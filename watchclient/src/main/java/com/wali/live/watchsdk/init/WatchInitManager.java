@@ -23,6 +23,7 @@ import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.dns.PreDnsManager;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
+import com.wali.live.watchsdk.log.LogHandler;
 import com.wali.live.watchsdk.service.PacketProcessService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -89,6 +90,7 @@ public class WatchInitManager {
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(BarrageMessageManager.getInstance());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new GiftPacketHandler());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(ReplayBarrageMessageManager.getInstance());
+        MiLinkClientAdapter.getsInstance().addPacketDataHandler(new LogHandler());
     }
 
     public static void registerAllEventBus() {
