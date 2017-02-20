@@ -9,11 +9,11 @@ interface IMiLiveSdkService {
 
     void openGameLive();
 
-    void loginByMiAccountSso(int channelId, long miid, String serviceToken);
+    void loginByMiAccountSso(int channelid, String packageName, long miid, String serviceToken);
 
-    void loginByMiAccountOAuth(int channelId, String code);
+    void loginByMiAccountOAuth(int channelid, String packageName, String code);
 
-    void clearAccount(int channelId);
+    void clearAccount(int channelid, String packageName);
 
     void setEventCallBack(int channelId, IMiLiveSdkEventCallback callback);
 }

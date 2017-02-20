@@ -67,7 +67,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void openWatch(int channelId, String packageName,
                           final long playerId, final String liveId, final String videoUrl) {
-        MyLog.d(TAG, "openWatch");
+        MyLog.d(TAG, "openWatch channelId=" + channelId);
 
         secureOperate(channelId, packageName, new ICommonCallBack() {
             @Override
@@ -87,7 +87,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void openReplay(int channelId, String packageName,
                            final long playerId, final String liveId, final String videoUrl) {
-        MyLog.d(TAG, "openReplay");
+        MyLog.d(TAG, "openReplay channelId=" + channelId);
 
         secureOperate(channelId, packageName, new ICommonCallBack() {
             @Override
@@ -111,87 +111,110 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void loginByMiAccountSso(final int channelId, final long miid, String serviceToken) throws RemoteException {
+    public void loginByMiAccountSso(final int channelId, String packageName,
+                                    final long miid, final String serviceToken) throws RemoteException {
         MyLog.d(TAG, "loginByMiAccountSso channelId=" + channelId);
 
-        AccountCaller.miSsoLogin(miid, serviceToken)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
-                    @Override
-                    public void onCompleted() {
-                        MyLog.w(TAG, "miSsoLogin on completed");
-                    }
+        secureOperate(channelId, packageName, new ICommonCallBack() {
+            @Override
+            public void process(Object object) {
+                MyLog.d(TAG, "loginByMiAccountSso success callback");
 
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, "miSsoLogin error", e);
-                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
-                    }
-
-                    @Override
-                    public void onNext(AccountProto.MiSsoLoginRsp miSsoLoginRsp) {
-                        try {
-                            if (miSsoLoginRsp == null) {
-                                MyLog.w(TAG, "miSsoLoginRsp is null");
-                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
-                                return;
-                            }
-                            MyLog.w(TAG, "miSsoLogin retCode=" + miSsoLoginRsp.getRetCode());
-                            if (miSsoLoginRsp.getRetCode() == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
-                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
-                                return;
-                            } else if (miSsoLoginRsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
-                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
-                                return;
+                AccountCaller.miSsoLogin(miid, serviceToken)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
+                            @Override
+                            public void onCompleted() {
+                                MyLog.w(TAG, "miSsoLogin on completed");
                             }
 
-                            onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
-                        } catch (Exception e) {
-                            MyLog.w(TAG, "miSsoLogin error", e);
-                            onEventLogin(channelId, MiLiveSdkEvent.FAILED);
-                            return;
-                        }
-                    }
-                });
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.e(TAG, "miSsoLogin error", e);
+                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                            }
+
+                            @Override
+                            public void onNext(AccountProto.MiSsoLoginRsp miSsoLoginRsp) {
+                                try {
+                                    if (miSsoLoginRsp == null) {
+                                        MyLog.w(TAG, "miSsoLoginRsp is null");
+                                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                        return;
+                                    }
+                                    MyLog.w(TAG, "miSsoLogin retCode=" + miSsoLoginRsp.getRetCode());
+                                    if (miSsoLoginRsp.getRetCode() == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
+                                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                        return;
+                                    } else if (miSsoLoginRsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
+                                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                        return;
+                                    }
+
+                                    onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
+                                } catch (Exception e) {
+                                    MyLog.w(TAG, "miSsoLogin error", e);
+                                    onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                    return;
+                                }
+                            }
+                        });
+            }
+        });
     }
 
     @Override
-    public void loginByMiAccountOAuth(final int channelId, String code) throws RemoteException {
+    public void loginByMiAccountOAuth(final int channelId, String packageName, final String code) throws RemoteException {
         MyLog.d(TAG, "loginByMiAccountOAuth channelId=" + channelId);
 
-        AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ActionParam>() {
-                    @Override
-                    public void onCompleted() {
-                        MyLog.w(TAG, "miLoginByCode login onCompleted");
-                    }
+        secureOperate(channelId, packageName, new ICommonCallBack() {
+            @Override
+            public void process(Object object) {
+                MyLog.d(TAG, "loginByMiAccountOAuth success callback");
 
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.w(TAG, "miLoginByCode login onError=" + e.getMessage());
-                        onEventLogin(channelId, MiLiveSdkEvent.FAILED);
-                    }
+                AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<ActionParam>() {
+                            @Override
+                            public void onCompleted() {
+                                MyLog.w(TAG, "miLoginByCode login onCompleted");
+                            }
 
-                    @Override
-                    public void onNext(ActionParam actionParam) {
-                        MyLog.w(TAG, "miLoginByCode login onNext");
-                        if (actionParam != null) {
-                            onEventLogin(channelId, actionParam.getErrCode());
-                        } else {
-                            onEventLogin(channelId, MiLiveSdkEvent.FAILED);
-                        }
-                    }
-                });
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.w(TAG, "miLoginByCode login onError=" + e.getMessage());
+                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                            }
+
+                            @Override
+                            public void onNext(ActionParam actionParam) {
+                                MyLog.w(TAG, "miLoginByCode login onNext");
+                                if (actionParam != null) {
+                                    onEventLogin(channelId, actionParam.getErrCode());
+                                } else {
+                                    onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                }
+                            }
+                        });
+            }
+        });
     }
 
     @Override
-    public void clearAccount(int channelId) throws RemoteException {
+    public void clearAccount(final int channelId, String packageName) throws RemoteException {
         MyLog.d(TAG, "clearAccount channelId=" + channelId);
-        // 账号这一块
-        UserAccountManager.getInstance().logoff(channelId);
-        onEventLogoff(channelId, MiLiveSdkEvent.SUCCESS);
+
+        secureOperate(channelId, packageName, new ICommonCallBack() {
+            @Override
+            public void process(Object object) {
+                MyLog.d(TAG, "clearAccount success callback");
+
+                // 账号这一块
+                UserAccountManager.getInstance().logoff(channelId);
+                onEventLogoff(channelId, MiLiveSdkEvent.SUCCESS);
+            }
+        });
     }
 
     private void secureOperate(final int channelId, final String packageName, final ICommonCallBack successCallback) {
