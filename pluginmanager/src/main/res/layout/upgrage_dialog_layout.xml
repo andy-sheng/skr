@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_upgrade">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33.33dp"
+        android:text="@string/find_new_version"
+        android:textColor="#E5000000"
+        android:textSize="16.67dp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/text_zone"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginLeft="21.66dp"
+        android:layout_marginRight="21.66dp"
+        android:layout_marginTop="83.33dp"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#CC000000"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/version"
+                android:layout_marginTop="6dp"
+                android:textColor="#CC000000"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/update_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/size"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="6dp"
+                android:textColor="#CC000000"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>
