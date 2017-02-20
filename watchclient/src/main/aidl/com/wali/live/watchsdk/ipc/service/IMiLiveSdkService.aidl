@@ -1,24 +1,19 @@
-// IMiLiveSdkService.aidl
 package com.wali.live.watchsdk.ipc.service;
 
 import com.wali.live.watchsdk.ipc.service.IMiLiveSdkEventCallback;
-// Declare any non-default types here with import statements
 
-/**
-* 保持和 livesdk 同步
-* */
 interface IMiLiveSdkService {
-    void openWatch(long playerId, String liveId, String videoUrl);
+    void openWatch(int channelId, String packageName, long playerId, String liveId, String videoUrl);
 
-    void openReplay(long playerId, String liveId, String videoUrl);
+    void openReplay(int channelId, String packageName, long playerId, String liveId, String videoUrl);
 
     void openGameLive();
 
-    void loginByMiAccountSso(int channelid, long miid, String serviceToken);
+    void loginByMiAccountSso(int channelId, long miid, String serviceToken);
 
-    void loginByMiAccountOAuth(int channelid, String code);
+    void loginByMiAccountOAuth(int channelId, String code);
 
-    void clearAccount(int channelid);
+    void clearAccount(int channelId);
 
-    void setEventCallBack(int channelid, IMiLiveSdkEventCallback callback);
+    void setEventCallBack(int channelId, IMiLiveSdkEventCallback callback);
 }

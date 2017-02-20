@@ -1,0 +1,16 @@
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "SecurityProto";
+
+//校验直播小助手的渠道来源是否是白名单
+//cmd:zhibo.account.verifyassistant
+message VerifyAssistantReq {
+    required string channelId   = 1; //对接小助手的第三方app渠道ID
+    required string packageName = 2; //对接小助手的第三方app包名
+}
+
+message VerifyAssistantRsp {
+    required uint32 retCode     = 1; //0:表示成功
+    optional string errMsg      = 2;
+}

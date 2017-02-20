@@ -2,6 +2,7 @@ package com.wali.live.channel.request;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.HotChannelProto.GetRecommendListReq;
 import com.wali.live.proto.HotChannelProto.GetRecommendListReq.Builder;
@@ -13,7 +14,7 @@ import com.wali.live.proto.HotChannelProto.GetRecommendListRsp;
  * @module 频道
  * @description 请求推荐频道的数据
  */
-public class GetChannelRequest extends BaseChannelRequest {
+public class GetChannelRequest extends BaseRequest {
     public GetChannelRequest() {
         initConstants();
         generateRequest();
