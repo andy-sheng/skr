@@ -29,7 +29,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
 
     compile 'com.android.support:multidex:1.0.1'
-    compile project(':watchsdk')
+    compile project(':watchclient')
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/ks3-android-sdk-v-1.4.6.jar')
 

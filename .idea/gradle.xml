@@ -14,12 +14,12 @@
             <option value="$PROJECT_DIR$/enginelive" />
             <option value="$PROJECT_DIR$/engineplayer" />
             <option value="$PROJECT_DIR$/greendaogenerator" />
+            <option value="$PROJECT_DIR$/liveclient" />
             <option value="$PROJECT_DIR$/livecommon" />
-            <option value="$PROJECT_DIR$/livesdk" />
+            <option value="$PROJECT_DIR$/livesdkapp" />
             <option value="$PROJECT_DIR$/livesdkdemo" />
             <option value="$PROJECT_DIR$/livesdkmanager" />
-            <option value="$PROJECT_DIR$/watchsdk" />
-            <option value="$PROJECT_DIR$/watchsdklite" />
+            <option value="$PROJECT_DIR$/watchclient" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
