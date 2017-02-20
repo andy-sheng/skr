@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:soundEffectsEnabled="false">
+
+    <com.wali.live.watchsdk.watch.view.TouchDelegateView
+        android:id="@+id/touch_delegate_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.wali.live.video.widget.VideoPlayerTextureView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/blur_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView
+        android:id="@+id/watch_top_info_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <!--评论栏-->
+    <com.wali.live.common.barrage.view.LiveCommentView
+        android:id="@+id/comment_rv"
+        android:layout_width="match_parent"
+        android:layout_height="160.33dip"
+        android:layout_above="@+id/smiley_root"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:paddingBottom="13.33dp"
+        android:paddingLeft="6dip"
+        android:paddingRight="6.67dip"
+        android:requiresFadingEdge="none" />
+
+
+    <!--游戏模式需要-->
+    <ViewStub
+        android:id="@+id/game_barrage_viewstub"
+        android:layout_width="586.66dp"
+        android:layout_height="96.77dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/margin_168"
+        android:layout_marginRight="@dimen/margin_168"
+        android:inflatedId="@+id/game_barrage_view"
+        android:layout="@layout/view_game_barrage" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/seek_bar_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center_horizontal" />
+
+    <com.wali.live.video.widget.player.ReplaySeekBar
+        android:id="@+id/replay_seekbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!--商城-->
+    <ViewStub
+        android:id="@+id/gift_mall_view_viewstub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/gift_mall_view"
+        android:layout="@layout/view_gift_mall" />
+
+    <ImageView
+        android:id="@+id/rotate_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6.67dp"
+        android:src="@drawable/live_icon_rotate_screen" />
+
+    <ImageView
+        android:id="@+id/close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_20"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/live_icon_close_btn" />
+
+    <!--弹幕区和弹幕评论区开始-->
+
+    <FrameLayout
+        android:id="@+id/smiley_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.wali.live.common.view.PlaceHolderView
+            android:id="@+id/place_holder_view"
+            android:layout_width="match_parent"
+            android:layout_height="35.66dip" />
+        <!--表情键盘-->
+        <ViewStub
+            android:id="@+id/similey_picker_viewstub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout="@layout/view_similey_picker" />
+    </FrameLayout>
+
+    <ViewStub
+        android:id="@+id/comment_input_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/smiley_root"
+        android:layout="@layout/view_send_comment"
+        android:minHeight="43dip"
+        android:visibility="invisible" />
+
+
+    <!--礼物展示需要-->
+    <include layout="@layout/component_gift_continue_view_group" />
+
+    <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
+        android:id="@+id/fly_barrage_viewgroup"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignBottom="@+id/gift_continue_vg" />
+
+    <!--房间特效礼物-->
+    <com.wali.live.common.gift.view.GiftRoomEffectView
+        android:id="@+id/gift_room_effect_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 礼物大动画 -->
+    <com.wali.live.common.gift.view.GiftAnimationView
+        android:id="@+id/gift_animation_player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
