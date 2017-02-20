@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="broadcaster">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/enginelive/libs/broadcaster.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

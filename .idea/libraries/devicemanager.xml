@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="devicemanager">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/enginebase/libs/devicemanager.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="xplatform_util">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/enginebase/libs/xplatform_util.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

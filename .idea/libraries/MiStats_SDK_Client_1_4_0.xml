@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="MiStats_SDK_Client_1_4_0">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/livecommon/libs/MiStats_SDK_Client_1_4_0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
