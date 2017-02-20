@@ -71,5 +71,5 @@ dependencies {
     compile(presentationDependencies.androidAppCompat) {
         exclude module: 'support-v4'
     }
-    compile project(':liveclient')
+    compile project(':watchclient')
 }

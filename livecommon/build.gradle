@@ -58,7 +58,7 @@ dependencies {
 //        compile project(':engine')
 //    }
 
-    compile project(':enginelive')
+    compile project(':engineplayer')
 
     /**
      *       以下都是支付相关，可以优化，sdk去掉一点
