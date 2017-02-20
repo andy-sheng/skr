@@ -10,9 +10,7 @@ import com.base.log.MyLog;
 /**
  * Created by chengsimin on 2016/12/26.
  */
-
 public class MiLiveSdkService extends Service {
-
     private static final String TAG = "MiLinkService";
 
     @Override

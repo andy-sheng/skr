@@ -23,7 +23,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * 要逐渐用这个替换app层的AccoutManager
  * Created by chengsimin on 16/7/1.
  */
 public class UserAccountManager {
@@ -38,7 +37,7 @@ public class UserAccountManager {
     // 账户模式：标准和匿名
     private static UserAccountManager sInstance;
 
-    //    private UserAccountDao mAccountDao;
+    // private UserAccountDao mAccountDao;
 
     private UserAccountManager() {
         EventBus.getDefault().register(this);

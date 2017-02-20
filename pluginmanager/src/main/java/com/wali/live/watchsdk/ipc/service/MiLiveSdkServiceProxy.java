@@ -14,12 +14,9 @@ import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
-import org.greenrobot.eventbus.EventBus;
-
 /**
  * Created by chengsimin on 2016/12/27.
  */
-
 public class MiLiveSdkServiceProxy implements ServiceConnection {
     public final static String TAG = MiLiveSdkServiceProxy.class.getSimpleName();
 
@@ -31,25 +28,22 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         @Override
         public void onEventLogin(int code) throws RemoteException {
             Log.d(TAG, "onEventLoginResult:" + code);
-            // 抛出eventbus事件通知
-            EventBus.getDefault().post(new MiLiveSdkEvent.LoginResult(code));
+            MiLiveSdkEvent.postLogin(code);
         }
 
         @Override
         public void onEventLogoff(int code) throws RemoteException {
             Log.d(TAG, "onEventLogoff:" + code);
-            // 登出了
-            EventBus.getDefault().post(new MiLiveSdkEvent.LogoffResult(code));
+            MiLiveSdkEvent.postLogoff(code);
         }
 
         @Override
         public void onEventWantLogin() throws RemoteException {
             Log.d(TAG, "onEventWantLogin");
-            // 请求登录
-            EventBus.getDefault().post(new MiLiveSdkEvent.WantLogin());
+            MiLiveSdkEvent.postWantLogin();
         }
-
     };
+
     long mMiId;
 
     String mSsoToken;
@@ -117,12 +111,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void openLive(RoomInfo roomInfo){
+    public void openWatch(RoomInfo roomInfo) {
+        Log.w(TAG, "openWatch");
         if (remoteService == null) {
             bindService();
         } else {
             try {
-                remoteService.openLive(roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
+                remoteService.openWatch(roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
             } catch (RemoteException e) {
                 bindService();
             }

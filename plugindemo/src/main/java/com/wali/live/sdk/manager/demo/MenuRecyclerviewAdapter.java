@@ -19,12 +19,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.toast.ToastUtils;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.sdk.manager.version.VersionCheckTask;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -39,13 +38,16 @@ import java.util.List;
 
 public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final static String TAG = MenuRecyclerviewAdapter.class.getSimpleName();
-    String sidForMiLive = "xmzhibo";
 
-    List<Bean> mDataList = new ArrayList<Bean>();
+    private String sidForMiLive = "xmzhibo";
 
-    Activity activity;
+    private List<Bean> mDataList = new ArrayList<Bean>();
+
+    private Activity mActivity;
+
     public MenuRecyclerviewAdapter(final Context context) {
-        activity = (Activity) context;
+        mActivity = (Activity) context;
+
         mDataList.add(new Bean("跳转到直播(AIDL)", new Runnable() {
             @Override
             public void run() {
@@ -55,19 +57,32 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 MiLiveSdkController.openLive(roomInfo);
             }
         }));
-
-        mDataList.add(new Bean("跳转到直播", new Runnable() {
+        mDataList.add(new Bean("宿主传OAuth登录账号(AIDL)", new Runnable() {
             @Override
             public void run() {
-                RoomInfo roomInfo = RoomInfo.Builder
-                        .newInstance(21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0")
-                        .setLiveType(RoomInfo.TYPE_LIVE_GAME)
-                        .build();
-                MiLiveSdkController.openLive((Activity) context, roomInfo);
+                oauthLogin();
+            }
+        }));
+        mDataList.add(new Bean("宿主传Sso登录账号(AIDL)", new Runnable() {
+            @Override
+            public void run() {
+                ssoLogin();
+            }
+        }));
+        mDataList.add(new Bean("登出当前宿主账号(AIDL)", new Runnable() {
+            @Override
+            public void run() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //  小米授权登录的
+                        MiLiveSdkController.clearAccount();
+                    }
+                }).start();
             }
         }));
 
-        mDataList.add(new Bean("跳转到随机直播", new Runnable() {
+        mDataList.add(new Bean("跳转到随机直播(用于测试，非AIDL，之后会删除)", new Runnable() {
             @Override
             public void run() {
                 // just for test
@@ -97,54 +112,38 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 new VersionCheckTask((Activity) context, true, true).execute();
             }
         }));
-        mDataList.add(new Bean("宿主传OAuth code登录账号", new Runnable() {
-            @Override
-            public void run() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //  小米授权登录的
-                        String code = XiaoMiOAuth.getOAuthCode((Activity) context);
-                        MiLiveSdkController.loginByMiAccount(code);
-                    }
-                }).start();
-            }
-        }));
-        mDataList.add(new Bean("宿主传Sso code登录账号", new Runnable() {
-            @Override
-            public void run() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ssoLogin();
-                    }
-                }).start();
-            }
-        }));
-        mDataList.add(new Bean("登出当前宿主的账号", new Runnable() {
-            @Override
-            public void run() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //  小米授权登录的
-                        MiLiveSdkController.clearAccount();
-                    }
-                }).start();
-            }
-        }));
 
         mDataList.add(new Bean("切换宿主id,模拟切换了宿主", new Runnable() {
             @Override
             public void run() {
-                if(channleClickListener!=null){
+                if (channleClickListener != null) {
                     channleClickListener.onClick(null);
                 }
             }
         }));
     }
 
+    public void oauthLogin() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //  小米授权登录的
+                String code = XiaoMiOAuth.getOAuthCode(mActivity);
+                MiLiveSdkController.loginByMiAccount(code);
+            }
+        }).start();
+    }
+
     public void ssoLogin() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ssoLoginInner();
+            }
+        }).start();
+    }
+
+    private void ssoLoginInner() {
         //  小米授权登录的
         AccountManager am = AccountManager.get(GlobalData.app().getApplicationContext());
         if (ActivityCompat.checkSelfPermission(GlobalData.app(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
@@ -159,7 +158,6 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
              * 这里获取ssotoken有两种方式
              */
             String ssoToken = getServiceTokenNew(GlobalData.app());
-//            String ssoToken = getServiceTokenOld(accounts[0]);
             MiLiveSdkController.loginByMiAccountSso(miid, ssoToken);
         }
     }
@@ -188,7 +186,7 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (GlobalData.app() == null) {
                 future = AccountManager.get(GlobalData.app()).getAuthToken(account, sidForMiLive, null, true, null, null);
             } else {
-                future = AccountManager.get(GlobalData.app()).getAuthToken(account, sidForMiLive, null,activity , null, null);
+                future = AccountManager.get(GlobalData.app()).getAuthToken(account, sidForMiLive, null, mActivity, null, null);
             }
             if (future != null) {
                 String authToken = future.getResult().getString(AccountManager.KEY_AUTHTOKEN);
@@ -208,7 +206,7 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     View.OnClickListener channleClickListener;
 
-    public void setChannleClickListener(View.OnClickListener listener){
+    public void setChannleClickListener(View.OnClickListener listener) {
         channleClickListener = listener;
     }
 
@@ -217,7 +215,7 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView tv = new TextView(parent.getContext());
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tv.setGravity(Gravity.CENTER);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,150);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
         tv.setLayoutParams(lp);
         RecyclerView.ViewHolder vh = new NormalViewHolder(tv);
         return vh;
@@ -241,15 +239,16 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
         return mDataList.size();
     }
 
-    static class NormalViewHolder extends RecyclerView.ViewHolder{
+    static class NormalViewHolder extends RecyclerView.ViewHolder {
         public TextView tv;
+
         public NormalViewHolder(View itemView) {
             super(itemView);
             tv = (TextView) itemView;
         }
     }
 
-    static class Bean{
+    static class Bean {
         public String content;
         public Runnable runnable;
 

@@ -10,13 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.wali.live.sdk.manager.toast.ToastUtils;
-import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.toast.ToastUtils;
 import com.wali.live.sdk.manager.uri.LiveUriUtils;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.sdk.manager.version.VersionCheckTask;
+import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import java.util.HashMap;
 
@@ -45,6 +45,7 @@ public class MiLiveSdkController {
 
     /**
      * 确保在使用 sdk插件 前 init 一下。
+     *
      * @param app
      * @param channelId
      */
@@ -52,13 +53,13 @@ public class MiLiveSdkController {
         GlobalData.setApplication(app);
         if (!GlobalData.app().getPackageName().equals(map.get(channelId))) {
             throw new RuntimeException("channelid error,unregister channelid for milivesdk,throw exception,");
-        }else{
+        } else {
             CHANNEL_ID = channelId;
         }
     }
 
-    private static void checkHasInit(){
-        if(CHANNEL_ID ==0){
+    private static void checkHasInit() {
+        if (CHANNEL_ID == 0) {
             throw new RuntimeException("CHANNEL_ID==0,check MiLiveSdkController.init(...) be called.");
         }
         MiLiveSdkServiceProxy.getInstance().tryInit();
@@ -70,7 +71,6 @@ public class MiLiveSdkController {
 
     /**
      * 只为测试使用，正常不需要
-     * @param activity
      */
     public static void openRandomLive(Activity activity) {
         checkHasInit();
@@ -111,9 +111,9 @@ public class MiLiveSdkController {
         }
     }
 
-    public static void openLive(RoomInfo roomInfo){
+    public static void openLive(RoomInfo roomInfo) {
         if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().openLive(roomInfo);
+            MiLiveSdkServiceProxy.getInstance().openWatch(roomInfo);
         } else {
             ToastUtils.showToast("未安装小米直播插件");
         }
@@ -246,9 +246,10 @@ public class MiLiveSdkController {
             ToastUtils.showToast("未安装小米直播插件");
         }
     }
+
     public static void loginByMiAccountSso(long miid, String authCode) {
         if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid,authCode);
+            MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, authCode);
         } else {
             ToastUtils.showToast("未安装小米直播插件");
         }

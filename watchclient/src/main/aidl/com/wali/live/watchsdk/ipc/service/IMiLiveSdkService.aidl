@@ -8,13 +8,13 @@ import com.wali.live.watchsdk.ipc.service.IMiLiveSdkEventCallback;
 * 保持和 livesdk 同步
 * */
 interface IMiLiveSdkService {
+    void openWatch(long playerId, String liveId, String videoUrl);
 
-    void loginByMiAccountSso(int channelid,long miid,String code);
+    void loginByMiAccountSso(int channelid, long miid, String serviceToken);
 
-    void loginByMiAccountOAuth(int channelid,String code);
+    void loginByMiAccountOAuth(int channelid, String code);
 
     void clearAccount(int channelid);
 
-    void setEventCallBack(int channelid,IMiLiveSdkEventCallback callback);
-
+    void setEventCallBack(int channelid, IMiLiveSdkEventCallback callback);
 }
