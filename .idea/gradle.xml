@@ -16,6 +16,8 @@
             <option value="$PROJECT_DIR$/greendaogenerator" />
             <option value="$PROJECT_DIR$/livecommon" />
             <option value="$PROJECT_DIR$/livesdk" />
+            <option value="$PROJECT_DIR$/livesdkdemo" />
+            <option value="$PROJECT_DIR$/livesdkmanager" />
             <option value="$PROJECT_DIR$/watchsdk" />
             <option value="$PROJECT_DIR$/watchsdklite" />
           </set>

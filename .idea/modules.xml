@@ -11,6 +11,8 @@
       <module fileurl="file://$PROJECT_DIR$/livecommon/livecommon.iml" filepath="$PROJECT_DIR$/livecommon/livecommon.iml" />
       <module fileurl="file://$PROJECT_DIR$/livesdk.iml" filepath="$PROJECT_DIR$/livesdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/livesdk/livesdk-livesdk.iml" filepath="$PROJECT_DIR$/livesdk/livesdk-livesdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/livesdkdemo/livesdkdemo.iml" filepath="$PROJECT_DIR$/livesdkdemo/livesdkdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/livesdkmanager/livesdkmanager.iml" filepath="$PROJECT_DIR$/livesdkmanager/livesdkmanager.iml" />
       <module fileurl="file://$PROJECT_DIR$/watchsdk/watchsdk.iml" filepath="$PROJECT_DIR$/watchsdk/watchsdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/watchsdklite/watchsdklite.iml" filepath="$PROJECT_DIR$/watchsdklite/watchsdklite.iml" />
     </modules>

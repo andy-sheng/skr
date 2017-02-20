@@ -1,1 +1,1 @@
-include ':greendaogenerator', ':data', ':common', ':livecommon', ':watchsdk', ':watchsdklite', ':engineplayer', ':livesdk', ':enginelive', ':enginebase'
+include ':greendaogenerator', ':data', ':common', ':livecommon', ':watchsdk', ':watchsdklite', ':engineplayer', ':livesdk', ':enginelive', ':enginebase', ':livesdkmanager', ':livesdkdemo'
