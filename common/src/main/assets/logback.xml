@@ -1,5 +1,5 @@
 <configuration>
-    <property name="LOG_DIR" value="/storage/emulated/0/Xiaomi/WALI_LIVE/logs/com.wali.live/" />
+    <property name="LOG_DIR" value="/storage/emulated/0/Xiaomi/WALI_LIVE_SDK/logs/com.mi.liveassistant/" />
     <!--声明一个时间戳-->
     <timestamp datePattern="yyyyMMdd" key="today" />
     <!--声明一个FileAppender-->
@@ -9,7 +9,7 @@
         <!--log追加到文件,否则覆盖文件-->
         <append>true</append>
         <!--用来保存log的文件全路径-->
-        <file>${LOG_DIR}/milivewatchsdk.log</file>
+        <file>${LOG_DIR}/livesdk.log</file>
         <!--输出log的格式-->
         <encoder>
             <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line] - %msg%n</pattern>-->
@@ -24,14 +24,14 @@
         <lazy>true</lazy>
         <!--log追加到文件,否则覆盖文件-->
 
-        <file>${LOG_DIR}/milivewatchsdk.roll.${today}.log</file>
+        <file>${LOG_DIR}/livesdk.roll.${today}.log</file>
         <append>true</append>
         <encoder>
             <pattern>%date [%thread] - %msg%n</pattern>
         </encoder>
 
         <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">-->
-        <!--<fileNamePattern>${LOG_DIR}/mizhibo.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>-->
+        <!--<fileNamePattern>${LOG_DIR}/livesdk.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>-->
         <!--<minIndex>1</minIndex>-->
         <!--<maxIndex>10</maxIndex>-->
         <!--</rollingPolicy>-->
@@ -41,15 +41,15 @@
         <!--</triggeringPolicy>-->
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/milivewatchsdk_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/livesdk_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                 class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- or whenever the file size reaches 5MB -->
-                <maxFileSize>10MB</maxFileSize>
-                <totalSizeCap>100MB</totalSizeCap>
+                <maxFileSize>5MB</maxFileSize>
+                <totalSizeCap>50MB</totalSizeCap>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!--最大保存7天的日志-->
-            <maxHistory>7</maxHistory>
+            <maxHistory>3</maxHistory>
         </rollingPolicy>
 
     </appender>
