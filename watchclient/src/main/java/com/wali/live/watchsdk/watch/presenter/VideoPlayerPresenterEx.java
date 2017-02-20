@@ -98,14 +98,10 @@ public class VideoPlayerPresenterEx implements
         public void onPrepared() {
             MyLog.v(TAG, " onPrepared");
             if (mVideoPlayerPresenter != null) {
-                if (mIsPlayLocal) {
-                    //本地视频onPrepared 就能播放了 而网络视频要oninfo的时候才能开播
-                    hideLoading();
-                    EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_PLAYING));
-                }
-
+                hideLoading();
                 mIsAlreadyPrepared = true;
-
+                setSeekBarContainerVisible(true);
+                EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_PLAYING));
                 mPlayedTime = 0;
                 mTotalTime = mVideoPlayerPresenter.getDuration();
                 if (mPreSeekTo > 0) {
@@ -136,12 +132,6 @@ public class VideoPlayerPresenterEx implements
         @Override
         public void onInfo(int info) {
             MyLog.v(TAG + " onInfo int " + info);
-            if (info == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START || info == IMediaPlayer.MEDIA_INFO_BUFFERING_END) {
-                hideLoading();
-                mIsAlreadyPrepared = true;
-                setSeekBarContainerVisible(mIsShowSeekBar);
-                EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_PLAYING));
-            }
         }
 
         @Override
@@ -253,7 +243,7 @@ public class VideoPlayerPresenterEx implements
         mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
         mVideoPlayerPresenter.setBufferSize(500);
         mVideoPlayerPresenter.setRealTime(false);
-        if(mSeekBar!=null) {
+        if (mSeekBar != null) {
             mSeekBar.setVideoPlaySeekBarListener(mVideoPlaySeekBarListener);
             mSeekBar.setPlayBtnSelected(isPlaying());
             delayHideSeekBar(mSeekBarHideDelay);
@@ -382,15 +372,15 @@ public class VideoPlayerPresenterEx implements
         orientRotateBtn();
     }
 
-    protected void orientRotateBtn(){
+    protected void orientRotateBtn() {
         showPortraitRotateIfNeed();
-        if(mIsLandscape){
+        if (mIsLandscape) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
             layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             mRotateBtn.setLayoutParams(layoutParams);
-        }else{
+        } else {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -553,7 +543,6 @@ public class VideoPlayerPresenterEx implements
             setSeekBarContainerVisible(false);
         }
     };
-
 
 
     //    ----接口回调的代码     ip优选回调-----------------------------------------------------------
