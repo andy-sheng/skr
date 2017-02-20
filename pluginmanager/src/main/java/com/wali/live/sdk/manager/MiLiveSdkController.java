@@ -31,9 +31,9 @@ public class MiLiveSdkController {
     /**
      * 标识唤起方
      */
-    private static int CHANNEL_ID = 0;
+    private static int sChannelId = 0;
 
-    static HashMap<Integer, String> map = new HashMap<Integer, String>();
+    static HashMap<Integer, String> map = new HashMap();
 
     static {
         map.put(50000, "com.wali.live.sdk.manager.demo");
@@ -44,29 +44,26 @@ public class MiLiveSdkController {
     }
 
     /**
-     * 确保在使用 sdk插件 前 init 一下。
-     *
-     * @param app
-     * @param channelId
+     * 确保在使用 sdk 插件前 init 一下。
      */
     public static void init(Application app, int channelId) {
         GlobalData.setApplication(app);
         if (!GlobalData.app().getPackageName().equals(map.get(channelId))) {
-            throw new RuntimeException("channelid error,unregister channelid for milivesdk,throw exception,");
+            throw new RuntimeException("channelid error, unregister channelid for milivesdk, throw exception,");
         } else {
-            CHANNEL_ID = channelId;
+            sChannelId = channelId;
         }
     }
 
     private static void checkHasInit() {
-        if (CHANNEL_ID == 0) {
-            throw new RuntimeException("CHANNEL_ID==0,check MiLiveSdkController.init(...) be called.");
+        if (sChannelId == 0) {
+            throw new RuntimeException("sChannelId==0,check MiLiveSdkController.init(...) be called.");
         }
         MiLiveSdkServiceProxy.getInstance().tryInit();
     }
 
     public static int getChannelId() {
-        return CHANNEL_ID;
+        return sChannelId;
     }
 
     /**
@@ -80,7 +77,7 @@ public class MiLiveSdkController {
         String className = "com.wali.live.JumpTestSdkActivity";
         intent.setClassName(packageName, className);
         Bundle bundle = new Bundle();
-        bundle.putInt("extra_channel_id", CHANNEL_ID);
+        bundle.putInt("extra_channel_id", sChannelId);
         bundle.putString("extra_packagename", GlobalData.app().getPackageName());
         intent.putExtras(bundle);
         if (!go(activity, intent)) {
@@ -230,7 +227,7 @@ public class MiLiveSdkController {
     @Deprecated
     public static void openWatch(final Activity activity, RoomInfo roomInfo) {
         checkHasInit();
-        roomInfo.setmChannelId(CHANNEL_ID);
+        roomInfo.setmChannelId(sChannelId);
         roomInfo.setPackageName(GlobalData.app().getPackageName());
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -251,7 +248,7 @@ public class MiLiveSdkController {
     @Deprecated
     public static void openPlayback(final Activity activity, RoomInfo roomInfo) {
         checkHasInit();
-        roomInfo.setmChannelId(CHANNEL_ID);
+        roomInfo.setmChannelId(sChannelId);
         roomInfo.setPackageName(GlobalData.app().getPackageName());
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -278,7 +275,7 @@ public class MiLiveSdkController {
         String className = "com.wali.live.livesdk.live.LiveSdkActivity";
         intent.setClassName(packageName, className);
         Bundle bundle = new Bundle();
-        bundle.putInt("extra_channel_id", CHANNEL_ID);
+        bundle.putInt("extra_channel_id", sChannelId);
         bundle.putString("extra_package_name", GlobalData.app().getPackageName());
         intent.putExtras(bundle);
         if (!go(activity, intent)) {

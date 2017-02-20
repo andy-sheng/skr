@@ -16,6 +16,9 @@ public class MiLinkCommand {
     public static final String COMMAND_ZHIBO_KS3AUTH_REQUEST = "zhibo.mfas.auth";
     public static final String COMMAND_ZHIBO_MULTIPART_AUTH = "zhibo.mfas.multipartauth";
 
+    /*验证助手合法性*/
+    public static final String COMMAND_ACCOUNT_VERIFY_ASSISTANT = "zhibo.account.verifyassistant";
+
     /*直播相关*/
     public static final String COMMAND_LIVE_GET_ROOM_ID = "zhibo.live.getroomid";                  //创建一个直播
     public static final String COMMAND_LIVE_BEGIN = "zhibo.live.begin";                     //创建一个直播

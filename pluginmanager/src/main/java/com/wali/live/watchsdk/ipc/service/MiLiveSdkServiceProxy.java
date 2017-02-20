@@ -42,6 +42,11 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             Log.d(TAG, "onEventWantLogin");
             MiLiveSdkEvent.postWantLogin();
         }
+
+        @Override
+        public void onEventVerifyFailure(int code) throws RemoteException {
+            Log.d(TAG, "onEventVerifyFailure code=" + code);
+        }
     };
 
     long mMiId;
@@ -117,7 +122,9 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             bindService();
         } else {
             try {
-                remoteService.openWatch(roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
+                remoteService.openWatch(
+                        50011, "com.xiaomi.gamecenter.dev",
+                        roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
             } catch (RemoteException e) {
                 bindService();
             }
@@ -125,12 +132,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void openReplay(RoomInfo roomInfo) {
-        Log.w(TAG, "openWatch");
+        Log.w(TAG, "openReplay " + "channelId=" + MiLiveSdkController.getChannelId() + ";packageName=" + GlobalData.app().getPackageName());
         if (remoteService == null) {
             bindService();
         } else {
             try {
-                remoteService.openReplay(roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
+                remoteService.openReplay(
+                        50010, "com.xiaomi.gamecenter",
+                        roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
             } catch (RemoteException e) {
                 bindService();
             }
