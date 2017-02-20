@@ -88,30 +88,7 @@ public class MiLiveSdkController {
         }
     }
 
-    /**
-     * 显示调用，指定跳到直播
-     *
-     * @param activity
-     * @param roomInfo
-     */
-    public static void openLive(final Activity activity, RoomInfo roomInfo) {
-        checkHasInit();
-        roomInfo.setmChannelId(CHANNEL_ID);
-        roomInfo.setPackageName(GlobalData.app().getPackageName());
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        String packageName = VersionCheckManager.PACKAGE_NAME;
-        String className = "com.wali.live.watchsdk.watch.WatchSdkActivity";
-        intent.setClassName(packageName, className);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("extra_room_info", roomInfo);
-        intent.putExtras(bundle);
-        if (!go(activity, intent)) {
-            checkSdkUpdate(activity, true, true);
-        }
-    }
-
-    public static void openLive(RoomInfo roomInfo) {
+    public static void openWatch(RoomInfo roomInfo) {
         if (hasInstallLiveSdk(GlobalData.app())) {
             MiLiveSdkServiceProxy.getInstance().openWatch(roomInfo);
         } else {
@@ -119,50 +96,19 @@ public class MiLiveSdkController {
         }
     }
 
-    public static void startGameLive(final Activity activity) {
-        checkHasInit();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        String packageName = VersionCheckManager.PACKAGE_NAME;
-        String className = "com.wali.live.livesdk.live.LiveSdkActivity";
-        intent.setClassName(packageName, className);
-        Bundle bundle = new Bundle();
-        bundle.putInt("extra_channel_id", CHANNEL_ID);
-        bundle.putString("extra_package_name", GlobalData.app().getPackageName());
-        intent.putExtras(bundle);
-        if (!go(activity, intent)) {
-            checkSdkUpdate(activity, true, true);
+    public static void openReplay(RoomInfo roomInfo) {
+        if (hasInstallLiveSdk(GlobalData.app())) {
+            MiLiveSdkServiceProxy.getInstance().openReplay(roomInfo);
+        } else {
+            ToastUtils.showToast("未安装小米直播插件");
         }
     }
 
-//    public static void openLive(final Activity activity, RoomInfo roomInfo) {
-//        String url = String.format("walilive_app_sdk://room/join?liveid=%s&playerid=%s&videourl=%s&query_room_info=false&after_live_end=0",
-//                roomInfo.getRoomId(),
-//                roomInfo.getPlayerId(),
-//                roomInfo.getVideoUrl());
-//        goLiveBySchema(activity, url);
-//    }
-
-    /**
-     * 显示调用，指定跳到回放
-     *
-     * @param activity
-     * @param roomInfo
-     */
-    public static void openPlayback(final Activity activity, RoomInfo roomInfo) {
-        checkHasInit();
-        roomInfo.setmChannelId(CHANNEL_ID);
-        roomInfo.setPackageName(GlobalData.app().getPackageName());
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        String packageName = VersionCheckManager.PACKAGE_NAME;
-        String className = "com.wali.live.watchsdk.watch.ReplaySdkActivity";
-        intent.setClassName(packageName, className);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("extra_room_info", roomInfo);
-        intent.putExtras(bundle);
-        if (!go(activity, intent)) {
-            checkSdkUpdate(activity, true, true);
+    public static void openGameLive() {
+        if (hasInstallLiveSdk(GlobalData.app())) {
+            MiLiveSdkServiceProxy.getInstance().openGameLive();
+        } else {
+            ToastUtils.showToast("未安装小米直播插件");
         }
     }
 
@@ -236,8 +182,6 @@ public class MiLiveSdkController {
 
     /**
      * 使用eventbus 接收 MiLiveSdkEvent.LoginResult 来监听登录事件的回调
-     *
-     * @param authcode
      */
     public static void loginByMiAccount(String authcode) {
         if (hasInstallLiveSdk(GlobalData.app())) {
@@ -278,5 +222,67 @@ public class MiLiveSdkController {
             Log.e(TAG, e.getMessage());
         }
         return pInfo != null;
+    }
+
+    /**
+     * 显示调用，指定跳到直播
+     */
+    @Deprecated
+    public static void openWatch(final Activity activity, RoomInfo roomInfo) {
+        checkHasInit();
+        roomInfo.setmChannelId(CHANNEL_ID);
+        roomInfo.setPackageName(GlobalData.app().getPackageName());
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        String packageName = VersionCheckManager.PACKAGE_NAME;
+        String className = "com.wali.live.watchsdk.watch.WatchSdkActivity";
+        intent.setClassName(packageName, className);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("extra_room_info", roomInfo);
+        intent.putExtras(bundle);
+        if (!go(activity, intent)) {
+            checkSdkUpdate(activity, true, true);
+        }
+    }
+
+    /**
+     * 显示调用，指定跳到回放
+     */
+    @Deprecated
+    public static void openPlayback(final Activity activity, RoomInfo roomInfo) {
+        checkHasInit();
+        roomInfo.setmChannelId(CHANNEL_ID);
+        roomInfo.setPackageName(GlobalData.app().getPackageName());
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        String packageName = VersionCheckManager.PACKAGE_NAME;
+        String className = "com.wali.live.watchsdk.watch.ReplaySdkActivity";
+        intent.setClassName(packageName, className);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("extra_room_info", roomInfo);
+        intent.putExtras(bundle);
+        if (!go(activity, intent)) {
+            checkSdkUpdate(activity, true, true);
+        }
+    }
+
+    /**
+     * 开启游戏直播
+     */
+    @Deprecated
+    public static void startGameLive(final Activity activity) {
+        checkHasInit();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        String packageName = VersionCheckManager.PACKAGE_NAME;
+        String className = "com.wali.live.livesdk.live.LiveSdkActivity";
+        intent.setClassName(packageName, className);
+        Bundle bundle = new Bundle();
+        bundle.putInt("extra_channel_id", CHANNEL_ID);
+        bundle.putString("extra_package_name", GlobalData.app().getPackageName());
+        intent.putExtras(bundle);
+        if (!go(activity, intent)) {
+            checkSdkUpdate(activity, true, true);
+        }
     }
 }

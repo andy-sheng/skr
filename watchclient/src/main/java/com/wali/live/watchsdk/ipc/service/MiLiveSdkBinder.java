@@ -15,6 +15,7 @@ import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.watchsdk.ipc.receiver.ReceiverConstant;
+import com.wali.live.watchsdk.watch.ReplaySdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -61,14 +62,30 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void openWatch(long playerId, String liveId, String videoUrl) {
         MyLog.d(TAG, "openWatch");
 
-        /**
-         * TODO FLAG_ACTIVITY_NEW_TASK，目前demo有停留在应用的问题，可以通过去除intent-filter实现
-         */
+        // TODO FLAG_ACTIVITY_NEW_TASK，目前demo有停留在应用的问题，可以通过去除intent-filter实现
         Intent intent = new Intent(GlobalData.app(), WatchSdkActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
         intent.putExtra(WatchSdkActivity.EXTRA_ROOM_INFO, roomInfo);
         GlobalData.app().startActivity(intent);
+    }
+
+    @Override
+    public void openReplay(long playerId, String liveId, String videoUrl) {
+        MyLog.d(TAG, "openReplay");
+
+        // TODO FLAG_ACTIVITY_NEW_TASK，目前demo有停留在应用的问题，可以通过去除intent-filter实现
+        Intent intent = new Intent(GlobalData.app(), ReplaySdkActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
+        intent.putExtra(ReplaySdkActivity.EXTRA_ROOM_INFO, roomInfo);
+        GlobalData.app().startActivity(intent);
+    }
+
+    @Override
+    public void openGameLive() {
+        MyLog.d(TAG, "openGameLive");
+        // TODO
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.auth;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,15 +7,11 @@ import android.content.DialogInterface;
 import com.base.dialog.MyAlertDialog;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.event.GiftEventClass;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by chengsimin on 2017/2/9.
  */
-
 public class AccountAuthManager {
     static boolean showWindow = false;
 

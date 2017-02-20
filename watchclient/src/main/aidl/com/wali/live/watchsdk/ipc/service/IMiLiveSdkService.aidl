@@ -10,6 +10,10 @@ import com.wali.live.watchsdk.ipc.service.IMiLiveSdkEventCallback;
 interface IMiLiveSdkService {
     void openWatch(long playerId, String liveId, String videoUrl);
 
+    void openReplay(long playerId, String liveId, String videoUrl);
+
+    void openGameLive();
+
     void loginByMiAccountSso(int channelid, long miid, String serviceToken);
 
     void loginByMiAccountOAuth(int channelid, String code);

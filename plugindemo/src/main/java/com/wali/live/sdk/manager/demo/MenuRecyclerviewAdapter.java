@@ -54,9 +54,24 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 RoomInfo roomInfo = RoomInfo.Builder
                         .newInstance(21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0")
                         .build();
-                MiLiveSdkController.openLive(roomInfo);
+                MiLiveSdkController.openWatch(roomInfo);
             }
         }));
+        mDataList.add(new Bean("跳转到回放(AIDL)", new Runnable() {
+            @Override
+            public void run() {
+                RoomInfo roomInfo = RoomInfo.Builder
+                        .newInstance(22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1")
+                        .build();
+                MiLiveSdkController.openReplay(roomInfo);
+            }
+        }));
+//        mDataList.add(new Bean("开启游戏直播(AIDL)", new Runnable() {
+//            @Override
+//            public void run() {
+//                MiLiveSdkController.openGameLive();
+//            }
+//        }));
         mDataList.add(new Bean("宿主传OAuth登录账号(AIDL)", new Runnable() {
             @Override
             public void run() {
@@ -87,22 +102,6 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void run() {
                 // just for test
                 MiLiveSdkController.openRandomLive((Activity) context);
-            }
-        }));
-
-        mDataList.add(new Bean("跳转到回放", new Runnable() {
-            @Override
-            public void run() {
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1")
-                        .build();
-                MiLiveSdkController.openPlayback((Activity) context, roomInfo);
-            }
-        }));
-
-        mDataList.add(new Bean("跳转到启动游戏直播", new Runnable() {
-            @Override
-            public void run() {
-                MiLiveSdkController.startGameLive((Activity) context);
             }
         }));
 

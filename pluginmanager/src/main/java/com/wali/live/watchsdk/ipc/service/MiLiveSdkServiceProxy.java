@@ -124,6 +124,32 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
+    public void openReplay(RoomInfo roomInfo) {
+        Log.w(TAG, "openWatch");
+        if (remoteService == null) {
+            bindService();
+        } else {
+            try {
+                remoteService.openReplay(roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
+            } catch (RemoteException e) {
+                bindService();
+            }
+        }
+    }
+
+    public void openGameLive() {
+        Log.w(TAG, "openGameLive");
+        if (remoteService == null) {
+            bindService();
+        } else {
+            try {
+                remoteService.openGameLive();
+            } catch (RemoteException e) {
+                bindService();
+            }
+        }
+    }
+
     public void loginByMiAccount(String code) {
         Log.w(TAG, "loginByMiAccount code:" + code);
         if (remoteService == null) {
