@@ -89,13 +89,16 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             remoteService.setEventCallBack(MiLiveSdkController.getChannelId(), miLiveSdkEventCallback);
             // 尝试处理登录
             if (!TextUtils.isEmpty(mSsoToken)) {
-                remoteService.loginByMiAccountSso(MiLiveSdkController.getChannelId(), mMiId, mSsoToken);
+                remoteService.loginByMiAccountSso(
+                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(), mMiId, mSsoToken);
                 mSsoToken = "";
             } else if (!TextUtils.isEmpty(mAuthCode)) {
-                remoteService.loginByMiAccountOAuth(MiLiveSdkController.getChannelId(), mAuthCode);
+                remoteService.loginByMiAccountOAuth(
+                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(), mAuthCode);
                 mAuthCode = "";
             } else if (mClearAccountFlag) {
-                remoteService.clearAccount(MiLiveSdkController.getChannelId());
+                remoteService.clearAccount(
+                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName());
                 mClearAccountFlag = false;
             }
         } catch (RemoteException e) {
@@ -123,7 +126,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         } else {
             try {
                 remoteService.openWatch(
-                        50011, "com.xiaomi.gamecenter.dev",
+                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(),
                         roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
             } catch (RemoteException e) {
                 bindService();
@@ -138,7 +141,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         } else {
             try {
                 remoteService.openReplay(
-                        50010, "com.xiaomi.gamecenter",
+                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(),
                         roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
             } catch (RemoteException e) {
                 bindService();
@@ -166,7 +169,8 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             bindService();
         } else {
             try {
-                remoteService.loginByMiAccountOAuth(MiLiveSdkController.getChannelId(), code);
+                remoteService.loginByMiAccountOAuth(
+                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(), code);
             } catch (RemoteException e) {
                 mAuthCode = code;
                 bindService();
@@ -182,7 +186,9 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             bindService();
         } else {
             try {
-                remoteService.loginByMiAccountSso(MiLiveSdkController.getChannelId(), miid, ssoToken);
+                remoteService.loginByMiAccountSso(
+                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(),
+                        miid, ssoToken);
             } catch (RemoteException e) {
                 mMiId = miid;
                 mSsoToken = ssoToken;
@@ -198,7 +204,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             bindService();
         } else {
             try {
-                remoteService.clearAccount(MiLiveSdkController.getChannelId());
+                remoteService.clearAccount(MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName());
             } catch (RemoteException e) {
                 mClearAccountFlag = true;
                 bindService();
