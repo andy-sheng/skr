@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+//    dependencies {
+//        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+//    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.fernandocejas.frodo'
+//apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    defaultPublishConfig "debug"
+
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError false
+        ignoreWarnings true
+        disable 'InvalidPackage'  // Some libraries have issues with this
+        disable 'OldTargetApi'
+        // Due to Robolectric that modifies the manifest when running tests
+    }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java-gen']
+        }
+    }
+    configurations {
+        all*.exclude group: 'android.support.v4', module: 'print'
+    }
+}
+
+dependencies {
+    def dataDependencies = rootProject.ext.dataDependencies
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    provided presentationDependencies.androidAppCompat
+    apt dataDependencies.daggerCompiler
+    provided dataDependencies.javaxAnnotation
+    compile dataDependencies.dagger
+    compile dataDependencies.rxJava
+    compile dataDependencies.rxAndroid
+    compile dataDependencies.androidAnnotations
+
+    compile files('libs/greendao-2.0.0.jar')
+    compile files('libs/xiaomiaccountsdk.jar')
+    compile files('libs/oauth.jar')
+
+    compile project(':common')
+}

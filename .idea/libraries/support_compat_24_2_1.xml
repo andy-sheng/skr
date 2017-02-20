@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="support-compat-24.2.1">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/enginelive/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/watchsdklite/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/common/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/data/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/livesdk/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/watchsdk/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/enginebase/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/livecommon/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/engineplayer/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/enginelive/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/enginelive/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar!/" />
+      <root url="file://$PROJECT_DIR$/enginelive/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-compat/24.2.1/support-compat-24.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

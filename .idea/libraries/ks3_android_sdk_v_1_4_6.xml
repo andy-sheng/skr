@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ks3-android-sdk-v-1.4.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/livesdk/libs/ks3-android-sdk-v-1.4.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

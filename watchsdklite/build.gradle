@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+//    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.mi.liveassistant"
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        myConfig {
+            storeFile file("com.xiaomi.debug.keystore")
+            storePassword "XiaomiIs#1"
+            keyAlias "release_key"
+            keyPassword "XiaomiIs#1"
+        }
+    }
+    buildTypes {
+
+        debug {
+            debuggable true
+            signingConfig signingConfigs.myConfig
+        }
+        release {
+            minifyEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myConfig
+            shrinkResources true
+
+        }
+    }
+
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    def dataDependencies = rootProject.ext.dataDependencies
+    def testDependencies = rootProject.ext.dataTestDependencies
+    compile presentationDependencies.rxAndroid
+    compile presentationDependencies.rxJava
+
+    compile(presentationDependencies.androidAppCompat) {
+        exclude module: 'support-v4'
+    }
+    compile project(':livesdk')
+}

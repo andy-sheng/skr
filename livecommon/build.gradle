@@ -1,0 +1,78 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+//    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+
+    useLibrary 'org.apache.http.legacy'
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+}
+
+// 放一些直播业务的基础公共类
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    def dataDependencies = rootProject.ext.dataDependencies
+    def testDependencies = rootProject.ext.dataTestDependencies
+    compile presentationDependencies.androidAppCompat
+    compile presentationDependencies.rxAndroid
+    compile presentationDependencies.rxJava
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile presentationDependencies.butterKnife
+    compile project(':data')
+
+//    /*
+//     *  动态加载引擎module [ engine | engineplayer ]
+//     *  1. AndroidStudio 编译 :assemble前面是编译所选模块名
+//     *  2. 命令行         编译 指定的module则是cd到对应目录执行命令
+//     *  所以判断编译app还是watchsdkdemo通过 1或2判断
+//     */
+//    boolean isWatchSdkDemo = gradle.getStartParameter().getTaskRequests().toString().contains("watchsdkdemo:assemble") || gradle.getStartParameter().getCurrentDir().toString().endsWith("/watchsdkdemo")
+//    if(isWatchSdkDemo){
+//        compile project(':engineplayer')
+//    }else{
+//        compile project(':engine')
+//    }
+
+    compile project(':enginelive')
+
+    /**
+     *       以下都是支付相关，可以优化，sdk去掉一点
+     */
+    compile files('libs/SDK_TY_4.4.33.jar')
+    //compile 'com.paypal.sdk:paypal-android-sdk:2.14.3'
+    compile files('libs/HyAlipay_release_20161202.jar')
+    compile files('libs/HyUcashierpay_release_20161202.jar')
+    compile files('libs/HyWxpay_release_20160620.jar')
+    compile files('libs/MiStats_SDK_Client_1_4_0.jar')
+    compile files('libs/reporter.jar')
+    compile files('libs/migamepluginstat_2.jar')
+    compile files('libs/libammsdk.jar')
+    compile files('libs/volley-1.0.19.jar')
+    compile files('libs/alipaySingle-20160825.jar')
+//    compile 'com.alibaba.alipay:alipaySingle:20160825@jar'//支付
+}

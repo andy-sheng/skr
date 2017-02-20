@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_first_bg"
+    android:drawableLeft="@drawable/checkbox"
+    android:drawablePadding="10dip"
+    android:ellipsize="marquee"
+    android:gravity="center_vertical"
+    android:minHeight="47.33dip"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:textColor="@color/color_black_trans_80"
+    android:textSize="@dimen/text_size_40" />

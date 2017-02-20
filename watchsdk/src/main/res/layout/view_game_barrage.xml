@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.wali.live.watchsdk.watch.view.GameBarrageViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/game_barrage_view"
+    android:layout_width="586.66dp"
+    android:layout_height="96.77dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginBottom="@dimen/margin_168"
+    android:layout_marginRight="@dimen/margin_168"
+    android:visibility="gone" />

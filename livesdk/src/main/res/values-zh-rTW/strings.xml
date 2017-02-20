@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">livesdk</string>
+    <string name="default_location_hint">開普勒452B星球</string>
+    <string name="game_default_name">選擇標籤</string>
+    <string name="game_quality_title">遊戲畫質</string>
+    <string name="live_start">開始直播</string>
+
+    <string name="prepare_live_edittext_hint">好的標題能吸引更多用戶</string>
+    <string name="network_unavailable">沒有網路連接</string>
+    <string name="game_choose_tag_tip">請選擇對應的標籤</string>
+    <string name="third_party_system_version_error">您的系統版本是舊版的，暫不支援直播</string>
+    <string name="game_live_tag_title">請選擇對應的遊戲直播標籤</string>
+    <string name="forbid_capture">您禁用了截圖權限，無法進行直播</string>
+    <string name="game_back_to_app_message">確定要返回主控台</string>
+    <string name="game_comment_title">聊天室</string>
+    <string name="empty_edittext_hint">跟大家說點什麼</string>
+    <plurals name="game_comment_number">
+        <item quantity="other">%d人</item>
+    </plurals>
+    <string name="game_live_unexpected_end_toast">出錯了，直播已結束</string>
+    <string name="max_topic_count">不能超過%d字</string>
+    <string name="game_mute_microphone">已靜音，粉絲暫時無法聽見你的聲音</string>
+    <string name="game_unmute_microphone">已開麥克風，粉絲可以聽見你的聲音了</string>
+    <string name="game_save_picture_success">已儲存截圖至%s</string>
+    <string name="game_save_picture_failed">儲存失敗，請稍後重試</string>
+    <string name="live_ended">直播結束</string>
+    <string name="live_private_tip">私密直播不能保存</string>
+    <string name="live_ended_back">返回首頁</string>
+    <string name="live_delete">刪除直播重播</string>
+    <plurals name="live_end_viewer_cnt">
+        <item quantity="other">%d人看過</item>
+    </plurals>
+    <plurals name="live_end_ticket">
+        <item quantity="other">本次直播收到%d星票</item>
+    </plurals>
+    <plurals name="ticket_buyer_count">
+        <item quantity="other">%1$d人購票</item>
+    </plurals>
+    <string name="confirm_delete_replay">確認刪除本次重播嗎？</string>
+    <string name="stop_live_dialog_message">確定結束直播?</string>
+    <string name="network_offline_warning">目前網路連接不可用，請檢查網路設定</string>
+    <string name="file_upload_failed_path_error">檔案上傳失敗,原因：本地路徑有誤！</string>
+    <string name="file_upload_failed_file_error">檔案上傳失敗，原因：檔案不存在或長度為0或不是一個檔案！</string>
+
+    <string name="begin_level_limit_default">你的等級未達到本時段開播條件，不可開播！</string>
+    <string name="begin_level_limit">本時段低於%d級不可開播！</string>
+    <string name="i_know">我知道了</string>
+    <string name="live_failure">建立房間失敗，請返回重試</string>
+    <string name="to_home">回到桌面</string>
+    <string name="game_back_to_home">直播開始！ 現在，您可以返回桌面啟動遊戲</string>
+    <string name="room_admin">房間管理</string>
+
+    <string name="admin_manager_tips">溫馨提示：</string>
+    <string name="admin_banspeaker_tips_1">1：當前被禁言的使用者只在本次直播中有效，如果你再次開播該使用者的禁言狀態則失效。</string>
+    <string name="admin_banspeaker_tips_2">2：被禁言的使用者不可以發言，但仍舊可以送禮物。</string>
+
+    <string name="block">加入黑名單</string>
+    <string name="unblock">移出</string>
+
+    <string name="remove_blocked">移出黑名單</string>
+    <string name="do_not_repeated_statement">不能重複發言</string>
+
+    <string name="barrage_not_control">不限制</string>
+    <string name="barrage_control_in_second">%ds內一次</string>
+    <string name="barrage_control_in_min">%dmin內一次</string>
+
+    <string name="banspeaker_list">禁言清單</string>
+    <string name="room_setting">房間設定</string>
+
+    <string name="block_confirm_tips">加入黑名單後使用者將無法再進入你的直播間觀看直播（永久有效）</string>
+    <string name="block_failed">拉黑失敗</string>
+
+    <string name="cancel_banspeaker_fail">解除禁言失敗</string>
+    <string name="game_cancel_forbid_gift">取消隱藏禮物</string>
+    <string name="game_cancel_forbid_system">取消隱藏系統消息</string>
+    <string name="game_cancel_forbid_chat">取消隱藏聊天內容</string>
+    <string name="game_forbid_gift_toast">隱藏禮物</string>
+    <string name="game_forbid_system_toast">隱藏系統消息</string>
+    <string name="game_forbid_chat_toast">隱藏聊天內容</string>
+    <string name="game_forbid_title">消息設定</string>
+    <string name="game_forbid_gift">禮物</string>
+    <string name="game_forbid_system">系統消息</string>
+    <string name="game_forbid_chat">聊天內容</string>
+
+    <string name="setting_dialog_black_title">提醒</string>
+    <string name="mic_occupy">麥克風使用中</string>
+    <string name="start_stream_failure">直播失敗，請返回重試</string>
+    <string name="network_not_good_tip">網有點卡，會影響直播效果哦</string>
+    <string name="network_change_tip">您當前正在使用非wifi網路進行直播，可能會產生流量費用</string>
+    <string name="warm_prompt">溫馨提示</string>
+    <string name="phone_interrupt">電話接聽前，直播已經暫停，您的通話不會對外傳播，現在您可以繼續直播。</string>
+</resources>

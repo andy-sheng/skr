@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/barrage_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="@dimen/margin_15"
+        android:paddingBottom="@dimen/margin_3"
+        android:singleLine="true"
+        android:textColor="@color/color_black_trans_60"
+        android:textDirection="3"
+        android:textSize="@dimen/text_size_42" />
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/gift_iv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/barrage_tv"
+        android:visibility="gone" />
+
+</merge>

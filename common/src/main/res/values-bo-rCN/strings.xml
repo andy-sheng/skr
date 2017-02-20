@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sixin_link">སྦྲེལ་མཐུད།</string>
+    <string name="exceed_max_retry_tip">དྲ་རྒྱ་ནོར་འདུག</string>
+    <string name="title_camera_permission">པར་ཆས་དབང་ཚད་ཁ་ཕྱེ།</string>
+    <string name="check_camera_video_message">པར་ཆས་དབང་ཚད་བཀག་སྡོམ་བྱས་པས། བརྒྱུད་ཁོངས་རྩ་འཛུགས་ནང་ནས་ཁ་འབྱེད། ད་ལྟ་སྒྲིག་འགོད་བྱེད་དམ།</string>
+    <string name="title_record_audio_permission">སྒྲ་འབེབས་དབང་ཚད་ཁ་ཕྱེ།</string>
+    <string name="message_record_audio_permission">སྒྲ་འབེབས་དབང་ཚད་བཀག་སྡོམ་བྱས་པས། བརྒྱུད་ཁོངས་རྩ་འཛུགས་ནང་ནས་ཁ་འབྱེད། ད་ལྟ་སྒྲིག་འགོད་བྱད་དམ།</string>
+    <string name="title_get_accounts_permission">ཐོ་འགོད་མཁན་མཚམས་འདྲིའི་དབང་ཚད་ཁ་འབྱེད་ཟིན།</string>
+    <string name="message_get_accounts_permission">ཁ་པར་ཐོ་འགོད་མཁན་གྱི་མཚམས་འདྲིའི་དབང་ཚད་སྤྱོད་མཚམས་བཞག་ཟིན། བརྒྱུད་ཁོངས་སྒྲིག་འགོད་ནང་ཁ་འབྱེད་དགོས། ད་ལྟ་སྒྲིག་འགོད་བྱེད་དམ།</string>
+    <string name="title_floating_window_permission">གཡེང་བའི་དྲ་མའི་དབང་ཚད་ཁ་འབྱེད།</string>
+    <string name="message_floating_window_permission">གཡེང་བའི་དྲ་མ་བཀག་སྡོམ་བྱས་པས། བརྒྱུད་ཁོངས་རྩ་འཛུགས་ནང་ནས་ཁ་འབྱེད། ད་ལྟ་སྒྲིག་འགོད་བྱེད་དམ།</string>
+    <string name="title_sdcard_permission">ཁ་པར་གི་ནང་གསོག་ཀློག་པའི་དབང་ཚད་ཁ་ཕྱེ།</string>
+    <string name="message_sdcard_permission">ཁ་པར་གྱི་ནང་གསོག་ཀློག་པ་བཀག་འདུག་པས་བརྒྱུད་ཁོངས་སྒྲིག་འགོད་ནང་ནས་ཁ་ཕྱེ་རོགས། ད་ལྟ་སྒྲིག་འགོད་བྱེད་དམ།</string>
+    <string name="title_location_permission">གནས་ངེས་ཀྱི་དབང་ཚད་ཁ་ཕྱེ།</string>
+    <string name="message_location_permission">གནས་ངེས་བཀག་འདུགཔས་བརྒྱུད་ཁོངས་ཀྱི་སྒྲིག་འགོད་ནང་ནས་ཁ་ཕྱེ་རོགས། ད་ལྟ་སྒྲིག་འགོད་བྱེད་དམ།</string>
+    <string name="setting_title">སྒྲིག་འགོད།</string>
+    <string name="cancel">རྩིད་མེད།</string>
+    <plurals name="days_ago">
+        <item quantity="other">ཉིན་%dསྔོན།</item>
+    </plurals>
+    <plurals name="months_ago">
+        <item quantity="other">ཟླ་བ%dསྔོན།</item>
+    </plurals>
+    <string name="within_1_hour">སྐར་མ་%dསྔོན་དུ་</string>
+    <string name="michannel_date_format">yyyyལོའི་ཟླ་MMཚེས་dd</string>
+    <string name="michannel_time_format">HH:mm</string>
+    <string name="within_s_secs">ད་ལྟ།</string>
+    <string name="yesterday_time">ཁ་སང་%s</string>
+    <string name="date_today">དེ་རིང་།</string>
+    <string name="times_mm_dd_format">ཟླ་MMཚེས་dd</string>
+    <string name="date_tomorrow">སང་ཉིན།</string>
+    <string name="justnow">ད་ལྟ།</string>
+    <plurals name="hour_ago">
+        <item quantity="other">ཆུ་ཚོད%dསྔོན།</item>
+    </plurals>
+    <string name="year_month_day">%1$dལོའི་ཟླ་%2$dཚེས་%3$dཉིན།</string>
+    <string name="year_month_day_hour_minute">yyyyལོའི་ཟླ་MMཚེས་ddཉིན། HH:mm</string>
+    <string name="month_day_hour_minute">ཟླ་MMཚེས་ddཉིན། HH:mm</string>
+    <plurals name="minute_ago">
+        <item quantity="other">སྐར་མ%dསྔོན།</item>
+    </plurals>
+
+    <string name="month_day">ཟླ་%1$d %2$dཉིན།</string>
+    <string name="yesterday_hour_minute">ཁ་སང་།%1$d%2$02d</string>
+</resources>

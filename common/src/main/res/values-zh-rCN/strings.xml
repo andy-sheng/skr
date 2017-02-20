@@ -1,0 +1,50 @@
+<resources>
+    <string name="sixin_link">链接</string>
+    <string name="exceed_max_retry_tip">网络错误</string>
+    <string name="title_camera_permission">开启相机权限</string>
+    <string name="check_camera_video_message">相机权限已被禁止，请在系统设置中开启。现在设置?</string>
+    <string name="title_record_audio_permission">开启录音权限</string>
+    <string name="message_record_audio_permission">录音权限已被禁止，请在系统设置中开启。现在设置?</string>
+    <string name="title_get_accounts_permission">开启帐号访问权限</string>
+    <string name="message_get_accounts_permission">手机帐号访问权限已被禁止，请在系统设置中开启。现在设置?</string>
+    <string name="title_floating_window_permission">开启悬浮窗权限</string>
+    <string name="message_floating_window_permission">悬浮框已被禁止，请在系统设置中开启。现在设置?</string>
+    <string name="title_sdcard_permission">开启读写手机存储权限</string>
+    <string name="message_sdcard_permission">读写手机存储已被禁止，请在系统设置中开启。现在设置?</string>
+    <string name="title_location_permission">开启定位权限</string>
+    <string name="message_location_permission">定位已被禁止，请在系统设置中开启。现在设置?</string>
+    <string name="setting_title">设置</string>
+    <string name="cancel">取消</string>
+    <plurals name="days_ago">
+        <item quantity="other">%d天前</item>
+    </plurals>
+    <plurals name="months_ago">
+        <item quantity="other">%d个月前</item>
+    </plurals>
+    <string name="within_1_hour">%d分钟前</string>
+    <string name="michannel_date_format">yyyy年MM月dd日</string>
+    <string name="michannel_time_format">HH:mm</string>
+    <string name="within_s_secs">刚刚</string>
+    <string name="yesterday_time">昨天 %s</string>
+    <string name="date_today">今天</string>
+    <string name="times_mm_dd_format">MM月dd日</string>
+    <string name="date_tomorrow">明天</string>
+    <string name="justnow">刚刚</string>
+    <plurals name="hour_ago">
+        <item quantity="other">%d小时前</item>
+    </plurals>
+
+    <string name="year_month_day">%1$d年%2$d月%3$d日</string>
+    <string name="year_month_day_hour_minute">yyyy年MM月dd日 HH:mm</string>
+
+    <string name="month_day_hour_minute">MM月dd日 HH:mm</string>
+
+    <plurals name="minute_ago">
+        <item quantity="other">%d分钟前</item>
+    </plurals>
+
+
+
+    <string name="month_day">%1$d月%2$d日</string>
+    <string name="yesterday_hour_minute">昨天 %1$d:%2$02d</string>
+</resources>

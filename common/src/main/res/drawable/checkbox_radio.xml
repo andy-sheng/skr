@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/me_set_confirmation" android:state_checked="true" />
+    <item android:drawable="@drawable/all_checkbox_list_radio_2" android:state_checked="false" />
+
+</selector>

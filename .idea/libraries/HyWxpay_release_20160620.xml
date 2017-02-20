@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="HyWxpay_release_20160620">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/livecommon/libs/HyWxpay_release_20160620.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

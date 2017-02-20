@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="reporter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/livecommon/libs/reporter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/end_live_flytRoot"
+    android:layout_width="@dimen/view_dimen_320"
+    android:layout_height="@dimen/view_dimen_320"
+    android:background="@drawable/loading_empty"
+    android:paddingRight="2dp"
+    android:clickable="true">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/end_live_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        style="@style/michannel_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:text="@string/live" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/home_new_human_bg">
+
+        <com.base.view.MLTextView
+            android:id="@+id/end_live_txtCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/live_show_avatar_iv"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_10"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/home_new_human_icon"
+            android:gravity="bottom"
+            android:singleLine="true"
+            android:text="200"
+            android:textColor="@color/color_white"
+            android:textSize="9.33sp" />
+
+        <com.base.view.MLTextView
+            android:id="@+id/end_live_txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="40dp"
+            android:includeFontPadding="false"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:text="新奇的少女"
+            android:textColor="@color/color_white"
+            android:textSize="11sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/color_black_trans_30"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
+</FrameLayout>

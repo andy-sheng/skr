@@ -1,0 +1,79 @@
+<resources>
+    <item name="fresco_view_tag" type="id"></item>
+    <item name="photo_dv" type="id"></item>
+    <item name="red_packet" type="id"></item>
+
+    <string name="sixin_link">Links</string>
+    <string name="exceed_max_retry_tip">Network error</string>
+    <string name="title_camera_permission">Allow access to camera</string>
+    <string name="check_camera_video_message">Allow access to camera in Settings?</string>
+    <string name="title_record_audio_permission">Allow recording audio</string>
+    <string name="message_record_audio_permission">Allow recording audio in Settings?</string>
+    <string name="title_get_accounts_permission">Give account permissions</string>
+    <string name="message_get_accounts_permission">Allow access to account in Settings now?</string>
+    <string name="title_floating_window_permission">Allow floating notifications</string>
+    <string name="message_floating_window_permission">Allow floating notifications in Settings?</string>
+    <string name="title_sdcard_permission">Allow reading and writing files on internal storage</string>
+    <string name="message_sdcard_permission">Can\'t read or write files. Allow now?</string>
+    <string name="title_location_permission">Give location permissions</string>
+    <string name="message_location_permission">Allow access to location info in Settings?</string>
+    <string name="setting_title">Settings</string>
+    <string name="cancel">Cancel</string>
+    <plurals name="days_ago">
+        <item quantity="one">%d day ago</item>
+        <item quantity="other">%d days ago</item>
+    </plurals>
+    <plurals name="months_ago">
+        <item quantity="one">%d month ago</item>
+        <item quantity="other">%d months ago</item>
+    </plurals>
+    <string name="within_1_hour">%d min ago</string>
+    <string name="michannel_date_format">MM/dd/yyyy</string>
+    <string name="michannel_time_format">HH:mm</string>
+    <string name="within_s_secs">Just now</string>
+    <string name="yesterday_time">Yesterday %s</string>
+    <string name="date_today">Today</string>
+    <string name="times_mm_dd_format">MM/dd</string>
+    <string name="date_tomorrow">Tomorrow</string>
+    <string name="justnow">Just now</string>
+    <plurals name="hour_ago">
+        <item quantity="one">%d hour ago</item>
+        <item quantity="other">%d hours ago</item>
+    </plurals>
+    <string name="year_month_day">%2$d/%3$d/%1$d</string>
+    <string name="year_month_day_hour_minute">MM/dd/yyyy HH:mm</string>
+    <string name="month_day_hour_minute">MM/dd HH:mm</string>
+    <plurals name="minute_ago">
+        <item quantity="one">%d minute ago</item>
+        <item quantity="other">%d minutes ago</item>
+    </plurals>
+
+    <string name="month_day">%1$d/%2$d</string>
+    <string name="yesterday_hour_minute">Yesterday %1$d:%2$02d</string>
+
+    <string name="in_process">处理中</string>
+    <!-- 版本更新 -->
+    <string name="dialog_milive_app_noinstall_message">你还没有安装小米直播插件，是否下载安装?</string>
+    <string name="dialog_milive_app_version_too_live_message">你的小米直播插件版本太低，是否下载最新</string>
+    <string name="sure_install_milive">下载</string>
+    <string name="cancel_install_milve">取消</string>
+    <string name="milive_upgrade_progress_sucess">小米直播插件下载成功</string>
+    <string name="milive_upgrade_progress_faild">小米直播插件下载失败</string>
+    <string name="milive_upgrade_progress_start">小米直播插件开始下载</string>
+    <string name="app_version">版本号:&#160;%s</string>
+    <string name="apksize">安装包大小:&#160;%sM</string>
+    <string name="upgrade_description">版本更新要点:&#160;%s</string>
+    <string name="cancel_update">取消</string>
+    <string name="update_rightnow">升级</string>
+    <string name="download_update_failed">下载更新失败</string>
+    <string name="find_new_version">下载小米直播</string>
+    <string name="no_upgrading">已是最新版本</string>
+    <string name="check_failed">检查更新失败，请检查网络</string>
+    <string name="check_upgrading">正在检查更新请稍后...</string>
+    <string name="is_upgrading">正在更新</string>
+    <string name="update_downloading">正在下载更新请稍后...</string>
+    <string name="downloading_background">正在后台下载升级文件，可在通知栏查看进度</string>
+    <string name="milive_upgrade_progress">已下载%d%%</string>
+    <string name="download_update_succeed">下载完成，安装升级文件</string>
+    <string name="update_file_illegal">更新的安装包验证出错,请重试</string>
+</resources>

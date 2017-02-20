@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="11.67dp"
+        android:layout_marginLeft="34.67dp"
+        android:includeFontPadding="false"
+        android:shadowColor="@color/color_black_trans_70"
+        android:shadowDx="0.67"
+        android:shadowDy="0.33"
+        android:shadowRadius="2.1"
+        android:singleLine="true"
+        android:text="Angelababy"
+        android:textColor="#fed267"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/content_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_below="@id/name_tv"
+        android:layout_marginTop="1.33dp"
+        android:layout_marginLeft="21.33dp"
+        android:background="@drawable/live_barrage_bg"
+        android:paddingLeft="13.33dp"
+        android:paddingRight="6.67dp"
+        android:gravity="center_vertical"
+        android:shadowColor="@color/color_black_trans_70"
+        android:shadowDx="0.67"
+        android:shadowDy="0.33"
+        android:shadowRadius="2.1"
+        android:singleLine="true"
+        android:text="主播，我永远支持你"
+        android:textColor="@color/white"
+        android:textSize="12dp" />
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/sender_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@id/content_tv"
+        android:layout_centerVertical="true"
+        app:roundAsCircle="false"
+        app:roundingBorderColor="@color/white"
+        app:roundingBorderWidth="1dp" />
+
+    <ImageView
+        android:id="@+id/user_badge_iv"
+        android:layout_width="9.33dp"
+        android:layout_height="9.33dp"
+        android:layout_alignBottom="@id/sender_iv"
+        android:layout_alignRight="@id/sender_iv"
+        android:background="@drawable/user_badge_iv_background"
+        android:scaleType="fitStart" />
+
+    <ImageView
+        android:id="@+id/user_badge_vip_iv"
+        android:layout_width="9.33dp"
+        android:layout_height="9.33dp"
+        android:layout_alignBottom="@id/sender_iv"
+        android:layout_alignRight="@id/sender_iv"
+        android:background="@drawable/user_badge_iv_background"
+        android:scaleType="fitStart" />
+
+</merge>

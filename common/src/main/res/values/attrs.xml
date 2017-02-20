@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomButton">
+        <attr name="button_style">
+            <enum name="normal" value="0"/>
+            <enum name="emphasize" value="1"/>
+            <enum name="emphasize2" value="2"/>
+            <enum name="highlight" value="3"/>
+            <enum name="green" value="4"/>
+        </attr>
+        <attr name="button_position">
+            <enum name="single" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="center" value="2"/>
+            <enum name="right" value="3"/>
+        </attr>
+        <attr name="button_text_style">
+            <enum name="standard" value="0"/>
+            <enum name="plain" value="1"/>
+            <enum name="bold" value="2"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="TitleBar">
+        <attr name="is_profile_mode" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="TintableImageView">
+        <attr name="tintColor" format="reference|color"/>
+    </declare-styleable>
+    <declare-styleable name="AskewView">
+        <attr name="adjustDistance" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="RotatedSeekBar">
+        <attr name="appShapeBkAlpha" format="float"/>
+        <attr name="appProgressDrawableFT" format="reference" />
+        <attr name="appProgressDrawableBK" format="reference" />
+        <attr name="appSeekBarLeftPadding" format="dimension" />
+        <attr name="appSeekBarRightPadding" format="dimension" />
+        <attr name="appThumbDrawable" format="reference" />
+        <attr name="appThumbSize" format="dimension" />
+        <attr name="appThumbDrawablePress" format="reference" />
+        <attr name="appThumbSizePress" format="dimension" />
+        <attr name="appRotatedAngle" format="float" />
+        <attr name="appPercente" format="float" />
+        <attr name="appPercenteMin" format="float" />
+        <attr name="appPercenteMax" format="float" />
+
+        <attr name="appShapeSize" format="dimension" />
+        <attr name="appShapeColorFT" format="reference|color" />
+        <attr name="appShapeColorBK" format="reference|color" />
+    </declare-styleable>
+</resources>

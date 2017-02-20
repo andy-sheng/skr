@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">livesdk</string>
+    <string name="game_default_name">Select a tag</string>
+    <string name="default_location_hint">Kepler-452b</string>
+    <string name="game_quality_title">Video quality:</string>
+    <string name="game_quality_title_en">Video quality:</string>
+    <string name="live_start">Start</string>
+    <string name="prepare_live_edittext_hint">Good titles give you more chances to get followers</string>
+    <string name="network_unavailable">Could\'t connect to the network</string>
+    <string name="game_choose_tag_tip">Select a tag</string>
+    <string name="third_party_system_version_error">Update system version before you install Mi Live</string>
+    <string name="max_topic_count">Up to %d characters</string>
+    <string name="forbid_capture">Allow Mi Live to record screen first</string>
+    <string name="game_live_tag_title">Select a tag</string>
+    <string name="game_back_to_app_message">Back to Mi Live</string>
+    <string name="game_comment_title">Chat room</string>
+    <string name="empty_edittext_hint">Say something here</string>
+    <plurals name="game_comment_number">
+        <item quantity="one">%d person</item>
+        <item quantity="other">%d people</item>
+    </plurals>
+    <string name="game_live_unexpected_end_toast">Error occurred. Session ended.</string>
+    <string name="game_mute_microphone">Your microphone is muted</string>
+    <string name="game_unmute_microphone">Microphone is on</string>
+    <string name="game_save_picture_success">Screenshot saved in %s</string>
+    <string name="game_save_picture_failed">Couldn\'t save, try again later</string>
+    <string name="live_ended">Session ended</string>
+    <string name="live_private_tip">Can\'t save private live stream</string>
+    <string name="live_ended_back">Back to Home</string>
+    <string name="live_delete">Delete replay</string>
+    <plurals name="live_end_viewer_cnt">
+        <item quantity="one">%d viewer</item>
+        <item quantity="other">%d viewers</item>
+    </plurals>
+    <plurals name="live_end_ticket">
+        <item quantity="one">This live stream got %d coin</item>
+        <item quantity="other">This live stream got %d coins</item>
+    </plurals>
+    <plurals name="ticket_buyer_count">
+        <item quantity="one">%1$d ticket</item>
+        <item quantity="other">%1$d tickets</item>
+    </plurals>
+    <string name="confirm_delete_replay">Delete this record?</string>
+    <string name="stop_live_dialog_message">End the session?</string>
+    <string name="network_offline_warning">Can\'t connect to the network</string>
+    <string name="file_upload_failed_path_error">Couldn\'t upload file, local path error</string>
+    <string name="file_upload_failed_file_error">Couldn\'t upload file</string>
+    <string name="begin_level_limit_default">Your level doesn\'t meet the conditions to start a live stream during this period of time</string>
+    <string name="begin_level_limit">Only hosts above level %d could start live streams during this period of time</string>
+    <string name="i_know">Got it</string>
+
+    <string name="live_failure">Couldn\'t create channel, go back and try again</string>
+    <string name="to_home">Back to Home</string>
+    <string name="game_back_to_home">Session begins. Go back to Home and play the game now</string>
+    <string name="room_admin">Manager</string>
+
+    <string name="admin_manager_tips">Attention:</string>
+    <string name="admin_banspeaker_tips_1">1. This user is only banned in current session and will be allowed next time.</string>
+    <string name="admin_banspeaker_tips_2">2. Banned users can\'t make comments, but can still give gifts.</string>
+
+    <string name="block">Block</string>
+    <string name="unblock">Remove</string>
+
+    <string name="remove_blocked">Remove from blocklist</string>
+    <string name="do_not_repeated_statement">Don\'t send duplicated comments</string>
+
+    <string name="barrage_not_control">Allow</string>
+    <string name="barrage_control_in_second">Once within %d s</string>
+    <string name="barrage_control_in_min">Once within %d min</string>
+
+    <string name="banspeaker_list">Banned</string>
+    <string name="room_setting">Settings</string>
+
+    <string name="block_confirm_tips">User added to blocklist can\'t watch your sessions (permanent)</string>
+    <string name="cancel_banspeaker_fail">Couldn\'t allow comments</string>
+    <string name="block_failed">Couldn\'t block</string>
+
+    <string name="game_cancel_forbid_gift">Allow notifications of receiving gifts</string>
+    <string name="game_cancel_forbid_system">Allow system messages</string>
+    <string name="game_cancel_forbid_chat">Allow messages</string>
+    <string name="game_forbid_gift_toast">Block notifications of receiving gifts</string>
+    <string name="game_forbid_system_toast">Block system messages</string>
+    <string name="game_forbid_chat_toast">Block chatting messagesdf</string>
+    <string name="game_forbid_title">Message settings</string>
+    <string name="game_forbid_gift">Gifts</string>
+    <string name="game_forbid_system">System messages</string>
+    <string name="game_forbid_chat">Chatsdf</string>
+
+    <string name="setting_dialog_black_title">Attention</string>
+    <string name="mic_occupy">Microphone is busy</string>
+    <string name="start_stream_failure">Couldn\'t start, go back and try again</string>
+    <string name="network_not_good_tip">Connection is too slow, video quality may be affected</string>
+    <string name="network_change_tip">Using mobile data may generate additional carrier fees</string>
+    <string name="warm_prompt">Attention</string>
+    <string name="phone_interrupt">Session was paused before you picked up the call. Your phone conversations are always private.</string>
+</resources>

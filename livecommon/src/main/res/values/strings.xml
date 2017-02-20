@@ -1,0 +1,252 @@
+<resources>
+    <string name="type_to_compose_text_enter_to_send">Enter message</string>
+    <string name="barrage_focus_body">followed the host</string>
+    <string name="barrage_leave_live_body">left the room</string>
+    <string name="barrage_enter_live_body">entered the room</string>
+    <string name="barrage_like_body">liked</string>
+    <string name="barrage_share_body">shared the live stream</string>
+    <string name="barrage_set_manager_body">You\'re set as manager</string>
+    <string name="barrage_cancel_manager_body">You are no longer a manager</string>
+    <string name="permission_deny_read_phone_state">can not read phone state,permission deny</string>
+    <string name="barrage_message_too_large">Comment is too long, divide it into 2 comments</string>
+    <string name="live_start_light">I liked</string>
+    <string name="high_level_brrage_level_upgrade">Upgrade to level %s</string>
+    <string name="brrage_level_upgrade" formatted="false">Upgrade from level %s to level %s to get more privileges</string>
+    <string name="feeds_detail_wifi_2_4g_hint">You\'re currently using cellular data. Keep watching anyway?</string>
+    <string name="recharge">Top up</string>
+    <string name="send_gift">Send</string>
+    <string name="gift_mall_guide_page_tip">Tap the gift repeatedly to send</string>
+    <string name="gift_mall_guide_page_btn_text">Got it</string>
+    <string name="retry">Try again</string>
+    <string name="lianfa">Burst</string>
+    <string name="continue_normal_send_text">Burst</string>
+    <string name="origin_for_gift_item">Original price</string>
+    <string name="experience">+%1$d Exp</string>
+    <string name="gift_card_num">"  remaining"</string>
+    <string name="richer_hongbao">Red envelope</string>
+    <string name="get_lucky">Random amount</string>
+    <string name="gift_item_mi_coin_text">Mi Credits</string>
+    <string name="gift_item_diamond_text">Gems</string>
+    <string name="continue_big_send_text">Send</string>
+    <string name="gift_mall_balance_tips">Gold gems are virtual currency on Mi Live</string>
+    <string name="gift_mall_silver_balance_tips">Use silver gems first to send gifts</string>
+    <string name="gift_mall_mi_coin_tips">Use Mi Credits to buy gifts having marks only</string>
+    <string name="ticket_buy_live_ticket_tip1">Watch full video</string>
+    <string name="no_gift_selected">No gifts selected</string>
+    <string name="insufficient_balance">Insufficient funds</string>
+    <string name="send_gift_failed">Couldn\'t send gift</string>
+    <string name="mi_coin_insufficient_balance">Insufficient funds, top up first.</string>
+    <string name="mi_coin_consume_timeout">Processing timed out</string>
+    <string name="not_mi_coin_user">Only Mi Credit users can buy the gifts having marks</string>
+    <string name="mi_coin_risk_control">Account error, contact our customer service</string>
+    <string name="mi_coin_account_frozen">Mi Credits account frozen</string>
+    <string name="mi_coin_other_consume_error">Error occurred</string>
+    <plurals name="verify_user_level_toast">
+        <item quantity="one">Only users get %d level can send</item>
+        <item quantity="other">Only users get %d levels can send</item>
+    </plurals>
+    <string name="old_gift_version">Update Mi Live to send the gifts</string>
+    <string name="network_disable">Can\'t connect to the network</string>
+    <string name="gift_card_insufficient">Insufficient gift cards</string>
+    <string name="gift_out_date">This gift isn\'t available</string>
+    <string name="user_level_too_low_cant_buy">Only VIP users can buy the gift</string>
+    <string name="buy_gift_failed_with_err_code">Couldn\'t buy, error code:</string>
+    <string name="get_gift_list_fail">Couldn\'t get gift list</string>
+    <string name="watch_owner_name_default">Mi Live</string>
+    <string name="live_ticket_count">Coins %d</string>
+    <string name="live_ticket_count_this_time">This time: %d</string>
+    <string name="live_ticket_count2">%d coins</string>
+    <string name="live_ticket_count_this_time2">%d this time</string>
+    <string name="live_ticket">Coins</string>
+    <string name="my_attention">Following</string>
+    <string name="fans">Fans</string>
+    <string name="forbid_speak">Ban comments</string>
+    <string name="home_bottom_main">Home</string>
+    <string name="private_message">Message</string>
+    <string name="more">More</string>
+    <string name="kick_out">kick out</string>
+    <string name="gift_send">sent %1$s</string>
+    <string name="pause_tip">Live stream host will be back soon</string>
+    <string name="live">Live</string>
+    <string name="live_ended_concerned">Following</string>
+    <string name="add_follow">Follow</string>
+    <string name="live_ended_viewer_cnt">Audience: %s</string>
+    <string name="endlive_follow_success">Followed successfully. You will receive notifications about this live stream.</string>
+    <string name="live_ended_concern">Follow</string>
+    <string name="follow_failed">Couldn\'t follow</string>
+    <string name="live_is_end">Session ended</string>
+    <string name="live_ended_enter_chat_room">Enter the chat room</string>
+    <string name="live_ended_recommend_hint">Recommendation for you</string>
+    <string name="live_ended_home_page">Visit Home for more fun</string>
+    <string name="setting_black_follow_hint">Unblock to follow</string>
+    <string name="kick_viewer_confirm_tips">User kicked out can\'t watch this session (current session)</string>
+    <string name="kick_confirm_btn">Kick out</string>
+    <string name="cancle_operating">Cancel</string>
+    <string name="doing_now">Processing</string>
+    <string name="click_follow_button_too_many_time">Too many taps</string>
+    <string name="unfollow_dialog_title">Unfollow?</string>
+    <string name="yes">OK</string>
+    <string name="no">Cancel</string>
+    <string name="report">Report</string>
+    <string name="cancel_manager">Remove manager</string>
+    <string name="set_manager">Set as manager</string>
+    <string name="manager_max_err">You can select up to %d managers</string>
+    <string name="default_id_hint">Mi Live ID: </string>
+    <plurals name="sent_diamond_text">
+        <item quantity="one">%1$d gem sent</item>
+        <item quantity="other">%1$d gems sent</item>
+    </plurals>
+    <string name="already_followed">Following</string>
+    <string name="follow_both">Friends</string>
+    <string name="verify_sina">Weibo verification: </string>
+    <string name="verify_recommand">Recommended: </string>
+    <string name="verify_offical">Official account: </string>
+    <string name="verify_xiaomi">Mi Live verification: </string>
+    <string name="default_signature">I\'m the description nobody has written yet</string>
+    <string name="cancel_banspeaker">Allow</string>
+    <string name="kick_viewer_success">Kicked out successfully</string>
+    <string name="not_permission_to_kick">You have no permissions yet</string>
+    <string name="not_permission_kick_this_viewer">You have no permissions to kick anyone out</string>
+    <string name="kick_viewer_fail">Couldn\'t kick out</string>
+    <string name="top1_msg">You can ban other people\'s comments now</string>
+    <string name="weixin">WeChat</string>
+    <string name="zhifubao">Alipay</string>
+    <string name="miwallet">Mi Wallet</string>
+    <string name="payway_google_wallet">Google Wallet</string>
+    <string name="payway_paypal">PayPal</string>
+    <string name="recharge_single_big_amount_tip">Large amount top-up</string>
+    <string name="recharge_weixin_single_amount_too_large">An top-up order more than 3000 CNY isn\'t supported in WeChat Wallet now</string>
+    <string name="recharge_adjust_amount">Edit amount</string>
+    <string name="recharge_miwallet_single_amount_too_large">An top-up order more than CNY 3000 isn\'t supported in Mi Wallet now</string>
+    <string name="recharge_use_alipay">Use Alipay</string>
+    <string name="recharge_exceed_weixin_one_day_quota">Too many WeChat Wallet orders, select</string>
+    <string name="recharge_not_adjust_continue">Continue to pay</string>
+    <string name="recharge_exceed_miwallet_one_day_quota">Too many Mi Wallet orders, select</string>
+    <string name="recharge_exceed_one_day_quota_tip">Guide</string>
+    <string name="insufficient_ticket_tip">You don\'t have enough coins</string>
+    <string name="recharge_exchange_gem_btn_tip_detail">Details</string>
+    <plurals name="recharge_exchange_tip">
+        <item quantity="one">You can get %s gold gem now</item>
+        <item quantity="other">You can get %s gold gems now</item>
+    </plurals>
+    <string name="recharge_exchange_gem_btn">Exchange</string>
+    <string name="recharge_select_pay_way_tip">Choose payment method</string>
+    <plurals name="recharge_money_amount">
+        <item quantity="one">%1$s CNY</item>
+        <item quantity="other">%1$s CNY</item>
+    </plurals>
+    <plurals name="gold_diamond">
+        <item quantity="one">%1$s gold gem</item>
+        <item quantity="other">%1$s gold gems</item>
+    </plurals>
+
+    <string name="recharge_immediately">Pay now: %1$s</string>
+    <string name="recharge_already_expired_tip">Expired</string>
+    <string name="recharge_today_expire_tip">Expires today</string>
+    <string name="recharge_expire_left_day_tip">Expires in %1$dd</string>
+    <plurals name="recharge_gold_diamond">
+        <item quantity="one">%1$d gold gem</item>
+        <item quantity="other">%1$d gold gems</item>
+    </plurals>
+    <plurals name="recharge_silver_diamond">
+        <item quantity="one">%1$d silver gem</item>
+        <item quantity="other">%1$d silver gems</item>
+    </plurals>
+    <string name="recharge_will_expire_date">%1$s expired</string>
+    <string name="recharge_expired_date">%1$s expired</string>
+    <string name="recharge_paypal_price_format">%1$s %2$s</string>
+
+    <string name="given_diamond">+%1$d (extra)</string>
+    <string name="default_loading_hint">Just a sec\u2026</string>
+
+    <plurals name="given_diamond">
+        <item quantity="one">%1$d extra gem</item>
+        <item quantity="other">%1$d extra gems</item>
+    </plurals>
+
+    <string name="comma">, </string>
+    <string name="network_unavailable">Could\'t connect to the network</string>
+    <string name="select_pay_way_dialog_title">Choose payment method</string>
+    <string name="ok">OK</string>
+
+    <string name="balance_title">Balance</string>
+    <string name="valid_forever_tip">Never expires</string>
+
+    <string name="will_expire_tip">About to expire</string>
+    <string name="other_pay_way">Other payment methods</string>
+    <string name="recharge_big_amount_tip">Contact customer service for large amount top-up</string>
+    <string name="diamond_outcome_hint">Buy gems</string>
+    <string name="record_recharge_title">Top-up history</string>
+    <string name="net_error_return">No response from the server, check your network</string>
+    <string name="live_network_error">Network not available, try again later</string>
+    <string name="gold_iv_tint">%d gold gems</string>
+    <string name="wait_to_recharge_tv">Waiting for payment</string>
+    <string name="recharge_done_tv">Topped up sucessfully</string>
+    <string name="google_play_buy_fail_msg">Couldn\'t pay</string>
+    <string name="pay_error_code_fail">Couldn\'t complete payment</string>
+    <string name="pay_error_code_cancel">Cancel</string>
+    <string name="connect_google_play_fail_toast">Couldn\'t connect to Google Play</string>
+    <string name="pull_diamond_price_list_failed">Couldn\'t get prices</string>
+    <string name="pay_way_not_selected">No payment method selected</string>
+
+
+    <string name="select_pay_way_weixin">Payment method: WeChat Wallet</string>
+    <string name="select_pay_way_alipay">Payment method: Alipay</string>
+    <string name="select_pay_way_mibi">Payment method: Mi Credits</string>
+    <string name="select_pay_way_miwallet">Payment method: Mi Wallet</string>
+    <string name="select_pay_way_google_wallet">Payment method: Google Wallet</string>
+    <string name="select_pay_way_paypal">Payment method: PayPal</string>
+
+    <string name="create_order_fail_server_timeout">Couldn\'t create an order</string>
+    <string name="create_order_fail_return_code">Couldn\'t create an order, error code %1$d</string>
+    <string name="with_extra_diamond">+ %1$d (Given)</string>
+    <string name="message_errorcode">%1$s, error code: %2$d</string>
+
+    <string name="weixin_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="alipay_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="mibi_min_pay_money_hint">You can\'t pay less than 1 Mi Credit</string>
+    <string name="mibi_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="mibi_pay_err_msg_pay_cancel">Mi Credits: canceled</string>
+    <string name="mibi_pay_err_msg_buy_fail">Mi Credits: couldn\'t complete payment</string>
+    <string name="mibi_pay_err_msg_operation_in_progress">Mi Credits: paying</string>
+    <string name="miwallet_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="query_order_fail_server_timeout">Couldn\'t get info</string>
+    <string name="query_order_fail_return_code">Couldn\'t get info, error code %1$d</string>
+    <string name="recharge_success">Topped up successfully</string>
+    <string name="create_order_goods_not_exist">Product not exist now</string>
+
+
+    <string name="pay_error_code_get_session_fail">Couldn\'t get info</string>
+    <string name="pay_error_code_get_session_error">Error occurred</string>
+    <string name="pay_error_code_order_create_fail">Couldn\'t create order</string>
+
+    <string name="pay_error_code_order_info_error">Error occurred</string>
+    <string name="pay_error_code_order_info_parse_error">Error occurred</string>
+    <string name="pay_error_code_alipay_not_install">Install Alipay first</string>
+    <string name="pay_error_code_wx_not_install">Install WeChat first</string>
+
+    <string name="pay_error_code_client_not_install">Install Mi Wallet first</string>
+    <string name="pay_error_code_network_error">Network error</string>
+    <string name="pay_error_code_get_order_error">Couldn\'t get info</string>
+
+    <string name="recharge_record_empry_tip">Buy gems to send gifts to the host</string>
+    <string name="last_100_records_bottom">Only show recent 100 records</string>
+    <string name="paypal_response_data_error">Data error</string>
+    <string name="use_mi_account_login_title">Sign in with Mi Account</string>
+    <string name="use_mi_account_login_miwallet_msg">You\'re using Mi Account %s. Use this account to sign in to Mi Wallet?</string>
+    <string name="account_withdraw_pay_user_account_not_enough">Insufficient funds</string>
+    <string name="account_withdraw_pay_user_account_not_enough_tip">Top up to send gifts. Top up now?</string>
+
+    <!-- 热点 -->
+    <string name="invited">The host invited</string>
+    <string name="connect_mic">Merge audio</string>
+    <string name="share_song">The host is playing </string>
+    <string name="share_video">The host shared a video</string>
+    <string name="share_pic">The host shared a picture</string>
+    <string name="luck_draw">The host started a lucky draw</string>
+    <string name="user_send_gift_tip">%1$s sent %2$s</string>
+    <string name="gift">Gifts</string>
+    <string name="connect_peripheral">The host made external devices connected</string>
+    <string name="recorded_video">The host recorded a video</string>
+    <string name="game_give_one_gift">sent 1 %s</string>
+</resources>

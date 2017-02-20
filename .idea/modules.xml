@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data/data.iml" filepath="$PROJECT_DIR$/data/data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/enginebase/enginebase.iml" filepath="$PROJECT_DIR$/enginebase/enginebase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/enginelive/enginelive.iml" filepath="$PROJECT_DIR$/enginelive/enginelive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/engineplayer/engineplayer.iml" filepath="$PROJECT_DIR$/engineplayer/engineplayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" filepath="$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/livecommon/livecommon.iml" filepath="$PROJECT_DIR$/livecommon/livecommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/livesdk.iml" filepath="$PROJECT_DIR$/livesdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/livesdk/livesdk-livesdk.iml" filepath="$PROJECT_DIR$/livesdk/livesdk-livesdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/watchsdk/watchsdk.iml" filepath="$PROJECT_DIR$/watchsdk/watchsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/watchsdklite/watchsdklite.iml" filepath="$PROJECT_DIR$/watchsdklite/watchsdklite.iml" />
+    </modules>
+  </component>
+</project>

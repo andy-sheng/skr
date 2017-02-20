@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">小米直播助手</string>
+    <string name="register">登录</string>
+    <string name="logged_in">有账号</string>
+</resources>

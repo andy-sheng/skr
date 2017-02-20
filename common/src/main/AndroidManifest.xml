@@ -1,0 +1,21 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.base.common">
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+        <activity
+            android:name="com.base.permission.rxpermission.ShadowActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:relinquishTaskIdentity="true"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.PopupMessage"
+             />
+
+    </application>
+
+</manifest>

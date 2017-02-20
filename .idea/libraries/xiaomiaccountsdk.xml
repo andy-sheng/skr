@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="xiaomiaccountsdk">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/data/libs/xiaomiaccountsdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

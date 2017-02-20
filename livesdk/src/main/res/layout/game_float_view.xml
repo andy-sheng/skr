@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:paddingLeft="19dp">
+
+    <!--功能按钮区域-->
+    <LinearLayout
+        android:id="@+id/btn_area"
+        android:layout_width="260dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:paddingLeft="19dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/home_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:padding="3dp"
+            android:src="@drawable/game_live_icon_homepage_btn"/>
+
+        <ImageView
+            android:id="@+id/screen_shot_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:padding="3dp"
+            android:src="@drawable/game_live_icon_screen_shot_btn"/>
+
+        <ImageView
+            android:id="@+id/mute_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:padding="3dp"
+            android:src="@drawable/game_live_icon_mute_btn"/>
+
+        <ImageView
+            android:id="@+id/comment_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:padding="3dp"
+            android:src="@drawable/game_live_icon_comment_btn"/>
+
+    </LinearLayout>
+
+    <!--消息标题-->
+    <LinearLayout
+        android:id="@+id/comment_title"
+        android:layout_width="260dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/color_black_trans_60"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="19dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/title_fold_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:padding="6dp"
+            android:rotation="180"
+            android:src="@drawable/game_live_icon_fold"
+            android:visibility="gone"/>
+
+        <com.wali.live.livesdk.live.view.GameRepeatScrollView
+            android:id="@+id/game_repeat_sv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/title_fold_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:padding="6dp"
+            android:rotation="180"
+            android:src="@drawable/game_live_icon_fold"/>
+
+    </LinearLayout>
+
+    <!--消息列表-->
+    <LinearLayout
+        android:id="@+id/comment_list_area"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="38dp"
+        android:background="@color/color_black_trans_60"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_1"
+            android:background="@color/color_white_trans_60"/>
+
+        <com.wali.live.common.barrage.view.LiveCommentView
+            android:id="@+id/comment_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
+
+        <RelativeLayout
+            android:id="@+id/input_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <EditText
+                android:id="@+id/comment_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/send_btn"
+                android:background="@null"
+                android:hint="@string/empty_edittext_hint"
+                android:imeOptions="flagNoFullscreen"
+                android:includeFontPadding="false"
+                android:inputType="text|textAutoCorrect|textCapSentences|textMultiLine"
+                android:maxLines="5"
+                android:paddingBottom="1dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/color_white_trans_90"
+                android:textColorHint="@color/color_white_trans_30"
+                android:textCursorDrawable="@drawable/edittext_color_cursor"
+                android:textSize="@dimen/text_size_40"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_1"
+                android:layout_alignBottom="@id/comment_input"
+                android:layout_alignRight="@id/comment_input"
+                android:background="@color/color_white_trans_60"/>
+
+            <TextView
+                android:id="@+id/send_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/comment_input"
+                android:layout_alignParentRight="true"
+                android:enabled="false"
+                android:includeFontPadding="false"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="@string/send"
+                android:textColor="@color/color_float_send_btn"
+                android:textSize="@dimen/text_size_42"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</merge>

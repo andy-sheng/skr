@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/gift_bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_270"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_black_trans_80">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/gift_display_recycleview"
+            android:layout_width="@dimen/view_dimen_1410"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/gift_display_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/gift_display_recycleview">
+
+            <TextView
+                android:id="@+id/recharge_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="6.66dp"
+                android:drawableRight="@drawable/live_anchor_recharge_more"
+                android:gravity="center"
+                android:textColor="#e5aa1e"
+                android:text="@string/recharge"
+                android:layout_marginTop="5dp"
+                android:textSize="14.66sp" />
+
+            <TextView
+                android:id="@+id/diamond_max_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recharge_tv"
+                android:layout_marginTop="@dimen/view_dimen_45"
+                android:drawablePadding="6.66dp"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/color_white"
+                android:drawableLeft="@drawable/live_anchor_recharge_diamond"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/diamond_siliver_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/diamond_max_tv"
+                android:layout_marginTop="@dimen/view_dimen_30"
+                android:drawablePadding="6.66dp"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/color_white"
+                android:drawableLeft="@drawable/sintra_icon"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/send_gift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_20"
+            android:background="@drawable/gift_landscape_send_btn_bg"
+            android:enabled="false"
+            android:gravity="center"
+            android:textColor="@color/gift_send_btn_bg_color"
+            android:textSize="13.33dp"
+            android:text="@string/send_gift" />
+
+        <ViewStub
+            android:id="@+id/gift_mall_guide_page_viewstub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inflatedId="@+id/gift_mall_guide_page"
+            android:layout="@layout/gift_mall_guide_page_land_view" />
+        <!--<include layout="@layout/gift_mall_guide_page_land_view"/>-->
+
+    </RelativeLayout>
+
+    <com.wali.live.common.gift.view.ContinueSendBtn
+        android:id="@+id/continue_send_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/top_transparent_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/gift_bottom_panel" />
+
+</RelativeLayout>
