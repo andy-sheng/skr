@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">LiveCommon</string>
     <string name="type_to_compose_text_enter_to_send">輸入消息</string>
     <string name="barrage_focus_body">關注了主播</string>
     <string name="barrage_leave_live_body">離開房間</string>
