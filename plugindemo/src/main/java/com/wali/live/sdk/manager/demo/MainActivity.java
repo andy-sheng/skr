@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //建议在 application里初始化这个
-        MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, new IMiLiveSdk.ICallback() {
+        MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, "TEST SECRET", new IMiLiveSdk.ICallback() {
             @Override
             public void notifyNotInstall() {
                 ToastUtils.showToast("notifyNotInstall");

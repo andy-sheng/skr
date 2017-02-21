@@ -35,7 +35,6 @@ import rx.schedulers.Schedulers;
 /**
  * Created by chengsimin on 2016/12/26.
  */
-
 public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public final static String TAG = MiLiveSdkBinder.class.getSimpleName();
     private static MiLiveSdkBinder sInstance;
@@ -66,11 +65,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Deprecated
-    public void openWatch(int channelId, String packageName,
+    public void openWatch(int channelId, String packageName, String channelSecret,
                           final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openWatch channelId=" + channelId);
 
-        secureOperate(channelId, packageName, new ICommonCallBack() {
+        secureOperate(channelId, packageName, channelSecret, new ICommonCallBack() {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openWatch success callback");
@@ -86,11 +85,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Deprecated
-    public void openReplay(int channelId, String packageName,
+    public void openReplay(int channelId, String packageName, String channelSecret,
                            final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openReplay channelId=" + channelId);
 
-        secureOperate(channelId, packageName, new ICommonCallBack() {
+        secureOperate(channelId, packageName, channelSecret, new ICommonCallBack() {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openReplay success callback");
@@ -111,11 +110,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         // TODO
     }
 
-    public void openWatch(final Activity activity, int channelId, String packageName,
+    public void openWatch(final Activity activity, int channelId, String packageName, String channelSecret,
                           final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openWatch by activity channelId=" + channelId);
 
-        secureOperate(channelId, packageName, new ICommonCallBack() {
+        secureOperate(channelId, packageName, channelSecret, new ICommonCallBack() {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openWatch by activity success callback");
@@ -127,11 +126,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    public void openReplay(final Activity activity, int channelId, String packageName,
+    public void openReplay(final Activity activity, int channelId, String packageName, String channelSecret,
                            final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openReplay by activity channelId=" + channelId);
 
-        secureOperate(channelId, packageName, new ICommonCallBack() {
+        secureOperate(channelId, packageName, channelSecret, new ICommonCallBack() {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openReplay by activity success callback");
@@ -144,11 +143,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void loginByMiAccountSso(final int channelId, String packageName,
+    public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
         MyLog.d(TAG, "loginByMiAccountSso channelId=" + channelId);
 
-        secureOperate(channelId, packageName, new ICommonCallBack() {
+        secureOperate(channelId, packageName, channelSecret, new ICommonCallBack() {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "loginByMiAccountSso success callback");
@@ -197,10 +196,10 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void loginByMiAccountOAuth(final int channelId, String packageName, final String code) throws RemoteException {
+    public void loginByMiAccountOAuth(final int channelId, String packageName, String channelSecret, final String code) throws RemoteException {
         MyLog.d(TAG, "loginByMiAccountOAuth channelId=" + channelId);
 
-        secureOperate(channelId, packageName, new ICommonCallBack() {
+        secureOperate(channelId, packageName, channelSecret, new ICommonCallBack() {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "loginByMiAccountOAuth success callback");
@@ -235,10 +234,10 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void clearAccount(final int channelId, String packageName) throws RemoteException {
+    public void clearAccount(final int channelId, String packageName, String channelSecret) throws RemoteException {
         MyLog.d(TAG, "clearAccount channelId=" + channelId);
 
-        secureOperate(channelId, packageName, new ICommonCallBack() {
+        secureOperate(channelId, packageName, channelSecret, new ICommonCallBack() {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "clearAccount success callback");
@@ -250,7 +249,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    private void secureOperate(final int channelId, final String packageName, final ICommonCallBack successCallback) {
+    private void secureOperate(final int channelId, final String packageName, final String channelSecret, final ICommonCallBack successCallback) {
         if (mAuthMap.containsKey(channelId) && mAuthMap.get(channelId).equals(packageName)) {
             if (successCallback != null) {
                 successCallback.process(null);
@@ -261,7 +260,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 .map(new Func1<Object, Integer>() {
                     @Override
                     public Integer call(Object o) {
-                        SecurityProto.VerifyAssistantRsp rsp = new VerifyRequest(channelId, packageName).syncRsp();
+                        SecurityProto.VerifyAssistantRsp rsp = new VerifyRequest(channelId, packageName, channelSecret).syncRsp();
                         if (rsp == null) {
                             return null;
                         }

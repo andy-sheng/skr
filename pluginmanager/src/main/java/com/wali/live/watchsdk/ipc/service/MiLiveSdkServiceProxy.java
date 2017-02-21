@@ -98,18 +98,21 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 remoteService.loginByMiAccountSso(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
                         mMiId, mServiceToken);
                 mServiceToken = "";
             } else if (!TextUtils.isEmpty(mAuthCode)) {
                 remoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
                         mAuthCode);
                 mAuthCode = "";
             } else if (mClearAccountFlag) {
                 remoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName());
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
                 mClearAccountFlag = false;
             }
         } catch (RemoteException e) {
@@ -189,6 +192,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 remoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
                         authCode);
             } catch (RemoteException e) {
                 mAuthCode = authCode;
@@ -210,6 +214,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 remoteService.loginByMiAccountSso(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
                         miid, serviceToken);
             } catch (RemoteException e) {
                 mMiId = miid;
@@ -230,7 +235,8 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             try {
                 remoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
-                        GlobalData.app().getPackageName());
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 mClearAccountFlag = true;
                 notifyAidlFailure(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);

@@ -63,6 +63,32 @@ public final class SecurityProto {
      */
     com.google.protobuf.ByteString
         getPackageNameBytes();
+
+    /**
+     * <code>required string channelSecret = 3;</code>
+     *
+     * <pre>
+     *对接小助手的第三方app密钥或签名
+     * </pre>
+     */
+    boolean hasChannelSecret();
+    /**
+     * <code>required string channelSecret = 3;</code>
+     *
+     * <pre>
+     *对接小助手的第三方app密钥或签名
+     * </pre>
+     */
+    java.lang.String getChannelSecret();
+    /**
+     * <code>required string channelSecret = 3;</code>
+     *
+     * <pre>
+     *对接小助手的第三方app密钥或签名
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getChannelSecretBytes();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.VerifyAssistantReq}
@@ -131,6 +157,12 @@ public final class SecurityProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
               packageName_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              channelSecret_ = bs;
               break;
             }
           }
@@ -281,9 +313,64 @@ public final class SecurityProto {
       }
     }
 
+    public static final int CHANNELSECRET_FIELD_NUMBER = 3;
+    private java.lang.Object channelSecret_;
+    /**
+     * <code>required string channelSecret = 3;</code>
+     *
+     * <pre>
+     *对接小助手的第三方app密钥或签名
+     * </pre>
+     */
+    public boolean hasChannelSecret() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string channelSecret = 3;</code>
+     *
+     * <pre>
+     *对接小助手的第三方app密钥或签名
+     * </pre>
+     */
+    public java.lang.String getChannelSecret() {
+      java.lang.Object ref = channelSecret_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          channelSecret_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string channelSecret = 3;</code>
+     *
+     * <pre>
+     *对接小助手的第三方app密钥或签名
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getChannelSecretBytes() {
+      java.lang.Object ref = channelSecret_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        channelSecret_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       channelId_ = "";
       packageName_ = "";
+      channelSecret_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -299,6 +386,10 @@ public final class SecurityProto {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasChannelSecret()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -311,6 +402,9 @@ public final class SecurityProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getPackageNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getChannelSecretBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -328,6 +422,10 @@ public final class SecurityProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getPackageNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getChannelSecretBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -455,6 +553,8 @@ public final class SecurityProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         packageName_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        channelSecret_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -491,6 +591,10 @@ public final class SecurityProto {
           to_bitField0_ |= 0x00000002;
         }
         result.packageName_ = packageName_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.channelSecret_ = channelSecret_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -517,6 +621,11 @@ public final class SecurityProto {
           packageName_ = other.packageName_;
           onChanged();
         }
+        if (other.hasChannelSecret()) {
+          bitField0_ |= 0x00000004;
+          channelSecret_ = other.channelSecret_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -527,6 +636,10 @@ public final class SecurityProto {
           return false;
         }
         if (!hasPackageName()) {
+          
+          return false;
+        }
+        if (!hasChannelSecret()) {
           
           return false;
         }
@@ -748,6 +861,106 @@ public final class SecurityProto {
   }
   bitField0_ |= 0x00000002;
         packageName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object channelSecret_ = "";
+      /**
+       * <code>required string channelSecret = 3;</code>
+       *
+       * <pre>
+       *对接小助手的第三方app密钥或签名
+       * </pre>
+       */
+      public boolean hasChannelSecret() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string channelSecret = 3;</code>
+       *
+       * <pre>
+       *对接小助手的第三方app密钥或签名
+       * </pre>
+       */
+      public java.lang.String getChannelSecret() {
+        java.lang.Object ref = channelSecret_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            channelSecret_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string channelSecret = 3;</code>
+       *
+       * <pre>
+       *对接小助手的第三方app密钥或签名
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getChannelSecretBytes() {
+        java.lang.Object ref = channelSecret_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          channelSecret_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string channelSecret = 3;</code>
+       *
+       * <pre>
+       *对接小助手的第三方app密钥或签名
+       * </pre>
+       */
+      public Builder setChannelSecret(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        channelSecret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string channelSecret = 3;</code>
+       *
+       * <pre>
+       *对接小助手的第三方app密钥或签名
+       * </pre>
+       */
+      public Builder clearChannelSecret() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        channelSecret_ = getDefaultInstance().getChannelSecret();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string channelSecret = 3;</code>
+       *
+       * <pre>
+       *对接小助手的第三方app密钥或签名
+       * </pre>
+       */
+      public Builder setChannelSecretBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        channelSecret_ = value;
         onChanged();
         return this;
       }
@@ -1376,11 +1589,12 @@ public final class SecurityProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016security.proto\022\023com.wali.live.proto\"<\n" +
+      "\n\016security.proto\022\023com.wali.live.proto\"S\n" +
       "\022VerifyAssistantReq\022\021\n\tchannelId\030\001 \002(\t\022\023" +
-      "\n\013packageName\030\002 \002(\t\"5\n\022VerifyAssistantRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\022\016\n\006errMsg\030\002 \001(\tB$\n\023co" +
-      "m.wali.live.protoB\rSecurityProto"
+      "\n\013packageName\030\002 \002(\t\022\025\n\rchannelSecret\030\003 \002" +
+      "(\t\"5\n\022VerifyAssistantRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\022\016\n\006errMsg\030\002 \001(\tB$\n\023com.wali.live.proto" +
+      "B\rSecurityProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1399,7 +1613,7 @@ public final class SecurityProto {
     internal_static_com_wali_live_proto_VerifyAssistantReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VerifyAssistantReq_descriptor,
-        new java.lang.String[] { "ChannelId", "PackageName", });
+        new java.lang.String[] { "ChannelId", "PackageName", "ChannelSecret", });
     internal_static_com_wali_live_proto_VerifyAssistantRsp_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_wali_live_proto_VerifyAssistantRsp_fieldAccessorTable = new
