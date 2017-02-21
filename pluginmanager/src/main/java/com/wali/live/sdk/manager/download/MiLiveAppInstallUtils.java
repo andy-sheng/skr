@@ -9,11 +9,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.wali.live.sdk.manager.R;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.http.HttpUtils;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.notification.NotificationManger;
 import com.wali.live.sdk.manager.toast.ToastUtils;
 
@@ -195,9 +195,9 @@ public class MiLiveAppInstallUtils {
         PackageInfo packageInfo = GlobalData.app().getApplicationContext().getPackageManager()
                 .getPackageArchiveInfo(newFile.getAbsolutePath(), PackageManager.GET_ACTIVITIES);
         if (null != packageInfo) {
-            Log.w("VersionCheckManag／er", "the apk file packageName is " + packageInfo.packageName);
+            Logger.w("VersionCheckManag／er", "the apk file packageName is " + packageInfo.packageName);
             if (MILIVESDK_PACKAGE_NAME.equals(packageInfo.packageName)) {
-                Log.w("VersionCheckManager", "the apk file packageName is "+MILIVESDK_PACKAGE_NAME);
+                Logger.w("VersionCheckManager", "the apk file packageName is "+MILIVESDK_PACKAGE_NAME);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.fromFile(newFile),
                         "application/vnd.android.package-archive");
@@ -206,6 +206,6 @@ public class MiLiveAppInstallUtils {
                 return;
             }
         }
-        Log.w("VersionCheckManager", "the apk file packageName is not "+MILIVESDK_PACKAGE_NAME);
+        Logger.w("VersionCheckManager", "the apk file packageName is not "+MILIVESDK_PACKAGE_NAME);
     }
 }

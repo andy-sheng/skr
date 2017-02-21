@@ -4,17 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.wali.live.sdk.manager.R;
 import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.toast.ToastUtils;
 
 import java.lang.ref.WeakReference;
 
-
 public class VersionCheckTask extends AsyncTask<Void, Void, Integer> {
-
     public final static String TAG = VersionCheckTask.class.getSimpleName();
 
     private WeakReference<Activity> mActivity; // 活动的名称
@@ -31,7 +29,7 @@ public class VersionCheckTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
-        if (mIsManualCheck && mProgressDialog != null&&mIsNeedDialog) {
+        if (mIsManualCheck && mProgressDialog != null && mIsNeedDialog) {
             mProgressDialog.dismiss();
         }
         if (result == VersionCheckManager.HAS_UPGRADE) {
@@ -55,11 +53,11 @@ public class VersionCheckTask extends AsyncTask<Void, Void, Integer> {
             }
             return;
         } else if (result == VersionCheckManager.NO_UPGRADE) {
-            if (mIsManualCheck&&mIsNeedDialog) {
+            if (mIsManualCheck && mIsNeedDialog) {
                 ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.no_upgrading);
             }
         } else if (result == VersionCheckManager.CHECK_FAILED) {
-            if (mIsManualCheck&&mIsNeedDialog) {
+            if (mIsManualCheck && mIsNeedDialog) {
                 ToastUtils.showToast(GlobalData.app(), R.string.check_failed);
             }
         } else if (result == VersionCheckManager.IS_UPGRADING) {
@@ -73,7 +71,7 @@ public class VersionCheckTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if (mIsManualCheck&&mIsNeedDialog) {
+        if (mIsManualCheck && mIsNeedDialog) {
             mProgressDialog = ProgressDialog.show(mActivity.get(), null, GlobalData.app().getString(R.string.check_upgrading));
             mProgressDialog.setCancelable(true);
             mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -88,9 +86,9 @@ public class VersionCheckTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected Integer doInBackground(Void... params) {
-        Log.d(TAG,"VersionCheckTask doInBackground");
+        Logger.d(TAG, "VersionCheckTask doInBackground");
         if (VersionCheckManager.getInstance().getShowUpgradeDialog()) {
-            Log.d(TAG,"getShowUpgradeDialog == true");
+            Logger.d(TAG, "getShowUpgradeDialog == true");
             return VersionCheckManager.HAS_UPGRADE;
         }
         return VersionCheckManager.getInstance().checkNewVersion();

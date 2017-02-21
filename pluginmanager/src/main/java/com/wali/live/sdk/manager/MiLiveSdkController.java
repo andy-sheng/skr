@@ -7,9 +7,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.sdk.manager.version.VersionCheckTask;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
@@ -27,7 +27,6 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_LIVE_ID = "extra_live_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
 
-
     private static final MiLiveSdkController sSdkController = new MiLiveSdkController();
 
     private int mChannelId = 0;
@@ -42,9 +41,14 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     public void init(Application app, int channelId, ICallback callback) {
         GlobalData.setApplication(app);
-        Log.d(TAG, "init channelId=" + channelId);
+        Logger.d(TAG, "init channelId=" + channelId);
         mChannelId = channelId;
         mCallback = callback;
+    }
+
+    @Override
+    public void setLogEnabled(boolean isEnabled) {
+        Logger.setEnabled(isEnabled);
     }
 
     private void checkHasInit() {
@@ -121,7 +125,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
             pInfo = GlobalData.app().getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
         return pInfo != null;
     }
@@ -156,7 +160,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     // 跳转
     private boolean startActivity(Activity activity, Intent intent) {
-        Log.d(TAG, "start activity uri=" + intent.getDataString());
+        Logger.d(TAG, "start activity uri=" + intent.getDataString());
         if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
             try {
                 activity.startActivity(intent);

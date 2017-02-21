@@ -5,12 +5,19 @@ import android.app.Application;
 
 /**
  * Created by lan on 17/2/20.
+ *
+ * @description 提供给第三方，只需要看这个文件
  */
 public interface IMiLiveSdk {
     /**
-     * 初始化操作
+     * 初始化操作，建议在Application.onCreate()初始化
      */
     void init(Application application, int channelId, ICallback callback);
+
+    /**
+     * 设置plugin日志是否开启，默认false
+     */
+    void setLogEnabled(boolean isEnabled);
 
     /**
      * 获取上层传入的channelId

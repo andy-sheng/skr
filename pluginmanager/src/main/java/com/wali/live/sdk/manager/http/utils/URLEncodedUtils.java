@@ -127,16 +127,16 @@ public class URLEncodedUtils {
         StringBuilder result = new StringBuilder();
         Iterator var4 = parameters.iterator();
 
-        while(var4.hasNext()) {
-            NameValuePair parameter = (NameValuePair)var4.next();
+        while (var4.hasNext()) {
+            NameValuePair parameter = (NameValuePair) var4.next();
             String encodedName = encodeFormFields(parameter.getName(), charset);
             String encodedValue = encodeFormFields(parameter.getValue(), charset);
-            if(result.length() > 0) {
+            if (result.length() > 0) {
                 result.append(parameterSeparator);
             }
 
             result.append(encodedName);
-            if(encodedValue != null) {
+            if (encodedValue != null) {
                 result.append("=");
                 result.append(encodedValue);
             }
@@ -153,16 +153,16 @@ public class URLEncodedUtils {
         StringBuilder result = new StringBuilder();
         Iterator var4 = parameters.iterator();
 
-        while(var4.hasNext()) {
-            NameValuePair parameter = (NameValuePair)var4.next();
+        while (var4.hasNext()) {
+            NameValuePair parameter = (NameValuePair) var4.next();
             String encodedName = encodeFormFields(parameter.getName(), charset);
             String encodedValue = encodeFormFields(parameter.getValue(), charset);
-            if(result.length() > 0) {
+            if (result.length() > 0) {
                 result.append(parameterSeparator);
             }
 
             result.append(encodedName);
-            if(encodedValue != null) {
+            if (encodedValue != null) {
                 result.append("=");
                 result.append(encodedValue);
             }
@@ -172,18 +172,18 @@ public class URLEncodedUtils {
     }
 
     private static String urlEncode(String content, Charset charset, BitSet safechars, boolean blankAsPlus) {
-        if(content == null) {
+        if (content == null) {
             return null;
         } else {
             StringBuilder buf = new StringBuilder();
             ByteBuffer bb = charset.encode(content);
 
-            while(true) {
-                while(bb.hasRemaining()) {
+            while (true) {
+                while (bb.hasRemaining()) {
                     int b = bb.get() & 255;
-                    if(safechars.get(b)) {
-                        buf.append((char)b);
-                    } else if(blankAsPlus && b == 32) {
+                    if (safechars.get(b)) {
+                        buf.append((char) b);
+                    } else if (blankAsPlus && b == 32) {
                         buf.append('+');
                     } else {
                         buf.append("%");
@@ -200,32 +200,32 @@ public class URLEncodedUtils {
     }
 
     private static String urlDecode(String content, Charset charset, boolean plusAsBlank) {
-        if(content == null) {
+        if (content == null) {
             return null;
         } else {
             ByteBuffer bb = ByteBuffer.allocate(content.length());
             CharBuffer cb = CharBuffer.wrap(content);
 
-            while(true) {
-                while(true) {
-                    while(cb.hasRemaining()) {
+            while (true) {
+                while (true) {
+                    while (cb.hasRemaining()) {
                         char c = cb.get();
-                        if(c == 37 && cb.remaining() >= 2) {
+                        if (c == 37 && cb.remaining() >= 2) {
                             char uc = cb.get();
                             char lc = cb.get();
                             int u = Character.digit(uc, 16);
                             int l = Character.digit(lc, 16);
-                            if(u != -1 && l != -1) {
-                                bb.put((byte)((u << 4) + l));
+                            if (u != -1 && l != -1) {
+                                bb.put((byte) ((u << 4) + l));
                             } else {
-                                bb.put((byte)37);
-                                bb.put((byte)uc);
-                                bb.put((byte)lc);
+                                bb.put((byte) 37);
+                                bb.put((byte) uc);
+                                bb.put((byte) lc);
                             }
-                        } else if(plusAsBlank && c == 43) {
-                            bb.put((byte)32);
+                        } else if (plusAsBlank && c == 43) {
+                            bb.put((byte) 32);
                         } else {
-                            bb.put((byte)c);
+                            bb.put((byte) c);
                         }
                     }
 
@@ -237,19 +237,19 @@ public class URLEncodedUtils {
     }
 
     private static String decodeFormFields(String content, String charset) {
-        return content == null?null:urlDecode(content, charset != null?Charset.forName(charset):Consts.UTF_8, true);
+        return content == null ? null : urlDecode(content, charset != null ? Charset.forName(charset) : Consts.UTF_8, true);
     }
 
     private static String decodeFormFields(String content, Charset charset) {
-        return content == null?null:urlDecode(content, charset != null?charset:Consts.UTF_8, true);
+        return content == null ? null : urlDecode(content, charset != null ? charset : Consts.UTF_8, true);
     }
 
     private static String encodeFormFields(String content, String charset) {
-        return content == null?null:urlEncode(content, charset != null?Charset.forName(charset):Consts.UTF_8, URLENCODER, true);
+        return content == null ? null : urlEncode(content, charset != null ? Charset.forName(charset) : Consts.UTF_8, URLENCODER, true);
     }
 
     private static String encodeFormFields(String content, Charset charset) {
-        return content == null?null:urlEncode(content, charset != null?charset:Consts.UTF_8, URLENCODER, true);
+        return content == null ? null : urlEncode(content, charset != null ? charset : Consts.UTF_8, URLENCODER, true);
     }
 
     static String encUserInfo(String content, Charset charset) {
@@ -275,15 +275,15 @@ public class URLEncodedUtils {
         URLENCODER = new BitSet(256);
 
         int i;
-        for(i = 97; i <= 122; ++i) {
+        for (i = 97; i <= 122; ++i) {
             UNRESERVED.set(i);
         }
 
-        for(i = 65; i <= 90; ++i) {
+        for (i = 65; i <= 90; ++i) {
             UNRESERVED.set(i);
         }
 
-        for(i = 48; i <= 57; ++i) {
+        for (i = 48; i <= 57; ++i) {
             UNRESERVED.set(i);
         }
 

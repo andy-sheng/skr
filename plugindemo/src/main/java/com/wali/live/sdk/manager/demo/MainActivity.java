@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 ToastUtils.showToast("notifyAidlFailure aidlFlag=" + aidlFlag);
             }
         });
+        MiLiveSdkController.getInstance().setLogEnabled(true);
         EventBus.getDefault().register(this);
     }
 

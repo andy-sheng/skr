@@ -166,14 +166,13 @@ public class HttpUtils {
         pairs.add(new BasicNameValuePair("s", md5));
         StringContent content = SimpleRequest.getAsString(url,
                 pairsToMap(pairs), null, true);
-//        MyLog.info("http v2 get " + url + " result: " + content.toString());
         return content;
     }
 
 
     public static boolean downloadFile(String urlStr, final File outputFile,
                                        OnDownloadProgress progress) {
-        if(!outputFile.exists()){
+        if (!outputFile.exists()) {
             try {
                 outputFile.createNewFile();
             } catch (IOException e) {
@@ -199,24 +198,20 @@ public class HttpUtils {
             while ((count = input.read(buffer)) != -1) {
                 output.write(buffer, 0, count);
                 downloaded += count;
-                if(null != progress) {
+                if (null != progress) {
                     progress.onDownloaded(downloaded, totalLength);
                 }
             }
-            if(null != progress) {
+            if (null != progress) {
                 progress.onCompleted(outputFile.getAbsolutePath());
             }
             return true;
         } catch (IOException e) {
-//            VoipLog.e("error while download file" + e);
-
-            if(null != progress) {
+            if (null != progress) {
                 progress.onFailed();
             }
         } catch (Throwable e) {
-//            VoipLog.e("error while download file" + e);
-
-            if(null != progress) {
+            if (null != progress) {
                 progress.onFailed();
             }
         } finally {

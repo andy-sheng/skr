@@ -1,7 +1,6 @@
 package com.wali.live.sdk.manager.http.utils;
 
 public class Base64Coder {
-
     // The line separator string of the operating system.
     private static final String systemLineSeparator = System
             .getProperty("line.separator");

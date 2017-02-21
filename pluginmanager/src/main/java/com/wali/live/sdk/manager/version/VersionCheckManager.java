@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -31,6 +30,7 @@ import com.wali.live.sdk.manager.http.exception.AccessDeniedException;
 import com.wali.live.sdk.manager.http.exception.AuthenticationFailureException;
 import com.wali.live.sdk.manager.http.utils.IOUtils;
 import com.wali.live.sdk.manager.http.utils.StringUtils;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.notification.NotificationManger;
 import com.wali.live.sdk.manager.toast.ToastUtils;
 
@@ -95,7 +95,7 @@ public class VersionCheckManager {
         if (miId == null || miId == "") {
             miId = "0";
         }
-        Log.d(TAG, "VersionCheckManager miId == " + miId);
+        Logger.d(TAG, "VersionCheckManager miId == " + miId);
         String url = String.format(CHECK_GRAY_UPGRADE_INFO, miId);
         List<NameValuePair> postBody = new ArrayList<NameValuePair>();
         NameValuePair p = new BasicNameValuePair("uuid", miId);
@@ -139,17 +139,17 @@ public class VersionCheckManager {
         }
         SimpleRequest.StringContent result = null;
         try {
-            Log.w(TAG, "VersionCheck Get Request Params : " + postBody);
+            Logger.w(TAG, "VersionCheck Get Request Params : " + postBody);
             result = HttpUtils.doV2Get(url, postBody);
-            Log.w(TAG, "VersionCheck return : " + result);
+            Logger.w(TAG, "VersionCheck return : " + result);
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         } catch (AccessDeniedException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         } catch (AuthenticationFailureException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
         setCheckTime();
         return parseResult(result);
@@ -168,7 +168,7 @@ public class VersionCheckManager {
             if (!resultObj.has("result") || !"ok".equalsIgnoreCase(resultObj.getString("result"))) {
                 return CHECK_FAILED;
             }
-            Log.w(TAG, "updateResult" + resultObj.toString());
+            Logger.w(TAG, "updateResult" + resultObj.toString());
             JSONObject dataObj = resultObj.getJSONObject("data");
             boolean shouldUpdate = dataObj.getBoolean("newUpdate");
             if (!shouldUpdate) {
@@ -197,7 +197,7 @@ public class VersionCheckManager {
                 setForceToVersion(false);
             }
         } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
             return CHECK_FAILED;
         }
         return HAS_UPGRADE;
@@ -225,7 +225,7 @@ public class VersionCheckManager {
             pInfo = context.getPackageManager().getPackageInfo(
                     PACKAGE_NAME, PackageManager.GET_META_DATA);
         } catch (NameNotFoundException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
 
         return pInfo;
@@ -236,7 +236,7 @@ public class VersionCheckManager {
             return context.getPackageManager().getApplicationInfo(
                     PACKAGE_NAME, 0).sourceDir;
         } catch (NameNotFoundException e) {
-            Log.e(TAG, "error in get package path...", e);
+            Logger.e(TAG, "error in get package path...", e);
         }
         return null;
     }
@@ -249,9 +249,9 @@ public class VersionCheckManager {
                 return StringUtils.getHexString(sha1Byte);
             }
         } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, "error in calc package sha1...", e);
+            Logger.e(TAG, "error in calc package sha1...", e);
         } catch (IOException e) {
-            Log.e(TAG, "error in calc package sha1...", e);
+            Logger.e(TAG, "error in calc package sha1...", e);
         }
         return null;
     }
@@ -392,8 +392,8 @@ public class VersionCheckManager {
         PackageInfo packageInfo = GlobalData.app().getApplicationContext().getPackageManager()
                 .getPackageArchiveInfo(newFile.getAbsolutePath(), PackageManager.GET_ACTIVITIES);
         if (null != packageInfo) {
-            Log.w("VersionCheckManager", "the apk file packageName is " + packageInfo.packageName);
-            Log.w("VersionCheckManager", "the apk file packageName is com.wali.live");
+            Logger.w("VersionCheckManager", "the apk file packageName is " + packageInfo.packageName);
+            Logger.w("VersionCheckManager", "the apk file packageName is com.wali.live");
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(newFile),
                     "application/vnd.android.package-archive");
@@ -401,7 +401,7 @@ public class VersionCheckManager {
             GlobalData.app().getApplicationContext().startActivity(intent);
             return;
         }
-        Log.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
+        Logger.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
         ToastUtils.showToast(R.string.update_file_illegal);
     }
 
@@ -439,7 +439,7 @@ public class VersionCheckManager {
     public boolean canAutoCheck() {
         SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         long last = pref.getLong(PREF_LAST_CHECK, 0);
-        Log.d(TAG, "canAutoCheck last == " + last);
+        Logger.d(TAG, "canAutoCheck last == " + last);
         return System.currentTimeMillis() - last >= 1800 * 1000;
     }
 
@@ -462,7 +462,7 @@ public class VersionCheckManager {
     public boolean needForceCheck() {
         SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         boolean needForceUpdate = pref.getBoolean(PREF_FORCE_TO, false);
-        Log.d(TAG, "need_force_to_version == " + needForceUpdate);
+        Logger.d(TAG, "need_force_to_version == " + needForceUpdate);
         return needForceUpdate;
     }
 

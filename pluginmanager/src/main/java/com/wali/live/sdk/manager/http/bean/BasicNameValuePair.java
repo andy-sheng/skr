@@ -27,7 +27,7 @@ public class BasicNameValuePair implements NameValuePair, Cloneable, Serializabl
     }
 
     public String toString() {
-        if(this.value == null) {
+        if (this.value == null) {
             return this.name;
         } else {
             int len = this.name.length() + 1 + this.value.length();
@@ -40,12 +40,12 @@ public class BasicNameValuePair implements NameValuePair, Cloneable, Serializabl
     }
 
     public boolean equals(Object object) {
-        if(this == object) {
+        if (this == object) {
             return true;
-        } else if(!(object instanceof NameValuePair)) {
+        } else if (!(object instanceof NameValuePair)) {
             return false;
         } else {
-            BasicNameValuePair that = (BasicNameValuePair)object;
+            BasicNameValuePair that = (BasicNameValuePair) object;
             return this.name.equals(that.name) && LangUtils.equals(this.value, that.value);
         }
     }

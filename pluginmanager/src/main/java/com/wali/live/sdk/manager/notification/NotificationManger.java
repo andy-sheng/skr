@@ -8,18 +8,14 @@ import android.os.Build;
 import com.wali.live.sdk.manager.R;
 import com.wali.live.sdk.manager.global.GlobalData;
 
-
 /**
  * Created by milive on 16/12/6.
  */
-
 public class NotificationManger {
-
     public static final int UPDATE_DOWNLOADING = 100001;
 
     private static NotificationManger sInstance = new NotificationManger();
     private NotificationManager mNotificationManager;
-
 
     private NotificationManger() {
         mNotificationManager = (NotificationManager) GlobalData.app().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -49,5 +45,4 @@ public class NotificationManger {
     public void removeNotification(int notificationId) {
         mNotificationManager.cancel(notificationId);
     }
-
 }

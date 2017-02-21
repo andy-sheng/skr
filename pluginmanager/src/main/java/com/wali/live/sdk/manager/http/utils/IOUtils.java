@@ -1,12 +1,9 @@
 package com.wali.live.sdk.manager.http.utils;
-/**
- * Created by chengsimin on 2016/12/12.
- */
 
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.wali.live.sdk.manager.log.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -30,12 +27,12 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-
-
+/**
+ * Created by chengsimin on 2016/12/12.
+ */
 public class IOUtils {
-
     public final static String TAG = IOUtils.class.getSimpleName();
-    
+
     private static final int EOF = -1;
     private static final int DEFAULT_BUFFER_SIZE = 1024;
 
@@ -56,7 +53,7 @@ public class IOUtils {
             try {
                 writer.close();
             } catch (IOException e) {
-                Log.e("IOUtils", "IOException", e);
+                Logger.e("IOUtils", "IOException", e);
             }
         }
     }
@@ -72,7 +69,7 @@ public class IOUtils {
             try {
                 zipFile.close();
             } catch (IOException e) {
-                Log.e("IOUtils", "IOException", e);
+                Logger.e("IOUtils", "IOException", e);
             }
         }
     }
@@ -82,7 +79,7 @@ public class IOUtils {
             try {
                 closeable.close();
             } catch (IOException e) {
-                Log.e("IOUtils", "IOException", e);
+                Logger.e("IOUtils", "IOException", e);
             }
         }
     }
@@ -207,7 +204,7 @@ public class IOUtils {
                 }
             }
         } catch (final IOException e) {
-            Log.e(TAG,"zipFiction failed with exception:" + e.toString());
+            Logger.e(TAG, "zipFiction failed with exception:" + e.toString());
         } finally {
             closeQuietly(in);
         }
@@ -230,7 +227,7 @@ public class IOUtils {
                 out.write(buffer, 0, bytesRead);
             }
         } catch (IOException e) {
-            Log.e(TAG,"zipFiction failed with exception:" + e.toString());
+            Logger.e(TAG, "zipFiction failed with exception:" + e.toString());
         }
     }
 
@@ -359,7 +356,7 @@ public class IOUtils {
 
     public static byte[] getFileSha1Digest(final String fileName)
             throws NoSuchAlgorithmException, IOException {
-        if(TextUtils.isEmpty(fileName)){
+        if (TextUtils.isEmpty(fileName)) {
             return null;
         }
         final MessageDigest md = MessageDigest.getInstance("SHA1");

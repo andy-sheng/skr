@@ -7,11 +7,11 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 
 /**
@@ -34,25 +34,25 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
         public void onEventLogin(int code) throws RemoteException {
-            Log.d(TAG, "onEventLoginResult:" + code);
+            Logger.d(TAG, "onEventLoggerinResult:" + code);
             MiLiveSdkEvent.postLogin(code);
         }
 
         @Override
         public void onEventLogoff(int code) throws RemoteException {
-            Log.d(TAG, "onEventLogoff:" + code);
+            Logger.d(TAG, "onEventLoggeroff:" + code);
             MiLiveSdkEvent.postLogoff(code);
         }
 
         @Override
         public void onEventWantLogin() throws RemoteException {
-            Log.d(TAG, "onEventWantLogin");
+            Logger.d(TAG, "onEventWantLoggerin");
             MiLiveSdkEvent.postWantLogin();
         }
 
         @Override
         public void onEventVerifyFailure(int code) throws RemoteException {
-            Log.d(TAG, "onEventVerifyFailure code=" + code);
+            Logger.d(TAG, "onEventVerifyFailure code=" + code);
             MiLiveSdkEvent.postVerifyFailure(code);
         }
     };
@@ -77,7 +77,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     private void bindService() {
-        Log.w(TAG, "bindService " + mIntent);
+        Logger.w(TAG, "bindService " + mIntent);
         GlobalData.app().bindService(mIntent, this, Context.BIND_AUTO_CREATE);
     }
 
@@ -87,7 +87,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder service) {
-        Log.w(TAG, "onServiceConnected");
+        Logger.w(TAG, "onServiceConnected");
         remoteService = IMiLiveSdkService.Stub.asInterface(service);
         try {
             remoteService.setEventCallBack(
@@ -119,7 +119,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     @Override
     public void onServiceDisconnected(ComponentName componentName) {
-        Log.w(TAG, "onServiceDisconnected");
+        Logger.w(TAG, "onServiceDisconnected");
     }
 
     public void tryInit() {
@@ -132,7 +132,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
 //    @Deprecated
 //    public void openWatch(long playerId, String liveId, String videoUrl) {
-//        Log.w(TAG, "openWatch");
+//        Logger.w(TAG, "openWatch");
 //        if (remoteService == null) {
 //            bindService();
 //        } else {
@@ -149,7 +149,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 //
 //    @Deprecated
 //    public void openReplay(long playerId, String liveId, String videoUrl) {
-//        Log.w(TAG, "openReplay");
+//        Logger.w(TAG, "openReplay");
 //        if (remoteService == null) {
 //            bindService();
 //        } else {
@@ -166,7 +166,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 //
 //    @Deprecated
 //    public void openGameLive() {
-//        Log.w(TAG, "openGameLive");
+//        Logger.w(TAG, "openGameLive");
 //        if (remoteService == null) {
 //            bindService();
 //        } else {
@@ -179,7 +179,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 //    }
 
     public void loginByMiAccountOAuth(String authCode) {
-        Log.w(TAG, "loginByMiAccount authCode=" + authCode);
+        Logger.w(TAG, "loginByMiAccount authCode=" + authCode);
         if (remoteService == null) {
             mAuthCode = authCode;
             notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
@@ -199,7 +199,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void loginByMiAccountSso(long miid, String serviceToken) {
-        Log.w(TAG, "loginByMiAccountSso miid=" + miid + ",serviceToken=" + serviceToken);
+        Logger.w(TAG, "loginByMiAccountSso miid=" + miid + ",serviceToken=" + serviceToken);
         if (remoteService == null) {
             mMiId = miid;
             mServiceToken = serviceToken;
@@ -221,7 +221,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void clearAccount() {
-        Log.w(TAG, "clearAccount");
+        Logger.w(TAG, "clearAccount");
         if (remoteService == null) {
             mClearAccountFlag = true;
             notifyServiceNull(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
