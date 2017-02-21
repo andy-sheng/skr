@@ -12,7 +12,7 @@ public interface IMiLiveSdk {
     /**
      * 初始化操作，建议在Application.onCreate()初始化
      */
-    void init(Application application, int channelId, ICallback callback);
+    void init(Application application, int channelId, String channelSecret, ICallback callback);
 
     /**
      * 设置plugin日志是否开启，默认false
@@ -23,6 +23,11 @@ public interface IMiLiveSdk {
      * 获取上层传入的channelId
      */
     int getChannelId();
+
+    /**
+     * 获取上层传入的channelSecret
+     */
+    String getChannelSecret();
 
     /**
      * 打开直播观看页面

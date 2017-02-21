@@ -20,6 +20,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
 
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
+    private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
 
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
@@ -42,12 +43,13 @@ public class JumpSdkActivity extends BaseSdkActivity {
 
         int channelId = intent.getIntExtra(EXTRA_CHANNEL_ID, 0);
         String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
+        String channelSecret = intent.getStringExtra(EXTRA_CHANNEL_SECRET);
         switch (action) {
             case ACTION_OPEN_WATCH: {
                 long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
                 String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
-                MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName,
+                MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
                         playerId, liveId, videoUrl);
                 break;
             }
@@ -55,21 +57,19 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
                 String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
-                MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName,
+                MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName, channelSecret,
                         playerId, liveId, videoUrl);
                 break;
             }
             case ACTION_RANDOM_LIVE: {
-                openRandomLive(channelId, packageName);
+                openRandomLive();
                 break;
             }
         }
     }
 
-    private void openRandomLive(int channelId, String packageName) {
+    private void openRandomLive() {
         Intent intent = new Intent(this, TestSdkActivity.class);
-        intent.putExtra(EXTRA_CHANNEL_ID, channelId);
-        intent.putExtra(EXTRA_PACKAGE_NAME, packageName);
         startActivity(intent);
         finish();
     }

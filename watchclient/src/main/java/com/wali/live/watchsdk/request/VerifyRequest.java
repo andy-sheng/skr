@@ -15,19 +15,19 @@ public class VerifyRequest extends BaseRequest {
         mAction = "VerifyAssistant";
     }
 
-    public VerifyRequest(int channelId, String packageName) {
-        generateRequest(channelId, packageName);
+    public VerifyRequest(int channelId, String packageName, String channelSecret) {
+        generateRequest(channelId, packageName, channelSecret);
     }
 
     private VerifyAssistantReq.Builder generateBuilder() {
         return VerifyAssistantReq.newBuilder();
-
     }
 
-    private void generateRequest(int channelId, String packageName) {
+    private void generateRequest(int channelId, String packageName, String channelSecret) {
         mRequest = generateBuilder()
                 .setChannelId(String.valueOf(channelId))
                 .setPackageName(packageName)
+                .setChannelSecret(channelSecret)
                 .build();
     }
 
