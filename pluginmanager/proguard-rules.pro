@@ -15,7 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--libraryjars <java.home>/lib/rt.jar
 
 -optimizationpasses 5
 -dontpreverify
@@ -37,3 +36,16 @@
 -keep public class * extends android.app.Service
 -keep public class * extends android.app.Application
 -keep public class * extends android.content.ContentProvider
+
+-keep class de.greenrobot.event.** {*;}
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+
+-keep class com.wali.live.sdk.manager.IMiLiveSdk{
+    public *;
+}
+
+-keep class com.wali.live.sdk.manager.MiLiveSdkController{
+    public *;
+}
