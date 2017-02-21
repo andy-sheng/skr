@@ -1,6 +1,6 @@
 package com.wali.live.watchsdk.ipc.service;
 
-import org.greenrobot.eventbus.EventBus;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by chengsimin on 2016/12/27.

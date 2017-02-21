@@ -12,8 +12,7 @@ import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.toast.ToastUtils;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkEvent;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity {
     public static final int CHANNEL_ID = 50000;
@@ -63,24 +62,21 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
     }
 
-    @Subscribe
-    public void onEvent(MiLiveSdkEvent.LoginResult event) {
+    public void onEventMainThread(MiLiveSdkEvent.LoginResult event) {
         if (event.code == MiLiveSdkEvent.SUCCESS) {
             ToastUtils.showToast("登录成功");
         } else {
         }
     }
 
-    @Subscribe
-    public void onEvent(MiLiveSdkEvent.LogoffResult event) {
+    public void onEventMainThread(MiLiveSdkEvent.LogoffResult event) {
         if (event.code == MiLiveSdkEvent.SUCCESS) {
             ToastUtils.showToast("登出成功");
         } else {
         }
     }
 
-    @Subscribe
-    public void onEvent(MiLiveSdkEvent.WantLogin event) {
+    public void onEventMainThread(MiLiveSdkEvent.WantLogin event) {
         ToastUtils.showToast("用户触发了只有登录才有的操作,回调给宿主,宿主传递账号信息给插件");
         mMenuRecyclerAdapter.oauthLogin();
     }

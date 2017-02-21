@@ -15,3 +15,25 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-libraryjars <java.home>/lib/rt.jar
+
+-optimizationpasses 5
+-dontpreverify
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+#-printmapping libs/mapping.txt
+-dontwarn
+
+-keepattributes Signature
+-keepattributes *Annotation*
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.app.Service
+-keep public class * extends android.app.Application
+-keep public class * extends android.content.ContentProvider
