@@ -39,7 +39,7 @@ public class HostChannelManager {
         return sInstance;
     }
 
-    public int getmCurrentChannelId() {
+    public int getCurrentChannelId() {
         return mCurrentChannelId;
     }
 

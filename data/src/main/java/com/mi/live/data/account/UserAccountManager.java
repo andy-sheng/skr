@@ -79,7 +79,7 @@ public class UserAccountManager {
     public void logoff(int channelid) {
         MyLog.w(TAG, "logoff:" + channelid);
         AccountLocalStore.getInstance().deleteAccount(channelid);
-        if (channelid == HostChannelManager.getInstance().getmCurrentChannelId()) {
+        if (channelid == HostChannelManager.getInstance().getCurrentChannelId()) {
             // 和当前渠道一致,当前账号置为空
             mAccount = null;
             // 实名模式登出
@@ -351,7 +351,7 @@ public class UserAccountManager {
                     //账号封禁
                     AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN);
                 }
-                UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getmCurrentChannelId());
+                UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getCurrentChannelId());
                 new MyAlertDialog.Builder(GlobalData.app())
                         .setMessage("账号被踢")
                         .create()
@@ -389,11 +389,11 @@ public class UserAccountManager {
                                             MyLog.w(TAG, "passToken to serviceToken success");
                                         } else if (errCode == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
                                             //账号封禁
-                                            UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getmCurrentChannelId());
+                                            UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getCurrentChannelId());
 //                                            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN);
                                         } else {
                                             MyLog.w(TAG, "passToken to serviceToken failure, kick off");
-                                            UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getmCurrentChannelId());
+                                            UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getCurrentChannelId());
 //                                            MiLinkClientAdapter.getsInstance().logoff();
 //                                            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF);
                                         }

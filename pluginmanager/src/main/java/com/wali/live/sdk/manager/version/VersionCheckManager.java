@@ -23,12 +23,12 @@ import android.widget.TextView;
 
 import com.wali.live.sdk.manager.R;
 import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.http.HttpUtils;
+import com.wali.live.sdk.manager.http.SimpleRequest;
+import com.wali.live.sdk.manager.http.bean.BasicNameValuePair;
+import com.wali.live.sdk.manager.http.bean.NameValuePair;
 import com.wali.live.sdk.manager.http.exception.AccessDeniedException;
 import com.wali.live.sdk.manager.http.exception.AuthenticationFailureException;
-import com.wali.live.sdk.manager.http.bean.BasicNameValuePair;
-import com.wali.live.sdk.manager.http.HttpUtils;
-import com.wali.live.sdk.manager.http.bean.NameValuePair;
-import com.wali.live.sdk.manager.http.SimpleRequest;
 import com.wali.live.sdk.manager.http.utils.IOUtils;
 import com.wali.live.sdk.manager.http.utils.StringUtils;
 import com.wali.live.sdk.manager.notification.NotificationManger;
@@ -55,6 +55,8 @@ public class VersionCheckManager {
     private static final String CHECK_GRAY_UPGRADE_INFO = "http://api.chat.xiaomi.net/v2/user/%s/grayupgarde";
 
     public static final String PACKAGE_NAME = "com.mi.liveassistant";
+    public static final String JUMP_CLASS_NAME = "com.wali.live.jump.JumpSdkActivity";
+
     private static final String APP_NAME = "liveassistant";
     private static final String APP_PLATFORM = "android";
 

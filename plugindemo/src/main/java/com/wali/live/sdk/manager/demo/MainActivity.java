@@ -1,13 +1,13 @@
 package com.wali.live.sdk.manager.demo;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.toast.ToastUtils;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkEvent;
@@ -21,10 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private int currentChannelId = CHANNEL_ID;
 
     private RecyclerView mRecyclerView;
-    private MenuRecyclerviewAdapter mMenuRecyclerviewAdapter;
+    private MenuRecyclerAdapter mMenuRecyclerAdapter;
     private TextView mChannelTv;
-
-    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +32,33 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.menu_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mMenuRecyclerviewAdapter = new MenuRecyclerviewAdapter(this);
-        mRecyclerView.setAdapter(mMenuRecyclerviewAdapter);
-        mMenuRecyclerviewAdapter.setChannleClickListener(new View.OnClickListener() {
+        mMenuRecyclerAdapter = new MenuRecyclerAdapter(this);
+        mRecyclerView.setAdapter(mMenuRecyclerAdapter);
+        mMenuRecyclerAdapter.setChannleClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 currentChannelId = currentChannelId == 50000 ? 50001 : 50000;
-                MiLiveSdkController.init(MainActivity.this.getApplication(), currentChannelId);
+                MiLiveSdkController.getInstance().setChannelId(currentChannelId);
                 mChannelTv.setText("宿主id:" + currentChannelId);
             }
         });
         //建议在 application里初始化这个
-        MiLiveSdkController.init(this.getApplication(), CHANNEL_ID);
+        MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, new IMiLiveSdk.ICallback() {
+            @Override
+            public void notifyNotInstall() {
+                ToastUtils.showToast("notifyNotInstall");
+            }
+
+            @Override
+            public void notifyServiceNull(int aidlFlag) {
+                ToastUtils.showToast("notifyServiceNull aidlFlag=" + aidlFlag);
+            }
+
+            @Override
+            public void notifyAidlFailure(int aidlFlag) {
+                ToastUtils.showToast("notifyAidlFailure aidlFlag=" + aidlFlag);
+            }
+        });
         EventBus.getDefault().register(this);
     }
 
@@ -68,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe
     public void onEvent(MiLiveSdkEvent.WantLogin event) {
         ToastUtils.showToast("用户触发了只有登录才有的操作,回调给宿主,宿主传递账号信息给插件");
-        mMenuRecyclerviewAdapter.oauthLogin();
+        mMenuRecyclerAdapter.oauthLogin();
     }
 
     @Override

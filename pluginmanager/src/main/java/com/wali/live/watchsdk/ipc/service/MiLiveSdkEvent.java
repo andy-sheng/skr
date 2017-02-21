@@ -41,4 +41,16 @@ public class MiLiveSdkEvent {
     public static void postWantLogin() {
         EventBus.getDefault().post(new WantLogin());
     }
+
+    public static class VerifyFailure {
+        public int code;
+
+        private VerifyFailure(int code) {
+            this.code = code;
+        }
+    }
+
+    public static void postVerifyFailure(int code) {
+        EventBus.getDefault().post(new VerifyFailure(code));
+    }
 }

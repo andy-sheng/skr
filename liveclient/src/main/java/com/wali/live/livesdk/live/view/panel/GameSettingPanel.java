@@ -123,7 +123,7 @@ public class GameSettingPanel extends BaseSettingPanel<LinearLayout, RelativeLay
         }
         if (msgType > 0) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                    String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SET_SPECIFIC, msgType, HostChannelManager.getInstance().getmCurrentChannelId()),
+                    String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SET_SPECIFIC, msgType, HostChannelManager.getInstance().getCurrentChannelId()),
                     TIMES, "1");
         }
     }

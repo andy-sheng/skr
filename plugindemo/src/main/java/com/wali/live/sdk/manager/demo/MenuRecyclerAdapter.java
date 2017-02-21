@@ -23,7 +23,6 @@ import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.toast.ToastUtils;
 import com.wali.live.sdk.manager.version.VersionCheckTask;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -36,34 +35,30 @@ import java.util.List;
  * Created by chengsimin on 2016/12/8.
  */
 
-public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public final static String TAG = MenuRecyclerviewAdapter.class.getSimpleName();
+public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public final static String TAG = MenuRecyclerAdapter.class.getSimpleName();
 
     private String sidForMiLive = "xmzhibo";
 
-    private List<Bean> mDataList = new ArrayList<Bean>();
+    private List<Bean> mDataList = new ArrayList();
 
     private Activity mActivity;
 
-    public MenuRecyclerviewAdapter(final Context context) {
+    public MenuRecyclerAdapter(final Context context) {
         mActivity = (Activity) context;
 
-        mDataList.add(new Bean("跳转到直播(AIDL)", new Runnable() {
+        mDataList.add(new Bean("跳转到直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                RoomInfo roomInfo = RoomInfo.Builder
-                        .newInstance(21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0")
-                        .build();
-                MiLiveSdkController.openWatch(roomInfo);
+                MiLiveSdkController.getInstance().openWatch(
+                        mActivity, 21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0");
             }
         }));
-        mDataList.add(new Bean("跳转到回放(AIDL)", new Runnable() {
+        mDataList.add(new Bean("跳转到回放(Intent)", new Runnable() {
             @Override
             public void run() {
-                RoomInfo roomInfo = RoomInfo.Builder
-                        .newInstance(22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1")
-                        .build();
-                MiLiveSdkController.openReplay(roomInfo);
+                MiLiveSdkController.getInstance().openReplay(
+                        mActivity, 22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1");
             }
         }));
 //        mDataList.add(new Bean("开启游戏直播(AIDL)", new Runnable() {
@@ -91,17 +86,17 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     @Override
                     public void run() {
                         //  小米授权登录的
-                        MiLiveSdkController.clearAccount();
+                        MiLiveSdkController.getInstance().clearAccount();
                     }
                 }).start();
             }
         }));
 
-        mDataList.add(new Bean("跳转到随机直播(用于测试，非AIDL，之后会删除)", new Runnable() {
+        mDataList.add(new Bean("跳转到随机直播(Intent，测试之后会删除)", new Runnable() {
             @Override
             public void run() {
                 // just for test
-                MiLiveSdkController.openRandomLive((Activity) context);
+                MiLiveSdkController.getInstance().openRandomLive((Activity) context);
             }
         }));
 
@@ -128,7 +123,7 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void run() {
                 //  小米授权登录的
                 String code = XiaoMiOAuth.getOAuthCode(mActivity);
-                MiLiveSdkController.loginByMiAccount(code);
+                MiLiveSdkController.getInstance().loginByMiAccountOAuth(code);
             }
         }).start();
     }
@@ -137,28 +132,24 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ssoLoginInner();
+                //  小米授权登录的
+                AccountManager am = AccountManager.get(GlobalData.app().getApplicationContext());
+                if (ActivityCompat.checkSelfPermission(GlobalData.app(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    ToastUtils.showToast("没有获取账号的权限");
+                    return;
+                }
+                Account[] accounts = am.getAccountsByType("com.xiaomi");
+                if (accounts != null && accounts.length > 0) {
+                    long miid = Long.parseLong(accounts[0].name);
+                    /**
+                     * 这里获取ssotoken有两种方式
+                     */
+                    String ssoToken = getServiceTokenNew(GlobalData.app());
+                    MiLiveSdkController.getInstance().loginByMiAccountSso(miid, ssoToken);
+                }
             }
         }).start();
-    }
-
-    private void ssoLoginInner() {
-        //  小米授权登录的
-        AccountManager am = AccountManager.get(GlobalData.app().getApplicationContext());
-        if (ActivityCompat.checkSelfPermission(GlobalData.app(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            ToastUtils.showToast("没有获取账号的权限");
-            return;
-        }
-        Account[] accounts = am.getAccountsByType("com.xiaomi");
-        if (accounts != null && accounts.length > 0) {
-            long miid = Long.parseLong(accounts[0].name);
-            /**
-             * 这里获取ssotoken有两种方式
-             */
-            String ssoToken = getServiceTokenNew(GlobalData.app());
-            MiLiveSdkController.loginByMiAccountSso(miid, ssoToken);
-        }
     }
 
     private String getServiceTokenNew(Context context) {
@@ -238,7 +229,7 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
         return mDataList.size();
     }
 
-    static class NormalViewHolder extends RecyclerView.ViewHolder {
+    private static class NormalViewHolder extends RecyclerView.ViewHolder {
         public TextView tv;
 
         public NormalViewHolder(View itemView) {
@@ -247,7 +238,7 @@ public class MenuRecyclerviewAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    static class Bean {
+    private static class Bean {
         public String content;
         public Runnable runnable;
 

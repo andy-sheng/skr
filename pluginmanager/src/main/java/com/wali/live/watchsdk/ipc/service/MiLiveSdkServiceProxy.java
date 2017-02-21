@@ -9,10 +9,10 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 /**
  * Created by chengsimin on 2016/12/27.
@@ -20,11 +20,18 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 public class MiLiveSdkServiceProxy implements ServiceConnection {
     public final static String TAG = MiLiveSdkServiceProxy.class.getSimpleName();
 
-    Intent mIntent;
+    private Intent mIntent;
+    private IMiLiveSdkService remoteService;
 
-    IMiLiveSdkService remoteService;
+    private long mMiId;
+    private String mServiceToken;
+    private String mAuthCode;
 
-    IMiLiveSdkEventCallback miLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
+    private boolean mClearAccountFlag = false;
+
+    private IMiLiveSdk.ICallback mCallback;
+
+    private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
         public void onEventLogin(int code) throws RemoteException {
             Log.d(TAG, "onEventLoginResult:" + code);
@@ -46,24 +53,17 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         @Override
         public void onEventVerifyFailure(int code) throws RemoteException {
             Log.d(TAG, "onEventVerifyFailure code=" + code);
+            MiLiveSdkEvent.postVerifyFailure(code);
         }
     };
 
-    long mMiId;
-
-    String mSsoToken;
-
-    String mAuthCode;
-
-    boolean mClearAccountFlag = false;
-
-    private static MiLiveSdkServiceProxy sIntance;
+    private static MiLiveSdkServiceProxy sInstance;
 
     public static synchronized MiLiveSdkServiceProxy getInstance() {
-        if (sIntance == null) {
-            sIntance = new MiLiveSdkServiceProxy();
+        if (sInstance == null) {
+            sInstance = new MiLiveSdkServiceProxy();
         }
-        return sIntance;
+        return sInstance;
     }
 
     private MiLiveSdkServiceProxy() {
@@ -72,12 +72,16 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         mIntent.setClassName(VersionCheckManager.PACKAGE_NAME, "com.wali.live.watchsdk.ipc.service.MiLiveSdkService");
     }
 
-    void bindService() {
+    public void setCallback(IMiLiveSdk.ICallback callback) {
+        mCallback = callback;
+    }
+
+    private void bindService() {
         Log.w(TAG, "bindService " + mIntent);
         GlobalData.app().bindService(mIntent, this, Context.BIND_AUTO_CREATE);
     }
 
-    void stopService() {
+    private void stopService() {
         GlobalData.app().stopService(mIntent);
     }
 
@@ -86,19 +90,26 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         Log.w(TAG, "onServiceConnected");
         remoteService = IMiLiveSdkService.Stub.asInterface(service);
         try {
-            remoteService.setEventCallBack(MiLiveSdkController.getChannelId(), miLiveSdkEventCallback);
+            remoteService.setEventCallBack(
+                    MiLiveSdkController.getInstance().getChannelId(),
+                    mLiveSdkEventCallback);
             // 尝试处理登录
-            if (!TextUtils.isEmpty(mSsoToken)) {
+            if (!TextUtils.isEmpty(mServiceToken)) {
                 remoteService.loginByMiAccountSso(
-                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(), mMiId, mSsoToken);
-                mSsoToken = "";
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        mMiId, mServiceToken);
+                mServiceToken = "";
             } else if (!TextUtils.isEmpty(mAuthCode)) {
                 remoteService.loginByMiAccountOAuth(
-                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(), mAuthCode);
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        mAuthCode);
                 mAuthCode = "";
             } else if (mClearAccountFlag) {
                 remoteService.clearAccount(
-                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName());
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName());
                 mClearAccountFlag = false;
             }
         } catch (RemoteException e) {
@@ -119,79 +130,91 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void openWatch(RoomInfo roomInfo) {
-        Log.w(TAG, "openWatch");
-        if (remoteService == null) {
-            bindService();
-        } else {
-            try {
-                remoteService.openWatch(
-                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(),
-                        roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
-            } catch (RemoteException e) {
-                bindService();
-            }
-        }
-    }
+//    @Deprecated
+//    public void openWatch(long playerId, String liveId, String videoUrl) {
+//        Log.w(TAG, "openWatch");
+//        if (remoteService == null) {
+//            bindService();
+//        } else {
+//            try {
+//                remoteService.openWatch(
+//                        MiLiveSdkController.getInstance().getChannelId(),
+//                        GlobalData.app().getPackageName(),
+//                        playerId, liveId, videoUrl);
+//            } catch (RemoteException e) {
+//                bindService();
+//            }
+//        }
+//    }
+//
+//    @Deprecated
+//    public void openReplay(long playerId, String liveId, String videoUrl) {
+//        Log.w(TAG, "openReplay");
+//        if (remoteService == null) {
+//            bindService();
+//        } else {
+//            try {
+//                remoteService.openReplay(
+//                        MiLiveSdkController.getInstance().getChannelId(),
+//                        GlobalData.app().getPackageName(),
+//                        playerId, liveId, videoUrl);
+//            } catch (RemoteException e) {
+//                bindService();
+//            }
+//        }
+//    }
+//
+//    @Deprecated
+//    public void openGameLive() {
+//        Log.w(TAG, "openGameLive");
+//        if (remoteService == null) {
+//            bindService();
+//        } else {
+//            try {
+//                remoteService.openGameLive();
+//            } catch (RemoteException e) {
+//                bindService();
+//            }
+//        }
+//    }
 
-    public void openReplay(RoomInfo roomInfo) {
-        Log.w(TAG, "openReplay " + "channelId=" + MiLiveSdkController.getChannelId() + ";packageName=" + GlobalData.app().getPackageName());
+    public void loginByMiAccountOAuth(String authCode) {
+        Log.w(TAG, "loginByMiAccount authCode=" + authCode);
         if (remoteService == null) {
-            bindService();
-        } else {
-            try {
-                remoteService.openReplay(
-                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(),
-                        roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
-            } catch (RemoteException e) {
-                bindService();
-            }
-        }
-    }
-
-    public void openGameLive() {
-        Log.w(TAG, "openGameLive");
-        if (remoteService == null) {
-            bindService();
-        } else {
-            try {
-                remoteService.openGameLive();
-            } catch (RemoteException e) {
-                bindService();
-            }
-        }
-    }
-
-    public void loginByMiAccount(String code) {
-        Log.w(TAG, "loginByMiAccount code:" + code);
-        if (remoteService == null) {
-            mAuthCode = code;
+            mAuthCode = authCode;
+            notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
             bindService();
         } else {
             try {
                 remoteService.loginByMiAccountOAuth(
-                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(), code);
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        authCode);
             } catch (RemoteException e) {
-                mAuthCode = code;
+                mAuthCode = authCode;
+                notifyAidlFailure(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
                 bindService();
             }
         }
     }
 
-    public void loginByMiAccountSso(long miid, String ssoToken) {
-        Log.w(TAG, "loginByMiAccountSso miid:" + miid + ",authCode:" + ssoToken);
+    public void loginByMiAccountSso(long miid, String serviceToken) {
+        Log.w(TAG, "loginByMiAccountSso miid=" + miid + ",serviceToken=" + serviceToken);
         if (remoteService == null) {
             mMiId = miid;
-            mSsoToken = ssoToken;
+            mServiceToken = serviceToken;
+            notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
             bindService();
         } else {
             try {
                 remoteService.loginByMiAccountSso(
-                        MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName(),
-                        miid, ssoToken);
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        miid, serviceToken);
             } catch (RemoteException e) {
                 mMiId = miid;
-                mSsoToken = ssoToken;
+                mServiceToken = serviceToken;
+                notifyAidlFailure(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
                 bindService();
             }
         }
@@ -201,14 +224,30 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         Log.w(TAG, "clearAccount");
         if (remoteService == null) {
             mClearAccountFlag = true;
+            notifyServiceNull(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
             bindService();
         } else {
             try {
-                remoteService.clearAccount(MiLiveSdkController.getChannelId(), GlobalData.app().getPackageName());
+                remoteService.clearAccount(
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName());
             } catch (RemoteException e) {
                 mClearAccountFlag = true;
+                notifyAidlFailure(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
                 bindService();
             }
+        }
+    }
+
+    private void notifyServiceNull(int aidlFlag) {
+        if (mCallback != null) {
+            mCallback.notifyServiceNull(aidlFlag);
+        }
+    }
+
+    private void notifyAidlFailure(int aidlFlag) {
+        if (mCallback != null) {
+            mCallback.notifyAidlFailure(aidlFlag);
         }
     }
 }

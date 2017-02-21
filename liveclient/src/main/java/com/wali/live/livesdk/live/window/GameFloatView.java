@@ -101,7 +101,7 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
         }
         if (!TextUtils.isEmpty(keyType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                    String.format(keyType, HostChannelManager.getInstance().getmCurrentChannelId()),
+                    String.format(keyType, HostChannelManager.getInstance().getCurrentChannelId()),
                     TIMES, "1");
         }
 
@@ -113,14 +113,14 @@ public class GameFloatView extends RelativeLayout implements View.OnClickListene
             showCommentTitle(true);
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
                     String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_FREEZE, StatisticsKey.KEY_LIVESDK_FREEZE_UNFIXED,
-                            HostChannelManager.getInstance().getmCurrentChannelId()),
+                            HostChannelManager.getInstance().getCurrentChannelId()),
                     TIMES, "1");
         } else if (mMode == MODE_MESSAGE && !enable) {
             mMode = MODE_NORMAL;
             showCommentList(false);
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
                     String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_FREEZE, StatisticsKey.KEY_LIVESDK_FREEZE_FIXED,
-                            HostChannelManager.getInstance().getmCurrentChannelId()),
+                            HostChannelManager.getInstance().getCurrentChannelId()),
                     TIMES, "1");
         }
     }

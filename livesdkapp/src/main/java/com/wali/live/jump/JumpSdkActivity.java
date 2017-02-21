@@ -1,0 +1,76 @@
+package com.wali.live.jump;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.base.log.MyLog;
+import com.mi.live.data.base.BaseSdkActivity;
+import com.wali.live.TestSdkActivity;
+import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
+
+/**
+ * Created by lan on 17/2/21.
+ */
+public class JumpSdkActivity extends BaseSdkActivity {
+    private static final String ACTION_OPEN_WATCH = "open_watch";
+    private static final String ACTION_OPEN_REPLAY = "open_replay";
+
+    /*test action below*/
+    private static final String ACTION_RANDOM_LIVE = "test_random_live";
+
+    private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
+    private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
+
+    private static final String EXTRA_PLAYER_ID = "extra_player_id";
+    private static final String EXTRA_LIVE_ID = "extra_live_id";
+    private static final String EXTRA_VIDEO_URL = "extra_video_url";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        processIntent();
+    }
+
+    private void processIntent() {
+        Intent intent = getIntent();
+        if (intent == null) {
+            MyLog.w(TAG, "processIntent intent is null");
+            finish();
+            return;
+        }
+        String action = intent.getAction();
+
+        int channelId = intent.getIntExtra(EXTRA_CHANNEL_ID, 0);
+        String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
+        switch (action) {
+            case ACTION_OPEN_WATCH: {
+                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
+                String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
+                String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
+                MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName,
+                        playerId, liveId, videoUrl);
+                break;
+            }
+            case ACTION_OPEN_REPLAY: {
+                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
+                String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
+                String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
+                MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName,
+                        playerId, liveId, videoUrl);
+                break;
+            }
+            case ACTION_RANDOM_LIVE: {
+                openRandomLive(channelId, packageName);
+                break;
+            }
+        }
+    }
+
+    private void openRandomLive(int channelId, String packageName) {
+        Intent intent = new Intent(this, TestSdkActivity.class);
+        intent.putExtra(EXTRA_CHANNEL_ID, channelId);
+        intent.putExtra(EXTRA_PACKAGE_NAME, packageName);
+        startActivity(intent);
+        finish();
+    }
+}

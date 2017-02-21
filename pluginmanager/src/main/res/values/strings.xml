@@ -28,4 +28,6 @@
     <string name="milive_upgrade_progress">已下载%d%%</string>
     <string name="download_update_succeed">下载完成，安装升级文件</string>
     <string name="update_file_illegal">更新的安装包验证出错,请重试</string>
+
+    <string name="cannot_find_livesdk">更新的安装包验证出错,请重试</string>
 </resources>

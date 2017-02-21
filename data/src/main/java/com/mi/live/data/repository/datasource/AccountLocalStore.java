@@ -9,14 +9,12 @@ import java.util.List;
 
 /**
  * Created by zjn on 16-10-30.
- * TODO 感觉不需要这部分代码，如果需要应该同时保留渠道和账号的键值对
  */
 public class AccountLocalStore {
-
     public final static String TAG = AccountLocalStore.class.getSimpleName();
 
     private static AccountLocalStore sInstance;
-
+    
     private UserAccountDao mUserAccountDao;
 
     private AccountLocalStore() {

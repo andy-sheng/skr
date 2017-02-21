@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.ipc.service;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
@@ -64,7 +65,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         list.register(callback);
     }
 
-    @Override
+    @Deprecated
     public void openWatch(int channelId, String packageName,
                           final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openWatch channelId=" + channelId);
@@ -84,7 +85,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    @Override
+    @Deprecated
     public void openReplay(int channelId, String packageName,
                            final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openReplay channelId=" + channelId);
@@ -104,10 +105,42 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    @Override
+    @Deprecated
     public void openGameLive() {
         MyLog.d(TAG, "openGameLive");
         // TODO
+    }
+
+    public void openWatch(final Activity activity, int channelId, String packageName,
+                          final long playerId, final String liveId, final String videoUrl) {
+        MyLog.d(TAG, "openWatch by activity channelId=" + channelId);
+
+        secureOperate(channelId, packageName, new ICommonCallBack() {
+            @Override
+            public void process(Object object) {
+                MyLog.d(TAG, "openWatch by activity success callback");
+
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
+                WatchSdkActivity.openActivity(activity, roomInfo);
+                activity.finish();
+            }
+        });
+    }
+
+    public void openReplay(final Activity activity, int channelId, String packageName,
+                           final long playerId, final String liveId, final String videoUrl) {
+        MyLog.d(TAG, "openReplay by activity channelId=" + channelId);
+
+        secureOperate(channelId, packageName, new ICommonCallBack() {
+            @Override
+            public void process(Object object) {
+                MyLog.d(TAG, "openReplay by activity success callback");
+
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
+                WatchSdkActivity.openActivity(activity, roomInfo);
+                activity.finish();
+            }
+        });
     }
 
     @Override
@@ -365,7 +398,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         if (!aidlSuccess) {
             Intent intent = new Intent(ReceiverConstant.ACTION_WANT_LOGIN);
             intent.putExtra(ReceiverConstant.EXTRA_TS, System.currentTimeMillis());
-            intent.putExtra(ReceiverConstant.EXTRA_CHANNEL_ID, HostChannelManager.getInstance().getmCurrentChannelId());
+            intent.putExtra(ReceiverConstant.EXTRA_CHANNEL_ID, HostChannelManager.getInstance().getCurrentChannelId());
             String packagename = HostChannelManager.getInstance().getmPackageName();
             if (!TextUtils.isEmpty(packagename)) {
                 intent.setPackage(packagename);

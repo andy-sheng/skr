@@ -2,16 +2,13 @@ package com.mi.live.data.account;
 
 import android.text.TextUtils;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.language.LocaleUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.event.UserInfoEvent;
-import com.mi.live.data.greendao.GreenDaoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
-import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.aidl.PacketData;
@@ -19,8 +16,6 @@ import com.wali.live.dao.OwnUserInfo;
 import com.wali.live.proto.UserProto;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
@@ -73,7 +68,7 @@ public class MyUserInfoManager {
      */
     private User readFromDB() {
         User user = new User();
-        OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(HostChannelManager.getInstance().getmCurrentChannelId());
+        OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(HostChannelManager.getInstance().getCurrentChannelId());
         MyLog.w(TAG,"ownUserInfo:"+ownUserInfo);
         if (ownUserInfo != null) {
             user.setUid(ownUserInfo.getUid());
@@ -125,7 +120,7 @@ public class MyUserInfoManager {
             return;
         }
         OwnUserInfo ownUserInfo = new OwnUserInfo();
-        ownUserInfo.setChannelid(HostChannelManager.getInstance().getmCurrentChannelId());
+        ownUserInfo.setChannelid(HostChannelManager.getInstance().getCurrentChannelId());
         ownUserInfo.setUid(mMyInfo.getUid());
         ownUserInfo.setNickname(mMyInfo.getNickname());
         ownUserInfo.setSign(mMyInfo.getSign());
