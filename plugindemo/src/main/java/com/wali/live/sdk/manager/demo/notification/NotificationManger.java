@@ -1,11 +1,11 @@
-package com.wali.live.sdk.manager.notification;
+package com.wali.live.sdk.manager.demo.notification;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 
-import com.wali.live.sdk.manager.R;
+import com.wali.live.sdk.manager.demo.R;
 import com.wali.live.sdk.manager.global.GlobalData;
 
 /**

@@ -1,9 +1,6 @@
 package com.wali.live.sdk.manager.version;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -11,35 +8,25 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
-import com.wali.live.sdk.manager.R;
+import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.http.HttpUtils;
 import com.wali.live.sdk.manager.http.SimpleRequest;
 import com.wali.live.sdk.manager.http.bean.BasicNameValuePair;
 import com.wali.live.sdk.manager.http.bean.NameValuePair;
-import com.wali.live.sdk.manager.http.exception.AccessDeniedException;
-import com.wali.live.sdk.manager.http.exception.AuthenticationFailureException;
 import com.wali.live.sdk.manager.http.utils.IOUtils;
 import com.wali.live.sdk.manager.http.utils.StringUtils;
 import com.wali.live.sdk.manager.log.Logger;
-import com.wali.live.sdk.manager.notification.NotificationManger;
-import com.wali.live.sdk.manager.toast.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,67 +74,49 @@ public class VersionCheckManager {
         return sInstance;
     }
 
+    public int getAdditionalSize() {
+        return mAdditionalSize;
+    }
+
+    public String getUpdateMessage() {
+        return mUpdateMessage;
+    }
+
     public int checkNewVersion() {
         if (mIsUpgrading) {
             return IS_UPGRADING;
         }
         String miId = "0";
-        if (miId == null || miId == "") {
-            miId = "0";
-        }
         Logger.d(TAG, "VersionCheckManager miId == " + miId);
         String url = String.format(CHECK_GRAY_UPGRADE_INFO, miId);
         List<NameValuePair> postBody = new ArrayList<NameValuePair>();
-        NameValuePair p = new BasicNameValuePair("uuid", miId);
-        postBody.add(p);
-        p = new BasicNameValuePair("app", APP_NAME);
-        postBody.add(p);
-        p = new BasicNameValuePair("platform", APP_PLATFORM);
-        postBody.add(p);
-        p = new BasicNameValuePair("system",
-                String.valueOf(Build.VERSION.SDK_INT));
-        postBody.add(p);
-        // 渠道号
-        p = new BasicNameValuePair("channel", "DEFAULT");
-        //p = new BasicNameValuePair("channel", "debug");
-        postBody.add(p);
-        p = new BasicNameValuePair("device", Build.MODEL);
-        postBody.add(p);
+        postBody.add(new BasicNameValuePair("uuid", miId));
+        postBody.add(new BasicNameValuePair("app", APP_NAME));
+        postBody.add(new BasicNameValuePair("platform", APP_PLATFORM));
+        postBody.add(new BasicNameValuePair("system", String.valueOf(Build.VERSION.SDK_INT)));
+        postBody.add(new BasicNameValuePair("channel", "DEFAULT")); // 渠道号
+        postBody.add(new BasicNameValuePair("device", Build.MODEL));
+
         int version = getCurrentVersion(GlobalData.app().getApplicationContext());
-        if (version == 0) {
-            version = 1;
-        }
-        p = new BasicNameValuePair("currentVersion",
-                String.valueOf(version));
-        postBody.add(p);
-        p = new BasicNameValuePair("language", "zh_CN");
-        postBody.add(p);
-        p = new BasicNameValuePair("updateId", "0");
-        postBody.add(p);
-        p = new BasicNameValuePair("unique", miId);
-        postBody.add(p);
+        version = (version == 0 ? 1 : version);
+        postBody.add(new BasicNameValuePair("currentVersion", String.valueOf(version)));
+        postBody.add(new BasicNameValuePair("language", "zh_CN"));
+        postBody.add(new BasicNameValuePair("updateId", "0"));
+        postBody.add(new BasicNameValuePair("unique", miId));
+
         // 发送当前包的hash值
         String packagePath = getPackagePath(GlobalData.app().getApplicationContext());
         String packageHash = getPackageHash(GlobalData.app().getApplicationContext(), packagePath);
         if (!TextUtils.isEmpty(packageHash)) {
-            p = new BasicNameValuePair("hash", packageHash);
-            postBody.add(p);
+            postBody.add(new BasicNameValuePair("hash", packageHash));
         } else {
-            // 缺个hash会没法下载，随便写个
-            p = new BasicNameValuePair("hash", "5fcc13f203341157dae7469f10b3121a9cb67721");
-            postBody.add(p);
+            postBody.add(new BasicNameValuePair("hash", "5fcc13f203341157dae7469f10b3121a9cb67721")); // 缺个hash会没法下载，随便写个
         }
         SimpleRequest.StringContent result = null;
         try {
             Logger.w(TAG, "VersionCheck Get Request Params : " + postBody);
             result = HttpUtils.doV2Get(url, postBody);
             Logger.w(TAG, "VersionCheck return : " + result);
-        } catch (IOException e) {
-            Logger.e(TAG, e.getMessage());
-        } catch (AccessDeniedException e) {
-            Logger.e(TAG, e.getMessage());
-        } catch (AuthenticationFailureException e) {
-            Logger.e(TAG, e.getMessage());
         } catch (Exception e) {
             Logger.e(TAG, e.getMessage());
         }
@@ -174,15 +143,15 @@ public class VersionCheckManager {
             if (!shouldUpdate) {
                 return NO_UPGRADE;
             }
-            this.mRemoteAppVersion = dataObj.getInt("toVersion");
-            this.mRemoteApkUrl = dataObj.getString("downloadUrl");
-            this.mUpdateMessage = dataObj.optString("remark");
-            this.mAdditionalUrl = dataObj.optString("additionalUrl");
-            this.mAdditionalSize = dataObj.optInt("fullSize", -1);
-            this.mFullPackageHash = dataObj.optString("fullHash");
+            mRemoteAppVersion = dataObj.getInt("toVersion");
+            mRemoteApkUrl = dataObj.getString("downloadUrl");
+            mUpdateMessage = dataObj.optString("remark");
+            mAdditionalUrl = dataObj.optString("additionalUrl");
+            mAdditionalSize = dataObj.optInt("fullSize", -1);
+            mFullPackageHash = dataObj.optString("fullHash");
             // additionalUrl不为空，走增量升级
-            this.mIsAdditionalUpgrade = !TextUtils.isEmpty(this.mAdditionalUrl)
-                    && !TextUtils.isEmpty(this.mFullPackageHash);
+            mIsAdditionalUpgrade = !TextUtils.isEmpty(mAdditionalUrl)
+                    && !TextUtils.isEmpty(mFullPackageHash);
             JSONObject custom = dataObj.optJSONObject("custom");
             boolean shouldForceUpdate = false;
             if (custom != null) {
@@ -204,31 +173,24 @@ public class VersionCheckManager {
     }
 
     public static int getCurrentVersion(Context context) {
-        int thisVersion = 0;
         PackageInfo pInfo = getPackageInfo(context);
-        if (pInfo != null)
-            thisVersion = pInfo.versionCode;
-        return thisVersion;
+        return pInfo != null ? pInfo.versionCode : 0;
     }
 
-    public static String getCurrentVersionName(Context context) {
-        String thisVersion = null;
+    public String getCurrentVersionName(Context context) {
         PackageInfo pInfo = getPackageInfo(context);
-        if (pInfo != null)
-            thisVersion = pInfo.versionName;
-        return thisVersion;
+        return pInfo != null ? pInfo.versionName : null;
     }
 
     private static PackageInfo getPackageInfo(Context context) {
-        PackageInfo pInfo = null;
         try {
-            pInfo = context.getPackageManager().getPackageInfo(
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(
                     PACKAGE_NAME, PackageManager.GET_META_DATA);
+            return pInfo;
         } catch (NameNotFoundException e) {
             Logger.e(TAG, e.getMessage());
         }
-
-        return pInfo;
+        return null;
     }
 
     private static String getPackagePath(Context context) {
@@ -245,9 +207,7 @@ public class VersionCheckManager {
         try {
             byte sha1Byte[];
             sha1Byte = IOUtils.getFileSha1Digest(packagePath);
-            if (sha1Byte != null) {
-                return StringUtils.getHexString(sha1Byte);
-            }
+            return sha1Byte != null ? StringUtils.getHexString(sha1Byte) : null;
         } catch (NoSuchAlgorithmException e) {
             Logger.e(TAG, "error in calc package sha1...", e);
         } catch (IOException e) {
@@ -257,7 +217,8 @@ public class VersionCheckManager {
     }
 
     public void saveRemoteVersion() {
-        SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
+                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
         ed.putInt(REMOTE_VERSION, mRemoteAppVersion);
         ed.apply();
@@ -269,114 +230,63 @@ public class VersionCheckManager {
         return pref.getInt(REMOTE_VERSION, -1);
     }
 
-    public void showUpgradeDialog(final WeakReference<Activity> activity, final boolean isManualCheck, final boolean canCancled) {
-        if (activity.get() == null) {
-            return;
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity.get());
-        View updateView = LayoutInflater.from(GlobalData.app()).inflate(R.layout.upgrage_dialog_layout, null);
-        final TextView version = (TextView) updateView.findViewById(R.id.version);
-        version.setText(StringUtils.getString(R.string.app_version, getVersionNumberByTransfer(mRemoteAppVersion)));
-        final TextView size = (TextView) updateView.findViewById(R.id.size);
-        size.setText(StringUtils.getString(R.string.apksize, String.valueOf(this.mAdditionalSize)));
-        final TextView update_content = (TextView) updateView.findViewById(R.id.update_content);
-        update_content.setText(StringUtils.getString(R.string.upgrade_description, mUpdateMessage));
-        builder.setView(updateView);
-        if (canCancled) {
-            builder.setPositiveButton(R.string.update_rightnow, new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    startDownload();
-                }
-            });
-            builder.setNegativeButton(R.string.cancel_update, new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (!isManualCheck) {
-                        setCheckTime();
-                    }
-                }
-            });
-        } else {
-            builder.setPositiveButton(R.string.update_rightnow, new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    startDownload();
-                    //setCheckTime(); //不纪录升级时间
-                }
-            });
-        }
-        AlertDialog dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
-
-    private void startDownload() {
-        ToastUtils.showToast(GlobalData.app().getApplicationContext(),
-                R.string.downloading_background);
+    public void startDownload(final IMiLiveSdk.IUpdateListener updateListener) {
         if (mIsUpgrading) {
             return;
         }
-        final String localFileName = String.format("%s_%d.apk", PACKAGE_NAME,
-                mRemoteAppVersion);
-        AsyncTask<Void, Void, Boolean> downloadTask = new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                mIsUpgrading = true;
-                File destFile = new File(getCachePath(localFileName));
-                return HttpUtils.downloadFile(mRemoteApkUrl, destFile,
-                        new HttpUtils.OnDownloadProgress() {
-                            long lastNotifyTime = 0;
-                            final int NOTIFY_GAP = 500;// 刷通知栏时间间隔
+        final String localFileName = String.format("%s_%d.apk", PACKAGE_NAME, mRemoteAppVersion);
+        if (updateListener != null) {
+            updateListener.onDownloadStart();
+        }
+        mIsUpgrading = true;
+        File destFile = new File(getCachePath(localFileName));
+        HttpUtils.downloadFile(mRemoteApkUrl, destFile,
+                new HttpUtils.OnDownloadProgress() {
+                    long lastNotifyTime = 0;
+                    final int NOTIFY_GAP = 500;// 刷通知栏时间间隔
 
-                            @Override
-                            public void onFailed() {
-                                mIsUpgrading = false;
-                                dismissNotification();
-                                ToastUtils.showToast(GlobalData.app().getApplicationContext(),
-                                        R.string.download_update_failed);
+                    @Override
+                    public void onFailed() {
+                        mIsUpgrading = false;
+                        if (updateListener != null) {
+                            updateListener.onDownloadFailed(-1);
+                        }
+                    }
+
+                    @Override
+                    public void onDownloaded(long downloaded, long totalLength) {
+                        if (totalLength <= 0) {
+                            return;
+                        }
+                        int percentage = (int) (downloaded * 100 / totalLength);
+                        long now = System.currentTimeMillis();
+                        if (now - lastNotifyTime >= NOTIFY_GAP) {
+                            lastNotifyTime = now;
+                            if (updateListener != null) {
+                                updateListener.onDownloadProgress(percentage);
                             }
+                        }
+                    }
 
-                            @Override
-                            public void onDownloaded(long downloaded,
-                                                     long totalLength) {
-                                if (totalLength != 0) {
-                                    int percentage = (int) (downloaded * 100 / totalLength);
-                                    long now = System.currentTimeMillis();
-                                    if (now - lastNotifyTime >= NOTIFY_GAP) {
-                                        String percStr = GlobalData.app().getApplicationContext()
-                                                .getString(
-                                                        R.string.milive_upgrade_progress,
-                                                        percentage);
-                                        showNotification(percStr);
-                                        lastNotifyTime = now;
-                                    }
-                                }
-                            }
+                    @Override
+                    public void onCompleted(String localPath) {
+                        mIsUpgrading = false;
+                        if (updateListener != null) {
+                            updateListener.onDownloadSuccess();
+                        }
+                    }
 
-                            @Override
-                            public void onCompleted(String localPath) {
-                                mIsUpgrading = false;
-                                dismissNotification();
-                                ToastUtils.showToast(GlobalData.app().getApplicationContext(),
-                                        R.string.download_update_succeed);
-                                installLocalPackage();
-                            }
-
-                            @Override
-                            public void onCanceled() {
-                                mIsUpgrading = false;
-                                dismissNotification();
-                            }
-                        });
-            }
-
-        };
-        downloadTask.executeOnExecutor(HttpUtils.ONLINE_FILE_TASK_EXECUTOR);
+                    @Override
+                    public void onCanceled() {
+                        mIsUpgrading = false;
+                        if (updateListener != null) {
+                            updateListener.onDownloadFailed(0);
+                        }
+                    }
+                });
     }
 
-    public void installLocalPackage() {
+    public boolean installLocalPackage() {
         // 首先将本地文件重命名，这样在下次检查的时候就会把这个文件删除，
         // 防止这次下载的是一个错误的包，安装失败后，下次继续会安装失败。
         String localFileName = getCachePath(String.format("%s_%d.apk",
@@ -399,10 +309,10 @@ public class VersionCheckManager {
                     "application/vnd.android.package-archive");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             GlobalData.app().getApplicationContext().startActivity(intent);
-            return;
+            return true;
         }
         Logger.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
-        ToastUtils.showToast(R.string.update_file_illegal);
+        return false;
     }
 
     private static String getCachePath(String name) {
@@ -429,7 +339,8 @@ public class VersionCheckManager {
 
     // 记录检查更新成功的时间
     public void setCheckTime() {
-        SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
+                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
         ed.putLong(PREF_LAST_CHECK, System.currentTimeMillis());
         ed.apply();
@@ -437,22 +348,16 @@ public class VersionCheckManager {
 
     // 看与上次成功检查时间间隔是否大于半小时
     public boolean canAutoCheck() {
-        SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
+                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         long last = pref.getLong(PREF_LAST_CHECK, 0);
         Logger.d(TAG, "canAutoCheck last == " + last);
         return System.currentTimeMillis() - last >= 1800 * 1000;
     }
 
-    private void showNotification(String msg) {
-        NotificationManger.getInstance().showDownloadNotification(msg);
-    }
-
-    private void dismissNotification() {
-        NotificationManger.getInstance().removeNotification(NotificationManger.UPDATE_DOWNLOADING);
-    }
-
     public void setForceToVersion(boolean needForceUpdate) {
-        SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
+                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
         ed.putBoolean(PREF_FORCE_TO, needForceUpdate);
         ed.apply();
@@ -460,31 +365,25 @@ public class VersionCheckManager {
 
     // 看当前版本是否低于要求的最低版本
     public boolean needForceCheck() {
-        SharedPreferences pref = GlobalData.app().getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
+                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         boolean needForceUpdate = pref.getBoolean(PREF_FORCE_TO, false);
         Logger.d(TAG, "need_force_to_version == " + needForceUpdate);
         return needForceUpdate;
     }
 
+    public String getVersionNumberByTransfer() {
+        return getVersionNumberByTransfer(mRemoteAppVersion);
+    }
+
     private String getVersionNumberByTransfer(int versionNumber) {
-        String mVersion = "";
+        String version = "";
         if (versionNumber < 0) {
             return "1.0.0";
         }
-//        String mSourceVersion = String.valueOf(versionNumber);
-//        if (null == mSourceVersion || mSourceVersion.length() < 5) {
-//            return "version has error";
-//        }
-//        mVersion += mSourceVersion.substring(0, 1) + ".";
-//        mVersion += mSourceVersion.substring(1, mSourceVersion.length() - 4) + ".";
-//        mVersion += mSourceVersion.substring(mSourceVersion.length() - 4, mSourceVersion.length() - 1);
-        mVersion += versionNumber / 100000 + ".";
-        mVersion += (versionNumber % 100000) / 1000 + ".";
-        mVersion += (versionNumber % 100000) % 1000;
-        return mVersion;
-    }
-
-    public static class NewVersion {
-
+        version += versionNumber / 100000 + ".";
+        version += (versionNumber % 100000) / 1000 + ".";
+        version += (versionNumber % 100000) % 1000;
+        return version;
     }
 }

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,9 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wali.live.sdk.manager.MiLiveSdkController;
+import com.wali.live.sdk.manager.SdkUpdateHelper;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.toast.ToastUtils;
-import com.wali.live.sdk.manager.version.VersionCheckTask;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -43,9 +44,11 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<Bean> mDataList = new ArrayList();
 
     private Activity mActivity;
+    private SdkUpdateHelper mSdkUpdateHelper;
 
-    public MenuRecyclerAdapter(final Context context) {
+    public MenuRecyclerAdapter(final Context context, @Nullable SdkUpdateHelper sdkUpdateHelper) {
         mActivity = (Activity) context;
+        mSdkUpdateHelper = sdkUpdateHelper;
 
         mDataList.add(new Bean("跳转到直播(Intent)", new Runnable() {
             @Override
@@ -103,7 +106,9 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("检查更新", new Runnable() {
             @Override
             public void run() {
-                new VersionCheckTask((Activity) context, true, true).execute();
+                if (mSdkUpdateHelper != null) {
+                    mSdkUpdateHelper.checkUpdate();
+                }
             }
         }));
 
