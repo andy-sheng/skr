@@ -249,4 +249,6 @@
     <string name="connect_peripheral">The host made external devices connected</string>
     <string name="recorded_video">The host recorded a video</string>
     <string name="game_give_one_gift">sent 1 %s</string>
+    <string name="account_withdraw_pay_user_account_not_enough_money">Insufficient funds</string>
+    <string name="app_name">LiveCommon</string>
 </resources>
