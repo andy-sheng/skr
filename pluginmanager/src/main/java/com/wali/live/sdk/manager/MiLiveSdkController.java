@@ -26,6 +26,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
+    private static final String EXTRA_LIVE_TYPE = "extra_live_type";
 
     private static final MiLiveSdkController sSdkController = new MiLiveSdkController();
 
@@ -80,25 +81,27 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl) {
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
         checkHasInit();
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
-        jumpToSdk(activity, bundle, "open_watch");
+        bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        jumpToSdk(activity, bundle, "open_watch", callback);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl) {
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
         checkHasInit();
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
-        jumpToSdk(activity, bundle, "open_replay");
+        bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        jumpToSdk(activity, bundle, "open_replay", callback);
     }
 
 //    @Override
@@ -145,18 +148,18 @@ public class MiLiveSdkController implements IMiLiveSdk {
      */
     public void openRandomLive(@NonNull Activity activity) {
         checkHasInit();
-        jumpToSdk(activity, getBasicBundle(), "test_random_live");
+        jumpToSdk(activity, getBasicBundle(), "test_random_live", null);
     }
 
-    private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action) {
+    private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IOpenCallback callback) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);
         intent.putExtras(bundle);
         intent.setAction(action);
 
         if (!startActivity(activity, intent)) {
-            if (mCallback != null) {
-                mCallback.notifyNotInstall();
+            if (callback != null) {
+                callback.notifyNotInstall();
             }
         }
     }

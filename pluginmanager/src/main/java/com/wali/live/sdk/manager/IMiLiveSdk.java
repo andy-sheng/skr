@@ -11,6 +11,8 @@ import android.support.annotation.Keep;
  * @description 提供给第三方，只需要看这个文件
  */
 public interface IMiLiveSdk {
+    int TYPE_LIVE_PUBLIC = 0;
+
     /**
      * 初始化操作，建议在Application.onCreate()初始化
      */
@@ -34,12 +36,12 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback);
 
     /**
      * 打开直播回放页面
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback);
 
     /**
      * OAuth登录
@@ -91,11 +93,6 @@ public interface IMiLiveSdk {
         int CODE_SUCCESS = 0;
 
         /**
-         * 通知上层应用，直播助手未安装
-         */
-        void notifyNotInstall();
-
-        /**
          * 通知上层应用，aidl service为空
          */
         void notifyServiceNull(int aidlFlag);
@@ -124,6 +121,14 @@ public interface IMiLiveSdk {
          * 通知上层权限验证失败
          */
         void notifyVerifyFailure(int code);
+    }
+
+    @Keep
+    interface IOpenCallback {
+        /**
+         * 打开直播，回放时，通知上层应用，直播助手未安装
+         */
+        void notifyNotInstall();
     }
 
     @Keep
@@ -174,10 +179,6 @@ public interface IMiLiveSdk {
      */
     @Keep
     class CallbackWrapper implements ICallback {
-        @Override
-        public void notifyNotInstall() {
-        }
-
         @Override
         public void notifyServiceNull(int aidlFlag) {
         }

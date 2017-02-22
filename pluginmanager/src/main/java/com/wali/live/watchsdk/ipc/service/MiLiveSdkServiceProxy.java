@@ -139,54 +139,6 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-//    @Deprecated
-//    public void openWatch(long playerId, String liveId, String videoUrl) {
-//        Logger.w(TAG, "openWatch");
-//        if (mRemoteService == null) {
-//            bindService();
-//        } else {
-//            try {
-//                mRemoteService.openWatch(
-//                        MiLiveSdkController.getInstance().getChannelId(),
-//                        GlobalData.app().getPackageName(),
-//                        playerId, liveId, videoUrl);
-//            } catch (RemoteException e) {
-//                bindService();
-//            }
-//        }
-//    }
-//
-//    @Deprecated
-//    public void openReplay(long playerId, String liveId, String videoUrl) {
-//        Logger.w(TAG, "openReplay");
-//        if (mRemoteService == null) {
-//            bindService();
-//        } else {
-//            try {
-//                mRemoteService.openReplay(
-//                        MiLiveSdkController.getInstance().getChannelId(),
-//                        GlobalData.app().getPackageName(),
-//                        playerId, liveId, videoUrl);
-//            } catch (RemoteException e) {
-//                bindService();
-//            }
-//        }
-//    }
-//
-//    @Deprecated
-//    public void openGameLive() {
-//        Logger.w(TAG, "openGameLive");
-//        if (mRemoteService == null) {
-//            bindService();
-//        } else {
-//            try {
-//                mRemoteService.openGameLive();
-//            } catch (RemoteException e) {
-//                bindService();
-//            }
-//        }
-//    }
-
     public void loginByMiAccountOAuth(String authCode) {
         Logger.w(TAG, "loginByMiAccount authCode=" + authCode);
         if (mRemoteService == null) {
