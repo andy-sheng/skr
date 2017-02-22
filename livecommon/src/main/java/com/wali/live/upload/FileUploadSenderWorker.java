@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.upload;
+package com.wali.live.upload;
 
 import android.text.TextUtils;
 

@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.common;
+package com.wali.live.common;
 
 import android.text.TextUtils;
 
