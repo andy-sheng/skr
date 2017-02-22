@@ -10,12 +10,9 @@ import com.wali.live.proto.SecurityProto.VerifyAssistantRsp;
  * Created by lan on 17/2/20.
  */
 public class VerifyRequest extends BaseRequest {
-    {
-        mCommand = MiLinkCommand.COMMAND_ACCOUNT_VERIFY_ASSISTANT;
-        mAction = "VerifyAssistant";
-    }
 
     public VerifyRequest(int channelId, String packageName, String channelSecret) {
+        super(MiLinkCommand.COMMAND_ACCOUNT_VERIFY_ASSISTANT,"VerifyAssistant",String.valueOf(channelId));
         generateRequest(channelId, packageName, channelSecret);
     }
 

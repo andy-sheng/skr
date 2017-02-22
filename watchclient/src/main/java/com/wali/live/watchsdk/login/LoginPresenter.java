@@ -53,12 +53,12 @@ public class LoginPresenter extends RxLifeCyclePresenter {
     /**
      * 系统小米账号登录
      */
-    public void systemLogin() {
+    public void systemLogin(final String channelId) {
         MyLog.w(TAG, "systemLogin start");
         Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
-                systemLoginInner();
+                systemLoginInner(channelId);
                 subscriber.onCompleted();
             }
         })
@@ -69,7 +69,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
     }
 
     // 再io线程执行
-    public void systemLoginInner() {
+    public void systemLoginInner(final String channelId) {
         if (!Network.hasNetwork(GlobalData.app())) {
             return;
         }
@@ -81,7 +81,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
                     miLogin();
                 } else {
                     // miui8 自动登录
-                    ssoLogin(Long.parseLong(miAccount));
+                    ssoLogin(Long.parseLong(miAccount),channelId);
                 }
             } else {
                 miLogin();
@@ -188,7 +188,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
     /**
      * sso登录
      */
-    public void ssoLogin(final long miid) {
+    public void ssoLogin(final long miid,final String channelId) {
         MyLog.w(TAG, "ssoLogin start, miid=" + miid);
         try {
             Observable.just(0)
@@ -204,7 +204,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
                     .subscribe(new Action1<String>() {
                         @Override
                         public void call(String var) {
-                            ssoLoginByAuthToken(miid, var);
+                            ssoLoginByAuthToken(miid, var,channelId);
                         }
                     }, new Action1<Throwable>() {
                         @Override
@@ -266,7 +266,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
     /**
      * sso登录
      */
-    private void ssoLoginByAuthToken(long miid, final String authToken) {
+    private void ssoLoginByAuthToken(long miid, final String authToken,final String channelId) {
         MyLog.w(TAG, "ssoLoginByAuthToken miid=" + miid + " authToken=" + authToken);
         String serviceToken = getServiceToken(authToken);
 
@@ -275,7 +275,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        Observable<AccountProto.MiSsoLoginRsp> observable = AccountCaller.miSsoLogin(miid, serviceToken);
+        Observable<AccountProto.MiSsoLoginRsp> observable = AccountCaller.miSsoLogin(miid, serviceToken,channelId);
         observable.subscribeOn(Schedulers.io())
                 .compose(this.<AccountProto.MiSsoLoginRsp>bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())

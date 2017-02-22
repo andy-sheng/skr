@@ -38,7 +38,7 @@ public class LoginActivity extends BaseSdkActivity {
         mRegisterTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mLoginPresenter.systemLogin();
+                mLoginPresenter.systemLogin("");
             }
         });
 

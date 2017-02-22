@@ -17,6 +17,7 @@ public class LeaveLiveRequest extends BaseLiveRequest {
     }
 
     public LeaveLiveRequest(long ownerId, String liveId) {
+        super(MiLinkCommand.COMMAND_LIVE_LEAVE, "LeaveLive", null);
         mRequest = generateBuilder()
                 .setZuid(ownerId)
                 .setLiveId(liveId)
@@ -24,6 +25,7 @@ public class LeaveLiveRequest extends BaseLiveRequest {
     }
 
     public LeaveLiveRequest(long ownerId, String liveId, int messageMode) {
+        super(MiLinkCommand.COMMAND_LIVE_LEAVE, "LeaveLive", null);
         mRequest = generateBuilder()
                 .setZuid(ownerId)
                 .setLiveId(liveId)
