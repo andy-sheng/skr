@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
+import com.mi.live.data.account.ChannelManager;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
@@ -65,7 +66,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Deprecated
-    public void openWatch(int channelId, String packageName, String channelSecret,
+    public void openWatch(final int channelId, String packageName, String channelSecret,
                           final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openWatch channelId=" + channelId);
 
@@ -75,6 +76,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.d(TAG, "openWatch success callback");
 
                 // TODO FLAG_ACTIVITY_NEW_TASK，目前demo有停留在应用的问题，可以通过去除intent-filter实现
+                ChannelManager.getInstance().setChannelId(String.valueOf(channelId));
                 Intent intent = new Intent(GlobalData.app(), WatchSdkActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
@@ -85,7 +87,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Deprecated
-    public void openReplay(int channelId, String packageName, String channelSecret,
+    public void openReplay(final int channelId, String packageName, String channelSecret,
                            final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openReplay channelId=" + channelId);
 
@@ -95,6 +97,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.d(TAG, "openReplay success callback");
 
                 // TODO FLAG_ACTIVITY_NEW_TASK，目前demo有停留在应用的问题，可以通过去除intent-filter实现
+                ChannelManager.getInstance().setChannelId(String.valueOf(channelId));
                 Intent intent = new Intent(GlobalData.app(), ReplaySdkActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
@@ -110,7 +113,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         // TODO
     }
 
-    public void openWatch(final Activity activity, int channelId, String packageName, String channelSecret,
+    public void openWatch(final Activity activity, final int channelId, String packageName, String channelSecret,
                           final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openWatch by activity channelId=" + channelId);
 
@@ -118,7 +121,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openWatch by activity success callback");
-
+                ChannelManager.getInstance().setChannelId(String.valueOf(channelId));
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 activity.finish();
@@ -126,7 +129,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    public void openReplay(final Activity activity, int channelId, String packageName, String channelSecret,
+
+    public void openReplay(final Activity activity, final int channelId, String packageName, String channelSecret,
                            final long playerId, final String liveId, final String videoUrl) {
         MyLog.d(TAG, "openReplay by activity channelId=" + channelId);
 
@@ -134,7 +138,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openReplay by activity success callback");
-
+                ChannelManager.getInstance().setChannelId(String.valueOf(channelId));
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 activity.finish();
@@ -152,7 +156,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             public void process(Object object) {
                 MyLog.d(TAG, "loginByMiAccountSso success callback");
 
-                AccountCaller.miSsoLogin(miid, serviceToken)
+                AccountCaller.miSsoLogin(miid, serviceToken,String.valueOf(channelId))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
                             @Override

@@ -16,16 +16,16 @@ public class EnterLiveRequest extends BaseLiveRequest {
     private EnterLiveReq.Builder builder;
 
     {
-        mCommand = MiLinkCommand.COMMAND_LIVE_ENTER;
-        mAction = "EnterLive";
         builder = EnterLiveReq.newBuilder();
     }
 
     public EnterLiveRequest(long ownerId, String liveId) {
+        super(MiLinkCommand.COMMAND_LIVE_ENTER,"EnterLive",null);
         build(ownerId, liveId);
     }
 
     public EnterLiveRequest(long ownerId, String liveId, String password) {
+        super(MiLinkCommand.COMMAND_LIVE_ENTER,"EnterLive",null);
         if (!TextUtils.isEmpty(password)) {
             builder.setPassword(password.trim());
         }

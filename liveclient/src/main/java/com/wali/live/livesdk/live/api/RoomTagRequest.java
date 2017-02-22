@@ -14,12 +14,8 @@ public class RoomTagRequest extends BaseLiveRequest {
     public static final int TAG_TYPE_GAME = 1;
     public static final int TAG_TYPE_NORMAL = 2;
 
-    {
-        mCommand = MiLinkCommand.COMMAND_LIVE_ROOM_TAG;
-        mAction = "RoomTag";
-    }
-
     public RoomTagRequest(int type) {
+        super(MiLinkCommand.COMMAND_LIVE_ROOM_TAG, "RoomTag", null);
         GetRoomTagReq.Builder builder = GetRoomTagReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setType(type);

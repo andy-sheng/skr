@@ -16,8 +16,7 @@ import com.wali.live.proto.LiveProto;
 public class GetRoomIdRequest extends BaseLiveRequest {
 
     public GetRoomIdRequest() {
-        mCommand = MiLinkCommand.COMMAND_LIVE_GET_ROOM_ID;
-        mAction = "GetRoomId";
+        super(MiLinkCommand.COMMAND_LIVE_GET_ROOM_ID, "GetRoomId", null);
 
         LiveProto.GetRoomIdReq.Builder builder = LiveProto.GetRoomIdReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong());
@@ -26,8 +25,7 @@ public class GetRoomIdRequest extends BaseLiveRequest {
     }
 
     public GetRoomIdRequest(AccountProto.AppInfo appInfo) {
-        mCommand = MiLinkCommand.COMMAND_LIVE_GET_ROOM_ID;
-        mAction = "GetRoomId";
+        super(MiLinkCommand.COMMAND_LIVE_GET_ROOM_ID, "GetRoomId", null);
 
         LiveProto.GetRoomIdReq.Builder builder = LiveProto.GetRoomIdReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())

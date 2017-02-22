@@ -11,12 +11,8 @@ import com.wali.live.proto.GiftProto;
  */
 public class GetMibiBalanceRequest extends BaseLiveRequest{
 
-    {
-        mCommand = MiLinkCommand.COMMAND_MIBI_BALANCE;
-        mAction = "GetMiBiBalance";
-    }
-
     public GetMibiBalanceRequest() {
+        super(MiLinkCommand.COMMAND_MIBI_BALANCE, "GetMiBiBalance", null);
         mRequest = GiftProto.GetMibiBalanceRequest.newBuilder().setUuid(UserAccountManager.getInstance().getUuidAsLong()).build();
     }
 

@@ -1,5 +1,8 @@
 package com.mi.live.data.milink;
 
+import android.text.TextUtils;
+
+import com.mi.live.data.account.ChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.callback.MiLinkEventListener;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
@@ -48,6 +51,9 @@ public class MilinkChannelClientAdapter {
     }
 
     public PacketData sendDataByChannel(final PacketData packet, final int timeout) {
+        if(packet!=null && TextUtils.isEmpty(packet.getChannelId()) && !TextUtils.isEmpty(ChannelManager.getInstance().getChannelId())){
+            packet.setChannelId(ChannelManager.getInstance().getChannelId());
+        }
         initMilinkChannelClient();
         return mMiLinkChannelClient.sendDataBySimpleChannel(packet, timeout);
     }

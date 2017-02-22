@@ -25,8 +25,6 @@ public class BeginLiveRequest extends BaseLiveRequest {
     BeginLiveReq.Builder mBuilder;
 
     {
-        mCommand = MiLinkCommand.COMMAND_LIVE_BEGIN;
-        mAction = "BeginLive";
         mBuilder = BeginLiveReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong());
     }
@@ -36,6 +34,7 @@ public class BeginLiveRequest extends BaseLiveRequest {
     public BeginLiveRequest(Location location, int liveType, List<Long> inviteeList, boolean addHistory,
                             String liveTitle, String CoverUrl, String liveId, AccountProto.AppInfo appInfo,
                             Integer playUi, int appType, RoomTag roomTag, boolean supportMagicFaceFlag) {
+        super(MiLinkCommand.COMMAND_LIVE_BEGIN, "BeginLive", null);
         build(location, liveType, inviteeList, addHistory, liveTitle, CoverUrl, liveId, appInfo, playUi, appType, roomTag, supportMagicFaceFlag);
     }
 
