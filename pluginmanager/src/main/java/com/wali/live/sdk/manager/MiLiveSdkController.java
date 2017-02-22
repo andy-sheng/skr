@@ -128,10 +128,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         MiLiveSdkServiceProxy.getInstance().clearAccount();
     }
 
-    /**
-     * 判断该手机中是否安装的直播助手
-     */
-    private boolean hasInstallLiveSdk() {
+    @Override
+    public boolean hasInstallLiveSdk() {
         PackageInfo pInfo = null;
         try {
             pInfo = GlobalData.app().getPackageManager().getPackageInfo(

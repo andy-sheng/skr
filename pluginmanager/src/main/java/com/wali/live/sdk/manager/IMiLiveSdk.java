@@ -57,6 +57,11 @@ public interface IMiLiveSdk {
     void clearAccount();
 
     /**
+     * 判断该手机中是否安装的直播助手
+     */
+    boolean hasInstallLiveSdk();
+
+    /**
      * 从上层重新传入channelId，用于测试，上线后删除
      */
     void setChannelId(int channelId);
