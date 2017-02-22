@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.log;
+package com.wali.live.log;
 
 import android.os.Message;
 
@@ -9,7 +9,7 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.mi.milink.sdk.proto.DataExtraProto;
-import com.wali.live.watchsdk.init.WatchInitManager;
+import com.wali.live.init.InitManager;
 
 /**
  * LogHandler是接到MnsCommand.COMMAND_VOIP_AUTO_UPLOAD_LOG命令之后，上传日志
@@ -95,7 +95,7 @@ public class LogHandler implements MiLinkPacketDispatcher.PacketDataHandler {
             } else {
                 //设置log level
                 int logLevel = dataLoglevel.getLoglevel();
-                WatchInitManager.setAppAndMilinkLogLevel(logLevel);
+                InitManager.setAppAndMilinkLogLevel(logLevel);
 
                 //产品要求在多少秒之后要恢复之前的log级别
                 long timeDelay = dataLoglevel.getTimeLong();
@@ -123,7 +123,7 @@ public class LogHandler implements MiLinkPacketDispatcher.PacketDataHandler {
         long now = System.currentTimeMillis();
 
         if (now >= revertTimestamp) {     //需要恢复日志级别
-            WatchInitManager.initLogger();
+            InitManager.initLogger();
             PreferenceUtils.setSettingLong(GlobalData.app(), SP_KEY_LOG_REVERT_TS, 0);
 
             mCustomHandlerThread.removeMessage(MSG_CHECK_REVERT_LOG_LEVEL);

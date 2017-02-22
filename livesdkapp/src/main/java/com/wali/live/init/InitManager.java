@@ -24,7 +24,7 @@ import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.dns.PreDnsManager;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
-import com.wali.live.watchsdk.log.LogHandler;
+import com.wali.live.log.LogHandler;
 import com.wali.live.watchsdk.service.PacketProcessService;
 import com.xsj.crasheye.Crasheye;
 
