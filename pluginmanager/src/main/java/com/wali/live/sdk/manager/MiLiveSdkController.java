@@ -47,6 +47,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mChannelId = channelId;
         mChannelSecret = channelSecret;
         mCallback = callback;
+
+        checkHasInit();
     }
 
     @Override
@@ -73,7 +75,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public String getChannelSecret(){
+    public String getChannelSecret() {
         return mChannelSecret;
     }
 
