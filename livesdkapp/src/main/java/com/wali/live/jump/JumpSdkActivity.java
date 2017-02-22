@@ -25,6 +25,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
+    private static final String EXTRA_LIVE_TYPE = "extra_live_type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
                 String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
+                int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
                         playerId, liveId, videoUrl);
                 break;
@@ -57,6 +59,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
                 String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
+                int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName, channelSecret,
                         playerId, liveId, videoUrl);
                 break;
