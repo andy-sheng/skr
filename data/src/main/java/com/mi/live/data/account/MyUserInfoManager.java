@@ -68,7 +68,7 @@ public class MyUserInfoManager {
      */
     private User readFromDB() {
         User user = new User();
-        OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(HostChannelManager.getInstance().getCurrentChannelId());
+        OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(HostChannelManager.getInstance().getChannelId());
         MyLog.w(TAG,"ownUserInfo:"+ownUserInfo);
         if (ownUserInfo != null) {
             user.setUid(ownUserInfo.getUid());
@@ -120,7 +120,7 @@ public class MyUserInfoManager {
             return;
         }
         OwnUserInfo ownUserInfo = new OwnUserInfo();
-        ownUserInfo.setChannelid(HostChannelManager.getInstance().getCurrentChannelId());
+        ownUserInfo.setChannelid(HostChannelManager.getInstance().getChannelId());
         ownUserInfo.setUid(mMyInfo.getUid());
         ownUserInfo.setNickname(mMyInfo.getNickname());
         ownUserInfo.setSign(mMyInfo.getSign());
