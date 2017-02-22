@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.init;
+package com.wali.live.init;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
+import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.language.LocaleUtil;
 import com.base.utils.version.VersionManager;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
@@ -25,6 +26,7 @@ import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
 import com.wali.live.watchsdk.log.LogHandler;
 import com.wali.live.watchsdk.service.PacketProcessService;
+import com.xsj.crasheye.Crasheye;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,8 +35,8 @@ import java.util.List;
 /**
  * Created by lan on 16/12/1.
  */
-public class WatchInitManager {
-    private static final String TAG = WatchInitManager.class.getSimpleName();
+public class InitManager {
+    private static final String TAG = InitManager.class.getSimpleName();
 
     private static String sPackageName;
     private static String sRemoteProcessName;
@@ -83,6 +85,7 @@ public class WatchInitManager {
             initLibrary();
             initMiLinkPacketHandler();
             registerAllEventBus();
+            initCrasheye();
         }
     }
 
@@ -124,6 +127,12 @@ public class WatchInitManager {
         } else {
             setAppAndMilinkLogLevel(TraceLevel.ABOVE_INFO);
         }
+    }
+
+    private static void initCrasheye() {
+        Crasheye.init(GlobalData.app(), Constants.CRASHEYE_APPID);
+        Crasheye.setChannelID(ReleaseChannelUtils.getReleaseChannel());
+        Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
     }
 
     /**

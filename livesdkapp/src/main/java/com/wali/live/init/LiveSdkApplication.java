@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.init;
+package com.wali.live.init;
 
 import android.app.Application;
 import android.content.Context;
@@ -12,13 +12,13 @@ import com.base.log.MyLog;
  *
  * @description 第三方应用可以继承WatchSdkApplication，或者直接使用InitManager
  */
-public class WatchSdkApplication extends Application {
-    private static final String TAG = WatchSdkApplication.class.getSimpleName();
+public class LiveSdkApplication extends Application {
+    private static final String TAG = LiveSdkApplication.class.getSimpleName();
 
     @Override
     public void onCreate() {
         super.onCreate();
-        WatchInitManager.init(this);
+        InitManager.init(this);
         GlobalData.initialize(this);
     }
 

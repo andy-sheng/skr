@@ -5,7 +5,7 @@
           android:versionName="2.3.49">
 
     <application
-        android:name="com.wali.live.watchsdk.init.WatchSdkApplication"
+        android:name="com.wali.live.init.LiveSdkApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
