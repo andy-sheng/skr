@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.Constants;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.language.LocaleUtil;
@@ -19,12 +20,12 @@ import com.mi.milink.sdk.base.Global;
 import com.mi.milink.sdk.base.debug.TraceLevel;
 import com.mi.milink.sdk.data.ClientAppInfo;
 import com.mi.milink.sdk.debug.MiLinkLog;
-import com.base.thread.ThreadPool;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.dns.PreDnsManager;
+import com.wali.live.log.LogHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
-import com.wali.live.log.LogHandler;
+import com.wali.live.watchsdk.init.EventBusDelegate;
 import com.wali.live.watchsdk.service.PacketProcessService;
 import com.xsj.crasheye.Crasheye;
 
@@ -98,6 +99,7 @@ public class InitManager {
 
     public static void registerAllEventBus() {
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
+        EventBus.getDefault().register(EventBusDelegate.getInstance());
     }
 
     private static void initLibrary() {

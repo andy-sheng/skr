@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.upload;
+package com.wali.live.upload;
 
 import com.base.log.MyLog;
 import com.ksyun.ks3.exception.Ks3Error;

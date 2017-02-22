@@ -1,10 +1,25 @@
-package com.wali.live.livesdk.live.utils;
+package com.wali.live.utils;
 
 import android.text.TextUtils;
 
-import com.wali.live.livesdk.live.common.MessageType;
+import com.base.global.GlobalData;
+import com.base.preference.PreferenceUtils;
+import com.wali.live.common.MessageType;
 
 public class AttachmentUtils {
+
+    private final static long MIN_ATTACHMENT_BASE_ID = 10240;
+
+    public synchronized static long generateAttachmentId() {
+        final long preferenceBaseId = PreferenceUtils.getSettingLong(
+                GlobalData.app(),
+                PreferenceUtils.PREF_KEY_ATTACHMENT_BASE_ID,
+                MIN_ATTACHMENT_BASE_ID);
+        long baseId = Math.max(System.currentTimeMillis(), preferenceBaseId) + 1;
+        PreferenceUtils.setSettingLong(GlobalData.app(),
+                PreferenceUtils.PREF_KEY_ATTACHMENT_BASE_ID, baseId);
+        return baseId;
+    }
 
     public static String getMimeType(int messageType, String fileName) {
         String extension;

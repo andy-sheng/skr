@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.utils;
+package com.wali.live.utils;
 
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;

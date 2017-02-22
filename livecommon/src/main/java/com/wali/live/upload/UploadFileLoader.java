@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.upload;
+package com.wali.live.upload;
 
 import android.text.TextUtils;
 
@@ -8,8 +8,8 @@ import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.ksyun.ks3.util.DateUtil;
 import com.ksyun.ks3.util.Md5Utils;
+import com.live.module.common.R;
 import com.mi.live.data.assist.Attachment;
-import com.wali.live.livesdk.R;
 import com.wali.live.proto.AuthUploadFileProto;
 
 import java.io.File;

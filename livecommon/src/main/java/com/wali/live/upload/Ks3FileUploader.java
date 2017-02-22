@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.upload;
+package com.wali.live.upload;
 
 import android.text.TextUtils;
 
@@ -27,8 +27,8 @@ import com.ksyun.ks3.services.request.InitiateMultipartUploadRequest;
 import com.ksyun.ks3.services.request.ListPartsRequest;
 import com.ksyun.ks3.services.request.PutObjectRequest;
 import com.ksyun.ks3.services.request.UploadPartRequest;
+import com.live.module.common.R;
 import com.mi.live.data.assist.Attachment;
-import com.wali.live.livesdk.R;
 import com.wali.live.proto.AuthUploadFileProto;
 import com.wali.live.statistics.StatisticUtils;
 import com.wali.live.statistics.StatisticsKey;
