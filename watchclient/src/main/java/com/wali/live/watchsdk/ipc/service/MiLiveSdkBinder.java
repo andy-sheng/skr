@@ -121,6 +121,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openWatch by activity success callback");
+
                 ChannelManager.getInstance().setChannelId(String.valueOf(channelId));
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
@@ -138,6 +139,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void process(Object object) {
                 MyLog.d(TAG, "openReplay by activity success callback");
+
                 ChannelManager.getInstance().setChannelId(String.valueOf(channelId));
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl).build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
@@ -156,7 +158,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             public void process(Object object) {
                 MyLog.d(TAG, "loginByMiAccountSso success callback");
 
-                AccountCaller.miSsoLogin(miid, serviceToken,String.valueOf(channelId))
+                AccountCaller.miSsoLogin(miid, serviceToken, String.valueOf(channelId))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AccountProto.MiSsoLoginRsp>() {
                             @Override
