@@ -18,13 +18,10 @@ import android.widget.TextView;
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
+import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.notification.NotificationManger;
-import com.wali.live.sdk.manager.global.GlobalData;
-import com.wali.live.sdk.manager.http.utils.StringUtils;
-import com.wali.live.sdk.manager.toast.ToastUtils;
-import com.wali.live.watchsdk.ipc.service.MiLiveSdkEvent;
-
-import de.greenrobot.event.EventBus;
+import com.wali.live.sdk.manager.demo.utils.StringUtils;
+import com.wali.live.sdk.manager.demo.utils.ToastUtils;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
@@ -61,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNoNewerVersion() {
                 Log.w(TAG, "onNoNewerVersion");
-                ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.no_upgrading);
+                ToastUtils.showToast(R.string.no_upgrading);
             }
 
             @Override
@@ -117,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 mChannelTv.setText("宿主id:" + currentChannelId);
             }
         });
+        GlobalData.setApplication(this.getApplication());
         //建议在 application里初始化这个
         MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, "TEST SECRET", new IMiLiveSdk.CallbackWrapper() {
             @Override
@@ -133,40 +131,33 @@ public class MainActivity extends AppCompatActivity {
             public void notifyAidlFailure(int aidlFlag) {
                 ToastUtils.showToast("notifyAidlFailure aidlFlag=" + aidlFlag);
             }
+
+            @Override
+            public void notifyLogin(int var1) {
+                if (var1 == IMiLiveSdk.ICallback.CODE_SUCCESS) {
+                    ToastUtils.showToast("登录成功");
+                }
+            }
+
+            @Override
+            public void notifyLogoff(int var1) {
+                if (var1 == IMiLiveSdk.ICallback.CODE_SUCCESS) {
+                    ToastUtils.showToast("登出成功");
+                }
+            }
+
+            @Override
+            public void notifyWantLogin() {
+                ToastUtils.showToast("用户触发了只有登录才有的操作,回调给宿主,宿主传递账号信息给插件");
+                mMenuRecyclerAdapter.oauthLogin();
+            }
+
+            @Override
+            public void notifyVerifyFailure(int var1) {
+                ToastUtils.showToast("验证失败，errCode=" + var1);
+            }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mSdkUpdateHelper.checkUpdate();
-    }
-
-    public void onEventMainThread(MiLiveSdkEvent.LoginResult event) {
-        if (event.code == MiLiveSdkEvent.SUCCESS) {
-            ToastUtils.showToast("登录成功");
-        } else {
-        }
-    }
-
-    public void onEventMainThread(MiLiveSdkEvent.LogoffResult event) {
-        if (event.code == MiLiveSdkEvent.SUCCESS) {
-            ToastUtils.showToast("登出成功");
-        } else {
-        }
-    }
-
-    public void onEventMainThread(MiLiveSdkEvent.WantLogin event) {
-        ToastUtils.showToast("用户触发了只有登录才有的操作,回调给宿主,宿主传递账号信息给插件");
-        mMenuRecyclerAdapter.oauthLogin();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     public void showUpgradeDialog(final @NonNull Activity activity, final boolean isManualCheck, final boolean canCancel) {

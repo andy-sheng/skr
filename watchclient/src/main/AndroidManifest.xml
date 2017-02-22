@@ -30,17 +30,13 @@
         <activity
             android:name="com.wali.live.watchsdk.watch.WatchSdkActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:exported="true"
             android:hardwareAccelerated="true"
-            android:launchMode="standard"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.wali.live.watchsdk.watch.ReplaySdkActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:exported="true"
             android:hardwareAccelerated="true"
-            android:launchMode="standard"
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity"/>

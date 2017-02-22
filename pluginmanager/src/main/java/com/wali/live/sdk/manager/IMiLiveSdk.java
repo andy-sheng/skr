@@ -71,11 +71,19 @@ public interface IMiLiveSdk {
      */
     @Keep
     interface ICallback {
+        /**
+         * 登录相关接口的标志
+         */
         int LOGIN_SSO_AIDL = 1001;
 
         int LOGIN_OAUTH_AIDL = 1002;
 
         int CLEAR_ACCOUNT_AIDL = 1003;
+
+        /**
+         * 登录相关接口的返回码
+         */
+        int CODE_SUCCESS = 0;
 
         /**
          * 通知上层应用，直播助手未安装
@@ -91,6 +99,26 @@ public interface IMiLiveSdk {
          * 通知上层应用aidl失败
          */
         void notifyAidlFailure(int aidlFlag);
+
+        /**
+         * 通知登录成功
+         */
+        void notifyLogin(int code);
+
+        /**
+         * 通知登录失败
+         */
+        void notifyLogoff(int code);
+
+        /**
+         * 通知上层需要登录
+         */
+        void notifyWantLogin();
+
+        /**
+         * 通知上层权限验证失败
+         */
+        void notifyVerifyFailure(int code);
     }
 
     @Keep
@@ -151,6 +179,22 @@ public interface IMiLiveSdk {
 
         @Override
         public void notifyAidlFailure(int aidlFlag) {
+        }
+
+        @Override
+        public void notifyLogin(int code) {
+        }
+
+        @Override
+        public void notifyLogoff(int code) {
+        }
+
+        @Override
+        public void notifyWantLogin() {
+        }
+
+        @Override
+        public void notifyVerifyFailure(int code) {
         }
     }
 }

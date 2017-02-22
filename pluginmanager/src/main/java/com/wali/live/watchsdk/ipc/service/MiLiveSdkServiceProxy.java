@@ -21,7 +21,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     public final static String TAG = MiLiveSdkServiceProxy.class.getSimpleName();
 
     private Intent mIntent;
-    private IMiLiveSdkService remoteService;
+    private IMiLiveSdkService mRemoteService;
 
     private long mMiId;
     private String mServiceToken;
@@ -34,26 +34,34 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
         public void onEventLogin(int code) throws RemoteException {
-            Logger.d(TAG, "onEventLoggerinResult:" + code);
-            MiLiveSdkEvent.postLogin(code);
+            Logger.d(TAG, "onEventLoginResult:" + code);
+            if (mCallback != null) {
+                mCallback.notifyLogin(code);
+            }
         }
 
         @Override
         public void onEventLogoff(int code) throws RemoteException {
-            Logger.d(TAG, "onEventLoggeroff:" + code);
-            MiLiveSdkEvent.postLogoff(code);
+            Logger.d(TAG, "onEventLogoff:" + code);
+            if (mCallback != null) {
+                mCallback.notifyLogoff(code);
+            }
         }
 
         @Override
         public void onEventWantLogin() throws RemoteException {
-            Logger.d(TAG, "onEventWantLoggerin");
-            MiLiveSdkEvent.postWantLogin();
+            Logger.d(TAG, "onEventWantLogin");
+            if (mCallback != null) {
+                mCallback.notifyWantLogin();
+            }
         }
 
         @Override
         public void onEventVerifyFailure(int code) throws RemoteException {
             Logger.d(TAG, "onEventVerifyFailure code=" + code);
-            MiLiveSdkEvent.postVerifyFailure(code);
+            if (mCallback != null) {
+                mCallback.notifyVerifyFailure(code);
+            }
         }
     };
 
@@ -88,28 +96,28 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder service) {
         Logger.w(TAG, "onServiceConnected");
-        remoteService = IMiLiveSdkService.Stub.asInterface(service);
+        mRemoteService = IMiLiveSdkService.Stub.asInterface(service);
         try {
-            remoteService.setEventCallBack(
+            mRemoteService.setEventCallBack(
                     MiLiveSdkController.getInstance().getChannelId(),
                     mLiveSdkEventCallback);
             // 尝试处理登录
             if (!TextUtils.isEmpty(mServiceToken)) {
-                remoteService.loginByMiAccountSso(
+                mRemoteService.loginByMiAccountSso(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mMiId, mServiceToken);
                 mServiceToken = "";
             } else if (!TextUtils.isEmpty(mAuthCode)) {
-                remoteService.loginByMiAccountOAuth(
+                mRemoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mAuthCode);
                 mAuthCode = "";
             } else if (mClearAccountFlag) {
-                remoteService.clearAccount(
+                mRemoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
@@ -126,21 +134,19 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void tryInit() {
-        if (remoteService == null) {
+        if (mRemoteService == null) {
             bindService();
-        } else {
-            //TODO 可以写个 aidl test 方法，当这个方法跑异常时也重新绑定一下
         }
     }
 
 //    @Deprecated
 //    public void openWatch(long playerId, String liveId, String videoUrl) {
 //        Logger.w(TAG, "openWatch");
-//        if (remoteService == null) {
+//        if (mRemoteService == null) {
 //            bindService();
 //        } else {
 //            try {
-//                remoteService.openWatch(
+//                mRemoteService.openWatch(
 //                        MiLiveSdkController.getInstance().getChannelId(),
 //                        GlobalData.app().getPackageName(),
 //                        playerId, liveId, videoUrl);
@@ -153,11 +159,11 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 //    @Deprecated
 //    public void openReplay(long playerId, String liveId, String videoUrl) {
 //        Logger.w(TAG, "openReplay");
-//        if (remoteService == null) {
+//        if (mRemoteService == null) {
 //            bindService();
 //        } else {
 //            try {
-//                remoteService.openReplay(
+//                mRemoteService.openReplay(
 //                        MiLiveSdkController.getInstance().getChannelId(),
 //                        GlobalData.app().getPackageName(),
 //                        playerId, liveId, videoUrl);
@@ -170,11 +176,11 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 //    @Deprecated
 //    public void openGameLive() {
 //        Logger.w(TAG, "openGameLive");
-//        if (remoteService == null) {
+//        if (mRemoteService == null) {
 //            bindService();
 //        } else {
 //            try {
-//                remoteService.openGameLive();
+//                mRemoteService.openGameLive();
 //            } catch (RemoteException e) {
 //                bindService();
 //            }
@@ -183,13 +189,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     public void loginByMiAccountOAuth(String authCode) {
         Logger.w(TAG, "loginByMiAccount authCode=" + authCode);
-        if (remoteService == null) {
+        if (mRemoteService == null) {
             mAuthCode = authCode;
             notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
             bindService();
         } else {
             try {
-                remoteService.loginByMiAccountOAuth(
+                mRemoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
@@ -204,14 +210,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     public void loginByMiAccountSso(long miid, String serviceToken) {
         Logger.w(TAG, "loginByMiAccountSso miid=" + miid + ",serviceToken=" + serviceToken);
-        if (remoteService == null) {
+        if (mRemoteService == null) {
             mMiId = miid;
             mServiceToken = serviceToken;
             notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
             bindService();
         } else {
             try {
-                remoteService.loginByMiAccountSso(
+                mRemoteService.loginByMiAccountSso(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
@@ -227,13 +233,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     public void clearAccount() {
         Logger.w(TAG, "clearAccount");
-        if (remoteService == null) {
+        if (mRemoteService == null) {
             mClearAccountFlag = true;
             notifyServiceNull(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
             bindService();
         } else {
             try {
-                remoteService.clearAccount(
+                mRemoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());

@@ -8,7 +8,7 @@
 //import com.wali.live.sdk.manager.R;
 //import com.wali.live.sdk.manager.global.GlobalData;
 //import com.wali.live.sdk.manager.log.Logger;
-//import com.wali.live.sdk.manager.toast.ToastUtils;
+//import com.wali.live.sdk.manager.demo.toast.ToastUtils;
 //
 //import java.lang.ref.WeakReference;
 //

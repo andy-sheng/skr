@@ -19,6 +19,7 @@ public class MiLiveSdkReceiver extends BroadcastReceiver {
             String action = intent.getAction();
             String packageName = intent.getPackage();
             Logger.w(TAG, "action:" + action + ";package=" + packageName);
+
             // 保证是自己app和action发出的闹钟。
             if (action.equals(ReceiverConstant.ACTION_WANT_LOGIN)) {
                 MiLiveSdkEvent.postWantLogin();

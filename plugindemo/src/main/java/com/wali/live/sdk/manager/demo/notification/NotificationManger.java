@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.wali.live.sdk.manager.demo.R;
-import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.demo.global.GlobalData;
 
 /**
  * Created by milive on 16/12/6.

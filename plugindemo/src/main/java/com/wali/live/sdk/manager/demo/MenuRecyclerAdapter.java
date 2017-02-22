@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
-import com.wali.live.sdk.manager.global.GlobalData;
-import com.wali.live.sdk.manager.toast.ToastUtils;
+import com.wali.live.sdk.manager.demo.global.GlobalData;
+import com.wali.live.sdk.manager.demo.utils.ToastUtils;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * Created by chengsimin on 2016/12/8.
  */
-
 public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final static String TAG = MenuRecyclerAdapter.class.getSimpleName();
 
