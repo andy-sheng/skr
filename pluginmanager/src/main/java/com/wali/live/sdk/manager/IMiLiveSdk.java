@@ -2,6 +2,8 @@ package com.wali.live.sdk.manager;
 
 import android.app.Activity;
 import android.app.Application;
+import android.support.annotation.IntRange;
+import android.support.annotation.Keep;
 
 /**
  * Created by lan on 17/2/20.
@@ -67,6 +69,7 @@ public interface IMiLiveSdk {
     /**
      * sdk 上层应用回调
      */
+    @Keep
     interface ICallback {
         int LOGIN_SSO_AIDL = 1001;
 
@@ -74,19 +77,69 @@ public interface IMiLiveSdk {
 
         int CLEAR_ACCOUNT_AIDL = 1003;
 
-        // 通知上层应用，直播助手未安装
+        /**
+         * 通知上层应用，直播助手未安装
+         */
         void notifyNotInstall();
 
-        // 通知上层应用，aidl service为空
+        /**
+         * 通知上层应用，aidl service为空
+         */
         void notifyServiceNull(int aidlFlag);
 
-        // 通知上层应用aidl失败
+        /**
+         * 通知上层应用aidl失败
+         */
         void notifyAidlFailure(int aidlFlag);
+    }
+
+    @Keep
+    interface IUpdateListener {
+        /**
+         * 通知上层应用可更新直播助手
+         */
+        void onNewVersionAvail(boolean isForce);
+
+        /**
+         * 通知上层应用当前无需更新直播助手
+         */
+        void onNoNewerVersion();
+
+        /**
+         * 通知上层应用更新检查失败
+         */
+        void onCheckVersionFailed();
+
+        /**
+         * 通知上层应用重复的更新检查请求
+         */
+        void onDuplicatedRequest();
+
+        /**
+         * 通知上层应用更新下载开始
+         */
+        void onDownloadStart();
+
+        /**
+         * 通知上层应用更新下载进度更新
+         */
+        void onDownloadProgress(@IntRange(from = 0, to = 100) int progress);
+
+        /**
+         * 通知上层应用更新下载成功
+         */
+        void onDownloadSuccess();
+
+        /**
+         * 通知上层应用更新下载失败
+         */
+        void onDownloadFailed(int errCode);
     }
 
     /**
      * 回调的包装器
      */
+    @Keep
     class CallbackWrapper implements ICallback {
         @Override
         public void notifyNotInstall() {

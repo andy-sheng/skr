@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
-import com.wali.live.sdk.manager.version.VersionCheckTask;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
 
 /**
@@ -181,10 +180,5 @@ public class MiLiveSdkController implements IMiLiveSdk {
             }
         }
         return false;
-    }
-
-    // 强制检查更新
-    public void checkSdkUpdate(Activity context, boolean isManualCheck, boolean isNeedDialog) {
-        new VersionCheckTask(context, isManualCheck, isNeedDialog).execute();
     }
 }
