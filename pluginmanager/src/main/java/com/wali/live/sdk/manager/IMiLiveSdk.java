@@ -166,7 +166,7 @@ public interface IMiLiveSdk {
         /**
          * 通知上层应用更新下载成功
          */
-        void onDownloadSuccess();
+        void onDownloadSuccess(String path);
 
         /**
          * 通知上层应用更新下载失败

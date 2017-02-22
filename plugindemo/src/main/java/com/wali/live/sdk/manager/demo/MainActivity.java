@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onDownloadSuccess() {
+            public void onDownloadSuccess(String path) {
                 Log.w(TAG, "onDownloadSuccess");
                 NotificationManger.getInstance().removeNotification(NotificationManger.UPDATE_DOWNLOADING);
                 ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.download_update_succeed);

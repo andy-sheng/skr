@@ -272,7 +272,7 @@ public class VersionCheckManager {
                     public void onCompleted(String localPath) {
                         mIsUpgrading = false;
                         if (updateListener != null) {
-                            updateListener.onDownloadSuccess();
+                            updateListener.onDownloadSuccess(localPath);
                         }
                     }
 
