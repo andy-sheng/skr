@@ -11,12 +11,6 @@ import android.support.annotation.Keep;
  * @description 提供给第三方，只需要看这个文件
  */
 public interface IMiLiveSdk {
-    int TYPE_LIVE_PUBLIC = 0;
-    int TYPE_LIVE_PRIVATE = 1;
-    int TYPE_LIVE_TOKEN = 2;
-    int TYPE_LIVE_TICKET = 3;
-    int TYPE_LIVE_VR = 5;
-    int TYPE_LIVE_GAME = 6;
 
     /**
      * 初始化操作，建议在Application.onCreate()初始化
