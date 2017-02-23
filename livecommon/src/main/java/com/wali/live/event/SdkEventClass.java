@@ -1,7 +1,6 @@
-package com.mi.live.data.event;
+package com.wali.live.event;
 
-
-import com.mi.live.data.base.BaseRotateSdkActivity;
+import com.wali.live.base.BaseRotateSdkActivity;
 
 /**
  * Created by lan on 15-4-15.
@@ -18,8 +17,9 @@ public abstract class SdkEventClass {
         public OrientEvent(int orientation) {
             this.orientation = orientation;
         }
-        public boolean isLandscape(){
-            return orientation  == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_NORMAL || orientation==BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_REVERSED;
+
+        public boolean isLandscape() {
+            return orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_NORMAL || orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_REVERSED;
         }
     }
 

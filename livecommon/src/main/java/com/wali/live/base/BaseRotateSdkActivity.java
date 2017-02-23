@@ -1,4 +1,4 @@
-package com.mi.live.data.base;
+package com.wali.live.base;
 
 import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
@@ -7,7 +7,7 @@ import android.provider.Settings;
 import android.view.OrientationEventListener;
 
 import com.base.fragment.IRotateActivity;
-import com.mi.live.data.event.SdkEventController;
+import com.wali.live.event.SdkEventController;
 
 /**
  * Created by lan on 16/7/4.

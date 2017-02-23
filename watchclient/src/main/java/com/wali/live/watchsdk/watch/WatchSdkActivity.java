@@ -24,7 +24,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;

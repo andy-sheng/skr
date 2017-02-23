@@ -17,7 +17,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.base.BaseEvent;

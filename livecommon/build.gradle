@@ -43,6 +43,7 @@ dependencies {
     compile presentationDependencies.rxJava
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile presentationDependencies.butterKnife
+    compile 'com.android.support:multidex:1.0.1'
     compile project(':data')
 
 //    /*
@@ -76,4 +77,5 @@ dependencies {
     compile files('libs/alipaySingle-20160825.jar')
 //    compile 'com.alibaba.alipay:alipaySingle:20160825@jar'//支付
     compile files('libs/ks3-android-sdk-v-1.4.6.jar')
+    compile files('libs/crasheye_2.1.5.jar')
 }

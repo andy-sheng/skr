@@ -5,7 +5,6 @@ import android.os.Message;
 import android.util.SparseArray;
 
 import com.base.log.MyLog;
-import com.mi.live.data.base.BaseRotateSdkActivity;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.collection.InsertSortLinkedList;
@@ -14,6 +13,7 @@ import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.milink.sdk.base.CustomHandlerThread;
+import com.wali.live.base.BaseRotateSdkActivity;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
 import com.wali.live.watchsdk.R;

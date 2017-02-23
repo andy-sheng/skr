@@ -29,7 +29,7 @@ import com.base.global.GlobalData;
 import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.repository.GiftRepository;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.dao.Gift;
