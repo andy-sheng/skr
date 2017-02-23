@@ -1,14 +1,5 @@
 <resources>
     <string name="app_name">MiLiveSdkManager</string>
-
-    <string name="dialog_milive_app_noinstall_message">你还没有安装小米直播插件，是否下载安装?</string>
-    <string name="dialog_milive_app_version_too_live_message">你的小米直播插件版本太低，是否下载最新</string>
-    <string name="sure_install_milive">下载</string>
-    <string name="cancel_install_milve">取消</string>
-    <string name="milive_upgrade_progress_sucess">小米直播插件下载成功</string>
-    <string name="milive_upgrade_progress_faild">小米直播插件下载失败</string>
-    <string name="milive_upgrade_progress_start">小米直播插件开始下载</string>
-
     <string name="app_version">版本号:&#160;%s</string>
     <string name="apksize">安装包大小:&#160;%sM</string>
     <string name="upgrade_description">版本更新要点:&#160;%s</string>
@@ -26,5 +17,4 @@
     <string name="milive_upgrade_progress">已下载%d%%</string>
     <string name="download_update_succeed">下载完成，安装升级文件</string>
     <string name="update_file_illegal">更新的安装包验证出错,请重试</string>
-
 </resources>
