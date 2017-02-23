@@ -37,10 +37,10 @@ public class InitManager {
         if (!hasInit) {
             initMiLinkPacketHandler();
             ThreadPool.startup();
-            initLogger();
             ThreadPool.getWorkerHandler().post(new Runnable() {
                 @Override
                 public void run() {
+                    initLogger();
                     SDCardUtils.generateDirectory();
                     hasInit = true;
                 }
