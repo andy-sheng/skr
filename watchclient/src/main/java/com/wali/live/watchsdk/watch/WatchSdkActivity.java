@@ -207,7 +207,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     public void call(Void aVoid) {
                         if (AccountAuthManager.triggerActionNeedAccount(WatchSdkActivity.this)) {
                             //飘萍测试
-    //                        FlyBarrageManager.testFlyBarrage(mMyRoomData.getRoomId(),String.valueOf(mMyRoomData.getUid()));
+                            //                        FlyBarrageManager.testFlyBarrage(mMyRoomData.getRoomId(),String.valueOf(mMyRoomData.getUid()));
                             EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST));
                         }
                     }
@@ -351,7 +351,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomViewerPresenter);
 
-        mSendCommentPresenter = new SendCommentPresenter(this, mRoomInfo, new Runnable() {
+        mSendCommentPresenter = new SendCommentPresenter(this, mMyRoomData, mRoomInfo, new Runnable() {
             @Override
             public void run() {
                 mBarrageSendBtn.setVisibility(View.VISIBLE);

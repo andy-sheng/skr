@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
@@ -22,6 +21,7 @@ import com.base.event.KeyboardEvent;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.toast.ToastUtils;
 import com.base.view.MLTextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.event.SdkEventClass;
@@ -29,6 +29,7 @@ import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.smiley.SmileyInputFilter;
 import com.wali.live.common.smiley.SmileyParser;
@@ -70,6 +71,8 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
 
     RoomInfo mRoomInfo;
 
+    RoomBaseDataModel mMyRoomData;
+
     Runnable mHideSendCommentAreaCallBack;
 
     boolean mLandscape = false;
@@ -82,8 +85,9 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
 
     public static int sEditTextHeight = DisplayUtils.dip2px(43);
 
-    public SendCommentPresenter(BaseActivity activity, RoomInfo roomInfo, Runnable hideSendCommentAreaCallBack) {
+    public SendCommentPresenter(BaseActivity activity, RoomBaseDataModel myRoomData, RoomInfo roomInfo, Runnable hideSendCommentAreaCallBack) {
         this.mActivity = activity;
+        this.mMyRoomData = myRoomData;
         this.mRoomInfo = roomInfo;
         this.mHideSendCommentAreaCallBack = hideSendCommentAreaCallBack;
     }
@@ -229,6 +233,10 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
                                    String msg = mInputView.getText().toString();
                                    String body = SmileyParser.getInstance()
                                            .convertString(msg, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
+                                   if (mMyRoomData != null && !mMyRoomData.canSpeak()) {
+                                       ToastUtils.showToast(GlobalData.app(), R.string.can_not_speak);
+                                       return;
+                                   }
                                    if (TextUtils.isEmpty(body.trim())) {
                                        return;
                                    }
@@ -287,7 +295,7 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
         if (!mHasInflate) {
             return;
         }
-        if(mShowInputView){
+        if (mShowInputView) {
             return;
         }
         mShowInputView = true;
@@ -315,10 +323,10 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
 
     protected void hideInputView() {
         MyLog.d(TAG, "hideInputView");
-        if(!mShowInputView){
+        if (!mShowInputView) {
             return;
         }
-        KeyboardUtils.hideKeyboard(mActivity,mInputView);
+        KeyboardUtils.hideKeyboard(mActivity, mInputView);
         mUiHanlder.post(new Runnable() {
             @Override
             public void run() {
@@ -364,7 +372,7 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(KeyboardEvent event) {
         MyLog.d(TAG, "KeyboardEvent eventType = " + event.eventType);
-        if(!mShowInputView){
+        if (!mShowInputView) {
             // 键盘不可见，其实可能是别的地方触发了键盘事件
             return;
         }
@@ -372,7 +380,7 @@ public class SendCommentPresenter implements IBindActivityLIfeCycle {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
                 try {
                     int keyboardHeight = Integer.parseInt(String.valueOf(event.obj1));
-                    if (mPlaceHolderView.getVisibility() == View.VISIBLE ) {
+                    if (mPlaceHolderView.getVisibility() == View.VISIBLE) {
                         if (mPlaceHolderView.getHeight() != keyboardHeight) {
                             mSoftKeyboardHeight = keyboardHeight;
                             MyLog.v(TAG, " keyboardHeight=" + keyboardHeight + ", mPlaceHolderView.getHeight()=" + mPlaceHolderView.getHeight());
