@@ -325,13 +325,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 mPlayer.setBufferTimeMax(Constants.PLAYER_BUFFER_TIME);//设置缓冲时间5s
                 mPlayer.setTimeout(5, 5);
                 mPlayer.setVolume(mVolumeL, mVolumeR);
-                if (Constants.isDebugBuild) {
-                    //每次设置路径,先清理下文件夹
-                    SDCardUtils.clearKsyDumpFile();
-//                    mPlayer.setOption(KSYMediaPlayer.OPT_CATEGORY_FORMAT,
-//                            "dump_file_name", mDumpPath);
-
-                }
                 String logPath = CommonUtils.getUniqueFilePath(new File(SDCardUtils.getKsyLogPath()), System.currentTimeMillis() + ".log");
                 if (!TextUtils.isEmpty(logPath)) {
                     mPlayer.setLogPath(logPath);
