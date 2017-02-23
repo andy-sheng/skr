@@ -69,7 +69,7 @@ public class MyUserInfoManager {
     private User readFromDB() {
         User user = new User();
         OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(HostChannelManager.getInstance().getChannelId());
-        MyLog.w(TAG,"ownUserInfo:"+ownUserInfo);
+        MyLog.w(TAG, "ownUserInfo:" + ownUserInfo);
         if (ownUserInfo != null) {
             user.setUid(ownUserInfo.getUid());
             user.setNickname(ownUserInfo.getNickname());
@@ -108,7 +108,7 @@ public class MyUserInfoManager {
             user.firstAudit = ownUserInfo.getFirstAudit();
             user.setRedName(ownUserInfo.getRedName() == null ? false : ownUserInfo.getRedName());
         }
-        MyLog.d(TAG,"");
+        MyLog.d(TAG, "");
         return user;
     }
 
@@ -157,7 +157,7 @@ public class MyUserInfoManager {
      * 同步自己的个人信息
      */
     public void syncSelfDetailInfo() {
-        MyLog.w(TAG,"syncSelfDetailInfo");
+        MyLog.w(TAG, "syncSelfDetailInfo");
         if (mSyncSubscription != null && !mSyncSubscription.isUnsubscribed()) {
             return;
         }
@@ -239,6 +239,9 @@ public class MyUserInfoManager {
      * 得到User
      */
     public User getUser() {
+        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
+            return mMyInfo;
+        }
         if (mMyInfo == null || mMyInfo.getUid() <= 0) {
             MyLog.w(TAG + " getUser mMyInfo == null || mMyInfo.getUid() <= 0");
             Observable.just(null)
