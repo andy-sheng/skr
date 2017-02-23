@@ -1,16 +1,12 @@
 package com.wali.live.watchsdk.ipc.service;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.text.TextUtils;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.account.ChannelManager;
-import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
@@ -18,7 +14,6 @@ import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.SecurityProto;
-import com.wali.live.watchsdk.ipc.receiver.ReceiverConstant;
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -356,17 +351,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         }
         MyLog.d(TAG, "onEventWantLogin aidl success=" + aidlSuccess);
-
-        if (!aidlSuccess) {
-            Intent intent = new Intent(ReceiverConstant.ACTION_WANT_LOGIN);
-            intent.putExtra(ReceiverConstant.EXTRA_TS, System.currentTimeMillis());
-            intent.putExtra(ReceiverConstant.EXTRA_CHANNEL_ID, HostChannelManager.getInstance().getChannelId());
-            String packageName = HostChannelManager.getInstance().getPackageName();
-            if (!TextUtils.isEmpty(packageName)) {
-                intent.setPackage(packageName);
-            }
-            GlobalData.app().sendBroadcast(intent);
-        }
     }
 
     public void onEventVerifyFailure(int channelId, int code) {
