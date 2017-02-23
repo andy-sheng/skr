@@ -296,11 +296,11 @@ public class VideoPlayerPresenterEx implements
             mTotalTime = 0;
             if (mSeekBar != null) {
                 mSeekBar.setProgress(mPlayedTime, mTotalTime, true);
+                mHandler.postDelayed(mOnSeekProgressRunnable, 500);
             }
             resume();
         }
         mIsActivate = true;
-        mHandler.postDelayed(mOnSeekProgressRunnable, 500);
     }
 
     private void showLoading() {

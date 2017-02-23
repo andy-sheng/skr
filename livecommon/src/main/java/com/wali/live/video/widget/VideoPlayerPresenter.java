@@ -717,7 +717,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     public long getCurrentPosition() {
         if (isInPlaybackState()) {
             long position = mPlayer.getCurrentPosition();
-            MyLog.w(TAG, "getCurrentPosition : = " + position);
+            MyLog.v(TAG, "getCurrentPosition : = " + position);
             return position;
         }
         return 0l;
@@ -761,7 +761,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     }
 
     private boolean isInPlaybackState() {
-        MyLog.w(TAG, "PlaybackState " + mCurrentState);
+        MyLog.v(TAG, "PlaybackState " + mCurrentState);
         return (mPlayer != null && mCurrentState != STATE_ERROR
                 && mCurrentState != STATE_IDLE && mCurrentState != STATE_PREPARING);
     }
