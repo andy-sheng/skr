@@ -30,18 +30,19 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.base.BaseRotateSdkActivity;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GetUserInfoAndUnpdateConversationEvent;
+import com.mi.live.data.event.LiveRoomManagerEvent;
+import com.mi.live.data.event.SdkEventClass;
+import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.relation.RelationApi;
 import com.mi.live.data.user.User;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.mi.live.data.event.LiveRoomManagerEvent;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
-import com.mi.live.data.manager.UserInfoManager;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.proto.Rank;
 import com.wali.live.statistics.StatisticsKey;
@@ -50,10 +51,9 @@ import com.wali.live.utils.AsyncTaskUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataCommonFormatUtils;
 import com.wali.live.watchsdk.R;
-import com.mi.live.data.base.BaseRotateSdkActivity;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.eventbus.DismissFloatPersonInfoEvent;
 import com.wali.live.watchsdk.eventbus.FollowStatEvent;
-import com.mi.live.data.event.SdkEventClass;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -186,7 +186,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                     List<Long> whiteList = GetConfigManager.getInstance().getSixinSystemServiceNumWhiteList();
                     if (fragment.mUser != null) {
                         AvatarUtils.updateMyFollowAvatarTimeStamp(fragment.mUser.getUid(), fragment.mUser.getAvatar());
-                        EventBus.getDefault().post(new GetUserInfoAndUnpdateConversationEvent(fragment.mUser.getUid(), fragment.mUser.isBlock(), 0, fragment.mUser.getCertificationType(),fragment.mUser.getNickname()));
+                        EventBus.getDefault().post(new GetUserInfoAndUnpdateConversationEvent(fragment.mUser.getUid(), fragment.mUser.isBlock(), 0, fragment.mUser.getCertificationType(), fragment.mUser.getNickname()));
                     }
                 }
             }
@@ -483,13 +483,13 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         mRednameTv.setTag(TAG_REDNAME_TV);
 
         //如果是自己则隐藏底部的按钮,默认都是visible的
-        if (mUserUuidFromBundle == MyUserInfoManager.getInstance().getUser().getUid()) {
+        if (mUserUuidFromBundle == UserAccountManager.getInstance().getUuidAsLong()) {
             mBottomButtonZone.setVisibility(View.GONE);
             mFollowButton.setVisibility(View.GONE);
         } else {
             if (getActivity() instanceof ForbidManagePresenter.IForbidManageProvider) {
                 //判断是否有禁言权限和踢人权限
-                if (mOwnerUuidFromBundle == MyUserInfoManager.getInstance().getUser().getUid()) {
+                if (mOwnerUuidFromBundle == UserAccountManager.getInstance().getUuidAsLong()) {
                     //判断禁言按钮的状态
                     changeForbidSpeakBtnStatus(LiveRoomCharactorManager.getInstance().isBanSpeaker(mUserUuidFromBundle));
                     mForbidSpeak.setVisibility(View.VISIBLE);
@@ -502,7 +502,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                         changeForbidSpeakBtnStatus(WatchRoomCharactorManager.getInstance().isBanSpeaker(mUserUuidFromBundle));
                         mForbidSpeak.setVisibility(View.VISIBLE);
                     }
-                    if (WatchRoomCharactorManager.getInstance().haveKickPermission(mOwnerUuidFromBundle, MyUserInfoManager.getInstance().getUser().getUid())) {
+                    if (WatchRoomCharactorManager.getInstance().haveKickPermission(mOwnerUuidFromBundle, UserAccountManager.getInstance().getUuidAsLong())) {
                         mKickViewerBtn.setVisibility(View.VISIBLE);
                     }
                 }
@@ -525,7 +525,6 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
     }
 
 
-
     public final int TAG_TOP_MAIN_AVATAR = 1001;
     public final int TAG_TOP_ONE_AVATAR = 1002;
     public final int TAG_OUT_VIEW = 1003;
@@ -540,59 +539,60 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        if (v.getTag() == null) {
+        if (v.getTag() == null || getActivity() == null) {
             return;
         }
-        switch ((int) v.getTag()) {
-            case TAG_TOP_MAIN_AVATAR:
-                onClickMainAvatar();
-                break;
-            case TAG_TOP_ONE_AVATAR:
-                onClickTopOneAvatar();
-                break;
-            case TAG_OUT_VIEW://get through
-            case TAG_CLOSE_BTN:     //关闭按钮
-                finish();
-                break;
-            case TAG_HOMEPAGE_TV:     //点击底部第一个按钮
-                onClickHomePageBtn();
-                break;
-            case TAG_PRIVATE_MESSAGE_TV:     //点击底部第二个按钮
-                onClickPrivateMessageBtn();
-                break;
-            case TAG_MORE_TV:     //点击底部第三个按钮
-                onClickMoreBtn();
-                break;
-            case TAG_FOLLOW_BUTTON:
-                onClickFollowButton();
-                break;
-            case TAG_FORBID_SPEAK:
-                if (mForbidManagePresenter != null) {
-                    if (v.isSelected()) {
-                        mForbidManagePresenter.cancelForbidSpeak(getLiveID(), getOwnerID(),
-                                MyUserInfoManager.getInstance().getUser().getUid(), getTargetID());
-                    } else {
-                        mForbidManagePresenter.forbidSpeak(getLiveID(), getOwnerID(),
-                                MyUserInfoManager.getInstance().getUser().getUid(), mUser);
-                    }
-                }
-                break;
-            case TAG_KICK_VIEWER_BTN:
-                DialogUtils .showNormalDialog(getActivity(), 0, R.string.kick_viewer_confirm_tips, R.string.kick_confirm_btn, R.string.cancle_operating, new DialogUtils.IDialogCallback() {
-                    @Override
-                    public void process(DialogInterface dialogInterface, int i) {
-                        if (mForbidManagePresenter != null) {
-                            mForbidManagePresenter.kickViewer(getLiveID(), getOwnerID(), MyUserInfoManager.getInstance().getUser().getUid(), getTargetID());
+        if ((int)v.getTag() == TAG_OUT_VIEW || (int)v.getTag() == TAG_CLOSE_BTN) {
+            finish();
+            return;
+        } else if (AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+            switch ((int) v.getTag()) {
+                case TAG_TOP_MAIN_AVATAR:
+                    onClickMainAvatar();
+                    break;
+                case TAG_TOP_ONE_AVATAR:
+                    onClickTopOneAvatar();
+                    break;
+                case TAG_HOMEPAGE_TV:     //点击底部第一个按钮
+                    onClickHomePageBtn();
+                    break;
+                case TAG_PRIVATE_MESSAGE_TV:     //点击底部第二个按钮
+                    onClickPrivateMessageBtn();
+                    break;
+                case TAG_MORE_TV:     //点击底部第三个按钮
+                    onClickMoreBtn();
+                    break;
+                case TAG_FOLLOW_BUTTON:
+                    onClickFollowButton();
+                    break;
+                case TAG_FORBID_SPEAK:
+                    if (mForbidManagePresenter != null) {
+                        if (v.isSelected()) {
+                            mForbidManagePresenter.cancelForbidSpeak(getLiveID(), getOwnerID(),
+                                    UserAccountManager.getInstance().getUuidAsLong(), getTargetID());
+                        } else {
+                            mForbidManagePresenter.forbidSpeak(getLiveID(), getOwnerID(),
+                                    UserAccountManager.getInstance().getUuidAsLong(), mUser);
                         }
                     }
-                }, null);
-                break;
-            case TAG_REDNAME_TV:
+                    break;
+                case TAG_KICK_VIEWER_BTN:
+                    DialogUtils.showNormalDialog(getActivity(), 0, R.string.kick_viewer_confirm_tips, R.string.kick_confirm_btn, R.string.cancle_operating, new DialogUtils.IDialogCallback() {
+                        @Override
+                        public void process(DialogInterface dialogInterface, int i) {
+                            if (mForbidManagePresenter != null) {
+                                mForbidManagePresenter.kickViewer(getLiveID(), getOwnerID(), UserAccountManager.getInstance().getUuidAsLong(), getTargetID());
+                            }
+                        }
+                    }, null);
+                    break;
+                case TAG_REDNAME_TV:
 //                TODO 打开注释
 //                WebViewActivity.openUrlWithBrowserIntent(REDNAME_URL, getActivity());
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -607,7 +607,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_FOLLOW, 1);
 
         //点击了房主卡片的关注按钮
-        if (mUserUuidFromBundle == mOwnerUuidFromBundle && mOwnerUuidFromBundle != MyUserInfoManager.getInstance().getUser().getUid()) {
+        if (mUserUuidFromBundle == mOwnerUuidFromBundle && mOwnerUuidFromBundle != UserAccountManager.getInstance().getUuidAsLong()) {
             EventBus.getDefault().post(new FollowStatEvent(StatisticsKey.KEY_FLOATING_NAME_FOLLOW));
         }
 
@@ -681,7 +681,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         String reportText = GlobalData.app().getResources().getString(R.string.report);
         String cancelText = GlobalData.app().getResources().getString(R.string.cancel);
         String[] items = null;
-        if (mOwnerUuidFromBundle == MyUserInfoManager.getInstance().getUser().getUid()) {//主播端
+        if (mOwnerUuidFromBundle == UserAccountManager.getInstance().getUuidAsLong()) {//主播端
 //            String forbiddenText;
 //            boolean setForbidden;
 //            if (LiveRoomCharactorManager.getInstance().isBanSpeaker(mUserUuidFromBundle)) {   //已经禁言
@@ -995,7 +995,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         }
         mFansCountTv.setText(String.valueOf(fansCount));
 
-        if (mUser.getUid() != MyUserInfoManager.getInstance().getUser().getUid()) {
+        if (mUser.getUid() != UserAccountManager.getInstance().getUuidAsLong()) {
             //刷新关注按钮
             if (mUser.isFocused()) {
                 mFollowButton.setEnabled(false);

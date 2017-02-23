@@ -7,6 +7,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
@@ -152,7 +153,7 @@ public class RoomViewerPresenter implements IPushMsgProcessor {
                 }
 
                 // 用户已经滑动拉取更多了
-                if (roomData.getViewersList().size() > 10) {
+                if (roomData.getViewersList().size() > 10 && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
                     // 保证自己在观众列表中
                     ViewerModel self = new ViewerModel(MyUserInfoManager.getInstance().getUser().getUid()
                             , MyUserInfoManager.getInstance().getUser().getLevel()
