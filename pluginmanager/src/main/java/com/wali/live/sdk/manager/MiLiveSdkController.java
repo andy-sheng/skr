@@ -143,14 +143,6 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return pInfo != null;
     }
 
-    /**
-     * 只为测试使用，正常不需要
-     */
-    public void openRandomLive(@NonNull Activity activity) {
-        checkHasInit();
-        jumpToSdk(activity, getBasicBundle(), "test_random_live", null);
-    }
-
     private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IOpenCallback callback) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);

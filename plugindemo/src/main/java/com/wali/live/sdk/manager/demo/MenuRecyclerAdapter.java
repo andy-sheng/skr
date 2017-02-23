@@ -8,6 +8,7 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -108,8 +109,17 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("跳转到随机直播(Intent，测试之后会删除)", new Runnable() {
             @Override
             public void run() {
-                // just for test
-                MiLiveSdkController.getInstance().openRandomLive((Activity) context);
+                /**
+                 * 只为测试使用，正常不需要
+                 */
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setClassName("com.mi.liveassistant", "com.wali.live.jump.JumpSdkActivity");
+                    intent.setAction("test_random_live");
+
+                    mActivity.startActivity(intent);
+                } catch (Exception e) {
+                }
             }
         }));
 

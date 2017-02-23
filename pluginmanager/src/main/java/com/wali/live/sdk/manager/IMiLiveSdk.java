@@ -68,11 +68,6 @@ public interface IMiLiveSdk {
     void setChannelId(int channelId);
 
     /**
-     * 随便打开一个直播，用于测试，上线后删除
-     */
-    void openRandomLive(Activity activity);
-
-    /**
      * sdk 上层应用回调
      */
     @Keep
