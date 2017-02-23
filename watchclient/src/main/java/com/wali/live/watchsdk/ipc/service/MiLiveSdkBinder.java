@@ -356,13 +356,14 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         }
         MyLog.d(TAG, "onEventWantLogin aidl success=" + aidlSuccess);
+
         if (!aidlSuccess) {
             Intent intent = new Intent(ReceiverConstant.ACTION_WANT_LOGIN);
             intent.putExtra(ReceiverConstant.EXTRA_TS, System.currentTimeMillis());
             intent.putExtra(ReceiverConstant.EXTRA_CHANNEL_ID, HostChannelManager.getInstance().getChannelId());
-            String packagename = HostChannelManager.getInstance().getmPackageName();
-            if (!TextUtils.isEmpty(packagename)) {
-                intent.setPackage(packagename);
+            String packageName = HostChannelManager.getInstance().getPackageName();
+            if (!TextUtils.isEmpty(packageName)) {
+                intent.setPackage(packageName);
             }
             GlobalData.app().sendBroadcast(intent);
         }
