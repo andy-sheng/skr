@@ -1,0 +1,13 @@
+<resources>
+    <string name="enter_live_success">加入房間成功</string>
+    <string name="enter_live_failure">加入房間失敗</string>
+    <string name="leave_live_success">來開房間成功</string>
+    <string name="leave_live_failure">離開房間失敗</string>
+    <string name="send">發送</string>
+
+    <string name="max_len_notice">最多隻能輸入30個字呦~</string>
+    <string name="barrage_close">彈幕關閉</string>
+    <string name="barrage_open">彈幕開啟</string>
+    <string name="can_not_speak">你被禁言</string>
+    <string name="setting_dialog_black_title">提示</string>
+</resources>

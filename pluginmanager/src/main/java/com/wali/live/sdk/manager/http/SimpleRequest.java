@@ -1,12 +1,4 @@
 package com.wali.live.sdk.manager.http;
-/**
- * Created by chengsimin on 2016/12/12.
- */
-
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
 
 import android.annotation.SuppressLint;
 
@@ -16,6 +8,7 @@ import com.wali.live.sdk.manager.http.exception.AuthenticationFailureException;
 import com.wali.live.sdk.manager.http.utils.IOUtils;
 import com.wali.live.sdk.manager.http.utils.ObjectUtils;
 import com.wali.live.sdk.manager.http.utils.URLEncodedUtils;
+import com.wali.live.sdk.manager.log.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,20 +31,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
+/**
+ * Created by chengsimin on 2016/12/12.
+ */
 @SuppressLint({"NewApi"})
 public final class SimpleRequest {
+    private static final String TAG = SimpleRequest.class.getSimpleName();
+
     private static final boolean DEBUG = false;
     public static final String UTF8 = "utf-8";
-    private static final Logger log = Logger.getLogger(SimpleRequest.class.getSimpleName());
     private static final int TIMEOUT = 30000;
     public static final String LOCATION = "Location";
 
     private static SimpleRequest.HttpURLConnectionFactory sHttpURLConnectionFactory = new SimpleRequest.HttpURLConnectionFactory() {
         public HttpURLConnection makeConn(URL url) throws IOException {
 
-            return (HttpURLConnection)url.openConnection();
+            return (HttpURLConnection) url.openConnection();
         }
     };
 
@@ -61,15 +57,16 @@ public final class SimpleRequest {
     static void injectHttpURLConnectionFactoryForTest(SimpleRequest.HttpURLConnectionFactory httpURLConnectionFactory) {
         sHttpURLConnectionFactory = httpURLConnectionFactory;
     }
+
     private static String appendUrl(String origin, List<NameValuePair> nameValuePairs) {
-        if(origin == null) {
+        if (origin == null) {
             throw new NullPointerException("origin is not allowed null");
         } else {
             StringBuilder urlBuilder = new StringBuilder(origin);
-            if(nameValuePairs != null) {
+            if (nameValuePairs != null) {
                 String paramPart = URLEncodedUtils.format(nameValuePairs, "utf-8");
-                if(paramPart != null && paramPart.length() > 0) {
-                    if(origin.contains("?")) {
+                if (paramPart != null && paramPart.length() > 0) {
+                    if (origin.contains("?")) {
                         urlBuilder.append("&");
                     } else {
                         urlBuilder.append("?");
@@ -84,15 +81,15 @@ public final class SimpleRequest {
     }
 
     public static SimpleRequest.StringContent getAsString(String url, Map<String, String> params, Map<String, String> cookies, boolean readBody) throws IOException, AccessDeniedException, AuthenticationFailureException {
-        return getAsString(url, params, (Map)null, cookies, readBody);
+        return getAsString(url, params, (Map) null, cookies, readBody);
     }
 
     public static SimpleRequest.StringContent getAsString(String url, Map<String, String> params, Map<String, String> headers, Map<String, String> cookies, boolean readBody) throws IOException, AccessDeniedException, AuthenticationFailureException {
         List nameValuePairs = ObjectUtils.mapToPairs(params);
         String fullUrl = appendUrl(url, nameValuePairs);
         HttpURLConnection conn = makeConn(fullUrl, cookies, headers);
-        if(conn == null) {
-            log.severe("failed to create URLConnection");
+        if (conn == null) {
+            Logger.e(TAG, "failed to create URLConnection");
             throw new IOException("failed to create connection");
         } else {
             SimpleRequest.StringContent line1;
@@ -101,15 +98,15 @@ public final class SimpleRequest {
                 conn.setRequestMethod("GET");
                 conn.connect();
                 int e = conn.getResponseCode();
-                if(e != 200 && e != 302) {
-                    if(e == 403) {
+                if (e != 200 && e != 302) {
+                    if (e == 403) {
                         throw new AccessDeniedException("access denied, encrypt error or user is forbidden to access the resource");
                     }
 
-                    if(e != 401 && e != 400) {
-                        log.info("http status error when GET: " + e);
-                        if(e == 301) {
-                            log.info("unexpected redirect from " + conn.getURL().getHost() + " to " + conn.getHeaderField("Location"));
+                    if (e != 401 && e != 400) {
+                        Logger.i(TAG, "http status error when GET: " + e);
+                        if (e == 301) {
+                            Logger.i(TAG, "unexpected redirect from " + conn.getURL().getHost() + " to " + conn.getHeaderField("Location"));
                         }
 
                         throw new IOException("unexpected http res code: " + e);
@@ -126,12 +123,12 @@ public final class SimpleRequest {
                 Map cookieMap = parseCookies(httpCookies);
                 cookieMap.putAll(ObjectUtils.listToMap(headerFields));
                 StringBuilder sb = new StringBuilder();
-                if(readBody) {
+                if (readBody) {
                     BufferedReader stringContent = new BufferedReader(new InputStreamReader(conn.getInputStream()), 1024);
 
                     String line;
                     try {
-                        while((line = stringContent.readLine()) != null) {
+                        while ((line = stringContent.readLine()) != null) {
                             sb.append(line);
                         }
                     } finally {
@@ -156,8 +153,8 @@ public final class SimpleRequest {
         List nameValuePairs = ObjectUtils.mapToPairs(params);
         String fullUrl = appendUrl(url, nameValuePairs);
         HttpURLConnection conn = makeConn(fullUrl, cookies);
-        if(conn == null) {
-            log.severe("failed to create URLConnection");
+        if (conn == null) {
+            Logger.e(TAG, "failed to create URLConnection");
             throw new IOException("failed to create connection");
         } else {
             try {
@@ -166,7 +163,7 @@ public final class SimpleRequest {
                 conn.setInstanceFollowRedirects(true);
                 conn.connect();
                 int e = conn.getResponseCode();
-                if(e == 200) {
+                if (e == 200) {
                     Map headerFields = conn.getHeaderFields();
                     CookieManager cm = new CookieManager();
                     URI reqUri = URI.create(fullUrl);
@@ -177,12 +174,12 @@ public final class SimpleRequest {
                     SimpleRequest.StreamContent streamContent = new SimpleRequest.StreamContent(conn.getInputStream());
                     streamContent.putHeaders(cookieMap);
                     return streamContent;
-                } else if(e == 403) {
+                } else if (e == 403) {
                     throw new AccessDeniedException("access denied, encrypt error or user is forbidden to access the resource");
-                } else if(e != 401 && e != 400) {
-                    log.info("http status error when GET: " + e);
-                    if(e == 301) {
-                        log.info("unexpected redirect from " + conn.getURL().getHost() + " to " + conn.getHeaderField("Location"));
+                } else if (e != 401 && e != 400) {
+                    Logger.i(TAG, "http status error when GET: " + e);
+                    if (e == 301) {
+                        Logger.i(TAG, "unexpected redirect from " + conn.getURL().getHost() + " to " + conn.getHeaderField("Location"));
                     }
 
                     throw new IOException("unexpected http res code: " + e);
@@ -201,18 +198,18 @@ public final class SimpleRequest {
     }
 
     public static SimpleRequest.StringContent postAsString(String url, Map<String, String> params, Map<String, String> cookies, boolean readBody) throws IOException, AccessDeniedException, AuthenticationFailureException {
-        return postAsString(url, params, cookies, (Map)null, (Map)null, readBody);
+        return postAsString(url, params, cookies, (Map) null, (Map) null, readBody);
     }
 
     public static SimpleRequest.StringContent postAsString(String url, Map<String, String> params, Map<String, String> cookies, Map<String, String> headers, Map<String, String> urlParams, boolean readBody) throws IOException, AccessDeniedException, AuthenticationFailureException {
-        if(urlParams != null) {
+        if (urlParams != null) {
             List conn = ObjectUtils.mapToPairs(urlParams);
             url = appendUrl(url, conn);
         }
 
         HttpURLConnection conn1 = makeConn(url, cookies, headers);
-        if(conn1 == null) {
-            log.severe("failed to create URLConnection");
+        if (conn1 == null) {
+            Logger.e(TAG, "failed to create URLConnection");
             throw new IOException("failed to create connection");
         } else {
             SimpleRequest.StringContent line1;
@@ -222,7 +219,7 @@ public final class SimpleRequest {
                 conn1.setRequestMethod("POST");
                 conn1.connect();
                 List e = ObjectUtils.mapToPairs(params);
-                if(e != null) {
+                if (e != null) {
                     String code = URLEncodedUtils.format(e, "utf-8");
                     OutputStream e1 = conn1.getOutputStream();
                     BufferedOutputStream cm = new BufferedOutputStream(e1);
@@ -235,15 +232,15 @@ public final class SimpleRequest {
                 }
 
                 int code1 = conn1.getResponseCode();
-                if(code1 != 200 && code1 != 302) {
-                    if(code1 == 403) {
+                if (code1 != 200 && code1 != 302) {
+                    if (code1 == 403) {
                         throw new AccessDeniedException("access denied, encrypt error or user is forbidden to access the resource");
                     }
 
-                    if(code1 != 401 && code1 != 400) {
-                        log.info("http status error when POST: " + code1);
-                        if(code1 == 301) {
-                            log.info("unexpected redirect from " + conn1.getURL().getHost() + " to " + conn1.getHeaderField("Location"));
+                    if (code1 != 401 && code1 != 400) {
+                        Logger.i(TAG, "http status error when POST: " + code1);
+                        if (code1 == 301) {
+                            Logger.i(TAG, "unexpected redirect from " + conn1.getURL().getHost() + " to " + conn1.getHeaderField("Location"));
                         }
 
                         throw new IOException("unexpected http res code: " + code1);
@@ -261,12 +258,12 @@ public final class SimpleRequest {
                 Map cookieMap = parseCookies(cm1.getCookieStore().get(reqUri));
                 cookieMap.putAll(ObjectUtils.listToMap(e2));
                 StringBuilder sb = new StringBuilder();
-                if(readBody) {
+                if (readBody) {
                     BufferedReader stringContent = new BufferedReader(new InputStreamReader(conn1.getInputStream()), 1024);
 
                     String line;
                     try {
-                        while((line = stringContent.readLine()) != null) {
+                        while ((line = stringContent.readLine()) != null) {
                             sb.append(line);
                         }
                     } finally {
@@ -293,7 +290,7 @@ public final class SimpleRequest {
     }
 
     protected static SimpleRequest.MapContent convertStringToMap(SimpleRequest.StringContent stringContent) {
-        if(stringContent == null) {
+        if (stringContent == null) {
             return null;
         } else {
             String bodyString = stringContent.getBody();
@@ -305,7 +302,7 @@ public final class SimpleRequest {
                 var5.printStackTrace();
             }
 
-            if(jsonObject == null) {
+            if (jsonObject == null) {
                 return null;
             } else {
                 Map contentMap = ObjectUtils.jsonToMap(jsonObject);
@@ -317,7 +314,7 @@ public final class SimpleRequest {
     }
 
     protected static HttpURLConnection makeConn(String url, Map<String, String> cookies) {
-        return makeConn(url, cookies, (Map)null);
+        return makeConn(url, cookies, (Map) null);
     }
 
     protected static HttpURLConnection makeConn(String url, Map<String, String> cookies, Map<String, String> headers) {
@@ -329,8 +326,8 @@ public final class SimpleRequest {
             var7.printStackTrace();
         }
 
-        if(req == null) {
-            log.severe("failed to init url");
+        if (req == null) {
+            Logger.e(TAG, "failed to init url");
             return null;
         } else {
             try {
@@ -344,16 +341,16 @@ public final class SimpleRequest {
 //                    e.setRequestProperty("User-Agent", XMPassportSettings.getUserAgent());
 //                }
 
-                if(cookies != null) {
+                if (cookies != null) {
                     e.setRequestProperty("Cookie", joinMap(cookies, "; "));
                 }
 
-                if(headers != null) {
+                if (headers != null) {
                     Iterator i$ = headers.keySet().iterator();
 
-                    while(i$.hasNext()) {
-                        String key = (String)i$.next();
-                        e.setRequestProperty(key, (String)headers.get(key));
+                    while (i$.hasNext()) {
+                        String key = (String) i$.next();
+                        e.setRequestProperty(key, (String) headers.get(key));
                     }
                 }
 
@@ -366,21 +363,21 @@ public final class SimpleRequest {
     }
 
     protected static String joinMap(Map<String, String> map, String sp) {
-        if(map == null) {
+        if (map == null) {
             return null;
         } else {
             StringBuilder sb = new StringBuilder();
             Set entries = map.entrySet();
             int i = 0;
 
-            for(Iterator i$ = entries.iterator(); i$.hasNext(); ++i) {
-                Map.Entry entry = (Map.Entry)i$.next();
-                if(i > 0) {
+            for (Iterator i$ = entries.iterator(); i$.hasNext(); ++i) {
+                Map.Entry entry = (Map.Entry) i$.next();
+                if (i > 0) {
                     sb.append(sp);
                 }
 
-                String key = (String)entry.getKey();
-                String value = (String)entry.getValue();
+                String key = (String) entry.getKey();
+                String value = (String) entry.getValue();
                 sb.append(key);
                 sb.append("=");
                 sb.append(value);
@@ -394,12 +391,12 @@ public final class SimpleRequest {
         HashMap cookieMap = new HashMap();
         Iterator i$ = cookies.iterator();
 
-        while(i$.hasNext()) {
-            HttpCookie cookie = (HttpCookie)i$.next();
-            if(!cookie.hasExpired()) {
+        while (i$.hasNext()) {
+            HttpCookie cookie = (HttpCookie) i$.next();
+            if (!cookie.hasExpired()) {
                 String name = cookie.getName();
                 String value = cookie.getValue();
-                if(name != null) {
+                if (name != null) {
                     cookieMap.put(name, value);
                 }
             }
@@ -467,7 +464,7 @@ public final class SimpleRequest {
         }
 
         public String getHeader(String key) {
-            return (String)this.headers.get(key);
+            return (String) this.headers.get(key);
         }
 
         public Map<String, String> getHeaders() {

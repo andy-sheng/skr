@@ -37,7 +37,7 @@ public class AccountAuthManager {
                 mMyAlertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "去登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        MiLiveSdkBinder.getInstance().onEventWantLogin(HostChannelManager.getInstance().getmCurrentChannelId());
+                        MiLiveSdkBinder.getInstance().onEventWantLogin(HostChannelManager.getInstance().getChannelId());
                         //TODO 一定记得加上
                         dialog.dismiss();
                     }

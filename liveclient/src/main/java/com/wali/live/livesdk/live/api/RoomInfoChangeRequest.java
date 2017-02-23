@@ -13,12 +13,9 @@ import com.wali.live.proto.Live2Proto.LiveCover;
  * Created by lan on 16/12/16.
  */
 public class RoomInfoChangeRequest extends BaseLiveRequest {
-    {
-        mCommand = MiLinkCommand.COMMAND_LIVE_ROOM_INFO_CHANGE;
-        mAction = "RoomInfoChange";
-    }
 
     public RoomInfoChangeRequest(long zuid, String liveId, String coverUrl) {
+        super(MiLinkCommand.COMMAND_LIVE_ROOM_INFO_CHANGE, "RoomInfoChange", null);
         ChangeRoomInfoReq.Builder builder = ChangeRoomInfoReq.newBuilder()
                 .setZuid(zuid)
                 .setLiveId(liveId);

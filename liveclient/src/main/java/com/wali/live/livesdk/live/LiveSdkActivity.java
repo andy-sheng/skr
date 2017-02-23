@@ -575,7 +575,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         i.addCategory(Intent.CATEGORY_HOME);
         GlobalData.app().startActivity(i);
         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_GODESK, HostChannelManager.getInstance().getmCurrentChannelId()),
+                String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_GODESK, HostChannelManager.getInstance().getChannelId()),
                 TIMES, "1");
     }
 
@@ -663,7 +663,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                     public void call(Void aVoid) {
                         showStopDialog();
                         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                                String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_CLOSE, HostChannelManager.getInstance().getmCurrentChannelId()),
+                                String.format(StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_CLOSE, HostChannelManager.getInstance().getChannelId()),
                                 TIMES, "1");
                     }
                 });

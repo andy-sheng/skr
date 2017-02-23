@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 /**
  * Created by chengsimin on 2016/12/12.
  */
-
 public final class Consts {
     public static final int CR = 13;
     public static final int LF = 10;

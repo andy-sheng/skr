@@ -19,12 +19,12 @@ public class AccountCaller {
     /**
      * 小米帐号sso登录
      */
-    public static Observable<AccountProto.MiSsoLoginRsp> miSsoLogin(final long mid, final String miservicetoken) {
+    public static Observable<AccountProto.MiSsoLoginRsp> miSsoLogin(final long mid, final String miservicetoken, final int channelId) {
         return Observable.create(new Observable.OnSubscribe<AccountProto.MiSsoLoginRsp>() {
             @Override
             public void call(Subscriber<? super AccountProto.MiSsoLoginRsp> subscriber) {
                 try {
-                    AccountProto.MiSsoLoginRsp rsp = AccountLoginManager.miSsoLogin(mid, miservicetoken);
+                    AccountProto.MiSsoLoginRsp rsp = AccountLoginManager.miSsoLogin(mid, miservicetoken, channelId);
 
                     if (rsp != null && ErrorCode.CODE_SUCCESS == rsp.getRetCode()) {
 //                        boolean isSameAccount = (UserAccountManager.getInstance().getUuidAsLong() == rsp.getUuid());
@@ -32,6 +32,7 @@ public class AccountCaller {
 //                            UserAccountManager.getInstance().clearDataFromDifAccount();
 //                        }
                         UserAccount userAccount = new UserAccount();
+                        userAccount.setChannelid(channelId);
                         userAccount.setUuid(String.valueOf(rsp.getUuid()));
                         userAccount.setPassToken(rsp.getPassToken());
                         userAccount.setServiceToken(rsp.getServiceToken());
@@ -83,7 +84,7 @@ public class AccountCaller {
         return Observable.create(new Observable.OnSubscribe<ActionParam>() {
             @Override
             public void call(Subscriber<? super ActionParam> subscriber) {
-                AccountProto.LoginRsp rsp = AccountLoginManager.loginReq(accountType, code, openId, accessToken, expires_in, refreshToken);
+                AccountProto.LoginRsp rsp = AccountLoginManager.loginReq(accountType, code, openId, accessToken, expires_in, refreshToken, String.valueOf(channelId));
                 if (rsp == null) {
                     subscriber.onError(new Exception("rsp is null"));
                     return;

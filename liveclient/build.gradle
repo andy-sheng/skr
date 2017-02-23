@@ -31,6 +31,4 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile project(':watchclient')
     compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/ks3-android-sdk-v-1.4.6.jar')
-
 }

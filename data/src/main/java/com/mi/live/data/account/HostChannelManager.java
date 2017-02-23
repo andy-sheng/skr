@@ -17,7 +17,7 @@ public class HostChannelManager {
     public final static String TAG = HostChannelManager.class.getSimpleName();
     // 当前账号的渠道
     private final static int NO_CHANNEL = 0;
-    private int mCurrentChannelId = NO_CHANNEL;
+    private int mChannelId = NO_CHANNEL;
     private String mPackageName = "";
 
     // 账户模式：标准和匿名
@@ -39,8 +39,8 @@ public class HostChannelManager {
         return sInstance;
     }
 
-    public int getmCurrentChannelId() {
-        return mCurrentChannelId;
+    public int getChannelId() {
+        return mChannelId;
     }
 
     public String getmPackageName() {
@@ -58,19 +58,19 @@ public class HostChannelManager {
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        MyLog.w(TAG, "setChannelId channelId:" + channelId + ", mChannelId:" + mCurrentChannelId);
-                        if (channelId < 0) {
-                            // demo id说来自demo，所以就不用进行后续操作了
+                        MyLog.w(TAG, "setChannelId new:" + channelId + ", old:" + mChannelId);
+                        if (channelId <= 0) {
                             return;
                         }
-                        if (mCurrentChannelId != channelId) {
+                        if (mChannelId != channelId) {
+                            mChannelId = channelId;
+
                             // 渠道号不一致,尝试查找当前渠道的账号
-                            UserAccount account = AccountLocalStore.getInstance().getAccount(channelId);
+                            UserAccount account = AccountLocalStore.getInstance().getAccount(mChannelId);
                             MyLog.w(TAG, "setChannelId account:" + account);
                             if (account == null) {
                                 // 没找到账号，
-                                mCurrentChannelId = channelId;
-                                UserAccountManager.getInstance().logoff(mCurrentChannelId);
+                                UserAccountManager.getInstance().logoff(mChannelId);
                             } else {
                                 // 有账号，登录这个账号
                                 UserAccountManager.getInstance().login(account);

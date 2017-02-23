@@ -10,10 +10,10 @@ import android.widget.TextView;
 import com.base.log.MyLog;
 import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.base.BaseSdkActivity;
+import com.mi.liveassistant.R;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
-import com.mi.liveassistant.R;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -24,6 +24,7 @@ public class LoginActivity extends BaseSdkActivity {
     private TextView mTestTv;
     private TextView mTest2Tv;
     private LoginPresenter mLoginPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class LoginActivity extends BaseSdkActivity {
         mRegisterTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mLoginPresenter.systemLogin();
+                mLoginPresenter.systemLogin(0);
             }
         });
 
@@ -47,9 +48,9 @@ public class LoginActivity extends BaseSdkActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, WatchSdkActivity.class);
-                RoomInfo mRoomInfo = RoomInfo.Builder.newInstance(100199,"1111","null").build();
+                RoomInfo mRoomInfo = RoomInfo.Builder.newInstance(100199, "1111", "null").build();
 
-                intent.putExtra(WatchSdkActivity.EXTRA_ROOM_INFO,mRoomInfo);
+                intent.putExtra(WatchSdkActivity.EXTRA_ROOM_INFO, mRoomInfo);
                 LoginActivity.this.startActivity(intent);
                 finish();
             }

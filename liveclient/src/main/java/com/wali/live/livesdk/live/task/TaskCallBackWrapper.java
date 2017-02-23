@@ -1,5 +1,7 @@
 package com.wali.live.livesdk.live.task;
 
+import com.wali.live.task.ITaskCallBack;
+
 /**
  * Created by lan on 15-12-7.
  * ITaskCallBack的包装器

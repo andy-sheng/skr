@@ -22,7 +22,7 @@ public class AccountLoginManager {
     /**
      * 小米帐号sso登录
      */
-    public static AccountProto.MiSsoLoginRsp miSsoLogin(long mid, String miservicetoken) {
+    public static AccountProto.MiSsoLoginRsp miSsoLogin(long mid, String miservicetoken, int channelId) {
         AccountProto.MiSsoLoginReq.Builder builder = AccountProto.MiSsoLoginReq.newBuilder();
         builder.setAccountType(AccountType.xiaomi);
         builder.setMid(mid);
@@ -32,6 +32,7 @@ public class AccountLoginManager {
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_ACCOUNT_XIAOMI_SSO_LOGIN);
         data.setData(req.toByteArray());
+        data.setChannelId(String.valueOf(channelId));
 
         MyLog.w(TAG, "missologin request : \n" + req.toString());
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendDataByChannel(data, MiLinkConstant.TIME_OUT);
@@ -89,11 +90,12 @@ public class AccountLoginManager {
         return null;
     }
 
-    /**`
+    /**
+     * `
      * 第三方授权登录
      * cmd:zhibo.account.login
      */
-    public static AccountProto.LoginRsp loginReq(int accountType, String code, String openId, String accessToken, String expires_in, String refreshToken) {
+    public static AccountProto.LoginRsp loginReq(int accountType, String code, String openId, String accessToken, String expires_in, String refreshToken, String channelId) {
         AccountProto.LoginReq.Builder builder = AccountProto.LoginReq.newBuilder();
         builder.setAccountType(accountType);
 
@@ -112,13 +114,15 @@ public class AccountLoginManager {
         if (!TextUtils.isEmpty(refreshToken)) {
             builder.setRefreshToken(refreshToken);
         }
-        return loginRspFromServer(builder);
+        return loginRspFromServer(builder, channelId);
     }
 
-    private static AccountProto.LoginRsp loginRspFromServer(AccountProto.LoginReq.Builder builder) {
+    private static AccountProto.LoginRsp loginRspFromServer(AccountProto.LoginReq.Builder builder, String channelId) {
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_LOGIN);
         data.setData(builder.build().toByteArray());
+        data.setChannelId(channelId);
+
         MyLog.w(TAG, "loginRspFromServer request : \n" + builder.build().toString());
         long start = System.currentTimeMillis();
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendDataByChannel(data, MiLinkConstant.TIME_OUT);

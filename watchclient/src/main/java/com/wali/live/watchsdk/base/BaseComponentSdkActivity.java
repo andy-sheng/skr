@@ -34,7 +34,6 @@ import java.util.List;
  * @module 基础模块
  */
 public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
-
     public static final String EXTRA_ROOM_INFO = "extra_room_info";
 
     /**

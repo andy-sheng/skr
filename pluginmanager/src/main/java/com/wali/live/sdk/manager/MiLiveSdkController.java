@@ -2,287 +2,178 @@ package com.wali.live.sdk.manager;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 import com.wali.live.sdk.manager.global.GlobalData;
-import com.wali.live.sdk.manager.toast.ToastUtils;
-import com.wali.live.sdk.manager.uri.LiveUriUtils;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
-import com.wali.live.sdk.manager.version.VersionCheckTask;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
-
-import java.util.HashMap;
 
 /**
  * Created by chengsimin on 2016/12/8.
  */
-public class MiLiveSdkController {
-    public static final String SCHEMA_APP = "walilive";
-    public static final String SCHEMA_SDK = "walilivesdk";
-    public final static String TAG = MiLiveSdkController.class.getSimpleName();
+public class MiLiveSdkController implements IMiLiveSdk {
+    public static final String TAG = MiLiveSdkController.class.getSimpleName();
 
-    /**
-     * 标识唤起方
-     */
-    private static int CHANNEL_ID = 0;
+    private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
+    private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
+    private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
 
-    static HashMap<Integer, String> map = new HashMap<Integer, String>();
+    private static final String EXTRA_PLAYER_ID = "extra_player_id";
+    private static final String EXTRA_LIVE_ID = "extra_live_id";
+    private static final String EXTRA_VIDEO_URL = "extra_video_url";
+    private static final String EXTRA_LIVE_TYPE = "extra_live_type";
 
-    static {
-        map.put(50000, "com.wali.live.sdk.manager.demo");
-        map.put(50001, "com.wali.live.sdk.manager.demo");
+    private static final MiLiveSdkController sSdkController = new MiLiveSdkController();
 
-        map.put(50010, "com.xiaomi.gamecenter");
-        map.put(50011, "com.xiaomi.gamecenter.dev");
+    private int mChannelId = 0;
+    private String mChannelSecret;
+
+    private ICallback mCallback;
+
+    private MiLiveSdkController() {
     }
 
-    /**
-     * 确保在使用 sdk插件 前 init 一下。
-     *
-     * @param app
-     * @param channelId
-     */
-    public static void init(Application app, int channelId) {
+    public static IMiLiveSdk getInstance() {
+        return sSdkController;
+    }
+
+    public void init(Application app, int channelId, String channelSecret, ICallback callback) {
         GlobalData.setApplication(app);
-        if (!GlobalData.app().getPackageName().equals(map.get(channelId))) {
-            throw new RuntimeException("channelid error,unregister channelid for milivesdk,throw exception,");
-        } else {
-            CHANNEL_ID = channelId;
-        }
+        Logger.d(TAG, "init channelId=" + channelId);
+        mChannelId = channelId;
+        mChannelSecret = channelSecret;
+        mCallback = callback;
+
+        checkHasInit();
     }
 
-    private static void checkHasInit() {
-        if (CHANNEL_ID == 0) {
-            throw new RuntimeException("CHANNEL_ID==0,check MiLiveSdkController.init(...) be called.");
+    @Override
+    public void setLogEnabled(boolean isEnabled) {
+        Logger.setEnabled(isEnabled);
+    }
+
+    private void checkHasInit() {
+        if (mChannelId == 0) {
+            throw new RuntimeException("channelId==0, make sure MiLiveSdkController.init(...) be called.");
         }
         MiLiveSdkServiceProxy.getInstance().tryInit();
+        MiLiveSdkServiceProxy.getInstance().setCallback(mCallback);
     }
 
-    public static int getChannelId() {
-        return CHANNEL_ID;
+    @Override
+    public void setChannelId(int channelId) {
+        mChannelId = channelId;
     }
 
-    /**
-     * 只为测试使用，正常不需要
-     */
-    public static void openRandomLive(Activity activity) {
+    @Override
+    public int getChannelId() {
+        return mChannelId;
+    }
+
+    @Override
+    public String getChannelSecret() {
+        return mChannelSecret;
+    }
+
+    @Override
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
         checkHasInit();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
 
-        String packageName = VersionCheckManager.PACKAGE_NAME;
-        String className = "com.wali.live.JumpTestSdkActivity";
-        intent.setClassName(packageName, className);
-        Bundle bundle = new Bundle();
-        bundle.putInt("extra_channel_id", CHANNEL_ID);
-        bundle.putString("extra_packagename", GlobalData.app().getPackageName());
-        intent.putExtras(bundle);
-        if (!go(activity, intent)) {
-            checkSdkUpdate(activity, true, true);
-        }
+        Bundle bundle = getBasicBundle();
+        bundle.putLong(EXTRA_PLAYER_ID, playerId);
+        bundle.putString(EXTRA_LIVE_ID, liveId);
+        bundle.putString(EXTRA_VIDEO_URL, videoUrl);
+        bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        jumpToSdk(activity, bundle, "open_watch", callback);
     }
 
-    public static void openWatch(RoomInfo roomInfo) {
-        if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().openWatch(roomInfo);
-        } else {
-            ToastUtils.showToast("未安装小米直播插件");
-        }
+    @Override
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        bundle.putLong(EXTRA_PLAYER_ID, playerId);
+        bundle.putString(EXTRA_LIVE_ID, liveId);
+        bundle.putString(EXTRA_VIDEO_URL, videoUrl);
+        bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        jumpToSdk(activity, bundle, "open_replay", callback);
     }
 
-    public static void openReplay(RoomInfo roomInfo) {
-        if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().openReplay(roomInfo);
-        } else {
-            ToastUtils.showToast("未安装小米直播插件");
-        }
+//    @Override
+//    public void openGameLive() {
+//        if (hasInstallLiveSdk()) {
+//            MiLiveSdkServiceProxy.getInstance().openGameLive();
+//        } else {
+//            ToastUtils.showToast(R.string.cannot_find_livesdk);
+//        }
+//    }
+
+    @Override
+    public void loginByMiAccountOAuth(String authCode) {
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().loginByMiAccountOAuth(authCode);
     }
 
-    public static void openGameLive() {
-        if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().openGameLive();
-        } else {
-            ToastUtils.showToast("未安装小米直播插件");
-        }
+    @Override
+    public void loginByMiAccountSso(long miid, String serviceToken) {
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, serviceToken);
     }
 
-    /**
-     * @param activity
-     * @param schema   walilive 只跳直播，walilivesdk只跳sdk，walilive_app_sdk优先跳app，walilive_sdk_app,优先跳sdk
-     */
-    public static void goLiveBySchema(final Activity activity, String schema) {
-        final Intent intent = new Intent();
-        Uri uri = Uri.parse(schema);
-        String head = uri.getScheme();
-        if (head.equals(SCHEMA_APP)) {
-            // 只跳app，没啥好说的
-            intent.setData(uri);
-            go(activity, intent);
-            return;
-        }
-        if (head.equals(SCHEMA_SDK)) {
-            // 只跳sdk，
-            intent.setData(uri);
-            if (!go(activity, intent)) {
-                checkSdkUpdate(activity, true, true);
-            }
-            return;
-        }
-        if (head.equals("walilive_app_sdk")) {
-            intent.setData(LiveUriUtils.turnAppUri(uri));
-            // 判断这个schema 有没有直播app响应。
-            if (!go(activity, intent)) {
-                Log.d(TAG, "componentName is null");
-                intent.setData(LiveUriUtils.turnSdkUri(uri));
-                if (!go(activity, intent)) {
-                    checkSdkUpdate(activity, true, true);
-                }
-            }
-            return;
-        }
-        if (head.equals("walilive_sdk_app")) {
-            intent.setData(LiveUriUtils.turnSdkUri(uri));
-            // 判断这个schema 有没有直播app响应。
-            if (!go(activity, intent)) {
-                Log.d(TAG, "componentName is null");
-                intent.setData(LiveUriUtils.turnAppUri(uri));
-                if (!go(activity, intent)) {
-                    checkSdkUpdate(activity, true, true);
-                }
-            }
-            return;
-        }
+    @Override
+    public void clearAccount() {
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().clearAccount();
     }
 
-    // 跳转
-    private static boolean go(Context activity, Intent intent) {
-        Log.d(TAG, "uri:" + intent.getDataString());
-        if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
-            try {
-                activity.startActivity(intent);
-            } catch (Exception e) {
-                return false;
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // 强制检查更新
-    public static void checkSdkUpdate(Activity context, boolean isManualCheck, boolean isNeedDialog) {
-        new VersionCheckTask(context, isManualCheck, isNeedDialog).execute();
-    }
-
-    /**
-     * 使用eventbus 接收 MiLiveSdkEvent.LoginResult 来监听登录事件的回调
-     */
-    public static void loginByMiAccount(String authcode) {
-        if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().loginByMiAccount(authcode);
-        } else {
-            ToastUtils.showToast("未安装小米直播插件");
-        }
-    }
-
-    public static void loginByMiAccountSso(long miid, String authCode) {
-        if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, authCode);
-        } else {
-            ToastUtils.showToast("未安装小米直播插件");
-        }
-    }
-
-    /**
-     * 清空账号
-     */
-    public static void clearAccount() {
-        if (hasInstallLiveSdk(GlobalData.app())) {
-            MiLiveSdkServiceProxy.getInstance().clearAccount();
-        } else {
-            ToastUtils.showToast("未安装小米直播插件");
-        }
-    }
-
-    /**
-     * 判断该手机中是否安装的直播助手
-     */
-    private static boolean hasInstallLiveSdk(Context context) {
+    @Override
+    public boolean hasInstallLiveSdk() {
         PackageInfo pInfo = null;
         try {
-            pInfo = context.getPackageManager().getPackageInfo(
+            pInfo = GlobalData.app().getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
         return pInfo != null;
     }
 
-    /**
-     * 显示调用，指定跳到直播
-     */
-    @Deprecated
-    public static void openWatch(final Activity activity, RoomInfo roomInfo) {
-        checkHasInit();
-        roomInfo.setmChannelId(CHANNEL_ID);
-        roomInfo.setPackageName(GlobalData.app().getPackageName());
+    private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IOpenCallback callback) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        String packageName = VersionCheckManager.PACKAGE_NAME;
-        String className = "com.wali.live.watchsdk.watch.WatchSdkActivity";
-        intent.setClassName(packageName, className);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("extra_room_info", roomInfo);
+        intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);
         intent.putExtras(bundle);
-        if (!go(activity, intent)) {
-            checkSdkUpdate(activity, true, true);
+        intent.setAction(action);
+
+        if (!startActivity(activity, intent)) {
+            if (callback != null) {
+                callback.notifyNotInstall();
+            }
         }
     }
 
-    /**
-     * 显示调用，指定跳到回放
-     */
-    @Deprecated
-    public static void openPlayback(final Activity activity, RoomInfo roomInfo) {
-        checkHasInit();
-        roomInfo.setmChannelId(CHANNEL_ID);
-        roomInfo.setPackageName(GlobalData.app().getPackageName());
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        String packageName = VersionCheckManager.PACKAGE_NAME;
-        String className = "com.wali.live.watchsdk.watch.ReplaySdkActivity";
-        intent.setClassName(packageName, className);
+    private Bundle getBasicBundle() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("extra_room_info", roomInfo);
-        intent.putExtras(bundle);
-        if (!go(activity, intent)) {
-            checkSdkUpdate(activity, true, true);
-        }
+        bundle.putInt(EXTRA_CHANNEL_ID, mChannelId);
+        bundle.putString(EXTRA_PACKAGE_NAME, GlobalData.app().getPackageName());
+        bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
+        return bundle;
     }
 
-    /**
-     * 开启游戏直播
-     */
-    @Deprecated
-    public static void startGameLive(final Activity activity) {
-        checkHasInit();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        String packageName = VersionCheckManager.PACKAGE_NAME;
-        String className = "com.wali.live.livesdk.live.LiveSdkActivity";
-        intent.setClassName(packageName, className);
-        Bundle bundle = new Bundle();
-        bundle.putInt("extra_channel_id", CHANNEL_ID);
-        bundle.putString("extra_package_name", GlobalData.app().getPackageName());
-        intent.putExtras(bundle);
-        if (!go(activity, intent)) {
-            checkSdkUpdate(activity, true, true);
+    // 跳转
+    private boolean startActivity(Activity activity, Intent intent) {
+        Logger.d(TAG, "start activity uri=" + intent.getDataString());
+        if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
+            try {
+                activity.startActivity(intent);
+                return true;
+            } catch (Exception e) {
+            }
         }
+        return false;
     }
 }

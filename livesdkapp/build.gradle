@@ -28,6 +28,8 @@ android {
         }
         release {
             minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.myConfig
@@ -35,7 +37,6 @@ android {
 
         }
     }
-
 
     splits {
         abi {
@@ -71,5 +72,6 @@ dependencies {
     compile(presentationDependencies.androidAppCompat) {
         exclude module: 'support-v4'
     }
-    compile project(':liveclient')
+    compile project(':watchclient')
+    compile files('libs/crasheye_2.1.5.jar')
 }

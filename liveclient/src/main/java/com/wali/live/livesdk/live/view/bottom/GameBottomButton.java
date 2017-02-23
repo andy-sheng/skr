@@ -90,7 +90,7 @@ public class GameBottomButton extends BaseBottomButton<GameBottomButton.IStatusL
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                    String.format(msgType, HostChannelManager.getInstance().getmCurrentChannelId()),
+                    String.format(msgType, HostChannelManager.getInstance().getChannelId()),
                     TIMES, "1");
         }
     }

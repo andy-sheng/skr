@@ -9,9 +9,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -31,11 +28,42 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
+    provided 'com.android.support:appcompat-v7:25.0.1'
+    provided files('libs/EventBus-2.4.0.jar')
+}
+
+task makeJar(type: Jar, dependsOn: build) {
+    delete('build/libs/pushsdk-noproguard.jar')
+    //指定生成的jar名
+    baseName 'liveplugin-noproguard'
+    //从哪里打包class文件 ,打的包可以在build/libs中找到
+    from('build/intermediates/classes/debug/', configurations.compile.collect {
+        it.isDirectory() ? it : zipTree(it)
     })
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    testCompile 'junit:junit:4.12'
+    exclude '**/BuildConfig.class'
+    exclude '**/R.class'
+    exclude '**/R$*.class'
+}
+
+task proguardJar(type: proguard.gradle.ProGuardTask, dependsOn: makeJar) {
+    delete('build/libs/liveplugin.jar')
+    // 依赖库
+    def sdkDir = android.getSdkDirectory().getAbsolutePath()
+    if (sdkDir == null) {
+        sdkDir = android.plugin.getSdkFolder().getAbsolutePath()
+    }
+    libraryjars sdkDir + '/platforms/' + android.compileSdkVersion.toString() + '/android.jar'
+    libraryjars files('libs/EventBus-2.4.0.jar')
+    // 输入路径
+    injars 'build/libs/liveplugin-noproguard.jar'
+    // 输出路径
+    outjars 'build/libs/liveplugin.jar'
+    // 添加配置信息
+    configuration android.getDefaultProguardFile('proguard-android.txt')
+    configuration 'proguard-rules.pro'
+}
+
+task buildJar(type: Copy, dependsOn: proguardJar) {
+    from 'build/libs/liveplugin.jar'
+    into '../plugindemo/libs'
 }

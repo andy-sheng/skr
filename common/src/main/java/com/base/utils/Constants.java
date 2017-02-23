@@ -59,7 +59,7 @@ public class Constants {
     public static final String FILE = "file";
     public static final String CONTENT = "content";
 
-    public static final String CRASHEYE_APPID = isDebugOrTestBuild ? "711e1080" : "e02f2030";//CrashEye的AppId
+    public static final String CRASHEYE_APPID = isDebugOrTestBuild ? "b7b0b9c0" : "98f83170";//CrashEye的AppId
 
     public static final String MI_STATISTIC_APPID = "2882303761517438806";
     public static final String MI_STATISTIC_APPKEY = "5431743870806";

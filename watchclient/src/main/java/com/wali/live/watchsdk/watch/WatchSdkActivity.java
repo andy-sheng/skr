@@ -29,6 +29,7 @@ import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
+import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.user.User;
@@ -44,7 +45,6 @@ import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.common.view.PlaceHolderView;
 import com.wali.live.event.EventClass;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -61,12 +61,13 @@ import com.wali.live.watchsdk.watch.presenter.BottomBtnPresenter;
 import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
-import com.wali.live.watchsdk.watch.presenter.SendCommentPresenter;
 import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
+import com.wali.live.watchsdk.watch.presenter.SendCommentPresenter;
 import com.wali.live.watchsdk.watch.presenter.TouchPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
@@ -125,6 +126,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     VideoPlayerPresenterEx mVideoPlayerPresenterEx;
     protected RoomTextMsgPresenter mRoomTextMsgPresenter;
     protected GiftPresenter mGiftPresenter;
+    private RoomManagerPresenter mRoomManagerPresenter;
     private LiveTaskPresenter mLiveTaskPresenter;
     private GiftMallPresenter mGiftMallPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
@@ -338,6 +340,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomTextMsgPresenter);
+
+        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true);
+        addPushProcessor(mRoomManagerPresenter);
 
         mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData);
         addBindActivityLifeCycle(mGiftMallPresenter, true);

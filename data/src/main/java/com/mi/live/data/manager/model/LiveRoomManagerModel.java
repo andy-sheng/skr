@@ -38,4 +38,28 @@ public class LiveRoomManagerModel {
         }
         return false;
     }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setCertificationType(int certificationType) {
+        this.certificationType = certificationType;
+    }
+
+    public void setIsInRoom(boolean isInRoom) {
+        this.isInRoom = isInRoom;
+    }
+
+    public void setRedName(boolean redName) {
+        this.redName = redName;
+    }
+
+    public void setAvatar(long avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setUuid(long uuid) {
+        this.uuid = uuid;
+    }
 }

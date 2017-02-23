@@ -10,7 +10,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 
-
 import com.wali.live.sdk.manager.global.GlobalData;
 
 import java.io.UnsupportedEncodingException;

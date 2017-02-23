@@ -249,4 +249,9 @@
     <string name="connect_peripheral">The host made external devices connected</string>
     <string name="recorded_video">The host recorded a video</string>
     <string name="game_give_one_gift">sent 1 %s</string>
+    <string name="account_withdraw_pay_user_account_not_enough_money">Insufficient funds</string>
+
+    <string name="network_offline_warning">Can\'t connect to the network</string>
+    <string name="file_upload_failed_path_error">Couldn\'t upload file, local path error</string>
+    <string name="file_upload_failed_file_error">Couldn\'t upload file</string>
 </resources>

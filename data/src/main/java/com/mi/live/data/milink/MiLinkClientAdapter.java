@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
+import com.mi.live.data.account.ChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.callback.MiLinkEventListener;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
@@ -139,6 +140,7 @@ public class MiLinkClientAdapter {
     }
 
     public PacketData sendSync(final PacketData packet, final int timeout) {
+        setChannelId(packet);
         if (mIsTouristMode) {
             if (checkChannelCommand(packet)) {
                 return mMiLinkChannelClient.sendDataBySimpleChannel(packet, timeout);
@@ -151,6 +153,7 @@ public class MiLinkClientAdapter {
     }
 
     public PacketData sendDataByChannel(PacketData packet, int timeout) {
+        setChannelId(packet);
         return mMiLinkChannelClient.sendDataBySimpleChannel(packet, timeout);
     }
 
@@ -174,6 +177,7 @@ public class MiLinkClientAdapter {
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {
+        setChannelId(packet);
         MiLinkClientIpc.sendAsync(packet, timeout, l);
     }
 
@@ -187,7 +191,7 @@ public class MiLinkClientAdapter {
      * @param packet 发送的业务数据
      */
     public void sendAsync(PacketData packet) {
-
+        setChannelId(packet);
         if (mIsTouristMode) {
             if (checkChannelCommand(packet)) {
                 mMiLinkChannelClient.sendAsync(packet);
@@ -198,13 +202,19 @@ public class MiLinkClientAdapter {
     }
 
     public void sendAsync(PacketData packet, int timeout) {
-
+        setChannelId(packet);
         if (mIsTouristMode) {
             if (checkChannelCommand(packet)) {
                 mMiLinkChannelClient.sendAsync(packet, timeout);
             }
         } else {
             MiLinkClientIpc.sendAsync(packet, timeout);
+        }
+    }
+
+    private void setChannelId(PacketData packet){
+        if(packet!=null && TextUtils.isEmpty(packet.getChannelId()) && !TextUtils.isEmpty(ChannelManager.getInstance().getChannelId())){
+            packet.setChannelId(ChannelManager.getInstance().getChannelId());
         }
     }
 

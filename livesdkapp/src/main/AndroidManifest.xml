@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mi.liveassistant"
-    android:versionCode="203049"
-    android:versionName="2.3.49">
+          package="com.mi.liveassistant"
+          android:versionCode="204002"
+          android:versionName="2.4.2">
 
     <application
-        android:name="com.wali.live.watchsdk.init.WatchSdkApplication"
+        android:name="com.wali.live.init.LiveSdkApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name="com.wali.live.TestSdkActivity"/>
+
         <activity
-            android:name="com.wali.live.JumpTestSdkActivity"
-            android:exported="true" />
+            android:name="com.wali.live.jump.JumpSdkActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/TransparentTheme"/>
 
         <activity
             android:name="com.wali.live.MainActivity"
@@ -25,7 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.wali.live.LoginActivity" />
+
+        <activity android:name="com.wali.live.LoginActivity"/>
     </application>
 
 </manifest>

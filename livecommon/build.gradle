@@ -59,6 +59,7 @@ dependencies {
 //    }
 
     compile project(':enginelive')
+    // compile project(':engineplayer')
 
     /**
      *       以下都是支付相关，可以优化，sdk去掉一点
@@ -75,4 +76,5 @@ dependencies {
     compile files('libs/volley-1.0.19.jar')
     compile files('libs/alipaySingle-20160825.jar')
 //    compile 'com.alibaba.alipay:alipaySingle:20160825@jar'//支付
+    compile files('libs/ks3-android-sdk-v-1.4.6.jar')
 }

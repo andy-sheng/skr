@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.ipc.service;
 /**
  * Created by chengsimin on 2016/12/27.
  */
-
 public class MiLiveSdkEvent {
     public static int SUCCESS = 0;
     public static int FAILED = 1;

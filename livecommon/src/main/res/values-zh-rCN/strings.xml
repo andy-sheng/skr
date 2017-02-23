@@ -240,4 +240,6 @@
     <string name="account_withdraw_pay_user_account_not_enough_tip">当前余额不足,充值才可以继续送礼物,是否去充值.</string>
     <string name="account_withdraw_pay_user_account_not_enough">余额不足</string>
     <string name="game_give_one_gift">送了一个%s</string>
+    <string name="recharge_paypal_price_format">%1$s %2$s</string>
+    <string name="pull_diamond_price_list_failed">拉取价格列表失败</string>
 </resources>

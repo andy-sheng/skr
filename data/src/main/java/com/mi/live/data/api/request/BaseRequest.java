@@ -1,11 +1,13 @@
 package com.mi.live.data.api.request;
 
+import android.text.TextUtils;
+
+import com.base.log.MyLog;
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.base.log.MyLog;
-import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.constant.MiLinkConstant;
+import com.mi.milink.sdk.aidl.PacketData;
 
 /**
  * Created by lan on 16-3-18.
@@ -19,13 +21,24 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
  * 目前只用于LiveManager相关代码,试试效果
  */
 public abstract class BaseRequest {
+    protected String TAG = getTAG();
+
     protected String mCommand;
     protected String mAction;
+    protected String mChannelId;
 
     protected GeneratedMessage mRequest;
     protected GeneratedMessage mResponse;
 
-    protected abstract String getTag();
+    protected String getTAG() {
+        return getClass().getSimpleName();
+    }
+
+    public BaseRequest(String command,String action,String channelId){
+        mCommand = command;
+        mAction = action;
+        mChannelId = channelId;
+    }
 
     /**
      * 生成请求数据
@@ -34,7 +47,10 @@ public abstract class BaseRequest {
         PacketData reqData = new PacketData();
         reqData.setCommand(mCommand);
         reqData.setData(mRequest.toByteArray());
-        MyLog.d(getTag(), mAction + " request : \n" + mRequest.toString());
+        if(!TextUtils.isEmpty(mChannelId)){
+            reqData.setChannelId(mChannelId);
+        }
+        MyLog.d(TAG, mAction + " request : \n" + mRequest.toString());
         return reqData;
     }
 
@@ -43,19 +59,19 @@ public abstract class BaseRequest {
      */
     protected GeneratedMessage sendSync() {
         if (mRequest == null) {
-            MyLog.d(getTag(), mAction + " request is null");
+            MyLog.d(TAG, mAction + " request is null");
             return null;
         }
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(generateReqData(), MiLinkConstant.TIME_OUT);
         if (rspData != null) {
             try {
                 mResponse = parse(rspData.getData());
-                MyLog.d(getTag(), mAction + " response : \n" + mResponse.toString());
+                MyLog.d(TAG, mAction + " response : \n" + mResponse.toString());
             } catch (InvalidProtocolBufferException e) {
-                MyLog.d(getTag(), e);
+                MyLog.d(TAG, e);
             }
         } else {
-            MyLog.d(getTag(), mAction + " response is null");
+            MyLog.d(TAG, mAction + " response is null");
         }
         return mResponse;
     }
@@ -70,7 +86,7 @@ public abstract class BaseRequest {
      */
     protected boolean sendAsync() {
         if (mRequest == null) {
-            MyLog.d(getTag(), mAction + " request is null");
+            MyLog.d(TAG, mAction + " request is null");
             return false;
         }
         MiLinkClientAdapter.getsInstance().sendAsync(generateReqData(), MiLinkConstant.TIME_OUT);

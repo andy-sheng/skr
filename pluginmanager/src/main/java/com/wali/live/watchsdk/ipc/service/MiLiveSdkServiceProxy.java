@@ -7,12 +7,12 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 /**
  * Created by chengsimin on 2016/12/27.
@@ -20,45 +20,58 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 public class MiLiveSdkServiceProxy implements ServiceConnection {
     public final static String TAG = MiLiveSdkServiceProxy.class.getSimpleName();
 
-    Intent mIntent;
+    private Intent mIntent;
+    private IMiLiveSdkService mRemoteService;
 
-    IMiLiveSdkService remoteService;
+    private long mMiId;
+    private String mServiceToken;
+    private String mAuthCode;
 
-    IMiLiveSdkEventCallback miLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
+    private boolean mClearAccountFlag = false;
+
+    private IMiLiveSdk.ICallback mCallback;
+
+    private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
         public void onEventLogin(int code) throws RemoteException {
-            Log.d(TAG, "onEventLoginResult:" + code);
-            MiLiveSdkEvent.postLogin(code);
+            Logger.d(TAG, "onEventLoginResult:" + code);
+            if (mCallback != null) {
+                mCallback.notifyLogin(code);
+            }
         }
 
         @Override
         public void onEventLogoff(int code) throws RemoteException {
-            Log.d(TAG, "onEventLogoff:" + code);
-            MiLiveSdkEvent.postLogoff(code);
+            Logger.d(TAG, "onEventLogoff:" + code);
+            if (mCallback != null) {
+                mCallback.notifyLogoff(code);
+            }
         }
 
         @Override
         public void onEventWantLogin() throws RemoteException {
-            Log.d(TAG, "onEventWantLogin");
-            MiLiveSdkEvent.postWantLogin();
+            Logger.d(TAG, "onEventWantLogin");
+            if (mCallback != null) {
+                mCallback.notifyWantLogin();
+            }
+        }
+
+        @Override
+        public void onEventVerifyFailure(int code) throws RemoteException {
+            Logger.d(TAG, "onEventVerifyFailure code=" + code);
+            if (mCallback != null) {
+                mCallback.notifyVerifyFailure(code);
+            }
         }
     };
 
-    long mMiId;
-
-    String mSsoToken;
-
-    String mAuthCode;
-
-    boolean mClearAccountFlag = false;
-
-    private static MiLiveSdkServiceProxy sIntance;
+    private static MiLiveSdkServiceProxy sInstance;
 
     public static synchronized MiLiveSdkServiceProxy getInstance() {
-        if (sIntance == null) {
-            sIntance = new MiLiveSdkServiceProxy();
+        if (sInstance == null) {
+            sInstance = new MiLiveSdkServiceProxy();
         }
-        return sIntance;
+        return sInstance;
     }
 
     private MiLiveSdkServiceProxy() {
@@ -67,30 +80,47 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         mIntent.setClassName(VersionCheckManager.PACKAGE_NAME, "com.wali.live.watchsdk.ipc.service.MiLiveSdkService");
     }
 
-    void bindService() {
-        Log.w(TAG, "bindService " + mIntent);
+    public void setCallback(IMiLiveSdk.ICallback callback) {
+        mCallback = callback;
+    }
+
+    private void bindService() {
+        Logger.w(TAG, "bindService " + mIntent);
         GlobalData.app().bindService(mIntent, this, Context.BIND_AUTO_CREATE);
     }
 
-    void stopService() {
+    private void stopService() {
         GlobalData.app().stopService(mIntent);
     }
 
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder service) {
-        Log.w(TAG, "onServiceConnected");
-        remoteService = IMiLiveSdkService.Stub.asInterface(service);
+        Logger.w(TAG, "onServiceConnected");
+        mRemoteService = IMiLiveSdkService.Stub.asInterface(service);
         try {
-            remoteService.setEventCallBack(MiLiveSdkController.getChannelId(), miLiveSdkEventCallback);
+            mRemoteService.setEventCallBack(
+                    MiLiveSdkController.getInstance().getChannelId(),
+                    mLiveSdkEventCallback);
             // 尝试处理登录
-            if (!TextUtils.isEmpty(mSsoToken)) {
-                remoteService.loginByMiAccountSso(MiLiveSdkController.getChannelId(), mMiId, mSsoToken);
-                mSsoToken = "";
+            if (!TextUtils.isEmpty(mServiceToken)) {
+                mRemoteService.loginByMiAccountSso(
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
+                        mMiId, mServiceToken);
+                mServiceToken = "";
             } else if (!TextUtils.isEmpty(mAuthCode)) {
-                remoteService.loginByMiAccountOAuth(MiLiveSdkController.getChannelId(), mAuthCode);
+                mRemoteService.loginByMiAccountOAuth(
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
+                        mAuthCode);
                 mAuthCode = "";
             } else if (mClearAccountFlag) {
-                remoteService.clearAccount(MiLiveSdkController.getChannelId());
+                mRemoteService.clearAccount(
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
                 mClearAccountFlag = false;
             }
         } catch (RemoteException e) {
@@ -100,100 +130,88 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     @Override
     public void onServiceDisconnected(ComponentName componentName) {
-        Log.w(TAG, "onServiceDisconnected");
+        Logger.w(TAG, "onServiceDisconnected");
     }
 
     public void tryInit() {
-        if (remoteService == null) {
+        if (mRemoteService == null) {
             bindService();
-        } else {
-            //TODO 可以写个 aidl test 方法，当这个方法跑异常时也重新绑定一下
         }
     }
 
-    public void openWatch(RoomInfo roomInfo) {
-        Log.w(TAG, "openWatch");
-        if (remoteService == null) {
+    public void loginByMiAccountOAuth(String authCode) {
+        Logger.w(TAG, "loginByMiAccount authCode=" + authCode);
+        if (mRemoteService == null) {
+            mAuthCode = authCode;
+            notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
             bindService();
         } else {
             try {
-                remoteService.openWatch(roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
+                mRemoteService.loginByMiAccountOAuth(
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
+                        authCode);
             } catch (RemoteException e) {
+                mAuthCode = authCode;
+                notifyAidlFailure(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
                 bindService();
             }
         }
     }
 
-    public void openReplay(RoomInfo roomInfo) {
-        Log.w(TAG, "openWatch");
-        if (remoteService == null) {
-            bindService();
-        } else {
-            try {
-                remoteService.openReplay(roomInfo.getPlayerId(), roomInfo.getLiveId(), roomInfo.getVideoUrl());
-            } catch (RemoteException e) {
-                bindService();
-            }
-        }
-    }
-
-    public void openGameLive() {
-        Log.w(TAG, "openGameLive");
-        if (remoteService == null) {
-            bindService();
-        } else {
-            try {
-                remoteService.openGameLive();
-            } catch (RemoteException e) {
-                bindService();
-            }
-        }
-    }
-
-    public void loginByMiAccount(String code) {
-        Log.w(TAG, "loginByMiAccount code:" + code);
-        if (remoteService == null) {
-            mAuthCode = code;
-            bindService();
-        } else {
-            try {
-                remoteService.loginByMiAccountOAuth(MiLiveSdkController.getChannelId(), code);
-            } catch (RemoteException e) {
-                mAuthCode = code;
-                bindService();
-            }
-        }
-    }
-
-    public void loginByMiAccountSso(long miid, String ssoToken) {
-        Log.w(TAG, "loginByMiAccountSso miid:" + miid + ",authCode:" + ssoToken);
-        if (remoteService == null) {
+    public void loginByMiAccountSso(long miid, String serviceToken) {
+        Logger.w(TAG, "loginByMiAccountSso miid=" + miid + ",serviceToken=" + serviceToken);
+        if (mRemoteService == null) {
             mMiId = miid;
-            mSsoToken = ssoToken;
+            mServiceToken = serviceToken;
+            notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
             bindService();
         } else {
             try {
-                remoteService.loginByMiAccountSso(MiLiveSdkController.getChannelId(), miid, ssoToken);
+                mRemoteService.loginByMiAccountSso(
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(),
+                        miid, serviceToken);
             } catch (RemoteException e) {
                 mMiId = miid;
-                mSsoToken = ssoToken;
+                mServiceToken = serviceToken;
+                notifyAidlFailure(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
                 bindService();
             }
         }
     }
 
     public void clearAccount() {
-        Log.w(TAG, "clearAccount");
-        if (remoteService == null) {
+        Logger.w(TAG, "clearAccount");
+        if (mRemoteService == null) {
             mClearAccountFlag = true;
+            notifyServiceNull(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
             bindService();
         } else {
             try {
-                remoteService.clearAccount(MiLiveSdkController.getChannelId());
+                mRemoteService.clearAccount(
+                        MiLiveSdkController.getInstance().getChannelId(),
+                        GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 mClearAccountFlag = true;
+                notifyAidlFailure(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
                 bindService();
             }
+        }
+    }
+
+    private void notifyServiceNull(int aidlFlag) {
+        if (mCallback != null) {
+            mCallback.notifyServiceNull(aidlFlag);
+        }
+    }
+
+    private void notifyAidlFailure(int aidlFlag) {
+        if (mCallback != null) {
+            mCallback.notifyAidlFailure(aidlFlag);
         }
     }
 }
