@@ -6,12 +6,18 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.BaseSdkView;
+import com.wali.live.livesdk.live.component.ComponentController;
+import com.wali.live.livesdk.live.component.presenter.ComponentPresenter;
+import com.wali.live.livesdk.live.component.presenter.InputAreaPresenter;
+import com.wali.live.livesdk.live.component.view.InputAreaView;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
 import com.wali.live.livesdk.live.livegame.view.LivePanelContainer;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -21,14 +27,28 @@ import com.wali.live.livesdk.live.livegame.view.LivePanelContainer;
 public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     private static final String TAG = "LiveSdkView";
 
+    protected RoomBaseDataModel mMyRoomData;
+
     public LiveSdkView(
             @NonNull Activity activity,
-            @NonNull LiveComponentController componentController) {
+            @NonNull LiveComponentController componentController,
+            @NonNull RoomBaseDataModel myRoomData) {
         super(activity, componentController);
+        mMyRoomData = myRoomData;
     }
 
     @Override
     public void setupSdkView() {
+        // 输入框
+        {
+            InputAreaView view = $(R.id.input_area_view);
+            if (view == null) {
+                return;
+            }
+            InputAreaPresenter presenter = new InputAreaPresenter(mComponentController, mMyRoomData);
+            addComponentView(view, presenter);
+        }
+
         // 底部面板
         {
             RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
@@ -55,5 +75,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                     new BottomButtonPresenter(mComponentController, mComponentController.mGameLivePresenter);
             addComponentView(view, presenter);
         }
+
+        mComponentController.onEvent(ComponentController.MSG_CTRL_FLY_BARRAGE,
+                new ComponentPresenter.Params().putItem(true));
     }
 }

@@ -13,21 +13,26 @@ import java.util.Set;
 /**
  * Created by yangli on 2017/2/17.
  *
- * @module
+ * @module 基础架构组件控制器
  */
 public class ComponentController implements ComponentPresenter.IComponentController {
     private static final String TAG = "ComponentController";
 
     public static final int MSG_DEFAULT = 0;
 
+    // 系统消息
     private static final int MSG_SYSTEM_FIRST = 10000;
-    public static final int MSG_ON_BACK_PRESSED = MSG_SYSTEM_FIRST;
-    public static final int MSG_ON_ORIENTATION = MSG_SYSTEM_FIRST + 1;
+    public static final int MSG_ON_BACK_PRESSED = MSG_SYSTEM_FIRST; // 返回键
+    public static final int MSG_ON_ORIENTATION  = MSG_SYSTEM_FIRST + 1; // 转屏
 
-
+    // UI消息
     private static final int MSG_LIVE_FIRST = 20000;
-    public static final int MSG_SHOW_INPUT_VIEW = MSG_LIVE_FIRST;
-    public static final int MSG_SHOW_SETTING_PANEL = MSG_LIVE_FIRST + 1;
+    // 输入框相关消息
+    public static final int MSG_CTRL_INPUT_VIEW    = MSG_LIVE_FIRST; // 弹起/隐藏 输入框
+    public static final int MSG_STAT_INPUT_VIEW    = MSG_LIVE_FIRST + 1; // 输入框 已显示/已隐藏
+    public static final int MSG_CTRL_FLY_BARRAGE   = MSG_LIVE_FIRST + 2; // 显示/隐藏 飘屏弹幕开关
+    // 底部面板相关消息
+    public static final int MSG_SHOW_SETTING_PANEL = MSG_LIVE_FIRST + 3; // 显示 设置面板
 
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
 
@@ -71,7 +76,7 @@ public class ComponentController implements ComponentPresenter.IComponentControl
     }
 
     @Override
-    public boolean onEvent(int source, ComponentPresenter.Params params) {
+    public boolean onEvent(int source, @Nullable ComponentPresenter.Params params) {
         Set<ComponentPresenter.IAction> actionSet = mEventActionMap.get(source);
         if (actionSet == null || actionSet.isEmpty()) {
             MyLog.e(TAG, "no action registered for source " + source);

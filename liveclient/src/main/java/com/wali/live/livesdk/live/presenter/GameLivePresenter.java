@@ -149,14 +149,14 @@ public class GameLivePresenter implements Presenter {
 
     public void sendBarrage(String msg, boolean isFlyBarrage) {
         if (mRoomChatMsgManager != null && mMyRoomData != null) {
-            MyLog.d(TAG, "onSendBarrage BaseInputArea msg=" + msg + ", isFlyBarrage=" + isFlyBarrage);
+            MyLog.d(TAG, "sendBarrage BaseInputArea msg=" + msg + ", isFlyBarrage=" + isFlyBarrage);
             if (isFlyBarrage) { // 飘屏弹幕
                 mRoomChatMsgManager.sendFlyBarrageMessageAsync(msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), null);
             } else {
                 mRoomChatMsgManager.sendTextBarrageMessageAsync(msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), null);
             }
         } else {
-            MyLog.w(TAG, "onSendBarrage failed, mRoomChatMsgManager or mMyRoomData is null");
+            MyLog.w(TAG, "sendBarrage failed, mRoomChatMsgManager or mMyRoomData is null");
         }
     }
 
