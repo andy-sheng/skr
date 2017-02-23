@@ -94,7 +94,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                    String.format(msgType, HostChannelManager.getInstance().getmCurrentChannelId()),
+                    String.format(msgType, HostChannelManager.getInstance().getChannelId()),
                     TIMES, "1");
         }
     }
