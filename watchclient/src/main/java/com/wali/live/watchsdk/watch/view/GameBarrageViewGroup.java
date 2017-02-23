@@ -13,15 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
-import com.base.activity.assist.IBindActivityLIfeCycle;
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.event.SdkEventClass;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
-import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
 import com.wali.live.common.model.CommentModel;
 import com.wali.live.watchsdk.R;
@@ -289,7 +285,7 @@ public class GameBarrageViewGroup extends RelativeLayout {
                 fbViewInfo.isWorking = true;
                 addViewToRoad(fbViewInfo);
                 fbViewInfo.view.setText(model.getBody());
-                if (model.getSenderId() == MyUserInfoManager.getInstance().getUser().getUid()) {
+                if (model.getSenderId() == UserAccountManager.getInstance().getUuidAsLong()) {
                     fbViewInfo.view.setTextColor(getResources().getColor(R.color.color_5fffd0));
                 } else {
                     fbViewInfo.view.setTextColor(getResources().getColor(R.color.color_white_trans_80));
@@ -315,7 +311,7 @@ public class GameBarrageViewGroup extends RelativeLayout {
                 fbViewInfo.isWorking = true;
                 addViewToRoad(fbViewInfo);
                 fbViewInfo.view.setText(model.getBody());
-                if (model.getSenderId() == MyUserInfoManager.getInstance().getUser().getUid()) {
+                if (model.getSenderId() == UserAccountManager.getInstance().getUuidAsLong()) {
                     fbViewInfo.view.setTextColor(getResources().getColor(R.color.color_5fffd0));
                 } else {
                     fbViewInfo.view.setTextColor(getResources().getColor(R.color.color_white_trans_80));
@@ -338,7 +334,7 @@ public class GameBarrageViewGroup extends RelativeLayout {
             return;
         }
         if (model.getMsgType() == BarrageMsgType.B_MSG_TYPE_TEXT) {
-        mFlyBarrageControl.add(model, model.getSenderId() == MyUserInfoManager.getInstance().getUser().getUid());
+            mFlyBarrageControl.add(model, model.getSenderId() == UserAccountManager.getInstance().getUuidAsLong());
         }
     }
 

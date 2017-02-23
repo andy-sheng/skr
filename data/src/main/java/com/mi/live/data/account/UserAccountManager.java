@@ -76,6 +76,7 @@ public class UserAccountManager {
         AccountLocalStore.getInstance().deleteAccount(channelid);
         if (channelid == HostChannelManager.getInstance().getChannelId()) {
             // 和当前渠道一致,当前账号置为空
+            MyUserInfoManager.getInstance().deleteUser();
             mAccount = null;
             // 实名模式登出
             MiLinkClientAdapter.getsInstance().logoff();

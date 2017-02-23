@@ -2,10 +2,12 @@ package com.mi.live.data.account;
 
 import android.text.TextUtils;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.language.LocaleUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.event.UserInfoEvent;
+import com.mi.live.data.greendao.GreenDaoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
@@ -13,6 +15,7 @@ import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.dao.OwnUserInfo;
+import com.wali.live.dao.OwnUserInfoDao;
 import com.wali.live.proto.UserProto;
 
 import org.greenrobot.eventbus.EventBus;
@@ -295,5 +298,12 @@ public class MyUserInfoManager {
                 || (System.currentTimeMillis() - mLastInfoTs > 5 * 60 * 1000)) {
             syncSelfDetailInfo();
         }
+    }
+
+    public void deleteUser() {
+        OwnUserInfoDao ownUserInfoDao = GreenDaoManager.getDaoSession(GlobalData.app()).getOwnUserInfoDao();
+        //清空所有数据
+        ownUserInfoDao.deleteAll();
+        mMyInfo = new User(); //清空內存中的值
     }
 }

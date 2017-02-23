@@ -13,6 +13,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
@@ -72,7 +73,7 @@ public class RoomManagerPresenter implements IPushMsgProcessor {
             }
             mRoomChatMsgManager.addChatMsg(msg, true);
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_SET_MANAGER) {
-            if (!mIsWatchRoom) {
+            if (!mIsWatchRoom || MiLinkClientAdapter.getsInstance().isTouristMode()) {
                 return;
             }
             if (msg.getSentTime() > mManagerUpdateTime) {

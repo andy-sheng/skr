@@ -20,7 +20,6 @@ import com.base.utils.rx.RxRetryAssist;
 import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.HostChannelManager;
-import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -764,7 +763,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         @Override
         public void enterLive(EnterRoomInfo roomInfo) {
             WatchRoomCharactorManager.getInstance().clear();
-            syncRoomEffect(mMyRoomData.getRoomId(), MyUserInfoManager.getInstance().getUser().getUid(), mMyRoomData.getUid(), null);
+            syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
         }
     };
 
