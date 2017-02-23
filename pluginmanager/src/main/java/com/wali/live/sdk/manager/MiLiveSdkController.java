@@ -48,7 +48,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private ICallback mCallback;
 
     private MiLiveSdkController() {
-        mMinVersionMap.put(ACTION_OPEN_WATCH, 204010);
+        mMinVersionMap.put(ACTION_OPEN_WATCH, 204000);
         mMinVersionMap.put(ACTION_OPEN_REPLAY, 204000);
 
         mMinVersionMap.put(ACTION_LOGIN_OAUTH, 204000);
