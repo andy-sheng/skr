@@ -13,6 +13,9 @@ import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by chengsimin on 2016/12/8.
  */
@@ -28,7 +31,16 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
 
+    private static final String ACTION_OPEN_WATCH = "open_watch";
+    private static final String ACTION_OPEN_REPLAY = "open_replay";
+    private static final String ACTION_LOGIN_OAUTH = "login_oauth";
+    private static final String ACTION_LOGIN_SSO = "login_sso";
+    private static final String ACTION_CLEAR_ACCOUNT = "clear_account";
+
     private static final MiLiveSdkController sSdkController = new MiLiveSdkController();
+
+    private Map<String, Integer> mMinVersionMap = new HashMap();
+    private int mApkVersion;
 
     private int mChannelId = 0;
     private String mChannelSecret;
@@ -36,6 +48,12 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private ICallback mCallback;
 
     private MiLiveSdkController() {
+        mMinVersionMap.put(ACTION_OPEN_WATCH, 204000);
+        mMinVersionMap.put(ACTION_OPEN_REPLAY, 204000);
+
+        mMinVersionMap.put(ACTION_LOGIN_OAUTH, 204000);
+        mMinVersionMap.put(ACTION_LOGIN_SSO, 204000);
+        mMinVersionMap.put(ACTION_CLEAR_ACCOUNT, 204000);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -49,7 +67,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mChannelSecret = channelSecret;
         mCallback = callback;
 
+        MiLiveSdkServiceProxy.getInstance().setCallback(mCallback);
         checkHasInit();
+
+        getApkVersion();
     }
 
     @Override
@@ -62,7 +83,30 @@ public class MiLiveSdkController implements IMiLiveSdk {
             throw new RuntimeException("channelId==0, make sure MiLiveSdkController.init(...) be called.");
         }
         MiLiveSdkServiceProxy.getInstance().tryInit();
-        MiLiveSdkServiceProxy.getInstance().setCallback(mCallback);
+    }
+
+    private void getApkVersion() {
+        try {
+            PackageInfo packageInfo = GlobalData.app().getPackageManager().getPackageInfo(
+                    VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
+            int versionCode = packageInfo.versionCode;
+            Logger.d(TAG, "versionCode=" + versionCode);
+            mApkVersion = versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            Logger.e(TAG, e.getMessage());
+        }
+    }
+
+    private boolean checkVersion(String action, IVersionCallback callback) {
+        int version = mMinVersionMap.get(action);
+        if (version > mApkVersion) {
+            getApkVersion();
+        }
+        if (version > mApkVersion) {
+            callback.notifyVersionLow();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -83,25 +127,31 @@ public class MiLiveSdkController implements IMiLiveSdk {
     @Override
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
         checkHasInit();
+        if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
+            return;
+        }
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
-        jumpToSdk(activity, bundle, "open_watch", callback);
+        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
     }
 
     @Override
     public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
         checkHasInit();
+        if (!checkVersion(ACTION_OPEN_REPLAY, callback)) {
+            return;
+        }
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
-        jumpToSdk(activity, bundle, "open_replay", callback);
+        jumpToSdk(activity, bundle, ACTION_OPEN_REPLAY, callback);
     }
 
 //    @Override
@@ -114,20 +164,29 @@ public class MiLiveSdkController implements IMiLiveSdk {
 //    }
 
     @Override
-    public void loginByMiAccountOAuth(String authCode) {
+    public void loginByMiAccountOAuth(String authCode, IVersionCallback callback) {
         checkHasInit();
+        if (!checkVersion(ACTION_LOGIN_OAUTH, callback)) {
+            return;
+        }
         MiLiveSdkServiceProxy.getInstance().loginByMiAccountOAuth(authCode);
     }
 
     @Override
-    public void loginByMiAccountSso(long miid, String serviceToken) {
+    public void loginByMiAccountSso(long miid, String serviceToken, IVersionCallback callback) {
         checkHasInit();
+        if (!checkVersion(ACTION_LOGIN_SSO, callback)) {
+            return;
+        }
         MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, serviceToken);
     }
 
     @Override
-    public void clearAccount() {
+    public void clearAccount(IVersionCallback callback) {
         checkHasInit();
+        if (!checkVersion(ACTION_CLEAR_ACCOUNT, callback)) {
+            return;
+        }
         MiLiveSdkServiceProxy.getInstance().clearAccount();
     }
 
@@ -164,9 +223,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return bundle;
     }
 
-    // 跳转
     private boolean startActivity(Activity activity, Intent intent) {
-        Logger.d(TAG, "start activity uri=" + intent.getDataString());
+        Logger.d(TAG, "start activity action=" + intent.getAction());
         if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
             try {
                 activity.startActivity(intent);

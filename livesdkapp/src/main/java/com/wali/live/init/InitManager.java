@@ -11,6 +11,7 @@ import com.base.thread.ThreadPool;
 import com.base.utils.Constants;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.language.LocaleUtil;
+import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.version.VersionManager;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.mi.live.data.account.UserAccountManager;
@@ -78,15 +79,20 @@ public class InitManager {
             FrescoManager.initFresco(application);
             PacketProcessService.startPacketProcessService(application);
 
-            initLogger();
             // 初始化账号,先用匿名
             UserAccountManager.getInstance().initAnonymous();
             ThreadPool.startup();
-
             initLibrary();
             initMiLinkPacketHandler();
             registerAllEventBus();
             initCrasheye();
+            ThreadPool.runOnWorker(new Runnable() {
+                @Override
+                public void run() {
+                    initLogger();
+                    SDCardUtils.generateDirectory();
+                }
+            });
         }
     }
 

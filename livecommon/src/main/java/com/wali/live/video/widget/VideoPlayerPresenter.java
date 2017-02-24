@@ -325,13 +325,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 mPlayer.setBufferTimeMax(Constants.PLAYER_BUFFER_TIME);//设置缓冲时间5s
                 mPlayer.setTimeout(5, 5);
                 mPlayer.setVolume(mVolumeL, mVolumeR);
-                if (Constants.isDebugBuild) {
-                    //每次设置路径,先清理下文件夹
-                    SDCardUtils.clearKsyDumpFile();
-//                    mPlayer.setOption(KSYMediaPlayer.OPT_CATEGORY_FORMAT,
-//                            "dump_file_name", mDumpPath);
-
-                }
                 String logPath = CommonUtils.getUniqueFilePath(new File(SDCardUtils.getKsyLogPath()), System.currentTimeMillis() + ".log");
                 if (!TextUtils.isEmpty(logPath)) {
                     mPlayer.setLogPath(logPath);
@@ -717,7 +710,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     public long getCurrentPosition() {
         if (isInPlaybackState()) {
             long position = mPlayer.getCurrentPosition();
-            MyLog.w(TAG, "getCurrentPosition : = " + position);
+            MyLog.v(TAG, "getCurrentPosition : = " + position);
             return position;
         }
         return 0l;
@@ -761,7 +754,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     }
 
     private boolean isInPlaybackState() {
-        MyLog.w(TAG, "PlaybackState " + mCurrentState);
+        MyLog.v(TAG, "PlaybackState " + mCurrentState);
         return (mPlayer != null && mCurrentState != STATE_ERROR
                 && mCurrentState != STATE_IDLE && mCurrentState != STATE_PREPARING);
     }

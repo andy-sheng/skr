@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
     android:id="@+id/total_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,7 @@
     <View
         android:id="@+id/out_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
         android:id="@+id/float_main_view"
@@ -31,7 +32,7 @@
             android:paddingRight="@dimen/margin_40"
             android:paddingTop="@dimen/margin_40"
             android:scaleType="center"
-            android:src="@drawable/live_card_close" />
+            android:src="@drawable/live_card_close"/>
 
         <!--　中间的信息区域, 昵称, ID, 认证, 签名-->
         <include
@@ -39,7 +40,7 @@
             layout="@layout/layout_include_person_info_float"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="97.33dp" />
+            android:layout_marginTop="97.33dp"/>
 
         <LinearLayout
             android:id="@+id/count_hint"
@@ -55,7 +56,7 @@
                 android:gravity="center"
                 android:text="@string/live_ticket"
                 android:textColor="@color/color_black_trans_80"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <!-- 显示关注文字-->
             <TextView
@@ -65,7 +66,7 @@
                 android:gravity="center"
                 android:text="@string/my_attention"
                 android:textColor="@color/color_black_trans_80"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <!--　显示粉丝文字-->
             <TextView
@@ -75,7 +76,7 @@
                 android:gravity="center"
                 android:text="@string/fans"
                 android:textColor="@color/color_black_trans_80"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
         </LinearLayout>
 
         <!-- 星票, 关注, 粉丝数量提示-->
@@ -95,7 +96,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_black_trans_40"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
 
             <!--　显示关注人数-->
             <TextView
@@ -105,7 +106,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_black_trans_40"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
 
             <!--　显示粉丝人数-->
             <TextView
@@ -115,7 +116,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_black_trans_40"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
         </LinearLayout>
 
         <!--　关注按钮-->
@@ -142,7 +143,7 @@
                     android:drawablePadding="3dp"
                     android:gravity="center|center_vertical"
                     android:textColor="@color/color_float_person_info_follow_btn"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -163,7 +164,7 @@
                     android:gravity="left|center_vertical"
                     android:text="@string/forbid_speak"
                     android:textColor="@color/color_float_person_info_follow_btn"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -174,7 +175,7 @@
             android:layout_height="1px"
             android:layout_below="@id/admin_area"
             android:layout_marginTop="14.67dp"
-            android:background="@color/color_black_trans_10" />
+            android:background="@color/color_black_trans_10"/>
 
         <!-- 底部的button按钮-->
         <LinearLayout
@@ -182,7 +183,8 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_below="@id/splite_line"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/homepage_tv"
@@ -192,13 +194,13 @@
                 android:gravity="center"
                 android:text="@string/home_bottom_main"
                 android:textColor="@color/color_follow_btn"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <View
                 android:layout_width="@dimen/line_height"
                 android:layout_height="21.33dp"
                 android:layout_gravity="center_vertical"
-                android:background="@color/color_black_trans_10" />
+                android:background="@color/color_black_trans_10"/>
 
             <TextView
                 android:id="@+id/private_message_tv"
@@ -208,14 +210,14 @@
                 android:gravity="center"
                 android:text="@string/private_message"
                 android:textColor="@color/color_follow_btn"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <!-- 分割线-->
             <View
                 android:layout_width="@dimen/line_height"
                 android:layout_height="21.33dp"
                 android:layout_gravity="center_vertical"
-                android:background="@color/color_black_trans_10" />
+                android:background="@color/color_black_trans_10"/>
 
             <TextView
                 android:id="@+id/more_tv"
@@ -225,7 +227,7 @@
                 android:gravity="center"
                 android:text="@string/more"
                 android:textColor="@color/color_follow_btn"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
         </LinearLayout>
 
         <!-- 顶部的头像　-->
@@ -237,7 +239,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_40"
             app:placeholderImage="@drawable/live_show_avatar_loading"
-            app:roundAsCircle="true" />
+            app:roundAsCircle="true"/>
 
         <!-- 微博认证　角标-->
         <ImageView
@@ -249,22 +251,22 @@
             android:layout_marginTop="-14dp"
             android:layout_toRightOf="@id/top_main_avatar"
             android:scaleType="fitStart"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/redname_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="什么鬼?"
-            android:background="@drawable/card_icon_red"
             android:layout_below="@id/top_main_avatar"
             android:layout_marginLeft="-16.67dp"
             android:layout_marginTop="-14dp"
-            android:paddingLeft="19.33dip"
             android:layout_toRightOf="@id/top_main_avatar"
-            android:textSize="@dimen/text_size_36"
+            android:background="@drawable/card_icon_red"
+            android:paddingLeft="19.33dip"
+            android:text="什么鬼?"
             android:textColor="@color/color_black_trans_60"
-            android:visibility="gone" />
+            android:textSize="@dimen/text_size_36"
+            android:visibility="gone"/>
 
         <!-- 贡献排名第一和本人的联系角标-->
         <com.facebook.drawee.view.SimpleDraweeView
@@ -276,7 +278,7 @@
             android:layout_toLeftOf="@id/top_main_avatar"
             android:visibility="gone"
             app:placeholderImage="@drawable/live_card_relation"
-            app:roundAsCircle="true" />
+            app:roundAsCircle="true"/>
 
         <!-- 贡献排名第一的人的头像-->
         <com.facebook.drawee.view.SimpleDraweeView
@@ -287,7 +289,7 @@
             android:layout_marginTop="62.67dp"
             android:layout_toLeftOf="@id/top_one_relation_avatar"
             android:visibility="gone"
-            app:placeholderImage="@drawable/live_show_avatar_loading" />
+            app:placeholderImage="@drawable/live_show_avatar_loading"/>
 
         <!-- 贡献排名第一的人的角标-->
         <ImageView
@@ -297,7 +299,7 @@
             android:layout_alignBottom="@id/top_one_avatar"
             android:layout_alignRight="@id/top_one_avatar"
             android:background="@drawable/live_card_star_first"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -327,7 +329,7 @@
                 android:text="@string/kick_out"
                 android:textColor="@color/color_black60_pressed_black30"
                 android:textSize="@dimen/text_size_26"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </LinearLayout>
 
     </RelativeLayout>

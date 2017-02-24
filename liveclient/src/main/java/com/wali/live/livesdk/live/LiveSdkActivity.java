@@ -643,7 +643,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                     }
                 });
 
-        mSendCommentPresenter = new SendCommentPresenter(this, mRoomInfo, new Runnable() {
+        mSendCommentPresenter = new SendCommentPresenter(this, mMyRoomData, mRoomInfo, new Runnable() {
             @Override
             public void run() {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mLiveCommentView.getLayoutParams();

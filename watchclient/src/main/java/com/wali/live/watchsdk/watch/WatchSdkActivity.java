@@ -20,7 +20,6 @@ import com.base.utils.rx.RxRetryAssist;
 import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.HostChannelManager;
-import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -207,7 +206,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     public void call(Void aVoid) {
                         if (AccountAuthManager.triggerActionNeedAccount(WatchSdkActivity.this)) {
                             //飘萍测试
-    //                        FlyBarrageManager.testFlyBarrage(mMyRoomData.getRoomId(),String.valueOf(mMyRoomData.getUid()));
+                            //                        FlyBarrageManager.testFlyBarrage(mMyRoomData.getRoomId(),String.valueOf(mMyRoomData.getUid()));
                             EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST));
                         }
                     }
@@ -351,7 +350,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomViewerPresenter);
 
-        mSendCommentPresenter = new SendCommentPresenter(this, mRoomInfo, new Runnable() {
+        mSendCommentPresenter = new SendCommentPresenter(this, mMyRoomData, mRoomInfo, new Runnable() {
             @Override
             public void run() {
                 mBarrageSendBtn.setVisibility(View.VISIBLE);
@@ -764,7 +763,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         @Override
         public void enterLive(EnterRoomInfo roomInfo) {
             WatchRoomCharactorManager.getInstance().clear();
-            syncRoomEffect(mMyRoomData.getRoomId(), MyUserInfoManager.getInstance().getUser().getUid(), mMyRoomData.getUid(), null);
+            syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
         }
     };
 

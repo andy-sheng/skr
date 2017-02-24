@@ -34,28 +34,38 @@ public interface IMiLiveSdk {
 
     /**
      * 打开直播观看页面
+     *
+     * @version 204000
      */
     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback);
 
     /**
      * 打开直播回放页面
+     *
+     * @version 204000
      */
     void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback);
 
     /**
      * OAuth登录
+     *
+     * @version 204000
      */
-    void loginByMiAccountOAuth(String authCode);
+    void loginByMiAccountOAuth(String authCode, IVersionCallback callback);
 
     /**
      * sso登录
+     *
+     * @version 204000
      */
-    void loginByMiAccountSso(long miid, String serviceToken);
+    void loginByMiAccountSso(long miid, String serviceToken, IVersionCallback callback);
 
     /**
      * 退出账号
+     *
+     * @version 204000
      */
-    void clearAccount();
+    void clearAccount(IVersionCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手
@@ -115,10 +125,19 @@ public interface IMiLiveSdk {
          * 通知上层权限验证失败
          */
         void notifyVerifyFailure(int code);
+
     }
 
     @Keep
-    interface IOpenCallback {
+    interface IVersionCallback {
+        /**
+         * 通知上层版本过低
+         */
+        void notifyVersionLow();
+    }
+
+    @Keep
+    interface IOpenCallback extends IVersionCallback {
         /**
          * 打开直播，回放时，通知上层应用，直播助手未安装
          */

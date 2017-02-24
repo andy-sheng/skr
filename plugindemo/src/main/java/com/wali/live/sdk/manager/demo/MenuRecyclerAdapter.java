@@ -57,6 +57,11 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 MiLiveSdkController.getInstance().openWatch(
                         mActivity, 21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0", 6, new IMiLiveSdk.IOpenCallback() {
                             @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
+                            @Override
                             public void notifyNotInstall() {
                                 ToastUtils.showToast("notifyNotInstall");
                             }
@@ -68,6 +73,11 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void run() {
                 MiLiveSdkController.getInstance().openReplay(
                         mActivity, 22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1", 6, new IMiLiveSdk.IOpenCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+
                             @Override
                             public void notifyNotInstall() {
                                 ToastUtils.showToast("notifyNotInstall");
@@ -100,7 +110,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void run() {
                         //  小米授权登录的
-                        MiLiveSdkController.getInstance().clearAccount();
+                        MiLiveSdkController.getInstance().clearAccount(new IMiLiveSdk.IVersionCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
+                        });
                     }
                 }).start();
             }
@@ -148,7 +163,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void run() {
                 //  小米授权登录的
                 String code = XiaoMiOAuth.getOAuthCode(mActivity);
-                MiLiveSdkController.getInstance().loginByMiAccountOAuth(code);
+                MiLiveSdkController.getInstance().loginByMiAccountOAuth(code, new IMiLiveSdk.IVersionCallback() {
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("notifyVersionLow");
+                    }
+                });
             }
         }).start();
     }
@@ -171,7 +191,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                      * 这里获取ssotoken有两种方式
                      */
                     String ssoToken = getServiceTokenNew(GlobalData.app());
-                    MiLiveSdkController.getInstance().loginByMiAccountSso(miid, ssoToken);
+                    MiLiveSdkController.getInstance().loginByMiAccountSso(miid, ssoToken, new IMiLiveSdk.IVersionCallback() {
+                        @Override
+                        public void notifyVersionLow() {
+                            ToastUtils.showToast("notifyVersionLow");
+                        }
+                    });
                 }
             }
         }).start();

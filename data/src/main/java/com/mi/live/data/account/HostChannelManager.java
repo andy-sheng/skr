@@ -43,7 +43,7 @@ public class HostChannelManager {
         return mChannelId;
     }
 
-    public String getmPackageName() {
+    public String getPackageName() {
         return mPackageName;
     }
 
