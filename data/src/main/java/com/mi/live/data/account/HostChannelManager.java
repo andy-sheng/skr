@@ -59,6 +59,7 @@ public class HostChannelManager {
                     subscriber.onCompleted();
                     return;
                 }
+                MyLog.w(TAG, "old channel=" + mChannelId + ",new channel=%s" + channelId);
                 UserAccount account = AccountLocalStore.getInstance().getAccount(channelId);
                 if (account != null
                         && UserAccountManager.getInstance().getAccount() != null
@@ -70,11 +71,13 @@ public class HostChannelManager {
                     return;
                 }
                 if (UserAccountManager.getInstance().getAccount() != null) {
+                    MyLog.w(TAG,"uuid "+UserAccountManager.getInstance().getAccount().getUuid()+" logoff");
                     UserAccountManager.getInstance().logoffWithoutClearAccount(mChannelId);
                 }
                 mChannelId = channelId;
                 mPackageName = packageName;
                 if (account != null) {
+                    MyLog.w(TAG,"uuid "+UserAccountManager.getInstance().getAccount().getUuid()+" login");
                     UserAccountManager.getInstance().login(account);
                 }
                 subscriber.onNext(true);

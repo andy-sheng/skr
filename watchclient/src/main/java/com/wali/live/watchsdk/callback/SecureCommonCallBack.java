@@ -24,7 +24,7 @@ public abstract class SecureCommonCallBack implements ISecureCallBack {
                 .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
-                        MyLog.w(TAG,"onCompleted");
+                        MyLog.v(TAG,"onCompleted");
                     }
 
                     @Override
@@ -35,7 +35,7 @@ public abstract class SecureCommonCallBack implements ISecureCallBack {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        MyLog.w(TAG, "onNext");
+                        MyLog.v(TAG, "onNext");
                         postProcess();
                     }
                 });
