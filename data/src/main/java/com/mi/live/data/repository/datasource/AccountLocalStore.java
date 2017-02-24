@@ -47,6 +47,21 @@ public class AccountLocalStore {
     public void replaceAccount(UserAccount account) {
         deleteAccount(account.getChannelid());
         mUserAccountDao.insertOrReplaceInTx(account);
+
+        String sql = String.format("update %s set %s='%s', %s='%s',%s='%s' where %s='%s' and %s!=%s",
+                mUserAccountDao.getTablename(),
+                UserAccountDao.Properties.PassToken.columnName,
+                account.getPassToken(),
+                UserAccountDao.Properties.ServiceToken.columnName,
+                account.getServiceToken(),
+                UserAccountDao.Properties.SecurityKey.columnName,
+                account.getSecurityKey(),
+                UserAccountDao.Properties.Uuid.columnName,
+                account.getUuid(),
+                UserAccountDao.Properties.Channelid.columnName,
+                account.getChannelid()
+                );
+        mUserAccountDao.getDatabase().execSQL(sql);
     }
 
     public UserAccount getAccount(int channelId) {

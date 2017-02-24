@@ -37,10 +37,12 @@ public class UserAccountManager {
     // 账户模式：标准和匿名
     private static UserAccountManager sInstance;
 
-    // private UserAccountDao mAccountDao;
-
     private UserAccountManager() {
         EventBus.getDefault().register(this);
+    }
+
+    public UserAccount getAccount() {
+        return mAccount;
     }
 
     public static UserAccountManager getInstance() {
@@ -87,9 +89,20 @@ public class UserAccountManager {
         }
     }
 
+    public void logoffWithoutClearAccount(int channelId){
+        if (channelId == HostChannelManager.getInstance().getChannelId()) {
+            MyUserInfoManager.getInstance().deleteUser();
+            // 和当前渠道一致,当前账号置为空
+            mAccount = null;
+            // 实名模式登出
+            MiLinkClientAdapter.getsInstance().logoff();
+            // milink 切换成匿名模式
+            MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
+        }
+    }
+
     public void setAccount(UserAccount account) {
         this.mAccount = account;
-        HostChannelManager.getInstance().setChannelId(account.getChannelid());
         // 只有非游客模式才发已有账号的事件
         if (!MiLinkClientAdapter.getsInstance().isTouristMode() && mAccount != null) {
             EventBus.getDefault().post(new SetUserAccountEvent());
@@ -116,30 +129,10 @@ public class UserAccountManager {
             AccountLocalStore.getInstance().replaceAccount(mAccount);
             // 取消匿名模式
             MiLinkClientAdapter.getsInstance().setIsTouristMode(false);
-            // MilinkChannelClientAdapter.getInstance().destroy();
             // 进入实名模式
             MiLinkClientAdapter.getsInstance().initCallBackFirst();
         }
     }
-//    public boolean isInitAccount() {
-//        return mAccount != null || mInitAccount;
-//    }
-//
-//    public synchronized void initAccount() {
-//        MyLog.d(TAG, "initAccount()");
-//        if (mAccountDao == null || null == mAccount) {
-//            mAccountDao = GreenDaoManager.getDaoSession(GlobalData.app()).getUserAccountDao();
-//            List<UserAccount> accountList = mAccountDao.queryBuilder().build().list();
-//            if (null != accountList && accountList.size() > 0) {
-//                setAccount(accountList.get(0));
-//                AccountEventController.onActionInitAccountFinish();
-//            }
-//        }
-//        if (mAccount != null) {
-//            MiLinkClientAdapter.getsInstance().initCallBackFirst();
-//        }
-//        mInitAccount = true;
-//    }
 
     public boolean hasAccount() {
         MyLog.d(TAG, "null != mAccount" + (null != mAccount));
@@ -244,88 +237,6 @@ public class UserAccountManager {
         return anonymousId;
     }
 
-//    public void recordUserAccount() {
-//        MyLog.d(TAG, "recordUserAccount mAccount=" + mAccount);
-//        if (null != mAccount) {
-//            mAccountDao.deleteAll();
-//            mAccountDao.insertOrReplace(mAccount);
-//            MyLog.d(TAG, "post EventClass.AccountChangeEvent.EVENT_TYPE_CHANGED");
-//            MiLinkClientAdapter.getsInstance().initCallBackFirst();
-//        }
-//    }
-//
-//    public void deleteUserAccount() {
-//        mAccountDao.deleteAll();
-//        clearAccount();
-//    }
-
-
-    // sdk中也使用这个策略
-    /**
-     * 更改登出账号策略，登出时标记为登出。
-     * 不清除账号内存以及数据库，下次账号登入，
-     * 匹配账号是否一致，不一致再清除账号数据。
-     */
-//    public void setUserAccountLogOff() {
-//        if (null != mAccount) {
-//            mAccount.setIsLogOff(true);
-//            mAccount.setPassToken("");
-//            mAccount.setServiceToken("");
-//            mAccount.setSSecurity("");
-//            mAccountDao.insertOrReplace(mAccount);
-//        }
-//    }
-//
-//    public void clearAccount() {
-//        MyLog.d(TAG, "clearAccount");
-//        setAccount(null);
-//    }
-//
-//    public void recordMyAccount() {
-//        MyLog.d(TAG, "recordMyAccount");
-//        mAccountDao.insertInTx(mAccount);
-//    }
-//
-//
-//    public UserAccount createNewFromAccountInfo(AccountInfo info) {
-//        UserAccount account = null;
-//        if (info != null) {
-//            account = new UserAccount();
-//            account.setUuid(info.getUserId());
-//            account.setPassToken(info.getPassToken());
-//            account.setServiceToken(info.getServiceToken());
-//            account.setPSecurity(info.getPsecurity());
-//            account.setSSecurity(info.getSecurity());
-//        }
-//        return account;
-//    }
-//
-//    public UserAccount createNewFromSystemLogin(String userId, String serviceToken, String security) {
-//        UserAccount account = new UserAccount();
-//        account.setUuid(userId);
-//        account.setServiceToken(serviceToken);
-//        account.setSSecurity(security);
-//        return account;
-//    }
-
-
-    /**
-     * 不是同一个账号需要清理相应数据的接口
-     *
-     * @notice 其他上层数据清理操作，可以在DataManager的SwitchAccountEvent中处理
-     */
-//    public void clearDataFromDifAccount() {
-//        MyUserInfoManager.getInstance().deleteUser();
-//
-//        WatchHistoryInfoDaoAdapter.getInstance().deleteAll();
-//
-//        MLPreferenceUtils.setIsLogOff(GlobalData.app(), true);
-//        PreferenceUtils.removePreference(GlobalData.app(), PreferenceUtils.PREF_KEY_FACE_BEAUTY_LEVEL);
-//        PreferenceUtils.clear(GlobalData.app(), PreferenceKeys.PRE_KEY_SEARCH_SONG_HISTORY);
-//
-//        EventBus.getDefault().post(new SwitchAccountEvent());
-//    }
-
     /*
     * milink链接上的回调
     * */
@@ -386,12 +297,9 @@ public class UserAccountManager {
                                         } else if (errCode == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
                                             //账号封禁
                                             UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getChannelId());
-//                                            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN);
                                         } else {
                                             MyLog.w(TAG, "passToken to serviceToken failure, kick off");
                                             UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getChannelId());
-//                                            MiLinkClientAdapter.getsInstance().logoff();
-//                                            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF);
                                         }
                                     }
                                 }

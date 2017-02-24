@@ -30,6 +30,9 @@ public class JumpSdkActivity extends BaseSdkActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTranslucentStatus(this, true);
+        setStatusColor(this, true);
+
         processIntent();
     }
 

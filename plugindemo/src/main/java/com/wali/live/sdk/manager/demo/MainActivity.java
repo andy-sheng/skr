@@ -151,6 +151,11 @@ public class MainActivity extends AppCompatActivity {
             public void notifyVerifyFailure(int var1) {
                 ToastUtils.showToast("验证失败，errCode=" + var1);
             }
+
+            @Override
+            public void notifyOtherAppActive(){
+                ToastUtils.showToast("有其他APP在活跃");
+            }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
     }

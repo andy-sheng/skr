@@ -8,4 +8,6 @@ interface IMiLiveSdkEventCallback {
     void onEventWantLogin();
 
     void onEventVerifyFailure(int code);
+
+    void onEventOtherAppActive();
 }

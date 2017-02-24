@@ -5,5 +5,5 @@ package com.base.utils.callback;
  */
 public interface ICommonCallBack {
     // 正常处理返回值
-    void process(Object object);
+    void process(Object objects);
 }

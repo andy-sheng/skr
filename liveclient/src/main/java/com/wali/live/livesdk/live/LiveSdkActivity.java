@@ -231,7 +231,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.livesdk_layout);
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
-        initData();
+        
         getLocation();
         setupRequiredComponent();
         openOrientation();
@@ -242,15 +242,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         mBlurIv = $(R.id.blur_iv);
         AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
-    }
-
-    private void initData() {
-        Intent data = getIntent();
-        if (data == null) {
-            return;
-        }
-        HostChannelManager.getInstance().setChannelId(data.getIntExtra("extra_channel_id", -1));
-        HostChannelManager.getInstance().setHostPackageName(data.getStringExtra("extra_package_name"));
     }
 
     private void setupRequiredComponent() {
