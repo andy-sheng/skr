@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--底部按钮相关-->
-    <item type="id" name="comment_btn"/>
     <item type="id" name="setting_btn"/>
     <item type="id" name="mute_btn"/>
     <item type="id" name="barrage_btn"/>

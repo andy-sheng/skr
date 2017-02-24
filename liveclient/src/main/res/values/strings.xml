@@ -14,7 +14,6 @@
     <string name="game_live_tag_title">Select a tag</string>
     <string name="game_back_to_app_message">Back to Mi Live</string>
     <string name="game_comment_title">Chat room</string>
-    <string name="empty_edittext_hint">Say something here</string>
     <plurals name="game_comment_number">
         <item quantity="one">%d person</item>
         <item quantity="other">%d people</item>

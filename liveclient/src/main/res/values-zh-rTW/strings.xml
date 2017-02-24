@@ -13,7 +13,6 @@
     <string name="forbid_capture">您禁用了截圖權限，無法進行直播</string>
     <string name="game_back_to_app_message">確定要返回主控台</string>
     <string name="game_comment_title">聊天室</string>
-    <string name="empty_edittext_hint">跟大家說點什麼</string>
     <plurals name="game_comment_number">
         <item quantity="other">%d人</item>
     </plurals>

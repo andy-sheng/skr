@@ -254,4 +254,6 @@
     <string name="network_offline_warning">Can\'t connect to the network</string>
     <string name="file_upload_failed_path_error">Couldn\'t upload file, local path error</string>
     <string name="file_upload_failed_file_error">Couldn\'t upload file</string>
+    <string name="send">send</string>
+    <string name="empty_edittext_hint">Say something here</string>
 </resources>

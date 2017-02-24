@@ -14,7 +14,6 @@
 
     <string name="game_back_to_app_message">确定要返回控制台</string>
     <string name="game_comment_title">聊天室</string>
-    <string name="empty_edittext_hint">跟大家说点什么</string>
     <plurals name="game_comment_number">
         <item quantity="other">%d人</item>
     </plurals>

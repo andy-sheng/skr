@@ -234,4 +234,6 @@
     <string name="continue_normal_send_text">連送</string>
     <string name="pull_diamond_price_list_failed">拉取價格清單失敗</string>
     <string name="recharge">儲值</string>
+    <string name="send">發送</string>
+    <string name="empty_edittext_hint">跟大家說點什麼</string>
 </resources>

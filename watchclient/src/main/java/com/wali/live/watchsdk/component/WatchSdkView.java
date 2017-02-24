@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.livegame;
+package com.wali.live.watchsdk.component;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -10,26 +10,27 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.presenter.InputAreaPresenter;
+import com.wali.live.component.view.BasePanelContainer;
 import com.wali.live.component.view.InputAreaView;
-import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
-import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
-import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
-import com.wali.live.livesdk.live.livegame.view.LivePanelContainer;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
+import com.wali.live.watchsdk.component.presenter.PanelContainerPresenter;
+import com.wali.live.watchsdk.component.view.WatchBottomButton;
+import com.wali.live.watchsdk.component.view.WatchPanelContainer;
 
 /**
  * Created by yangli on 2017/2/18.
  *
  * @module 游戏直播页面
  */
-public class LiveSdkView extends BaseSdkView<LiveComponentController> {
-    private static final String TAG = "LiveSdkView";
+public class WatchSdkView extends BaseSdkView<WatchComponentController> {
+    private static final String TAG = "WatchSdkView";
 
     protected RoomBaseDataModel mMyRoomData;
 
-    public LiveSdkView(
+    public WatchSdkView(
             @NonNull Activity activity,
-            @NonNull LiveComponentController componentController,
+            @NonNull WatchComponentController componentController,
             @NonNull RoomBaseDataModel myRoomData) {
         super(activity, componentController);
         mMyRoomData = myRoomData;
@@ -54,7 +55,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 MyLog.e(TAG, "missing R.id.bottom_panel_view");
                 return;
             }
-            LivePanelContainer view = new LivePanelContainer(relativeLayout);
+            WatchPanelContainer view = new WatchPanelContainer(relativeLayout);
             PanelContainerPresenter presenter = new PanelContainerPresenter(
                     mComponentController, mComponentController.mRoomChatMsgManager);
             addComponentView(view, presenter);
@@ -68,13 +69,10 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            LiveBottomButton view = new LiveBottomButton(relativeLayout);
+            WatchBottomButton view = new WatchBottomButton(relativeLayout);
             BottomButtonPresenter presenter =
-                    new BottomButtonPresenter(mComponentController, mComponentController.mGameLivePresenter);
+                    new BottomButtonPresenter(mComponentController);
             addComponentView(view, presenter);
         }
-
-        mComponentController.onEvent(LiveComponentController.MSG_CTRL_FLY_BARRAGE,
-                new ComponentPresenter.Params().putItem(true));
     }
 }

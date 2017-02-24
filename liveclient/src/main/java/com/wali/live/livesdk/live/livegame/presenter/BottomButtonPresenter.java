@@ -3,8 +3,7 @@ package com.wali.live.livesdk.live.livegame.presenter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.wali.live.livesdk.live.component.ComponentController;
-import com.wali.live.livesdk.live.component.presenter.ComponentPresenter;
+import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
@@ -25,19 +24,19 @@ public class BottomButtonPresenter extends
             @NonNull IComponentController componentController,
             @Nullable GameLivePresenter gameLivePresenter) {
         super(componentController);
-        registerAction(ComponentController.MSG_ON_ORIENTATION);
+        registerAction(LiveComponentController.MSG_ON_ORIENTATION);
         mGameLivePresenter = gameLivePresenter;
     }
 
     @Override
     public void showInputView() {
-        mComponentController.onEvent(ComponentController.MSG_CTRL_INPUT_VIEW,
+        mComponentController.onEvent(LiveComponentController.MSG_CTRL_INPUT_VIEW,
                 new ComponentPresenter.Params().putItem(true));
     }
 
     @Override
     public void showSettingPanel() {
-        mComponentController.onEvent(ComponentController.MSG_SHOW_SETTING_PANEL);
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_SETTING_PANEL);
     }
 
     @Override
