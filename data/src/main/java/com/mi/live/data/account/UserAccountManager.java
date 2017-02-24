@@ -91,6 +91,7 @@ public class UserAccountManager {
 
     public void logoffWithoutClearAccount(int channelId){
         if (channelId == HostChannelManager.getInstance().getChannelId()) {
+            MyUserInfoManager.getInstance().deleteUser();
             // 和当前渠道一致,当前账号置为空
             mAccount = null;
             // 实名模式登出
