@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
@@ -143,8 +144,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         Logger.w(TAG, "loginByMiAccount authCode=" + authCode);
         if (mRemoteService == null) {
             mAuthCode = authCode;
-            notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
-            bindService();
+            resolveNullService(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
         } else {
             try {
                 mRemoteService.loginByMiAccountOAuth(
@@ -154,8 +154,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         authCode);
             } catch (RemoteException e) {
                 mAuthCode = authCode;
-                notifyAidlFailure(IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
-                bindService();
+                resolveException(e, IMiLiveSdk.ICallback.LOGIN_OAUTH_AIDL);
             }
         }
     }
@@ -165,8 +164,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         if (mRemoteService == null) {
             mMiId = miid;
             mServiceToken = serviceToken;
-            notifyServiceNull(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
-            bindService();
+            resolveNullService(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
         } else {
             try {
                 mRemoteService.loginByMiAccountSso(
@@ -177,8 +175,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             } catch (RemoteException e) {
                 mMiId = miid;
                 mServiceToken = serviceToken;
-                notifyAidlFailure(IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
-                bindService();
+                resolveException(e, IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
             }
         }
     }
@@ -187,8 +184,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         Logger.w(TAG, "clearAccount");
         if (mRemoteService == null) {
             mClearAccountFlag = true;
-            notifyServiceNull(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
-            bindService();
+            resolveNullService(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
         } else {
             try {
                 mRemoteService.clearAccount(
@@ -197,9 +193,21 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 mClearAccountFlag = true;
-                notifyAidlFailure(IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
-                bindService();
+                resolveException(e, IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
             }
+        }
+    }
+
+    private void resolveNullService(int aidlFlag) {
+        notifyServiceNull(aidlFlag);
+        bindService();
+    }
+
+    private void resolveException(RemoteException e, int aidlFlag) {
+        Logger.e(TAG, "remote exception=", e);
+        notifyAidlFailure(aidlFlag);
+        if (e instanceof DeadObjectException) {
+            bindService();
         }
     }
 

@@ -97,10 +97,14 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
     }
 
-    private boolean checkVersion(String action, IVersionCallback callback) {
+    private boolean checkVersion(String action, IAssistantCallback callback) {
         int version = mMinVersionMap.get(action);
         if (version > mApkVersion) {
             getApkVersion();
+        }
+        if (mApkVersion == 0) {
+            callback.notifyNotInstall();
+            return false;
         }
         if (version > mApkVersion) {
             callback.notifyVersionLow();
@@ -125,7 +129,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
         checkHasInit();
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
@@ -140,7 +144,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback) {
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
         checkHasInit();
         if (!checkVersion(ACTION_OPEN_REPLAY, callback)) {
             return;
@@ -164,7 +168,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 //    }
 
     @Override
-    public void loginByMiAccountOAuth(String authCode, IVersionCallback callback) {
+    public void loginByMiAccountOAuth(String authCode, IAssistantCallback callback) {
         checkHasInit();
         if (!checkVersion(ACTION_LOGIN_OAUTH, callback)) {
             return;
@@ -173,7 +177,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void loginByMiAccountSso(long miid, String serviceToken, IVersionCallback callback) {
+    public void loginByMiAccountSso(long miid, String serviceToken, IAssistantCallback callback) {
         checkHasInit();
         if (!checkVersion(ACTION_LOGIN_SSO, callback)) {
             return;
@@ -182,7 +186,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void clearAccount(IVersionCallback callback) {
+    public void clearAccount(IAssistantCallback callback) {
         checkHasInit();
         if (!checkVersion(ACTION_CLEAR_ACCOUNT, callback)) {
             return;
@@ -202,15 +206,16 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return pInfo != null;
     }
 
-    private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IOpenCallback callback) {
+    private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IAssistantCallback callback) {
+        Logger.d(TAG, "jumpToSdk action=" + action);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);
         intent.putExtras(bundle);
         intent.setAction(action);
-
         if (!startActivity(activity, intent)) {
             if (callback != null) {
                 callback.notifyNotInstall();
+                getApkVersion();
             }
         }
     }

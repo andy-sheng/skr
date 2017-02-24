@@ -37,35 +37,35 @@ public interface IMiLiveSdk {
      *
      * @version 204000
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
 
     /**
      * 打开直播回放页面
      *
      * @version 204000
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IOpenCallback callback);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
 
     /**
      * OAuth登录
      *
      * @version 204000
      */
-    void loginByMiAccountOAuth(String authCode, IVersionCallback callback);
+    void loginByMiAccountOAuth(String authCode, IAssistantCallback callback);
 
     /**
      * sso登录
      *
      * @version 204000
      */
-    void loginByMiAccountSso(long miid, String serviceToken, IVersionCallback callback);
+    void loginByMiAccountSso(long miid, String serviceToken, IAssistantCallback callback);
 
     /**
      * 退出账号
      *
      * @version 204000
      */
-    void clearAccount(IVersionCallback callback);
+    void clearAccount(IAssistantCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手
@@ -128,18 +128,18 @@ public interface IMiLiveSdk {
 
     }
 
+    /**
+     * 直播助手回调
+     */
     @Keep
-    interface IVersionCallback {
+    interface IAssistantCallback {
         /**
          * 通知上层版本过低
          */
         void notifyVersionLow();
-    }
 
-    @Keep
-    interface IOpenCallback extends IVersionCallback {
         /**
-         * 打开直播，回放时，通知上层应用，直播助手未安装
+         * 通知上层应用，直播助手未安装
          */
         void notifyNotInstall();
     }
