@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.base.log.MyLog;
+import com.mi.live.data.base.BaseSdkActivity;
 import com.wali.live.TestSdkActivity;
-import com.wali.live.base.BaseSdkActivity;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 
 /**

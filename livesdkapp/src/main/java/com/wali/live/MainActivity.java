@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
-import com.wali.live.base.BaseSdkActivity;
+import com.mi.live.data.base.BaseSdkActivity;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;

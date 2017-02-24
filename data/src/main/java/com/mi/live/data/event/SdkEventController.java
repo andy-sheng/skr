@@ -1,4 +1,4 @@
-package com.wali.live.event;
+package com.mi.live.data.event;
 
 import org.greenrobot.eventbus.EventBus;
 

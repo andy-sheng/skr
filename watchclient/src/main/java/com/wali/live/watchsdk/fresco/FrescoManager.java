@@ -1,4 +1,4 @@
-package com.wali.live.fresco;
+package com.wali.live.watchsdk.fresco;
 
 import android.content.Context;
 import android.os.Environment;

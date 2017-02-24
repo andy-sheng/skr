@@ -73,4 +73,5 @@ dependencies {
         exclude module: 'support-v4'
     }
     compile project(':watchclient')
+    compile files('libs/crasheye_2.1.5.jar')
 }

@@ -16,7 +16,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
-import com.wali.live.event.SdkEventClass;
+import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.engine.media.player.IMediaPlayer;
 import com.wali.live.dns.IStreamReconnect;
 import com.wali.live.event.EventClass;
