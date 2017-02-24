@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by linjinbin on 16/5/1.
@@ -35,6 +36,23 @@ import java.util.List;
  */
 public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     public static final String EXTRA_ROOM_INFO = "extra_room_info";
+
+    /**
+     * 控制是否活跃，活跃的标准为LiveActivity,WatchActivity,ReplayActivity其中之一没有destroy
+     * 控制是否活跃的目的为：当渠道A活跃时其他渠道不能够调用登录接口
+     */
+    private static AtomicInteger activeNum = new AtomicInteger(0);
+
+    public static boolean isActive(){
+        return activeNum.get()!=0;
+    }
+
+    public static void decrementActive(){
+        int num = activeNum.decrementAndGet();
+        if (num < 0) {
+            activeNum.set(0);
+        }
+    }
 
     /**
      * 本房间相关信息
@@ -81,6 +99,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         getWindow().setBackgroundDrawableResource(R.color.color_black);
         // 通知别的观看的activity关闭
         EventBus.getDefault().post(new WatchOrReplayActivityCreated());
+        activeNum.incrementAndGet();
         super.onCreate(savedInstanceState);
         // 检测有没有登录,走匿名模式
 //        if (!UserAccountManager.getInstance().hasAccount()) {
@@ -122,6 +141,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        decrementActive();
         if (mGiftRoomEffectView != null) {
             mGiftRoomEffectView.onActivityDestroy();
         }

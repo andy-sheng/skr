@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
-import com.mi.live.data.account.ChannelManager;
+import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.callback.MiLinkEventListener;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
@@ -213,8 +213,8 @@ public class MiLinkClientAdapter {
     }
 
     private void setChannelId(PacketData packet){
-        if(packet!=null && TextUtils.isEmpty(packet.getChannelId()) && !TextUtils.isEmpty(ChannelManager.getInstance().getChannelId())){
-            packet.setChannelId(ChannelManager.getInstance().getChannelId());
+        if(packet!=null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0){
+            packet.setChannelId(String.valueOf(HostChannelManager.getInstance().getChannelId()));
         }
     }
 

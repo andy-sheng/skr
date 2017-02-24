@@ -64,6 +64,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 mCallback.notifyVerifyFailure(code);
             }
         }
+
+        @Override
+        public void onEventOtherAppActive() throws RemoteException {
+            Logger.d(TAG, "onEventOtherAppActive" );
+            if (mCallback != null) {
+                mCallback.notifyOtherAppActive();
+            }
+        }
     };
 
     private static MiLiveSdkServiceProxy sInstance;

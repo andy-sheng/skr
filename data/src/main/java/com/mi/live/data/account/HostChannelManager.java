@@ -5,8 +5,7 @@ import com.mi.live.data.repository.datasource.AccountLocalStore;
 import com.wali.live.dao.UserAccount;
 
 import rx.Observable;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import rx.Subscriber;
 
 /**
  * 宿主管理
@@ -22,8 +21,6 @@ public class HostChannelManager {
 
     // 账户模式：标准和匿名
     private static HostChannelManager sInstance;
-
-    //    private UserAccountDao mAccountDao;
 
     private HostChannelManager() {
     }
@@ -48,42 +45,46 @@ public class HostChannelManager {
     }
 
     /**
-     * 关键，这时已经知道调用方的channelid了，尝试读取账号，如果没有账号进入匿名模式
-     * 是不是不要在主线程干这些
-     * TODO 渠道逻辑还有不少问题，之后重新写这部分逻辑
+     * 检查channelid
+     *
+     * @param channelId
+     * @return
      */
-    public synchronized void setChannelId(final int channelId) {
-        Observable.just(null)
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        MyLog.w(TAG, "setChannelId new:" + channelId + ", old:" + mChannelId);
-                        if (channelId <= 0) {
-                            return;
-                        }
-                        if (mChannelId != channelId) {
-                            mChannelId = channelId;
-
-                            // 渠道号不一致,尝试查找当前渠道的账号
-                            UserAccount account = AccountLocalStore.getInstance().getAccount(mChannelId);
-                            MyLog.w(TAG, "setChannelId account:" + account);
-                            if (account == null) {
-                                // 没找到账号，
-                                UserAccountManager.getInstance().logoff(mChannelId);
-                            } else {
-                                // 有账号，登录这个账号
-                                UserAccountManager.getInstance().login(account);
-                            }
-                        } else {
-                            // 渠道号一致
-                        }
-                    }
-                });
-
+    public synchronized Observable<Boolean> checkChannel(final int channelId, final String packageName) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                if (channelId == mChannelId) {
+                    subscriber.onNext(true);
+                    subscriber.onCompleted();
+                    return;
+                }
+                UserAccount account = AccountLocalStore.getInstance().getAccount(channelId);
+                if (account != null
+                        && UserAccountManager.getInstance().getAccount() != null
+                        && account.getUuid().equals(UserAccountManager.getInstance().getAccount().getUuid())) {
+                    mChannelId = channelId;
+                    mPackageName = packageName;
+                    subscriber.onNext(true);
+                    subscriber.onCompleted();
+                    return;
+                }
+                if (UserAccountManager.getInstance().getAccount() != null) {
+                    UserAccountManager.getInstance().logoffWithoutClearAccount(mChannelId);
+                }
+                mChannelId = channelId;
+                mPackageName = packageName;
+                if (account != null) {
+                    UserAccountManager.getInstance().login(account);
+                }
+                subscriber.onNext(true);
+                subscriber.onCompleted();
+            }
+        });
     }
 
-    public void setHostPackageName(String packageName) {
+    public synchronized void setChannelData(int channelId, String packageName) {
+        mChannelId = channelId;
         mPackageName = packageName;
     }
 }

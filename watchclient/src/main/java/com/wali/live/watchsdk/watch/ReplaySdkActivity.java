@@ -264,8 +264,6 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
             finish();
             return;
         }
-        HostChannelManager.getInstance().setChannelId(mRoomInfo.getChannelId());
-        HostChannelManager.getInstance().setHostPackageName(mRoomInfo.getmPackageName());
         // 填充 mMyRoomData
         mMyRoomData.setRoomId(mRoomInfo.getLiveId());
         mMyRoomData.setUid(mRoomInfo.getPlayerId());

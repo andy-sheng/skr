@@ -126,6 +126,11 @@ public interface IMiLiveSdk {
          */
         void notifyVerifyFailure(int code);
 
+        /**
+         * 通知上层有其它的app在活跃状态
+         */
+        void notifyOtherAppActive();
+
     }
 
     /**
@@ -214,6 +219,11 @@ public interface IMiLiveSdk {
 
         @Override
         public void notifyVerifyFailure(int code) {
+        }
+
+        @Override
+        public void notifyOtherAppActive() {
+
         }
     }
 }
