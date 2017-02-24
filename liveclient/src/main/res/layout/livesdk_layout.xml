@@ -39,7 +39,7 @@
         android:id="@+id/comment_rv"
         android:layout_width="match_parent"
         android:layout_height="160.33dip"
-        android:layout_above="@+id/smiley_root"
+        android:layout_above="@+id/input_area_view"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
@@ -110,34 +110,13 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <!--弹幕区和弹幕评论区开始-->
-    <FrameLayout
-        android:id="@+id/smiley_root"
-        android:layout_width="wrap_content"
+    <!--输入框-->
+    <com.wali.live.livesdk.live.component.view.InputAreaView
+        android:id="@+id/input_area_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <com.wali.live.common.view.PlaceHolderView
-            android:id="@+id/place_holder_view"
-            android:layout_width="match_parent"
-            android:layout_height="35.66dip"/>
-
-        <!--表情键盘-->
-        <ViewStub
-            android:id="@+id/similey_picker_viewstub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout="@layout/view_similey_picker"/>
-    </FrameLayout>
-
-    <ViewStub
-        android:id="@+id/comment_input_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/smiley_root"
-        android:layout="@layout/view_send_comment"
-        android:minHeight="43dip"
-        android:visibility="invisible"/>
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"/>
 
     <com.wali.live.livesdk.live.view.CountDownView
         android:id="@+id/count_down_view"

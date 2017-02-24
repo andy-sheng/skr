@@ -6,12 +6,12 @@ import com.base.utils.FileIOUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.assist.Attachment;
+import com.wali.live.common.MessageType;
 import com.wali.live.livesdk.live.api.RoomInfoChangeRequest;
-import com.wali.live.livesdk.live.common.MessageType;
 import com.wali.live.livesdk.live.task.TaskCallBackWrapper;
-import com.wali.live.livesdk.live.upload.UploadTask;
-import com.wali.live.livesdk.live.utils.AttachmentUtils;
 import com.wali.live.proto.Live2Proto.ChangeRoomInfoRsp;
+import com.wali.live.upload.UploadTask;
+import com.wali.live.utils.AttachmentUtils;
 
 import java.util.concurrent.TimeUnit;
 
