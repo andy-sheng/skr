@@ -231,15 +231,19 @@ public class VersionCheckManager {
     }
 
     public void startDownload(final IMiLiveSdk.IUpdateListener updateListener) {
+        Logger.e(TAG, "startDownload");
         if (mIsUpgrading) {
             return;
         }
+        mIsUpgrading = true;
+
         final String localFileName = String.format("%s_%d.apk", PACKAGE_NAME, mRemoteAppVersion);
         if (updateListener != null) {
             updateListener.onDownloadStart();
         }
-        mIsUpgrading = true;
         File destFile = new File(getCachePath(localFileName));
+
+        Logger.e(TAG, "startDownload onDownloadStart");
         HttpUtils.downloadFile(mRemoteApkUrl, destFile,
                 new HttpUtils.OnDownloadProgress() {
                     long lastNotifyTime = 0;

@@ -9,4 +9,7 @@
     <string name="barrage_open">彈幕開啟</string>
     <string name="can_not_speak">你被禁言</string>
     <string name="setting_dialog_black_title">提示</string>
+    <string name="follow_success">關注成功</string>
+    <string name="follow_failed">關注失敗</string>
+    <string name="setting_black_follow_hint">解除黑名單後才能關注哦</string>
 </resources>

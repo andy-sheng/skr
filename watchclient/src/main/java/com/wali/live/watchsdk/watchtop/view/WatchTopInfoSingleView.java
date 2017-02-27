@@ -43,6 +43,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -174,6 +175,9 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     Subscription mFollowSubscription;
 
     private void tryFollowOwner() {
+        if (!AccountAuthManager.triggerActionNeedAccount(getContext())) {
+            return;
+        }
         if (mFollowSubscription != null && !mFollowSubscription.isUnsubscribed()) {
             return;
         }
@@ -184,16 +188,16 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                     @Override
                     public void call(RelationProto.FollowResponse followResponse) {
                         if (followResponse.getCode() == RelationApi.ERROR_CODE_BLACK) {
-                            ToastUtils.showToast("在黑名单无法关注");
+                            ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
                         } else if (followResponse.getCode() == 0) {
-                            ToastUtils.showToast("关注成功");
+                            ToastUtils.showToast(getResources().getString(R.string.follow_success));
                         }
                         hideFollowBtn(true);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        ToastUtils.showToast("关注失败");
+                        ToastUtils.showToast(getResources().getString(R.string.follow_failed));
                     }
                 });
     }

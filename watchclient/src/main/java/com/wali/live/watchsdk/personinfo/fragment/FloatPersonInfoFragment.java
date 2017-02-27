@@ -542,7 +542,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         if (v.getTag() == null || getActivity() == null) {
             return;
         }
-        if ((int)v.getTag() == TAG_OUT_VIEW || (int)v.getTag() == TAG_CLOSE_BTN) {
+        if ((int) v.getTag() == TAG_OUT_VIEW || (int) v.getTag() == TAG_CLOSE_BTN) {
             finish();
             return;
         } else if (AccountAuthManager.triggerActionNeedAccount(getActivity())) {
@@ -605,6 +605,10 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         }
         //打点
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_FOLLOW, 1);
+
+        if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+            return;
+        }
 
         //点击了房主卡片的关注按钮
         if (mUserUuidFromBundle == mOwnerUuidFromBundle && mOwnerUuidFromBundle != UserAccountManager.getInstance().getUuidAsLong()) {

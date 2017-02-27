@@ -8,4 +8,8 @@
     <string name="can_not_speak">can not speak</string>
     <string name="barrage_open">open barrage</string>
     <string name="barrage_close">close barrage</string>
+    <string name="follow_success">Followed successfully</string>
+    <string name="follow_failed">Couldn\\\'t follow</string>
+    <string name="setting_black_follow_hint">Unblock to follow</string>
+
 </resources>
