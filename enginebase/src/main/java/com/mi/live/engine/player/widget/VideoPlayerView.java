@@ -3,6 +3,7 @@ package com.mi.live.engine.player.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -39,6 +40,16 @@ public class VideoPlayerView extends VideoSurfaceView implements IVideoView, IPl
 
     public VideoPlayerView(Context context) {
         super(context);
+        init(context);
+    }
+
+    public VideoPlayerView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public VideoPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init(context);
     }
 

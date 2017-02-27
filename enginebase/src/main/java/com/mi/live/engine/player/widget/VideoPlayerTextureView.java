@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.TextureView;
 import android.view.TextureView.SurfaceTextureListener;
@@ -32,7 +33,17 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
 
     public VideoPlayerTextureView(Context context) {
         super(context);
-        initVideoView(context);
+        init(context);
+    }
+
+    public VideoPlayerTextureView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public VideoPlayerTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
     }
 
     @Override
@@ -52,7 +63,7 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
         }
     }
 
-    private void initVideoView(Context context) {
+    private void init(Context context) {
         mVideoWidth = 0;
         mVideoHeight = 0;
         mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight);
