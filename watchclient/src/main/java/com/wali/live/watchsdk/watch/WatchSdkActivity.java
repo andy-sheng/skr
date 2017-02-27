@@ -303,7 +303,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true);
         addPushProcessor(mRoomManagerPresenter);
 
-        mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData);
+        mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData, mComponentController);
         addBindActivityLifeCycle(mGiftMallPresenter, true);
         mGiftMallPresenter.setViewStub((ViewStub) findViewById(R.id.gift_mall_view_viewstub));
 
@@ -449,20 +449,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 if (mGameModePresenter == null || !mLandscape) {
                     mLiveCommentView.setVisibility(View.VISIBLE);
                 }
-                // mBottomBtnViewGroup.setVisibility(View.VISIBLE); TODO send message
-                if (mComponentController != null) {
-                    mComponentController.onEvent(WatchComponentController.MSG_DEFAULT);
-                }
             }
             break;
 
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST: {
                 mLiveCommentView.setVisibility(View.INVISIBLE);
                 mGiftMallPresenter.showGiftMallView();
-                // mBottomBtnViewGroup.setVisibility(View.GONE); TODO send message
-                if (mComponentController != null) {
-                    mComponentController.onEvent(WatchComponentController.MSG_DEFAULT);
-                }
             }
             break;
 
@@ -470,10 +462,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 mLiveCommentView.setVisibility(View.INVISIBLE);
                 mGiftMallPresenter.showGiftMallView();
                 mGiftMallPresenter.selectGiftView((Integer) event.obj1);
-                // mBottomBtnViewGroup.setVisibility(View.GONE); TODO send message
-                if (mComponentController != null) {
-                    mComponentController.onEvent(WatchComponentController.MSG_DEFAULT);
-                }
             }
             break;
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE: {

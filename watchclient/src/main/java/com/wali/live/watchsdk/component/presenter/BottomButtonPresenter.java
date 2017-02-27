@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.mi.live.data.event.GiftEventClass;
 import com.wali.live.component.presenter.ComponentPresenter;
@@ -24,6 +25,8 @@ public class BottomButtonPresenter extends
             @NonNull IComponentController componentController) {
         super(componentController);
         registerAction(WatchComponentController.MSG_ON_ORIENTATION);
+        registerAction(WatchComponentController.MSG_GIFT_MALL_SHOWED);
+        registerAction(WatchComponentController.MSG_GIFT_MALL_HIDDEN);
     }
 
     @Override
@@ -53,15 +56,24 @@ public class BottomButtonPresenter extends
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
+            if (mView == null) {
+                return false;
+            }
             switch (source) {
                 case WatchComponentController.MSG_ON_ORIENTATION:
-                    if (params != null && mView != null) {
+                    if (params != null) {
                         Boolean isLandscape = params.firstItem();
                         if (isLandscape != null) {
                             mView.onOrientation(isLandscape);
                             return true;
                         }
                     }
+                    break;
+                case WatchComponentController.MSG_GIFT_MALL_SHOWED:
+                    mView.getRealView().setVisibility(View.GONE);
+                    break;
+                case WatchComponentController.MSG_GIFT_MALL_HIDDEN:
+                    mView.getRealView().setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;

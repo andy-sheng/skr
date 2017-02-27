@@ -29,12 +29,15 @@ public class ComponentController implements ComponentPresenter.IComponentControl
     private static final int MSG_LIVE_FIRST = 20000;
     // 输入框相关消息
     public static final int MSG_CTRL_INPUT_VIEW    = MSG_LIVE_FIRST; // 弹起/隐藏 输入框
-    public static final int MSG_STAT_INPUT_VIEW    = MSG_LIVE_FIRST + 1; // 输入框 已显示/已隐藏
-    public static final int MSG_CTRL_FLY_BARRAGE   = MSG_LIVE_FIRST + 2; // 显示/隐藏 飘屏弹幕开关
-    // 底部面板相关消息
-    public static final int MSG_SHOW_SETTING_PANEL = MSG_LIVE_FIRST + 3; // 显示 设置面板
+    public static final int MSG_INPUT_VIEW_SHOWED  = MSG_LIVE_FIRST + 1; // 输入框 已显示
+    public static final int MSG_INPUT_VIEW_HIDDEN  = MSG_LIVE_FIRST + 2; // 输入框 已隐藏
+    public static final int MSG_CTRL_FLY_BARRAGE   = MSG_LIVE_FIRST + 3; // 显示/隐藏 飘屏弹幕开关
+    // 弹出页面相关消息
+    public static final int MSG_SHOW_SETTING_PANEL = MSG_LIVE_FIRST + 4; // 显示 设置面板
 
-    public static final int MSG_CTRL_GIFT_VIEW     = MSG_LIVE_FIRST + 4; // 显示 礼物页面
+    public static final int MSG_CTRL_GIFT_VIEW     = MSG_LIVE_FIRST + 5; // 显示 礼物页面
+    public static final int MSG_GIFT_MALL_SHOWED   = MSG_LIVE_FIRST + 6; // 礼物页面 已显示
+    public static final int MSG_GIFT_MALL_HIDDEN   = MSG_LIVE_FIRST + 7; // 礼物页面 已隐藏
 
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
 

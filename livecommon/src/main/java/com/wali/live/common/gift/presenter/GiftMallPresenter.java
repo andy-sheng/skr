@@ -2,6 +2,7 @@ package com.wali.live.common.gift.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.wali.live.common.gift.exception.GiftException;
 import com.wali.live.common.gift.manager.GetMibiBalanceRequest;
 import com.wali.live.common.gift.view.GiftDisPlayItemView;
 import com.wali.live.common.gift.view.GiftMallView;
+import com.wali.live.component.ComponentController;
 import com.wali.live.dao.Gift;
 import com.wali.live.proto.GiftProto;
 import com.wali.live.proto.PayProto;
@@ -69,6 +71,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     private RoomBaseDataModel mMyRoomData; // 主播id
     private Activity mActivity;
+    @Nullable
+    private ComponentController mComponentController;
 
     private ViewStub mGiftMallViewStub;
     private GiftMallView mGiftMallView;
@@ -92,10 +96,15 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     private Subscription mSountDownSubscription; // 倒计时的订阅
 
-    public GiftMallPresenter(Activity activity, Context baseContext, RoomBaseDataModel mMyRoomData) {
-        this.mMyRoomData = mMyRoomData;
-        this.mActivity = activity;
-        this.mContext = baseContext;
+    public GiftMallPresenter(
+            Activity activity,
+            Context baseContext,
+            RoomBaseDataModel mMyRoomData,
+            @Nullable ComponentController componentController) {
+        mMyRoomData = mMyRoomData;
+        mActivity = activity;
+        mContext = baseContext;
+        mComponentController = componentController;
     }
 
     public void setViewStub(ViewStub viewStub) {
@@ -121,6 +130,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         MyLog.d(TAG, "hideGiftMallView");
         if (mGiftMallView.getVisibility() == View.VISIBLE) {
             mGiftMallView.setVisibility(View.GONE);
+            if (mComponentController != null) {
+                mComponentController.onEvent(ComponentController.MSG_GIFT_MALL_HIDDEN);
+            }
         }
     }
 
@@ -708,6 +720,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         MyLog.d(TAG, "showGiftMallView");
         if (mGiftMallView.getVisibility() != View.VISIBLE) {
             mGiftMallView.setVisibility(View.VISIBLE);
+            if (mComponentController != null) {
+                mComponentController.onEvent(ComponentController.MSG_GIFT_MALL_SHOWED);
+            }
         }
     }
 
