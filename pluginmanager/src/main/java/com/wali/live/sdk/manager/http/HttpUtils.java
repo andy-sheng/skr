@@ -11,6 +11,7 @@ import com.wali.live.sdk.manager.http.exception.AccessDeniedException;
 import com.wali.live.sdk.manager.http.exception.AuthenticationFailureException;
 import com.wali.live.sdk.manager.http.utils.Base64Coder;
 import com.wali.live.sdk.manager.http.utils.StringUtils;
+import com.wali.live.sdk.manager.log.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +32,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HttpUtils {
+    private static final String TAG = HttpUtils.class.getSimpleName();
+
     public static ExecutorService ONLINE_FILE_TASK_EXECUTOR = (ExecutorService) Executors
             .newSingleThreadExecutor();
 
@@ -39,9 +42,7 @@ public class HttpUtils {
     public static final int READ_TIMEOUT = 15 * 1000;
 
     private static final String SALT_P1 = "8007236f-";
-
     private static final String SALT_P2 = "a2d6-4847-ac83-";
-
     private static final String SALT_P3 = "c49395ad6d65";
 
     private static String USER_AGENT = null;
@@ -172,15 +173,17 @@ public class HttpUtils {
 
     public static boolean downloadFile(String urlStr, final File outputFile,
                                        OnDownloadProgress progress) {
+        Logger.e(TAG, "downloadFile enter");
         if (!outputFile.exists()) {
             try {
                 outputFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.e(TAG, "downloadFile createNewFile IOException=", e);
             }
         }
         InputStream input = null;
         OutputStream output = null;
+        Logger.e(TAG, "downloadFile start");
         try {
             output = new FileOutputStream(outputFile);
             URL url = new URL(urlStr);
@@ -207,10 +210,12 @@ public class HttpUtils {
             }
             return true;
         } catch (IOException e) {
+            Logger.e(TAG, "downloadFile IOException=", e);
             if (null != progress) {
                 progress.onFailed();
             }
         } catch (Throwable e) {
+            Logger.e(TAG, "downloadFile Throwable=", e);
             if (null != progress) {
                 progress.onFailed();
             }
@@ -254,7 +259,6 @@ public class HttpUtils {
 
 
     public static class DownloadResponse {
-
         public static final int dontAllowCallOnFailureTimesLimit = -2;
         public int responseCode;
         public int result;
@@ -268,5 +272,4 @@ public class HttpUtils {
             this.e = e;
         }
     }
-
 }
