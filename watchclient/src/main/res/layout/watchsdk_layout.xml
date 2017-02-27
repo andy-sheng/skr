@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="160.33dip"
         android:layout_above="@+id/input_area_view"
+        android:layout_alignWithParentIfMissing="true"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
@@ -109,7 +110,7 @@
         android:id="@+id/bottom_button_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
     <ImageView
         android:id="@+id/close_btn"
@@ -119,14 +120,14 @@
         android:layout_marginRight="@dimen/margin_20"
         android:layout_marginTop="25dp"
         android:src="@drawable/live_icon_close_btn"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--底部面板(供BasePanelContainer使用)-->
     <RelativeLayout
         android:id="@+id/bottom_panel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--输入框-->
     <com.wali.live.component.view.InputAreaView
@@ -134,6 +135,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        android:visibility="invisible" />
 
 </RelativeLayout>

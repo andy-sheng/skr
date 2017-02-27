@@ -56,7 +56,7 @@ public class BottomButtonPresenter extends
             switch (source) {
                 case WatchComponentController.MSG_ON_ORIENTATION:
                     if (params != null && mView != null) {
-                        Boolean isLandscape = params.fetchItem();
+                        Boolean isLandscape = params.firstItem();
                         if (isLandscape != null) {
                             mView.onOrientation(isLandscape);
                             return true;

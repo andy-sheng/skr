@@ -99,7 +99,7 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 			switch (source) {
 				case ComponentController.MSG_ON_ORIENTATION:
 					if (params != null) {
-						Boolean isLandscape = params.fetchItem();
+						Boolean isLandscape = params.firstItem();
 						if (isLandscape != null) {
 							mView.onOrientation(isLandscape);
 							return true;
@@ -110,7 +110,7 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 					return mView.processBackPress();
 				case ComponentController.MSG_CTRL_INPUT_VIEW:
 					if (params != null) {
-						Boolean isShow = params.fetchItem();
+						Boolean isShow = params.firstItem();
 						if (isShow != null) {
 							return isShow ? mView.showInputView() : mView.hideInputView();
 						}
@@ -118,7 +118,7 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 					break;
 				case ComponentController.MSG_CTRL_FLY_BARRAGE:
 					if (params != null) {
-						Boolean isEnable = params.fetchItem();
+						Boolean isEnable = params.firstItem();
 						if (isEnable != null) {
 							mView.enableFlyBarrage(isEnable);
 							return true;

@@ -41,6 +41,7 @@ public class ComponentController implements ComponentPresenter.IComponentControl
     @Override
     public void registerAction(int event, @Nullable ComponentPresenter.IAction action) {
         if (action == null) {
+            MyLog.e(TAG, "registerAction but action is null for event=" + event);
             return;
         }
         Set<ComponentPresenter.IAction> actionSet = mEventActionMap.get(event);

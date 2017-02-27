@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
@@ -19,7 +18,6 @@ import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
-import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -42,7 +40,6 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.pay.fragment.RechargeFragment;
-import com.wali.live.common.view.PlaceHolderView;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.manager.WatchRoomCharactorManager;
@@ -51,7 +48,6 @@ import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.video.widget.VideoPlayerTextureView;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
@@ -63,7 +59,6 @@ import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
-import com.wali.live.watchsdk.watch.presenter.SendCommentPresenter;
 import com.wali.live.watchsdk.watch.presenter.TouchPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
@@ -228,6 +223,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                         finish();
                     }
                 });
+        mCloseBtn.setVisibility(View.VISIBLE);
 
         mRotateBtn = $(R.id.rotate_btn);
         RxView.clicks(mRotateBtn)

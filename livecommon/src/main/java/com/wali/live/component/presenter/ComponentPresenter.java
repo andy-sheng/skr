@@ -64,7 +64,6 @@ public abstract class ComponentPresenter<VIEW extends IViewProxy> extends RxLife
      */
     public static class Params {
         private List<Object> params;
-        private int accessIndex = 0;
 
         public Params putItem(Object object) {
             if (params == null) {
@@ -74,15 +73,18 @@ public abstract class ComponentPresenter<VIEW extends IViewProxy> extends RxLife
             return this;
         }
 
-        public
         @Nullable
-        <T extends Object> T fetchItem() {
-            if (params == null || accessIndex >= params.size()) {
+        public <T extends Object> T firstItem() {
+            return getItem(0);
+        }
+
+        @Nullable
+        public <T extends Object> T getItem(int index) {
+            if (params == null || index >= params.size()) {
                 return null;
             }
             try {
-                T elem = (T) params.get(accessIndex);
-                ++accessIndex;
+                T elem = (T) params.get(index);
                 return elem;
             } catch (ClassCastException e) {
                 // just ignore

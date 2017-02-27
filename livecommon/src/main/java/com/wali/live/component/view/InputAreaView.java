@@ -231,6 +231,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         }
         MyLog.w(TAG, "showInputView softKeyboardHeight=" + keyboardHeight);
         mIsInputMode = true;
+        setVisibility(View.VISIBLE);
         mInputContainer.setVisibility(View.VISIBLE);
         mPlaceHolderContainer.setVisibility(View.VISIBLE);
         adjustPlaceHolder(keyboardHeight);
@@ -264,6 +265,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             MyLog.w(TAG, "hideInputViewDirectly");
             mIsInputMode = false;
             KeyboardUtils.hideKeyboardThenReturnResult((Activity) getContext());
+            setVisibility(View.INVISIBLE);
             mInputContainer.setVisibility(View.GONE);
             mPlaceHolderContainer.setVisibility(View.GONE);
         }

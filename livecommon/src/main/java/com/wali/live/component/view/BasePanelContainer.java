@@ -73,7 +73,9 @@ public abstract class BasePanelContainer<PRESENTER, VIEW extends IViewProxy, VIE
         MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         if (mIsLandscape != isLandscape) {
             mIsLandscape = isLandscape;
-            mCurrPanel.onOrientation(mIsLandscape);
+            if (mCurrPanel != null) {
+                mCurrPanel.onOrientation(mIsLandscape);
+            }
         }
     }
 }

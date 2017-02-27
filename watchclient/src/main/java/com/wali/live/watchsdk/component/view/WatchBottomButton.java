@@ -24,7 +24,7 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  * @module 底部按钮视图, 游戏直播
  */
 public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPresenter, WatchBottomButton.IView> {
-    private static final String TAG = "LiveBottomButton";
+    private static final String TAG = "WatchBottomButton";
 
     protected View mCommentBtn;
     protected View mGiftBtn;
