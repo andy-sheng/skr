@@ -16,17 +16,19 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.event.SdkEventClass;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.engine.media.player.IMediaPlayer;
+import com.mi.live.engine.player.widget.VideoPlayMode;
+import com.mi.live.engine.player.widget.VideoPlayerCallBackWrapper;
+import com.mi.live.engine.player.widget.VideoPlayerPresenter;
+import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.wali.live.dns.IStreamReconnect;
 import com.wali.live.event.EventClass;
 import com.wali.live.ipselect.BaseIpSelectionHelper;
 import com.wali.live.ipselect.FeedsIpSelectionHelper;
 import com.wali.live.receiver.NetworkReceiver;
-import com.wali.live.video.widget.VideoPlayMode;
-import com.wali.live.video.widget.VideoPlayerCallBackWrapper;
-import com.wali.live.video.widget.VideoPlayerPresenter;
-import com.wali.live.video.widget.VideoPlayerTextureView;
 import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.video.widget.player.VideoPlayBaseSeekBar;
 
@@ -46,12 +48,12 @@ public class VideoPlayerPresenterEx implements
 
     protected static final int CLICK_TAG_ROTATE = 1001;
 
-    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, ReplaySeekBar seekBar, ImageView rotateBtn) {
+    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, ReplaySeekBar seekBar, ImageView rotateBtn, boolean realTime) {
         mContext = context;
         this.mVideoView = mVideoView;
         this.mSeekBar = seekBar;
         this.mRotateBtn = rotateBtn;
-        onCreate();
+        onCreate(realTime);
     }
 
     //-------view-----------------------------------------------------------------------------------
@@ -65,7 +67,6 @@ public class VideoPlayerPresenterEx implements
 
 
     //-------data-----------------------------------------------------------------------------------
-    protected String mLiveId;
     protected String mHost;
     protected boolean mIsActivate = false;
     protected boolean mIsAlreadyPrepared = false;
@@ -236,13 +237,14 @@ public class VideoPlayerPresenterEx implements
     };
     //-------需要外部调用的生命周期相关api--------------------------------------------------------------
 
-    protected void onCreate() {
+    protected void onCreate(boolean realTime) {
         mIpSelectionHelper = new FeedsIpSelectionHelper(mContext, this);//, KeyFlowReportManager.INSTANCE
 
         mVideoPlayerPresenter = mVideoView.getVideoPlayerPresenter();
+        mVideoPlayerPresenter.setRealTime(realTime);
         mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
         mVideoPlayerPresenter.setBufferSize(500);
-        mVideoPlayerPresenter.setRealTime(false);
+        mVideoPlayerPresenter.setLogInfo(UserAccountManager.getInstance().getUuid(), MiLinkClientAdapter.getsInstance().getClientIp());
         if (mSeekBar != null) {
             mSeekBar.setVideoPlaySeekBarListener(mVideoPlaySeekBarListener);
             mSeekBar.setPlayBtnSelected(isPlaying());
@@ -279,11 +281,7 @@ public class VideoPlayerPresenterEx implements
             //ip优选
             mIpSelectionHelper.setOriginalStreamUrl(videoUrl);
             mIpSelectionHelper.ipSelect();
-            if (TextUtils.isEmpty(mLiveId)) {
-                mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
-            } else {
-                mVideoPlayerPresenter.setVideoPath(mLiveId, mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
-            }
+            mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
             mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
 
             MyLog.w(TAG, " mIpSelectionHelper.getStreamUrl() = " + mIpSelectionHelper.getStreamUrl());
@@ -387,10 +385,6 @@ public class VideoPlayerPresenterEx implements
             layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
             mRotateBtn.setLayoutParams(layoutParams);
         }
-    }
-
-    public void setLiveId(String liveId) {
-        mLiveId = liveId;
     }
 
     //设置播放模式  VideoPlayerTextureView.TRANS_MODE_CENTER_CROP | VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE

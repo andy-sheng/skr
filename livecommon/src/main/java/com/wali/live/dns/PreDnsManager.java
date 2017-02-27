@@ -324,20 +324,6 @@ public enum PreDnsManager {
         return ipList;
     }
 
-    /**
-     * 换url中ip为新的ip
-     */
-    public static String replaceIp(String videoUrl, String ip) {
-        MyLog.w(TAG, "before videoUrl = " + videoUrl);
-        int start = videoUrl.indexOf(":");
-        int mid = videoUrl.indexOf(PreDnsManager.parseDomainFromUrl(videoUrl));
-        if (start > 0 && mid > 0) {
-            videoUrl = videoUrl.substring(0, start) + "://" + ip + "/" + videoUrl.substring(mid);
-            MyLog.w(TAG, "after videoUrl = " + videoUrl);
-        }
-        return videoUrl;
-    }
-
     public static String parseProtocolFromUrl(String streamUrl) {
         if (TextUtils.isEmpty(streamUrl)) {
             return null;

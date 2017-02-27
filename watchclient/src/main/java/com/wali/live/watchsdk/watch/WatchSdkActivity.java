@@ -31,6 +31,7 @@ import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.user.User;
+import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.view.LiveCommentView;
@@ -48,7 +49,6 @@ import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.video.widget.VideoPlayerTextureView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
@@ -283,7 +283,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private void startPlayer() {
         if (mVideoPlayerPresenterEx != null) {
             if (!mVideoPlayerPresenterEx.isActivate()) {
-                mVideoPlayerPresenterEx.setLiveId(mRoomInfo.getLiveId());
                 mVideoPlayerPresenterEx.play(mRoomInfo.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
                 mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
             }
@@ -298,7 +297,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     private void initPresenter() {
 
-        mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this, mVideoView, null, mRotateBtn) {
+        mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this, mVideoView, null, mRotateBtn, true) {
             // 覆盖只为让他不执行
             protected void orientRotateBtn() {
                 showPortraitRotateIfNeed();

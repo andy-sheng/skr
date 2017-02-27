@@ -1,4 +1,4 @@
-package com.wali.live.video.widget;
+package com.mi.live.engine.player.widget;
 
 /**
  * Created by lan on 16-1-5.

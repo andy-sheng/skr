@@ -1,4 +1,4 @@
-package com.wali.live.video.widget;
+package com.mi.live.engine.player.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,6 +1,5 @@
-package com.wali.live.video.widget;
+package com.mi.live.engine.player.widget;
 
-import android.content.res.Configuration;
 import android.view.View;
 
 /**

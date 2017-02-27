@@ -89,8 +89,6 @@ public class GalileoStreamer implements IStreamer {
     private MixVideoModel mRemoteMixVideoModel = new MixVideoModel();
     private int mCurDeviceAngle = 0;
 
-    private boolean mIsStreamerDebug = FixedStreamerDebugPresenter.getsInstance().isStreamerDebug();
-
     private boolean mHasMicSource;
     private boolean mIsDestroyed;
     private Lock mLock = new ReentrantLock();
@@ -243,12 +241,6 @@ public class GalileoStreamer implements IStreamer {
     @Deprecated
     public void updateUrl(String url) {
 //        url = "rtmp://218.92.226.43/live/stream?wsHost=r2.zb.mi.com";
-        if (mIsStreamerDebug) {
-            String fixedLiveUrl = FixedStreamerDebugPresenter.getsInstance().getFixedLiveUrl();
-            if (!TextUtils.isEmpty(fixedLiveUrl)) {
-                url = fixedLiveUrl;
-            }
-        }
         mUpStreamUrl = url;
         MyLog.w(TAG, "mUpStreamUrl =" + mUpStreamUrl);
     }
@@ -278,7 +270,7 @@ public class GalileoStreamer implements IStreamer {
                                 ipPortList[i] = ip + ":" + DEFAULT_PORT;
                             }
                         }
-                        mBroadCaster.startRtmpSessionWithURL(mUpStreamUrl, mIsStreamerDebug ? new String[0] : ipPortList);
+                        mBroadCaster.startRtmpSessionWithURL(mUpStreamUrl, ipPortList);
                     } else {
                         mBroadCaster.startRtmpSessionWithURL(mUpStreamUrl, new String[0]);
                     }

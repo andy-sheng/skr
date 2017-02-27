@@ -1,8 +1,7 @@
-package com.wali.live.video.widget;
+package com.mi.live.engine.player.widget;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.media.AudioManager;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -12,7 +11,6 @@ import android.widget.RelativeLayout;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.live.module.common.R;
 
 /**
  * Created by lan on 16-1-4.
@@ -42,17 +40,17 @@ public class VideoPlayerView extends VideoSurfaceView implements IVideoView, IPl
 
     public VideoPlayerView(Context context) {
         super(context);
-        init(context, null);
+        init(context);
     }
 
     public VideoPlayerView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-        init(context, attrs);
+        super(context, attrs);
+        init(context);
     }
 
-    public VideoPlayerView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context, attrs);
+    public VideoPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
     }
 
     @Override
@@ -66,17 +64,10 @@ public class VideoPlayerView extends VideoSurfaceView implements IVideoView, IPl
         return mVideoPlayerPresenter;
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    private void init(Context context) {
         mVideoWidth = 0;
         mVideoHeight = 0;
-        if (attrs != null) {
-            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PlayerView);
-            boolean realTime = a.getBoolean(R.styleable.PlayerView_real_time, false);
-            a.recycle();
-            mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight, realTime);
-        } else {
-            mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight, false);
-        }
+        mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight);
         mVideoPlayerPresenter.setView(this);
         // 设置SurfaceHolder callback
         getHolder().addCallback(mSHCallback);

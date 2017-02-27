@@ -14,8 +14,6 @@ import java.util.List;
  */
 public interface IPlayer {
 
-    boolean setRotateDegree(int degree);
-
     void setBufferTimeMax(float timeSecond);
 
     void reload(String path, boolean flushBuffer);

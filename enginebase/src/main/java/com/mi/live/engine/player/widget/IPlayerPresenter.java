@@ -1,4 +1,4 @@
-package com.wali.live.video.widget;
+package com.mi.live.engine.player.widget;
 
 import java.util.List;
 
@@ -44,10 +44,6 @@ public interface IPlayerPresenter {
 
     void setVideoPath(String path, String host);
 
-    void setVideoPath(String liveId, String path, String host);
-
-    void setVideoPath(String liveId, String path, String host, int interruptMode);
-
     void reconnect();
 
     long getMessageStamp();
@@ -66,8 +62,6 @@ public interface IPlayerPresenter {
     void setVolume(float var1, float var2);
 
     void release();
-
-    void setIsWatch(boolean isWatch);
 
     void enableReconnect(boolean isEnable);
 
