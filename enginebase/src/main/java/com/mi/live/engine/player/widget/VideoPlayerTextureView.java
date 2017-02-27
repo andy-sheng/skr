@@ -1,11 +1,9 @@
-package com.wali.live.video.widget;
+package com.mi.live.engine.player.widget;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
-import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.TextureView;
 import android.view.TextureView.SurfaceTextureListener;
@@ -13,7 +11,6 @@ import android.view.TextureView.SurfaceTextureListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.live.module.common.R;
 import com.xiaomi.player.Player;
 
 /**
@@ -25,7 +22,6 @@ import com.xiaomi.player.Player;
 public class VideoPlayerTextureView extends TextureView implements SurfaceTextureListener, IVideoView, IPlayerTextureView {
     private static final String TAG = VideoPlayerTextureView.class.getSimpleName();
     private int mVideoWidth, mVideoHeight;
-    private int mOffset_X = 0, mOffset_Y = 0;
     private float mShiftUpRatio;
 
     public static final int TRANS_MODE_CENTER_CROP = 0;
@@ -36,17 +32,7 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
 
     public VideoPlayerTextureView(Context context) {
         super(context);
-        initVideoView(context, null);
-    }
-
-    public VideoPlayerTextureView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-        initVideoView(context, attrs);
-    }
-
-    public VideoPlayerTextureView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        initVideoView(context, attrs);
+        initVideoView(context);
     }
 
     @Override
@@ -66,17 +52,10 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
         }
     }
 
-    private void initVideoView(Context context, AttributeSet attrs) {
+    private void initVideoView(Context context) {
         mVideoWidth = 0;
         mVideoHeight = 0;
-        if (attrs != null) {
-            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PlayerView);
-            boolean realTime = a.getBoolean(R.styleable.PlayerView_real_time, false);
-            a.recycle();
-            mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight, realTime);
-        } else {
-            mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight, false);
-        }
+        mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight);
         mVideoPlayerPresenter.setView(this);
         // 设置SurfaceTexture listener
         setSurfaceTextureListener(this);
@@ -109,7 +88,6 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         MyLog.d(TAG, "surfaceDestroyed");
-
         mVideoPlayerPresenter.onSurfaceDestroyed();
         mVideoWidth = 0;
         mVideoHeight = 0;
@@ -175,7 +153,6 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
             return;
         }
         MyLog.v(TAG + " transformVideo videoWidth=" + videoWidth + " videoHeight=" + videoHeight + " transformVideo layoutW=" + layoutW + " layoutH=" + layoutH + " mVideoTransMode=" + mVideoTransMode);
-        MyLog.v(TAG + " transformVideo offsetX = " + mOffset_X + " offsetY = " + mOffset_Y);
         if (mVideoTransMode == TRANS_MODE_CENTER_CROP) {
             mVideoPlayerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFill, layoutW, layoutH);
         } else if (mVideoTransMode == TRANS_MODE_CENTER_INSIDE) {
@@ -191,11 +168,4 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
         return (int) (mShiftUpRatio * GlobalData.screenHeight / 2);
     }
 
-    public void rotateVideo(int angle) {
-        mVideoPlayerPresenter.setRotateDegree(angle);
-    }
-
-    public void setYOffset(int offset) {
-        mOffset_Y = offset;
-    }
 }

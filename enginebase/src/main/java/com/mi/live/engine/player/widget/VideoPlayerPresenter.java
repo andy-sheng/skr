@@ -1,4 +1,4 @@
-package com.wali.live.video.widget;
+package com.mi.live.engine.player.widget;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -8,7 +8,6 @@ import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Message;
-import android.os.PowerManager;
 import android.text.TextUtils;
 import android.view.Surface;
 
@@ -17,15 +16,11 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
 import com.base.utils.sdcard.SDCardUtils;
-import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.engine.media.player.IMediaPlayer;
 import com.mi.live.engine.media.player.MediaInfo;
 import com.mi.live.engine.media.player.util.PlayConfig;
 import com.mi.live.engine.player.GalileoPlayer;
 import com.mi.live.engine.player.IPlayer;
-import com.wali.live.dns.PreDnsManager;
-import com.wali.live.video.presenter.FixedStreamerDebugPresenter;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.enums.PlayerWorkingMode;
 
@@ -60,10 +55,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private int mInterruptMode = INTERRUPT_MODE_DEFAULT;
     private int mCurrentState = STATE_IDLE;
 
-    // id标志
-    private String mLiveId;
-    private String mDumpPath;
-
     private Uri mUri;
     private String mHost;
     private long mDuration;
@@ -79,8 +70,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
     // 外部注册的监听回调
     private IPlayerCallBack mPlayerCallBack;
-    private boolean mIsWatch = false;
-    private boolean mIsStreamerDebug = FixedStreamerDebugPresenter.getsInstance().isStreamerDebug();
 
     private int mPlayMode = VideoPlayMode.PLAY_MODE_LANDSCAPE;
 
@@ -95,67 +84,34 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private boolean mWifiNetwork = false;
 
     // 调试信息
-    private long mStartTime = 0;
-    private long mPauseStartTime = 0;
-    private long mPausedTime = 0;
-    private long mFirstAudioTime = 0;
-
-    private String mBitrateStr;
-    private String mCurBitRateStr;
-    private String mCachedAudioDurationStr;
-    private String mDownloadSizeStr;
-    private String mCacheVideoBytes;
-    private String mCacheAudioBytes;
-    private String mCacheVideoDuration;
-    private String mCacheAudioDuration;
-
     private String mIpStr;
     private String mResolutionStr;
     private String mMediaMetaStr;
     private String mFrameStr;
     private String mPrepareStr = "";
     private String mStreamName;
-
     private String mIpAddress;
-    AudioManager mAudioManager;
 
-    private long mGetDecodedDataTime;
-    private long mDecodedDataSize;
-
+    private AudioManager mAudioManager;
     private float mVolumeL = 1, mVolumeR = 1;
     private int mBufferSize = 0;
     private boolean mLooping = false;
     private IVideoView mVideoView;
-
     private SurfaceTexture mSurfaceTexture = null;
     private Surface mSurface;
     private Paint mClearPaint;
-
     private boolean mIsLandscape = false;
-
     private boolean mRealTime = false;
     private long mTransferObserver = 0;
     private PlayerWorkingMode mPlayerMode = PlayerWorkingMode.PlayerWorkingLipSyncMode;
-
-    PowerManager.WakeLock mWakeLock;
-
     private boolean mIsReconnectEnable = true;
+    private String mTagInfo;
 
-    public VideoPlayerPresenter(int videoWidth, int videoHeight, boolean realTime) {
-        init(videoWidth, videoHeight, realTime);
-    }
-
-    private void init(int videoWidth, int videoHeight, boolean realTime) {
+    public VideoPlayerPresenter(int videoWidth, int videoHeight) {
         mVideoHeight = videoHeight;
         mVideoWidth = videoWidth;
-        mRealTime = realTime;
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-    }
-
-    @Override
-    public void setIsWatch(boolean isWatch) {
-        mIsWatch = isWatch;
     }
 
     @Override
@@ -183,10 +139,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         return mPlayMode;
     }
 
-    public boolean setRotateDegree(int degree) {
-        return mPlayer != null && mPlayer.setRotateDegree(degree);
-    }
-
     public void setNeedReset(boolean isNeedReset) {
         mIsNeedReset = isNeedReset;
     }
@@ -203,51 +155,13 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
     @Override
     public void setVideoPath(String path, String host) {
-        path = getVideoPathForDebug(path);
         MyLog.w(TAG, "setVideoPath path=" + path + ", host=" + host);
-        if (!TextUtils.isEmpty(path)) {
-            mUri = Uri.parse(path);
-            mHost = host;
-            setStreamName(path);
-        }
-    }
-
-    @Override
-    public void setVideoPath(String liveId, String path, String host) {
-        path = getVideoPathForDebug(path);
-        MyLog.w(TAG, "setVideoPath path=" + path + ", host=" + host);
-        mLiveId = liveId;
-        mDumpPath = SDCardUtils.getKsyPath() + "/" +
-                mLiveId + "-" + System.currentTimeMillis() + ".flv";
         if (!TextUtils.isEmpty(path)) {
             setStreamName(path);
             setVideoURI(Uri.parse(path), host);
         } else {
             MyLog.e(TAG, "setVideoPath but path is empty");
         }
-    }
-
-    @Override
-    public void setVideoPath(String liveId, String path, String host, int interruptMode) {
-        path = getVideoPathForDebug(path);
-        MyLog.w(TAG, "setVideoPath path=" + path + ", host=" + host + ", interruptMode=" + interruptMode);
-        setStreamName(path);
-        mLiveId = liveId;
-        mInterruptMode = interruptMode;
-        mDumpPath = SDCardUtils.getKsyPath() + "/" +
-                mLiveId + "-" + System.currentTimeMillis() + ".flv";
-        setVideoURI(Uri.parse(path), host);
-    }
-
-    private String getVideoPathForDebug(String path) {
-        if (mIsWatch && mIsStreamerDebug) {
-            if (!TextUtils.isEmpty(FixedStreamerDebugPresenter.getsInstance().getFixedWatchUrl())) {
-                path = FixedStreamerDebugPresenter.getsInstance().getFixedWatchUrl();//"http://163.177.43.12/r2.zb.mi.com/live/stream_400.flv";
-            } else if (!TextUtils.isEmpty(FixedStreamerDebugPresenter.getsInstance().getFixedWatchIp())) {
-                path = PreDnsManager.replaceIp(path, FixedStreamerDebugPresenter.getsInstance().getFixedWatchIp());
-            }
-        }
-        return path;
     }
 
     private void setVideoURI(Uri uri, String host) {
@@ -261,12 +175,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private void setStreamName(String path) {
         if (!path.isEmpty() && path.contains(".flv")) {
             mStreamName = path.substring(0, path.lastIndexOf(".flv"));
-        }
-    }
-
-    public void rotateVideo(int rotateAngle) {
-        if (mPlayer != null) {
-            mPlayer.setRotateDegree(rotateAngle);
         }
     }
 
@@ -321,7 +229,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             mMediaInfo = null;
 
             if (mPlayer == null) {
-                mPlayer = new GalileoPlayer(GlobalData.app(), mPlayerMode, mTransferObserver, UserAccountManager.getInstance().getUuid(), MiLinkClientAdapter.getsInstance().getClientIp());
+                mPlayer = new GalileoPlayer(GlobalData.app(), mPlayerMode, mTransferObserver, mTagInfo);
                 mPlayer.setBufferTimeMax(Constants.PLAYER_BUFFER_TIME);//设置缓冲时间5s
                 mPlayer.setTimeout(5, 5);
                 mPlayer.setVolume(mVolumeL, mVolumeR);
@@ -441,7 +349,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             mVideoHeight = mp.getVideoHeight();
             if (mPlayer != null) {
                 MyLog.w(TAG, String.format("onPrepared : ( %d x %d )", mPlayer.getVideoWidth(), mPlayer.getVideoHeight()));
-                mStartTime = System.currentTimeMillis();
                 mIpAddress = mPlayer.getServerAddress();
                 mIpStr = "ServerIP: " + mIpAddress + "\n";
                 mResolutionStr = "Resolution: " + mPlayer.getVideoWidth() + "x" + mPlayer.getVideoHeight() + "\n";
@@ -555,7 +462,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             } catch (IllegalStateException e) {
                 MyLog.e(e);
             }
-
         }
     }
 
@@ -573,11 +479,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         if (isInPlaybackState()) {
             mPlayer.start();
             mCurrentState = STATE_PLAYING;
-
-            if (mPauseStartTime != 0) {
-                mPausedTime += System.currentTimeMillis() - mPauseStartTime;
-            }
-            mPauseStartTime = 0;
         } else if (isInErrorState()) {
             //TODO 是否使用reload
             mPlayer.reset();
@@ -613,8 +514,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             }
             mDuration = mPlayer.getDuration();
             mCurrentState = STATE_PAUSED;
-
-            mPauseStartTime = System.currentTimeMillis();
             stopBitRateSampling();
         }
     }
@@ -763,41 +662,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     public boolean isInErrorState() {
         return (mPlayer != null && mCurrentState == STATE_ERROR);
     }
-
-//    /*
-//    * 横屏加黑边
-//    * */
-//    public void setVideoLayout() {
-//        if (mVideoHeight > 0 && mVideoWidth > 0) {
-//            if (mVideoWidth > mVideoHeight && mIsShowWithBlack) {
-//                //如果修改请注意布局为RelativeLayout
-//                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayoutParams();
-//                float videoRatio = ((float) (mVideoWidth)) / mVideoHeight;
-//                MyLog.w(TAG, "videoRatio = " + videoRatio);
-//                lp.height = (int) (GlobalData.screenWidth / videoRatio);
-//                lp.width = GlobalData.screenWidth;
-//                lp.topMargin = DisplayUtils.dip2px(125);
-//                lp.addRule(RelativeLayout.CENTER_IN_PARENT, 0);
-//                setLayoutParams(lp);
-//            } else {
-//                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayoutParams();
-//                float videoRatio = ((float) (mVideoWidth)) / mVideoHeight;
-//                float windowRatio = GlobalData.screenWidth / (float) GlobalData.screenHeight;
-//                boolean shouldBeWider = videoRatio > windowRatio;
-//                if (shouldBeWider) {
-//                    lp.height = GlobalData.screenHeight;
-//                    lp.width = (int) (GlobalData.screenHeight * videoRatio);
-//                } else {
-//                    lp.width = GlobalData.screenWidth;
-//                    lp.height = (int) (GlobalData.screenWidth / videoRatio);
-//                }
-//                MyLog.w(TAG, "videoRatio = " + videoRatio);
-//                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-//                lp.topMargin = 0;
-//                setLayoutParams(lp);
-//            }
-//        }
-//    }
 
     public boolean isKsyMediaPlayerNull() {
         return mPlayer == null;
@@ -1020,5 +884,11 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
     public void setPlayerMode(PlayerWorkingMode mode) {
         mPlayerMode = mode;
+    }
+
+    public void setLogInfo(String userId, String clientIp) {
+        if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(clientIp)) {
+            mTagInfo = userId + ":" + clientIp;
+        }
     }
 }

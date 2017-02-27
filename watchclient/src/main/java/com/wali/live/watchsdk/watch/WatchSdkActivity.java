@@ -19,7 +19,6 @@ import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
-import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -32,6 +31,7 @@ import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.user.User;
+import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.view.LiveCommentView;
@@ -48,7 +48,6 @@ import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.video.widget.VideoPlayerTextureView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -290,7 +289,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private void startPlayer() {
         if (mVideoPlayerPresenterEx != null) {
             if (!mVideoPlayerPresenterEx.isActivate()) {
-                mVideoPlayerPresenterEx.setLiveId(mRoomInfo.getLiveId());
                 mVideoPlayerPresenterEx.play(mRoomInfo.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
                 mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
             }

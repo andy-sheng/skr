@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.jakewharton.rxbinding.view.RxView;
-import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.SdkEventClass;
@@ -33,7 +32,7 @@ import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.ReplayBarrageMessageManager;
-import com.wali.live.video.widget.VideoPlayerTextureView;
+import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -349,7 +348,6 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     private void startPlayer() {
         if (mReplayVideoPresenter != null) {
             if (!mReplayVideoPresenter.isActivate()) {
-                mReplayVideoPresenter.setLiveId(mRoomInfo.getLiveId());
                 mReplayVideoPresenter.play(mRoomInfo.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
                 mReplayVideoPresenter.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
             }

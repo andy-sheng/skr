@@ -29,12 +29,12 @@ public class GalileoPlayer implements IPlayer {
 
     private IjkMediaPlayer mIjkMediaPlayer;
 
-    public GalileoPlayer(final Context context, final PlayerWorkingMode mode, final long observer, final String UserId, final String clientIp) {
+    public GalileoPlayer(final Context context, final PlayerWorkingMode mode, final long observer, final String tagInfo) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
             public void run() {
                 GalileoDeviceManager.INSTANCE.init(context);
-                String tag = TextUtils.isEmpty(clientIp) ? "" : UserId + ":" + clientIp;
+                String tag = TextUtils.isEmpty(tagInfo) ? "" : tagInfo;
                 mIjkMediaPlayer = new IjkMediaPlayer(context, tag, mode, observer);
                 mIjkMediaPlayer.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, GlobalData.screenWidth, GlobalData.screenHeight);
                 int curMargin = (GlobalData.screenHeight - GlobalData.screenWidth * 9 / 16) / 2;
@@ -43,11 +43,6 @@ public class GalileoPlayer implements IPlayer {
                 mIjkMediaPlayer.shiftUp(distance * 2 / GlobalData.screenHeight);
             }
         }, "GalileoPlayer()");
-    }
-
-    @Override
-    public boolean setRotateDegree(int degree) {
-        return false;
     }
 
     @Override
