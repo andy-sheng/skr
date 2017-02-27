@@ -234,7 +234,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.livesdk_layout);
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
-        
+
         getLocation();
         setupRequiredComponent();
         openOrientation();
@@ -276,6 +276,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         MyLog.w(TAG, "finish");
         super.finish();
         overridePendingTransition(R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
+        clear();
     }
 
     public void getLocation() {
@@ -360,9 +361,19 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         }
     }
 
+    //引擎的释放统一在clear处理.
+    private void clear() {
+        if (mStreamer != null) {
+            mStreamer.stopMusic();
+            mStreamer.destroy();
+            mStreamer = null;
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        clear();
         if (mScreenStateReceiver != null) {
             unregisterReceiver(mScreenStateReceiver);
         }
@@ -863,6 +874,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             mStreamer.toggleTorch(false);
             mStreamer.stopStream();
             mIsStarted = false;
+            clear();
         } else {
             MyLog.w(TAG, "stopStream is ignored, mIsStarted=" + mIsStarted);
         }
