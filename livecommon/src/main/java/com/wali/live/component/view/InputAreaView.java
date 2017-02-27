@@ -242,6 +242,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         } else {
             KeyboardUtils.showKeyboard(getContext());
         }
+        if (mPresenter != null) {
+            mPresenter.notifyInputViewShowed();
+        }
         return true;
     }
 
@@ -268,6 +271,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             setVisibility(View.INVISIBLE);
             mInputContainer.setVisibility(View.GONE);
             mPlaceHolderContainer.setVisibility(View.GONE);
+            if (mPresenter != null) {
+                mPresenter.notifyInputViewHidden();
+            }
         }
     }
 
@@ -390,6 +396,16 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
          * 发送消息
          */
         void sendBarrage(String msg, boolean isFlyBarrage);
+
+        /**
+         * 输入框 已显示
+         */
+        void notifyInputViewShowed();
+
+        /**
+         * 输入框 已隐藏
+         */
+        void notifyInputViewHidden();
     }
 
     public interface IView extends IViewProxy, IOrientationListener{

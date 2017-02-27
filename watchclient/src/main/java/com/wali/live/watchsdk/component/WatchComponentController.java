@@ -10,12 +10,11 @@ import com.wali.live.component.ComponentController;
  * @module 组件控制器, 游戏直播
  */
 public class WatchComponentController extends ComponentController {
-    private static final String TAG = "LiveComponentController";
+    private static final String TAG = "WatchComponentController";
 
     /**
      * 房间弹幕管理
      */
     LiveRoomChatMsgManager mRoomChatMsgManager =
             new LiveRoomChatMsgManager(InsertSortLinkedList.DEFAULT_MAX_SIZE);
-
 }

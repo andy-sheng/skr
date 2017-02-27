@@ -86,6 +86,16 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 		SendBarrageManager.pretendPushBarrage(barrageMsg);
 	}
 
+	@Override
+	public void notifyInputViewShowed() {
+		mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_SHOWED);
+	}
+
+	@Override
+	public void notifyInputViewHidden() {
+		mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_HIDDEN);
+	}
+
 	@Nullable
 	@Override
 	protected IAction createAction() {

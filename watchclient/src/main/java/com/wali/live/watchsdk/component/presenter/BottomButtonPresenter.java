@@ -68,10 +68,10 @@ public class BottomButtonPresenter extends
                     break;
                 case WatchComponentController.MSG_BOTTOM_POPUP_SHOWED:
                     mView.getRealView().setVisibility(View.GONE);
-                    break;
+                    return true;
                 case WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN:
                     mView.getRealView().setVisibility(View.VISIBLE);
-                    break;
+                    return true;
                 default:
                     break;
             }

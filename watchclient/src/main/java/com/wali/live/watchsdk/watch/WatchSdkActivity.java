@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.pay.fragment.RechargeFragment;
+import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.manager.WatchRoomCharactorManager;
@@ -247,6 +249,35 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
+
+        ComponentPresenter.IAction action = new ComponentPresenter.IAction() {
+            @Override
+            public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
+                switch (source) {
+                    case WatchComponentController.MSG_INPUT_VIEW_SHOWED:
+                        if (mGiftContinueViewGroup != null) {
+                            mGiftContinueViewGroup.onShowInputView();
+                        }
+                        if (mLiveCommentView != null && isDisplayLandscape()) {
+                            mLiveCommentView.setVisibility(View.GONE);
+                        }
+                        return true;
+                    case WatchComponentController.MSG_INPUT_VIEW_HIDDEN:
+                        if (mGiftContinueViewGroup != null) {
+                            mGiftContinueViewGroup.onHideInputView();
+                        }
+                        if (mLiveCommentView != null) {
+                            mLiveCommentView.setVisibility(View.VISIBLE);
+                        }
+                        return true;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        };
+        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_SHOWED, action);
+        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_HIDDEN, action);
     }
 
     private void startPlayer() {
