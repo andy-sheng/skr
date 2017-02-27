@@ -48,12 +48,12 @@ public class VideoPlayerPresenterEx implements
 
     protected static final int CLICK_TAG_ROTATE = 1001;
 
-    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, ReplaySeekBar seekBar, ImageView rotateBtn) {
+    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, ReplaySeekBar seekBar, ImageView rotateBtn, boolean realTime) {
         mContext = context;
         this.mVideoView = mVideoView;
         this.mSeekBar = seekBar;
         this.mRotateBtn = rotateBtn;
-        onCreate();
+        onCreate(realTime);
     }
 
     //-------view-----------------------------------------------------------------------------------
@@ -237,10 +237,11 @@ public class VideoPlayerPresenterEx implements
     };
     //-------需要外部调用的生命周期相关api--------------------------------------------------------------
 
-    protected void onCreate() {
+    protected void onCreate(boolean realTime) {
         mIpSelectionHelper = new FeedsIpSelectionHelper(mContext, this);//, KeyFlowReportManager.INSTANCE
 
         mVideoPlayerPresenter = mVideoView.getVideoPlayerPresenter();
+        mVideoPlayerPresenter.setRealTime(realTime);
         mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
         mVideoPlayerPresenter.setBufferSize(500);
         mVideoPlayerPresenter.setLogInfo(UserAccountManager.getInstance().getUuid(), MiLinkClientAdapter.getsInstance().getClientIp());
@@ -248,9 +249,6 @@ public class VideoPlayerPresenterEx implements
             mSeekBar.setVideoPlaySeekBarListener(mVideoPlaySeekBarListener);
             mSeekBar.setPlayBtnSelected(isPlaying());
             delayHideSeekBar(mSeekBarHideDelay);
-            mVideoPlayerPresenter.setRealTime(false);
-        } else {
-            mVideoPlayerPresenter.setRealTime(true);
         }
         mAnime = AnimationUtils.loadAnimation(GlobalData.app(), com.live.module.common.R.anim.ml_loading_animation);
         mPlayedTime = 0;

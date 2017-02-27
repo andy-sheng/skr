@@ -212,7 +212,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         addPushProcessor(mRoomStatusPresenter);
         mUserInfoPresenter = new UserInfoPresenter(this,mMyRoomData);
 
-        mReplayVideoPresenter = new VideoPlayerPresenterEx(this, mVideoView,mReplaySeekBar,mRotateBtn);
+        mReplayVideoPresenter = new VideoPlayerPresenterEx(this, mVideoView,mReplaySeekBar,mRotateBtn, false);
 //        TODO 回放横竖屏 判断是否需要
 //        mFeedsVideoPlayer.setTempForceOrientListener(this);
         mReplayVideoPresenter.setSeekBarHideDelay(4000);
