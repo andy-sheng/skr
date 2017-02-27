@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.View;
 import android.view.ViewStub;
 
@@ -14,7 +13,6 @@ import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.rx.RefuseRetryExeption;
-import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -34,7 +32,6 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.gift.exception.GiftErrorCode;
 import com.wali.live.common.gift.exception.GiftException;
-import com.wali.live.common.gift.manager.GetMibiBalanceRequest;
 import com.wali.live.common.gift.view.GiftDisPlayItemView;
 import com.wali.live.common.gift.view.GiftMallView;
 import com.wali.live.component.ComponentController;
@@ -59,7 +56,6 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -131,7 +127,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         if (mGiftMallView.getVisibility() == View.VISIBLE) {
             mGiftMallView.setVisibility(View.GONE);
             if (mComponentController != null) {
-                mComponentController.onEvent(ComponentController.MSG_GIFT_MALL_HIDDEN);
+                mComponentController.onEvent(ComponentController.MSG_BOTTOM_POPUP_HIDDEN);
             }
         }
     }
@@ -721,7 +717,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         if (mGiftMallView.getVisibility() != View.VISIBLE) {
             mGiftMallView.setVisibility(View.VISIBLE);
             if (mComponentController != null) {
-                mComponentController.onEvent(ComponentController.MSG_GIFT_MALL_SHOWED);
+                mComponentController.onEvent(ComponentController.MSG_BOTTOM_POPUP_SHOWED);
             }
         }
     }

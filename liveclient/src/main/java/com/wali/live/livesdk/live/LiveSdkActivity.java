@@ -654,8 +654,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             @Override
             public void onClick(View v) {
                 if (mComponentController != null) {
-                    mComponentController.onEvent(LiveComponentController.MSG_CTRL_INPUT_VIEW,
-                            new ComponentPresenter.Params().putItem(false));
+                    mComponentController.onEvent(LiveComponentController.MSG_HIDE_INPUT_VIEW);
                 }
             }
         });

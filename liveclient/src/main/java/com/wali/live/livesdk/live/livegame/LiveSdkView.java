@@ -8,7 +8,6 @@ import android.widget.RelativeLayout;
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkView;
-import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.presenter.InputAreaPresenter;
 import com.wali.live.component.view.InputAreaView;
 import com.wali.live.livesdk.R;
@@ -74,7 +73,6 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             addComponentView(view, presenter);
         }
 
-        mComponentController.onEvent(LiveComponentController.MSG_CTRL_FLY_BARRAGE,
-                new ComponentPresenter.Params().putItem(true));
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_BARRAGE_SWITCH);
     }
 }

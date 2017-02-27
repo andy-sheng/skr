@@ -30,8 +30,7 @@ public class BottomButtonPresenter extends
 
     @Override
     public void showInputView() {
-        mComponentController.onEvent(LiveComponentController.MSG_CTRL_INPUT_VIEW,
-                new ComponentPresenter.Params().putItem(true));
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_INPUT_VIEW);
     }
 
     @Override

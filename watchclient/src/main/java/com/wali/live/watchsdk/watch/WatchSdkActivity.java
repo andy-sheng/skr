@@ -333,8 +333,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             @Override
             public boolean onDown() {
                 if (mComponentController != null && mComponentController.onEvent(
-                        WatchComponentController.MSG_CTRL_INPUT_VIEW,
-                        new ComponentPresenter.Params().putItem(false))) {
+                        WatchComponentController.MSG_HIDE_INPUT_VIEW)) {
                     return true;
                 }
                 if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {

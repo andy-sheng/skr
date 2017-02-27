@@ -35,8 +35,10 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 		mMyRoomData = myRoomData;
 		registerAction(ComponentController.MSG_ON_ORIENTATION);
 		registerAction(ComponentController.MSG_ON_BACK_PRESSED);
-		registerAction(ComponentController.MSG_CTRL_INPUT_VIEW);
-		registerAction(ComponentController.MSG_CTRL_FLY_BARRAGE);
+		registerAction(ComponentController.MSG_SHOW_INPUT_VIEW);
+		registerAction(ComponentController.MSG_HIDE_INPUT_VIEW);
+		registerAction(ComponentController.MSG_SHOW_BARRAGE_SWITCH);
+		registerAction(ComponentController.MSG_HIDE_BARRAGE_SWITCH);
 		EventBus.getDefault().register(this);
 	}
 
@@ -108,23 +110,16 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 					break;
 				case ComponentController.MSG_ON_BACK_PRESSED:
 					return mView.processBackPress();
-				case ComponentController.MSG_CTRL_INPUT_VIEW:
-					if (params != null) {
-						Boolean isShow = params.firstItem();
-						if (isShow != null) {
-							return isShow ? mView.showInputView() : mView.hideInputView();
-						}
-					}
-					break;
-				case ComponentController.MSG_CTRL_FLY_BARRAGE:
-					if (params != null) {
-						Boolean isEnable = params.firstItem();
-						if (isEnable != null) {
-							mView.enableFlyBarrage(isEnable);
-							return true;
-						}
-					}
-					break;
+				case ComponentController.MSG_SHOW_INPUT_VIEW:
+					return mView.showInputView();
+				case ComponentController.MSG_HIDE_INPUT_VIEW:
+					return mView.hideInputView();
+				case ComponentController.MSG_SHOW_BARRAGE_SWITCH:
+					mView.enableFlyBarrage(true);
+					return true;
+				case ComponentController.MSG_HIDE_BARRAGE_SWITCH:
+					mView.enableFlyBarrage(false);
+					return true;
 				default:
 					break;
 			}

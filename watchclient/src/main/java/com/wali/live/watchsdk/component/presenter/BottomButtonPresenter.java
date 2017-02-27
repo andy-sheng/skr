@@ -25,20 +25,17 @@ public class BottomButtonPresenter extends
             @NonNull IComponentController componentController) {
         super(componentController);
         registerAction(WatchComponentController.MSG_ON_ORIENTATION);
-        registerAction(WatchComponentController.MSG_GIFT_MALL_SHOWED);
-        registerAction(WatchComponentController.MSG_GIFT_MALL_HIDDEN);
+        registerAction(WatchComponentController.MSG_BOTTOM_POPUP_SHOWED);
+        registerAction(WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN);
     }
 
     @Override
     public void showInputView() {
-        mComponentController.onEvent(WatchComponentController.MSG_CTRL_INPUT_VIEW,
-                new Params().putItem(true));
+        mComponentController.onEvent(WatchComponentController.MSG_SHOW_INPUT_VIEW);
     }
 
     @Override
     public void showGiftView() {
-        mComponentController.onEvent(WatchComponentController.MSG_CTRL_GIFT_VIEW,
-                new Params().putItem(true));
         if (AccountAuthManager.triggerActionNeedAccount(mView.getRealView().getContext())) {
             // 飘屏测试
 //            FlyBarrageManager.testFlyBarrage(mMyRoomData.getRoomId(),String.valueOf(mMyRoomData.getUid()));
@@ -69,10 +66,10 @@ public class BottomButtonPresenter extends
                         }
                     }
                     break;
-                case WatchComponentController.MSG_GIFT_MALL_SHOWED:
+                case WatchComponentController.MSG_BOTTOM_POPUP_SHOWED:
                     mView.getRealView().setVisibility(View.GONE);
                     break;
-                case WatchComponentController.MSG_GIFT_MALL_HIDDEN:
+                case WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN:
                     mView.getRealView().setVisibility(View.VISIBLE);
                     break;
                 default:
