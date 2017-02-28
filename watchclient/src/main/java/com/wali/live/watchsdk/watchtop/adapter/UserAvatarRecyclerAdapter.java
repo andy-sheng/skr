@@ -17,7 +17,7 @@ import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.query.model.ViewerModel;
 import com.wali.live.common.listener.OnItemClickListener;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.utils.ItemDataCommonFormatUtils;
+import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 
 import java.util.ArrayList;
@@ -142,14 +142,14 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
         if (viewer.getCertificationType() > 0 && !viewer.isRedName()) {
             holder.badgeIv.getLayoutParams().width = DisplayUtils.dip2px(16f);
             holder.badgeIv.getLayoutParams().height = DisplayUtils.dip2px(16f);
-            holder.badgeIv.setImageDrawable(ItemDataCommonFormatUtils.getCertificationImgSource(viewer.getCertificationType()));
+            holder.badgeIv.setImageDrawable(ItemDataFormatUtils.getCertificationImgSource(viewer.getCertificationType()));
         } else {
             holder.badgeIv.getLayoutParams().width = DisplayUtils.dip2px(10f);
             holder.badgeIv.getLayoutParams().height = DisplayUtils.dip2px(10f);
             if (viewer.isRedName()) {
-                holder.badgeIv.setImageDrawable(ItemDataCommonFormatUtils.getSmallRedName());
+                holder.badgeIv.setImageDrawable(ItemDataFormatUtils.getSmallRedName());
             } else {
-                holder.badgeIv.setImageDrawable(ItemDataCommonFormatUtils.getLevelSmallImgSource(viewer.getLevel()));
+                holder.badgeIv.setImageDrawable(ItemDataFormatUtils.getLevelSmallImgSource(viewer.getLevel()));
             }
         }
 

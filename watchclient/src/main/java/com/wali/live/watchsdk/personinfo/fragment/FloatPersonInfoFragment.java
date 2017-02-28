@@ -49,7 +49,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AsyncTaskUtils;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.utils.ItemDataCommonFormatUtils;
+import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.eventbus.DismissFloatPersonInfoEvent;
@@ -924,7 +924,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                 } else {
                     mRednameTv.setVisibility(View.GONE);
                     mWeiboVerifyConnerImage.setVisibility(View.VISIBLE);
-                    mWeiboVerifyConnerImage.setImageDrawable(ItemDataCommonFormatUtils.getCertificationImgSource(mUser.getCertificationType()));
+                    mWeiboVerifyConnerImage.setImageDrawable(ItemDataFormatUtils.getCertificationImgSource(mUser.getCertificationType()));
                 }
             }
 
@@ -1063,7 +1063,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         if (level <= 1) {
             level = 1;
         }
-        GetConfigManager.LevelItem levelItem = ItemDataCommonFormatUtils.getLevelItem(level);
+        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(level);
         mLevelTv.setText(String.valueOf(level));
         mLevelTv.setBackgroundDrawable(levelItem.drawableBG);
         mLevelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);

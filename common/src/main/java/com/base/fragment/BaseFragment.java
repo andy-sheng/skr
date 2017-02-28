@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -133,10 +132,11 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
 
     /**
      * 是否需要　强制设置attach的activity的方向, 子类需要override该方法, 默认返回true
-     * @author yaojian 2016-10-26
+     *
      * @return
+     * @author yaojian 2016-10-26
      */
-    protected boolean needForceActivityOrientation(){
+    protected boolean needForceActivityOrientation() {
         return true;
     }
 
@@ -252,7 +252,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
         }
         super.onDestroy();
         if (!Constants.isDebugMiChanel && GlobalData.app() instanceof ILeakWatch) { //耗时包不监控
-            ILeakWatch watch = (ILeakWatch)GlobalData.app();
+            ILeakWatch watch = (ILeakWatch) GlobalData.app();
             watch.watchFragment(this);
         }
         removeSelfFromStatusList();
@@ -353,7 +353,9 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
         return false;
     }
 
-    /**不想使用ButterKnife，可以使用下面方法简化代码，JQuery选择器风格*/
+    /**
+     * 不想使用ButterKnife，可以使用下面方法简化代码，JQuery选择器风格
+     */
     @Nullable
     public <V extends View> V $(@IdRes int resId) {
         if (mRootView == null) {

@@ -12,4 +12,7 @@
     <string name="setting_black_follow_hint">解除拉黑后才能关注哦</string>
     <string name="follow_success">关注成功</string>
     <string name="follow_failed">关注失败</string>
+
+    <string name="please_login">请先登录</string>
+    <string name="go_to_login">去登录</string>
 </resources>

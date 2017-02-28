@@ -145,8 +145,6 @@ public class InitManager {
 
     /**
      * 同时设置app和milink日志
-     *
-     * @param logLevel
      */
     public static void setAppAndMilinkLogLevel(int logLevel) {
         if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
@@ -154,14 +152,11 @@ public class InitManager {
         }
 
         setAppLogLevel(logLevel);
-
         setMilinkLogLevel(logLevel);
     }
 
     /**
      * 设置app log级别
-     *
-     * @param logLevel
      */
     public static void setAppLogLevel(int logLevel) {
         if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
@@ -176,8 +171,6 @@ public class InitManager {
 
     /**
      * 设置milink log级别
-     *
-     * @param logLevel
      */
     public static void setMilinkLogLevel(int logLevel) {
         if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
@@ -185,6 +178,5 @@ public class InitManager {
         }
 
         MiLinkClientAdapter.getsInstance().setMilinkLogLevel(logLevel);
-
     }
 }
