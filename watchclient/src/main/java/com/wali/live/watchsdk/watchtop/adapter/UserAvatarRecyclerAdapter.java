@@ -5,12 +5,15 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.jakewharton.rxbinding.view.RxView;
+import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.query.model.ViewerModel;
 import com.wali.live.common.listener.OnItemClickListener;
 import com.wali.live.utils.AvatarUtils;
@@ -18,9 +21,13 @@ import com.wali.live.utils.ItemDataCommonFormatUtils;
 import com.wali.live.watchsdk.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.functions.Action1;
 
 /**
@@ -29,19 +36,36 @@ import rx.functions.Action1;
 public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRecyclerAdapter.UserAvatarHolder> {
     private static final String TAG = UserAvatarRecyclerAdapter.class.getSimpleName();
 
-    private static int[] mCrownBackgrounds = {R.drawable.avatar_item_crown_gold, R.drawable.avatar_item_crown_sliver, R.drawable.avatar_item_crown_cuprum};
-    private ArrayList<ViewerModel> mViewerList = new ArrayList<>();
+    private static int[] mCrownBackgrounds = {R.drawable.avatar_item_crown_gold, R.drawable.avatar_item_crown_sliver, R.drawable.avatar_item_crown_cuprum };
+    private LinkedList<ViewerModel> mViewerList = new LinkedList<>();
 
     public static final int ITEM_TYPE_NORMAL = 100;    //列表的header
+    public static final int ITEM_TYPE_FOOTER_BTN = 101;    //列表的footer  展示loadmore正在加载 和 列表为空的状态
 
     private OnItemClickListener mClickListener;
 
+    private View mFooterBtn;
+    View.OnClickListener mFooterBtnListener;
+
+    private int mLastLayoutPosition;  // 屏幕右边最后一个item 位置
     private Pair<Integer, Float> mLastItemPositionAndAlpha = new Pair<>(-1, 1.0f);
     private Pair<Integer, Float> mLastSecondPositionAndAlpha = new Pair<>(-1, 1.0f);
 
+    private int mManagerCount = -1;
+
+    public void setMaxManagerNumAndClickListener(int cnt, View.OnClickListener listener) {
+        mManagerCount = cnt;
+        mFooterBtnListener = listener;
+    }
+
+    private AdapterView.OnItemLongClickListener mLongClickListener;
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) {
+        mLongClickListener = listener;
     }
 
     public UserAvatarRecyclerAdapter() {
@@ -54,19 +78,37 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
     public void setViewerList(List<ViewerModel> dataList, boolean force) {
         mViewerList.clear();
         mViewerList.addAll(dataList);
-        MyLog.d(TAG,"setViewerList size:"+mViewerList.size());
         notifyDataSetChanged();
+    }
+
+    public void addViewerList(Collection<ViewerModel> dataList) {
+        mViewerList.addAll(dataList);
+        notifyDataSetChanged();
+    }
+
+    public ViewerModel getViewer(int position) {
+        if (mManagerCount < 0) {
+            if (position < 0 || position >= getItemCount()) {
+                return null;
+            }
+            return mViewerList.get(position);
+        } else {
+            if (position < 1 || position >= getItemCount()) {
+                return null;
+            }
+            return mViewerList.get(position - 1);
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return mViewerList.size();
+        int count = (mManagerCount > 0 && (mViewerList == null ? 0 : mViewerList.size()) <= mManagerCount) ? 1 : 0;
+        return (mViewerList == null ? 0 : mViewerList.size()) + count;
     }
 
     @Override
     public UserAvatarHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyLog.d(TAG,"onCreateViewHolder");
         View itemView;
         switch (viewType) {
             case ITEM_TYPE_NORMAL:
@@ -82,16 +124,18 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
 
     @Override
     public void onBindViewHolder(final UserAvatarHolder holder, final int position) {
-        MyLog.d(TAG,"onBindViewHolder");
-        ViewerModel viewer;
-        //这个adapter观众头像和管理员头像 管理员头像maxCnt大于0
-        viewer = mViewerList.get(position);
-        AvatarUtils.loadAvatarByUidTs(holder.avatarIv, viewer.getUid(), viewer.getAvatar(), true);
+        if (getItemViewType(position) == ITEM_TYPE_FOOTER_BTN) {
+            return;
+        }
 
-        if (position < 3 && mViewerList.size() >= 5) {
+        //这个adapter观众头像和管理员头像 管理员头像maxCnt大于0
+        ViewerModel viewer = mViewerList.get(position);
+        AvatarUtils.loadAvatarByUidTs(holder.avatarIv, viewer.getUid(), viewer.getAvatar(), true);
+        if (position < 3 && mViewerList.size() >= 5 ) {
             //         holder.crownIv.setVisibility(View.VISIBLE);
             holder.crownIv.setBackground(holder.crownIv.getContext().getResources().getDrawable(mCrownBackgrounds[position]));
         } else {
+            holder.crownIv.setImageResource(0);
             holder.crownIv.setVisibility(View.INVISIBLE);
         }
 
@@ -120,13 +164,13 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
                     });
         }
 
-        if (position == mLastItemPositionAndAlpha.first) {   // 最右一个item 设置alpha
+       /* if (position == mLastItemPositionAndAlpha.first) {   // 最右一个item 设置alpha
             holder.itemView.setAlpha(mLastItemPositionAndAlpha.second);
         } else if (position == mLastSecondPositionAndAlpha.first) {
             holder.itemView.setAlpha(mLastSecondPositionAndAlpha.second); // 最右倒数第二个 设置alpha
         } else {
             holder.itemView.setAlpha(1.0f);
-        }
+        }*/
     }
 
     @Override
@@ -142,21 +186,21 @@ public class UserAvatarRecyclerAdapter extends RecyclerView.Adapter<UserAvatarRe
         mLastSecondPositionAndAlpha = positionAndAlpha;
     }
 
-    public ViewerModel getViewer(int position) {
-        return mViewerList.get(position);
-    }
-
     public class UserAvatarHolder extends RecyclerView.ViewHolder {
         public BaseImageView avatarIv;
+
         public ImageView badgeIv;
 
         public ImageView crownIv;
 
         public UserAvatarHolder(View itemView) {
             super(itemView);
+            if (mFooterBtn == itemView) {
+                return;
+            }
             avatarIv = (BaseImageView) itemView.findViewById(R.id.user_avatar_iv);
             badgeIv = (ImageView) itemView.findViewById(R.id.user_badge_iv);
-            crownIv = (ImageView) itemView.findViewById(R.id.user_crown);
+            crownIv = (ImageView)itemView.findViewById(R.id.user_crown);
         }
     }
 }
