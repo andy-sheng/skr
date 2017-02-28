@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,9 +13,7 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
-import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
@@ -98,7 +94,7 @@ import rx.functions.Action1;
  * Created by lan on 16/11/25.
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener
-        , ForbidManagePresenter.IForbidManageProvider,IActionCallBack {
+        , ForbidManagePresenter.IForbidManageProvider, IActionCallBack {
 
     @Override
     public boolean isKeyboardResize() {
@@ -253,9 +249,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     @Override
                     public void call(Void aVoid) {
                         if (mLandscape) {
-                            forcePortrait();
+                            tempForcePortrait();
                         } else {
-                            forceLandscape();
+                            tempForceLandscape();
                         }
                     }
                 });
@@ -443,7 +439,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mSdkView.releaseSdkView();
             mSdkView = null;
         }
-        if(mHandlerThread != null){
+        if (mHandlerThread != null) {
             mHandlerThread.destroy();
         }
     }

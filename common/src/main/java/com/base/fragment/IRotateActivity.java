@@ -9,9 +9,13 @@ public interface IRotateActivity {
 
     void forceLandscape();
 
-    void increaseLockScreenRefCount();
-
     void forcePortrait();
+
+    void tempForceLandscape();
+
+    void tempForcePortrait();
+
+    void increaseLockScreenRefCount();
 
     void decreaseLockScreenRefCount();
 

@@ -234,6 +234,24 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     }
 
     @Override
+    public void tempForceLandscape() {
+        int tempOrientation = mScreenOrientation;
+        mScreenOrientation = ORIENTATION_LANDSCAPE_NORMAL;
+        rotateOrientation();
+        notifyOrientation(mScreenDisplayOrientation);
+        mScreenOrientation = tempOrientation;
+    }
+
+    @Override
+    public void tempForcePortrait() {
+        int tempOrientation = mScreenOrientation;
+        mScreenOrientation = ORIENTATION_PORTRAIT_NORMAL;
+        rotateOrientation();
+        notifyOrientation(mScreenDisplayOrientation);
+        mScreenOrientation = tempOrientation;
+    }
+
+    @Override
     public void openOrientationButNotRotate() {
         mOpenOrientation = true;
     }
