@@ -68,7 +68,6 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.dns.ILiveReconnect;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
@@ -383,8 +382,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             mTopInfoSingleView.onScreenOrientationChanged(true);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENTATION,
-                    new ComponentPresenter.Params().putItem(true));
+            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
@@ -402,8 +400,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             mTopInfoSingleView.onScreenOrientationChanged(false);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENTATION,
-                    new ComponentPresenter.Params().putItem(false));
+            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);

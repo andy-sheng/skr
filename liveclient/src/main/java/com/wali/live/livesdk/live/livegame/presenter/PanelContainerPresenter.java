@@ -27,7 +27,8 @@ public class PanelContainerPresenter extends
             @NonNull IComponentController componentController,
             @Nullable LiveRoomChatMsgManager liveRoomChatMsgManager) {
         super(componentController);
-        registerAction(LiveComponentController.MSG_ON_ORIENTATION);
+        registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(LiveComponentController.MSG_ON_BACK_PRESSED);
         registerAction(LiveComponentController.MSG_SHOW_SETTING_PANEL);
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
@@ -51,27 +52,21 @@ public class PanelContainerPresenter extends
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
+            if (mView == null) {
+                return false;
+            }
             switch (source) {
-                case LiveComponentController.MSG_ON_ORIENTATION:
-                    if (params != null && mView != null) {
-                        Boolean isLandscape = params.firstItem();
-                        if (isLandscape != null) {
-                            mView.onOrientation(isLandscape);
-                            return true;
-                        }
-                    }
-                    break;
+                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
+                    mView.onOrientation(false);
+                    return true;
+                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                    mView.onOrientation(true);
+                    return true;
                 case LiveComponentController.MSG_SHOW_SETTING_PANEL:
-                    if (mView != null) {
-                        mView.showSettingPanel();
-                        return true;
-                    }
-                    break;
+                    mView.showSettingPanel();
+                    return true;
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
-                    if (mView != null) {
-                        return mView.processBackPress();
-                    }
-                    break;
+                    return mView.processBackPress();
                 default:
                     break;
 

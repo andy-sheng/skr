@@ -22,8 +22,9 @@ public class ComponentController implements ComponentPresenter.IComponentControl
 
     // 系统消息
     private static final int MSG_SYSTEM_FIRST = 10000;
-    public static final int MSG_ON_BACK_PRESSED = MSG_SYSTEM_FIRST; // 返回键
-    public static final int MSG_ON_ORIENTATION  = MSG_SYSTEM_FIRST + 1; // 系统转屏
+    public static final int MSG_ON_BACK_PRESSED     = MSG_SYSTEM_FIRST; // 返回键
+    public static final int MSG_ON_ORIENT_PORTRAIT  = MSG_SYSTEM_FIRST + 1; // 竖屏
+    public static final int MSG_ON_ORIENT_LANDSCAPE = MSG_SYSTEM_FIRST + 2; // 横屏
 
     // UI消息
     private static final int MSG_LIVE_FIRST = 20000;

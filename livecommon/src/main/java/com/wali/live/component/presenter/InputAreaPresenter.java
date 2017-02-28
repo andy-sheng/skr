@@ -33,7 +33,8 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 			@NonNull RoomBaseDataModel myRoomData) {
 		super(componentController);
 		mMyRoomData = myRoomData;
-		registerAction(ComponentController.MSG_ON_ORIENTATION);
+		registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
+		registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
 		registerAction(ComponentController.MSG_ON_BACK_PRESSED);
 		registerAction(ComponentController.MSG_SHOW_INPUT_VIEW);
 		registerAction(ComponentController.MSG_HIDE_INPUT_VIEW);
@@ -109,15 +110,12 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 				return false;
 			}
 			switch (source) {
-				case ComponentController.MSG_ON_ORIENTATION:
-					if (params != null) {
-						Boolean isLandscape = params.firstItem();
-						if (isLandscape != null) {
-							mView.onOrientation(isLandscape);
-							return true;
-						}
-					}
-					break;
+				case ComponentController.MSG_ON_ORIENT_PORTRAIT:
+					mView.onOrientation(false);
+					return true;
+				case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
+					mView.onOrientation(true);
+					return true;
 				case ComponentController.MSG_ON_BACK_PRESSED:
 					return mView.processBackPress();
 				case ComponentController.MSG_SHOW_INPUT_VIEW:

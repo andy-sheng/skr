@@ -24,7 +24,8 @@ public class BottomButtonPresenter extends
             @NonNull IComponentController componentController,
             @Nullable GameLivePresenter gameLivePresenter) {
         super(componentController);
-        registerAction(LiveComponentController.MSG_ON_ORIENTATION);
+        registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         mGameLivePresenter = gameLivePresenter;
     }
 
@@ -54,16 +55,16 @@ public class BottomButtonPresenter extends
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
+            if (mView == null) {
+                return false;
+            }
             switch (source) {
-                case LiveComponentController.MSG_ON_ORIENTATION:
-                    if (params != null && mView != null) {
-                        Boolean isLandscape = params.firstItem();
-                        if (isLandscape != null) {
-                            mView.onOrientation(isLandscape);
-                            return true;
-                        }
-                    }
-                    break;
+                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
+                    mView.onOrientation(false);
+                    return true;
+                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                    mView.onOrientation(true);
+                    return true;
                 default:
                     break;
             }

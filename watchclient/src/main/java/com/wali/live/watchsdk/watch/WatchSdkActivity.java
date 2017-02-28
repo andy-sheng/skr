@@ -42,7 +42,6 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.pay.fragment.RechargeFragment;
-import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.manager.WatchRoomCharactorManager;
@@ -907,8 +906,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mGiftContinueViewGroup.setOrient(true);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENTATION,
-                    new ComponentPresenter.Params().putItem(true));
+            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         }
     }
 
@@ -923,8 +921,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mGiftContinueViewGroup.setOrient(false);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENTATION,
-                    new ComponentPresenter.Params().putItem(false));
+            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
         }
     }
 

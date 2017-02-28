@@ -65,6 +65,8 @@ public abstract class ComponentPresenter<VIEW extends IViewProxy> extends RxLife
     public static class Params {
         private List<Object> params;
 
+        public Params() {}
+
         public Params putItem(Object object) {
             if (params == null) {
                 params = new ArrayList<>();

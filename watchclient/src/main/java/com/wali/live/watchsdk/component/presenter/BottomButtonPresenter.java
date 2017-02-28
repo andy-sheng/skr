@@ -24,7 +24,8 @@ public class BottomButtonPresenter extends
     public BottomButtonPresenter(
             @NonNull IComponentController componentController) {
         super(componentController);
-        registerAction(WatchComponentController.MSG_ON_ORIENTATION);
+        registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(WatchComponentController.MSG_BOTTOM_POPUP_SHOWED);
         registerAction(WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN);
     }
@@ -57,15 +58,12 @@ public class BottomButtonPresenter extends
                 return false;
             }
             switch (source) {
-                case WatchComponentController.MSG_ON_ORIENTATION:
-                    if (params != null) {
-                        Boolean isLandscape = params.firstItem();
-                        if (isLandscape != null) {
-                            mView.onOrientation(isLandscape);
-                            return true;
-                        }
-                    }
-                    break;
+                case WatchComponentController.MSG_ON_ORIENT_PORTRAIT:
+                    mView.onOrientation(false);
+                    return true;
+                case WatchComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                    mView.onOrientation(true);
+                    return true;
                 case WatchComponentController.MSG_BOTTOM_POPUP_SHOWED:
                     mView.getRealView().setVisibility(View.GONE);
                     return true;
