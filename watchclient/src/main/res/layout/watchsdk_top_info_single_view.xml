@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true">
 
     <RelativeLayout
         android:id="@+id/owner_container_root"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6.67dp"
-        android:layout_marginRight="6.67dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginRight="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_80">
 
 
         <RelativeLayout
             android:id="@+id/owner_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/avatar_rv"
             android:background="@drawable/live_bg_head">
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/owner_iv"
-                android:layout_width="34.66dp"
-                android:layout_height="34.66dp"
-                android:layout_margin="1dp" />
+                android:layout_width="@dimen/view_dimen_100"
+                android:layout_height="@dimen/view_dimen_100" />
 
 
             <!--主播连麦中时头像右下方的小图标-->
@@ -56,8 +56,11 @@
                     android:maxLength="11"
                     android:maxWidth="75dp"
                     android:minWidth="25dip"
+                    android:shadowColor="@color/color_666666"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="1"
                     android:singleLine="true"
-                    android:text="直播用户"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/text_size_34" />
 
@@ -65,44 +68,46 @@
                     android:id="@+id/view_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/name_tv"
-                    android:layout_alignParentLeft="true"
                     android:layout_below="@id/name_tv"
+                    android:layout_marginLeft="@dimen/margin_10"
                     android:layout_marginTop="1dp"
+                    android:layout_toRightOf="@+id/iv_user_icon"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="1"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_28" />
 
                 <ImageView
+                    android:id="@+id/iv_user_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/name_tv"
+                    android:layout_alignParentLeft="true"
                     android:layout_below="@id/name_tv"
-                    android:layout_marginLeft="3dp"
                     android:layout_marginTop="4dp"
-                    android:layout_toRightOf="@id/view_tv"
-                    android:src="@drawable/live_bottom_icon_me_normal" />
+                    android:src="@drawable/live_icon_people" />
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/follow_btn"
-                android:layout_width="30.33dp"
-                android:layout_height="30.33dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="3.33dp"
+                android:layout_marginRight="3.67dp"
                 android:layout_toRightOf="@id/name_and_viewer_num_area"
                 android:background="@drawable/live_icon_follow_bg"
-                android:gravity="center"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/margin_24"
+                android:paddingRight="@dimen/margin_24"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:text="@string/follow"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_36"
                 android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/follow_btn_background"
-                android:layout_width="30.33dp"
-                android:layout_height="30.33dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="3.33dp"
-                android:layout_toRightOf="@id/name_and_viewer_num_area"
-                android:src="@drawable/follow_background_yellow"
-                android:visibility="gone" />
-
             <!--连麦主播嘉宾间的连接符、嘉宾的头像及头像右下小图标-->
             <RelativeLayout
                 android:id="@+id/link_guest_area"
@@ -123,10 +128,9 @@
 
                 <com.base.image.fresco.BaseImageView
                     android:id="@+id/guest_iv"
-                    android:layout_width="34.66dp"
-                    android:layout_height="34.66dp"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="1dp" />
+                    android:layout_width="@dimen/view_dimen_100"
+                    android:layout_height="@dimen/view_dimen_100"
+                    android:layout_centerVertical="true" />
 
                 <ImageView
                     android:id="@+id/link_guest_icon"
@@ -145,8 +149,8 @@
             android:id="@+id/user_badge_iv"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:layout_marginLeft="24.66dp"
-            android:layout_marginTop="24.66dp"
+            android:layout_marginLeft="@dimen/margin_66"
+            android:layout_marginTop="@dimen/margin_60"
             android:scaleType="fitStart"
             android:visibility="visible" />
 
@@ -154,9 +158,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/avatar_rv"
             android:layout_width="match_parent"
-            android:layout_height="40.66dp"
+            android:layout_height="@dimen/view_dimen_100"
             android:layout_marginLeft="6.66dp"
-            android:layout_marginRight="48dp"
+            android:layout_marginRight="@dimen/margin_120"
             android:layout_toRightOf="@id/owner_container"
             android:fadingEdge="none"
             android:fadingEdgeLength="0dp"
@@ -173,7 +177,6 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/live_anchor_star_ticket_bg">
 
-            <!--android:drawableRight="@drawable/live_anchor_star_ticket_more"-->
             <TextView
                 android:id="@+id/ticket_tv_up"
                 android:layout_width="wrap_content"
@@ -183,6 +186,9 @@
                 android:ellipsize="none"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
                 android:text="星票"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/text_size_32" />
@@ -193,14 +199,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawablePadding="5.33dp"
-                android:drawableRight="@drawable/live_anchor_star_ticket_more"
                 android:ellipsize="none"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
                 android:text=""
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/text_size_32"
-                android:translationY="15dp" />
+                android:translationY="18dp" />
         </RelativeLayout>
     </RelativeLayout>
 </merge>

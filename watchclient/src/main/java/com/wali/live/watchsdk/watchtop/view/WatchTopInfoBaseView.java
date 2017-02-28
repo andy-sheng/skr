@@ -135,6 +135,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                     @Override
                     public void call(Void aVoid) {
                         EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomBaseDataModel.getUid(), null));
+
                     }
                 });
 
@@ -148,6 +149,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         mAvatarAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
                 if (CommonUtils.isFastDoubleClick(1000)) {
                     return;
                 }
@@ -173,14 +175,14 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                         mIsLoadViewer = true;
                         EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER, mMyRoomBaseDataModel, null));
                     }
-                    gradientItems();
+                    //gradientItems();
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                gradientItems();
+                // gradientItems();
             }
         });
         mAvatarRv.setItemAnimator(new DefaultItemAnimator());
@@ -197,6 +199,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+
                         EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET
                                 , mMyRoomBaseDataModel.getUid(), mMyRoomBaseDataModel.getTicket(), mMyRoomBaseDataModel.getRoomId()));
                     }
@@ -240,9 +243,11 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
     public void updateAnchorNickName() {
         String nickName = mMyRoomBaseDataModel.getNickName();
         if (!TextUtils.isEmpty(nickName)) {
-            mShowerNameTv.setText(nickName);
+//            mShowerNameTv.setText(nickName);
+            CommonUtils.setMaxEcplise(mShowerNameTv,DisplayUtils.dip2px(75),nickName);
         } else if (mMyRoomBaseDataModel.getUid() > 0) {
-            mShowerNameTv.setText(String.valueOf(mMyRoomBaseDataModel.getUid()));
+//            mShowerNameTv.setText());
+            CommonUtils.setMaxEcplise(mShowerNameTv,DisplayUtils.dip2px(75),String.valueOf(mMyRoomBaseDataModel.getUid()));
         } else {
             mShowerNameTv.setText(R.string.watch_owner_name_default);
         }
@@ -278,7 +283,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
             mMainHandler.removeCallbacks(mDelayUpdateTicketRunnable);
             if (!mIsTicketing && ticket <= 0) {
                 mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
-                        R.color.color_white, R.color.color_e5aa1e));
+                        R.color.color_white, R.color.color_fed533));
                 resetTicketView();
                 mMainHandler.postDelayed(mDelayUpdateTicketRunnable, TICKET_DELAYED_TOTAL);
                 return;
@@ -286,15 +291,15 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
             if (mIsTicketing) {
                 //切换到星票
                 mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(ticket), getResources().getString(R.string.live_ticket_count_this_time, ticket),
-                        R.color.color_white, R.color.color_e5aa1e));
+                        R.color.color_white, R.color.color_fed533));
                 mTicketTvDown.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
-                        R.color.color_white, R.color.color_e5aa1e));
+                        R.color.color_white, R.color.color_fed533));
             } else {
                 //切换到本场
                 mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
-                        R.color.color_white, R.color.color_e5aa1e));
+                        R.color.color_white, R.color.color_fed533));
                 mTicketTvDown.setText(SpanUtils.addColorSpan(String.valueOf(ticket), getResources().getString(R.string.live_ticket_count_this_time, ticket),
-                        R.color.color_white, R.color.color_e5aa1e));
+                        R.color.color_white, R.color.color_fed533));
             }
             mIsTicketing = !mIsTicketing;
             mMyRoomBaseDataModel.setTicketing(mIsTicketing);
@@ -400,7 +405,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
             mIsTicketing = false;
             mMyRoomBaseDataModel.setTicketing(mIsTicketing);
             mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
-                    R.color.color_white, R.color.color_e5aa1e));
+                    R.color.color_white, R.color.color_fed533));
             pFont.getTextBounds(mTicketTvUp.getText().toString(), 0, mTicketTvUp.getText().toString().length(), rect);
             int ticketUpWidth = rect.width() + TICKET_PADDING;
             mTicketArea.setWidth(ticketUpWidth);
@@ -415,23 +420,23 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                 if (mIsTicketing) {
                     //本场 正在替换 星票
                     mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
-                            R.color.color_white, R.color.color_e5aa1e));
+                            R.color.color_white, R.color.color_fed533));
                     mTicketTvDown.setText(SpanUtils.addColorSpan(String.valueOf(ticket), getResources().getString(R.string.live_ticket_count_this_time, ticket),
-                            R.color.color_white, R.color.color_e5aa1e));
+                            R.color.color_white, R.color.color_fed533));
                 } else {
                     //星票 正在替换 本场
                     mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(ticket), getResources().getString(R.string.live_ticket_count_this_time, ticket),
-                            R.color.color_white, R.color.color_e5aa1e));
+                            R.color.color_white, R.color.color_fed533));
                     mTicketTvDown.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
-                            R.color.color_white, R.color.color_e5aa1e));
+                            R.color.color_white, R.color.color_fed533));
                 }
             } else {
                 if (mIsTicketing) {
                     mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(ticket), getResources().getString(R.string.live_ticket_count_this_time, ticket),
-                            R.color.color_white, R.color.color_e5aa1e));
+                            R.color.color_white, R.color.color_fed533));
                 } else {
                     mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
-                            R.color.color_white, R.color.color_e5aa1e));
+                            R.color.color_white, R.color.color_fed533));
                 }
                 pFont.getTextBounds(mTicketTvUp.getText().toString(), 0, mTicketTvUp.getText().toString().length(), rect);
                 int ticketUpWidth = rect.width() + TICKET_PADDING;
@@ -480,7 +485,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
 //                mMyRoomBaseDataModel.setTicketing(mIsTicketing);
 //                mTicketTvUp.setText(SpanUtils.addColorSpan(String.valueOf(totalTicket), getResources().getString(R.string.live_ticket_count, totalTicket),
 //                        R.color.color_white, R.color.color_e5aa1e));
-//                mTicketTvDown.setText(SpanUtils.addColorSpan(String.valueOf(ticket), getResources().getString(R.string.live_ticket_count_this_time, ticket),
+//                mTicketTvDown.setText(SpanUtils.addColorSpan(String.valueOf(ticket), getResources().getString(com.mi.live.data.R.string.live_ticket_count_this_time, ticket),
 //                        R.color.color_white, R.color.color_e5aa1e));
 //                switchTicketTextModeAnime(mTicketTvUp.getText().toString(), mTicketTvDown.getText().toString());
 //                mMainHandler.postDelayed(mDelayUpdateTicketRunnable, TICKET_DELAYED);

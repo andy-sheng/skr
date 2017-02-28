@@ -1625,4 +1625,19 @@ public abstract class CommonUtils {
         }
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
     }
+
+    /**
+     * 参数：maxWidth 最大宽度
+     * 参数：content  指TextView中要显示的内容
+     */
+    public static void setMaxEcplise(final TextView mTextView,int maxWidth, final String content) {
+        TextPaint textPaint = mTextView.getPaint();
+        float textPaintWidth = textPaint.measureText(content);
+
+        if(textPaintWidth > maxWidth && content.length() > 6){
+            setMaxEcplise(mTextView,maxWidth,content.substring(0,content.length()-6) + "...");
+        }else{
+            mTextView.setText(content);
+        }
+    }
 }

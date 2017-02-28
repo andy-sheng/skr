@@ -3,8 +3,11 @@ package com.wali.live.watchsdk.watch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +15,9 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
@@ -20,6 +25,7 @@ import com.base.utils.rx.RxRetryAssist;
 import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
@@ -28,10 +34,13 @@ import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
+import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.view.LiveCommentView;
@@ -54,6 +63,8 @@ import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.task.IActionCallBack;
+import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
@@ -75,6 +86,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -86,7 +98,7 @@ import rx.functions.Action1;
  * Created by lan on 16/11/25.
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener
-        , ForbidManagePresenter.IForbidManageProvider {
+        , ForbidManagePresenter.IForbidManageProvider,IActionCallBack {
 
     @Override
     public boolean isKeyboardResize() {
@@ -130,6 +142,13 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected UserInfoPresenter mUserInfoPresenter;
     private TouchPresenter mTouchPresenter;
     private GameModePresenter mGameModePresenter;
+
+    protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
+        @Override
+        protected void processMessage(Message message) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -423,6 +442,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mSdkView.releaseSdkView();
             mSdkView = null;
         }
+        if(mHandlerThread != null){
+            mHandlerThread.destroy();
+        }
     }
 
 
@@ -542,7 +564,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             return;
         }
 //        TODO 打开注释
-//        switch (event.type) {
+        switch (event.type) {
 //            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET: {
 //                clearTop();
 //                long uid = (long) event.obj1;
@@ -575,11 +597,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //                }
 //            }
 //            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
+            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
 //                clearTop();
-//                viewerTopFromServer((RoomBaseDataModel) event.obj1);
-//            }
-//            break;
+                viewerTopFromServer((RoomBaseDataModel) event.obj1);
+            }
+            break;
 //            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_OPEN_SUPPORT_SELECT_VIEW: {
 //                addSwitchAnchorViewIfNeed();
 //            }
@@ -731,7 +753,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //                        gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
 //                BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
 //                break;
-//        }
+        }
+    }
+
+    private void viewerTopFromServer(RoomBaseDataModel roomData) {
+        mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
     }
 
     private IWatchView mWatchView = new IWatchView() {
@@ -933,4 +959,26 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    @Override
+    public void processAction(String action, int errCode, Object... objects) {
+        MyLog.w(TAG, "processAction : " + action + " , errCode : " + errCode);
+        switch (action) {
+            case MiLinkCommand.COMMAND_LIVE_VIEWER_TOP:
+                processViewerTop(errCode, objects);
+                break;
+        }
+    }
+
+    private void processViewerTop(int errCode, Object... objects) {
+        switch (errCode) {
+            case ErrorCode.CODE_SUCCESS:
+                RoomBaseDataModel roomData = (RoomBaseDataModel) objects[0];
+                // 更新顶部观众
+                roomData.getViewersList().clear();
+                roomData.getViewersList().addAll((List) objects[1]);
+                roomData.notifyViewersChange("processViewerTop");
+                break;
+
+        }
+    }
 }

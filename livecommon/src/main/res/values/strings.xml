@@ -256,4 +256,5 @@
     <string name="file_upload_failed_file_error">Couldn\'t upload file</string>
     <string name="send">send</string>
     <string name="empty_edittext_hint">Say something here</string>
+    <string name="follow">Follow</string>
 </resources>
