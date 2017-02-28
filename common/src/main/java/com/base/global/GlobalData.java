@@ -41,6 +41,7 @@ public class GlobalData {
     public static void setApplication(Application app) {
         sApplication = app;
         recordScreenParam(app);
+        initialize();
     }
 
     public static int getRequestCode() {
@@ -55,22 +56,8 @@ public class GlobalData {
         screenHeight = displayMetrics.heightPixels;
     }
 
-    public static Executor getExecutorByLevel(int level) {
-        if (level > ASYNC_EXECUTOR_LEVEL_IMAGEWORKER) {
-            throw new IllegalArgumentException("wrong level");
-        }
-        return executors[level];
-    }
-
-    public static void initialize(Context context) {
-//        TODO 打开注释
-//        sIsDebuggable = (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
-//        if (globalUIHandler == null) {
-//            globalUIHandler = new Handler();
-//        }
-//        calculateScreenRate(context);
+    private static void initialize() {
         RejectedExecutionHandler rehHandler = new RejectedExecutionHandler() {
-
             @Override
             public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
                 MyLog.w("GlobalData ASYNC_EXECUTOR_LEVEL_IMAGEWORKER rehHandler");
@@ -79,5 +66,12 @@ public class GlobalData {
         executors[ASYNC_EXECUTOR_LEVEL_IMAGEWORKER] = new ThreadPoolExecutor(0, CPU_COUNT * 20, 30, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(), rehHandler);
         executors[ASYNC_EXECUTOR_LEVEL_IMAGEWORKER].allowCoreThreadTimeOut(true);
+    }
+
+    public static Executor getExecutorByLevel(int level) {
+        if (level > ASYNC_EXECUTOR_LEVEL_IMAGEWORKER) {
+            throw new IllegalArgumentException("wrong level");
+        }
+        return executors[level];
     }
 }
