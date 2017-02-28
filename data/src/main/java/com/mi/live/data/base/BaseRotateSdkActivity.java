@@ -5,6 +5,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.OrientationEventListener;
+import android.view.WindowManager;
 
 import com.base.fragment.IRotateActivity;
 import com.mi.live.data.event.SdkEventController;
@@ -115,9 +116,11 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
             if (isLandscape(mScreenOrientation)) {
                 rotateOrientation();
                 notifyOrientation(mScreenOrientation);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             } else if (isPortrait(mScreenOrientation)) {
                 rotateOrientation();
                 notifyOrientation(mScreenOrientation);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
         }
     }
