@@ -25,6 +25,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     private static final String TAG = "WatchSdkView";
 
     protected RoomBaseDataModel mMyRoomData;
+    protected boolean mIsGameMode = false;
 
     public WatchSdkView(
             @NonNull Activity activity,
@@ -34,6 +35,11 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         mMyRoomData = myRoomData;
     }
 
+    public void setupSdkView(boolean isGameMode) {
+        mIsGameMode = isGameMode;
+        setupSdkView();
+    }
+    
     @Override
     public void setupSdkView() {
         // 输入框
@@ -67,7 +73,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            WatchBottomButton view = new WatchBottomButton(relativeLayout);
+            WatchBottomButton view = new WatchBottomButton(relativeLayout, mIsGameMode);
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController);
             addComponentView(view, presenter);

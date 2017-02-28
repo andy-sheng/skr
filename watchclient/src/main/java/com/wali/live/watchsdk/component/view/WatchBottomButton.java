@@ -30,13 +30,41 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     protected View mGiftBtn;
 //    protected View mRotateBtn;
 
+    private boolean mIsGameMode = false;
+
     @Override
     protected String getTAG() {
         return TAG;
     }
 
-    public WatchBottomButton(@NonNull RelativeLayout contentContainer) {
+    @Override
+    public void onClick(View view) {
+        if (mPresenter == null) {
+            return;
+        }
+        int id = view.getId();
+        String msgType = "";
+        if (id == R.id.comment_btn) {
+            mPresenter.showInputView();
+            msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SENDMESSAGE;
+        } else if (id == R.id.gift_btn) {
+            mPresenter.showGiftView();
+            // TODO 增加打点
+        } else if (id == R.id.rotate_btn) {
+            mPresenter.rotateScreen();
+        }
+        if (!TextUtils.isEmpty(msgType)) {
+            StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
+                    String.format(msgType, HostChannelManager.getInstance().getChannelId()),
+                    TIMES, "1");
+        }
+    }
+
+    public WatchBottomButton(
+            @NonNull RelativeLayout contentContainer,
+            boolean isGameMode) {
         super(contentContainer);
+        mIsGameMode = isGameMode;
         initView();
     }
 
@@ -62,25 +90,12 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     @Override
-    public void onClick(View view) {
-        if (mPresenter == null) {
-            return;
-        }
-        int id = view.getId();
-        String msgType = "";
-        if (id == R.id.comment_btn) {
-            mPresenter.showInputView();
-            msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SENDMESSAGE;
-        } else if (id == R.id.gift_btn) {
-            mPresenter.showGiftView();
-            // TODO 增加打点
-        } else if (id == R.id.rotate_btn) {
-            mPresenter.rotateScreen();
-        }
-        if (!TextUtils.isEmpty(msgType)) {
-            StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                    String.format(msgType, HostChannelManager.getInstance().getChannelId()),
-                    TIMES, "1");
+    public void onOrientation(boolean isLandscape) {
+        super.onOrientation(isLandscape);
+        if (mIsGameMode && mIsLandscape) {
+            mCommentBtn.setVisibility(View.GONE);
+        } else {
+            mCommentBtn.setVisibility(View.VISIBLE);
         }
     }
 

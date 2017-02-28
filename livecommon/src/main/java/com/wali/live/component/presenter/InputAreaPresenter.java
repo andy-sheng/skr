@@ -68,6 +68,8 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
                 mView.onKeyboardHided();
                 break;
+            default:
+                break;
         }
     }
 

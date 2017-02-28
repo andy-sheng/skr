@@ -262,7 +262,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
         mComponentController = new WatchComponentController();
         mSdkView = new WatchSdkView(this, mComponentController, mMyRoomData);
-        mSdkView.setupSdkView();
+        mSdkView.setupSdkView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
 
         mTouchDelegateView = $(R.id.touch_delegate_view);
 
