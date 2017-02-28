@@ -43,6 +43,10 @@ public class ComponentController implements ComponentPresenter.IComponentControl
 
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
 
+    public void release() {
+        mEventActionMap.clear();
+    }
+
     @Override
     public void registerAction(int event, @Nullable ComponentPresenter.IAction action) {
         if (action == null) {

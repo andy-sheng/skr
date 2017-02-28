@@ -372,6 +372,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         }
         TelephoneStateReceiver.unregisterReceiver(this, mTelephoneStateReceiver);
         sRecording = false;
+        if (mComponentController != null) {
+            mComponentController.release();
+            mComponentController = null;
+        }
+        if (mSdkView != null) {
+            mSdkView.releaseSdkView();
+            mSdkView = null;
+        }
     }
 
     protected void orientLandscape() {

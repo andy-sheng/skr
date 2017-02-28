@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.base.presenter.Presenter;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.IComponentView;
 
@@ -24,7 +25,8 @@ public abstract class BaseSdkView<T extends ComponentController> {
 
     protected @NonNull Activity mActivity;
     protected @NonNull T mComponentController;
-    protected final List<IComponentView> mModuleViewSet = new ArrayList<>();
+    protected final List<IComponentView> mComponentViewSet = new ArrayList<>();
+    protected final List<ComponentPresenter> mComponentPresenterSet = new ArrayList<>();
 
     @Nullable
     @CheckResult
@@ -37,7 +39,8 @@ public abstract class BaseSdkView<T extends ComponentController> {
             @NonNull ComponentPresenter presenter) {
         view.setPresenter(presenter);
         presenter.setComponentView(view.getViewProxy());
-        mModuleViewSet.add(view);
+        mComponentViewSet.add(view);
+        mComponentPresenterSet.add(presenter);
     }
 
     public BaseSdkView(@NonNull Activity activity,
@@ -50,5 +53,16 @@ public abstract class BaseSdkView<T extends ComponentController> {
      * 初始化SdkView
      */
     public abstract void setupSdkView();
+
+    /**
+     * 销毁SdkView
+     */
+    public void releaseSdkView() {
+        for (Presenter presenter : mComponentPresenterSet) {
+            presenter.destroy();
+        }
+        mComponentPresenterSet.clear();
+        mComponentViewSet.clear();
+    }
 
 }

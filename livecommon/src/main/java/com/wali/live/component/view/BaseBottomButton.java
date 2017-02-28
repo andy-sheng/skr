@@ -61,7 +61,7 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
     public BaseBottomButton(@NonNull RelativeLayout contentContainer) {
         mContentContainer = contentContainer;
         mContentContainer.removeAllViews();
-        mContentContainer.setPadding(BTN_MARGIN, 0, BTN_MARGIN, 0);
+        mContentContainer.setPadding(BTN_MARGIN, BTN_MARGIN, BTN_MARGIN, BTN_MARGIN);
     }
 
     protected void orientSelf(boolean isLandscape) {

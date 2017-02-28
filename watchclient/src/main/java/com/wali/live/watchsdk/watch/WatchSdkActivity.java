@@ -415,6 +415,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         super.onDestroy();
         stopPlayer();
         leaveLiveToServer();
+        if (mComponentController != null) {
+            mComponentController.release();
+            mComponentController = null;
+        }
+        if (mSdkView != null) {
+            mSdkView.releaseSdkView();
+            mSdkView = null;
+        }
     }
 
 
