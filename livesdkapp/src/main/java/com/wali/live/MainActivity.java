@@ -25,7 +25,6 @@ import com.wali.live.channel.presenter.ChannelPresenter;
 import com.wali.live.channel.presenter.IChannelPresenter;
 import com.wali.live.channel.presenter.IChannelView;
 import com.wali.live.channel.viewmodel.BaseViewModel;
-import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.login.LoginPresenter;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -38,6 +37,8 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+//import com.wali.live.livesdk.live.LiveSdkActivity;
 
 /**
  * Created by lan on 16/11/25.
@@ -129,7 +130,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                     LoginPresenter loginPresenter = new LoginPresenter(MainActivity.this);
                     loginPresenter.systemLogin(HostChannelManager.getInstance().getChannelId());
                 } else {
-                    LiveSdkActivity.openActivity(MainActivity.this);
+//                    LiveSdkActivity.openActivity(MainActivity.this);
                 }
             }
         });

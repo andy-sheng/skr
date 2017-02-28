@@ -20,7 +20,7 @@ import com.squareup.leakcanary.RefWatcher;
 public class LiveSdkApplication extends Application implements ILeakWatch {
     private static final String TAG = LiveSdkApplication.class.getSimpleName();
 
-    private RefWatcher mRefWatcher;
+    private static RefWatcher sRefWatcher;
 
     @Override
     public void onCreate() {
@@ -40,14 +40,14 @@ public class LiveSdkApplication extends Application implements ILeakWatch {
 
     protected void initializeLeakDetection() {
         if (BuildConfig.DEBUG && !Constants.isDebugMiChanel) {
-            mRefWatcher = LeakCanary.install(this);
+            sRefWatcher = LeakCanary.install(this);
         }
     }
 
     @Override
     public void watchFragment(BaseFragment baseFragment) {
-        if (mRefWatcher != null) {
-            mRefWatcher.watch(this);
+        if (sRefWatcher != null) {
+            sRefWatcher.watch(this);
         }
     }
 }
