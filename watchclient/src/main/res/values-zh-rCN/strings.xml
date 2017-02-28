@@ -3,7 +3,6 @@
     <string name="enter_live_failure">加入房间失败</string>
     <string name="leave_live_success">离开房间成功</string>
     <string name="leave_live_failure">离开房间失败</string>
-    <string name="send">发送</string>
 
     <string name="max_len_notice">最多只能输入30个字哦～</string>
     <string name="barrage_close">弹幕关闭</string>

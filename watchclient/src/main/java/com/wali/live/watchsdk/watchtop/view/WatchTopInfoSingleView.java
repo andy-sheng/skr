@@ -74,10 +74,13 @@ import rx.schedulers.Schedulers;
 public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     public static final String TAG = "WatchTopInfoSingleView";
 
+    public static final float AVATAR_MARGIN_TOP_PORTRAIT = 26.67f;
+    public static final float AVATAR_MARGIN_TOP_LANDSCAPE = 6.67f;
+    public static final float AVATAR_MARGIN_RIGHT_PORTRAIT = 48f;
+    public static final float AVATAR_MARGIN_RIGHT_LANDSCAPE = 48f;
+
 
     TextView mFollowBtnTv;
-
-    ImageView mFollowBtnBackground;
 
     ImageView mLinkAnchorIcon;
 
@@ -205,7 +208,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     @Override
     protected void initView() {
         mFollowBtnTv = (TextView) findViewById(R.id.follow_btn);
-        mFollowBtnBackground = (ImageView) findViewById(R.id.follow_btn_background);
         mLinkAnchorIcon = (ImageView) findViewById(R.id.link_anchor_icon);
 
         mLinkGuestArea = findViewById(R.id.link_guest_area);
@@ -348,12 +350,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         } else {
             hideFollowBtn(false);
         }
-    }
-
-    protected void updateManagers() {
-//        if (null != mAvatarManagerAdapter) {
-//            mAvatarManagerAdapter.setViewerList(mMyRoomBaseDataModel.getManagerList(), true);
-//        }
     }
 
     @Override
@@ -570,6 +566,23 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         }
     }
 
+    public void onScreenOrientationChanged(boolean isLandScape) {
+        super.onScreenOrientationChanged(isLandScape);
+        LayoutParams lpAvatar = (RelativeLayout.LayoutParams) mAvatarRv.getLayoutParams();
+        LayoutParams lpContainer = (RelativeLayout.LayoutParams) findViewById(R.id.owner_container_root).getLayoutParams();
+        if (isLandScape) {
+//            lpAvatar.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_LANDSCAPE);
+            lpAvatar.rightMargin = DisplayUtils.dip2px(AVATAR_MARGIN_RIGHT_LANDSCAPE);
+            lpContainer.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_LANDSCAPE);
+
+
+        } else {
+//            lpAvatar.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_PORTRAIT);
+            lpAvatar.rightMargin = DisplayUtils.dip2px(AVATAR_MARGIN_RIGHT_PORTRAIT);
+            lpContainer.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_PORTRAIT);
+        }
+//        redrawFollowGuidePopupWindow();
+    }
 
     /**
      * 连麦结束时，显示底部运营位数据
@@ -822,16 +835,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         scaleAnimation.setRepeatMode(Animation.REVERSE);
         scaleAnimation.setDuration(300);
 
-        mFollowBtnBackground.setAnimation(scaleAnimation);
-        mFollowBtnBackground.setVisibility(VISIBLE);
-
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                mFollowBtnBackground.clearAnimation();
-                mFollowBtnBackground.setVisibility(GONE);
-            }
-        });
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, String.format(StatisticsKey.KEY_FOLLOW_FLOATING_WINDOW, mMyRoomBaseDataModel.getRoomId() == null ? "" : mMyRoomBaseDataModel.getRoomId()), 1);
     }
 

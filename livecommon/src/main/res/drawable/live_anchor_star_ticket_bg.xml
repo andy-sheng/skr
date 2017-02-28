@@ -3,8 +3,8 @@
     <!-- 定义按钮按下时的图片 -->
     <item
         android:state_pressed = "true"
-        android:drawable = "@drawable/live_anchor_starticket_bg_pressed"
+        android:drawable = "@drawable/live_bg_ticket_pressed"
         />
     <!-- 定义按钮默认的图片 -->
-    <item android:drawable = "@drawable/live_anchor_starticket_bg" />
+    <item android:drawable = "@drawable/live_bg_ticket_normal" />
 </selector>

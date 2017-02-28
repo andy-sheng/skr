@@ -15,8 +15,11 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.SdkEventClass;
+import com.mi.live.data.milink.command.MiLinkCommand;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.base.BaseEvent;
@@ -37,6 +40,8 @@ import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.task.IActionCallBack;
+import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
@@ -52,6 +57,7 @@ import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -64,7 +70,7 @@ import rx.functions.Action1;
  * Created by yurui on 2016/12/13.
  */
 
-public class ReplaySdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener {
+public class ReplaySdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener,IActionCallBack {
 
     protected final static String TAG = "ReplaySdkActivity";
 
@@ -419,6 +425,14 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         if (CommonUtils.isFastDoubleClick()) {
             return;
         }
+
+        switch (event.type) {
+            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
+//                clearTop();
+                viewerTopFromServer((RoomBaseDataModel) event.obj1);
+            }
+            break;
+        }
     }
 
     //视频event 刷新播放按钮等操作
@@ -461,4 +475,30 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         activity.startActivity(intent);
     }
 
+    private void viewerTopFromServer(RoomBaseDataModel roomData) {
+        mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
+    }
+
+    @Override
+    public void processAction(String action, int errCode, Object... objects) {
+        MyLog.w(TAG, "processAction : " + action + " , errCode : " + errCode);
+        switch (action) {
+            case MiLinkCommand.COMMAND_LIVE_VIEWER_TOP:
+                processViewerTop(errCode, objects);
+                break;
+        }
+    }
+
+    private void processViewerTop(int errCode, Object... objects) {
+        switch (errCode) {
+            case ErrorCode.CODE_SUCCESS:
+                RoomBaseDataModel roomData = (RoomBaseDataModel) objects[0];
+                // 更新顶部观众
+                roomData.getViewersList().clear();
+                roomData.getViewersList().addAll((List) objects[1]);
+                roomData.notifyViewersChange("processViewerTop");
+                break;
+
+        }
+    }
 }

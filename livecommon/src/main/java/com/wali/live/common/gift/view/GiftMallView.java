@@ -253,14 +253,14 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
          * @return false 条件不符合, true 可以发起购买
          */
         private boolean judgeBuyGiftCondition() {
-            if(mSelectedGift.card == null || mSelectedGift.card.getGiftCardCount() <= 0) {
+            if (mSelectedGift.card == null || mSelectedGift.card.getGiftCardCount() <= 0) {
                 int limitLevel = mSelectedGift.gift.getLowerLimitLevel();
-                if(mSelectedGift.gift.getCatagory() == GiftType.PRIVILEGE_GIFT && limitLevel > MyUserInfoManager.getInstance().getUser().getLevel()) {
+                if (mSelectedGift.gift.getCatagory() == GiftType.PRIVILEGE_GIFT && limitLevel > MyUserInfoManager.getInstance().getUser().getLevel()) {
                     //特权礼物
                     Toast.makeText(getContext(), getResources().getQuantityString(R.plurals.verify_user_level_toast, limitLevel, limitLevel), Toast.LENGTH_SHORT).show();
                     return false;
-                } else if((mSelectedGift.gift.getCatagory() == GiftType.Mi_COIN_GIFT && (mSelectedGift.gift.getPrice() / 10) > mGiftMallPresenter.getCurrentTotalBalance())
-                        || (mSelectedGift.gift.getCatagory() != GiftType.Mi_COIN_GIFT && mSelectedGift.gift.getPrice() > mGiftMallPresenter.getCurrentTotalBalance()) ) {
+                } else if ((mSelectedGift.gift.getCatagory() == GiftType.Mi_COIN_GIFT && (mSelectedGift.gift.getPrice() / 10) > mGiftMallPresenter.getCurrentTotalBalance())
+                        || (mSelectedGift.gift.getCatagory() != GiftType.Mi_COIN_GIFT && mSelectedGift.gift.getPrice() > mGiftMallPresenter.getCurrentTotalBalance())) {
                     showInsufficientBalanceTips();
                     return false;
                 }
@@ -547,33 +547,53 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             int left;
             int bottom;
+//            if (!mIsLandscape) {
+//                mDiamondTips.changeTipsBackGroup(false);//改变tips的背景
+//
+//                bottom = DisplayUtils.dip2px(getContext(), 40f);
+//                if (tipsType == TIPS_TYPE_BALANCE) {
+//                    left = mBalanceTv.getLeft() + mBalanceTv.getMeasuredWidth() / 2 - DisplayUtils.dip2px(getContext(), 10f);
+//                } else {
+//                    left = mSiliverDiamond.getLeft() + mSiliverDiamond.getMeasuredWidth() / 2 - DisplayUtils.dip2px(getContext(), 10f);
+//                }
+//
+//                if (left < DisplayUtils.dip2px(getContext(), 13.33f)) {
+//                    left = DisplayUtils.dip2px(getContext(), 13.33f);
+//                }
+//                layoutParams.setMargins(left, 0, 0, bottom);
+//            } else {
+//                mDiamondTips.changeTipsBackGroup(true);
+//
+//                left = mGiftDisplayRecycleView.getMeasuredWidth() - getMeasureViewParams(mDiamondTips)[0] + DisplayUtils.dip2px(getContext(), 30f);
+//                if (tipsType == TIPS_TYPE_MI_COIN) {
+//                    bottom = DisplayUtils.dip2px(getContext(), 50f);
+//                } else if (tipsType == TIPS_TYPE_BALANCE) {
+//                    bottom = DisplayUtils.dip2px(getContext(), 50f);
+//                } else {
+//                    bottom = DisplayUtils.dip2px(getContext(), 25f);
+//                }
+//                layoutParams.setMargins(left, 0, 0, bottom);
+//            }
+            mDiamondTips.changeTipsBackGroup(false);//改变tips的背景
+
             if (!mIsLandscape) {
-                mDiamondTips.changeTipsBackGroup(false);//改变tips的背景
-
                 bottom = DisplayUtils.dip2px(getContext(), 40f);
-                if (tipsType == TIPS_TYPE_BALANCE) {
-                    left = mBalanceTv.getLeft() + mBalanceTv.getMeasuredWidth() / 2 - DisplayUtils.dip2px(getContext(), 10f);
-                } else {
-                    left = mSiliverDiamond.getLeft() + mSiliverDiamond.getMeasuredWidth() / 2 - DisplayUtils.dip2px(getContext(), 10f);
-                }
-
-                if (left < DisplayUtils.dip2px(getContext(), 13.33f)) {
-                    left = DisplayUtils.dip2px(getContext(), 13.33f);
-                }
-                layoutParams.setMargins(left, 0, 0, bottom);
             } else {
-                mDiamondTips.changeTipsBackGroup(true);
-
-                left = mGiftDisplayRecycleView.getMeasuredWidth() - getMeasureViewParams(mDiamondTips)[0] + DisplayUtils.dip2px(getContext(), 30f);
-                if (tipsType == TIPS_TYPE_MI_COIN) {
-                    bottom = DisplayUtils.dip2px(getContext(), 50f);
-                } else if (tipsType == TIPS_TYPE_BALANCE) {
-                    bottom = DisplayUtils.dip2px(getContext(), 50f);
-                } else {
-                    bottom = DisplayUtils.dip2px(getContext(), 25f);
-                }
-                layoutParams.setMargins(left, 0, 0, bottom);
+                bottom = DisplayUtils.dip2px(getContext(), 30f);
             }
+//            if (tipsType == TIPS_TYPE_MI_COIN) {
+//                left = mMiCoinBalance.getLeft() + mMiCoinBalance.getMeasuredWidth() - DisplayUtils.dip2px(getContext(), 22f);
+//            } else
+            if (tipsType == TIPS_TYPE_BALANCE) {
+                left = mBalanceTv.getLeft() + mBalanceTv.getMeasuredWidth() - DisplayUtils.dip2px(getContext(), 22f);
+            } else {
+                left = mSiliverDiamond.getLeft() + mSiliverDiamond.getMeasuredWidth() - DisplayUtils.dip2px(getContext(), 22f);
+            }
+
+            if (left < DisplayUtils.dip2px(getContext(), 13.33f)) {
+                left = DisplayUtils.dip2px(getContext(), 13.33f);
+            }
+            layoutParams.setMargins(left, 0, 0, bottom);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             mGiftBottomPanel.addView(mDiamondTips, layoutParams);
         }
@@ -1155,6 +1175,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
      */
 
     private GiftMallPresenter mGiftMallPresenter;
+
     //TODO 一定记得改
     public void firstInflateGiftMallView(GiftMallPresenter giftMallPresenter, Activity activity, RoomBaseDataModel myRoomData, boolean isLandscape) {
         this.mActivity = activity;
@@ -1217,7 +1238,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
         if (v != null) {
             MyLog.d(TAG, "v != null" + shake);
             mSelectedView = (GiftDisPlayItemView) v;
-            v.setBackgroundResource(R.drawable.live_anchor_gift_selected);
+            v.setBackgroundResource(R.drawable.live_choice_selected);
 
             Gift gift = mSelectedGift.gift;
             MyLog.d(TAG, "gift.toString:" + gift.toString());

@@ -31,7 +31,8 @@
         android:id="@+id/comment_rv"
         android:layout_width="match_parent"
         android:layout_height="160.33dip"
-        android:layout_above="@+id/smiley_root"
+        android:layout_above="@+id/input_area_view"
+        android:layout_alignWithParentIfMissing="true"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
@@ -60,6 +61,7 @@
         android:layout_centerHorizontal="true"
         android:inflatedId="@+id/game_bottom_view"
         android:layout="@layout/view_game_bottom" />
+
     <!--商城-->
     <ViewStub
         android:id="@+id/gift_mall_view_viewstub"
@@ -67,41 +69,6 @@
         android:layout_height="match_parent"
         android:inflatedId="@+id/gift_mall_view"
         android:layout="@layout/view_gift_mall" />
-
-    <!--底部的按钮们 开始-->
-    <RelativeLayout
-        android:id="@+id/bottom_button_zone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/margin_10"
-        android:layout_marginRight="@dimen/margin_10">
-
-        <!--按钮-->
-        <ImageView
-            android:id="@+id/gift_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_10"
-            android:layout_marginTop="@dimen/margin_10"
-            android:src="@drawable/live_icon_gift_btn" />
-
-        <ImageView
-            android:id="@+id/send_comment_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_10"
-            android:layout_marginTop="@dimen/margin_10"
-            android:src="@drawable/live_icon_message_btn" />
-    </RelativeLayout>
-    <!--底部的按钮们 结束-->
-
 
     <ImageView
         android:id="@+id/rotate_btn"
@@ -112,45 +79,6 @@
         android:layout_marginRight="6.67dp"
         android:src="@drawable/live_icon_rotate_screen"
         android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/close_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_20"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/live_icon_close_btn" />
-
-    <!--弹幕区和弹幕评论区开始-->
-
-    <FrameLayout
-        android:id="@+id/smiley_root"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <com.wali.live.common.view.PlaceHolderView
-            android:id="@+id/place_holder_view"
-            android:layout_width="match_parent"
-            android:layout_height="35.66dip" />
-        <!--表情键盘-->
-        <ViewStub
-            android:id="@+id/similey_picker_viewstub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout="@layout/view_similey_picker" />
-    </FrameLayout>
-
-    <ViewStub
-        android:id="@+id/comment_input_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/smiley_root"
-        android:layout="@layout/view_send_comment"
-        android:minHeight="43dip"
-        android:visibility="invisible" />
-
 
     <!--礼物展示需要-->
     <include
@@ -177,5 +105,38 @@
         android:id="@+id/gift_animation_player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <!--底部按钮(供BaseBottomButton使用)-->
+    <RelativeLayout
+        android:id="@+id/bottom_button_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <ImageView
+        android:id="@+id/close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_20"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/live_icon_close_btn"
+        android:visibility="gone" />
+
+    <!--底部面板(供BasePanelContainer使用)-->
+    <RelativeLayout
+        android:id="@+id/bottom_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <!--输入框-->
+    <com.wali.live.component.view.InputAreaView
+        android:id="@+id/input_area_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="invisible" />
 
 </RelativeLayout>

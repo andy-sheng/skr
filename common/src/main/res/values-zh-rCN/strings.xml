@@ -43,8 +43,7 @@
         <item quantity="other">%d分钟前</item>
     </plurals>
 
-
-
     <string name="month_day">%1$d月%2$d日</string>
     <string name="yesterday_hour_minute">昨天 %1$d:%2$02d</string>
+    <string name="in_process">正在处理中</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.wali.live.livesdk.live;
 
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.dialog.DialogUtils;
@@ -70,7 +68,6 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.common.view.PlaceHolderView;
 import com.wali.live.dns.ILiveReconnect;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
@@ -81,6 +78,8 @@ import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.EndLiveFragment;
 import com.wali.live.livesdk.live.fragment.PrepareGameLiveFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
+import com.wali.live.livesdk.live.livegame.LiveComponentController;
+import com.wali.live.livesdk.live.livegame.LiveSdkView;
 import com.wali.live.livesdk.live.operator.LiveOperator;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
@@ -89,10 +88,7 @@ import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
 import com.wali.live.livesdk.live.receiver.TelephoneStateReceiver;
 import com.wali.live.livesdk.live.task.IActionCallBack;
 import com.wali.live.livesdk.live.utils.LocationHelper;
-import com.wali.live.livesdk.live.view.bottom.BaseBottomButton;
 import com.wali.live.livesdk.live.view.CountDownView;
-import com.wali.live.livesdk.live.view.bottom.GameBottomButton;
-import com.wali.live.livesdk.live.view.container.LivePanelContainer;
 import com.wali.live.livesdk.live.view.topinfo.LiveTopInfoSingleView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
@@ -104,7 +100,6 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
-import com.wali.live.watchsdk.watch.presenter.SendCommentPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
@@ -187,7 +182,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     private RoomTextMsgPresenter mRoomTextMsgPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
     private RoomStatusPresenter mRoomStatusPresenter;
-    private SendCommentPresenter mSendCommentPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
 
     protected BaseImageView mBlurIv; // 高斯蒙层
@@ -197,12 +191,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     protected LiveCommentView mLiveCommentView; //弹幕区view
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
-    protected PlaceHolderView mPlaceHolderView; //输入法填白部分
 
     protected TextView mTipsTv;
 
-    protected LivePanelContainer mLivePanelContainer;
-    protected BaseBottomButton mBottomButtonView;
+    protected LiveComponentController mComponentController;
+    protected LiveSdkView mSdkView;
 
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     protected GiftAnimationView mGiftAnimationView; // 礼物特效动画
@@ -346,8 +339,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     private void resumeGameLive() {
         // onResume 更新游戏直播静音按钮
-        if (mBottomButtonView != null && mBottomButtonView instanceof GameBottomButton) {
-            ((GameBottomButton) mBottomButtonView).updateMuteAudio(mGameLivePresenter.isMuteMic());
+        if (mComponentController != null) {
+            mComponentController.onEvent(LiveComponentController.MSG_DEFAULT);
         }
     }
 
@@ -379,6 +372,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         }
         TelephoneStateReceiver.unregisterReceiver(this, mTelephoneStateReceiver);
         sRecording = false;
+        if (mComponentController != null) {
+            mComponentController.release();
+            mComponentController = null;
+        }
+        if (mSdkView != null) {
+            mSdkView.releaseSdkView();
+            mSdkView = null;
+        }
     }
 
     protected void orientLandscape() {
@@ -388,17 +389,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(true);
         }
-        if (mLivePanelContainer != null) {
-            mLivePanelContainer.onOrientation(true);
-        }
-        if (mBottomButtonView != null) {
-            mBottomButtonView.onOrientation(true);
+        if (mComponentController != null) {
+            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
-        }
-        if (mPlaceHolderView != null) {
-            mPlaceHolderView.setOrient(true);
         }
         if (mGameLivePresenter != null) {
             mGameLivePresenter.onOrientation(true);
@@ -412,17 +407,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(false);
         }
-        if (mLivePanelContainer != null) {
-            mLivePanelContainer.onOrientation(false);
-        }
-        if (mBottomButtonView != null) {
-            mBottomButtonView.onOrientation(false);
+        if (mComponentController != null) {
+            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
-        }
-        if (mPlaceHolderView != null) {
-            mPlaceHolderView.setOrient(false);
         }
         if (mGameLivePresenter != null) {
             mGameLivePresenter.onOrientation(false);
@@ -639,8 +628,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         mGiftAnimationView = $(R.id.gift_animation_player_view);
         addBindActivityLifeCycle(mGiftAnimationView, true);
 
-        mPlaceHolderView = $(R.id.place_holder_view);
-
         //关闭按钮
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setVisibility(View.VISIBLE);
@@ -656,20 +643,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                     }
                 });
 
-        mSendCommentPresenter = new SendCommentPresenter(this, mMyRoomData, mRoomInfo, new Runnable() {
-            @Override
-            public void run() {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mLiveCommentView.getLayoutParams();
-                layoutParams.bottomMargin = 0;
-                mGiftContinueViewGroup.onHideInputView();
-            }
-        });
-        addBindActivityLifeCycle(mSendCommentPresenter, true);
-        mSendCommentPresenter.setPlaceHolderView((PlaceHolderView) $(R.id.place_holder_view));
-        mSendCommentPresenter.setViewStub((ViewStub) $(R.id.comment_input_area));
-        mSendCommentPresenter.setmSimilePickerViewStub((ViewStub) $(R.id.similey_picker_viewstub));
-        mSendCommentPresenter.setLiveCommentView(mLiveCommentView);
-
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPushProcessor(mGiftPresenter);
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
@@ -681,32 +654,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
         mTipsTv = $(R.id.tips_tv);
 
-        // 操作面板
-        mLivePanelContainer = new LivePanelContainer(
-                (RelativeLayout) $(R.id.bottom_panel_view), mRoomChatMsgManager);
-
-        // 底部按钮
-        mBottomButtonView = new GameBottomButton((RelativeLayout) $(R.id.bottom_button_view));
-        mBottomButtonView.setStatusListener(new GameBottomButton.IStatusListener() {
-            @Override
-            public void showInputView() {
-                mSendCommentPresenter.showInputArea();
-                RelativeLayout.LayoutParams layoutParams =
-                        (RelativeLayout.LayoutParams) mLiveCommentView.getLayoutParams();
-                layoutParams.bottomMargin = SendCommentPresenter.sEditTextHeight;
-                mGiftContinueViewGroup.onShowInputView();
-            }
-
-            @Override
-            public void showSettingPanel() {
-                mLivePanelContainer.showSettingPanel();
-            }
-
-            @Override
-            public void muteAudio(boolean isMute) {
-                mGameLivePresenter.muteMic(isMute);
-            }
-        });
+        mComponentController = new LiveComponentController();
+        mSdkView = new LiveSdkView(this, mComponentController, mMyRoomData);
+        mSdkView.setupSdkView();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
@@ -719,8 +669,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         $(R.id.main_act_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mSendCommentPresenter.ismInputViewShow()) {
-                    mSendCommentPresenter.hideInputArea();
+                if (mComponentController != null) {
+                    mComponentController.onEvent(LiveComponentController.MSG_HIDE_INPUT_VIEW);
                 }
             }
         });
@@ -1096,11 +1046,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Override
     public void onBackPressed() {
-        if (mSendCommentPresenter != null && mSendCommentPresenter.ismInputViewShow()) {
-            mSendCommentPresenter.hideInputArea();
-            return;
-        }
-        if (mLivePanelContainer != null && mLivePanelContainer.processBackPress()) {
+        if (mComponentController != null && mComponentController.onEvent(
+                LiveComponentController.MSG_ON_BACK_PRESSED)) {
             return;
         }
         processBack(true);

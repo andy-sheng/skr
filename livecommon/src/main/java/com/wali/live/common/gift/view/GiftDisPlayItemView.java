@@ -3,13 +3,9 @@ package com.wali.live.common.gift.view;
 import android.content.Context;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,18 +15,15 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
-import com.base.utils.display.DisplayUtils;
 import com.base.utils.language.LocaleUtil;
 import com.live.module.common.R;
+import com.mi.live.data.gift.model.BuyGiftType;
 import com.mi.live.data.gift.model.GiftCard;
 import com.mi.live.data.gift.model.GiftType;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.utils.NumTranformation;
 import com.wali.live.common.view.StrokeTextView;
 import com.wali.live.dao.Gift;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by zjn on 16-7-25.
@@ -54,9 +47,9 @@ public class GiftDisPlayItemView extends RelativeLayout {
 
     private TextView mFreeGiftTv;
 
-    private TextView mExepTv;
-
-    private ImageView mLianIv;
+//    private TextView mExepTv;
+//
+//    private ImageView mLianIv;
 
     private BaseImageView mCornerIv;
 
@@ -68,19 +61,22 @@ public class GiftDisPlayItemView extends RelativeLayout {
 
     private TextView mContinueSendText;
 
+    private TextView mGiftName;
+
     public void bindView() {
         mGiftIv = (BaseImageView) findViewById(R.id.gift_iv);
         mPriceTv = (TextView) findViewById(R.id.price_tv);
         mTextTv = (TextView) findViewById(R.id.text_tv);
         mOriginalPrice = (TextView) findViewById(R.id.origin_price_tv);
         mFreeGiftTv = (TextView) findViewById(R.id.free_tv);
-        mExepTv = (TextView) findViewById(R.id.exep_tv);
-        mLianIv = (ImageView) findViewById(R.id.lian_iv);
+//        mExepTv = (TextView) findViewById(R.id.exep_tv);
+//        mLianIv = (ImageView) findViewById(R.id.lian_iv);
         mCornerIv = (BaseImageView) findViewById(R.id.superscript_iv);
         mContinueSendBtn = (TextView) findViewById(R.id.continue_tv);
         mContinueSendGiftNum = (StrokeTextView) findViewById(R.id.continue_gift_num);
         mGiftProgressBar = (CircularProgressBar) findViewById(R.id.progress_bar);
         mContinueSendText = (TextView) findViewById(R.id.send_tv);
+        mGiftName = (TextView) findViewById(R.id.gift_name);
     }
 
     private int[] mNumberColors = {
@@ -129,7 +125,7 @@ public class GiftDisPlayItemView extends RelativeLayout {
             mTextTv.setText(getResources().getString(R.string.origin_for_gift_item));
         }
         mOriginalPrice.setVisibility(View.VISIBLE);
-        if(giftType == GiftType.Mi_COIN_GIFT) {
+        if (giftType == GiftType.Mi_COIN_GIFT) {
 //            mOriginalPrice.setText(String.valueOf((float) originalPrice / 100.0));
             mOriginalPrice.setText(NumTranformation.getShowValues((float) originalPrice / 100));
         } else {
@@ -151,11 +147,12 @@ public class GiftDisPlayItemView extends RelativeLayout {
         MyLog.d(TAG, "infoWithCard:" + infoWithCard);
 
         Gift gift = infoWithCard.gift;
+        mGiftName.setText(infoWithCard.gift.getInternationalName());
         // 礼物
         mGiftPicture = gift.getPicture();
         FrescoWorker.loadImage(mGiftIv, ImageFactory.newHttpImage(gift.getPicture()).build());
         // 经验
-        mExepTv.setText(getContext().getString(R.string.experience, gift.getEmpiricValue()));
+//        mExepTv.setText(getContext().getString(R.string.experience, gift.getEmpiricValue()));
 
         GiftCard card = infoWithCard.card;
 
@@ -179,32 +176,39 @@ public class GiftDisPlayItemView extends RelativeLayout {
             if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
                 mPriceTv.setCompoundDrawables(null, null, null, null);
                 mPriceTv.setText(R.string.richer_hongbao);
-                mExepTv.setText(R.string.get_lucky);
+//                mExepTv.setText(R.string.get_lucky);
                 mTextTv.setVisibility(GONE);
                 mOriginalPrice.setVisibility(GONE);
             } else {
                 int price = gift.getPrice();
-                if (LocaleUtil.getLanguageCode().matches("^en.*")) {
-                    if(gift.getCatagory() == GiftType.Mi_COIN_GIFT) {
-                        mPriceTv.setText(NumTranformation.getShowValues((float) price / 10));
-                    } else {
-                        mPriceTv.setText(String.valueOf(price));
-                    }
-                    mPriceTv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.me_icon_diamond_small), null);
-                } else {
-                    mPriceTv.setCompoundDrawables(null, null, null, null);
-                    String priceLength;
-                    if (gift.getCatagory() == GiftType.Mi_COIN_GIFT) {
-                        priceLength = NumTranformation.getShowValues((float) price / 10);
-                    } else {
-                        priceLength = String.valueOf(price);
+//                if (LocaleUtil.getLanguageCode().matches("^en.*")) {
+//                    if (gift.getCatagory() == GiftType.Mi_COIN_GIFT) {
+//                        mPriceTv.setText(NumTranformation.getShowValues((float) price / 10));
+//                    } else {
+//                        mPriceTv.setText(String.valueOf(price));
+//                    }
+//                    mPriceTv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.live_icon_golden_diamond_small), null);
+//                } else {
+//                    mPriceTv.setCompoundDrawables(null, null, null, null);
+//                    String priceLength;
+//                    if (gift.getCatagory() == GiftType.Mi_COIN_GIFT) {
+//                        priceLength = NumTranformation.getShowValues((float) price / 10);
+//                    } else {
+//                        priceLength = String.valueOf(price);
+//
+//                    }
+//                    String st = String.valueOf(price) + " " + getResources().getString(R.string.gift_item_diamond_text);
+//                    SpannableString spannableString = new SpannableString(st);
+//                    spannableString.setSpan(new AbsoluteSizeSpan(DisplayUtils.dip2px(BALANCE_TEXT_SIZE)), priceLength.length(), st.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+//                    mPriceTv.setText(spannableString);
+//                }
 
-                    }
-                    String st = String.valueOf(price) + " " + getResources().getString(R.string.gift_item_diamond_text);
-                    SpannableString spannableString = new SpannableString(st);
-                    spannableString.setSpan(new AbsoluteSizeSpan(DisplayUtils.dip2px(BALANCE_TEXT_SIZE)), priceLength.length(), st.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                    mPriceTv.setText(spannableString);
+                if (gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
+                    mPriceTv.setText(NumTranformation.getShowValues((float) price / 10));
+                } else {
+                    mPriceTv.setText(String.valueOf(price));
                 }
+                mPriceTv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.live_icon_golden_diamond_small), null);
 
                 if (gift.getOriginalPrice() > 0) {
                     // 显示原价

@@ -7,9 +7,9 @@
     <com.base.image.fresco.BaseImageView
         android:id="@+id/user_avatar_iv"
         app:fadeDuration="300"
-        android:layout_width="34.66dp"
-        android:layout_height="34.66dp"
-        android:layout_marginTop="5dip" />
+        android:layout_width="@dimen/view_dimen_100"
+        android:layout_height="@dimen/view_dimen_100"
+        />
 
     <ImageView
         android:id="@+id/user_crown"
@@ -31,7 +31,7 @@
         android:visibility="visible" />
 
     <View
-        android:layout_width="8dp"
+        android:layout_width="@dimen/margin_20"
         android:layout_height="8dp"
         android:layout_alignTop="@id/user_avatar_iv"
         android:layout_toRightOf="@id/user_avatar_iv" />

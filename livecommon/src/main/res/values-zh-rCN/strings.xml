@@ -242,4 +242,7 @@
     <string name="game_give_one_gift">送了一个%s</string>
     <string name="recharge_paypal_price_format">%1$s %2$s</string>
     <string name="pull_diamond_price_list_failed">拉取价格列表失败</string>
+    <string name="send">发送</string>
+    <string name="empty_edittext_hint">跟大家说点什么</string>
+    <string name="follow">关注</string>
 </resources>

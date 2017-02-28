@@ -3,14 +3,15 @@ package com.wali.live.watchsdk.watch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
@@ -20,6 +21,7 @@ import com.base.utils.rx.RxRetryAssist;
 import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
@@ -28,10 +30,13 @@ import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
+import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.view.LiveCommentView;
@@ -42,25 +47,26 @@ import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.pay.fragment.RechargeFragment;
-import com.wali.live.common.view.PlaceHolderView;
+import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.task.IActionCallBack;
+import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
-import com.wali.live.watchsdk.watch.presenter.BottomBtnPresenter;
 import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
-import com.wali.live.watchsdk.watch.presenter.SendCommentPresenter;
 import com.wali.live.watchsdk.watch.presenter.TouchPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
@@ -76,6 +82,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -87,7 +94,7 @@ import rx.functions.Action1;
  * Created by lan on 16/11/25.
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener
-        , ForbidManagePresenter.IForbidManageProvider {
+        , ForbidManagePresenter.IForbidManageProvider, IActionCallBack {
 
     @Override
     public boolean isKeyboardResize() {
@@ -102,14 +109,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     // 播放器容器
     protected WatchTopInfoSingleView mWatchTopInfoSingleView;
     protected LiveCommentView mLiveCommentView; //弹幕区view
-    protected ImageView mBarrageSendBtn; //弹幕发送按钮
-    protected PlaceHolderView mPlaceHolderView; //输入法填白部分
-    protected ImageView mClostBtn;// 关闭按钮
+    protected ImageView mCloseBtn;// 关闭按钮
     protected ImageView mRotateBtn;// 关闭
 
-    protected RelativeLayout mBottomBtnViewGroup;
-    // 礼物按钮
-    private ImageView mGiftBtn;
+    protected WatchComponentController mComponentController;
+    protected WatchSdkView mSdkView;
+
     // 高斯蒙层
     private BaseImageView mBlurIv;
     protected GiftContinueViewGroup mGiftContinueViewGroup;
@@ -128,13 +133,18 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private LiveTaskPresenter mLiveTaskPresenter;
     private GiftMallPresenter mGiftMallPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
-    private SendCommentPresenter mSendCommentPresenter;
     private RoomStatusPresenter mRoomStatusPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
-    protected BottomBtnPresenter mBottomBtnPresenter;
     protected UserInfoPresenter mUserInfoPresenter;
     private TouchPresenter mTouchPresenter;
     private GameModePresenter mGameModePresenter;
+
+    protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
+        @Override
+        protected void processMessage(Message message) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +193,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
 
+        // TEST
 //        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
     }
 
@@ -193,21 +204,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         addBindActivityLifeCycle(mWatchTopInfoSingleView, true);
         mWatchTopInfoSingleView.setMyRoomDataSet(mMyRoomData);
         mWatchTopInfoSingleView.initViewUseData();
-
-        // 礼物按钮
-        mGiftBtn = $(R.id.gift_button);
-        RxView.clicks(mGiftBtn)
-                .throttleFirst(200, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        if (AccountAuthManager.triggerActionNeedAccount(WatchSdkActivity.this)) {
-                            //飘萍测试
-                            //                        FlyBarrageManager.testFlyBarrage(mMyRoomData.getRoomId(),String.valueOf(mMyRoomData.getUid()));
-                            EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST));
-                        }
-                    }
-                });
 
         // 封面模糊图
         mBlurIv = $(R.id.blur_iv);
@@ -234,28 +230,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mGiftAnimationView = $(R.id.gift_animation_player_view);
         addBindActivityLifeCycle(mGiftAnimationView, true);
 
-        //初始化发送按钮
-        mBarrageSendBtn = $(R.id.send_comment_btn);
-        RxView.clicks(mBarrageSendBtn)
-                .throttleFirst(200, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        if (AccountAuthManager.triggerActionNeedAccount(WatchSdkActivity.this)) {
-                            mBarrageSendBtn.setVisibility(View.GONE);
-                            mSendCommentPresenter.showInputArea();
-                            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mLiveCommentView.getLayoutParams();
-                            layoutParams.bottomMargin = SendCommentPresenter.sEditTextHeight;
-                            mGiftContinueViewGroup.onShowInputView();
-                        }
-                    }
-                });
-
-        mPlaceHolderView = $(R.id.place_holder_view);
-
         //关闭按钮
-        mClostBtn = $(R.id.close_btn);
-        RxView.clicks(mClostBtn)
+        mCloseBtn = $(R.id.close_btn);
+        RxView.clicks(mCloseBtn)
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
@@ -263,6 +240,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                         finish();
                     }
                 });
+        mCloseBtn.setVisibility(View.VISIBLE);
 
         mRotateBtn = $(R.id.rotate_btn);
         RxView.clicks(mRotateBtn)
@@ -271,19 +249,50 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     @Override
                     public void call(Void aVoid) {
                         if (mLandscape) {
-                            forcePortrait();
+                            tempForcePortrait();
                         } else {
-                            forceLandscape();
+                            tempForceLandscape();
                         }
                     }
                 });
 
-        mBottomBtnViewGroup = $(R.id.bottom_button_zone);
+        mComponentController = new WatchComponentController();
+        mSdkView = new WatchSdkView(this, mComponentController, mMyRoomData);
+        mSdkView.setupSdkView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
 
         mTouchDelegateView = $(R.id.touch_delegate_view);
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
+
+        ComponentPresenter.IAction action = new ComponentPresenter.IAction() {
+            @Override
+            public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
+                switch (source) {
+                    case WatchComponentController.MSG_INPUT_VIEW_SHOWED:
+                        if (mGiftContinueViewGroup != null) {
+                            mGiftContinueViewGroup.onShowInputView();
+                        }
+                        if (mLiveCommentView != null && isDisplayLandscape()) {
+                            mLiveCommentView.setVisibility(View.GONE);
+                        }
+                        return true;
+                    case WatchComponentController.MSG_INPUT_VIEW_HIDDEN:
+                        if (mGiftContinueViewGroup != null) {
+                            mGiftContinueViewGroup.onHideInputView();
+                        }
+                        if (mLiveCommentView != null) {
+                            mLiveCommentView.setVisibility(View.VISIBLE);
+                        }
+                        return true;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        };
+        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_SHOWED, action);
+        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_HIDDEN, action);
     }
 
     private void startPlayer() {
@@ -339,33 +348,15 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true);
         addPushProcessor(mRoomManagerPresenter);
 
-        mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData);
+        mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData, mComponentController);
         addBindActivityLifeCycle(mGiftMallPresenter, true);
         mGiftMallPresenter.setViewStub((ViewStub) findViewById(R.id.gift_mall_view_viewstub));
 
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomViewerPresenter);
 
-        mSendCommentPresenter = new SendCommentPresenter(this, mMyRoomData, mRoomInfo, new Runnable() {
-            @Override
-            public void run() {
-                mBarrageSendBtn.setVisibility(View.VISIBLE);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mLiveCommentView.getLayoutParams();
-                layoutParams.bottomMargin = 0;
-                mGiftContinueViewGroup.onHideInputView();
-            }
-        });
-
-        addBindActivityLifeCycle(mSendCommentPresenter, true);
-        mSendCommentPresenter.setPlaceHolderView((PlaceHolderView) $(R.id.place_holder_view));
-        mSendCommentPresenter.setViewStub((ViewStub) $(R.id.comment_input_area));
-        mSendCommentPresenter.setmSimilePickerViewStub((ViewStub) $(R.id.similey_picker_viewstub));
-        mSendCommentPresenter.setLiveCommentView(mLiveCommentView);
-
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
-
-        mBottomBtnPresenter = new BottomBtnPresenter(new View[]{mBarrageSendBtn, mGiftBtn}, mBottomBtnViewGroup);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
@@ -376,10 +367,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         animationParams.views = new View[]{
                 mWatchTopInfoSingleView,
                 mLiveCommentView,
-                mBottomBtnViewGroup,
                 mGiftContinueViewGroup,
                 mGiftRoomEffectView,
-                mGiftAnimationView
+                mGiftAnimationView,
+                $(R.id.bottom_button_view)
         };
         mTouchPresenter.setNeedHideViewsPortrait(animationParams);
         mTouchPresenter.setNeedHideViewsLandscape(animationParams);
@@ -387,8 +378,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mTouchPresenter.setGestureAdapter(new TouchPresenter.GestureApater() {
             @Override
             public boolean onDown() {
-                if (mSendCommentPresenter.ismInputViewShow()) {
-                    mSendCommentPresenter.hideInputArea();
+                if (mComponentController != null && mComponentController.onEvent(
+                        WatchComponentController.MSG_HIDE_INPUT_VIEW)) {
                     return true;
                 }
                 if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
@@ -406,10 +397,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mGameModePresenter.setGameBottomViewStub((ViewStub) findViewById(R.id.game_bottom_viewstub));
             mGameModePresenter.setCommentView(mLiveCommentView);
             mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
-            mGameModePresenter.setNormalCommentBtn(mBarrageSendBtn);
-            mGameModePresenter.setBottomContainerView(mBottomBtnViewGroup);
-            mGameModePresenter.setCloseBtn(mClostBtn);
+            mGameModePresenter.setCloseBtn(mCloseBtn);
             mGameModePresenter.setRotateBtn(mRotateBtn);
+            mGameModePresenter.setBottomContainerView($(R.id.bottom_button_view));
             mGameModePresenter.setmTouchPresenter(mTouchPresenter);
             addBindActivityLifeCycle(mGameModePresenter, true);
         }
@@ -441,6 +431,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         super.onDestroy();
         stopPlayer();
         leaveLiveToServer();
+        if (mComponentController != null) {
+            mComponentController.release();
+            mComponentController = null;
+        }
+        if (mSdkView != null) {
+            mSdkView.releaseSdkView();
+            mSdkView = null;
+        }
+        if (mHandlerThread != null) {
+            mHandlerThread.destroy();
+        }
     }
 
 
@@ -501,7 +502,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     public void onEvent(GiftEventClass.GiftMallEvent event) {
         switch (event.eventType) {
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST: {
-                mBottomBtnViewGroup.setVisibility(View.VISIBLE);
                 mGiftMallPresenter.hideGiftMallView();
                 if (mGameModePresenter == null || !mLandscape) {
                     mLiveCommentView.setVisibility(View.VISIBLE);
@@ -510,14 +510,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             break;
 
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST: {
-                mBottomBtnViewGroup.setVisibility(View.GONE);
                 mLiveCommentView.setVisibility(View.INVISIBLE);
                 mGiftMallPresenter.showGiftMallView();
             }
             break;
 
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_CLICK_SELECT_GIFT: {
-                mBottomBtnViewGroup.setVisibility(View.GONE);
                 mLiveCommentView.setVisibility(View.INVISIBLE);
                 mGiftMallPresenter.showGiftMallView();
                 mGiftMallPresenter.selectGiftView((Integer) event.obj1);
@@ -563,7 +561,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             return;
         }
 //        TODO 打开注释
-//        switch (event.type) {
+        switch (event.type) {
 //            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET: {
 //                clearTop();
 //                long uid = (long) event.obj1;
@@ -596,11 +594,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //                }
 //            }
 //            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
+            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
 //                clearTop();
-//                viewerTopFromServer((RoomBaseDataModel) event.obj1);
-//            }
-//            break;
+                viewerTopFromServer((RoomBaseDataModel) event.obj1);
+            }
+            break;
 //            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_OPEN_SUPPORT_SELECT_VIEW: {
 //                addSwitchAnchorViewIfNeed();
 //            }
@@ -752,7 +750,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //                        gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
 //                BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
 //                break;
-//        }
+        }
+    }
+
+    private void viewerTopFromServer(RoomBaseDataModel roomData) {
+        mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
     }
 
     private IWatchView mWatchView = new IWatchView() {
@@ -902,8 +904,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Override
     public void onBackPressed() {
-        if (mSendCommentPresenter.ismInputViewShow()) {
-            mSendCommentPresenter.hideInputArea();
+        if (mComponentController != null && mComponentController.onEvent(
+                WatchComponentController.MSG_ON_BACK_PRESSED)) {
             return;
         } else if (mGiftMallPresenter.isGiftMallViewVisibility()) {
             EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
@@ -934,12 +936,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
         }
-        if (mBottomBtnPresenter != null) {
-            mBottomBtnPresenter.onOrientation(true);
-        }
-
-        if (mPlaceHolderView != null) {
-            mPlaceHolderView.setOrient(true);
+        if (mComponentController != null) {
+            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         }
     }
 
@@ -953,12 +951,31 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
         }
-        if (mBottomBtnPresenter != null) {
-            mBottomBtnPresenter.onOrientation(false);
-        }
-        if (mPlaceHolderView != null) {
-            mPlaceHolderView.setOrient(false);
+        if (mComponentController != null) {
+            mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
         }
     }
 
+    @Override
+    public void processAction(String action, int errCode, Object... objects) {
+        MyLog.w(TAG, "processAction : " + action + " , errCode : " + errCode);
+        switch (action) {
+            case MiLinkCommand.COMMAND_LIVE_VIEWER_TOP:
+                processViewerTop(errCode, objects);
+                break;
+        }
+    }
+
+    private void processViewerTop(int errCode, Object... objects) {
+        switch (errCode) {
+            case ErrorCode.CODE_SUCCESS:
+                RoomBaseDataModel roomData = (RoomBaseDataModel) objects[0];
+                // 更新顶部观众
+                roomData.getViewersList().clear();
+                roomData.getViewersList().addAll((List) objects[1]);
+                roomData.notifyViewersChange("processViewerTop");
+                break;
+
+        }
+    }
 }

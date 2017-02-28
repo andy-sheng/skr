@@ -2,8 +2,8 @@ package com.wali.live.common.gift.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.View;
 import android.view.ViewStub;
 
@@ -13,7 +13,6 @@ import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.rx.RefuseRetryExeption;
-import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -33,9 +32,9 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.gift.exception.GiftErrorCode;
 import com.wali.live.common.gift.exception.GiftException;
-import com.wali.live.common.gift.manager.GetMibiBalanceRequest;
 import com.wali.live.common.gift.view.GiftDisPlayItemView;
 import com.wali.live.common.gift.view.GiftMallView;
+import com.wali.live.component.ComponentController;
 import com.wali.live.dao.Gift;
 import com.wali.live.proto.GiftProto;
 import com.wali.live.proto.PayProto;
@@ -57,7 +56,6 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -69,6 +67,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     private RoomBaseDataModel mMyRoomData; // 主播id
     private Activity mActivity;
+    @Nullable
+    private ComponentController mComponentController;
 
     private ViewStub mGiftMallViewStub;
     private GiftMallView mGiftMallView;
@@ -92,10 +92,15 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     private Subscription mSountDownSubscription; // 倒计时的订阅
 
-    public GiftMallPresenter(Activity activity, Context baseContext, RoomBaseDataModel mMyRoomData) {
-        this.mMyRoomData = mMyRoomData;
-        this.mActivity = activity;
-        this.mContext = baseContext;
+    public GiftMallPresenter(
+            Activity activity,
+            Context baseContext,
+            RoomBaseDataModel myRoomData,
+            @Nullable ComponentController componentController) {
+        mMyRoomData = myRoomData;
+        mActivity = activity;
+        mContext = baseContext;
+        mComponentController = componentController;
     }
 
     public void setViewStub(ViewStub viewStub) {
@@ -121,6 +126,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         MyLog.d(TAG, "hideGiftMallView");
         if (mGiftMallView.getVisibility() == View.VISIBLE) {
             mGiftMallView.setVisibility(View.GONE);
+            if (mComponentController != null) {
+                mComponentController.onEvent(ComponentController.MSG_BOTTOM_POPUP_HIDDEN);
+            }
         }
     }
 
@@ -205,12 +213,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             return Observable.error(new GiftException(mContext.getString(R.string.no_gift_selected)));
                         }
 
-                        if(buyGiftWithCard.card == null || buyGiftWithCard.card.getGiftCardCount() <= 0) {
-                            if(gift.getCatagory() == GiftType.PRIVILEGE_GIFT && gift.getLowerLimitLevel() > MyUserInfoManager.getInstance().getUser().getLevel()) {
+                        if (buyGiftWithCard.card == null || buyGiftWithCard.card.getGiftCardCount() <= 0) {
+                            if (gift.getCatagory() == GiftType.PRIVILEGE_GIFT && gift.getLowerLimitLevel() > MyUserInfoManager.getInstance().getUser().getLevel()) {
                                 //特权礼物
                                 return Observable.error(new GiftException(mContext.getResources().getQuantityString(R.plurals.verify_user_level_toast,
                                         gift.getLowerLimitLevel(), gift.getLowerLimitLevel())));
-                            } else if((gift.getCatagory() == GiftType.Mi_COIN_GIFT && (gift.getPrice() / 10) > getCurrentTotalBalance()) ||
+                            } else if ((gift.getCatagory() == GiftType.Mi_COIN_GIFT && (gift.getPrice() / 10) > getCurrentTotalBalance()) ||
                                     (gift.getCatagory() != GiftType.Mi_COIN_GIFT && gift.getPrice() > getCurrentTotalBalance())) {
                                 return Observable.error(new GiftException(GiftErrorCode.GIFT_INSUFFICIENT_BALANCE, mContext.getString(R.string.insufficient_balance)));
                             }
@@ -266,7 +274,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             continueId = System.currentTimeMillis();
                         }
                         useGiftCard[0] = buyGiftWithCard.canUseCard();
-                        if(buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
+                        if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
                             return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(), timestamp, continueId, null, mRoomType, useGiftCard[0], true);
                         } else {
                             return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(), timestamp, continueId, null, mRoomType, useGiftCard[0], false);
@@ -566,7 +574,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                 .filter(new Func1<Gift, Boolean>() {
                     @Override
                     public Boolean call(Gift gift) {
-                        if(gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
+                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
                             return false;
                         }
                         return true;
@@ -708,6 +716,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         MyLog.d(TAG, "showGiftMallView");
         if (mGiftMallView.getVisibility() != View.VISIBLE) {
             mGiftMallView.setVisibility(View.VISIBLE);
+            if (mComponentController != null) {
+                mComponentController.onEvent(ComponentController.MSG_BOTTOM_POPUP_SHOWED);
+            }
         }
     }
 
