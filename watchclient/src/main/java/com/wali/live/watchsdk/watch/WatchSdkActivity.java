@@ -403,6 +403,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
             mGameModePresenter.setCloseBtn(mCloseBtn);
             mGameModePresenter.setRotateBtn(mRotateBtn);
+            mGameModePresenter.setBottomContainerView($(R.id.bottom_button_view));
             mGameModePresenter.setmTouchPresenter(mTouchPresenter);
             addBindActivityLifeCycle(mGameModePresenter, true);
         }
