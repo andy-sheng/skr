@@ -354,7 +354,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 mLiveCommentView,
                 mGiftContinueViewGroup,
                 mGiftRoomEffectView,
-                mGiftAnimationView
+                mGiftAnimationView,
+                $(R.id.bottom_button_view)
         };
         mTouchPresenter.setNeedHideViewsPortrait(animationParams);
         mTouchPresenter.setNeedHideViewsLandscape(animationParams);
