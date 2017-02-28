@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -569,7 +568,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     public void onScreenOrientationChanged(boolean isLandScape) {
         super.onScreenOrientationChanged(isLandScape);
-        /*LayoutParams lpAvatar = (RelativeLayout.LayoutParams) mAvatarRv.getLayoutParams();
+        LayoutParams lpAvatar = (RelativeLayout.LayoutParams) mAvatarRv.getLayoutParams();
         LayoutParams lpContainer = (RelativeLayout.LayoutParams) findViewById(R.id.owner_container_root).getLayoutParams();
         if (isLandScape) {
 //            lpAvatar.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_LANDSCAPE);
@@ -582,7 +581,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             lpAvatar.rightMargin = DisplayUtils.dip2px(AVATAR_MARGIN_RIGHT_PORTRAIT);
             lpContainer.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_PORTRAIT);
         }
-        redrawFollowGuidePopupWindow();*/
+//        redrawFollowGuidePopupWindow();
     }
 
     /**

@@ -95,9 +95,9 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     public GiftMallPresenter(
             Activity activity,
             Context baseContext,
-            RoomBaseDataModel mMyRoomData,
+            RoomBaseDataModel myRoomData,
             @Nullable ComponentController componentController) {
-        mMyRoomData = mMyRoomData;
+        mMyRoomData = myRoomData;
         mActivity = activity;
         mContext = baseContext;
         mComponentController = componentController;
@@ -213,12 +213,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             return Observable.error(new GiftException(mContext.getString(R.string.no_gift_selected)));
                         }
 
-                        if(buyGiftWithCard.card == null || buyGiftWithCard.card.getGiftCardCount() <= 0) {
-                            if(gift.getCatagory() == GiftType.PRIVILEGE_GIFT && gift.getLowerLimitLevel() > MyUserInfoManager.getInstance().getUser().getLevel()) {
+                        if (buyGiftWithCard.card == null || buyGiftWithCard.card.getGiftCardCount() <= 0) {
+                            if (gift.getCatagory() == GiftType.PRIVILEGE_GIFT && gift.getLowerLimitLevel() > MyUserInfoManager.getInstance().getUser().getLevel()) {
                                 //特权礼物
                                 return Observable.error(new GiftException(mContext.getResources().getQuantityString(R.plurals.verify_user_level_toast,
                                         gift.getLowerLimitLevel(), gift.getLowerLimitLevel())));
-                            } else if((gift.getCatagory() == GiftType.Mi_COIN_GIFT && (gift.getPrice() / 10) > getCurrentTotalBalance()) ||
+                            } else if ((gift.getCatagory() == GiftType.Mi_COIN_GIFT && (gift.getPrice() / 10) > getCurrentTotalBalance()) ||
                                     (gift.getCatagory() != GiftType.Mi_COIN_GIFT && gift.getPrice() > getCurrentTotalBalance())) {
                                 return Observable.error(new GiftException(GiftErrorCode.GIFT_INSUFFICIENT_BALANCE, mContext.getString(R.string.insufficient_balance)));
                             }
@@ -274,7 +274,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             continueId = System.currentTimeMillis();
                         }
                         useGiftCard[0] = buyGiftWithCard.canUseCard();
-                        if(buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
+                        if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
                             return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(), timestamp, continueId, null, mRoomType, useGiftCard[0], true);
                         } else {
                             return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(), timestamp, continueId, null, mRoomType, useGiftCard[0], false);
@@ -574,7 +574,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                 .filter(new Func1<Gift, Boolean>() {
                     @Override
                     public Boolean call(Gift gift) {
-                        if(gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
+                        if (gift.getCatagory() == GiftType.RED_ENVELOPE_GIFT) {
                             return false;
                         }
                         return true;
