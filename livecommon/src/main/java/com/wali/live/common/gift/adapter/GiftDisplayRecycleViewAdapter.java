@@ -68,7 +68,7 @@ public class GiftDisplayRecycleViewAdapter extends RecyclerView.Adapter<GiftItem
 
         final View finalConvertView = viewHolder.giftDisPlayItemView;
         if (mGiftItemListener!=null && infoWithCard.gift == mGiftItemListener.getSelectedGift()) {
-            viewHolder.giftDisPlayItemView.setBackgroundResource(R.drawable.live_anchor_gift_selected);
+            viewHolder.giftDisPlayItemView.setBackgroundResource(R.drawable.live_choice_selected);
             if(!infoWithCard.gift.getCanContinuous()){
                 viewHolder.giftDisPlayItemView.changeContinueSendBtnBackGroup(true);
                 viewHolder.giftDisPlayItemView.showContinueSendBtn(false);

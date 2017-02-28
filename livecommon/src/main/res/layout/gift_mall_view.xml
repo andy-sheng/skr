@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:text="10"
                 android:drawablePadding="6.66dp"
-                android:drawableLeft="@drawable/live_anchor_recharge_diamond"
+                android:drawableRight="@drawable/live_icon_golden_diamond_big"
                 android:textColor="@color/color_white"
                 android:textSize="15sp" />
 
@@ -41,7 +41,7 @@
                 android:text="0"
                 android:layout_toRightOf="@id/diamond_max_tv"
                 android:drawablePadding="6.66dp"
-                android:drawableLeft="@drawable/sintra_icon"
+                android:drawableRight="@drawable/live_icon_argentum_diamond_big"
                 android:textColor="@color/color_white"
                 android:textSize="15sp" />
 
@@ -53,12 +53,12 @@
                 android:layout_marginLeft="-1.33dp"
                 android:layout_toRightOf="@id/diamond_siliver_tv"
                 android:drawablePadding="6.66dp"
-                android:drawableRight="@drawable/live_anchor_recharge_more"
+                android:drawableRight="@drawable/live_icon_more_big_normal"
                 android:gravity="center"
                 android:padding="10dp"
-                android:textColor="#e5aa1e"
+                android:textColor="@color/color_fed533"
                 android:text="@string/recharge"
-                android:textSize="14.66sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/send_gift"

@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/avatar_rv"
-            android:background="@drawable/live_anchor_bg">
+            android:background="@drawable/live_bg_head">
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/owner_iv"

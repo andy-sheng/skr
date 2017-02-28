@@ -90,7 +90,7 @@ public class ContinueSendBtn extends RelativeLayout {
         }
         NumberViewWithExtraInfo viewWithExtraInfo = getFlyBarrageView();
         LayoutParams lp = (LayoutParams) viewWithExtraInfo.view.getLayoutParams();
-        if(lp==null) {
+        if (lp == null) {
             lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         lp.addRule(RelativeLayout.ALIGN_RIGHT, R.id.continue_send_vp);
@@ -102,7 +102,7 @@ public class ContinueSendBtn extends RelativeLayout {
         viewWithExtraInfo.view.setTextSize(getResources().getDimension(R.dimen.text_size_18));
         viewWithExtraInfo.view.setText("X" + mNumber);
         //viewWithExtraInfo.view.setTextColor(0xff7f62ff);
-        setNumberColor(mNumber,viewWithExtraInfo.view);
+        setNumberColor(mNumber, viewWithExtraInfo.view);
         this.addView(viewWithExtraInfo.view);
         play(viewWithExtraInfo);
     }
@@ -112,7 +112,7 @@ public class ContinueSendBtn extends RelativeLayout {
         for (int i = 0; i < mFlag.length; i++) {
             if (number > mFlag[i]) {
                 index++;
-            }else{
+            } else {
                 break;
             }
         }

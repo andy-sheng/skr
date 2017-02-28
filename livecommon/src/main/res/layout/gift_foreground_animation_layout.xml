@@ -16,7 +16,7 @@
             android:layout_centerHorizontal="true"
             android:paddingRight="25dp"
             android:minWidth="100dp"
-            android:background="@drawable/live_anchor_gift_bg">
+            android:background="@drawable/live_bg_head">
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/sender_iv"
