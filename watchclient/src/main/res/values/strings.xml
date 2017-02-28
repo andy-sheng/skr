@@ -13,4 +13,6 @@
     <string name="follow_failed">Couldn\\\'t follow</string>
     <string name="setting_black_follow_hint">Unblock to follow</string>
 
+    <string name="please_login">请先登录</string>
+    <string name="go_to_login">去登录</string>
 </resources>

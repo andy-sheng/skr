@@ -34,7 +34,7 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.listener.OnItemClickListener;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.utils.ItemDataCommonFormatUtils;
+import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.watchtop.adapter.UserAvatarRecyclerAdapter;
 
@@ -253,11 +253,11 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         if (mMyRoomBaseDataModel.getCertificationType() > 0) {
             mOwnerBadgeIv.getLayoutParams().width = DisplayUtils.dip2px(16f);
             mOwnerBadgeIv.getLayoutParams().height = DisplayUtils.dip2px(16f);
-            mOwnerBadgeIv.setImageDrawable(ItemDataCommonFormatUtils.getCertificationImgSource(mMyRoomBaseDataModel.getCertificationType()));
+            mOwnerBadgeIv.setImageDrawable(ItemDataFormatUtils.getCertificationImgSource(mMyRoomBaseDataModel.getCertificationType()));
         } else {
             mOwnerBadgeIv.getLayoutParams().width = DisplayUtils.dip2px(11f);
             mOwnerBadgeIv.getLayoutParams().height = DisplayUtils.dip2px(11f);
-            mOwnerBadgeIv.setImageDrawable(ItemDataCommonFormatUtils.getLevelSmallImgSource(mMyRoomBaseDataModel.getLevel()));
+            mOwnerBadgeIv.setImageDrawable(ItemDataFormatUtils.getLevelSmallImgSource(mMyRoomBaseDataModel.getLevel()));
         }
     }
 

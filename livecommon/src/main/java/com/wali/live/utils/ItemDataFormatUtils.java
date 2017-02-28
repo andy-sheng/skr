@@ -9,12 +9,10 @@ import com.mi.live.data.config.GetConfigManager;
 /**
  * Created by yurui on 2/27/16.
  */
-public class ItemDataCommonFormatUtils {
-
-    public static final String TAG = ItemDataCommonFormatUtils.class.getName();
+public class ItemDataFormatUtils {
+    public static final String TAG = ItemDataFormatUtils.class.getName();
 
     public static final int WALL_PAPER_BIG_SIZE = 480;
-
     public static final int WALL_PAPER_SMALL_SIZE = 160;
 
     public static GetConfigManager.LevelItem getLevelItem(int lvl) {
@@ -30,14 +28,14 @@ public class ItemDataCommonFormatUtils {
         }
     }
 
-//    public static Drawable getCertificationImgSourceLiveComment(int certificationType) {
+    //    public static Drawable getCertificationImgSourceLiveComment(int certificationType) {
 //        if (certificationType > 0) {
 //            return GetConfigManager.getInstance().getCertificationTypeDrawable(certificationType).certificationDrawableLiveComment;
 //        } else {
 //            return null;
 //        }
 //    }
-//
+
     public static Drawable getLevelSmallImgSource(int level) {
         if (level >= 0) {
             return GetConfigManager.getInstance().getLevelSmallDrawable(level);
@@ -45,12 +43,12 @@ public class ItemDataCommonFormatUtils {
             return null;
         }
     }
-//
+
     public static Drawable getSmallRedName() {
         return GlobalData.app().getResources().getDrawable(R.drawable.red_icon);
     }
-//
-//    public static Drawable getRedName() {
+
+    //    public static Drawable getRedName() {
 //        return GlobalData.app().getResources().getDrawable(R.drawable.card_icon_red);
 //    }
 //
@@ -293,7 +291,7 @@ public class ItemDataCommonFormatUtils {
         }
         return displayText.toString();
     }
-//
+
 //    public static SpannableStringBuilder getLiveTitle(String className, String text) {
 //        SpannableStringBuilder title = new SpannableStringBuilder(text);
 //        int len = title.length();

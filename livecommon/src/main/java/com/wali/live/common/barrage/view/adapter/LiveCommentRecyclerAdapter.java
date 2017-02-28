@@ -42,6 +42,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.mi.live.data.push.model.BarrageMsgType.B_MSG_TYPE_TEXT;
+
 /**
  * @module 直播间评论弹幕
  * Created by lan on 15-11-26.
@@ -81,27 +83,26 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                 return;
             }
-            mSubscription = Observable.create(new Observable.OnSubscribe<DiffUtil.DiffResult>() {
-                @Override
-                public void call(Subscriber<? super DiffUtil.DiffResult> subscriber) {
-                    mCommentDiffUtils.setList(dataList);
-                    DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(mCommentDiffUtils, true);
-                    // 把结果应用到 adapter
-                    subscriber.onNext(diffResult);
-                    subscriber.onCompleted();
-                }
-            })
+            mSubscription = Observable
+                    .create(new Observable.OnSubscribe<DiffUtil.DiffResult>() {
+                        @Override
+                        public void call(Subscriber<? super DiffUtil.DiffResult> subscriber) {
+                            mCommentDiffUtils.setList(dataList);
+                            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(mCommentDiffUtils, true);
+                            // 把结果应用到 adapter
+                            subscriber.onNext(diffResult);
+                            subscriber.onCompleted();
+                        }
+                    })
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<DiffUtil.DiffResult>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override
                         public void onError(Throwable e) {
-
                         }
 
                         @Override
@@ -110,16 +111,32 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                             afterRefresh.run();
                         }
                     });
-
         }
     }
-
 
     /**
      * 这个回调是点击弹幕的姓名时的回调
      */
     public interface LiveCommentNameClickListener {
         void onClickName(long uid);
+    }
+
+    private void setBackground(LiveCommentHolder liveCommentHolder, CommentModel liveComment) {
+        if (null != liveComment) {
+            int type = liveComment.getMsgType();
+            if ((type == BarrageMsgType.B_MSG_TYPE_TEXT || type == BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE || type == BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG)
+                    && null != mContext.get()) {
+                liveCommentHolder.itemView.setBackground(mContext.get().getResources().getDrawable(R.drawable.live_bg_comment));
+                RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) liveCommentHolder.itemView.getLayoutParams();
+                lp.setMargins(0, 3, 0, 3);
+            } else {
+                liveCommentHolder.itemView.setBackground(null);
+                RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) liveCommentHolder.itemView.getLayoutParams();
+                lp.setMargins(0, 0, 0, 0);
+            }
+        } else {
+            MyLog.w(TAG, "setBackground liveComment is null!");
+        }
     }
 
     public void bindLevelView(LiveCommentHolder liveCommentHolder, CommentModel liveComment) {
@@ -146,7 +163,7 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                 name += "...";
             }
         }
-        liveCommentHolder.setNameSpan(name, liveComment.getNameColor(), liveComment.getCertificationType(), liveComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_TEXT, liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_SELL);
+        liveCommentHolder.setNameSpan(name, liveComment.getNameColor(), liveComment.getCertificationType(), liveComment.getMsgType() != B_MSG_TYPE_TEXT, liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_SELL);
     }
 
     public void bindCommentView(LiveCommentHolder liveCommentHolder, CommentModel liveComment) {
@@ -195,16 +212,17 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MyLog.d(TAG, "onCreateViewHolder");
-//            View footView = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_footerview, null, false);
-//            return new FootViewHolder(footView);
+
         View footView = LayoutInflater.from(parent.getContext()).inflate(R.layout.live_comment_item_left, parent, false);
         LiveCommentHolder liveCommentHolder = new LiveCommentHolder(footView);
         liveCommentHolder.setContext(mContext);
         liveCommentHolder.setNameClickListener(mLiveCommentNameClickListener);
+
         if (mIsGameLive) {
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) liveCommentHolder.barrageTv.getLayoutParams();
             params.rightMargin = DisplayUtils.dip2px(3.33f);
         }
+
         return liveCommentHolder;
     }
 
@@ -213,18 +231,19 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         if (holder instanceof LiveCommentHolder) {
             LiveCommentHolder liveCommentHolder = (LiveCommentHolder) holder;
             liveCommentHolder.reset();
+
             CommentModel liveComment = mCommentDiffUtils.getList().get(position);
             liveCommentHolder.setModel(liveComment);
+
+            setBackground(liveCommentHolder, liveComment);
+
             bindLevelView(liveCommentHolder, liveComment);
-
             bindNameView(liveCommentHolder, liveComment);
-
             bindCommentView(liveCommentHolder, liveComment);
 
             liveCommentHolder.setAll();
         }
     }
-
 
     @Override
     public long getItemId(int position) {
@@ -242,9 +261,8 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     static class CommentDiffUtils extends DiffUtil.Callback {
-
-        private List<CommentModel> oldList = new ArrayList<>();
-        private List<CommentModel> newList = new ArrayList<>();
+        private List<CommentModel> oldList = new ArrayList();
+        private List<CommentModel> newList = new ArrayList();
 
         public List<CommentModel> getList() {
             return newList;

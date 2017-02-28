@@ -3,7 +3,6 @@ package com.wali.live.common.barrage.view;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -14,14 +13,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
+import com.live.module.common.R;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
-
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
-
 import com.wali.live.common.model.CommentModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,15 +29,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
-import com.live.module.common.R;
 /**
  * @module 直播间弹幕评论
  */
 public class LiveCommentView extends RelativeLayout implements IBindActivityLIfeCycle {
-
     private static final String TAG = LiveCommentView.class.getSimpleName();
     private static final int IDLE_STATUS_MAX_TIME = 30 * 1000;
 
@@ -48,10 +42,8 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
 
     private String mToken;
 
-//    @Bind(R.id.moveTolastIv)
-    public ImageView mMoveToLastItemIv;  //点击回到最底部
+    public ImageView mMoveToLastItemIv;     //点击回到最底部
 
-//    @Bind(R.id.barrage_comment_list_view)
     public MyListView mCommentRv;
 
     private LiveCommentRecyclerAdapter.LiveCommentNameClickListener mNameViewClickListener = null;
@@ -59,6 +51,8 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private boolean mDraging = false;
+
+    private boolean mHasAdjust = false;
 
     public LiveCommentView(Context context) {
         super(context);
@@ -80,10 +74,11 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
     private LinearLayoutManager mLayoutManager;
 
     private void initContentView(Context context) {
-
         inflate(context, R.layout.livecomment_recycler_layout, this);
-        mCommentRv  = (MyListView) findViewById(R.id.barrage_comment_list_view);
-        mMoveToLastItemIv = (ImageView)findViewById(R.id.moveTolastIv);
+
+        mMoveToLastItemIv = (ImageView) findViewById(R.id.moveTolastIv);
+
+        mCommentRv = (MyListView) findViewById(R.id.barrage_comment_list_view);
         mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true);
         mCommentRv.setLayoutManager(mLayoutManager);
         mCommentRv.setItemAnimator(null);
@@ -114,11 +109,11 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                     mDraging = false;
                     // 停下来判断是否是最后一个
                     int firstVisiblePosition = mLayoutManager.findFirstVisibleItemPosition();
-                    MyLog.d(TAG, "onScrollStateChangd firstVisiblePosition :"+firstVisiblePosition);
-                    if(firstVisiblePosition==0){
-                        setOnBottom("onScrollStateChanged",true);
-                    }else{
-                        setOnBottom("onScrollStateChanged",false);
+                    MyLog.d(TAG, "onScrollStateChangd firstVisiblePosition :" + firstVisiblePosition);
+                    if (firstVisiblePosition == 0) {
+                        setOnBottom("onScrollStateChanged", true);
+                    } else {
+                        setOnBottom("onScrollStateChanged", false);
                     }
                 } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) { //用户滑动的话则动态跟新maxSize
                     mDraging = true;
@@ -127,7 +122,6 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
             }
         };
         mCommentRv.addOnScrollListener(mOnScrollListener);
@@ -155,7 +149,6 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                 setOnBottom("mMoveToLastItemIv", true);
             }
         });
-
     }
 
     private void setOnBottom(String from, boolean onBottom) {
@@ -167,7 +160,8 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                     refreshComment(true);
                 }
                 mCommentRv.scrollToPosition(0);
-                mMoveToLastItemIv.setVisibility(GONE);
+                // INVISIBLE占位
+                mMoveToLastItemIv.setVisibility(INVISIBLE);
                 EventBus.getDefault().post(new LiveCommentStateEvent(LiveCommentStateEvent.TYPE_UPDATE_TO_DEFAULT_SIZE));
             } else {
                 // 不在底部不需要更新数据
@@ -247,16 +241,16 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
     }
 
     // this value should be adjust when ui design is changed
-    private static final int COMMENT_VIEW_HEIGHT_IN_PORTRAIT = DisplayUtils.dip2px(160.33f); // 弹幕区域高度
+    private static final int COMMENT_VIEW_HEIGHT_IN_PORTRAIT = DisplayUtils.dip2px(160.33f);        // 弹幕区域高度
     private static final int COMMENT_VIEW_HEIGHT_IN_LANDSCAPE = DisplayUtils.dip2px(115f);
 
-    private static final int COMMENT_VIEW_LARGE_MARGIN_IN_PORTRAIT = DisplayUtils.dip2px(110.67f); // 连麦小窗存在时，弹幕区域右边距
+    private static final int COMMENT_VIEW_LARGE_MARGIN_IN_PORTRAIT = DisplayUtils.dip2px(110.67f);  // 连麦小窗存在时，弹幕区域右边距
     private static final int COMMENT_VIEW_LARGE_MARGIN_IN_LANDSCAPE = DisplayUtils.dip2px(240f);
 
-    private static final int COMMENT_VIEW_NORMAL_MARGIN_IN_PORTRAIT = DisplayUtils.dip2px(6.67f); // 连麦小窗不存在时，弹幕区域右边距
-    private static final int COMMENT_VIEW_NORMAL_MARGIN_IN_LANDSCAPE = DisplayUtils.dip2px(140);
+    private static final int COMMENT_VIEW_NORMAL_MARGIN_IN_PORTRAIT = DisplayUtils.dip2px(70f);     // 连麦小窗不存在时，弹幕区域右边距
+    private static final int COMMENT_VIEW_NORMAL_MARGIN_IN_LANDSCAPE = DisplayUtils.dip2px(140f);
 
-    private static final int MOVE_BUTTON_LARGE_MARGIN = DisplayUtils.dip2px(23.33f);  // 弹幕置底按钮距离弹幕区域右侧的右边距
+    private static final int MOVE_BUTTON_LARGE_MARGIN = DisplayUtils.dip2px(23.33f);                // 弹幕置底按钮距离弹幕区域右侧的右边距
     private static final int MOVE_BUTTON_NORMAL_MARGIN = DisplayUtils.dip2px(3.33f);
 
     private boolean mIsLandscape = false;
@@ -300,6 +294,13 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CommentRefreshEvent event) {
         if (event != null && event.barrageMsgs != null && event.token.equals(mToken)) {
+            if (!mHasAdjust) {
+                try {
+                    orientInner();
+                    mHasAdjust = true;
+                } catch (Exception e) {
+                }
+            }
             setDataSourceOnMainThread(event.barrageMsgs);
             if (event.needManualMoveToLast) {
                 setOnBottom("onEventMainThread", true);
@@ -321,25 +322,29 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
         }
     }
 
-    private static final int LANDSCAPE_WIDTH = DisplayUtils.dip2px(440.66f);
+    private static final int LANDSCAPE_WIDTH = GlobalData.screenHeight >> 1;
 
     public void orientComment(boolean isLandscape) {
         if (mIsLandscape == isLandscape) {
             return;
         }
         mIsLandscape = isLandscape;
+        orientInner();
+    }
+
+    private void orientInner() {
         adjustLayoutForOrient(mIsLandscape ? COMMENT_VIEW_HEIGHT_IN_LANDSCAPE : COMMENT_VIEW_HEIGHT_IN_PORTRAIT);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.getLayoutParams();
         layoutParams.width = mIsLandscape ? LANDSCAPE_WIDTH : LayoutParams.MATCH_PARENT;
-        this.setLayoutParams(layoutParams);
+        setLayoutParams(layoutParams);
     }
 
     public void reset() {
         mLastSetCommentListTs = 0;
         mOnBottom = true;
         mHasDataUpdate = false;
-        if (mMoveToLastItemIv != null && mMoveToLastItemIv.getVisibility() != View.GONE) {
-            mMoveToLastItemIv.setVisibility(View.GONE);
+        if (mMoveToLastItemIv != null && mMoveToLastItemIv.getVisibility() == View.VISIBLE) {
+            mMoveToLastItemIv.setVisibility(View.INVISIBLE);
         }
     }
 }

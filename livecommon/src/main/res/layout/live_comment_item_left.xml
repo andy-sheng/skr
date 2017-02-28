@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <TextView
@@ -8,8 +9,9 @@
         android:layout_width="@dimen/lvl_tv_width"
         android:layout_height="@dimen/lvl_tv_height"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_16"
         android:layout_marginRight="@dimen/margin_18"
+        android:layout_marginTop="@dimen/margin_18"
         android:drawablePadding="@dimen/lvl_drawable_padding"
         android:gravity="center"
         android:paddingLeft="@dimen/lvl_left_padding"
@@ -17,23 +19,25 @@
         android:singleLine="true"
         android:text="10"
         android:textColor="@color/lvl_txt_color"
-        android:textSize="@dimen/lvl_text_size" />
+        android:textSize="@dimen/lvl_text_size"/>
 
     <TextView
         android:id="@+id/barrage_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_80"
-        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_18"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_18"
         android:layout_toRightOf="@+id/level_tv"
+        android:gravity="center_vertical"
         android:includeFontPadding="false"
-        android:paddingRight="@dimen/margin_16"
+        android:lineSpacingExtra="@dimen/margin_15"
         android:paddingBottom="@dimen/margin_3"
+        android:paddingRight="@dimen/margin_16"
         android:textColor="@color/color_black_trans_60"
         android:textDirection="3"
-        android:lineSpacingExtra="@dimen/margin_15"
-        android:layout_marginBottom="@dimen/barrage_line_space_bottom"
-        android:textSize="@dimen/text_size_46" />
+        android:textSize="@dimen/text_size_44"/>
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/gift_iv"
@@ -43,55 +47,5 @@
         android:layout_marginBottom="2.66dp"
         android:layout_marginLeft="-3.33dp"
         android:layout_toRightOf="@id/barrage_tv"
-        android:visibility="gone" />
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/imgInfoArea"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_toRightOf="@+id/level_tv"-->
-        <!--android:layout_marginRight="50dp"-->
-        <!--android:layout_below="@id/barrage_tv"-->
-        <!--android:background="@drawable/live_bullet_screen_bg">-->
-
-        <!--<com.wali.live.fresco.BaseImageView-->
-            <!--android:id="@+id/imgGoods"-->
-            <!--android:layout_width="@dimen/view_dimen_150"-->
-            <!--android:layout_height="@dimen/view_dimen_150"-->
-            <!--android:layout_gravity="center_vertical|left"-->
-            <!--android:layout_margin="@dimen/margin_20"-->
-            <!--android:src="@drawable/ic_launcher" />-->
-
-        <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_marginRight="@dimen/margin_20"-->
-            <!--android:layout_marginTop="@dimen/margin_20"-->
-            <!--android:layout_marginBottom="@dimen/margin_20"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/txtGoodsDetail"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:layout_marginLeft="@dimen/margin_5"-->
-                <!--android:layout_marginTop="@dimen/margin_12"-->
-                <!--android:text="@string/account_error_tips"-->
-                <!--android:textColor="@color/color_black_trans_90"-->
-                <!--android:textSize="@dimen/text_size_34" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/txtGoodsPrice"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:textStyle="bold"-->
-                <!--android:layout_marginBottom="@dimen/margin_12"-->
-                <!--android:layout_marginLeft="@dimen/margin_5"-->
-                <!--android:text="@string/account_error_tips"-->
-                <!--android:textColor="#ff5000"-->
-                <!--android:textSize="@dimen/text_size_34" />-->
-        <!--</RelativeLayout>-->
-    <!--</LinearLayout>-->
-
+        android:visibility="gone"/>
 </RelativeLayout>

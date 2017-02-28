@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.base.view.RotatedSeekBar;
 import com.live.module.common.R;
 import com.wali.live.proto.HotSpotProto;
-import com.wali.live.utils.ItemDataCommonFormatUtils;
+import com.wali.live.utils.ItemDataFormatUtils;
 
 import java.util.List;
 
@@ -126,8 +126,8 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
     public void setProgress(long now, long total, boolean updateProgress) {
         if (total > 0 && now >= 0) {
             mSeekBar.setTotalDuration(total);
-            mCurTimeTv.setText(ItemDataCommonFormatUtils.formatVideodisplayTime(now));
-            mTotalTimeTv.setText(ItemDataCommonFormatUtils.formatVideodisplayTime(total));
+            mCurTimeTv.setText(ItemDataFormatUtils.formatVideodisplayTime(now));
+            mTotalTimeTv.setText(ItemDataFormatUtils.formatVideodisplayTime(total));
             if (updateProgress) {
                 mSeekBar.setPercent(now * 1f / total);
             }
