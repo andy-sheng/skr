@@ -41,6 +41,8 @@ public class ComponentController implements ComponentPresenter.IComponentControl
     public static final int MSG_SHOW_SETTING_PANEL  = MSG_LIVE_FIRST + 8; // 显示 设置面板
     public static final int MSG_SHOW_GIFT_PANEL     = MSG_LIVE_FIRST + 9; // 显示 礼物面板
 
+    public static final int MSG_FORCE_ROTATE_SCREEN = MSG_LIVE_FIRST + 10; // 强制旋转UI
+
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
 
     public void release() {

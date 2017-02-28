@@ -17,8 +17,8 @@ import org.greenrobot.eventbus.EventBus;
  *
  * @module 底部按钮表现, 游戏直播
  */
-public class BottomButtonPresenter extends
-        ComponentPresenter<WatchBottomButton.IView> implements WatchBottomButton.IPresenter {
+public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.IView>
+        implements WatchBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
     public BottomButtonPresenter(
@@ -43,6 +43,10 @@ public class BottomButtonPresenter extends
             EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(
                     GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST));
         }
+    }
+
+    @Override
+    public void rotateScreen() {
     }
 
     @Nullable

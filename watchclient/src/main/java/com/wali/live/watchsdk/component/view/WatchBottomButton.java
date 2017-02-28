@@ -28,6 +28,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     protected View mCommentBtn;
     protected View mGiftBtn;
+//    protected View mRotateBtn;
 
     @Override
     protected String getTAG() {
@@ -46,12 +47,16 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
 
+//        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
+//        addCreatedView(mGiftBtn, R.id.rotate_btn);
+
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mCommentBtn);
         mRightBtnSetPort.add(mGiftBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
         mBottomBtnSetLand.add(mCommentBtn);
+        //mBottomBtnSetLand.add(mRotateBtn);
 
         orientChild(mIsLandscape);
     }
@@ -69,6 +74,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.gift_btn) {
             mPresenter.showGiftView();
             // TODO 增加打点
+        } else if (id == R.id.rotate_btn) {
+            mPresenter.rotateScreen();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -107,6 +114,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 显示礼物界面
          */
         void showGiftView();
+
+        /**
+         * 旋转UI
+         */
+        void rotateScreen();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
