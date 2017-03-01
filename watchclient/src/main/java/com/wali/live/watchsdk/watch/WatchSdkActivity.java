@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
@@ -902,19 +905,43 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private boolean fragmentBackPressed(Fragment fragment) {
+        if (fragment != null && fragment instanceof FragmentListener) {
+            if (((FragmentListener) fragment).onBackPressed()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onBackPressed() {
-        if (mComponentController != null && mComponentController.onEvent(
-                WatchComponentController.MSG_ON_BACK_PRESSED)) {
-            return;
-        } else if (mGiftMallPresenter.isGiftMallViewVisibility()) {
-            EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
-            return;
-        } else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
-            mGameModePresenter.hideInputArea();
-            return;
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            //退出栈弹出
+            String fName = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+            if (!TextUtils.isEmpty(fName)) {
+                Fragment fragment = fm.findFragmentByTag(fName);
+                MyLog.w(TAG, "fragment name=" + fName + ", fragment=" + fragment);
+
+                if (fragmentBackPressed(fragment)) {
+                    return;
+                }
+                FragmentNaviUtils.popFragmentFromStack(this);
+            }
+        } else {
+            if (mComponentController != null && mComponentController.onEvent(
+                    WatchComponentController.MSG_ON_BACK_PRESSED)) {
+                return;
+            } else if (mGiftMallPresenter.isGiftMallViewVisibility()) {
+                EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
+                return;
+            } else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
+                mGameModePresenter.hideInputArea();
+                return;
+            }
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     @Subscribe
