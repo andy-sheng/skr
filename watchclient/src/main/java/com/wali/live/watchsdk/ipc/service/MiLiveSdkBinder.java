@@ -67,12 +67,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
                           final long playerId, final String liveId, final String videoUrl, final int liveType) {
-        MyLog.d(TAG, "openWatch by activity channelId=" + channelId);
+        MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
-            public void postProcess() {
-                MyLog.d(TAG, "openWatch by activity success callback");
+            public void postSuccess() {
+                MyLog.w(TAG, "openWatch by activity success callback");
 
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
@@ -83,18 +83,26 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
             @Override
             public void postError() {
+                MyLog.w(TAG, "openWatch by activity postError callback");
+                activity.finish();
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "openWatch by activity failure callback");
+                activity.finish();
             }
         });
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
                            final long playerId, final String liveId, final String videoUrl, final int liveType) {
-        MyLog.d(TAG, "openReplay by activity channelId=" + channelId);
+        MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
-            public void postProcess() {
-                MyLog.d(TAG, "openReplay by activity success callback");
+            public void postSuccess() {
+                MyLog.w(TAG, "openReplay by activity success callback");
 
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
@@ -105,6 +113,14 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
             @Override
             public void postError() {
+                MyLog.w(TAG, "openReplay by activity postError callback");
+                activity.finish();
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "openReplay by activity failure callback");
+                activity.finish();
             }
         });
     }
@@ -112,12 +128,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
-        MyLog.d(TAG, "loginByMiAccountSso channelId=" + channelId);
+        MyLog.w(TAG, "loginByMiAccountSso channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback() {
             @Override
-            public void postProcess() {
-                MyLog.d(TAG, "loginByMiAccountSso success callback");
+            public void postSuccess() {
+                MyLog.w(TAG, "loginByMiAccountSso success callback");
 
                 AccountCaller.miSsoLogin(miid, serviceToken, channelId)
                         .observeOn(AndroidSchedulers.mainThread())
@@ -161,20 +177,26 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
 
             @Override
-            public void onActive() {
+            public void postActive() {
+                MyLog.w(TAG, "loginByMiAccountSso postActive callback");
                 onEventOtherAppActive(channelId);
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "loginByMiAccountSso failure callback");
             }
         });
     }
 
     @Override
     public void loginByMiAccountOAuth(final int channelId, String packageName, String channelSecret, final String code) throws RemoteException {
-        MyLog.d(TAG, "loginByMiAccountOAuth channelId=" + channelId);
+        MyLog.w(TAG, "loginByMiAccountOAuth channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback() {
             @Override
-            public void postProcess() {
-                MyLog.d(TAG, "loginByMiAccountOAuth success callback");
+            public void postSuccess() {
+                MyLog.w(TAG, "loginByMiAccountOAuth success callback");
 
                 AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
                         .subscribeOn(Schedulers.io())
@@ -204,32 +226,43 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
 
             @Override
-            public void onActive() {
+            public void postActive() {
+                MyLog.w(TAG, "loginByMiAccountOAuth postActive callback");
                 onEventOtherAppActive(channelId);
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.d(TAG, "loginByMiAccountOAuth failure callback");
             }
         });
     }
 
     @Override
     public void clearAccount(final int channelId, String packageName, String channelSecret) throws RemoteException {
-        MyLog.d(TAG, "clearAccount channelId=" + channelId);
+        MyLog.w(TAG, "clearAccount channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new ISecureCallBack() {
             @Override
             public void process(Object... objects) {
-                MyLog.d(TAG, "clearAccount success callback");
+                MyLog.w(TAG, "clearAccount success callback");
 
                 // 账号这一块
                 UserAccountManager.getInstance().logoff(channelId);
                 onEventLogoff(channelId, MiLiveSdkEvent.SUCCESS);
             }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "clearAccount failure callback");
+            }
         });
     }
 
-    private void secureOperate(final int channelId, final String packageName, final String channelSecret, final ISecureCallBack successCallback) {
+    private void secureOperate(final int channelId, final String packageName, final String channelSecret, final ISecureCallBack callback) {
         if (mAuthMap.containsKey(channelId) && mAuthMap.get(channelId).equals(packageName)) {
-            if (successCallback != null) {
-                successCallback.process(channelId, packageName);
+            if (callback != null) {
+                callback.process(channelId, packageName);
             }
             return;
         }
@@ -256,23 +289,21 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                     public void onError(Throwable e) {
                         MyLog.d(TAG, "verify failure, ");
                         onEventVerifyFailure(channelId, -1);
+                        callback.processFailure();
                     }
 
                     @Override
                     public void onNext(Integer integer) {
                         MyLog.d(TAG, "onNext integer=" + integer);
-                        if (integer != null) {
-                            if (integer == 0) {
-                                if (successCallback != null) {
-                                    successCallback.process(channelId, packageName);
-                                }
-                                mAuthMap.put(channelId, packageName);
-                            } else {
-                                onEventVerifyFailure(channelId, integer);
+                        if (integer != null && integer == 0) {
+                            if (callback != null) {
+                                callback.process(channelId, packageName);
                             }
-                        } else {
-                            onEventVerifyFailure(channelId, -1);
+                            mAuthMap.put(channelId, packageName);
+                            return;
                         }
+                        onEventVerifyFailure(channelId, integer == null ? -1 : integer);
+                        callback.processFailure();
                     }
                 });
     }

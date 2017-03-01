@@ -9,39 +9,40 @@ import rx.schedulers.Schedulers;
 
 /**
  * 权限检查回调，用于除登录接口的其它接口
- *
+ * <p>
  * Created by wuxiaoshan on 17-2-23.
  */
 public abstract class SecureCommonCallBack implements ISecureCallBack {
     private String TAG = getClass().getSimpleName();
+
     @Override
     public void process(Object... objects) {
-        int channelId = (int)objects[0];
-        String packageName = (String)objects[1];
-        HostChannelManager.getInstance().checkChannel(channelId,packageName)
+        int channelId = (int) objects[0];
+        String packageName = (String) objects[1];
+        HostChannelManager.getInstance().checkChannel(channelId, packageName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
-                        MyLog.v(TAG,"onCompleted");
+                        MyLog.v(TAG, "onCompleted");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.e(TAG,e);
+                        MyLog.e(TAG, e);
                         postError();
                     }
 
                     @Override
                     public void onNext(Boolean aBoolean) {
                         MyLog.v(TAG, "onNext");
-                        postProcess();
+                        postSuccess();
                     }
                 });
     }
 
-    public abstract void postProcess();
+    public abstract void postSuccess();
 
     public abstract void postError();
 }
