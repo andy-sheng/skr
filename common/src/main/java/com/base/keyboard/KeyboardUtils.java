@@ -84,7 +84,7 @@ public class KeyboardUtils {
                     MyLog.w(TAG, "isHide=" + isHide);
                 }
             }
-        }, 1000);
+        }, 150);
     }
 
     //注释：这个函数是 如果有软键盘，那么隐藏它；反之，把它显示出来。 不是强制隐藏键盘的api.
