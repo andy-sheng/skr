@@ -1,4 +1,4 @@
-package com.wali.live.fragment.utils;
+package com.base.fragment.utils;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.text.TextUtils;
 import com.base.activity.BaseActivity;
 import com.base.common.R;
 import com.base.log.MyLog;
-import com.wali.live.fragment.BaseFragment;
+import com.base.fragment.BaseFragment;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

@@ -15,7 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
-import com.wali.live.fragment.MyRxFragment;
+import com.base.fragment.MyRxFragment;
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.SafeGoActivity;
@@ -27,12 +28,13 @@ import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.common.action.VideoAction;
 import com.wali.live.common.keyboard.KeyboardUtils;
-import com.wali.live.fragment.BaseFragment;
+import com.base.fragment.BaseFragment;
 import com.wali.live.proto.RoomRecommend;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.fragment.utils.FragmentNaviUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

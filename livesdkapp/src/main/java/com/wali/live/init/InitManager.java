@@ -23,10 +23,11 @@ import com.mi.milink.sdk.data.ClientAppInfo;
 import com.mi.milink.sdk.debug.MiLinkLog;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.dns.PreDnsManager;
-import com.wali.live.fresco.FrescoManager;
 import com.wali.live.log.LogHandler;
-import com.wali.live.service.PacketProcessService;
 import com.wali.live.utils.ReplayBarrageMessageManager;
+import com.wali.live.watchsdk.fresco.FrescoManager;
+import com.wali.live.watchsdk.init.EventBusDelegate;
+import com.wali.live.watchsdk.service.PacketProcessService;
 import com.xsj.crasheye.Crasheye;
 
 import org.greenrobot.eventbus.EventBus;

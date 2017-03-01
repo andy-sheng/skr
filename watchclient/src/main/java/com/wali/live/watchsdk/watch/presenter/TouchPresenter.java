@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.log.MyLog;
-import com.wali.live.event.SdkEventClass;
+import com.mi.live.data.event.SdkEventClass;
 import com.wali.live.watchsdk.watch.view.TouchDelegateView;
 
 import org.greenrobot.eventbus.EventBus;

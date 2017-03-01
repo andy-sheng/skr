@@ -1,10 +1,10 @@
-package com.wali.live.base;
+package com.mi.live.data.base;
 
 import android.os.Bundle;
 
 import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
-import com.wali.live.event.SdkEventClass;
+import com.mi.live.data.event.SdkEventClass;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

@@ -17,7 +17,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
-import com.wali.live.event.SdkEventClass;
+import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;

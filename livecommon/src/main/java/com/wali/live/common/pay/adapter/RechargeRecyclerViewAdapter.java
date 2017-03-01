@@ -1,5 +1,6 @@
 package com.wali.live.common.pay.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -48,13 +49,15 @@ import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.common.pay.model.Diamond;
 import com.wali.live.common.pay.model.SkuDetail;
 import com.wali.live.common.pay.presenter.RechargePresenter;
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.wali.live.common.view.ErrorView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

@@ -20,7 +20,7 @@ import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
-import com.wali.live.base.BaseSdkActivity;
+import com.mi.live.data.base.BaseSdkActivity;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.AccountProto;
 import com.xiaomi.accountsdk.account.data.ExtendedAuthToken;

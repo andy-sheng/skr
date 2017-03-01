@@ -1,7 +1,7 @@
-package com.wali.live.event;
+package com.mi.live.data.event;
 
 
-import com.wali.live.base.BaseRotateSdkActivity;
+import com.mi.live.data.base.BaseRotateSdkActivity;
 
 /**
  * Created by lan on 15-4-15.
