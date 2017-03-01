@@ -5,8 +5,6 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
 import com.base.log.MyLog;
-
-import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
@@ -14,10 +12,9 @@ import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.SecurityProto;
-
+import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
-
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -64,7 +61,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl) {
+                          final long playerId, final String liveId, final String videoUrl, final int liveType) {
         MyLog.d(TAG, "openWatch by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -73,8 +70,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.d(TAG, "openWatch by activity success callback");
 
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                        .setChannelId(channelId)
-                        .setPackageName(packageName)
+                        .setLiveType(liveType)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 activity.finish();
@@ -82,13 +78,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
             @Override
             public void postError() {
-
             }
         });
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl) {
+                           final long playerId, final String liveId, final String videoUrl, final int liveType) {
         MyLog.d(TAG, "openReplay by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -97,8 +92,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 MyLog.d(TAG, "openReplay by activity success callback");
 
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                        .setChannelId(channelId)
-                        .setPackageName(packageName)
+                        .setLiveType(liveType)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 activity.finish();
@@ -106,7 +100,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
             @Override
             public void postError() {
-
             }
         });
     }
@@ -349,7 +342,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void onEventWantLogin(int channelId) {
         MyLog.d(TAG, "onEventWantLogin channelId=" + channelId);
 
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
         if (callbackList != null) {
@@ -378,7 +371,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void onEventVerifyFailure(int channelId, int code) {
         MyLog.d(TAG, "onEventVerifyFailure channelId=" + channelId);
 
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
         if (callbackList != null) {
@@ -407,7 +400,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void onEventOtherAppActive(int channelId) {
         MyLog.d(TAG, "onEventOtherApp channelId=" + channelId);
 
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
         if (callbackList != null) {

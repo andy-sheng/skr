@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
  */
 @Keep
 public class SdkUpdateHelper {
-
     public static final int HAS_UPGRADE = VersionCheckManager.HAS_UPGRADE;
     public static final int NO_UPGRADE = VersionCheckManager.NO_UPGRADE;
     public static final int CHECK_FAILED = VersionCheckManager.CHECK_FAILED;

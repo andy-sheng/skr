@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.log.Logger;
+import com.wali.live.sdk.manager.utils.CommonUtils;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
 
@@ -67,10 +68,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mChannelSecret = channelSecret;
         mCallback = callback;
 
+        getApkVersion();
+
         MiLiveSdkServiceProxy.getInstance().setCallback(mCallback);
         checkHasInit();
-
-        getApkVersion();
     }
 
     @Override
@@ -82,7 +83,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         if (mChannelId == 0) {
             throw new RuntimeException("channelId==0, make sure MiLiveSdkController.init(...) be called.");
         }
-        MiLiveSdkServiceProxy.getInstance().tryInit();
+        MiLiveSdkServiceProxy.getInstance().initService();
     }
 
     private void getApkVersion() {
@@ -92,6 +93,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
             int versionCode = packageInfo.versionCode;
             Logger.d(TAG, "versionCode=" + versionCode);
             mApkVersion = versionCode;
+            // 如果版本为0，置空服务，防止下次apk重装出问题
+            if (mApkVersion == 0) {
+                MiLiveSdkServiceProxy.getInstance().clearService();
+            }
         } catch (PackageManager.NameNotFoundException e) {
             Logger.e(TAG, e.getMessage());
         }
@@ -207,6 +212,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IAssistantCallback callback) {
+        if (CommonUtils.isFastDoubleClick()) {
+            Logger.d(TAG, "jumpToSdk fast double click, action=" + action);
+            return;
+        }
         Logger.d(TAG, "jumpToSdk action=" + action);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);
