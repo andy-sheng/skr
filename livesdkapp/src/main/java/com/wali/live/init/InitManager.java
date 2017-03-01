@@ -27,6 +27,7 @@ import com.wali.live.log.LogHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
 import com.wali.live.watchsdk.init.EventBusDelegate;
+import com.wali.live.watchsdk.relation.UserRelationManager;
 import com.wali.live.watchsdk.service.PacketProcessService;
 import com.xsj.crasheye.Crasheye;
 
@@ -106,6 +107,8 @@ public class InitManager {
     public static void registerAllEventBus() {
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
         EventBus.getDefault().register(EventBusDelegate.getInstance());
+
+        EventBus.getDefault().register(UserRelationManager.INSTANCE);
     }
 
     private static void initLibrary() {

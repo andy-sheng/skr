@@ -320,11 +320,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         } else {
             hideFollowBtn(false);
         }
-        if (!mMyRoomBaseDataModel.isFocused() && mMyRoomBaseDataModel.getUid() != UserAccountManager.getInstance().getUuidAsLong()) {
-            showFollowBtn();
-        } else {
-            hideFollowBtn(false);
-        }
     }
 
 
