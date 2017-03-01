@@ -314,7 +314,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     private void initPresenter() {
-
         mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this, mVideoView, null, mRotateBtn, true) {
             // 覆盖只为让他不执行
             protected void orientRotateBtn() {
