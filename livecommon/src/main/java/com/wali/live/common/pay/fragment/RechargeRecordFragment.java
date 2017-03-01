@@ -21,10 +21,10 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.base.fragment.MyRxFragment;
+import com.wali.live.fragment.MyRxFragment;
 import com.wali.live.proto.HttpDnsProto;
 import com.wali.live.proto.PayProto;
-import com.base.fragment.utils.FragmentNaviUtils;
+import com.wali.live.fragment.utils.FragmentNaviUtils;
 
 import java.util.ArrayList;
 import java.util.List;

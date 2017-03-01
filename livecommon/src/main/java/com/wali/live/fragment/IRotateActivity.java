@@ -1,4 +1,4 @@
-package com.base.fragment;
+package com.wali.live.fragment;
 
 /**
  * Created by chengsimin on 2016/12/2.

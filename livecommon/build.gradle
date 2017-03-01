@@ -7,6 +7,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.androidMinSdkVersion
         targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -77,4 +78,10 @@ dependencies {
     compile files('libs/alipaySingle-20160825.jar')
 //    compile 'com.alibaba.alipay:alipaySingle:20160825@jar'//支付
     compile files('libs/ks3-android-sdk-v-1.4.6.jar')
+    compile files('libs/crasheye_2.1.5.jar')
+
+    // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }

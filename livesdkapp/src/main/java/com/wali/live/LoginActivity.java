@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.base.log.MyLog;
 import com.mi.live.data.account.event.AccountEventController;
-import com.mi.live.data.base.BaseSdkActivity;
+import com.wali.live.base.BaseSdkActivity;
 import com.mi.liveassistant.R;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;

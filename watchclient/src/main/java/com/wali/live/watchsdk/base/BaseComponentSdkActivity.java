@@ -5,7 +5,7 @@ import android.os.Message;
 import android.util.SparseArray;
 
 import com.base.log.MyLog;
-import com.mi.live.data.base.BaseRotateSdkActivity;
+import com.wali.live.base.BaseRotateSdkActivity;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.collection.InsertSortLinkedList;

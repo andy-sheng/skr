@@ -9,7 +9,7 @@ import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.global.GlobalData;
 import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;

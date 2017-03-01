@@ -13,7 +13,7 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.base.fragment.utils.FragmentNaviUtils;
+import com.wali.live.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
@@ -25,7 +25,7 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;

@@ -24,7 +24,7 @@ import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.MLTextView;
 import com.jakewharton.rxbinding.view.RxView;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;

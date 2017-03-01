@@ -23,10 +23,10 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.FragmentDataListener;
-import com.base.fragment.FragmentListener;
-import com.base.fragment.MyRxFragment;
-import com.base.fragment.utils.FragmentNaviUtils;
+import com.wali.live.fragment.FragmentDataListener;
+import com.wali.live.fragment.FragmentListener;
+import com.wali.live.fragment.MyRxFragment;
+import com.wali.live.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
