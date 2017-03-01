@@ -184,20 +184,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             return;
         }
 
-        mRoomInfo = (RoomInfo) data.getParcelableExtra(EXTRA_ROOM_INFO);
+        mRoomInfo = data.getParcelableExtra(EXTRA_ROOM_INFO);
         if (mRoomInfo == null) {
             MyLog.e(TAG, "mRoomInfo is null");
             finish();
             return;
         }
-        // 填充 mMyRoomData
+        // 填充 MyRoomData
         mMyRoomData.setRoomId(mRoomInfo.getLiveId());
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
-
-        // TEST
-//        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
     }
 
 
@@ -554,10 +551,13 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BaseEvent.UserActionEvent event) {
-        MyLog.e(TAG, "BaseEvent.UserActionEvent");
+        MyLog.e(TAG, "BaseEvent.UserActionEvent event type=" + event.type);
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
         if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
+            return;
+        } else if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_REFRESH_USER_RELATION) {
+            mUserInfoPresenter.updateOwnerInfoFromServer();
             return;
         }
         if (CommonUtils.isFastDoubleClick()) {

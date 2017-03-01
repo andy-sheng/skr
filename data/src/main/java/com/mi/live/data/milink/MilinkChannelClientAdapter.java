@@ -51,7 +51,7 @@ public class MilinkChannelClientAdapter {
     }
 
     public PacketData sendDataByChannel(final PacketData packet, final int timeout) {
-        if(packet!=null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0){
+        if (packet != null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0) {
             packet.setChannelId(String.valueOf(HostChannelManager.getInstance().getChannelId()));
         }
         initMilinkChannelClient();
