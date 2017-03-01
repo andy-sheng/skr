@@ -57,7 +57,7 @@ public class ErrorCode {
     public static final int CODE_NO_PERMISSION_BEGIN_TICKET = 5040; //没有权限创建门票直播;相关命令字：zhibo.live.begin
     public static final int CODE_SET_ROMM_TICKET_ERROR = 5041;//创建房间时，设置直播间的门票失败;相关命令字：zhibo.live.begin
     public static final int CODE_QUERY_BUY_TICKET_ERROR = 5042; //进入门票直播间时，查询是否购票信息失败，客户端需重试（这种情况会告诉客户端没买票）
-                            //相关命令字：zhibo.live.enter ，zhibo.live.roominfo， hibo.live.hisroom ， zhibo.live.historyroominfo
+    //相关命令字：zhibo.live.enter ，zhibo.live.roominfo， hibo.live.hisroom ， zhibo.live.historyroominfo
 
 
     //[6000-6100]提现模块;
@@ -106,10 +106,13 @@ public class ErrorCode {
     public static final int CODE_SERVER_RESPONSE_ERROR_CODE_NOT_SETTING_PWD = 6024;
     public static final int CODE_SERVER_RESPONSE_ERROR_CODE_INVALID_ACCOUNT = 6026;
     public static final int ERR_HAS_ANTISPAM_ERROR = 7021;
-    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM = 5033; //没有权限进入房间
-    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_NOT_HAVE_PERMISSION_TO_KICK = 5034;   //没有权限发起踢人操作
-    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_NOT_HAVE_PERMISSION_TO_KICK_VIEWER = 5035;    //没有权限踢掉该观众
-    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_IDCARD_INVALID_ERROR = 7013;  //身份证号或护照号为空或不合法
-    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_REALNAME_VERIFY_FAIL = 7016;  //姓名和身份证号检验失败
+    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM = 5033;         // 没有权限进入房间
+    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_NOT_HAVE_PERMISSION_TO_KICK = 5034;         // 没有权限发起踢人操作
+    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_NOT_HAVE_PERMISSION_TO_KICK_VIEWER = 5035;  // 没有权限踢掉该观众
+    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_IDCARD_INVALID_ERROR = 7013;                // 身份证号或护照号为空或不合法
+    public static final int CODE_SERVER_RESPONSE_ERROR_CODE_REALNAME_VERIFY_FAIL = 7016;                // 姓名和身份证号检验失败
 
+    /* 关系错误码 */
+    public static final int CODE_RELATION_YOURSELF = 7505;
+    public static final int CODE_RELATION_BLACK = 7506;     // 黑名单
 }

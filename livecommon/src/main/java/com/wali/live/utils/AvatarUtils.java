@@ -436,9 +436,6 @@ public class AvatarUtils {
 
     /**
      * 更新我关注的人
-     *
-     * @param uuid
-     * @param timestamp
      */
     public static void updateMyFollowAvatarTimeStamp(long uuid, long timestamp) {
         mAvatarTimeCache.put(uuid, timestamp);
@@ -463,7 +460,6 @@ public class AvatarUtils {
         if (TextUtils.isEmpty(in)) {
             return "";
         }
-
         return in + AvatarUtils.getAvatarSizeAppend(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
     }
 
@@ -471,7 +467,6 @@ public class AvatarUtils {
         if (TextUtils.isEmpty(in)) {
             return "";
         }
-
         return in + AvatarUtils.getAvatarSizeAppend(AvatarUtils.SIZE_TYPE_AVATAR_SMALL);
     }
 }

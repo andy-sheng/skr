@@ -1,25 +1,19 @@
-package com.mi.live.data.relation;
+package com.mi.live.data.api.relation;
 
 import android.text.TextUtils;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.BlockOrUnblockEvent;
-import com.mi.live.data.event.DatabaseChangedEvent;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
-import com.mi.live.data.greendao.GreenDaoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.repository.datasource.WatchHistoryInfoDaoAdapter;
 import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.dao.Relation;
-import com.wali.live.dao.RelationDao;
 import com.wali.live.proto.Rank;
 import com.wali.live.proto.RelationProto;
-
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,55 +23,30 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 
+import static com.mi.live.data.api.BanSpeakerUtils.RESULT_CODE_SUCCESS;
+
 /**
  * Created by chengsimin on 16/9/20.
  */
 public class RelationApi {
     public final static String TAG = RelationApi.class.getSimpleName();
-    public static final int RESULT_CODE_SUCCESS = 0; //表示成功的返回码
 
     //以下为关注返回的值 大于等于0说明成功 返回FOLLOW_STATE_BOTH_WAY 说明双向关注
     public static final int FOLLOW_STATE_FAILED = -1;
-
     public static final int FOLLOW_STATE_SUCCESS = 0;
-
     public static final int FOLLOW_STATE_BOTH_WAY = 1;
 
-    public static final int ERROR_CODE_BLACK = 7506;
+    public static int sErrorCode = 0;
 
-    public static int errorCode = 0;
-
-    public static final int LOADING_FOLLOWING_PAGE_COUNT = 300;
-
-    public static Relation getRelationByUUid(long uuid) {
-        return GreenDaoManager.getDaoSession(GlobalData.app()).getRelationDao().queryBuilder().where(RelationDao.Properties.UserId.eq(uuid)).unique();
-    }
-
-    public static boolean insertRelation(Relation Relation) {
-        if (null != Relation) {
-            try {
-                GreenDaoManager.getDaoSession(GlobalData.app()).getRelationDao().insertOrReplace(Relation);
-                List<Relation> RelationList = new ArrayList<>();
-                RelationList.add(Relation);
-                EventBus.getDefault().post(new DatabaseChangedEvent(DatabaseChangedEvent.EVENT_TYPE_DB_RELATION, DatabaseChangedEvent.ACTION_ADD, RelationList));
-            } catch (Exception e) {
-                MyLog.e(TAG, e);
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public static Observable<RelationProto.FollowResponse> follow(final long uuid, final long target, final String roomid) {
+    public static Observable<RelationProto.FollowResponse> follow(final long uuid, final long target, final String roomId) {
         return Observable.create(new Observable.OnSubscribe<RelationProto.FollowResponse>() {
             @Override
             public void call(Subscriber<? super RelationProto.FollowResponse> subscriber) {
                 RelationProto.FollowRequest.Builder builder = RelationProto.FollowRequest.newBuilder()
                         .setUserId(uuid)
                         .setTargetId(target);
-                if (!TextUtils.isEmpty(roomid)) {
-                    builder.setRoomId(roomid);
+                if (!TextUtils.isEmpty(roomId)) {
+                    builder.setRoomId(roomId);
                 }
                 RelationProto.FollowRequest request = builder.build();
                 PacketData packetData = new PacketData();
@@ -107,14 +76,10 @@ public class RelationApi {
     /**
      * 关注，只返回 失败，单项关注，双向关注
      */
-    public static int follow2(long uuid, long target) {
-        return follow2(uuid, target, null);
-    }
-
-    public static int follow2(long uuid, long target, String roomid) {
+    public static int follow2(long uuid, long target, String roomId) {
         RelationProto.FollowRequest.Builder builder = RelationProto.FollowRequest.newBuilder().setUserId(uuid).setTargetId(target);
-        if (!TextUtils.isEmpty(roomid)) {
-            builder.setRoomId(roomid);
+        if (!TextUtils.isEmpty(roomId)) {
+            builder.setRoomId(roomId);
         }
         RelationProto.FollowRequest request = builder.build();
         PacketData packetData = new PacketData();
@@ -126,7 +91,7 @@ public class RelationApi {
             if (responseData != null) {
                 RelationProto.FollowResponse response = RelationProto.FollowResponse.parseFrom(responseData.getData());
                 MyLog.v(TAG + " followRequest result:" + response.getCode());
-                errorCode = response.getCode();
+                sErrorCode = response.getCode();
                 if (response.getCode() == RESULT_CODE_SUCCESS) {
                     FollowOrUnfollowEvent event = new FollowOrUnfollowEvent(FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW, target);
                     event.isBothFollow = response.getIsBothway();
@@ -190,7 +155,6 @@ public class RelationApi {
             }
         });
     }
-
 
     public static Observable<RelationProto.SubscribeResponse> subscribe(final long uid, final long targetId) {
         return Observable.create(new Observable.OnSubscribe<RelationProto.SubscribeResponse>() {
@@ -296,7 +260,7 @@ public class RelationApi {
             if (responseData != null) {
                 RelationProto.BlockResponse response = RelationProto.BlockResponse.parseFrom(responseData.getData());
                 MyLog.v(TAG + " block result:" + response.getCode());
-                if (response.getCode() == RESULT_CODE_SUCCESS) {
+                if (response.getCode() == ErrorCode.CODE_SUCCESS) {
                     EventBus.getDefault().post(new BlockOrUnblockEvent(BlockOrUnblockEvent.EVENT_TYPE_BLOCK, target));
                     return true;
                 }
@@ -335,6 +299,5 @@ public class RelationApi {
             MyLog.e(e);
         }
         return rankItemList;
-
     }
 }

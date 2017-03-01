@@ -8,14 +8,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
-import com.base.activity.RxActivity;
 import com.base.log.MyLog;
-import com.mi.live.data.account.HostChannelManager;
-import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
@@ -25,7 +20,6 @@ import com.wali.live.channel.presenter.ChannelPresenter;
 import com.wali.live.channel.presenter.IChannelPresenter;
 import com.wali.live.channel.presenter.IChannelView;
 import com.wali.live.channel.viewmodel.BaseViewModel;
-import com.wali.live.watchsdk.login.LoginPresenter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -50,8 +44,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     protected LinearLayoutManager mLayoutManager;
     protected ChannelRecyclerAdapter mRecyclerAdapter;
 
-    private TextView mTestLiveTv;
-
     protected IChannelPresenter mPresenter;
     protected long mChannelId = 201;
 
@@ -59,12 +51,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        if (!UserAccountManager.getInstance().hasAccount()) {
-//            LoginActivity.openActivity(this);
-//            finish();
-//            return;
-//        }
 
         initViews();
         initPresenters();
@@ -78,16 +64,17 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     }
 
     private void syncGiftList() {
-        Observable.create(new Observable.OnSubscribe<Object>() {
-            @Override
-            public void call(Subscriber<? super Object> subscriber) {
-                GiftRepository.syncGiftList();
-                subscriber.onCompleted();
-            }
-        })
+        Observable
+                .create(new Observable.OnSubscribe<Object>() {
+                    @Override
+                    public void call(Subscriber<? super Object> subscriber) {
+                        GiftRepository.syncGiftList();
+                        subscriber.onCompleted();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(((RxActivity) this).bindUntilEvent(ActivityEvent.DESTROY))
+                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Observer<Object>() {
                     @Override
                     public void onCompleted() {
@@ -121,19 +108,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
         mRecyclerAdapter = new ChannelRecyclerAdapter(this, mChannelId);
         mRecyclerView.setAdapter(mRecyclerAdapter);
-
-        mTestLiveTv = $(R.id.live_test_tv);
-        mTestLiveTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!UserAccountManager.getInstance().hasAccount()) {
-                    LoginPresenter loginPresenter = new LoginPresenter(MainActivity.this);
-                    loginPresenter.systemLogin(HostChannelManager.getInstance().getChannelId());
-                } else {
-//                    LiveSdkActivity.openActivity(MainActivity.this);
-                }
-            }
-        });
     }
 
     private void initPresenters() {

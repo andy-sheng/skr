@@ -90,6 +90,8 @@ public class LoginPresenter extends RxLifeCyclePresenter {
         }
     }
 
+
+
     public void miLogin() {
         MyLog.w(TAG, "miLogin");
         Observable

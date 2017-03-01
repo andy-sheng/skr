@@ -7,16 +7,13 @@ import org.json.JSONObject;
  * Created by yaojian on 16-4-27.
  */
 public interface JSONable {
-
     /**
      * 将数据序列化到一个JSONObject中
-     * @return
      */
     JSONObject serialToJSON();
 
     /**
      * 由一个JSONObject来序列化
-     * @param jsonObject
      */
     void serialFromJSON(JSONObject jsonObject);
 }

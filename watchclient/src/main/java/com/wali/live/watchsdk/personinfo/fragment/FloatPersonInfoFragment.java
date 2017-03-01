@@ -34,15 +34,16 @@ import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GetUserInfoAndUnpdateConversationEvent;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.manager.UserInfoManager;
-import com.mi.live.data.relation.RelationApi;
 import com.mi.live.data.user.User;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
+import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.proto.Rank;
 import com.wali.live.statistics.StatisticsKey;
@@ -147,11 +148,9 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
 
     RelativeLayout mForbidSpeak;
 
-    TextView mKickViewerBtn;
-
-    TextView mFollowButtonTv;
-
-    TextView mForbidSpeakTv;
+    private TextView mKickViewerBtn;
+    private TextView mFollowButtonTv;
+    private TextView mForbidSpeakTv;
 
     /**
      * 获取用户信息并刷新UI的task
@@ -214,18 +213,16 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
      * 关注或者取消关注的task
      */
     private static class FollowOrUnFollowUserTask extends AsyncTask<Void, Void, Boolean> {
-
         private WeakReference<FloatPersonInfoFragment> reference = null;
 
         public FollowOrUnFollowUserTask(FloatPersonInfoFragment fragment) {
             if (fragment != null) {
-                reference = new WeakReference<FloatPersonInfoFragment>(fragment);
+                reference = new WeakReference(fragment);
             }
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
             if (reference != null && reference.get() != null) {
                 FloatPersonInfoFragment fragment = reference.get();
                 if (fragment != null) {
@@ -241,8 +238,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                             fragment.mUser.setIsFocused(true);
                             StatisticsAlmightyWorker.getsInstance().recordDelay(StatisticsKey.AC_APP,
                                     StatisticsKey.KEY, StatisticsKey.KEY_LIVE_ROOM_FLOAT_FOLLOW_BUTTON + fragment.mUser.getUid());
-                            //sdk不用数据库
-                            //RelationDaoAdapter.getInstance().insertRelation(fragment.mUser.getRelation());
+                            RelationDaoAdapter.getInstance().insertRelation(fragment.mUser.getRelation());
 
                             //多久关注主播点
                             if (fragment.mUserUuidFromBundle == fragment.mOwnerUuidFromBundle && fragment.mOwnerUuidFromBundle != 0 && fragment.mEnterTimeFromBundle > 0) {
@@ -257,8 +253,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                         result = RelationApi.unFollow(UserAccountManager.getInstance().getUuidAsLong(), fragment.mUser.getUid());
                         if (result) {
                             fragment.mUser.setIsFocused(false);
-                            //sdk 不存数据库
-                            //RelationDaoAdapter.getInstance().deleteRelation(fragment.mUser.getUid());
+                            RelationDaoAdapter.getInstance().deleteRelation(fragment.mUser.getUid());
                         }
                     }
                     return result;
@@ -279,7 +274,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                         //刷新Info UI
                         fragment.mMainHandler.sendEmptyMessage(MSG_FRESH_USER_INFO_VIEWS);
                     } else {
-                        if (RelationApi.errorCode == RelationApi.ERROR_CODE_BLACK) {
+                        if (RelationApi.sErrorCode == ErrorCode.CODE_RELATION_BLACK) {
                             ToastUtils.showToast(GlobalData.app(), GlobalData.app().getString(R.string.setting_black_follow_hint));
                         }
                     }

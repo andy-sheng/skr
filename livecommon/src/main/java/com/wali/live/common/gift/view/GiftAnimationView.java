@@ -29,7 +29,7 @@ import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.gift.model.giftEntity.BigAnimationGift;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
-import com.wali.live.utils.VM.VMArguUtils;
+import com.wali.live.utils.vm.VMArguUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

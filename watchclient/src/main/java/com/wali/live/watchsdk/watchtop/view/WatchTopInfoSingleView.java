@@ -30,13 +30,15 @@ import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
-import com.mi.live.data.relation.RelationApi;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
+import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -79,17 +81,14 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     public static final float AVATAR_MARGIN_RIGHT_PORTRAIT = 48f;
     public static final float AVATAR_MARGIN_RIGHT_LANDSCAPE = 48f;
 
+    private TextView mFollowBtnTv;
 
-    TextView mFollowBtnTv;
-
-    ImageView mLinkAnchorIcon;
-
+    private ImageView mLinkAnchorIcon;
     private ImageView mLinkGuestIcon;
 
-    View mLinkGuestArea;
+    private View mLinkGuestArea;
 
-    View mNameAndViewerNumAreaView;
-
+    private View mNameAndViewerNumAreaView;
 
     private int mOriginFollowBtnWidth;
 
@@ -128,7 +127,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         return R.layout.watchsdk_top_info_single_view;
 //        }
     }
-
 
     @Override
     protected void initParticular() {
@@ -172,10 +170,9 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                         }
                     }
                 });
-
     }
 
-    Subscription mFollowSubscription;
+    private Subscription mFollowSubscription;
 
     private void tryFollowOwner() {
         if (!AccountAuthManager.triggerActionNeedAccount(getContext())) {
@@ -190,7 +187,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                 .subscribe(new Action1<RelationProto.FollowResponse>() {
                     @Override
                     public void call(RelationProto.FollowResponse followResponse) {
-                        if (followResponse.getCode() == RelationApi.ERROR_CODE_BLACK) {
+                        if (followResponse.getCode() == ErrorCode.CODE_RELATION_BLACK) {
                             ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
                         } else if (followResponse.getCode() == 0) {
                             ToastUtils.showToast(getResources().getString(R.string.follow_success));
@@ -220,12 +217,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     public void showFollowBtn() {
         mNeedShowFollowBtn = true;
-//        if (mFollowBtnTv != null) {
-//            MyLog.v(TAG + " showFollowBtn");
-//            mFollowBtnTv.setVisibility(View.VISIBLE);
-//            mFollowBtnTv.setAlpha(1f);
-//        }
-
         if (mFollowBtnTv != null && mLinkUser == null) {
             MyLog.v(TAG + " showFollowBtn");
             mFollowBtnTv.setVisibility(VISIBLE);
@@ -239,7 +230,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     public void hideFollowBtn(boolean needAnimation) {
         mNeedShowFollowBtn = false;
         if (!needAnimation) {
-//            mFollowBtnTv.setVisibility(View.GONE);
             mFollowBtnTv.setVisibility(GONE);
             return;
         }
@@ -550,17 +540,35 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FollowOrUnfollowEvent event) {
         if (null != event && mMyRoomBaseDataModel != null && mMyRoomBaseDataModel.getUser() != null && mMyRoomBaseDataModel.getUser().getUid() == event.uuid) {
-
-            User user = mMyRoomBaseDataModel.getUser();
+            final User user = mMyRoomBaseDataModel.getUser();
             if (user != null && user.getUid() == event.uuid) {
+                boolean needUpdateDb = false;
+
                 if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW) {
                     user.setIsFocused(true);
                     hideFollowBtn(true);
+
+                    needUpdateDb = true;
                 } else if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW) {
                     user.setIsFocused(false);
                     showFollowBtn();
+
+                    needUpdateDb = true;
                 } else {
                     MyLog.e(TAG, "type error");
+                }
+                MyLog.d(TAG, "needUpdateDb=" + needUpdateDb);
+                if (needUpdateDb) {
+                    // 其后台线程
+                    Observable.just(null)
+                            .map(new Func1<Object, Object>() {
+                                @Override
+                                public Object call(Object o) {
+                                    return RelationDaoAdapter.getInstance().insertRelation(user.getRelation());
+                                }
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .subscribe();
                 }
             }
         }
@@ -883,9 +891,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     /**
      * 运营位打点
-     *
-     * @param widgetID
-     * @param type
      */
     private void sendClick(int widgetID, String type) {
         String key = String.format(StatisticsKey.KEY_WIDGET_CLICK, String.valueOf(widgetID), type, String.valueOf(currentZuid));

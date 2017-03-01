@@ -1,4 +1,4 @@
-package com.wali.live.utils.VM;
+package com.wali.live.utils.vm;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -22,7 +22,8 @@ public class VMArguUtils {
 
             try {
                 Thread.sleep(360);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
 
             reader.seek(0);
             load = reader.readLine();
@@ -33,7 +34,7 @@ public class VMArguUtils {
             long idle2 = Long.parseLong(toks[4]);
             long cpu2 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[5])
                     + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
-            sLastCpuUsage = (float)(cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
+            sLastCpuUsage = (float) (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
             sLastGetTime = System.currentTimeMillis();
             return sLastCpuUsage;
 
@@ -46,12 +47,12 @@ public class VMArguUtils {
 
     /*耗时行为*/
     public static float getCpuUsage(boolean force) {
-        if(force){
+        if (force) {
             return readCpuUsage();
-        }else{
-            if(System.currentTimeMillis() - sLastGetTime > 5000){
+        } else {
+            if (System.currentTimeMillis() - sLastGetTime > 5000) {
                 return readCpuUsage();
-            }else{
+            } else {
                 return sLastCpuUsage;
             }
         }

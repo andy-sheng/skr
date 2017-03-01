@@ -30,8 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name="com.wali.live.LoginActivity"/>
     </application>
 
 </manifest>
