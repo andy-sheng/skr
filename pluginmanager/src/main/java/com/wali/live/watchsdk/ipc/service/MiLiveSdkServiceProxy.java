@@ -150,7 +150,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void clearService() {
-
+        mRemoteService = null;
     }
 
     public void loginByMiAccountOAuth(String authCode) {
