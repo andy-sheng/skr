@@ -10,4 +10,6 @@ interface IMiLiveSdkService {
     void clearAccount(int channelid, String packageName, String channelSecret);
 
     void setEventCallBack(int channelId, IMiLiveSdkEventCallback callback);
+
+    void checkService();
 }

@@ -329,6 +329,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
             return;
         }
         Logger.d(TAG, "jumpToSdk action=" + action);
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);
         intent.putExtras(bundle);
@@ -339,6 +340,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 getApkVersion();
             }
         }
+
+        // check service alive
+        MiLiveSdkServiceProxy.getInstance().checkService();
     }
 
     private Bundle getBasicBundle() {
