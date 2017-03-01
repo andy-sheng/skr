@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
+import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.engine.media.player.IMediaPlayer;
 import com.mi.live.engine.player.widget.VideoPlayMode;

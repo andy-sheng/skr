@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,10 +13,10 @@ import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.watchsdk.R;
 
 import org.greenrobot.eventbus.Subscribe;

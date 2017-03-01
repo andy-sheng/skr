@@ -1,10 +1,9 @@
-package com.mi.live.data.base;
+package com.base.activity;
 
 import android.os.Bundle;
 
-import com.base.activity.BaseActivity;
+import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
-import com.mi.live.data.event.SdkEventClass;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

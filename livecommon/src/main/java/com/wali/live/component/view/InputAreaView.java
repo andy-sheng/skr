@@ -18,11 +18,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.mi.live.data.preference.MLPreferenceUtils;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.smiley.SmileyInputFilter;
 import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.common.smiley.SmileyTranslateFilter;
@@ -48,13 +48,17 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
     protected boolean mIsLandscape = false;
 
     protected InputFilter[] mNormalFilter;
-    protected @Nullable InputFilter[] mFlyBarrageFilter;
+    protected
+    @Nullable
+    InputFilter[] mFlyBarrageFilter;
 
     protected View mInputContainer;
     protected View mPlaceHolderContainer; // 用于软件键盘弹出占位和表情选择容器
     protected EditText mInputView;
     protected TextView mSendBtn;
-    protected @Nullable View mBarrageSwitchBtn; // 飘屏弹幕开关
+    protected
+    @Nullable
+    View mBarrageSwitchBtn; // 飘屏弹幕开关
 
     protected ImageView mShowSmileyBtn;
     protected SmileyPicker mSmileyPicker;
@@ -408,7 +412,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         void notifyInputViewHidden();
     }
 
-    public interface IView extends IViewProxy, IOrientationListener{
+    public interface IView extends IViewProxy, IOrientationListener {
         /**
          * 响应返回键事件
          */

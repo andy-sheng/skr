@@ -11,16 +11,17 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
+import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
@@ -35,7 +36,6 @@ import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.ReplayBarrageMessageManager;
-import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -44,9 +44,9 @@ import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
-import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.TouchPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
+import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
@@ -70,7 +70,7 @@ import rx.functions.Action1;
  * Created by yurui on 2016/12/13.
  */
 
-public class ReplaySdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener,IActionCallBack {
+public class ReplaySdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener, IActionCallBack {
 
     protected final static String TAG = "ReplaySdkActivity";
 
@@ -216,9 +216,9 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
-        mUserInfoPresenter = new UserInfoPresenter(this,mMyRoomData);
+        mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
-        mReplayVideoPresenter = new VideoPlayerPresenterEx(this, mVideoView,mReplaySeekBar,mRotateBtn, false);
+        mReplayVideoPresenter = new VideoPlayerPresenterEx(this, mVideoView, mReplaySeekBar, mRotateBtn, false);
 //        TODO 回放横竖屏 判断是否需要
 //        mFeedsVideoPlayer.setTempForceOrientListener(this);
         mReplayVideoPresenter.setSeekBarHideDelay(4000);
@@ -226,7 +226,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 
         // 点击事件代理，左右滑动隐藏组件的逻辑
         mTouchPresenter = new TouchPresenter(mTouchDelegateView);
-        addBindActivityLifeCycle(mTouchPresenter,true);
+        addBindActivityLifeCycle(mTouchPresenter, true);
         TouchPresenter.AnimationParams animationParams = new TouchPresenter.AnimationParams();
         animationParams.views = new View[]{
                 mWatchTopInfoSingleView,
@@ -244,9 +244,9 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
             }
         });
 
-        if(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME){
+        if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) {
             // 是游戏直播间
-            mGameModePresenter = new GameModePresenter(this,mMyRoomData);
+            mGameModePresenter = new GameModePresenter(this, mMyRoomData);
             mGameModePresenter.setGameBarrageViewStub((ViewStub) findViewById(R.id.game_barrage_viewstub));
             mGameModePresenter.setCommentView(mLiveCommentView);
             mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
@@ -308,7 +308,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         mTouchDelegateView = $(R.id.touch_delegate_view);
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
-        addBindActivityLifeCycle(mFlyBarrageViewGroup,true);
+        addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
 
         mReplaySeekBar = $(R.id.replay_seekbar);
         mRotateBtn = $(R.id.rotate_btn);
@@ -317,9 +317,9 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        if(mLandscape){
+                        if (mLandscape) {
                             forcePortrait();
-                        }else{
+                        } else {
                             forceLandscape();
                         }
                     }
@@ -457,10 +457,10 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                     break;
                 case EventClass.FeedsVideoEvent.TYPE_ERROR:
                     break;
-                case EventClass.FeedsVideoEvent.TYPE_ON_CLICK_ROTATE:{
-                    if(mLandscape){
+                case EventClass.FeedsVideoEvent.TYPE_ON_CLICK_ROTATE: {
+                    if (mLandscape) {
                         forcePortrait();
-                    }else {
+                    } else {
                         forceLandscape();
                     }
                 }

@@ -1,4 +1,4 @@
-package com.wali.live.common.keyboard;
+package com.base.keyboard;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,9 +9,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.base.activity.BaseActivity;
-import com.base.preference.PreferenceUtils;
+import com.base.common.R;
 import com.base.log.MyLog;
-import com.live.module.common.R;
+import com.base.preference.PreferenceUtils;
 
 public class KeyboardUtils {
     private static final String TAG = KeyboardUtils.class.getSimpleName();
@@ -30,7 +30,7 @@ public class KeyboardUtils {
             public void run() {
                 showKeyboard(context);
             }
-        },200);
+        }, 200);
     }
 
     public static void showKeyboardWithDelay(final Context context, EditText editText, long miniSecond) {
@@ -40,7 +40,7 @@ public class KeyboardUtils {
             public void run() {
                 showKeyboard(context);
             }
-        },miniSecond);
+        }, miniSecond);
     }
 
     /**

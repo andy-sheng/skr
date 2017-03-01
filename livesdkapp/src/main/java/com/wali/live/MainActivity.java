@@ -11,11 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.base.BaseSdkActivity;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;

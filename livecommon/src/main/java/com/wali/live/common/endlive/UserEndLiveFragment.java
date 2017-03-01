@@ -15,9 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
+import com.base.fragment.BaseFragment;
 import com.base.fragment.MyRxFragment;
-import com.base.global.GlobalData;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.SafeGoActivity;
 import com.base.utils.language.LocaleUtil;
@@ -28,13 +30,9 @@ import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.common.action.VideoAction;
-import com.wali.live.common.keyboard.KeyboardUtils;
-import com.base.fragment.BaseFragment;
 import com.wali.live.proto.RoomRecommend;
 import com.wali.live.utils.AvatarUtils;
-import com.base.fragment.utils.FragmentNaviUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -234,22 +232,22 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
             Observable.interval(0, 10, TimeUnit.SECONDS)
                     .compose(this.<Long>bindUntilEvent())
                     .subscribe(new Observer<Long>() {
-                @Override
-                public void onCompleted() {
+                        @Override
+                        public void onCompleted() {
 
-                }
+                        }
 
-                @Override
-                public void onError(Throwable e) {
-                    MyLog.e(TAG, "getRoomRecommendList error");
-                    e.printStackTrace();
-                }
+                        @Override
+                        public void onError(Throwable e) {
+                            MyLog.e(TAG, "getRoomRecommendList error");
+                            e.printStackTrace();
+                        }
 
-                @Override
-                public void onNext(Long aLong) {
-                    presenter.getRoomRecommendList();
-                }
-            });
+                        @Override
+                        public void onNext(Long aLong) {
+                            presenter.getRoomRecommendList();
+                        }
+                    });
         } else {
             MyLog.d(TAG, "Language is not zh_CN");
             hideAvatarZone();
@@ -281,7 +279,7 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
             try {
                 Intent intent = null;
                 intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
-                SafeGoActivity.goCheckUpdateWhenFailed(getActivity(),intent);
+                SafeGoActivity.goCheckUpdateWhenFailed(getActivity(), intent);
                 popFragment();
             } catch (URISyntaxException e) {
             }

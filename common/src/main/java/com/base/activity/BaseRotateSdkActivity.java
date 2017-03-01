@@ -1,4 +1,4 @@
-package com.mi.live.data.base;
+package com.base.activity;
 
 import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
@@ -7,8 +7,9 @@ import android.provider.Settings;
 import android.view.OrientationEventListener;
 import android.view.WindowManager;
 
+import com.base.event.SdkEventController;
 import com.base.fragment.IRotateActivity;
-import com.mi.live.data.event.SdkEventController;
+import com.base.keyboard.KeyboardUtils;
 
 /**
  * Created by lan on 16/7/4.
@@ -130,6 +131,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     }
 
     private void rotateOrientation() {
+        KeyboardUtils.hideKeyboard(this);
         switch (mScreenOrientation) {
             case ORIENTATION_PORTRAIT_NORMAL:
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -258,7 +260,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
 
     @Override
     public boolean isRotateOn() {
-        return (android.provider.Settings.System.getInt(getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
+        return (Settings.System.getInt(getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
     }
 
     @Override

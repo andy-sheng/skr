@@ -10,11 +10,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.base.log.MyLog;
-import com.live.module.common.R;
+import com.base.keyboard.KeyboardUtils;
 import com.base.utils.display.DisplayUtils;
+import com.live.module.common.R;
 import com.mi.live.data.preference.MLPreferenceUtils;
-import com.wali.live.common.keyboard.KeyboardUtils;
 
 import java.util.List;
 
@@ -149,7 +148,7 @@ public class SmileyPicker extends LinearLayout implements ViewPager.OnPageChange
     }
 
 
-    public void show(final Activity activity, final int packageId, int maxHeight,Animation.AnimationListener listener) {
+    public void show(final Activity activity, final int packageId, int maxHeight, Animation.AnimationListener listener) {
         if (this.getVisibility() == View.VISIBLE) {
             return;
         }
@@ -169,7 +168,7 @@ public class SmileyPicker extends LinearLayout implements ViewPager.OnPageChange
             initSmiley();
         }
 
-        if(listener!=null) {
+        if (listener != null) {
             Animation animation = onCreateAnimation(true);
             animation.setDuration(300);
             animation.setAnimationListener(listener);
@@ -178,7 +177,7 @@ public class SmileyPicker extends LinearLayout implements ViewPager.OnPageChange
     }
 
     public void show(final Activity activity) {
-        show(activity, -1, 0,null);
+        show(activity, -1, 0, null);
     }
 
     public void hide(Animation.AnimationListener listener) {
@@ -193,7 +192,7 @@ public class SmileyPicker extends LinearLayout implements ViewPager.OnPageChange
         mIsInited = false;
 
 
-        if(listener!=null) {
+        if (listener != null) {
             Animation animation = onCreateAnimation(false);
             animation.setDuration(300);
             animation.setAnimationListener(listener);

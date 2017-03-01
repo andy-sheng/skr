@@ -13,12 +13,12 @@ import android.widget.RelativeLayout;
 
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.event.SdkEventClass;
 import com.wali.live.common.flybarrage.model.FlyBarrageInfo;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
 

@@ -1,7 +1,6 @@
-package com.mi.live.data.event;
+package com.base.event;
 
-
-import com.mi.live.data.base.BaseRotateSdkActivity;
+import com.base.activity.BaseRotateSdkActivity;
 
 /**
  * Created by lan on 15-4-15.

@@ -7,8 +7,8 @@ import android.util.Property;
 import android.view.View;
 
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
-import com.mi.live.data.event.SdkEventClass;
 import com.wali.live.watchsdk.watch.view.TouchDelegateView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,8 +30,8 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
     public static final int DIRECTION_RIGHT = 3;
 
     TouchDelegateView mTouchDelegateView;
-    AnimationParams  mAnimationParamsPortrait;
-    AnimationParams  mAnimationParamsLandscape;
+    AnimationParams mAnimationParamsPortrait;
+    AnimationParams mAnimationParamsLandscape;
 
     private boolean mHideAll = false;
     GestureApater mGestureApater;
@@ -67,15 +67,17 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
                     mGestureApater.onSingleTap();
                 }
 
-                if(!hasConsume && getAnimationParamsMode().animationWays == ANIMATION_TAP_DISMISS){
-                    if(mHideAll){
+                if (!hasConsume && getAnimationParamsMode().animationWays == ANIMATION_TAP_DISMISS) {
+                    if (mHideAll) {
                         showAllViewByTap();
-                    }else{
+                    } else {
                         hideAllViewByTap();
                     }
                 }
             }
+
             boolean hasConsume = false;
+
             @Override
             public boolean onDown() {
                 if (mGestureApater != null) {
@@ -171,37 +173,37 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
 
     private void hideAllViewByTap() {
         AnimationParams animationParams = getAnimationParamsMode();
-        for(int i=0;i<animationParams.views.length;i++){
+        for (int i = 0; i < animationParams.views.length; i++) {
             final View view = animationParams.views[i];
-            if(view==null){
+            if (view == null) {
                 continue;
             }
             int direction = animationParams.ext[i];
-            int begin = 0,end = 0;
+            int begin = 0, end = 0;
             Property<View, Float> property = null;
-            switch (direction){
-                case DIRECTION_UP:{
-                    property =  View.TRANSLATION_Y;
+            switch (direction) {
+                case DIRECTION_UP: {
+                    property = View.TRANSLATION_Y;
                     end = -view.getHeight();
                     break;
                 }
-                case DIRECTION_DOWN:{
-                    property =  View.TRANSLATION_Y;
+                case DIRECTION_DOWN: {
+                    property = View.TRANSLATION_Y;
                     end = view.getHeight();
                     break;
                 }
-                case DIRECTION_LEFT:{
-                    property =  View.TRANSLATION_X;
+                case DIRECTION_LEFT: {
+                    property = View.TRANSLATION_X;
                     end = -view.getWidth();
                     break;
                 }
-                case DIRECTION_RIGHT:{
-                    property =  View.TRANSLATION_X;
+                case DIRECTION_RIGHT: {
+                    property = View.TRANSLATION_X;
                     end = view.getWidth();
                     break;
                 }
             }
-            if(property!=null) {
+            if (property != null) {
                 final ObjectAnimator animator = ObjectAnimator.ofFloat(view, property, begin, end);
                 animator.setDuration(200);
                 final Property<View, Float> finalProperty = property;
@@ -209,9 +211,9 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         view.setVisibility(View.GONE);
-                        if(finalProperty == View.TRANSLATION_X){
+                        if (finalProperty == View.TRANSLATION_X) {
                             view.setTranslationX(0);
-                        }else{
+                        } else {
                             view.setTranslationY(0);
                         }
                     }
@@ -224,22 +226,22 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
 
     private void showAllViewByTap() {
         AnimationParams animationParams = getAnimationParamsMode();
-        for(int i=0;i<animationParams.views.length;i++){
+        for (int i = 0; i < animationParams.views.length; i++) {
             View view = animationParams.views[i];
-            if(view==null){
+            if (view == null) {
                 continue;
             }
             view.setVisibility(View.VISIBLE);
         }
 
-        for(int i=0;i<animationParams.views.length;i++){
+        for (int i = 0; i < animationParams.views.length; i++) {
             View view = animationParams.views[i];
-            if(view==null){
+            if (view == null) {
                 continue;
             }
             int direction = animationParams.ext[i];
-            switch (direction){
-                case DIRECTION_UP:{
+            switch (direction) {
+                case DIRECTION_UP: {
                     view.animate().translationY(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -248,7 +250,7 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
                     });
                     break;
                 }
-                case DIRECTION_DOWN:{
+                case DIRECTION_DOWN: {
                     view.animate().translationY(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -257,7 +259,7 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
                     });
                     break;
                 }
-                case DIRECTION_LEFT:{
+                case DIRECTION_LEFT: {
                     view.animate().translationX(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -266,7 +268,7 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
                     });
                     break;
                 }
-                case DIRECTION_RIGHT:{
+                case DIRECTION_RIGHT: {
                     view.animate().translationX(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -294,16 +296,16 @@ public class TouchPresenter implements IBindActivityLIfeCycle {
     public void onEvent(SdkEventClass.OrientEvent event) {
         // 这里改掉
         mLandscape = event.isLandscape();
-        if(isHideAll()){
-            if(getAnimationParamsMode().animationWays == ANIMATION_TAP_DISMISS){
+        if (isHideAll()) {
+            if (getAnimationParamsMode().animationWays == ANIMATION_TAP_DISMISS) {
                 showAllViewByTap();
-            }else{
+            } else {
                 showAllView();
             }
         }
     }
 
-    public static class AnimationParams{
+    public static class AnimationParams {
         public int animationWays = ANIMATION_SLIDE;
         public View views[];
         public int ext[];// 标记view是往上下左右哪个方向飘动

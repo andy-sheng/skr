@@ -1,10 +1,7 @@
 package com.wali.live.common.pay.fragment;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +12,10 @@ import android.view.ViewGroup;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.base.dialog.MyProgressDialogEx;
+import com.base.fragment.MyRxFragment;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
@@ -25,7 +25,6 @@ import com.base.view.BackTitleBar;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
 import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.pay.adapter.RechargeRecyclerViewAdapter;
 import com.wali.live.common.pay.assist.IPayActivityFlag;
 import com.wali.live.common.pay.constant.PayConstant;
@@ -37,8 +36,6 @@ import com.wali.live.common.pay.presenter.RechargePresenter;
 import com.wali.live.common.pay.utils.PayStatisticUtils;
 import com.wali.live.common.pay.view.IRechargeView;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.base.fragment.MyRxFragment;
-import com.base.fragment.utils.FragmentNaviUtils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +57,9 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
     private static final String TAG = RechargeFragment.class.getSimpleName();
     public static final int REQUEST_CODE = 0;
 
-    /**用户当前选择的支付方式*/
+    /**
+     * 用户当前选择的支付方式
+     */
     private static PayWay sPayWay = PayWay.WEIXIN;
 
     public static PayWay getCurrentPayWay() {
@@ -83,10 +82,14 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
     private IInAppBillingService mService;
     private ServiceConnection mServiceConn;
 
-    /**是否为国际化支付模式（支付方式排列顺序和国内有差异），区别于Native模式*/
+    /**
+     * 是否为国际化支付模式（支付方式排列顺序和国内有差异），区别于Native模式
+     */
     private boolean mIsInternationalPayMode = CommonUtils.isInternationalPayMode();
 
-    /**是否为首次充值*/
+    /**
+     * 是否为首次充值
+     */
     private boolean mIsFirstRecharge = PreferenceUtils.getSettingBoolean(
             GlobalData.app().getSharedPreferences(PayConstant.SP_FILENAME_RECHARGE_CONFIG, Context.MODE_PRIVATE),
             PayConstant.SP_KEY_IS_FIRST_RECHARGE,
@@ -100,7 +103,9 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
      */
     private boolean mOnlyGetExchangeableDiamond = true;
 
-    /**根据语言和渠道设置为国内支付列表或国际支付列表*/
+    /**
+     * 根据语言和渠道设置为国内支付列表或国际支付列表
+     */
     private List<PayWay> mPayWayList;////
 
     //Inject
@@ -125,6 +130,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
     }
 
     static PayPacketHandler sPayPacketHandler;
+
     @Override
     protected void bindView() {
         if (sPayPacketHandler == null) {
@@ -132,7 +138,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
             MiLinkClientAdapter.getsInstance().addPacketDataHandler(sPayPacketHandler);
         }
 //        mPayWayList = mIsInternationalPayMode ? RechargeConfig.getInternationalPayWayList() : RechargeConfig.getNativePayWayList();
-        mPayWayList =  RechargeConfig.getNativePayWayList();
+        mPayWayList = RechargeConfig.getNativePayWayList();
         sPayWay = getInitialPayWay();// 设置支付手段的首选项
         // 清空缓存的价格列表，消除缓存在切换支付方式时可能出现问题的隐患
         mRechargePresenter.clearPriceListCache();
@@ -229,7 +235,9 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, PayStatisticUtils.getRechargeTemplate(VISIT, getCurrentPayWay()), TIMES, "1");
     }
 
-    /**在{@link #mPayWayList}初始化后调用*/
+    /**
+     * 在{@link #mPayWayList}初始化后调用
+     */
     private PayWay getInitialPayWay() {
         PayWay defaultPayWay = mPayWayList.get(0);
         PayWay payWay = defaultPayWay;
@@ -292,7 +300,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
 //                mRechargePresenter.pullPriceListAsync();
 //            }
 //        } else {
-            mRechargePresenter.pullPriceListAsync();
+        mRechargePresenter.pullPriceListAsync();
 //        }
     }
 
@@ -303,7 +311,9 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
         mRechargeAdapter.hidePopupWindow();
     }
 
-    /**是否可能去微信充值了*/
+    /**
+     * 是否可能去微信充值了
+     */
     private boolean mMayRechargeFromOutSide = false;
 
     @Override
@@ -339,6 +349,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
 
     /**
      * 是否重载状态栏，如果不重载，则用该Fragment所附着的Activity的设置
+     *
      * @return
      */
     @Override

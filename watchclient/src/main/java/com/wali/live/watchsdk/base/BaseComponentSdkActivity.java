@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.SparseArray;
 
+import com.base.activity.BaseRotateSdkActivity;
 import com.base.log.MyLog;
-import com.mi.live.data.base.BaseRotateSdkActivity;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.collection.InsertSortLinkedList;
@@ -43,11 +43,11 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
      */
     private static AtomicInteger activeNum = new AtomicInteger(0);
 
-    public static boolean isActive(){
-        return activeNum.get()!=0;
+    public static boolean isActive() {
+        return activeNum.get() != 0;
     }
 
-    public static void decrementActive(){
+    public static void decrementActive() {
         int num = activeNum.decrementAndGet();
         if (num < 0) {
             activeNum.set(0);

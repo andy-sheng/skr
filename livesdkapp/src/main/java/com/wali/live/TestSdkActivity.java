@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
-import com.mi.live.data.base.BaseSdkActivity;
 import com.wali.live.channel.presenter.ChannelPresenter;
 import com.wali.live.channel.presenter.IChannelView;
 import com.wali.live.channel.viewmodel.BaseViewModel;
