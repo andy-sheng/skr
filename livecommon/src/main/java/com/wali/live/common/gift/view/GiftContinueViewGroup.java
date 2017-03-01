@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.live.module.common.R;
-import com.mi.live.data.base.BaseRotateSdkActivity;
+import com.wali.live.base.BaseRotateSdkActivity;
 import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.gift.model.GiftContinueStrategyQueue;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.base.activity.assist.IBindActivityLIfeCycle;

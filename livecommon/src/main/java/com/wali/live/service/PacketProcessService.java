@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.service;
+package com.wali.live.service;
 
 import android.app.Service;
 import android.content.Context;

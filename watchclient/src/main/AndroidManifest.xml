@@ -96,7 +96,7 @@
 
 
         <service
-            android:name="com.wali.live.watchsdk.service.PacketProcessService"
+            android:name="com.wali.live.watchsdk.com.wali.live.service.PacketProcessService"
             android:exported="false"/>
 
         <service

@@ -1,10 +1,7 @@
 package com.wali.live.common.pay.fragment;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,8 +34,8 @@ import com.wali.live.common.pay.presenter.RechargePresenter;
 import com.wali.live.common.pay.utils.PayStatisticUtils;
 import com.wali.live.common.pay.view.IRechargeView;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.base.fragment.MyRxFragment;
-import com.base.fragment.utils.FragmentNaviUtils;
+import com.wali.live.fragment.MyRxFragment;
+import com.wali.live.fragment.utils.FragmentNaviUtils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

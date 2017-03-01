@@ -1,4 +1,4 @@
-package com.base.fragment;
+package com.wali.live.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.base.fragment.BaseFragment;
 import com.base.view.LoadDataView;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.RxLifecycle;

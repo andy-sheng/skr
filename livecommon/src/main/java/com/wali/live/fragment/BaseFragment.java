@@ -1,4 +1,4 @@
-package com.base.fragment;
+package com.wali.live.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,12 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.base.activity.BaseActivity;
-import com.base.fragment.utils.FragmentNaviUtils;
-import com.base.fragment.utils.ILeakWatch;
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.view.IStatusBarOperator;
+import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.wali.live.init.LiveSdkApplication;
 
 import java.lang.reflect.Field;
 
@@ -251,9 +250,8 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
 //            MyLog.d(TAG, "onDestroy");
         }
         super.onDestroy();
-        if (!Constants.isDebugMiChanel && GlobalData.app() instanceof ILeakWatch) { //耗时包不监控
-            ILeakWatch watch = (ILeakWatch) GlobalData.app();
-            watch.watchFragment(this);
+        if (!Constants.isDebugMiChanel && LiveSdkApplication.getRefWatcher() != null) { //耗时包不监控
+            LiveSdkApplication.getRefWatcher().watch(this);
         }
         removeSelfFromStatusList();
     }

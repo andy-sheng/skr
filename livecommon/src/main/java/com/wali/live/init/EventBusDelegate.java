@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.init;
+package com.wali.live.init;
 
 import com.base.log.MyLog;
 import com.mi.live.data.milink.event.MiLinkEvent;
