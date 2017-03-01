@@ -7,7 +7,6 @@ import com.base.log.MyLog;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.collection.InsertSortLinkedList;
@@ -197,9 +196,6 @@ public class LiveRoomChatMsgManager {
      * @param pkExt
      */
     public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId, BarrageMsg.PkMessageExt pkExt, BarrageMsg.MsgExt ext) {
-        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
-            return;
-        }
         if (MyUserInfoManager.getInstance().getUser().getLevel() == 0) {
             MyUserInfoManager.getInstance().syncSelfDetailInfo();
         }
@@ -265,7 +261,7 @@ public class LiveRoomChatMsgManager {
 
     //只有自己能看到的提示消息
     public void sendLocalSystemMsg(String name, String message, String liveId, long anchorId, int type) {
-        if (!TextUtils.isEmpty(liveId) && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
+        if (!TextUtils.isEmpty(liveId)) {
             BarrageMsg msg = new BarrageMsg();
             msg.setMsgType(type);
             msg.setSender(0);
@@ -285,7 +281,7 @@ public class LiveRoomChatMsgManager {
     }
 
     public void sendLocalFocusBarrageMsg(String message, String liveId, long anchorId) {
-        if (!TextUtils.isEmpty(liveId) && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
+        if (!TextUtils.isEmpty(liveId)) {
             BarrageMsg msg = new BarrageMsg();
             msg.setMsgType(BarrageMsgType.B_MSG_TYPE_ROOM_FOUCES_ANCHOR);
             msg.setSender(MyUserInfoManager.getInstance().getUser().getUid());
@@ -305,7 +301,7 @@ public class LiveRoomChatMsgManager {
 
 
     public void sendShareBarrageMessageAsync(String liveId, long anchorId) {
-        if (!TextUtils.isEmpty(liveId) && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
+        if (!TextUtils.isEmpty(liveId)) {
             BarrageMsg msg = new BarrageMsg();
             msg.setMsgType(BarrageMsgType.B_MSG_TYPE_SHARE);
             msg.setSender(UserAccountManager.getInstance().getUuidAsLong());
@@ -326,7 +322,7 @@ public class LiveRoomChatMsgManager {
 
 
     public BarrageMsg sendLevelUpgradeAnimeMessageAsync(String liveId, long anchorId) {
-        if (!TextUtils.isEmpty(liveId) && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
+        if (!TextUtils.isEmpty(liveId)) {
             BarrageMsg msg = new BarrageMsg();
             msg.setMsgType(BarrageMsgType.B_MSG_TYPE_ANIM);
             msg.setSender(UserAccountManager.getInstance().getUuidAsLong());
