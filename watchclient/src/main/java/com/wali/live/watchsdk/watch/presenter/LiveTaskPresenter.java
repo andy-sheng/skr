@@ -8,6 +8,7 @@ import com.base.log.MyLog;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
@@ -45,16 +46,30 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
     //这里限制进入房间只会被调用一次
     boolean mHasEnter = false;
     Subscription mEnterRoomSubscription;
+
+    private void pullRoomMessage() {
+        // 对外的不收push了，统一走拉取模式
+        if (mPullRoomMessagePresenter == null) {
+            mPullRoomMessagePresenter = new RoomMessagePresenter(mMyRoomData, new RoomMessageRepository(new RoomMessageStore()), mRxActivity);
+        }
+        mPullRoomMessagePresenter.startWork();
+    }
+
     @Override
     public void enterLive() {
-        if(mHasEnter){
+        //匿名模式不要进入房间,否则有bug
+        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
+            pullRoomMessage();
+            return;
+        }
+        if (mHasEnter) {
             return;
         }
         /**
          * 加上这句，否则会触发离开房间逻辑
          */
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
-        if(mEnterRoomSubscription!=null && !mEnterRoomSubscription.isUnsubscribed()){
+        if (mEnterRoomSubscription != null && !mEnterRoomSubscription.isUnsubscribed()) {
             return;
         }
         mEnterRoomSubscription = LiveRoomQuery.enterRoom(mMyRoomData.getUid(), mMyRoomData.getRoomId(), "")
@@ -74,14 +89,8 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
                     @Override
                     public void onNext(EnterRoomInfo enterRoomInfo) {
                         MyLog.w(TAG, "enterRoomInfo code: " + enterRoomInfo.getRetCode());
-
                         RoomDataMapper.fillRoomDataModelByEnterRoomInfo(mMyRoomData, enterRoomInfo);
-                        // 对外的不收push了，统一走拉取模式
-                        if (mPullRoomMessagePresenter == null) {
-                            mPullRoomMessagePresenter = new RoomMessagePresenter(mMyRoomData, new RoomMessageRepository(new RoomMessageStore()), mRxActivity);
-                        }
-                        mPullRoomMessagePresenter.startWork();
-
+                        pullRoomMessage();
 //                        if (mMyRoomData.getGetMessageMode() == RoomMessagePresenter.PULL_MODE) {
 //                            if (mPullRoomMessagePresenter == null) {
 //                                mPullRoomMessagePresenter = new RoomMessagePresenter(mMyRoomData, new RoomMessageRepository(new RoomMessageStore()), mRxActivity);
@@ -98,7 +107,7 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
                             ext.viewerCount = 0;
                             BarrageMsg msg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_LIVE_END, "直播已经结束", mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), ext);
                             SendBarrageManager.pretendPushBarrage(msg);
-                        }else if (enterRoomInfo.getRetCode() == 5004) {
+                        } else if (enterRoomInfo.getRetCode() == 5004) {
                             ToastUtils.showToast("房间不存在");
                         }
                         if (mView != null) {
