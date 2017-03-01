@@ -184,6 +184,9 @@ public class BottomGameInputView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMain(KeyboardEvent event) {
         MyLog.w(TAG, "KeyboardEvent eventType=" + event.eventType);
+        if (getVisibility() != View.VISIBLE) {
+            return;
+        }
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
                 int keyboardHeight;
