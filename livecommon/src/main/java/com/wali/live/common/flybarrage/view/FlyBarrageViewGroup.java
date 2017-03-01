@@ -18,7 +18,7 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.event.SdkEventClass;
+import com.wali.live.event.SdkEventClass;
 import com.wali.live.common.flybarrage.model.FlyBarrageInfo;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
 

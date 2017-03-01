@@ -1,4 +1,4 @@
-package com.base.fragment;
+package com.wali.live.fragment;
 
 import android.os.Bundle;
 

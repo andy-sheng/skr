@@ -60,6 +60,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         list.register(callback);
     }
 
+    @Override
+    public void checkService() throws RemoteException {
+        //nothing to do
+    }
+
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
                           final long playerId, final String liveId, final String videoUrl, final int liveType) {
         MyLog.d(TAG, "openWatch by activity channelId=" + channelId);

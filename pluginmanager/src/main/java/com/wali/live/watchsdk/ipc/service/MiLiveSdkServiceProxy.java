@@ -211,6 +211,21 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
+    public void checkService() {
+        Logger.w(TAG, "checkService");
+        if (mRemoteService == null) {
+            bindService();
+        } else {
+            try {
+                mRemoteService.checkService();
+            } catch (RemoteException e) {
+                if (e instanceof DeadObjectException) {
+                    bindService();
+                }
+            }
+        }
+    }
+
     private void resolveNullService(int aidlFlag) {
         notifyServiceNull(aidlFlag);
         bindService();
