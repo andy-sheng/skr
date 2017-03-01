@@ -86,8 +86,14 @@ public class VersionCheckManager {
         if (mIsUpgrading) {
             return IS_UPGRADING;
         }
+        SimpleRequest.StringContent result = getStringContent();
+        setCheckTime();
+        return parseResult(result);
+    }
+
+    public SimpleRequest.StringContent getStringContent() {
         String miId = "0";
-        Logger.d(TAG, "VersionCheckManager miId == " + miId);
+        Logger.d(TAG, "miId == " + miId);
         String url = String.format(CHECK_GRAY_UPGRADE_INFO, miId);
         List<NameValuePair> postBody = new ArrayList();
         postBody.add(new BasicNameValuePair("uuid", miId));
@@ -120,8 +126,7 @@ public class VersionCheckManager {
         } catch (Exception e) {
             Logger.e(TAG, e.getMessage());
         }
-        setCheckTime();
-        return parseResult(result);
+        return result;
     }
 
     private int parseResult(SimpleRequest.StringContent result) {

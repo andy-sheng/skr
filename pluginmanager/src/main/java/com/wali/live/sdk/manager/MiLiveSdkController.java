@@ -135,10 +135,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
         }
+        checkHasInit();
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
@@ -150,10 +150,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_OPEN_REPLAY, callback)) {
             return;
         }
+        checkHasInit();
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
@@ -174,28 +174,28 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void loginByMiAccountOAuth(String authCode, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_LOGIN_OAUTH, callback)) {
             return;
         }
+        checkHasInit();
         MiLiveSdkServiceProxy.getInstance().loginByMiAccountOAuth(authCode);
     }
 
     @Override
     public void loginByMiAccountSso(long miid, String serviceToken, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_LOGIN_SSO, callback)) {
             return;
         }
+        checkHasInit();
         MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, serviceToken);
     }
 
     @Override
     public void clearAccount(IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_CLEAR_ACCOUNT, callback)) {
             return;
         }
+        checkHasInit();
         MiLiveSdkServiceProxy.getInstance().clearAccount();
     }
 
