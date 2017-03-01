@@ -144,7 +144,7 @@ public class RechargeRecordFragment extends MyRxFragment {
                             }
                             mRecordListView.setAdapter(mAdapter);
                             mAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             mEmpty = mInflater.inflate(R.layout.empty_diamond_layout, (ViewGroup) mRecordListView.getParent());
                         }
                     }
@@ -173,7 +173,7 @@ public class RechargeRecordFragment extends MyRxFragment {
     @Override
     public boolean onBackPressed() {
         finish();
-        return super.onBackPressed();
+        return true;
     }
 
     private final class MyAdapter extends BaseAdapter {
