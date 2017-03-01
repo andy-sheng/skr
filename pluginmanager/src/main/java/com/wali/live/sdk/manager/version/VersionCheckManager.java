@@ -33,6 +33,7 @@ import java.util.List;
 
 public class VersionCheckManager {
     public final static String TAG = VersionCheckManager.class.getSimpleName();
+
     public static final int HAS_UPGRADE = 1;
     public static final int NO_UPGRADE = 2;
     public static final int CHECK_FAILED = 3;
@@ -47,11 +48,12 @@ public class VersionCheckManager {
     private static final String APP_NAME = "liveassistant";
     private static final String APP_PLATFORM = "android";
 
+    /*SharedPreferences FileName & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
     private static final String PREF_SHOW_UPGRADE_DIALOG = "show_upgrade_dialog";
     private static final String PREF_LAST_CHECK = "last_check";
     private static final String PREF_FORCE_TO = "force_to";
-    private static final String REMOTE_VERSION = "remote_version";
+    private static final String PREF_REMOTE_VERSION = "remote_version";
 
     private static VersionCheckManager sInstance;
 
@@ -80,6 +82,10 @@ public class VersionCheckManager {
 
     public String getUpdateMessage() {
         return mUpdateMessage;
+    }
+
+    public boolean isUpgrading() {
+        return mIsUpgrading;
     }
 
     public int checkNewVersion() {
@@ -225,14 +231,14 @@ public class VersionCheckManager {
         SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         Editor ed = pref.edit();
-        ed.putInt(REMOTE_VERSION, mRemoteAppVersion);
+        ed.putInt(PREF_REMOTE_VERSION, mRemoteAppVersion);
         ed.apply();
     }
 
     public int getRemoteVersion() {
         SharedPreferences pref = GlobalData.app().getApplicationContext()
                 .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return pref.getInt(REMOTE_VERSION, -1);
+        return pref.getInt(PREF_REMOTE_VERSION, -1);
     }
 
     public void startDownload(final IMiLiveSdk.IUpdateListener updateListener) {
