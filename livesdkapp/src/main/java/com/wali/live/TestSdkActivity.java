@@ -69,10 +69,10 @@ public class TestSdkActivity extends BaseSdkActivity implements IChannelView {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setAvatar(item.getUser().getAvatar())
                         .setCoverUrl(item.getImageUrl())
+                        .setLiveType(6)
                         .build();
                 MyLog.d(TAG, "TestSdkActivity WatchSdkActivity.openActivity");
-                WatchSdkActivity.openActivity(this, roomInfo
-                );
+                WatchSdkActivity.openActivity(this, roomInfo);
                 finish();
                 break;
             }
