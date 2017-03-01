@@ -253,11 +253,11 @@ public class RoomProcessor {
                                     // 正在直播,直接跳转直播间
                                     RoomInfo liveShow = RoomInfo.Builder.newInstance(playerId,roomInfoRsp.getLiveid(),roomInfoRsp.getPlaybackUrl()).build();
                                     if (roomInfoRsp.hasLiveid() && (!TextUtils.isEmpty(roomInfoRsp.getLiveid()))) {
-                                        liveShow.setmLiveId(roomInfoRsp.getLiveid());
+                                        liveShow.setLiveId(roomInfoRsp.getLiveid());
                                     } else {
-                                        liveShow.setmLiveId(liveId);
+                                        liveShow.setLiveId(liveId);
                                     }
-                                    liveShow.setmVideoUrl(roomInfoRsp.getDownStreamUrl());
+                                    liveShow.setVideoUrl(roomInfoRsp.getDownStreamUrl());
                                     jumpToWatchActivity(liveShow, activity);
                                 } else {
                                     String playBackUrl = null;

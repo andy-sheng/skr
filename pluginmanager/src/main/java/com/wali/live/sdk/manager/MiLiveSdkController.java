@@ -2,19 +2,29 @@ package com.wali.live.sdk.manager;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.wali.live.sdk.manager.global.GlobalData;
+import com.wali.live.sdk.manager.http.HttpUtils;
+import com.wali.live.sdk.manager.http.SimpleRequest;
 import com.wali.live.sdk.manager.log.Logger;
+import com.wali.live.sdk.manager.utils.CommonUtils;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkServiceProxy;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by chengsimin on 2016/12/8.
@@ -37,7 +47,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_LOGIN_SSO = "login_sso";
     private static final String ACTION_CLEAR_ACCOUNT = "clear_account";
 
+    /*SharedPreferences File & Key*/
+    private static final String PREF_FILE_NAME = "liveassistant_upgrade";
+    private static final String PREF_FORCE_CHECK_TIME = "pref_force_check_time";
+
+    private static final long ONE_DAY = 24 * 60 * 60 * 1000;
+
     private static final MiLiveSdkController sSdkController = new MiLiveSdkController();
+
+    private ExecutorService mExecutor = HttpUtils.ONLINE_FILE_TASK_EXECUTOR;
+    private int mRemoteVersion;
+    private boolean mForceUpdate;
 
     private Map<String, Integer> mMinVersionMap = new HashMap();
     private int mApkVersion;
@@ -67,10 +87,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mChannelSecret = channelSecret;
         mCallback = callback;
 
+        getApkVersion();
+        checkForceUpdate();
+
         MiLiveSdkServiceProxy.getInstance().setCallback(mCallback);
         checkHasInit();
-
-        getApkVersion();
     }
 
     @Override
@@ -82,33 +103,129 @@ public class MiLiveSdkController implements IMiLiveSdk {
         if (mChannelId == 0) {
             throw new RuntimeException("channelId==0, make sure MiLiveSdkController.init(...) be called.");
         }
-        MiLiveSdkServiceProxy.getInstance().tryInit();
+        MiLiveSdkServiceProxy.getInstance().initService();
+    }
+
+    private void checkForceUpdate() {
+        long last = getForceCheckTime();
+        long delta = System.currentTimeMillis() - last;
+        if (delta > 0 && delta < ONE_DAY) {
+            Logger.d(TAG, "force update has check today, last=" + last + ", delta=" + delta);
+            return;
+        }
+        if (VersionCheckManager.getInstance().isUpgrading()) {
+            Logger.d(TAG, "update is upgrading");
+            return;
+        }
+        Logger.d(TAG, "force update is executing");
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                checkUpdateFromServer();
+            }
+        });
+    }
+
+    private void checkUpdateFromServer() {
+        // 默认不需要强制升级
+        mForceUpdate = false;
+
+        SimpleRequest.StringContent result = VersionCheckManager.getInstance().getStringContent();
+        if (result == null) {
+            Logger.d(TAG, "updateResult is null");
+            return;
+        }
+        String jsonString = result.getBody();
+        if (TextUtils.isEmpty(jsonString)) {
+            Logger.d(TAG, "updateResult body is empty");
+            return;
+        }
+        try {
+            JSONObject resultObj = new JSONObject(jsonString);
+            if (!resultObj.has("result") || !"ok".equalsIgnoreCase(resultObj.getString("result"))) {
+                Logger.d(TAG, "updateResult content is illegal");
+                return;
+            }
+            Logger.w(TAG, "updateResult=" + resultObj.toString());
+            JSONObject dataObj = resultObj.getJSONObject("data");
+            boolean shouldUpdate = dataObj.getBoolean("newUpdate");
+            if (!shouldUpdate) {
+                // 只有获取到数据，认为不需要强制升级，才写入checkTime
+                saveForceCheckTime();
+                return;
+            }
+            mRemoteVersion = dataObj.getInt("toVersion");
+            JSONObject custom = dataObj.optJSONObject("custom");
+            if (custom != null) {
+                mForceUpdate = custom.optBoolean("forced", false);
+                // 只有获取到数据，认为不需要强制升级，才写入checkTime
+                if (!mForceUpdate) {
+                    saveForceCheckTime();
+                }
+            }
+        } catch (JSONException e) {
+            Logger.e(TAG, e.getMessage());
+        }
+    }
+
+    private void saveForceCheckTime() {
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
+                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = pref.edit();
+        ed.putLong(PREF_FORCE_CHECK_TIME, System.currentTimeMillis());
+        ed.apply();
+    }
+
+    private long getForceCheckTime() {
+        SharedPreferences pref = GlobalData.app().getApplicationContext()
+                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        return pref.getLong(PREF_FORCE_CHECK_TIME, 0);
     }
 
     private void getApkVersion() {
         try {
             PackageInfo packageInfo = GlobalData.app().getPackageManager().getPackageInfo(
                     VersionCheckManager.PACKAGE_NAME, PackageManager.GET_META_DATA);
-            int versionCode = packageInfo.versionCode;
-            Logger.d(TAG, "versionCode=" + versionCode);
-            mApkVersion = versionCode;
+            mApkVersion = packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             Logger.e(TAG, e.getMessage());
+        }
+        Logger.d(TAG, "getApkVersion versionCode=" + mApkVersion);
+        // 如果版本为0，置空服务，防止下次apk重装出问题
+        if (mApkVersion == 0) {
+            MiLiveSdkServiceProxy.getInstance().clearService();
         }
     }
 
     private boolean checkVersion(String action, IAssistantCallback callback) {
         int version = mMinVersionMap.get(action);
+        // 版本校验失败再重新获取下版本
         if (version > mApkVersion) {
+            Logger.d(TAG, "checkVersion smaller");
             getApkVersion();
         }
+        // 如果版本为0，通知未安装
         if (mApkVersion == 0) {
+            Logger.d(TAG, "checkVersion zero");
             callback.notifyNotInstall();
             return false;
         }
+        // 如果接口要求版本大于当前版本，通知版本过低
         if (version > mApkVersion) {
+            Logger.d(TAG, "checkVersion smaller again");
             callback.notifyVersionLow();
             return false;
+        }
+        // 强制升级，如果当前版本小于远端强制升级版本，通知版本过低，否则重新检测下是否需要强制升级
+        if (mForceUpdate) {
+            Logger.d(TAG, "checkVersion forceUpdate");
+            if (mApkVersion < mRemoteVersion) {
+                Logger.d(TAG, "checkVersion smaller tripple");
+                callback.notifyVersionLow();
+                return false;
+            }
+            Logger.d(TAG, "checkVersion forceUpdate again");
+            checkForceUpdate();
         }
         return true;
     }
@@ -130,10 +247,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
         }
+        checkHasInit();
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
@@ -145,10 +262,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_OPEN_REPLAY, callback)) {
             return;
         }
+        checkHasInit();
 
         Bundle bundle = getBasicBundle();
         bundle.putLong(EXTRA_PLAYER_ID, playerId);
@@ -169,28 +286,28 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void loginByMiAccountOAuth(String authCode, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_LOGIN_OAUTH, callback)) {
             return;
         }
+        checkHasInit();
         MiLiveSdkServiceProxy.getInstance().loginByMiAccountOAuth(authCode);
     }
 
     @Override
     public void loginByMiAccountSso(long miid, String serviceToken, IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_LOGIN_SSO, callback)) {
             return;
         }
+        checkHasInit();
         MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, serviceToken);
     }
 
     @Override
     public void clearAccount(IAssistantCallback callback) {
-        checkHasInit();
         if (!checkVersion(ACTION_CLEAR_ACCOUNT, callback)) {
             return;
         }
+        checkHasInit();
         MiLiveSdkServiceProxy.getInstance().clearAccount();
     }
 
@@ -207,6 +324,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IAssistantCallback callback) {
+        if (CommonUtils.isFastDoubleClick()) {
+            Logger.d(TAG, "jumpToSdk fast double click, action=" + action);
+            return;
+        }
         Logger.d(TAG, "jumpToSdk action=" + action);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);
