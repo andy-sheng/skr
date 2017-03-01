@@ -67,7 +67,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventOtherAppActive() throws RemoteException {
-            Logger.d(TAG, "onEventOtherAppActive" );
+            Logger.d(TAG, "onEventOtherAppActive");
             if (mCallback != null) {
                 mCallback.notifyOtherAppActive();
             }
@@ -100,6 +100,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     private void stopService() {
         GlobalData.app().stopService(mIntent);
+        mRemoteService = null;
     }
 
     @Override
@@ -142,10 +143,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         Logger.w(TAG, "onServiceDisconnected");
     }
 
-    public void tryInit() {
+    public void initService() {
         if (mRemoteService == null) {
             bindService();
         }
+    }
+
+    public void clearService() {
+
     }
 
     public void loginByMiAccountOAuth(String authCode) {

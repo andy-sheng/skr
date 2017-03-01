@@ -154,8 +154,6 @@ public abstract class CommonUtils {
 
     /**
      * 判断是否是快速点击
-     *
-     * @return
      */
     public static boolean isFastDoubleClick() {
         return isFastDoubleClick(FAST_DOUBLE_CLICK_INTERVAL);

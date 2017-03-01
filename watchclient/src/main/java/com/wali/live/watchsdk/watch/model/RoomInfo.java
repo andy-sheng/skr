@@ -9,14 +9,13 @@ import android.os.Parcelable;
  * @notice 采取小设计，不需要的属性不要加
  */
 public class RoomInfo implements Parcelable {
-    private int mChannelId;
-    private String mPackageName;
     private long mPlayerId;
     private String mLiveId;
     private String mVideoUrl;
     private long mStartTime;
 
-    private int mLiveType;// 什么类型的直播，有公开的／私密的／口令／游戏的 列表中会给出每个项目的直播类型
+    // 什么类型的直播，有公开的／私密的／口令／游戏的 列表中会给出每个项目的直播类型
+    private int mLiveType;
     // 以下是user内的非直播必须的信息，如果需要完整的信息，以后直接传User进来
     private long mAvatar;
 
@@ -27,8 +26,6 @@ public class RoomInfo implements Parcelable {
         mPlayerId = playerId;
         mLiveId = liveId;
         mVideoUrl = videoUrl;
-        mChannelId = -1;
-        mPackageName = null;
     }
 
     protected RoomInfo(Parcel in) {
@@ -39,8 +36,6 @@ public class RoomInfo implements Parcelable {
         mCoverUrl = in.readString();
         mStartTime = in.readLong();
         mLiveType = in.readInt();
-        mChannelId = in.readInt();
-        mPackageName = in.readString();
     }
 
     public static final Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {
@@ -54,14 +49,6 @@ public class RoomInfo implements Parcelable {
             return new RoomInfo[size];
         }
     };
-
-    public int getChannelId() {
-        return mChannelId;
-    }
-
-    public void setmChannelId(int mChannelId) {
-        this.mChannelId = mChannelId;
-    }
 
     public long getStartTime() {
         return mStartTime;
@@ -77,14 +64,6 @@ public class RoomInfo implements Parcelable {
 
     public void setCoverUrl(String coverUrl) {
         mCoverUrl = coverUrl;
-    }
-
-    public void setPackageName(String packageName) {
-        this.mPackageName = packageName;
-    }
-
-    public String getmPackageName() {
-        return mPackageName;
     }
 
     public long getPlayerId() {
@@ -107,24 +86,16 @@ public class RoomInfo implements Parcelable {
         return mCoverUrl;
     }
 
-    public void setmPlayerId(long mPlayerId) {
-        this.mPlayerId = mPlayerId;
+    public void setPlayerId(long playerId) {
+        mPlayerId = playerId;
     }
 
-    public void setmLiveId(String mLiveId) {
-        this.mLiveId = mLiveId;
+    public void setLiveId(String liveId) {
+        mLiveId = liveId;
     }
 
-    public void setmVideoUrl(String mVideoUrl) {
-        this.mVideoUrl = mVideoUrl;
-    }
-
-    public void setmAvatar(long mAvatar) {
-        this.mAvatar = mAvatar;
-    }
-
-    public void setmCoverUrl(String mCoverUrl) {
-        this.mCoverUrl = mCoverUrl;
+    public void setVideoUrl(String videoUrl) {
+        mVideoUrl = videoUrl;
     }
 
     @Override
@@ -141,8 +112,6 @@ public class RoomInfo implements Parcelable {
         parcel.writeString(mCoverUrl);
         parcel.writeLong(mStartTime);
         parcel.writeInt(mLiveType);
-        parcel.writeInt(mChannelId);
-        parcel.writeString(mPackageName);
     }
 
     public void setLiveType(int liveType) {
@@ -182,16 +151,6 @@ public class RoomInfo implements Parcelable {
 
         public Builder setLiveType(int livetype) {
             mRoomInfo.setLiveType(livetype);
-            return this;
-        }
-
-        public Builder setChannelId(int channelId) {
-            mRoomInfo.setmChannelId(channelId);
-            return this;
-        }
-
-        public Builder setPackageName(String packageName) {
-            mRoomInfo.setPackageName(packageName);
             return this;
         }
 
