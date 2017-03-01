@@ -142,7 +142,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
         @Override
         protected void processMessage(Message message) {
-
         }
     };
 
