@@ -89,7 +89,7 @@ public class VersionCheckManager {
         String miId = "0";
         Logger.d(TAG, "VersionCheckManager miId == " + miId);
         String url = String.format(CHECK_GRAY_UPGRADE_INFO, miId);
-        List<NameValuePair> postBody = new ArrayList<NameValuePair>();
+        List<NameValuePair> postBody = new ArrayList();
         postBody.add(new BasicNameValuePair("uuid", miId));
         postBody.add(new BasicNameValuePair("app", APP_NAME));
         postBody.add(new BasicNameValuePair("platform", APP_PLATFORM));
