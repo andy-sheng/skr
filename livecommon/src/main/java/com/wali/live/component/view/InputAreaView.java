@@ -361,6 +361,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
 
             @Override
             public void onKeyboardShowed(int keyboardHeight) {
+                if (getVisibility() != View.VISIBLE) {
+                    return;
+                }
                 if (mKeyboardHeight != keyboardHeight) {
                     mKeyboardHeight = keyboardHeight;
                     MyLog.d(TAG, "onKeyboardShowed mKeyboardHeight=" + mKeyboardHeight);
@@ -372,6 +375,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
 
             @Override
             public void onKeyboardHided() {
+                if (getVisibility() != View.VISIBLE) {
+                    return;
+                }
                 if (!mIsShowSmileyPicker) {
                     hideInputViewDirectly();
                 }

@@ -981,6 +981,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (mComponentController != null) {
             mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
         }
+        if (mGameModePresenter != null) {
+            if (mCloseBtn.getVisibility() != View.VISIBLE) {
+                mCloseBtn.setVisibility(View.VISIBLE);
+            }
+            if (mWatchTopInfoSingleView.getVisibility() != View.VISIBLE) {
+                mWatchTopInfoSingleView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
