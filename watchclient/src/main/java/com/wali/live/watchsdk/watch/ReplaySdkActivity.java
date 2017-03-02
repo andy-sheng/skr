@@ -7,10 +7,12 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.base.activity.BaseActivity;
 import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
@@ -120,7 +122,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     protected TouchDelegateView mTouchDelegateView;
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
     protected ImageView mRotateBtn;
-    protected ImageView mClostBtn;
+    protected ImageView mCloseBtn;
     protected ReplaySeekBar mReplaySeekBar;
 
     private PhoneStateReceiver mPhoneStateReceiver;
@@ -167,6 +169,20 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         }
     }
 
+    private void orientCloseBtn(boolean isLandscape) {
+        if (mCloseBtn == null) {
+            return;
+        }
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
+                mCloseBtn.getLayoutParams();
+        if (!isLandscape && BaseActivity.isProfileMode()) {
+            layoutParams.topMargin = layoutParams.rightMargin + BaseActivity.getStatusBarHeight();
+        } else {
+            layoutParams.topMargin = layoutParams.rightMargin;
+        }
+        mCloseBtn.setLayoutParams(layoutParams);
+    }
+
     protected void orientLandscape() {
         if (mLiveCommentView != null) {
             mLiveCommentView.orientComment(true);
@@ -177,6 +193,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
         }
+        orientCloseBtn(true);
     }
 
     protected void orientPortrait() {
@@ -189,6 +206,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
         }
+        orientCloseBtn(false);
     }
 
     @Override
@@ -260,7 +278,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
             mGameModePresenter.setGameBarrageViewStub((ViewStub) findViewById(R.id.game_barrage_viewstub));
             mGameModePresenter.setCommentView(mLiveCommentView);
             mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
-            mGameModePresenter.setCloseBtn(mClostBtn);
+            mGameModePresenter.setCloseBtn(mCloseBtn);
             mGameModePresenter.setRotateBtn(mRotateBtn);
             mGameModePresenter.setmTouchPresenter(mTouchPresenter);
             addBindActivityLifeCycle(mGameModePresenter, true);
@@ -339,8 +357,8 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                     }
                 });
         //关闭按钮
-        mClostBtn = $(R.id.close_btn);
-        RxView.clicks(mClostBtn)
+        mCloseBtn = $(R.id.close_btn);
+        RxView.clicks(mCloseBtn)
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
@@ -348,6 +366,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                         finish();
                     }
                 });
+        orientCloseBtn(false);
 
     }
 

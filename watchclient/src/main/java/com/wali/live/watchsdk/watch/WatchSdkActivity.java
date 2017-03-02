@@ -11,10 +11,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.base.activity.BaseActivity;
 import com.base.event.SdkEventClass;
 import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -243,6 +245,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     }
                 });
         mCloseBtn.setVisibility(View.VISIBLE);
+        orientCloseBtn(isDisplayLandscape());
 
         mRotateBtn = $(R.id.rotate_btn);
         RxView.clicks(mRotateBtn)
@@ -980,6 +983,20 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private void orientCloseBtn(boolean isLandscape) {
+        if (mCloseBtn == null) {
+            return;
+        }
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
+                mCloseBtn.getLayoutParams();
+        if (!isLandscape && BaseActivity.isProfileMode()) {
+            layoutParams.topMargin = layoutParams.rightMargin + BaseActivity.getStatusBarHeight();
+        } else {
+            layoutParams.topMargin = layoutParams.rightMargin;
+        }
+        mCloseBtn.setLayoutParams(layoutParams);
+    }
+
     protected void orientLandscape() {
         if (mLiveCommentView != null) {
             mLiveCommentView.orientComment(true);
@@ -993,6 +1010,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (mComponentController != null) {
             mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         }
+        orientCloseBtn(true);
     }
 
     protected void orientPortrait() {
@@ -1016,6 +1034,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 mWatchTopInfoSingleView.setVisibility(View.VISIBLE);
             }
         }
+        orientCloseBtn(false);
     }
 
     @Override
