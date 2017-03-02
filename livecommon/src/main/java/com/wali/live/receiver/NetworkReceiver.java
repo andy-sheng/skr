@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import com.base.log.MyLog;
-import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.network.ImageUrlDNSManager;
 
@@ -30,8 +29,6 @@ public class NetworkReceiver extends BroadcastReceiver {
         NET_NO, NET_2G, NET_3G, NET_4G, NET_WIFI, NET_UNKNOWN
     }
 
-//    public static IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-
     private static long mLastClearTimestamp;
     private static NetState mLastNetState;
 
@@ -39,7 +36,7 @@ public class NetworkReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         MyLog.w("NetworkReceiver", "network changed, NetworkReceiver");
         NetState netState = getCurrentNetStateCode(context);
-        if (null != netState && UserAccountManager.getInstance().hasAccount()) {
+        if (null != netState) {
             if (netState == NetState.NET_2G
                     || netState == NetState.NET_3G
                     || netState == NetState.NET_4G
@@ -51,16 +48,6 @@ public class NetworkReceiver extends BroadcastReceiver {
             }
             MyLog.w(TAG, netState + "");
             EventBus.getDefault().post(new EventClass.NetWorkChangeEvent(netState));
-//            TODO 现在用不上
-//            //切换网络，且当前网络为wifi时检查更新H5 CACHE
-//            if (netState == NetState.NET_WIFI) {
-//                List<NewH5CachePackage> cachePkgList = NewH5CacheManager.getInstance(GlobalData.app().getApplicationContext(), false).cachePackageList();
-//                if (cachePkgList != null) {
-//                    for (NewH5CachePackage h5CachePackage : cachePkgList) {
-//                        ThreadPool.runOnPool(new H5CacheUpdateEntry(H5CacheUpdateEntry.CHECK_UPDATE_TYPE_NET_WORK_CHANGE, h5CachePackage));
-//                    }
-//                }
-//            }
         }
         mLastNetState = netState;
     }

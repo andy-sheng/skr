@@ -15,4 +15,8 @@
 
     <string name="please_login">請先登錄</string>
     <string name="go_to_login">去登錄</string>
+
+    <string name="live_traffic_tip">屬於行動網路,是否繼續觀看?</string>
+    <string name="live_traffic_positive">繼續觀看</string>
+    <string name="live_traffic_negative">退出觀看</string>
 </resources>
