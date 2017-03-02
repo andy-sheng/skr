@@ -1,4 +1,4 @@
-package com.wali.live.component.view;
+package com.wali.live.watchsdk.component.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +26,10 @@ import com.mi.live.data.preference.MLPreferenceUtils;
 import com.wali.live.common.smiley.SmileyInputFilter;
 import com.wali.live.common.smiley.SmileyPicker;
 import com.wali.live.common.smiley.SmileyTranslateFilter;
+import com.wali.live.component.view.IComponentView;
+import com.wali.live.component.view.IOrientationListener;
+import com.wali.live.component.view.IViewProxy;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 17/02/20.
@@ -67,13 +71,15 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.send_btn) { // 发送消息
-            String body = mInputView.getText().toString().trim();
-            if (!TextUtils.isEmpty(body)) {
-                if (mPresenter != null) {
-                    mPresenter.sendBarrage(body, mBarrageSwitchBtn != null ?
-                            mBarrageSwitchBtn.isSelected() : false);
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                String body = mInputView.getText().toString().trim();
+                if (!TextUtils.isEmpty(body)) {
+                    if (mPresenter != null) {
+                        mPresenter.sendBarrage(body, mBarrageSwitchBtn != null ?
+                                mBarrageSwitchBtn.isSelected() : false);
+                    }
+                    mInputView.setText("");
                 }
-                mInputView.setText("");
             }
         } else if (id == R.id.show_smiley_btn) { // 显示表情
             if (mIsInputMode) {
