@@ -1,5 +1,7 @@
 package com.wali.live.livesdk.live.livegame;
 
+import android.support.annotation.Nullable;
+
 import com.mi.live.data.push.collection.InsertSortLinkedList;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.ComponentController;
@@ -20,4 +22,10 @@ public class LiveComponentController extends ComponentController {
             new LiveRoomChatMsgManager(InsertSortLinkedList.DEFAULT_MAX_SIZE);
 
     GameLivePresenter mGameLivePresenter;
+
+    @Nullable
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
 }

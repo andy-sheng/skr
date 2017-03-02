@@ -41,7 +41,7 @@
         android:paddingRight="6.67dip"
         android:requiresFadingEdge="none" />
 
-    <!--游戏模式需要-->
+    <!--游戏模式 输入框与弹幕 改为在代码中动态添加，见WatchSdkView-->
     <ViewStub
         android:id="@+id/game_barrage_viewstub"
         android:layout_width="586.66dp"

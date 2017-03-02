@@ -23,7 +23,7 @@ import com.wali.live.watchsdk.R;
 /**
  * Created by yangli on 2017/02/28.
  *
- * @module 游戏直播输入框, 观看
+ * @module 游戏直播输入框视图, 观看
  */
 public class GameInputView extends RelativeLayout implements View.OnClickListener,
         IComponentView<GameInputView.IPresenter, GameInputView.IView> {
@@ -39,6 +39,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
 
     protected EditText mInputView;
     protected View mSendBtn;
+    protected View mBarrageBtn;
 
     // Auto-generated to easy use findViewById
     protected final <T extends View> T $(@IdRes int resId) {
@@ -46,8 +47,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
     }
 
     // Auto-generated to easy use setOnClickListener
-    protected final void $click(@IdRes int resId, View.OnClickListener listener) {
-        View view = $(resId);
+    protected final void $click(View view, View.OnClickListener listener) {
         if (view != null) {
             view.setOnClickListener(listener);
         }
@@ -91,8 +91,9 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
 
         mInputView = $(R.id.input_et);
         mSendBtn = $(R.id.send_btn);
-        $click(R.id.send_btn, this);
-        $click(R.id.barrage_btn, this);
+        mBarrageBtn = $(R.id.barrage_btn);
+        $click(mSendBtn, this);
+        $click(mBarrageBtn, this);
 
         setupInputView();
     }
@@ -176,8 +177,14 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
             public void onOrientation(boolean isLandscape) {
                 if (isLandscape) {
                     GameInputView.this.setVisibility(View.VISIBLE);
+                    if (mPresenter != null && !mBarrageBtn.isSelected()) {
+                        mPresenter.showGameBarrage(true);
+                    }
                 } else {
                     GameInputView.this.setVisibility(View.GONE);
+                    if (mPresenter != null && !mBarrageBtn.isSelected()) {
+                        mPresenter.showGameBarrage(false);
+                    }
                 }
             }
         }

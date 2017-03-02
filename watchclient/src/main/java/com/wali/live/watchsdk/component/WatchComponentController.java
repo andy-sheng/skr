@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.component;
 
+import android.support.annotation.Nullable;
+
 import com.mi.live.data.push.collection.InsertSortLinkedList;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.ComponentController;
@@ -17,4 +19,10 @@ public class WatchComponentController extends ComponentController {
      */
     LiveRoomChatMsgManager mRoomChatMsgManager =
             new LiveRoomChatMsgManager(InsertSortLinkedList.DEFAULT_MAX_SIZE);
+
+    @Nullable
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
 }

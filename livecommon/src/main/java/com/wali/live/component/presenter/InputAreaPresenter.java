@@ -107,6 +107,7 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
         @Override
         public boolean onAction(int source, @Nullable Params params) {
             if (mView == null) {
+                MyLog.e(TAG, "onAction but mView is null, source=" + source);
                 return false;
             }
             switch (source) {

@@ -8,7 +8,11 @@ ${IMPORT}
  * @module [TODO add module]
  */
 public class ${NAME}View implements IComponentView<${NAME}View.IPresenter, ${NAME}View.IView> {
-	
+	private static final String TAG = "${NAME}View";
+
+	@Nullable
+	protected IPresenter mPresenter;
+
 	// Auto-generated to easy use findViewById
 	protected final <T extends View> T $(@IdRes int resId) {
 		return (T) findViewById(resId);
@@ -20,6 +24,11 @@ public class ${NAME}View implements IComponentView<${NAME}View.IPresenter, ${NAM
 		if (view != null) {
 			view.setOnClickListener(listener);
 		}
+	}
+
+	@Override
+	public void setPresenter(@Nullable IPresenter iPresenter) {
+		mPresenter = iPresenter;
 	}
 		
 	@Override

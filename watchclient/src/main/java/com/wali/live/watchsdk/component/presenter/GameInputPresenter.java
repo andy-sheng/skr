@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by yangli on 2017/02/28.
  *
- * @module 游戏直播输入框表现
+ * @module 游戏直播输入框表现, 观看
  */
 public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
         implements GameInputView.IPresenter {
@@ -47,7 +47,6 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
     @Override
     public void destroy() {
         super.destroy();
-        MyLog.d(TAG, "destroy()");
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -67,6 +66,8 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
                 break;
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
                 mView.onKeyboardHidden();
+                break;
+            default:
                 break;
         }
     }
@@ -116,6 +117,10 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
+            if (mView == null) {
+                MyLog.e(TAG, "onAction but mView is null, source=" + source);
+                return false;
+            }
             switch (source) {
                 case WatchComponentController.MSG_ON_ORIENT_PORTRAIT:
                     mView.onOrientation(false);

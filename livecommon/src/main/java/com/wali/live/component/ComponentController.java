@@ -15,8 +15,8 @@ import java.util.Set;
  *
  * @module 基础架构组件控制器
  */
-public class ComponentController implements ComponentPresenter.IComponentController {
-    private static final String TAG = "ComponentController";
+public abstract class ComponentController implements ComponentPresenter.IComponentController {
+    protected final String TAG = getTAG();
 
     public static final int MSG_DEFAULT = 0;
 
@@ -50,6 +50,9 @@ public class ComponentController implements ComponentPresenter.IComponentControl
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST; // 强制旋转UI
 
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
+
+    @Nullable
+    protected abstract String getTAG();
 
     public void release() {
         mEventActionMap.clear();
