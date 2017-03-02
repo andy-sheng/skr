@@ -137,7 +137,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private ForbidManagePresenter mForbidManagePresenter;
     protected UserInfoPresenter mUserInfoPresenter;
     private TouchPresenter mTouchPresenter;
-    private GameModePresenter mGameModePresenter;
+//    private GameModePresenter mGameModePresenter;
 
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
         @Override
@@ -381,26 +381,26 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                         WatchComponentController.MSG_HIDE_INPUT_VIEW)) {
                     return true;
                 }
-                if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
-                    mGameModePresenter.hideInputArea();
-                    return true;
-                }
+//                if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
+//                    mGameModePresenter.hideInputArea();
+//                    return true;
+//                }
                 return false;
             }
         });
 
         if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) {
             // 是游戏直播间
-            mGameModePresenter = new GameModePresenter(this, mMyRoomData);
-            mGameModePresenter.setGameBarrageViewStub((ViewStub) findViewById(R.id.game_barrage_viewstub));
-            mGameModePresenter.setGameBottomViewStub((ViewStub) findViewById(R.id.game_bottom_viewstub));
-            mGameModePresenter.setCommentView(mLiveCommentView);
-            mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
-            mGameModePresenter.setCloseBtn(mCloseBtn);
-            mGameModePresenter.setRotateBtn(mRotateBtn);
-            mGameModePresenter.setBottomContainerView($(R.id.bottom_button_view));
-            mGameModePresenter.setmTouchPresenter(mTouchPresenter);
-            addBindActivityLifeCycle(mGameModePresenter, true);
+//            mGameModePresenter = new GameModePresenter(this, mMyRoomData);
+//            mGameModePresenter.setGameBarrageViewStub((ViewStub) findViewById(R.id.game_barrage_viewstub));
+//            mGameModePresenter.setGameBottomViewStub((ViewStub) findViewById(R.id.game_bottom_viewstub));
+//            mGameModePresenter.setCommentView(mLiveCommentView);
+//            mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
+//            mGameModePresenter.setCloseBtn(mCloseBtn);
+//            mGameModePresenter.setRotateBtn(mRotateBtn);
+//            mGameModePresenter.setBottomContainerView($(R.id.bottom_button_view));
+//            mGameModePresenter.setmTouchPresenter(mTouchPresenter);
+//            addBindActivityLifeCycle(mGameModePresenter, true);
         }
     }
 
@@ -502,9 +502,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         switch (event.eventType) {
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST: {
                 mGiftMallPresenter.hideGiftMallView();
-                if (mGameModePresenter == null || !mLandscape) {
-                    mLiveCommentView.setVisibility(View.VISIBLE);
-                }
+//                if (mGameModePresenter == null || !mLandscape) {
+//                    mLiveCommentView.setVisibility(View.VISIBLE);
+//                }
             }
             break;
 
@@ -909,10 +909,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         } else if (mGiftMallPresenter.isGiftMallViewVisibility()) {
             EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
             return;
-        } else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
-            mGameModePresenter.hideInputArea();
-            return;
         }
+//        else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
+//            mGameModePresenter.hideInputArea();
+//            return;
+//        }
         super.onBackPressed();
     }
 

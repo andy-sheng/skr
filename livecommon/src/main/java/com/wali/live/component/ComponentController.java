@@ -22,26 +22,32 @@ public class ComponentController implements ComponentPresenter.IComponentControl
 
     // 系统消息
     private static final int MSG_SYSTEM_FIRST = 10000;
-    public static final int MSG_ON_BACK_PRESSED     = MSG_SYSTEM_FIRST; // 返回键
+    public static final int MSG_ON_BACK_PRESSED     = MSG_SYSTEM_FIRST;     // 返回键
     public static final int MSG_ON_ORIENT_PORTRAIT  = MSG_SYSTEM_FIRST + 1; // 竖屏
     public static final int MSG_ON_ORIENT_LANDSCAPE = MSG_SYSTEM_FIRST + 2; // 横屏
+    public static final int MSG_ON_KEYBOARD_SHOWED  = MSG_SYSTEM_FIRST + 3; // 键盘 已显示
+    public static final int MSG_ON_KEYBOARD_HIDDEN  = MSG_SYSTEM_FIRST + 4; // 键盘 已隐藏
 
     // UI消息
-    private static final int MSG_LIVE_FIRST = 20000;
     // 输入框相关消息
-    public static final int MSG_SHOW_INPUT_VIEW     = MSG_LIVE_FIRST;     // 请求弹起输入框
-    public static final int MSG_HIDE_INPUT_VIEW     = MSG_LIVE_FIRST + 1; // 请求隐藏输入框
-    public static final int MSG_INPUT_VIEW_SHOWED   = MSG_LIVE_FIRST + 2; // 输入框 已显示
-    public static final int MSG_INPUT_VIEW_HIDDEN   = MSG_LIVE_FIRST + 3; // 输入框 已隐藏
-    public static final int MSG_SHOW_BARRAGE_SWITCH = MSG_LIVE_FIRST + 4; // 显示 飘屏弹幕开关
-    public static final int MSG_HIDE_BARRAGE_SWITCH = MSG_LIVE_FIRST + 5; // 隐藏 飘屏弹幕开关
+    private static final int MSG_INPUT_FIRST = 20000;
+    public static final int MSG_SHOW_INPUT_VIEW     = MSG_INPUT_FIRST;     // 请求弹起输入框
+    public static final int MSG_HIDE_INPUT_VIEW     = MSG_INPUT_FIRST + 1; // 请求隐藏输入框
+    public static final int MSG_INPUT_VIEW_SHOWED   = MSG_INPUT_FIRST + 2; // 输入框 已显示
+    public static final int MSG_INPUT_VIEW_HIDDEN   = MSG_INPUT_FIRST + 3; // 输入框 已隐藏
+    public static final int MSG_SHOW_BARRAGE_SWITCH = MSG_INPUT_FIRST + 4; // 显示 飘屏弹幕开关
+    public static final int MSG_HIDE_BARRAGE_SWITCH = MSG_INPUT_FIRST + 5; // 隐藏 飘屏弹幕开关
+    public static final int MSG_SHOW_GAME_BARRAGE   = MSG_INPUT_FIRST + 6; // 显示 游戏弹幕
+    public static final int MSG_HIDE_GAME_BARRAGE   = MSG_INPUT_FIRST + 7; // 隐藏 游戏弹幕
     // 弹出页面相关消息
-    public static final int MSG_BOTTOM_POPUP_SHOWED = MSG_LIVE_FIRST + 6; // 底部按钮/礼物页面等显示时，通知 底部按钮和弹幕区 隐藏
-    public static final int MSG_BOTTOM_POPUP_HIDDEN = MSG_LIVE_FIRST + 7; // 底部按钮/礼物页面等隐藏时，通知 底部按钮和弹幕区 显示
-    public static final int MSG_SHOW_SETTING_PANEL  = MSG_LIVE_FIRST + 8; // 显示 设置面板
-    public static final int MSG_SHOW_GIFT_PANEL     = MSG_LIVE_FIRST + 9; // 显示 礼物面板
+    private static final int MSG_POPUP_FIRST = 21000;
+    public static final int MSG_BOTTOM_POPUP_SHOWED = MSG_POPUP_FIRST;     // 底部按钮/礼物页面等显示时，通知 底部按钮和弹幕区 隐藏
+    public static final int MSG_BOTTOM_POPUP_HIDDEN = MSG_POPUP_FIRST + 1; // 底部按钮/礼物页面等隐藏时，通知 底部按钮和弹幕区 显示
+    public static final int MSG_SHOW_SETTING_PANEL  = MSG_POPUP_FIRST + 2; // 显示 设置面板
+    public static final int MSG_SHOW_GIFT_PANEL     = MSG_POPUP_FIRST + 3; // 显示 礼物面板
 
-    public static final int MSG_FORCE_ROTATE_SCREEN = MSG_LIVE_FIRST + 10; // 强制旋转UI
+    private static final int MSG_MORE_FIRST = 30000;
+    public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST; // 强制旋转UI
 
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
 

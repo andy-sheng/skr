@@ -55,7 +55,7 @@ public abstract class BaseSdkView<T extends ComponentController> {
     public abstract void setupSdkView();
 
     /**
-     * 销毁SdkView
+     * 销毁SdkView，并释放资源
      */
     public void releaseSdkView() {
         for (Presenter presenter : mComponentPresenterSet) {

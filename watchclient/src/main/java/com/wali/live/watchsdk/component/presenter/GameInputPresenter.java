@@ -1,45 +1,46 @@
-package com.wali.live.component.presenter;
+package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.event.KeyboardEvent;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.ComponentController;
-import com.wali.live.component.view.InputAreaView;
+import com.wali.live.common.smiley.SmileyParser;
+import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.component.view.GameInputView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 /**
- * Created by yangli on 17/02/20.
+ * Created by yangli on 2017/02/28.
  *
- * @module 输入框表现
+ * @module 游戏直播输入框表现
  */
-public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
-        implements InputAreaView.IPresenter {
-    private static final String TAG = "InputAreaPresenter";
+public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
+        implements GameInputView.IPresenter {
+    private static final String TAG = "GameInputPresenter";
 
     protected RoomBaseDataModel mMyRoomData;
 
-    public InputAreaPresenter(
+    public GameInputPresenter(
             @NonNull IComponentController componentController,
             @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
         mMyRoomData = myRoomData;
-        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(ComponentController.MSG_SHOW_INPUT_VIEW);
-        registerAction(ComponentController.MSG_HIDE_INPUT_VIEW);
-        registerAction(ComponentController.MSG_SHOW_BARRAGE_SWITCH);
-        registerAction(ComponentController.MSG_HIDE_BARRAGE_SWITCH);
+        registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(WatchComponentController.MSG_ON_BACK_PRESSED);
         EventBus.getDefault().register(this);
     }
 
@@ -79,8 +80,18 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
             MyLog.e("sendBarrage but mMyRoomData is null");
             return;
         }
+        if (!mMyRoomData.canSpeak()) {
+            ToastUtils.showToast(GlobalData.app(), R.string.can_not_speak);
+            return;
+        }
+        // 检查发送频率限制
+        if (mMyRoomData.getmMsgRule() != null && mMyRoomData.getmMsgRule().getSpeakPeriod() == Integer.MAX_VALUE) {
+            return;
+        }
+        String body = SmileyParser.getInstance()
+                .convertString(msg, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString();
         BarrageMsg barrageMsg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_TEXT,
-                msg, mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), null);
+                body, mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), null);
         SendBarrageManager
                 .sendBarrageMessageAsync(barrageMsg)
                 .subscribe();
@@ -88,13 +99,12 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
     }
 
     @Override
-    public void notifyInputViewShowed() {
-        mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_SHOWED);
-    }
-
-    @Override
-    public void notifyInputViewHidden() {
-        mComponentController.onEvent(ComponentController.MSG_INPUT_VIEW_HIDDEN);
+    public void showGameBarrage(boolean isShow) {
+        if (isShow) {
+            mComponentController.onEvent(WatchComponentController.MSG_SHOW_GAME_BARRAGE);
+        } else {
+            mComponentController.onEvent(WatchComponentController.MSG_HIDE_GAME_BARRAGE);
+        }
     }
 
     @Nullable
@@ -106,28 +116,15 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                return false;
-            }
             switch (source) {
-                case ComponentController.MSG_ON_ORIENT_PORTRAIT:
+                case WatchComponentController.MSG_ON_ORIENT_PORTRAIT:
                     mView.onOrientation(false);
                     return true;
-                case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                case WatchComponentController.MSG_ON_ORIENT_LANDSCAPE:
                     mView.onOrientation(true);
                     return true;
-                case ComponentController.MSG_ON_BACK_PRESSED:
+                case WatchComponentController.MSG_ON_BACK_PRESSED:
                     return mView.processBackPress();
-                case ComponentController.MSG_SHOW_INPUT_VIEW:
-                    return mView.showInputView();
-                case ComponentController.MSG_HIDE_INPUT_VIEW:
-                    return mView.hideInputView();
-                case ComponentController.MSG_SHOW_BARRAGE_SWITCH:
-                    mView.enableFlyBarrage(true);
-                    return true;
-                case ComponentController.MSG_HIDE_BARRAGE_SWITCH:
-                    mView.enableFlyBarrage(false);
-                    return true;
                 default:
                     break;
             }

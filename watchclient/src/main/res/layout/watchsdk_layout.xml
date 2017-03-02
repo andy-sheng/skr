@@ -53,14 +53,14 @@
         android:inflatedId="@+id/game_barrage_view"
         android:layout="@layout/view_game_barrage" />
 
-    <ViewStub
-        android:id="@+id/game_bottom_viewstub"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:inflatedId="@+id/game_bottom_view"
-        android:layout="@layout/view_game_bottom" />
+    <!--<ViewStub-->
+        <!--android:id="@+id/game_bottom_viewstub"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:inflatedId="@+id/game_bottom_view"-->
+        <!--android:layout="@layout/view_game_bottom" />-->
 
     <!--商城-->
     <ViewStub

@@ -1,8 +1,10 @@
 package com.wali.live.watchsdk.component;
 
 import android.app.Activity;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
@@ -12,9 +14,13 @@ import com.wali.live.component.presenter.InputAreaPresenter;
 import com.wali.live.component.view.InputAreaView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
+import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.PanelContainerPresenter;
+import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WatchPanelContainer;
+
+import static android.widget.RelativeLayout.TRUE;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -24,6 +30,7 @@ import com.wali.live.watchsdk.component.view.WatchPanelContainer;
 public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     private static final String TAG = "WatchSdkView";
 
+    @NonNull
     protected RoomBaseDataModel mMyRoomData;
     protected boolean mIsGameMode = false;
 
@@ -35,11 +42,40 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         mMyRoomData = myRoomData;
     }
 
+    public final <T extends View> void addView(
+            @NonNull T view,
+            @NonNull ViewGroup.LayoutParams params,
+            @IdRes int anchorId) {
+        ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+        View anchorView = $(anchorId);
+        int pos = anchorView != null ? rootView.indexOfChild(anchorView) : -1;
+        if (pos >= 0) {
+            rootView.addView(view, pos + 1, params);
+        } else {
+            rootView.addView(view, params);
+        }
+    }
+
     public void setupSdkView(boolean isGameMode) {
         mIsGameMode = isGameMode;
         setupSdkView();
+        if (mIsGameMode) {
+            // 游戏直播横屏时输入框
+            {
+                GameInputView view = new GameInputView(mActivity);
+                view.setVisibility(View.GONE);
+                GameInputPresenter presenter = new GameInputPresenter(mComponentController, mMyRoomData);
+                addComponentView(view, presenter);
+                // add view to activity
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                addView(view, layoutParams, R.id.input_area_view);
+            }
+        }
     }
-    
+
     @Override
     public void setupSdkView() {
         // 输入框
