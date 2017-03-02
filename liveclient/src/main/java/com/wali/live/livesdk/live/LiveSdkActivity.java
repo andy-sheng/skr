@@ -255,7 +255,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     @Override
-    public void trySenddataWithServerOnce() {
+    public void trySendDataWithServerOnce() {
     }
 
     private void prepareGameLive() {
@@ -678,7 +678,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LiveEventClass.SystemEvent event) {
-        MyLog.w(TAG, "onEventMainThread SystemEvent");
+        MyLog.w(TAG, "onEventMainThread PhoneStateEvent");
         if (event != null) {
             switch (event.type) {
                 case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_IDLE: {

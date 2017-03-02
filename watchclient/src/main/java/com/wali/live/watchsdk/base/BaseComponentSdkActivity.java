@@ -221,14 +221,13 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         mGiftRoomEffectView.onActivityCreate();
     }
 
-    public abstract void trySenddataWithServerOnce();
-
+    public abstract void trySendDataWithServerOnce();
 
     // milink链接成功了,在主线程保证时序
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MiLinkEvent.StatusLogined event) {
         // 登录成功了
-        trySenddataWithServerOnce();
+        trySendDataWithServerOnce();
     }
 
     @Override
