@@ -46,29 +46,4 @@
     <string name="yesterday_hour_minute">昨天 %1$d:%2$02d</string>
 
     <string name="in_process">正在處理中</string>
-
-    <!-- 版本更新 -->
-    <string name="dialog_milive_app_noinstall_message">你還沒有安裝小米直播插件,是否下載安裝?</string>
-    <string name="dialog_milive_app_version_too_live_message">你的小米直播插件版本太低,是否下載更新</string>
-    <string name="sure_install_milive">下載</string>
-    <string name="cancel_install_milve">取消</string>
-    <string name="milive_upgrade_progress_sucess">小米直播插件下載成功</string>
-    <string name="milive_upgrade_progress_faild">小米直播插件下載失敗</string>
-    <string name="milive_upgrade_progress_start">小米直播插件開始下載</string>
-    <string name="app_version">版本號:&#160;%s</string>
-    <string name="apksize">安裝包大小:&#160;%sM</string>
-    <string name="upgrade_description">版本更新要點:&#160;%s</string>
-    <string name="cancel_update">取消</string>
-    <string name="update_rightnow">升級</string>
-    <string name="download_update_failed">下載更新失敗</string>
-    <string name="find_new_version">下載小米直播</string>
-    <string name="no_upgrading">已經是最新版本</string>
-    <string name="check_failed">檢查更新失敗,請檢查網絡</string>
-    <string name="check_upgrading">正在檢查更新請稍後...</string>
-    <string name="is_upgrading">正在更新</string>
-    <string name="update_downloading">正在下載更新請稍後...</string>
-    <string name="downloading_background">正在后台下載升級文件,可在通知欄查看進度</string>
-    <string name="milive_upgrade_progress">已下載%d%%</string>
-    <string name="download_update_succeed">下載完成,安裝升級文件</string>
-    <string name="update_file_illegal">更新的安裝包驗證出錯,請重試</string>
 </resources>

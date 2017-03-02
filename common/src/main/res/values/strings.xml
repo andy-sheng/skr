@@ -52,29 +52,4 @@
     <string name="yesterday_hour_minute">Yesterday %1$d:%2$02d</string>
 
     <string name="in_process">Working\u2026</string>
-
-    <!-- 版本更新 -->
-    <string name="dialog_milive_app_noinstall_message">Install Mi Live Assistant ?</string>
-    <string name="dialog_milive_app_version_too_live_message">Update Mi Live Assistant to latest version ?</string>
-    <string name="milive_upgrade_progress_sucess">Mi Live Assistant downloads success</string>
-    <string name="milive_upgrade_progress_faild">Mi Live Assistant couldn\'t download</string>
-    <string name="milive_upgrade_progress_start">Just a sec\u2026</string>
-    <string name="sure_install_milive">Download</string>
-    <string name="cancel_install_milve">Cancel</string>
-    <string name="app_version">Version: %s</string>
-    <string name="apksize">App size: %sMB</string>
-    <string name="upgrade_description">What\'s new: %s</string>
-    <string name="cancel_update">Cancel</string>
-    <string name="update_rightnow">Update</string>
-    <string name="download_update_failed">Couldn\'t download update</string>
-    <string name="find_new_version">Update available</string>
-    <string name="no_upgrading">Current version is up to date</string>
-    <string name="check_failed">Couldn\'t check for updates, check network and try again</string>
-    <string name="check_upgrading">Just a sec\u2026</string>
-    <string name="is_upgrading">Updating\u2026</string>
-    <string name="update_downloading">Just a sec\u2026</string>
-    <string name="downloading_background">Downloading update, you can view the progress in the notification shade</string>
-    <string name="milive_upgrade_progress">Downloaded %d%%</string>
-    <string name="download_update_succeed">Downloaded successfully, installing\u2026</string>
-    <string name="update_file_illegal">Couldn\'t install, try again</string>
 </resources>

@@ -25,7 +25,6 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
-import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
@@ -849,7 +848,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Override
     public void onClickSixin(User user) {
-        VersionCheckTask.checkUpdate(this);
+
     }
 
     @Override

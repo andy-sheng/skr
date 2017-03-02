@@ -36,7 +36,7 @@
 }
 
 #milink
--keep public class com.mi.milink.sdk.** { *; }
+-keep public class com.mi.milink.sdk.connection.** { *; }
 
 #greenDao
 -keep class de.greenrobot.dao.** {*;}
