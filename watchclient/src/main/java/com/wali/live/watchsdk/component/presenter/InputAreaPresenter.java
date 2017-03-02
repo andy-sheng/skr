@@ -1,4 +1,4 @@
-package com.wali.live.component.presenter;
+package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +11,8 @@ import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.ComponentController;
-import com.wali.live.component.view.InputAreaView;
+import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.watchsdk.component.view.InputAreaView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

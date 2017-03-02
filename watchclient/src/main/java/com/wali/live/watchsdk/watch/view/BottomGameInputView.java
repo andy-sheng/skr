@@ -18,6 +18,7 @@ import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -112,12 +113,14 @@ public class BottomGameInputView extends RelativeLayout {
         mSendBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = mEditText.getText().toString();
-                if (TextUtils.isEmpty(msg)) {
-                    return;
+                if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                    String msg = mEditText.getText().toString();
+                    if (TextUtils.isEmpty(msg)) {
+                        return;
+                    }
+                    mListener.onSendClick(msg);
+                    mEditText.setText("");
                 }
-                mListener.onSendClick(msg);
-                mEditText.setText("");
             }
         });
         mSoftKeyboardHeight = MLPreferenceUtils.getKeyboardHeight(false);

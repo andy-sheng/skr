@@ -131,7 +131,7 @@
         android:visibility="gone" />
 
     <!--输入框-->
-    <com.wali.live.component.view.InputAreaView
+    <com.wali.live.watchsdk.component.view.InputAreaView
         android:id="@+id/input_area_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
