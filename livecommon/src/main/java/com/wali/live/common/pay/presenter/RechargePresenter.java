@@ -29,6 +29,7 @@ import com.base.presenter.Presenter;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.rx.RefuseRetryExeption;
 import com.base.utils.rx.RxRetryAssist;
+import com.base.utils.toast.ToastUtils;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.XiaoMiOAuth;
@@ -41,19 +42,12 @@ import com.wali.live.common.pay.model.Diamond;
 import com.wali.live.common.pay.model.SkuDetail;
 import com.wali.live.common.pay.model.UnconsumedProduct;
 import com.wali.live.common.pay.utils.PayCommonUtils;
-import com.wali.live.common.pay.utils.PayStatisticUtils;
 import com.wali.live.common.pay.view.IRechargeView;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.PayProto;
 import com.xiaomi.game.plugin.stat.MiGamePluginStat;
 import com.xiaomi.gamecenter.alipay.HyAliPay;
-import com.xiaomi.gamecenter.sdk.MiCommplatform;
-import com.xiaomi.gamecenter.sdk.MiErrorCode;
-import com.xiaomi.gamecenter.sdk.OnLoginProcessListener;
-import com.xiaomi.gamecenter.sdk.OnPayProcessListener;
-import com.xiaomi.gamecenter.sdk.entry.MiAccountInfo;
-import com.xiaomi.gamecenter.sdk.entry.MiBuyInfo;
 import com.xiaomi.gamecenter.ucashier.HyUcashierPay;
 import com.xiaomi.gamecenter.ucashier.PayResultCallback;
 import com.xiaomi.gamecenter.ucashier.purchase.FeePurchase;
@@ -84,13 +78,28 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.common.pay.fragment.RechargeFragment.getCurrentPayWay;
+import static com.wali.live.common.pay.utils.PayStatisticUtils.getRechargeTemplate;
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
-import static com.wali.live.statistics.StatisticsKey.Recharge.APP_NOT_INSTALL;
 import static com.wali.live.statistics.StatisticsKey.Recharge.CANCEL;
 import static com.wali.live.statistics.StatisticsKey.Recharge.PAY_ERROR_CODE;
 import static com.wali.live.statistics.StatisticsKey.Recharge.SUCCESS;
 import static com.wali.live.statistics.StatisticsKey.TIMES;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.ALIPAY_CANCEL;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.ALIPAY_ERROR;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.CREATE_UNDEFINEORDER_ERROR;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.GET_SESSION_ERROR;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.NET_ERROR;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.SCANPAY_CANCEL;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.SCANPAY_ERROR;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.WXPAY_CANCEL;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.WXPAY_ERROR;
+import static com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_CLIENT_NOT_INSTALL;
+import static com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_CREATE_UNDEFINE_ORDER_ERROR;
+import static com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_GETSESSION_ERROR;
+import static com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_NETWORK_ERROR;
+import static com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_PAY_CANCEL;
+import static com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_PAY_FAIL;
 
 /**
  * @module 充值
@@ -701,7 +710,6 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
                                 payByAlipay(orderId, price, cpUserInfo);
                                 break;
                             case MIBI:
-                                payByMiPay(orderId, price, cpUserInfo);
                                 break;
                             case MIWALLET:
                                 payByMiWallet(orderId, price, cpUserInfo);
@@ -723,41 +731,28 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
     @NonNull
     private String getErrorMsgByErrorCode(int errorCode) {
         switch (errorCode) {
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.GET_SESSION_ERROR:
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_GETSSION_FAIL:
+            case GET_SESSION_ERROR:
                 return getString(R.string.pay_error_code_get_session_fail);
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_GETSSION_ERROR:
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_GETSESSION_ERROR:
+            case TOAST_GETSESSION_ERROR:
                 return getString(R.string.pay_error_code_get_session_error);
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.CREATE_UNDEFINEORDER_ERROR:
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_ORDERCREATE_FAIL:
+            case CREATE_UNDEFINEORDER_ERROR:
                 return getString(R.string.pay_error_code_order_create_fail);
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.WXPAY_ERROR:
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.SCANPAY_ERROR:
-            case com.xiaomi.gamecenter.alipay.config.ResultCode.ALIPAY_ERROR:
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_FAIL:
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_PAY_FAIL:
+            case WXPAY_ERROR:
+            case SCANPAY_ERROR:
+            case ALIPAY_ERROR:
+            case TOAST_PAY_FAIL:
                 return getString(R.string.pay_error_code_fail);
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_ORDERINFO_ERROR:
-                return getString(R.string.pay_error_code_order_info_error);
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_ORDERINFOPARSE_ERROR:
-                return getString(R.string.pay_error_code_order_info_parse_error);
-            //case CODE_CLIENT_NOT_INSTALL:
-            //    return getString(R.string.pay_error_code_alipay_not_install);
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_NOT_INSTALL:
-                return getString(R.string.pay_error_code_wx_not_install);
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.WXPAY_CANCEL:
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.SCANPAY_CANCEL:
-            case com.xiaomi.gamecenter.alipay.config.ResultCode.ALIPAY_CANCEL:
-            case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_CANCEL:
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_PAY_CANCEL:
+            case WXPAY_CANCEL:
+            case SCANPAY_CANCEL:
+            case ALIPAY_CANCEL:
+            case TOAST_PAY_CANCEL:
                 return getString(R.string.pay_error_code_cancel);
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_CLIENT_NOT_INSTALL:
+            case TOAST_CLIENT_NOT_INSTALL:
                 return getString(R.string.pay_error_code_client_not_install);
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_NETWORK_ERROR:
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.NET_ERROR:
+            case TOAST_NETWORK_ERROR:
+            case NET_ERROR:
                 return getString(R.string.pay_error_code_network_error);
-            case com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_CREATE_UNDEFINE_ORDER_ERROR:
+            case TOAST_CREATE_UNDEFINE_ORDER_ERROR:
                 return getString(R.string.pay_error_code_get_order_error);
         }
         return "";
@@ -819,40 +814,52 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
         saveUserSelectedPayWay();
     }
 
-    private void payByWeixin(String orderId, int price, String userInfo) {
-        HyWxPay wxPay = new HyWxPay(mRechargeView.getActivity(), String.valueOf(XiaoMiOAuth.APP_ID_PAY), XiaoMiOAuth.APP_KEY_PAY);
-        com.xiaomi.gamecenter.wxpay.model.WxBuyInfo order = new com.xiaomi.gamecenter.wxpay.model.WxBuyInfo(orderId, String.valueOf(price), userInfo);
-        wxPay.pay(order, new com.xiaomi.gamecenter.wxpay.PayResultCallback() {
+    private void payByWeixin(String orderId, int price, final String userInfo) {
+        com.xiaomi.gamecenter.wxpay.purchase.FeePurchase purchase = new com.xiaomi.gamecenter.wxpay.purchase.FeePurchase();
+        purchase.setCpOrderId(orderId);
+        purchase.setFeeValue(String.valueOf(price));
+        purchase.setCpUserInfo(userInfo);
+        HyWxPay hyWxPay = null;
+        try {
+            hyWxPay = HyWxPay.getInstance();
+        } catch (IllegalStateException e) {
+            MyLog.e(TAG, "init alipay sdk fail, init here", e);
+            HyWxPay.init(GlobalData.app(), String.valueOf(XiaoMiOAuth.APP_ID_PAY), XiaoMiOAuth.APP_KEY_PAY);
+            hyWxPay = HyWxPay.getInstance();
+        }
+
+        hyWxPay.pay(mRechargeView.getActivity(), purchase, new com.xiaomi.gamecenter.wxpay.PayResultCallback() {
             @Override
             public void onError(int errorCode, String msg) {
                 String errMsg = String.format("msg:%s, errorCode:%d", msg, errorCode);
                 MyLog.e(TAG, errMsg);
                 if (mRechargeView != null) {
-                    mRechargeView.showToast(getErrorMsgByErrorCode(errorCode));
+                    ToastUtils.showToast(getErrorMsgByErrorCode(errorCode));
                 }
                 switch (errorCode) {
-                    case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_CANCEL:
+                    case WXPAY_CANCEL:
+                    case SCANPAY_CANCEL://取消扫码支付
                         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                                PayStatisticUtils.getRechargeTemplate(CANCEL, PayWay.WEIXIN), TIMES, "1");
+                                getRechargeTemplate(CANCEL, PayWay.WEIXIN), TIMES, "1");
                         break;
-                    case com.xiaomi.gamecenter.wxpay.config.ResultCode.CODE_WX_NOT_INSTALL:
-                        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                                PayStatisticUtils.getRechargeTemplate(APP_NOT_INSTALL, PayWay.WEIXIN), TIMES, "1");
-                        break;
+                    //case CODE_WX_NOT_INSTALL:
+                    //    StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
+                    //            getRechargeTemplate(APP_NOT_INSTALL, PayWay.WEIXIN), TIMES, "1");
+                    //    break;
                 }
                 StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                        PayStatisticUtils.getRechargeTemplate(PAY_ERROR_CODE, PayWay.WEIXIN, errorCode), TIMES, "1");
+                        getRechargeTemplate(PAY_ERROR_CODE, PayWay.WEIXIN, errorCode), TIMES, "1");
             }
 
             @Override
-            public void onSuccess(String orderId, String uid) {
-                MyLog.w(TAG, String.format("weixin pay ok, orderId:%s, uid:%s", orderId, uid));
+            public void onSuccess(String orderId) {
+                MyLog.w(TAG, String.format("weixin pay ok, orderId:%s, uid:%s", orderId, userInfo));
                 if (mRechargeView != null) {
-                    mRechargeView.showToast(getString(R.string.weixin_pay_success_sync_order));
+                    ToastUtils.showToast(R.string.weixin_pay_success_sync_order);
                 }
                 StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                        PayStatisticUtils.getRechargeTemplate(SUCCESS, PayWay.WEIXIN), TIMES, "1");
-                checkOrder(orderId, uid, null, null, true);
+                        getRechargeTemplate(SUCCESS, PayWay.WEIXIN), TIMES, "1");
+                checkOrder(orderId, userInfo, null, null, true);
             }
         });
     }
@@ -880,15 +887,15 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
                     mRechargeView.showToast(getErrorMsgByErrorCode(errorCode));
                 }
                 switch (errorCode) {
-                    case com.xiaomi.gamecenter.alipay.config.ResultCode.WXPAY_CANCEL:
-                    case com.xiaomi.gamecenter.alipay.config.ResultCode.SCANPAY_CANCEL:
-                    case com.xiaomi.gamecenter.alipay.config.ResultCode.ALIPAY_CANCEL:
+                    case WXPAY_CANCEL:
+                    case SCANPAY_CANCEL:
+                    case ALIPAY_CANCEL:
                         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                                PayStatisticUtils.getRechargeTemplate(CANCEL, PayWay.ZHIFUBAO), TIMES, "1");
+                                getRechargeTemplate(CANCEL, PayWay.ZHIFUBAO), TIMES, "1");
                         break;
                 }
                 StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                        PayStatisticUtils.getRechargeTemplate(PAY_ERROR_CODE, PayWay.ZHIFUBAO, errorCode), TIMES, "1");
+                        getRechargeTemplate(PAY_ERROR_CODE, PayWay.ZHIFUBAO, errorCode), TIMES, "1");
             }
 
             @Override
@@ -898,96 +905,10 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
                     mRechargeView.showToast(getString(R.string.alipay_pay_success_sync_order));
                 }
                 StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                        PayStatisticUtils.getRechargeTemplate(SUCCESS, PayWay.ZHIFUBAO), TIMES, "1");
+                        getRechargeTemplate(SUCCESS, PayWay.ZHIFUBAO), TIMES, "1");
                 checkOrder(orderId, userInfo, null, null, true);
             }
         });
-    }
-
-    @Deprecated
-    private void payByMiPay(final String orderId, final int price, final String userInfo) {
-        MiCommplatform.getInstance().miLogin(mRechargeView.getActivity(),
-                new OnLoginProcessListener() {
-                    @Override
-                    public void finishLoginProcess(int code, MiAccountInfo arg1) {
-                        switch (code) {
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_SUCCESS:
-                                // 登陆成功
-                                //获取用户的登陆后的UID（即用户唯一标识）
-                                long uid = arg1.getUid();
-
-                                /**以下为获取session并校验流程，如果是网络游戏必须校验，如果是单机游戏或应用可选**/
-                                //获取用户的登陆的Session（请参考5.3.3流程校验Session有效性）
-                                String session = arg1.getSessionId();
-                                //请开发者完成将uid和session提交给开发者自己服务器进行session验证
-                                payByMibiInternal(uid, orderId, price, userInfo);
-                                break;
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_LOGIN_FAIL:
-                                // 登陆失败
-                                break;
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_CANCEL:
-                                // 取消登录
-                                break;
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_ACTION_EXECUTED:
-                                //登录操作正在进行中
-                                break;
-                            default:
-                                // 登录失败
-                                break;
-                        }
-                    }
-                });
-    }
-
-    @Deprecated
-    private void payByMibiInternal(final long uidPay, final String orderId, int price, String userInfo) {
-        MiBuyInfo miBuyInfo = new MiBuyInfo();
-        miBuyInfo.setCpOrderId(orderId);//订单号唯一（不为空）
-        miBuyInfo.setCpUserInfo(userInfo); //此参数在用户支付成功后会透传给CP的服务器
-        int pay = (int) (price / 100.0f);
-        if (pay == 0) {
-            mRechargeView.showToast(getString(R.string.mibi_min_pay_money_hint));
-            return;
-        }
-        miBuyInfo.setAmount(pay); //必须是大于1的整数，10代表10米币，即10元人民币（不为空）
-
-        MiCommplatform.getInstance().miUniPay(mRechargeView.getActivity(), miBuyInfo,
-                new OnPayProcessListener() {
-                    @Override
-                    public void finishPayProcess(int code) {
-                        switch (code) {
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_SUCCESS:
-                                //购买成功
-                                mRechargeView.showToast(getString(R.string.mibi_pay_success_sync_order));
-                                checkOrder(orderId, String.valueOf(uidPay), null, null, true);
-                                break;
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_PAY_CANCEL: {
-                                //取消购买
-                                String errMsg = getString(R.string.mibi_pay_err_msg_pay_cancel);
-                                MyLog.e(TAG, errMsg);
-                                mRechargeView.showToast(errMsg);
-                            }
-                            break;
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_PAY_FAILURE: {
-                                //购买失败
-                                String errMsg = getString(R.string.mibi_pay_err_msg_buy_fail);
-                                MyLog.e(TAG, errMsg);
-                                mRechargeView.showToast(errMsg);
-                            }
-                            break;
-                            case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_ACTION_EXECUTED: {
-                                //操作正在进行中
-                                String errMsg = getString(R.string.mibi_pay_err_msg_operation_in_progress);
-                                MyLog.e(TAG, errMsg);
-                                mRechargeView.showToast(errMsg);
-                            }
-                            break;
-                            default:
-                                //购买失败
-                                break;
-                        }
-                    }
-                });
     }
 
     private void payByMiWallet(final String orderId, final int price, final String userInfo) {
@@ -1055,7 +976,7 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
                                     @Override
                                     public void onCancel(DialogInterface dialog) {
                                         if (mRechargeView != null) {
-                                            mRechargeView.showToast(getErrorMsgByErrorCode(com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_PAY_CANCEL));
+                                            mRechargeView.showToast(getErrorMsgByErrorCode(TOAST_PAY_CANCEL));
                                         }
                                     }
                                 });
@@ -1106,14 +1027,14 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
                     mRechargeView.showToast(getErrorMsgByErrorCode(errorCode));
                 }
                 switch (errorCode) {
-                    case com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_PAY_CANCEL:
+                    case TOAST_PAY_CANCEL:
                         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                                PayStatisticUtils.getRechargeTemplate(CANCEL, PayWay.MIWALLET), TIMES, "1");
+                                getRechargeTemplate(CANCEL, PayWay.MIWALLET), TIMES, "1");
                         break;
                 }
 
                 StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                        PayStatisticUtils.getRechargeTemplate(PAY_ERROR_CODE, PayWay.MIWALLET, errorCode), TIMES, "1");
+                        getRechargeTemplate(PAY_ERROR_CODE, PayWay.MIWALLET, errorCode), TIMES, "1");
             }
 
             @Override
@@ -1123,7 +1044,7 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
                     mRechargeView.showToast(getString(R.string.miwallet_pay_success_sync_order));
                 }
                 StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                        PayStatisticUtils.getRechargeTemplate(SUCCESS, PayWay.MIWALLET), TIMES, "1");
+                        getRechargeTemplate(SUCCESS, PayWay.MIWALLET), TIMES, "1");
                 checkOrder(orderId, null, null, null, true);
             }
         });
