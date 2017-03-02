@@ -32,16 +32,21 @@ public class UserInfoPresenter {
 
     // 更新主播信息
     public void updateOwnerInfo() {
-        if(mHasUpdateOwnerInfo){
+        if (mHasUpdateOwnerInfo) {
             return;
         }
-        Observable.create(new Observable.OnSubscribe<User>() {
-            @Override
-            public void call(Subscriber<? super User> subscriber) {
-                subscriber.onNext(UserInfoManager.getUserInfoById(mMyRoomData.getUid()));
-                subscriber.onCompleted();
-            }
-        })
+        updateOwnerInfoFromServer();
+    }
+
+    public void updateOwnerInfoFromServer() {
+        Observable
+                .create(new Observable.OnSubscribe<User>() {
+                    @Override
+                    public void call(Subscriber<? super User> subscriber) {
+                        subscriber.onNext(UserInfoManager.getUserInfoById(mMyRoomData.getUid()));
+                        subscriber.onCompleted();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(mRxActivity.<User>bindUntilEvent(ActivityEvent.DESTROY))
@@ -49,12 +54,10 @@ public class UserInfoPresenter {
                 .subscribe(new Observer<User>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
@@ -67,6 +70,5 @@ public class UserInfoPresenter {
                         }
                     }
                 });
-
     }
 }

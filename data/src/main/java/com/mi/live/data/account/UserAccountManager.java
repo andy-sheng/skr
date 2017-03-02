@@ -89,7 +89,7 @@ public class UserAccountManager {
         }
     }
 
-    public void logoffWithoutClearAccount(int channelId){
+    public void logoffWithoutClearAccount(int channelId) {
         if (channelId == HostChannelManager.getInstance().getChannelId()) {
             MyUserInfoManager.getInstance().deleteUser();
             // 和当前渠道一致,当前账号置为空
@@ -242,7 +242,9 @@ public class UserAccountManager {
     * */
     @Subscribe
     public void onEvent(MiLinkEvent.StatusLogined event) {
-        MyUserInfoManager.getInstance().updateUserInfoIfNeed();
+        if (event != null) {
+            MyUserInfoManager.getInstance().updateUserInfoIfNeed();
+        }
     }
 
     // TODO 全部移到data层后这里要重构

@@ -19,9 +19,9 @@ import android.widget.TextView;
 
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
-import com.wali.live.fragment.FragmentDataListener;
-import com.wali.live.fragment.FragmentListener;
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.fragment.FragmentDataListener;
+import com.base.fragment.FragmentListener;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
@@ -42,9 +42,9 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
-import com.wali.live.base.BaseSdkActivity;
+import com.mi.live.data.base.BaseSdkActivity;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
-import com.wali.live.event.SdkEventClass;
+import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.data.location.Address;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -255,7 +255,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     @Override
-    public void trySenddataWithServerOnce() {
+    public void trySendDataWithServerOnce() {
     }
 
     private void prepareGameLive() {
@@ -678,7 +678,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LiveEventClass.SystemEvent event) {
-        MyLog.w(TAG, "onEventMainThread SystemEvent");
+        MyLog.w(TAG, "onEventMainThread PhoneStateEvent");
         if (event != null) {
             switch (event.type) {
                 case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_IDLE: {

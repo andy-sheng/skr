@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.base.dialog.DialogUtils;
-import com.wali.live.fragment.FragmentDataListener;
-import com.wali.live.fragment.MyRxFragment;
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.fragment.FragmentDataListener;
+import com.base.fragment.MyRxFragment;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;

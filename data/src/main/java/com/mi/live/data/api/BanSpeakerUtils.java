@@ -15,18 +15,16 @@ import java.util.List;
  * Created by yurui on 3/1/16.
  */
 public class BanSpeakerUtils {
-
     private static final String TAG = BanSpeakerUtils.class.getSimpleName();
+
     public static final int RESULT_CODE_SUCCESS = 0; //表示成功的返回码
 
-    /*
-    *
-    * 房间id     liveId
-    * 主播id     zuid
-    * 操作者id   uuid
-    * 要禁言id   banUuid
-    *
-    */
+    /**
+     * 房间id     liveId
+     * 主播id     zuid
+     * 操作者id   uuid
+     * 要禁言id   banUuid
+     */
     public static boolean banSpeaker(String liveId, long zuid, long uuid, long banUuid) {
         LiveProto.SetBanSpeakerReq request = LiveProto.SetBanSpeakerReq.newBuilder().setLiveId(liveId).setZuid(zuid).setUuid(uuid).addBanSpeaker(banUuid).build();
         PacketData packetData = new PacketData();

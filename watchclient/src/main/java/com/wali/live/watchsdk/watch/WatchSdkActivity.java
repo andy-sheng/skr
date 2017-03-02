@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,8 +15,11 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.event.SdkEventClass;
+import com.base.fragment.FragmentListener;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
@@ -25,7 +30,6 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
-import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
@@ -45,11 +49,11 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.manager.WatchRoomCharactorManager;
+import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
@@ -93,14 +97,8 @@ import rx.functions.Action1;
 /**
  * Created by lan on 16/11/25.
  */
-public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener
-        , ForbidManagePresenter.IForbidManageProvider, IActionCallBack {
-
-    @Override
-    public boolean isKeyboardResize() {
-        return false;
-    }
-
+public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
+        ForbidManagePresenter.IForbidManageProvider, IActionCallBack {
     /**
      * view放在这里
      */
@@ -139,6 +137,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private TouchPresenter mTouchPresenter;
 //    private GameModePresenter mGameModePresenter;
 
+    private PhoneStateReceiver mPhoneStateReceiver;
+
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
         @Override
         protected void processMessage(Message message) {
@@ -159,16 +159,22 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
         initView();
         initPresenter();
+        initReceiver();
 
         //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
-        trySenddataWithServerOnce();
+        trySendDataWithServerOnce();
+    }
+
+    @Override
+    public boolean isKeyboardResize() {
+        return false;
     }
 
     /**
      * 这里的方法会在初始时调用一次，会在账号或milink刚登录上在基类接受event也会调用，
      * 所以里面的方法依据要求要具备能被不断调用的能力
      */
-    public void trySenddataWithServerOnce() {
+    public void trySendDataWithServerOnce() {
         mLiveTaskPresenter.enterLive();
         mUserInfoPresenter.updateOwnerInfo();
         startPlayer();
@@ -180,20 +186,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             return;
         }
 
-        mRoomInfo = (RoomInfo) data.getParcelableExtra(EXTRA_ROOM_INFO);
+        mRoomInfo = data.getParcelableExtra(EXTRA_ROOM_INFO);
         if (mRoomInfo == null) {
             MyLog.e(TAG, "mRoomInfo is null");
             finish();
             return;
         }
-        // 填充 mMyRoomData
+        // 填充 MyRoomData
         mMyRoomData.setRoomId(mRoomInfo.getLiveId());
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
-
-        // TEST
-//        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
     }
 
 
@@ -310,7 +313,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     private void initPresenter() {
-
         mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this, mVideoView, null, mRotateBtn, true) {
             // 覆盖只为让他不执行
             protected void orientRotateBtn() {
@@ -404,6 +406,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private void initReceiver() {
+        mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
+    }
+
     protected void leaveLiveToServer() {
         mLiveTaskPresenter.leaveLive();
     }
@@ -430,6 +436,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         super.onDestroy();
         stopPlayer();
         leaveLiveToServer();
+        unregisterReceiver();
         if (mComponentController != null) {
             mComponentController.release();
             mComponentController = null;
@@ -443,6 +450,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private void unregisterReceiver() {
+        PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+    }
 
     // 直播结束
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -527,7 +537,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
-
     private RechargeFragment mRechargeFragment;
 
     /**
@@ -549,11 +558,33 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.PhoneStateEvent event) {
+        if (mVideoPlayerPresenterEx == null) {
+            MyLog.d(TAG, "mVideoPlayerPresenterEx is null");
+            return;
+        }
+        switch (event.type) {
+            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
+                mVideoPlayerPresenterEx.resume();
+                break;
+            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mVideoPlayerPresenterEx.pause();
+                break;
+            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mVideoPlayerPresenterEx.pause();
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BaseEvent.UserActionEvent event) {
-        MyLog.e(TAG, "BaseEvent.UserActionEvent");
+        MyLog.e(TAG, "BaseEvent.UserActionEvent event type=" + event.type);
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
         if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
+            return;
+        } else if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_REFRESH_USER_RELATION) {
+            mUserInfoPresenter.updateOwnerInfoFromServer();
             return;
         }
         if (CommonUtils.isFastDoubleClick()) {
@@ -901,20 +932,44 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private boolean fragmentBackPressed(Fragment fragment) {
+        if (fragment != null && fragment instanceof FragmentListener) {
+            if (((FragmentListener) fragment).onBackPressed()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onBackPressed() {
-        if (mComponentController != null && mComponentController.onEvent(
-                WatchComponentController.MSG_ON_BACK_PRESSED)) {
-            return;
-        } else if (mGiftMallPresenter.isGiftMallViewVisibility()) {
-            EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
-            return;
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            //退出栈弹出
+            String fName = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+            if (!TextUtils.isEmpty(fName)) {
+                Fragment fragment = fm.findFragmentByTag(fName);
+                MyLog.w(TAG, "fragment name=" + fName + ", fragment=" + fragment);
+
+                if (fragmentBackPressed(fragment)) {
+                    return;
+                }
+                FragmentNaviUtils.popFragmentFromStack(this);
+            }
+        } else {
+            if (mComponentController != null && mComponentController.onEvent(
+                    WatchComponentController.MSG_ON_BACK_PRESSED)) {
+                return;
+            } else if (mGiftMallPresenter.isGiftMallViewVisibility()) {
+                EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
+                return;
+            }
+//            else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
+//                mGameModePresenter.hideInputArea();
+//                return;
+//            }
+            super.onBackPressed();
         }
-//        else if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
-//            mGameModePresenter.hideInputArea();
-//            return;
-//        }
-        super.onBackPressed();
     }
 
     @Subscribe
@@ -954,6 +1009,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (mComponentController != null) {
             mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
         }
+//        if (mGameModePresenter != null) {
+//            if (mCloseBtn.getVisibility() != View.VISIBLE) {
+//                mCloseBtn.setVisibility(View.VISIBLE);
+//            }
+//            if (mWatchTopInfoSingleView.getVisibility() != View.VISIBLE) {
+//                mWatchTopInfoSingleView.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
 
     @Override

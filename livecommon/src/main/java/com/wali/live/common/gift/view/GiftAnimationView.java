@@ -13,31 +13,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseRotateSdkActivity;
+import com.base.activity.RxActivity;
+import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.event.SdkEventClass;
+import com.base.log.MyLog;
+import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.base.log.MyLog;
-import com.base.activity.assist.IBindActivityLIfeCycle;
-import com.base.activity.RxActivity;
-import com.wali.live.base.BaseRotateSdkActivity;
 import com.mi.live.data.event.GiftEventClass;
-import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.gift.model.giftEntity.BigAnimationGift;
-import com.base.utils.display.DisplayUtils;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
-import com.wali.live.utils.VM.VMArguUtils;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import com.wali.live.utils.vm.VMArguUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 大动画播放
@@ -416,7 +416,7 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.POSTING)
+    //    @Subscribe(threadMode = ThreadMode.POSTING)
 //    public void onEvent(EventClass.SwitchAnchor event) {
 //        mBigAnimationControl.reset();
 //        cancelAllAnimation();

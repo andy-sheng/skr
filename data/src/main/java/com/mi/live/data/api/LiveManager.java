@@ -1,7 +1,5 @@
 package com.mi.live.data.api;
 
-import android.text.TextUtils;
-
 import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
@@ -14,16 +12,8 @@ import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveManagerProto;
 import com.wali.live.proto.LiveProto;
-import com.wali.live.proto.LiveProto.BeginLiveReq;
-import com.wali.live.proto.LiveProto.BeginLiveRsp;
-import com.wali.live.proto.LiveProto.EndLiveReq;
-import com.wali.live.proto.LiveProto.EndLiveRsp;
-import com.wali.live.proto.LiveProto.EnterLiveReq;
-import com.wali.live.proto.LiveProto.EnterLiveRsp;
 import com.wali.live.proto.LiveProto.HistoryDeleteReq;
 import com.wali.live.proto.LiveProto.HistoryDeleteRsp;
-import com.wali.live.proto.LiveProto.LeaveLiveReq;
-import com.wali.live.proto.LiveProto.LeaveLiveRsp;
 import com.wali.live.proto.LiveProto.RoomInfoReq;
 import com.wali.live.proto.LiveProto.RoomInfoRsp;
 import com.wali.live.proto.LiveProto.ViewerTopReq;
@@ -37,6 +27,7 @@ import java.util.List;
  */
 public class LiveManager {
     private static final String TAG = LiveManager.class.getSimpleName();
+
     // Live.proto里的直播类型定义
     public static final int TYPE_LIVE_PUBLIC = 0;
     public static final int TYPE_LIVE_PRIVATE = 1;
@@ -44,146 +35,6 @@ public class LiveManager {
     public static final int TYPE_LIVE_TICKET = 3;
     public static final int TYPE_LIVE_VR = 5;
     public static final int TYPE_LIVE_GAME = 6;
-    /**
-     * MiLinkCommand : zhibo.live.begin
-     * 创建一个直播
-     */
-//    public static BeginLiveRsp beginLiveRsp(Location location, int liveType, List<Long> inviteeList) {
-//        BeginLiveReq.Builder builder = BeginLiveReq.newBuilder()
-//                .setUuid(UserAccountManager.getInstance().getUuidAsLong());
-//        if (location != null) {
-//            builder.setLocation(location.build());
-//        }
-//        builder.setType(liveType);
-//        if (inviteeList != null) {
-//            builder.addAllInvitee(inviteeList);
-//        }
-//        BeginLiveReq req = builder.build();
-//        return beginLiveRspFromServer(req);
-//    }
-
-    private static BeginLiveRsp beginLiveRspFromServer(BeginLiveReq req) {
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_LIVE_BEGIN);
-        data.setData(req.toByteArray());
-        MyLog.v(TAG, "beginLive request : \n" + req.toString());
-
-        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (rspData != null) {
-            try {
-                BeginLiveRsp rsp = BeginLiveRsp.parseFrom(rspData.getData());
-                MyLog.v(TAG, "beginLive response : \n" + rsp.toString());
-
-                return rsp;
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * MiLinkCommand : beginLive
-     * 结束一个直播
-     */
-    public static EndLiveRsp endLiveRsp(String liveId) {
-        if (TextUtils.isEmpty(liveId)) {
-            return null;
-        }
-        EndLiveReq req = EndLiveReq.newBuilder()
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
-                .setLiveId(liveId)
-                .build();
-        return endLiveRspFromServer(req);
-    }
-
-    private static EndLiveRsp endLiveRspFromServer(EndLiveReq req) {
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_LIVE_END);
-        data.setData(req.toByteArray());
-        MyLog.v(TAG, "endLive request : \n" + req.toString());
-
-        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (rspData != null) {
-            try {
-                EndLiveRsp rsp = EndLiveRsp.parseFrom(rspData.getData());
-                MyLog.v(TAG, "endLive response : \n" + rsp.toString());
-
-                return rsp;
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * MiLinkCommand : zhibo.live.enter
-     * 进入房间
-     */
-    public static EnterLiveRsp enterLiveRsp(long ownerId, String liveId) {
-        EnterLiveReq req = EnterLiveReq.newBuilder()
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
-                .setZuid(ownerId)
-                .setLiveId(liveId)
-                .build();
-
-        return enterLiveRspFromServer(req);
-    }
-
-    private static EnterLiveRsp enterLiveRspFromServer(EnterLiveReq req) {
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_LIVE_ENTER);
-        data.setData(req.toByteArray());
-        MyLog.e(TAG, "enterLive request : \n" + req.toString());
-
-        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (rspData != null) {
-            try {
-                EnterLiveRsp rsp = EnterLiveRsp.parseFrom(rspData.getData());
-                MyLog.e(TAG, "enterLive response : \n" + rsp.toString());
-
-                return rsp;
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * MiLinkCommand : zhibo.live.leave
-     * 离开房间
-     */
-    public static LeaveLiveRsp leaveLiveRsp(long ownerId, String liveId) {
-        LeaveLiveReq req = LeaveLiveReq.newBuilder()
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
-                .setZuid(ownerId)
-                .setLiveId(liveId)
-                .build();
-
-        return leaveLiveRspFromServer(req);
-    }
-
-    private static LeaveLiveRsp leaveLiveRspFromServer(LeaveLiveReq req) {
-        PacketData data = new PacketData();
-        data.setCommand(MiLinkCommand.COMMAND_LIVE_LEAVE);
-        data.setData(req.toByteArray());
-        MyLog.v(TAG, "leaveLive request : \n" + req.toString());
-
-        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (rspData != null) {
-            try {
-                LeaveLiveRsp rsp = LeaveLiveRsp.parseFrom(rspData.getData());
-                MyLog.v(TAG, "leaveLive response : \n" + rsp.toString());
-
-                return rsp;
-            } catch (InvalidProtocolBufferException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 
     /**
      * MiLinkCommand : zhibo.live.roomInfo
@@ -510,7 +361,6 @@ public class LiveManager {
             } catch (InvalidProtocolBufferException e) {
                 MyLog.e(TAG, e);
             }
-
         }
         return false;
     }

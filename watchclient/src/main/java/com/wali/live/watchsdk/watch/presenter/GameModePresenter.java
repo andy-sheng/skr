@@ -6,15 +6,15 @@ import android.view.ViewStub;
 
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
+import com.base.keyboard.KeyboardUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
-import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.watch.view.BottomGameInputView;
@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 /**
  * Created by chengsimin on 2017/1/14.
  */
-
+@Deprecated
 public class GameModePresenter implements IBindActivityLIfeCycle {
 
     RxActivity mActivity;

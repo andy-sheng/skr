@@ -6,24 +6,24 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.live.module.common.R;
-import com.wali.live.base.BaseRotateSdkActivity;
-import com.mi.live.data.event.GiftEventClass;
-import com.wali.live.event.SdkEventClass;
-import com.mi.live.data.gift.model.GiftContinueStrategyQueue;
-import com.mi.live.data.gift.model.GiftRecvModel;
+import com.base.activity.BaseRotateSdkActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.live.module.common.R;
+import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.gift.model.GiftContinueStrategyQueue;
+import com.mi.live.data.gift.model.GiftRecvModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
 import rx.Subscriber;

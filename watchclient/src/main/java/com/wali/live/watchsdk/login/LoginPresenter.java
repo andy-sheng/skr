@@ -8,6 +8,7 @@ import android.accounts.OperationCanceledException;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
@@ -20,7 +21,6 @@ import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
-import com.wali.live.base.BaseSdkActivity;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.AccountProto;
 import com.xiaomi.accountsdk.account.data.ExtendedAuthToken;
@@ -89,6 +89,8 @@ public class LoginPresenter extends RxLifeCyclePresenter {
             miLogin();
         }
     }
+
+
 
     public void miLogin() {
         MyLog.w(TAG, "miLogin");

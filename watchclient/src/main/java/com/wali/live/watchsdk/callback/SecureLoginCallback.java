@@ -6,24 +6,24 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
  * 权限检查回调，用于登录接口
- *
+ * <p>
  * Created by wuxiaoshan on 17-2-23.
  */
 public abstract class SecureLoginCallback implements ISecureCallBack {
     @Override
     public void process(Object... objects) {
-        int channelId = (int)objects[0];
-        String packageName = (String)objects[1];
-        if(channelId == HostChannelManager.getInstance().getChannelId() || !BaseComponentSdkActivity.isActive()) {
+        int channelId = (int) objects[0];
+        String packageName = (String) objects[1];
+        if (channelId == HostChannelManager.getInstance().getChannelId() || !BaseComponentSdkActivity.isActive()) {
             UserAccountManager.getInstance().logoffWithoutClearAccount(HostChannelManager.getInstance().getChannelId());
             HostChannelManager.getInstance().setChannelData(channelId, packageName);
-            postProcess();
-        }else {
-            onActive();
+            postSuccess();
+        } else {
+            postActive();
         }
     }
 
-    public abstract void postProcess();
+    public abstract void postSuccess();
 
-    public abstract void onActive();
+    public abstract void postActive();
 }

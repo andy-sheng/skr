@@ -36,7 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by Star on 16/12/26.
  */
-
+@Deprecated
 public class GameBarrageViewGroup extends RelativeLayout {
     public static final String TAG = GameBarrageViewGroup.class.getSimpleName();
 

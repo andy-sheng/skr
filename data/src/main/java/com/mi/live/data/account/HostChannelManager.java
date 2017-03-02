@@ -46,9 +46,6 @@ public class HostChannelManager {
 
     /**
      * 检查channelid
-     *
-     * @param channelId
-     * @return
      */
     public synchronized Observable<Boolean> checkChannel(final int channelId, final String packageName) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
@@ -71,13 +68,13 @@ public class HostChannelManager {
                     return;
                 }
                 if (UserAccountManager.getInstance().getAccount() != null) {
-                    MyLog.w(TAG,"uuid "+UserAccountManager.getInstance().getAccount().getUuid()+" logoff");
+                    MyLog.w(TAG, "uuid " + UserAccountManager.getInstance().getAccount().getUuid() + " logoff");
                     UserAccountManager.getInstance().logoffWithoutClearAccount(mChannelId);
                 }
                 mChannelId = channelId;
                 mPackageName = packageName;
                 if (account != null) {
-                    MyLog.w(TAG,"uuid "+UserAccountManager.getInstance().getAccount().getUuid()+" login");
+                    MyLog.w(TAG, "uuid " + account.getUuid() + " login");
                     UserAccountManager.getInstance().login(account);
                 }
                 subscriber.onNext(true);

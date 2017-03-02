@@ -10,7 +10,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 
-
 import com.base.global.GlobalData;
 
 import java.io.UnsupportedEncodingException;
@@ -22,7 +21,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
-
 
 public class StringUtils {
     public static CharSequence getGettingString(String str, int dotCount) {

@@ -25,11 +25,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
 import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
-import com.wali.live.event.SdkEventClass;
 import com.mi.live.data.repository.GiftRepository;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.dao.Gift;

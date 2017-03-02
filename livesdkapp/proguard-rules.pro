@@ -212,12 +212,16 @@
 -keep class com.taobao.* {*;}
 -keep class com.alibaba.** {*;}
 -keep class com.alipay.** {*;}
+-keep class com.tencent.** {*;}
+-keep class com.wali.gamecenter.report.** {*;}
+-keep class com.xiaomi.gamecenter.** {*;}
 -dontwarn com.taobao.**
 -dontwarn com.alibaba.**
 -dontwarn com.alipay.**
 -keep class com.ut.** {*;}
 -dontwarn com.ut.**
 -keep class com.ta.** {*;}
+-keep class mtopsdk.** {*;}
 -dontwarn com.ta.**
 -keep class org.json.** {*;}
 -keep class com.ali.auth.** {*;}

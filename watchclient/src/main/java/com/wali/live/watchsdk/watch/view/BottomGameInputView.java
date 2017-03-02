@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,11 +13,12 @@ import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by Star on 16/12/15.
  */
-
+@Deprecated
 public class BottomGameInputView extends RelativeLayout {
     private final static String TAG = BottomGameInputView.class.getSimpleName();
     private final static int MAX_LEN = 30;
@@ -113,12 +113,14 @@ public class BottomGameInputView extends RelativeLayout {
         mSendBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = mEditText.getText().toString();
-                if (TextUtils.isEmpty(msg)) {
-                    return;
+                if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                    String msg = mEditText.getText().toString();
+                    if (TextUtils.isEmpty(msg)) {
+                        return;
+                    }
+                    mListener.onSendClick(msg);
+                    mEditText.setText("");
                 }
-                mListener.onSendClick(msg);
-                mEditText.setText("");
             }
         });
         mSoftKeyboardHeight = MLPreferenceUtils.getKeyboardHeight(false);
@@ -185,6 +187,9 @@ public class BottomGameInputView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMain(KeyboardEvent event) {
         MyLog.w(TAG, "KeyboardEvent eventType=" + event.eventType);
+        if (getVisibility() != View.VISIBLE) {
+            return;
+        }
         switch (event.eventType) {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
                 int keyboardHeight;

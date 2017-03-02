@@ -6,7 +6,7 @@ import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.presenter.Presenter;
 import com.mi.live.data.api.BanSpeakerUtils;
-import com.mi.live.data.relation.RelationApi;
+import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.mi.live.data.manager.LiveRoomCharactorManager;

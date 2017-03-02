@@ -19,6 +19,7 @@ import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 2017/02/28.
@@ -57,12 +58,14 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.send_btn) { // 发送消息
-            String body = mInputView.getText().toString().trim();
-            if (!TextUtils.isEmpty(body)) {
-                if (mPresenter != null) {
-                    mPresenter.sendBarrage(body, false);
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                String body = mInputView.getText().toString().trim();
+                if (!TextUtils.isEmpty(body)) {
+                    if (mPresenter != null) {
+                        mPresenter.sendBarrage(body, false);
+                    }
+                    mInputView.setText("");
                 }
-                mInputView.setText("");
             }
         } else if (id == R.id.barrage_btn) { // 是否显示弹幕
             boolean isSelected = !view.isSelected();

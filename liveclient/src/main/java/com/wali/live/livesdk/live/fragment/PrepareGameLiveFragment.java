@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.dialog.MyAlertDialog;
-import com.wali.live.fragment.BaseFragment;
-import com.wali.live.fragment.FragmentDataListener;
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.fragment.BaseFragment;
+import com.base.fragment.FragmentDataListener;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
@@ -34,6 +34,7 @@ import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.watch.WatchSdkActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

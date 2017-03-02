@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.query.LiveRoomQuery;
-import com.mi.live.data.relation.RelationApi;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.proto.RoomRecommend;
 import com.wali.live.statistics.StatisticsKey;
@@ -33,18 +33,13 @@ public abstract class EndLivePresenter {
 
     /**
      * 获取主播ID
-     *
-     * @return
      */
-
     public long getOwnerId() {
         return mEndLiveModel.getOwnerId();
     }
 
     /**
      * 获取主播认证
-     *
-     * @return
      */
     public int getOwnerCertType() {
         return mEndLiveModel.getOwnerCertType();
@@ -52,8 +47,6 @@ public abstract class EndLivePresenter {
 
     /**
      * 获取时间戳
-     *
-     * @return
      */
     public long getAvatarTs() {
         return mEndLiveModel.getAvaTarTs();
@@ -61,8 +54,6 @@ public abstract class EndLivePresenter {
 
     /**
      * 获取主播名称
-     *
-     * @return
      */
     public String getNickName() {
         return mEndLiveModel.getNickName();
@@ -70,8 +61,6 @@ public abstract class EndLivePresenter {
 
     /**
      * 获取观看人数
-     *
-     * @return
      */
     public int getViewerCount() {
         return mEndLiveModel.getViewerCount();
@@ -79,8 +68,6 @@ public abstract class EndLivePresenter {
 
     /**
      * 是否已关注
-     *
-     * @return
      */
     public boolean isFocused() {
         return mEndLiveModel.isFocused();
@@ -108,12 +95,10 @@ public abstract class EndLivePresenter {
                 .subscribe(new Observer<RelationProto.FollowResponse>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
@@ -133,12 +118,10 @@ public abstract class EndLivePresenter {
                 .subscribe(new Observer<List<RoomRecommend.RecommendRoom>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
@@ -149,73 +132,58 @@ public abstract class EndLivePresenter {
     }
 
     public void sendShowCommend(long id1, long id2, long id3, long id4) {
-
         String key = String.format(StatisticsKey.KEY_END_LIVE_SHOW, mEndLiveModel.getUuid(), mEndLiveModel.getOwnerId(), id1, id2, id3, id4);
         if (TextUtils.isEmpty(key)) {
             return;
         }
-
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
     }
 
     public void sendFollowCommend() {
-
         String key = String.format(StatisticsKey.KEY_END_LIVE_FOLLOW, mEndLiveModel.getUuid(), mEndLiveModel.getOwnerId());
         if (TextUtils.isEmpty(key)) {
             return;
         }
-
-        //构造一个StatisticsItem, 并上传
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
     }
 
     public void sendChatCommend() {
-
         String key = String.format(StatisticsKey.KEY_END_LIVE_CHAT, mEndLiveModel.getUuid(), mEndLiveModel.getOwnerId());
         if (TextUtils.isEmpty(key)) {
             return;
         }
-
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
     }
 
     public void sendCloseCommend() {
-
         String key = String.format(StatisticsKey.KEY_END_LIVE_CLOSE, mEndLiveModel.getUuid(), mEndLiveModel.getOwnerId());
         if (TextUtils.isEmpty(key)) {
             return;
         }
-
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
     }
 
     public void sendRecommendCommend(int position, long id1, long zuid) {
-
         String key = String.format(StatisticsKey.KEY_END_LIVE_RECOMMEND, mEndLiveModel.getUuid(), position, id1, zuid);
         if (TextUtils.isEmpty(key)) {
             return;
         }
-
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
     }
 
     public void sendClickAvatarCommend(long zuid) {
-
         String key = String.format(StatisticsKey.KEY_END_LIVE_AVATAR, zuid);
         if (TextUtils.isEmpty(key)) {
             return;
         }
-
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
     }
 
     public void sendHomePageCommend() {
-
         String key = String.format(StatisticsKey.KEY_END_LIVE_HOMEPAGE, mEndLiveModel.getZuid());
         if (TextUtils.isEmpty(key)) {
             return;
         }
-
         StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
     }
 }

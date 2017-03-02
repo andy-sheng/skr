@@ -15,13 +15,13 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.dialog.DialogUtils;
-import com.wali.live.fragment.BaseFragment;
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.fragment.BaseFragment;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.span.SpanUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.wali.live.base.BaseSdkActivity;
+import com.mi.live.data.base.BaseSdkActivity;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.base.CustomHandlerThread;

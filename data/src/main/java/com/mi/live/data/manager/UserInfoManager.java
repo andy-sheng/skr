@@ -122,9 +122,7 @@ public class UserInfoManager {
         return users;
     }
 
-
     public static User getUserInfoById(long uuid) {
-
         UserProto.GetUserInfoByIdRsp rsp = getUserInfoByIdReq(uuid);
         if (rsp == null) {
             return null;
@@ -136,7 +134,6 @@ public class UserInfoManager {
         }
         return null;
     }
-
 
     /**
      * MiLinkCommand : zhibo.user.getuserinfobyid

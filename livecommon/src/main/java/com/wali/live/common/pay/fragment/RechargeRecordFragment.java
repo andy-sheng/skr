@@ -21,10 +21,10 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.fragment.MyRxFragment;
+import com.base.fragment.MyRxFragment;
 import com.wali.live.proto.HttpDnsProto;
 import com.wali.live.proto.PayProto;
-import com.wali.live.fragment.utils.FragmentNaviUtils;
+import com.base.fragment.utils.FragmentNaviUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +144,7 @@ public class RechargeRecordFragment extends MyRxFragment {
                             }
                             mRecordListView.setAdapter(mAdapter);
                             mAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             mEmpty = mInflater.inflate(R.layout.empty_diamond_layout, (ViewGroup) mRecordListView.getParent());
                         }
                     }
@@ -173,7 +173,7 @@ public class RechargeRecordFragment extends MyRxFragment {
     @Override
     public boolean onBackPressed() {
         finish();
-        return super.onBackPressed();
+        return true;
     }
 
     private final class MyAdapter extends BaseAdapter {
