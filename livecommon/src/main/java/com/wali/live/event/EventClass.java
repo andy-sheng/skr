@@ -99,4 +99,19 @@ public abstract class EventClass {
             this.token = token;
         }
     }
+
+    /**
+     * 不区分打电话，还是接电话，均分为响铃RINGING，接机OFFHOOK，和空闲IDLE
+     */
+    public static class PhoneStateEvent {
+        public static final int TYPE_PHONE_STATE_IDLE = 1;
+        public static final int TYPE_PHONE_STATE_RING = 2;
+        public static final int TYPE_PHONE_STATE_OFFHOOK = 3;
+
+        public int type;
+
+        public PhoneStateEvent(int type) {
+            this.type = type;
+        }
+    }
 }

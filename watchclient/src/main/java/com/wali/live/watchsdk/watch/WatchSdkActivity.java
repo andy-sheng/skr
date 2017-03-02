@@ -53,6 +53,7 @@ import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.manager.WatchRoomCharactorManager;
+import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
@@ -96,14 +97,8 @@ import rx.functions.Action1;
 /**
  * Created by lan on 16/11/25.
  */
-public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener
-        , ForbidManagePresenter.IForbidManageProvider, IActionCallBack {
-
-    @Override
-    public boolean isKeyboardResize() {
-        return false;
-    }
-
+public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
+        ForbidManagePresenter.IForbidManageProvider, IActionCallBack {
     /**
      * view放在这里
      */
@@ -142,10 +137,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private TouchPresenter mTouchPresenter;
     private GameModePresenter mGameModePresenter;
 
+    private PhoneStateReceiver mPhoneStateReceiver;
+
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
         @Override
         protected void processMessage(Message message) {
-
         }
     };
 
@@ -163,16 +159,22 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
         initView();
         initPresenter();
+        initReceiver();
 
         //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
-        trySenddataWithServerOnce();
+        trySendDataWithServerOnce();
+    }
+
+    @Override
+    public boolean isKeyboardResize() {
+        return false;
     }
 
     /**
      * 这里的方法会在初始时调用一次，会在账号或milink刚登录上在基类接受event也会调用，
      * 所以里面的方法依据要求要具备能被不断调用的能力
      */
-    public void trySenddataWithServerOnce() {
+    public void trySendDataWithServerOnce() {
         mLiveTaskPresenter.enterLive();
         mUserInfoPresenter.updateOwnerInfo();
         startPlayer();
@@ -404,6 +406,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private void initReceiver() {
+        mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
+    }
+
     protected void leaveLiveToServer() {
         mLiveTaskPresenter.leaveLive();
     }
@@ -430,6 +436,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         super.onDestroy();
         stopPlayer();
         leaveLiveToServer();
+        unregisterReceiver();
         if (mComponentController != null) {
             mComponentController.release();
             mComponentController = null;
@@ -443,6 +450,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private void unregisterReceiver() {
+        PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+    }
 
     // 直播结束
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -527,7 +537,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
-
     private RechargeFragment mRechargeFragment;
 
     /**
@@ -544,6 +553,25 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 if (mBlurIv.getVisibility() == View.VISIBLE) {
                     mBlurIv.setVisibility(View.GONE);
                 }
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.PhoneStateEvent event) {
+        if (mVideoPlayerPresenterEx == null) {
+            MyLog.d(TAG, "mVideoPlayerPresenterEx is null");
+            return;
+        }
+        switch (event.type) {
+            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
+                mVideoPlayerPresenterEx.resume();
+                break;
+            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mVideoPlayerPresenterEx.pause();
+                break;
+            case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mVideoPlayerPresenterEx.pause();
                 break;
         }
     }
