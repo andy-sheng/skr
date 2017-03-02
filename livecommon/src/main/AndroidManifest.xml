@@ -3,9 +3,9 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +29,18 @@
             android:name="com.xiaomi.gamecenter.ucashier.HyUcashierActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat" />
+
+        <activity
+            android:name="com.xiaomi.gamecenter.wxpay.HyWxWappayActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name="com.mi.liveassistant.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent" />
 
     </application>
 
