@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IOrientationListener;
@@ -118,6 +119,12 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
+                String result = s.toString();
+                if (result.length() > MAX_LEN) {
+                    mInputView.setText(result.substring(0, MAX_LEN));
+                    ToastUtils.showToast(getContext(), getContext().getString(R.string.max_len_notice));
+                    mInputView.setSelection(MAX_LEN);
+                }
             }
         });
         mInputView.setOnEditorActionListener(new TextView.OnEditorActionListener() {

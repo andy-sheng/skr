@@ -67,7 +67,6 @@ import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
-import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
@@ -197,6 +196,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
+
+        // TEST
+//        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
     }
 
 
