@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.push.SendBarrageManager;
@@ -19,6 +21,7 @@ import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.RoomMessageRepository;
 import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.watchsdk.R;
 
 import rx.Observer;
 import rx.Subscription;
@@ -102,13 +105,13 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 //                            }
 //                        }
 
-                        if (enterRoomInfo.getRetCode() == 5001) {
+                        if (enterRoomInfo.getRetCode() == ErrorCode.CODE_ROOM_NOT_EXIST) {
                             BarrageMsg.LiveEndMsgExt ext = new BarrageMsg.LiveEndMsgExt();
                             ext.viewerCount = 0;
-                            BarrageMsg msg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_LIVE_END, "直播已经结束", mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), ext);
+                            BarrageMsg msg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_LIVE_END, GlobalData.app().getString(R.string.live_finish), mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), ext);
                             SendBarrageManager.pretendPushBarrage(msg);
-                        } else if (enterRoomInfo.getRetCode() == 5004) {
-                            ToastUtils.showToast("房间不存在");
+                        } else if (enterRoomInfo.getRetCode() == ErrorCode.CODE_PARAM_ERROR) {
+                            ToastUtils.showToast(R.string.token_live_error_toast_room_not_exist);
                         }
                         if (mView != null) {
                             mView.enterLive(enterRoomInfo);
