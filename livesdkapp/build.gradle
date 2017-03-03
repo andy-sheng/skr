@@ -12,6 +12,15 @@ android {
         multiDexEnabled true
     }
 
+    // chenyong1 后面去掉这个选项对lint进行优化
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        quiet true
+        ignoreWarnings true
+        disable 'InvalidPackage'  // Some libraries have issues with this
+    }
+
     signingConfigs {
         myConfig {
             storeFile file("com.xiaomi.debug.keystore")
