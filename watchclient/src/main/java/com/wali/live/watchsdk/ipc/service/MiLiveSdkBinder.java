@@ -245,7 +245,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         secureOperate(channelId, packageName, channelSecret, new ISecureCallBack() {
             @Override
             public void process(Object... objects) {
-                MyLog.w(TAG, "clearAccount success callback");
+                MyLog.w(TAG, "clearAccount success before callback channelId=" + channelId);
 
                 // 账号这一块
                 UserAccountManager.getInstance().logoff(channelId);

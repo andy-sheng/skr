@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.watch;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -13,7 +15,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.base.activity.BaseActivity;
+import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.jakewharton.rxbinding.view.RxView;
@@ -145,8 +149,10 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 
         ReplayBarrageMessageManager.getInstance().init(mRoomChatMsgManager.toString());//回放弹幕管理
 
-        //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
-        trySendDataWithServerOnce();
+        if (!check4GNet()) {
+            //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
+            trySendDataWithServerOnce();
+        }
     }
 
     /**
@@ -529,6 +535,31 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 
     private void viewerTopFromServer(RoomBaseDataModel roomData) {
         mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
+    }
+
+    private boolean check4GNet() {
+        if (is4g()) {
+            MyAlertDialog alertDialog = new MyAlertDialog.Builder(this).create();
+            alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    trySendDataWithServerOnce();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setCancelable(false);
+            alertDialog.show();
+            return true;
+        }
+        return false;
     }
 
     @Override

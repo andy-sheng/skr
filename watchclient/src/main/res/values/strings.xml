@@ -14,4 +14,8 @@
 
     <string name="please_login">login first</string>
     <string name="go_to_login">login</string>
+
+    <string name="live_traffic_tip">Use mobile data to watch live streams?</string>
+    <string name="live_traffic_positive">Continue</string>
+    <string name="live_traffic_negative">Exit</string>
 </resources>

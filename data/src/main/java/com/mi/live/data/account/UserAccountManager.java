@@ -74,12 +74,13 @@ public class UserAccountManager {
     }
 
     public void logoff(int channelid) {
-        MyLog.w(TAG, "logoff:" + channelid);
+        MyLog.w(TAG, "logoff:" + channelid + "  HostChannelManager.getInstance().getChannelId()" + HostChannelManager.getInstance().getChannelId());
         AccountLocalStore.getInstance().deleteAccount(channelid);
         if (channelid == HostChannelManager.getInstance().getChannelId()) {
             // 和当前渠道一致,当前账号置为空
             MyUserInfoManager.getInstance().deleteUser();
             mAccount = null;
+
             // 实名模式登出
             MiLinkClientAdapter.getsInstance().logoff();
             // milink 切换成匿名模式
