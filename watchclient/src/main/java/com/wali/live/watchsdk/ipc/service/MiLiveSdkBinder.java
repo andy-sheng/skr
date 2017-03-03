@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
@@ -15,6 +16,7 @@ import com.wali.live.proto.SecurityProto;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
+import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -165,7 +167,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                         onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                         return;
                                     }
-
+                                    UploadService.startService(new UploadService.UploadInfo(miSsoLoginRsp));
                                     onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
                                 } catch (Exception e) {
                                     MyLog.w(TAG, "miSsoLogin error", e);
@@ -201,7 +203,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<ActionParam>() {
+                        .subscribe(new Observer<AccountProto.LoginRsp>() {
                             @Override
                             public void onCompleted() {
                                 MyLog.w(TAG, "miLoginByCode login onCompleted");
@@ -214,10 +216,13 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             }
 
                             @Override
-                            public void onNext(ActionParam actionParam) {
+                            public void onNext(AccountProto.LoginRsp rsp) {
                                 MyLog.w(TAG, "miLoginByCode login onNext");
-                                if (actionParam != null) {
-                                    onEventLogin(channelId, actionParam.getErrCode());
+                                if(rsp.getRetCode() == MiLiveSdkEvent.SUCCESS){
+                                    UploadService.startService(new UploadService.UploadInfo(rsp));
+                                }
+                                if (rsp != null) {
+                                    onEventLogin(channelId, rsp.getRetCode());
                                 } else {
                                     onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                 }

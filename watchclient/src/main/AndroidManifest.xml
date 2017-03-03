@@ -138,5 +138,11 @@
         <service
             android:name="com.wali.live.watchsdk.ipc.service.MiLiveSdkService"
             android:exported="true"/>
+        <service android:name=".login.UploadService"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.wali.live.watchsdk.login.UploadService"/>
+            </intent-filter>
+        </service>
     </application>
 </manifest>

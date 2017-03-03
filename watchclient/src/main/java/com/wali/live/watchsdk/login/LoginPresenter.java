@@ -137,7 +137,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
         AccountCaller.login(-1, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ActionParam>() {
+                .subscribe(new Observer<AccountProto.LoginRsp>() {
                     @Override
                     public void onCompleted() {
                         MyLog.w(TAG, "miLoginByCode login onCompleted");
@@ -149,10 +149,10 @@ public class LoginPresenter extends RxLifeCyclePresenter {
                     }
 
                     @Override
-                    public void onNext(ActionParam actionParam) {
+                    public void onNext(AccountProto.LoginRsp rsp) {
                         MyLog.w(TAG, "miLoginByCode login onNext");
-                        if (actionParam != null) {
-                            int errCode = actionParam.getErrCode();
+                        if (rsp != null) {
+                            int errCode = rsp.getRetCode();
                             if (errCode == ErrorCode.CODE_SUCCESS) {
                                 MyLog.w(TAG, "miLogin login success");
                                 ToastUtils.showToast("milogin 登录成功");
