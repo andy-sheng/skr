@@ -19,4 +19,7 @@
     <string name="live_traffic_tip">屬於行動網路,是否繼續觀看?</string>
     <string name="live_traffic_positive">繼續觀看</string>
     <string name="live_traffic_negative">退出觀看</string>
+
+    <string name="token_live_error_toast_room_not_exist">房間不存在</string>
+    <string name="live_finish">直播已經結束</string>
 </resources>

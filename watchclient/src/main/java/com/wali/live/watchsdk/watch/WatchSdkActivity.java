@@ -800,6 +800,15 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         public void enterLive(EnterRoomInfo roomInfo) {
             WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
+//            if (roomInfo != null) {
+//                switch (roomInfo.getRetCode()) {
+//                    case ErrorCode.CODE_SUCCESS:
+//                        break;
+//                    default:
+//                        showEndLiveFragment(true);
+//
+//                }
+//            }
         }
     };
 
