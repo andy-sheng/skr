@@ -59,7 +59,8 @@ public class RechargeConfig {
 //            sInternationalPayWayList = sNativePayWayList = Arrays.asList(PayWay.GOOGLEWALLET);
         } else {
 //            sInternationalPayWayList = Arrays.asList(PayWay.GOOGLEWALLET, PayWay.PAYPAL, PayWay.WEIXIN, PayWay.ZHIFUBAO, PayWay.MIWALLET);
-            sNativePayWayList = Arrays.asList(PayWay.WEIXIN, PayWay.ZHIFUBAO, PayWay.MIWALLET/*, PayWay.GOOGLEWALLET, PayWay.PAYPAL*/);
+//            sNativePayWayList = Arrays.asList(PayWay.WEIXIN, PayWay.ZHIFUBAO, PayWay.MIWALLET/*, PayWay.GOOGLEWALLET, PayWay.PAYPAL*/);
+            sNativePayWayList = Arrays.asList(/*PayWay.WEIXIN,*/ PayWay.ZHIFUBAO, PayWay.MIWALLET/*, PayWay.GOOGLEWALLET, PayWay.PAYPAL*/);
         }
     }
 
