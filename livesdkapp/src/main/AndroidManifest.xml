@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mi.liveassistant"
-    android:versionCode="204008"
-    android:versionName="2.4.8">
+    android:versionCode="204009"
+    android:versionName="2.4.9">
 
     <application
         android:name="com.wali.live.init.LiveSdkApplication"
