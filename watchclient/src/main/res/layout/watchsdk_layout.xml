@@ -26,13 +26,30 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
+    <!--&lt;!&ndash;评论栏&ndash;&gt;-->
+    <!--<com.wali.live.common.barrage.view.LiveCommentView-->
+        <!--android:id="@+id/comment_rv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="160.33dip"-->
+        <!--android:layout_above="@+id/input_area_view"-->
+        <!--android:layout_alignWithParentIfMissing="true"-->
+        <!--android:fadingEdge="none"-->
+        <!--android:fadingEdgeLength="0dp"-->
+        <!--android:overScrollMode="never"-->
+        <!--android:paddingBottom="13.33dp"-->
+        <!--android:paddingLeft="6dip"-->
+        <!--android:paddingRight="6.67dip"-->
+        <!--android:requiresFadingEdge="none"-->
+        <!--android:visibility="invisible" />-->
+
     <!--评论栏-->
-    <com.wali.live.common.barrage.view.LiveCommentView
-        android:id="@+id/comment_rv"
+    <com.wali.live.watchsdk.component.view.LiveCommentView
+        android:id="@+id/live_comment_view"
         android:layout_width="match_parent"
         android:layout_height="160.33dip"
         android:layout_above="@+id/input_area_view"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_marginRight="70dp"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
@@ -54,13 +71,13 @@
         android:layout="@layout/view_game_barrage" />
 
     <!--<ViewStub-->
-        <!--android:id="@+id/game_bottom_viewstub"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:inflatedId="@+id/game_bottom_view"-->
-        <!--android:layout="@layout/view_game_bottom" />-->
+    <!--android:id="@+id/game_bottom_viewstub"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:inflatedId="@+id/game_bottom_view"-->
+    <!--android:layout="@layout/view_game_bottom" />-->
 
     <!--商城-->
     <ViewStub
@@ -85,7 +102,7 @@
         layout="@layout/component_gift_continue_view_group"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        android:layout_above="@id/comment_rv"
+        android:layout_above="@id/live_comment_view"
         android:layout_marginBottom="61.33dip" />
 
     <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup

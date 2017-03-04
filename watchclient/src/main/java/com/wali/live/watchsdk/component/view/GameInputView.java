@@ -165,6 +165,9 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
                 MyLog.d(TAG, "onKeyboardShowed keyboardHeight=" + keyboardHeight);
                 if (!mIsInputMode) {
                     mIsInputMode = true;
+                    if (mPresenter != null) {
+                        mPresenter.notifyInputViewShowed();
+                    }
                 }
                 if (mKeyboardHeight != keyboardHeight) {
                     mKeyboardHeight = keyboardHeight;
@@ -179,6 +182,9 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
                 MyLog.d(TAG, "onKeyboardHidden");
                 if (mIsInputMode) {
                     mIsInputMode = false;
+                    if (mPresenter != null) {
+                        mPresenter.notifyInputViewHidden();
+                    }
                 }
                 setTranslationY(0);
             }
@@ -211,6 +217,16 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
          * 显示游戏直播样式弹幕
          */
         void showGameBarrage(boolean isShow);
+
+        /**
+         * 输入框 已显示
+         */
+        void notifyInputViewShowed();
+
+        /**
+         * 输入框 已隐藏
+         */
+        void notifyInputViewHidden();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

@@ -32,6 +32,7 @@ import java.util.List;
 /**
  * @module 直播间弹幕评论
  */
+@Deprecated
 public class LiveCommentView extends RelativeLayout implements IBindActivityLIfeCycle {
     private static final String TAG = LiveCommentView.class.getSimpleName();
     private static final int IDLE_STATUS_MAX_TIME = 30 * 1000;

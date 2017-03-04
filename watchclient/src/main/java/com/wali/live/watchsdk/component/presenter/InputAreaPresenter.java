@@ -47,7 +47,6 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
     @Override
     public void destroy() {
         super.destroy();
-        MyLog.d(TAG, "destroy()");
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

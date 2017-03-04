@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -43,14 +42,12 @@ import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
-import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.endlive.UserEndLiveFragment;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.pay.fragment.RechargeFragment;
-import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.receiver.PhoneStateReceiver;
@@ -105,7 +102,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected VideoPlayerTextureView mVideoView;
     // 播放器容器
     protected WatchTopInfoSingleView mWatchTopInfoSingleView;
-    protected LiveCommentView mLiveCommentView; //弹幕区view
+//    protected LiveCommentView mLiveCommentView; //弹幕区view
     protected ImageView mCloseBtn;// 关闭按钮
     protected ImageView mRotateBtn;// 关闭
 
@@ -219,10 +216,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
 
         // 初始化弹幕区
-        mLiveCommentView = $(R.id.comment_rv);
-        mLiveCommentView.setSoundEffectsEnabled(false);
-        addBindActivityLifeCycle(mLiveCommentView, true);
-        mLiveCommentView.setToken(mRoomChatMsgManager.toString());
+//        mLiveCommentView = $(R.id.comment_rv);
+//        mLiveCommentView.setSoundEffectsEnabled(false);
+//        addBindActivityLifeCycle(mLiveCommentView, true);
+//        mLiveCommentView.setToken(mRoomChatMsgManager.toString());
 
         mVideoView = $(R.id.video_view);
 
@@ -261,42 +258,13 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 });
 
         mComponentController = new WatchComponentController();
-        mSdkView = new WatchSdkView(this, mComponentController, mMyRoomData);
+        mSdkView = new WatchSdkView(this, mComponentController, mMyRoomData, mRoomChatMsgManager);
         mSdkView.setupSdkView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
 
         mTouchDelegateView = $(R.id.touch_delegate_view);
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
-
-        ComponentPresenter.IAction action = new ComponentPresenter.IAction() {
-            @Override
-            public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-                switch (source) {
-                    case WatchComponentController.MSG_INPUT_VIEW_SHOWED:
-                        if (mGiftContinueViewGroup != null) {
-                            mGiftContinueViewGroup.onShowInputView();
-                        }
-                        if (mLiveCommentView != null && isDisplayLandscape()) {
-                            mLiveCommentView.setVisibility(View.GONE);
-                        }
-                        return true;
-                    case WatchComponentController.MSG_INPUT_VIEW_HIDDEN:
-                        if (mGiftContinueViewGroup != null) {
-                            mGiftContinueViewGroup.onHideInputView();
-                        }
-                        if (mLiveCommentView != null) {
-                            mLiveCommentView.setVisibility(View.VISIBLE);
-                        }
-                        return true;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        };
-        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_SHOWED, action);
-        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_HIDDEN, action);
     }
 
     private void startPlayer() {
@@ -369,10 +337,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         TouchPresenter.AnimationParams animationParams = new TouchPresenter.AnimationParams();
         animationParams.views = new View[]{
                 mWatchTopInfoSingleView,
-                mLiveCommentView,
                 mGiftContinueViewGroup,
                 mGiftRoomEffectView,
                 mGiftAnimationView,
+                $(R.id.live_comment_view),
                 $(R.id.bottom_button_view)
         };
         mTouchPresenter.setNeedHideViewsPortrait(animationParams);
@@ -519,15 +487,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //                }
             }
             break;
-
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST: {
-                mLiveCommentView.setVisibility(View.INVISIBLE);
                 mGiftMallPresenter.showGiftMallView();
             }
             break;
-
             case GiftEventClass.GiftMallEvent.EVENT_TYPE_CLICK_SELECT_GIFT: {
-                mLiveCommentView.setVisibility(View.INVISIBLE);
                 mGiftMallPresenter.showGiftMallView();
                 mGiftMallPresenter.selectGiftView((Integer) event.obj1);
             }
@@ -984,9 +948,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     protected void orientLandscape() {
-        if (mLiveCommentView != null) {
-            mLiveCommentView.orientComment(true);
-        }
+//        if (mLiveCommentView != null) {
+//            mLiveCommentView.orientComment(true);
+//        }
         if (mWatchTopInfoSingleView != null) {
             mWatchTopInfoSingleView.onScreenOrientationChanged(true);
         }
@@ -999,9 +963,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     protected void orientPortrait() {
-        if (mLiveCommentView != null) {
-            mLiveCommentView.orientComment(false);
-        }
+//        if (mLiveCommentView != null) {
+//            mLiveCommentView.orientComment(false);
+//        }
         if (mWatchTopInfoSingleView != null) {
             mWatchTopInfoSingleView.onScreenOrientationChanged(false);
         }

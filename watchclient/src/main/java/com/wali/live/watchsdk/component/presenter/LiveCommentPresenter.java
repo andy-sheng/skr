@@ -1,0 +1,104 @@
+package com.wali.live.watchsdk.component.presenter;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
+
+import com.base.log.MyLog;
+import com.wali.live.common.barrage.event.CommentRefreshEvent;
+import com.wali.live.component.ComponentController;
+import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.component.view.LiveCommentView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+/**
+ * Created by yangli on 2017/03/02.
+ *
+ * @module 弹幕区表现
+ */
+public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IView>
+        implements LiveCommentView.IPresenter {
+    private static final String TAG = "LiveCommentPresenter";
+
+    public LiveCommentPresenter(@NonNull IComponentController componentController) {
+        super(componentController);
+        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(ComponentController.MSG_BOTTOM_POPUP_SHOWED);
+        registerAction(ComponentController.MSG_BOTTOM_POPUP_HIDDEN);
+        EventBus.getDefault().register(this);
+        // TEST
+//        Observable.interval(3, 5, TimeUnit.SECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .compose(this.<Long>bindUntilEvent(PresenterEvent.DESTROY))
+//                .subscribe(new Action1<Long>() {
+//                    @Override
+//                    public void call(Long aLong) {
+//                        if (mView != null) {
+//                            mView.setRightMargin(aLong % 2 == 0 ?
+//                                    LARGE_MARGIN_PORTRAIT : NORMAL_MARGIN_PORTRAIT);
+//                        }
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                    }
+//                });
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        if (mView != null) {
+            mView.destroy();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CommentRefreshEvent event) {
+        MyLog.d(TAG, "CommentRefreshEvent ");
+        if (mView != null) {
+            mView.onCommentRefreshEvent(event);
+        }
+    }
+
+    @Nullable
+    @Override
+    protected IAction createAction() {
+        return new Action();
+    }
+
+    public class Action implements IAction {
+        @Override
+        public boolean onAction(int source, @Nullable Params params) {
+            if (mView == null) {
+                MyLog.e(TAG, "onAction but mView is null, source=" + source);
+                return false;
+            }
+            switch (source) {
+                case ComponentController.MSG_ON_ORIENT_PORTRAIT:
+                    mView.onOrientation(false);
+                    return true;
+                case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                    mView.onOrientation(true);
+                    return true;
+                case WatchComponentController.MSG_BOTTOM_POPUP_SHOWED:
+                    mView.getRealView().setVisibility(View.INVISIBLE);
+                    return true;
+                case WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN:
+                    mView.getRealView().setVisibility(View.VISIBLE);
+                    return true;
+                default:
+                    break;
+            }
+            return false;
+        }
+    }
+}

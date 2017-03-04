@@ -108,6 +108,16 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
         }
     }
 
+    @Override
+    public void notifyInputViewShowed() {
+        mComponentController.onEvent(WatchComponentController.MSG_INPUT_VIEW_SHOWED);
+    }
+
+    @Override
+    public void notifyInputViewHidden() {
+        mComponentController.onEvent(WatchComponentController.MSG_INPUT_VIEW_HIDDEN);
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {
