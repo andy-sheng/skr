@@ -34,7 +34,7 @@ public class AccountEventController {
             this.eventType = type;
         }
 
-        private LogOffEvent(int type,int channelId){
+        private LogOffEvent(int type, int channelId) {
             this.eventType = type;
             this.channelId = channelId;
         }
@@ -43,12 +43,8 @@ public class AccountEventController {
             return eventType;
         }
 
-        public void setEventType(int type) {
-            this.eventType = type;
-        }
-
-        public int getChannelId(int channelId){
-            return this.channelId;
+        public int getChannelId() {
+            return channelId;
         }
     }
 

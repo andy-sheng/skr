@@ -15,8 +15,7 @@ public class BaseEvent {
         public Object obj4;
         public static final int EVENT_TYPE_REQUEST_LOOK_USER_INFO = 1;
         public static final int EVENT_TYPE_REQUEST_LOOK_USER_TICKET = 2;
-        public static final int EVENT_TYPE_REQUEST_REFRESH_USER_RELATION = 3;
-
+        public static final int EVENT_TYPE_REQUEST_WANT_FOLLOW_USER = 3;
         public static final int EVENT_TYPE_TOUCH_DOWN_COMMENT_RC = 4;
         public static final int EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER = 5;
         public static final int EVENT_TYPE_REQUEST_SET_MANAGER = 6;
