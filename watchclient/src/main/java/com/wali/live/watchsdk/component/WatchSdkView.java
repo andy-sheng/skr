@@ -50,6 +50,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     @NonNull
     protected final Action mAction = new Action();
 
+    private final List<View> mHorizontalMoveSet = new ArrayList<>();
+    private final List<View> mVerticalMoveSet = new ArrayList<>(0);
+    private final List<View> mGameHideSet = new ArrayList<>(0);
+
     @NonNull
     protected RoomBaseDataModel mMyRoomData;
     @NonNull
@@ -63,7 +67,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     protected View mLiveCommentView;
 
     protected boolean mIsGameMode = false;
-    protected boolean mIsHideAll = false;
     protected boolean mIsLandscape = false;
 
     public WatchSdkView(
@@ -134,6 +137,18 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         setupSdkView();
     }
 
+    private void addViewToSet(int[] idSet, List<View>... listSet) {
+        if (idSet == null || listSet == null) {
+            return;
+        }
+        for (int id : idSet) {
+            View view = $(id);
+            for (List<View> viewSet : listSet) {
+                viewSet.add(view);
+            }
+        }
+    }
+
     @Override
     public void setupSdkView() {
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
@@ -189,6 +204,26 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             addComponentView(view, presenter);
         }
 
+        mVerticalMoveSet.add($(R.id.close_btn));
+        addViewToSet(new int[]{
+                R.id.watch_top_info_view,
+                R.id.bottom_button_view,
+                R.id.live_comment_view,
+                R.id.gift_animation_player_view,
+                R.id.gift_continue_vg,
+                R.id.gift_room_effect_view
+        }, mHorizontalMoveSet, mVerticalMoveSet);
+
+        if (mIsGameMode) {
+            addViewToSet(new int[]{
+                    R.id.watch_top_info_view,
+                    R.id.bottom_button_view,
+                    R.id.game_barrage_view,
+                    R.id.game_input_view,
+                    R.id.close_btn
+            }, mGameHideSet);
+        }
+
         // 滑动
         {
             View view = $(R.id.touch_view);
@@ -197,26 +232,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
             TouchPresenter presenter = new TouchPresenter(mComponentController, view);
             addComponentView(presenter);
-
-            presenter.addHorizontalView($(R.id.watch_top_info_view));
-            presenter.addHorizontalView($(R.id.bottom_button_view));
-            presenter.addHorizontalView($(R.id.live_comment_view));
-            presenter.addHorizontalView($(R.id.gift_animation_player_view));
-            presenter.addHorizontalView($(R.id.gift_continue_vg));
-            presenter.addHorizontalView($(R.id.gift_room_effect_view));
-            presenter.addVerticalView($(R.id.close_btn));
+            presenter.setViewSet(mHorizontalMoveSet, mVerticalMoveSet, mIsGameMode);
         }
 
-        mAction.clearViewSet();
-        if (mIsGameMode) {
-            mAction.addGameHideView(
-                    R.id.watch_top_info_view,
-                    R.id.bottom_button_view,
-                    R.id.game_barrage_view,
-                    R.id.game_input_view,
-                    R.id.close_btn);
-        }
-        mAction.registerAction();
+        mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到
     }
 
     public class Action implements ComponentPresenter.IAction {
@@ -239,6 +258,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
         private WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起时，隐藏
         private boolean mInputShow = false;
+
         /**
          * 输入框显示时，隐藏弹幕区和头部区
          * 弹幕区只在横屏下才需要显示和隐藏，直接修改visibility，在显示动画开始时显示，在消失动画结束时消失。
@@ -296,26 +316,13 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         }
 
         private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
-        private boolean mGameShow = true;
-        private final List<View> mGameViewSet = new ArrayList<>(0);
-
-        public void clearViewSet() {
-            mGameViewSet.clear();
-        }
-
-        public void addGameHideView(@IdRes int... idList) {
-            if (idList != null && idList.length > 0) {
-                for (int id : idList) {
-                    mGameViewSet.add($(id));
-                }
-            }
-        }
+        private boolean mGameHide = false;
 
         /**
          * 观看游戏直播横屏时，点击隐藏显示View
          */
         private void startGameAnimator() {
-            mGameShow = !mGameShow;
+            mGameHide = !mGameHide;
             ValueAnimator valueAnimator = deRef(mGameAnimatorRef);
             if (valueAnimator != null) {
                 if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
@@ -329,10 +336,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float value = (float) animation.getAnimatedValue();
-                    if (!mGameShow) {
+                    if (mGameHide) {
                         value = 1.0f - value;
                     }
-                    for (View view : mGameViewSet) {
+                    for (View view : mGameHideSet) {
                         if (view != null) {
                             setAlpha(view, value);
                         }
@@ -342,8 +349,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    if (mGameShow) {
-                        for (View view : mGameViewSet) {
+                    if (!mGameHide) {
+                        for (View view : mGameHideSet) {
                             if (view != null) {
                                 setAlpha(view, 0.0f);
                                 setVisibility(view, View.VISIBLE);
@@ -354,8 +361,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (!mGameShow) {
-                        for (View view : mGameViewSet) {
+                    if (mGameHide) {
+                        for (View view : mGameHideSet) {
                             if (view != null) {
                                 setAlpha(view, 1.0f);
                                 setVisibility(view, View.GONE);
@@ -401,7 +408,16 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     stopAllAnimator();
                     if (mIsGameMode) {
                         mComponentController.onEvent(ComponentController.MSG_ENABLE_MOVE_VIEW);
+                        if (mGameHide) { // 横屏转竖屏，恢复被隐藏的View，竖屏转横屏的逻辑在TouchPresenter中处理
+                            mGameHide = false;
+                            for (View view : mGameHideSet) {
+                                if (view != null && view.getVisibility() != View.VISIBLE) {
+                                    view.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
                         setVisibility(mLiveCommentView, View.VISIBLE);
+                        mComponentController.onEvent(ComponentController.MSG_HIDE_GAME_INPUT);
                     }
                     return true;
                 case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
@@ -410,6 +426,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     if (mIsGameMode) { // 游戏直播横屏不需左右滑
                         mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
                         setVisibility(mLiveCommentView, View.INVISIBLE);
+                        mComponentController.onEvent(ComponentController.MSG_SHOW_GAME_INPUT);
                     }
                     return true;
                 case WatchComponentController.MSG_INPUT_VIEW_SHOWED:

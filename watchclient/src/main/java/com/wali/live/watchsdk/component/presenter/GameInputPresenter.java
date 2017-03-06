@@ -38,10 +38,10 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
             @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
         mMyRoomData = myRoomData;
-        registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(WatchComponentController.MSG_ON_BACK_PRESSED);
         registerAction(WatchComponentController.MSG_HIDE_INPUT_VIEW);
+        registerAction(WatchComponentController.MSG_SHOW_GAME_INPUT);
+        registerAction(WatchComponentController.MSG_HIDE_GAME_INPUT);
         EventBus.getDefault().register(this);
     }
 
@@ -133,11 +133,11 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
                 return false;
             }
             switch (source) {
-                case WatchComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mView.onOrientation(false);
+                case WatchComponentController.MSG_SHOW_GAME_INPUT:
+                    mView.showSelf();
                     return true;
-                case WatchComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mView.onOrientation(true);
+                case WatchComponentController.MSG_HIDE_GAME_INPUT:
+                    mView.hideSelf();
                     return true;
                 case WatchComponentController.MSG_ON_BACK_PRESSED:
                     return mView.processBackPress();

@@ -19,7 +19,6 @@ import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -163,6 +162,22 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
             }
 
             @Override
+            public void showSelf() {
+                GameInputView.this.setVisibility(View.VISIBLE);
+                if (mPresenter != null && !mBarrageBtn.isSelected()) {
+                    mPresenter.showGameBarrage(true);
+                }
+            }
+
+            @Override
+            public void hideSelf() {
+                GameInputView.this.setVisibility(View.GONE);
+                if (mPresenter != null && !mBarrageBtn.isSelected()) {
+                    mPresenter.showGameBarrage(false);
+                }
+            }
+
+            @Override
             public boolean hideInputView() {
                 if (mIsInputMode) {
                     KeyboardUtils.hideKeyboard((Activity) getContext());
@@ -198,21 +213,6 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
                 }
                 setTranslationY(0);
             }
-
-            @Override
-            public void onOrientation(boolean isLandscape) {
-                if (isLandscape) {
-                    GameInputView.this.setVisibility(View.VISIBLE);
-                    if (mPresenter != null && !mBarrageBtn.isSelected()) {
-                        mPresenter.showGameBarrage(true);
-                    }
-                } else {
-                    GameInputView.this.setVisibility(View.GONE);
-                    if (mPresenter != null && !mBarrageBtn.isSelected()) {
-                        mPresenter.showGameBarrage(false);
-                    }
-                }
-            }
         }
         return new ComponentView();
     }
@@ -239,11 +239,21 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
         void notifyInputViewHidden();
     }
 
-    public interface IView extends IViewProxy, IOrientationListener {
+    public interface IView extends IViewProxy {
         /**
          * 响应返回键事件
          */
         boolean processBackPress();
+
+        /**
+         * 显示游戏输入框及弹幕区
+         */
+        void showSelf();
+
+        /**
+         * 隐藏游戏输入框及弹幕区
+         */
+        void hideSelf();
 
         /**
          * 隐藏输入框

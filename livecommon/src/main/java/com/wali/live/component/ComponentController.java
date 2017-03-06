@@ -6,7 +6,7 @@ import com.base.log.MyLog;
 import com.wali.live.component.presenter.ComponentPresenter;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,12 +42,14 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_BACKGROUND_CLICK    = MSG_TOUCH_FIRST + 2; // 背景点击
     // 输入框相关消息
     private static final int MSG_INPUT_FIRST = 30000;
-    public static final int MSG_SHOW_INPUT_VIEW     = MSG_INPUT_FIRST;     // 请求弹起输入框
-    public static final int MSG_HIDE_INPUT_VIEW     = MSG_INPUT_FIRST + 1; // 请求隐藏输入框
-    public static final int MSG_SHOW_BARRAGE_SWITCH = MSG_INPUT_FIRST + 2; // 显示 飘屏弹幕开关
-    public static final int MSG_HIDE_BARRAGE_SWITCH = MSG_INPUT_FIRST + 3; // 隐藏 飘屏弹幕开关
-    public static final int MSG_SHOW_GAME_BARRAGE   = MSG_INPUT_FIRST + 4; // 显示 游戏弹幕
-    public static final int MSG_HIDE_GAME_BARRAGE   = MSG_INPUT_FIRST + 5; // 隐藏 游戏弹幕
+    public static final int MSG_SHOW_INPUT_VIEW     = MSG_INPUT_FIRST;     // 请求弹起 输入框
+    public static final int MSG_HIDE_INPUT_VIEW     = MSG_INPUT_FIRST + 1; // 请求隐藏 输入框
+    public static final int MSG_SHOW_GAME_INPUT     = MSG_INPUT_FIRST + 2; // 请求显示 游戏输入框
+    public static final int MSG_HIDE_GAME_INPUT     = MSG_INPUT_FIRST + 3; // 请求隐藏 游戏输入框
+    public static final int MSG_SHOW_BARRAGE_SWITCH = MSG_INPUT_FIRST + 4; // 显示 飘屏弹幕开关
+    public static final int MSG_HIDE_BARRAGE_SWITCH = MSG_INPUT_FIRST + 5; // 隐藏 飘屏弹幕开关
+    public static final int MSG_SHOW_GAME_BARRAGE   = MSG_INPUT_FIRST + 6; // 显示 游戏弹幕
+    public static final int MSG_HIDE_GAME_BARRAGE   = MSG_INPUT_FIRST + 7; // 隐藏 游戏弹幕
     // 弹出页面相关消息
     private static final int MSG_POPUP_FIRST = 31000;
     public static final int MSG_SHOW_SETTING_PANEL  = MSG_POPUP_FIRST;     // 显示 设置面板
@@ -75,7 +77,7 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
         }
         Set<ComponentPresenter.IAction> actionSet = mEventActionMap.get(event);
         if (actionSet == null) {
-            actionSet = new HashSet<>();
+            actionSet = new LinkedHashSet<>(); // 保序
             mEventActionMap.put(event, actionSet);
         }
         actionSet.add(action);

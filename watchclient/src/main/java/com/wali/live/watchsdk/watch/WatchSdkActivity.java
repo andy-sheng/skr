@@ -195,7 +195,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
 
         // TEST
-        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
+//        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
     }
 
 
