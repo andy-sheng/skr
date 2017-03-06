@@ -102,7 +102,7 @@ public class VideoPlayerPresenterEx implements
         @Override
         public void onPrepared() {
             MyLog.v(TAG, " onPrepared");
-            if (mVideoPlayerPresenter != null) {
+            if (mVideoPlayerPresenter != null && mVideoPlayerPresenter.isEnableReconnect()) {
                 hideLoading();
                 mIsAlreadyPrepared = true;
                 setSeekBarContainerVisible(true);
@@ -350,10 +350,14 @@ public class VideoPlayerPresenterEx implements
     }
 
     private void reconnect() {
-
         long resumeTime = mVideoPlayerPresenter.getResumePosition();
         MyLog.w(TAG, "reconnect, resumeTime= " + resumeTime);
         mVideoPlayerPresenter.resumeTo(resumeTime);
+    }
+
+    public void enableReconnect(boolean isEnable) {
+        MyLog.w(TAG, "enableReconnect, isEnable= " + isEnable);
+        mVideoPlayerPresenter.enableReconnect(isEnable);
     }
 
     @Subscribe

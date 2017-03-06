@@ -579,12 +579,15 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
+                mVideoPlayerPresenterEx.enableReconnect(true);
                 mVideoPlayerPresenterEx.resume();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mVideoPlayerPresenterEx.enableReconnect(false);
                 mVideoPlayerPresenterEx.pause();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mVideoPlayerPresenterEx.enableReconnect(false);
                 mVideoPlayerPresenterEx.pause();
                 break;
         }

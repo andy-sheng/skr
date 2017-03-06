@@ -466,12 +466,15 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         }
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
+                mReplayVideoPresenter.enableReconnect(true);
                 mReplayVideoPresenter.resume();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mReplayVideoPresenter.enableReconnect(false);
                 mReplayVideoPresenter.pause();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mReplayVideoPresenter.enableReconnect(false);
                 mReplayVideoPresenter.pause();
                 break;
         }
