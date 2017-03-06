@@ -167,7 +167,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                         onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                         return;
                                     }
-                                    UploadService.startService(new UploadService.UploadInfo(miSsoLoginRsp));
+                                    UploadService.toUpload(new UploadService.UploadInfo(miSsoLoginRsp,channelId));
                                     onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
                                 } catch (Exception e) {
                                     MyLog.w(TAG, "miSsoLogin error", e);
@@ -219,7 +219,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             public void onNext(AccountProto.LoginRsp rsp) {
                                 MyLog.w(TAG, "miLoginByCode login onNext");
                                 if(rsp.getRetCode() == MiLiveSdkEvent.SUCCESS){
-                                    UploadService.startService(new UploadService.UploadInfo(rsp));
+                                    UploadService.toUpload(new UploadService.UploadInfo(rsp,channelId));
                                 }
                                 if (rsp != null) {
                                     onEventLogin(channelId, rsp.getRetCode());
