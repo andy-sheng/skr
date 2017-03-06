@@ -85,6 +85,8 @@ public class UserAccountManager {
             MiLinkClientAdapter.getsInstance().logoff();
             // milink 切换成匿名模式
             MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
+
+            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF,channelid);
         } else {
             //
         }
@@ -99,6 +101,8 @@ public class UserAccountManager {
             MiLinkClientAdapter.getsInstance().logoff();
             // milink 切换成匿名模式
             MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
+
+            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF,channelId);
         }
     }
 

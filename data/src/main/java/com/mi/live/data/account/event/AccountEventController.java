@@ -28,9 +28,15 @@ public class AccountEventController {
         public static final int EVENT_TYPE_NORMAL_LOGOFF = 2;
         public static final int EVENT_TYPE_ACCOUNT_FORBIDDEN = 3;
         private int eventType = EVENT_TYPE_NONE;
+        private int channelId;
 
-        public LogOffEvent(int type) {
+        private LogOffEvent(int type) {
             this.eventType = type;
+        }
+
+        private LogOffEvent(int type,int channelId){
+            this.eventType = type;
+            this.channelId = channelId;
         }
 
         public int getEventType() {
@@ -40,10 +46,19 @@ public class AccountEventController {
         public void setEventType(int type) {
             this.eventType = type;
         }
+
+        public int getChannelId(int channelId){
+            return this.channelId;
+        }
     }
 
     public static void onActionLogOff(int type) {
         LogOffEvent event = new LogOffEvent(type);
+        EventBus.getDefault().post(event);
+    }
+
+    public static void onActionLogOff(int type, int channelId) {
+        LogOffEvent event = new LogOffEvent(type, channelId);
         EventBus.getDefault().post(event);
     }
 
