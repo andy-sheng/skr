@@ -32,7 +32,7 @@ import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.barrage.view.LiveCommentView;
-import com.wali.live.common.endlive.UserEndLiveFragment;
+import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;

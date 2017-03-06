@@ -1,4 +1,4 @@
-package com.wali.live.common.endlive;
+package com.wali.live.watchsdk.endlive;
 
 import android.app.Activity;
 import android.content.Context;

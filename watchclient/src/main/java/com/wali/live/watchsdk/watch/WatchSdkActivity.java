@@ -49,7 +49,7 @@ import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.view.LiveCommentView;
-import com.wali.live.common.endlive.UserEndLiveFragment;
+import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
@@ -182,8 +182,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
      * 所以里面的方法依据要求要具备能被不断调用的能力
      */
     public void trySendDataWithServerOnce() {
-        mLiveTaskPresenter.enterLive();
         mUserInfoPresenter.updateOwnerInfo();
+        mLiveTaskPresenter.enterLive();
         startPlayer();
     }
 
@@ -800,15 +800,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         public void enterLive(EnterRoomInfo roomInfo) {
             WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
-//            if (roomInfo != null) {
-//                switch (roomInfo.getRetCode()) {
-//                    case ErrorCode.CODE_SUCCESS:
-//                        break;
-//                    default:
-//                        showEndLiveFragment(true);
-//
-//                }
-//            }
         }
     };
 

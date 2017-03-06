@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
-import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.SecurityProto;

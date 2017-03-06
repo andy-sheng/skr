@@ -1,4 +1,4 @@
-package com.wali.live.common.endlive;
+package com.wali.live.watchsdk.endlive;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -31,6 +31,7 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.action.VideoAction;
 import com.wali.live.proto.RoomRecommend;
 import com.wali.live.utils.AvatarUtils;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -198,7 +199,7 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
             return;
         }
     }
-
+    
     @Override
     public void initData() {
         AvatarUtils.loadAvatarByUidTs(mAvatarBg, presenter.getOwnerId(), presenter.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
@@ -281,13 +282,15 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
 //            } catch (URISyntaxException e) {
 //            }
             // 打点
-            presenter.sendHomePageCommend();
+//            presenter.sendHomePageCommend();
         } else if (i == R.id.end_live_txtFollow) {
-            followAvatar();
+            if (AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+                followAvatar();
+            }
 
         } else if (i == R.id.end_live_ImgAvatar) {
 //            PersonInfoActivity.openActivity(getActivity(), presenter.getOwnerId(), presenter.getOwnerCertType());
-            presenter.sendClickAvatarCommend(presenter.getOwnerId());
+//            presenter.sendClickAvatarCommend(presenter.getOwnerId());
 
         }
     }
