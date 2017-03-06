@@ -44,7 +44,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class GalileoStreamer implements IStreamer {
 
-    private static final String TAG = GalileoStreamer.class.getSimpleName();
+    private static final String TAG = "GalileoStreamer";
 
     private static final String DEFAULT_PORT = "1935";
     private static final int DEFAULT_FRAME_RATE = 15;
