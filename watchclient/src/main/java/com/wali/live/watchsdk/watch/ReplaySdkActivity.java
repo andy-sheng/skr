@@ -160,10 +160,15 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
      * 所以里面的方法依据要求要具备能被不断调用的能力
      */
     @Override
-    public void trySendDataWithServerOnce() {
+    protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
         startPlayer();
         startGetBarrageTimer();
+    }
+
+    @Override
+    protected void tryClearData() {
+        mUserInfoPresenter.clearLoginFlag();
     }
 
     @Subscribe

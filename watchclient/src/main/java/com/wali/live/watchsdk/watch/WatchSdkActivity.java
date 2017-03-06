@@ -49,7 +49,6 @@ import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.view.LiveCommentView;
-import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
@@ -66,6 +65,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
+import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -181,10 +181,16 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
      * 这里的方法会在初始时调用一次，会在账号或milink刚登录上在基类接受event也会调用，
      * 所以里面的方法依据要求要具备能被不断调用的能力
      */
-    public void trySendDataWithServerOnce() {
+    @Override
+    protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
         mLiveTaskPresenter.enterLive();
         startPlayer();
+    }
+
+    @Override
+    protected void tryClearData() {
+        mUserInfoPresenter.clearLoginFlag();
     }
 
     private void initData() {
@@ -590,9 +596,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
         if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
-            return;
-        } else if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_REFRESH_USER_RELATION) {
-            mUserInfoPresenter.updateOwnerInfoFromServer();
             return;
         }
         if (CommonUtils.isFastDoubleClick()) {
