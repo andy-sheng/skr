@@ -301,45 +301,5 @@ public class MyUserInfoManager {
         MyUserInfoLocalStore.getInstance().deleteAccount(HostChannelManager.getInstance().getChannelId());
         mMyInfo = new User(); //清空內存中的值
     }
-    /**
-     * 设置User
-     */
-    public void setUser(User user, boolean needSaveToDB) {
-        if (user == null) {
-            return;
-        }
-        if(mMyInfo.getUid() == user.getUid())
-            mMyInfo = user;
-
-        if (needSaveToDB) {
-            Observable.create(new Observable.OnSubscribe<Object>() {
-                @Override
-                public void call(Subscriber<? super Object> subscriber) {
-                    saveInfoIntoDB();
-                    subscriber.onCompleted();
-                }
-            })
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Observer<Object>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(Object o) {
-
-                        }
-                    });
-        }
-
-        //发送event
-        EventBus.getDefault().post(new UserInfoEvent());
-    }
 
 }
