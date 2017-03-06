@@ -2,4 +2,7 @@
 <resources>
     <!--底部按钮相关-->
     <item type="id" name="gift_btn"/>
+    <!--游戏直播输入相关-->
+    <item type="id" name="game_input_view"/>
+    <item type="id" name="game_barrage_view"/>
 </resources>

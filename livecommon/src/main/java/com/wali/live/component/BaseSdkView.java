@@ -43,6 +43,11 @@ public abstract class BaseSdkView<T extends ComponentController> {
         mComponentPresenterSet.add(presenter);
     }
 
+    protected final void addComponentView(
+            @NonNull ComponentPresenter presenter) {
+        mComponentPresenterSet.add(presenter);
+    }
+
     public BaseSdkView(@NonNull Activity activity,
                        @NonNull T componentController) {
         mActivity = activity;

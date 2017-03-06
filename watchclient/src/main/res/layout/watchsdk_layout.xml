@@ -8,6 +8,12 @@
     <com.wali.live.watchsdk.watch.view.TouchDelegateView
         android:id="@+id/touch_delegate_view"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/touch_view"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.mi.live.engine.player.widget.VideoPlayerTextureView
@@ -28,19 +34,19 @@
 
     <!--&lt;!&ndash;评论栏&ndash;&gt;-->
     <!--<com.wali.live.common.barrage.view.LiveCommentView-->
-        <!--android:id="@+id/comment_rv"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="160.33dip"-->
-        <!--android:layout_above="@+id/input_area_view"-->
-        <!--android:layout_alignWithParentIfMissing="true"-->
-        <!--android:fadingEdge="none"-->
-        <!--android:fadingEdgeLength="0dp"-->
-        <!--android:overScrollMode="never"-->
-        <!--android:paddingBottom="13.33dp"-->
-        <!--android:paddingLeft="6dip"-->
-        <!--android:paddingRight="6.67dip"-->
-        <!--android:requiresFadingEdge="none"-->
-        <!--android:visibility="invisible" />-->
+    <!--android:id="@+id/comment_rv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="160.33dip"-->
+    <!--android:layout_above="@+id/input_area_view"-->
+    <!--android:layout_alignWithParentIfMissing="true"-->
+    <!--android:fadingEdge="none"-->
+    <!--android:fadingEdgeLength="0dp"-->
+    <!--android:overScrollMode="never"-->
+    <!--android:paddingBottom="13.33dp"-->
+    <!--android:paddingLeft="6dip"-->
+    <!--android:paddingRight="6.67dip"-->
+    <!--android:requiresFadingEdge="none"-->
+    <!--android:visibility="invisible" />-->
 
     <!--评论栏-->
     <com.wali.live.watchsdk.component.view.LiveCommentView
@@ -103,6 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="140dp"
         android:layout_above="@id/live_comment_view"
+
         android:layout_marginBottom="61.33dip" />
 
     <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup

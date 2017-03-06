@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.component.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.preference.MLPreferenceUtils;
@@ -157,7 +159,15 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
 
             @Override
             public boolean processBackPress() {
-                return false;
+                return mIsInputMode;
+            }
+
+            @Override
+            public boolean hideInputView() {
+                if (mIsInputMode) {
+                    KeyboardUtils.hideKeyboard((Activity) getContext());
+                }
+                return mIsInputMode;
             }
 
             @Override
@@ -234,6 +244,11 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
          * 响应返回键事件
          */
         boolean processBackPress();
+
+        /**
+         * 隐藏输入框
+         */
+        boolean hideInputView();
 
         /**
          * 键盘弹起

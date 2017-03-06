@@ -27,6 +27,7 @@ import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.PanelContainerPresenter;
+import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
@@ -35,6 +36,8 @@ import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WatchPanelContainer;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -44,6 +47,7 @@ import java.lang.ref.WeakReference;
 public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     private static final String TAG = "WatchSdkView";
 
+    @NonNull
     protected final Action mAction = new Action();
 
     @NonNull
@@ -59,6 +63,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     protected View mLiveCommentView;
 
     protected boolean mIsGameMode = false;
+    protected boolean mIsHideAll = false;
     protected boolean mIsLandscape = false;
 
     public WatchSdkView(
@@ -93,11 +98,11 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
     public void setupSdkView(boolean isGameMode) {
         mIsGameMode = isGameMode;
-        setupSdkView();
         if (mIsGameMode) {
             // 游戏直播横屏输入框
             {
                 GameInputView view = new GameInputView(mActivity);
+                view.setId(R.id.game_input_view);
                 view.setVisibility(View.GONE);
                 GameInputPresenter presenter = new GameInputPresenter(mComponentController, mMyRoomData);
                 addComponentView(view, presenter);
@@ -112,6 +117,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             // 游戏直播横屏弹幕
             {
                 GameBarrageView view = new GameBarrageView(mActivity);
+                view.setId(R.id.game_barrage_view);
                 view.setVisibility(View.GONE);
                 GameBarragePresenter presenter = new GameBarragePresenter(mComponentController);
                 addComponentView(view, presenter);
@@ -125,6 +131,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 addView(view, layoutParams, R.id.comment_rv);
             }
         }
+        setupSdkView();
     }
 
     @Override
@@ -182,16 +189,37 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             addComponentView(view, presenter);
         }
 
-        mComponentController.registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT, mAction);
-        mComponentController.registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE, mAction);
-        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_SHOWED, mAction);
-        mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_HIDDEN, mAction);
+        // 滑动
+        {
+            View view = $(R.id.touch_view);
+            if (view == null) {
+                return;
+            }
+            TouchPresenter presenter = new TouchPresenter(mComponentController, view);
+            addComponentView(presenter);
+
+            presenter.addHorizontalView($(R.id.watch_top_info_view));
+            presenter.addHorizontalView($(R.id.bottom_button_view));
+            presenter.addHorizontalView($(R.id.live_comment_view));
+            presenter.addHorizontalView($(R.id.gift_animation_player_view));
+            presenter.addHorizontalView($(R.id.gift_continue_vg));
+            presenter.addHorizontalView($(R.id.gift_room_effect_view));
+            presenter.addVerticalView($(R.id.close_btn));
+        }
+
+        mAction.clearViewSet();
+        if (mIsGameMode) {
+            mAction.addGameHideView(
+                    R.id.watch_top_info_view,
+                    R.id.bottom_button_view,
+                    R.id.game_barrage_view,
+                    R.id.game_input_view,
+                    R.id.close_btn);
+        }
+        mAction.registerAction();
     }
 
     public class Action implements ComponentPresenter.IAction {
-
-        private WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起时，隐藏
-        private boolean mInputShow = false;
 
         private <T> T deRef(WeakReference<?> reference) {
             return reference != null ? (T) reference.get() : null;
@@ -209,11 +237,16 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
         }
 
+        private WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起时，隐藏
+        private boolean mInputShow = false;
         /**
          * 输入框显示时，隐藏弹幕区和头部区
          * 弹幕区只在横屏下才需要显示和隐藏，直接修改visibility，在显示动画开始时显示，在消失动画结束时消失。
          */
         private void startInputAnimator(boolean inputShow) {
+            if (mInputShow == inputShow) {
+                return;
+            }
             mInputShow = inputShow;
             ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
             if (valueAnimator != null) {
@@ -262,12 +295,102 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             mInputAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
-        public void clearAnimation() {
+        private WeakReference<ValueAnimator> mGameAnimatorRef; // 游戏直播竖屏时，隐藏显示动画
+        private boolean mGameShow = true;
+        private final List<View> mGameViewSet = new ArrayList<>(0);
+
+        public void clearViewSet() {
+            mGameViewSet.clear();
+        }
+
+        public void addGameHideView(@IdRes int... idList) {
+            if (idList != null && idList.length > 0) {
+                for (int id : idList) {
+                    mGameViewSet.add($(id));
+                }
+            }
+        }
+
+        /**
+         * 观看游戏直播横屏时，点击隐藏显示View
+         */
+        private void startGameAnimator() {
+            mGameShow = !mGameShow;
+            ValueAnimator valueAnimator = deRef(mGameAnimatorRef);
+            if (valueAnimator != null) {
+                if (!valueAnimator.isStarted() && !valueAnimator.isRunning()) {
+                    valueAnimator.start();
+                }
+                return;
+            }
+            valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float value = (float) animation.getAnimatedValue();
+                    if (!mGameShow) {
+                        value = 1.0f - value;
+                    }
+                    for (View view : mGameViewSet) {
+                        if (view != null) {
+                            setAlpha(view, value);
+                        }
+                    }
+                }
+            });
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if (mGameShow) {
+                        for (View view : mGameViewSet) {
+                            if (view != null) {
+                                setAlpha(view, 0.0f);
+                                setVisibility(view, View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (!mGameShow) {
+                        for (View view : mGameViewSet) {
+                            if (view != null) {
+                                setAlpha(view, 1.0f);
+                                setVisibility(view, View.GONE);
+                            }
+                        }
+                    }
+                }
+            });
+            valueAnimator.start();
+            mGameAnimatorRef = new WeakReference<>(valueAnimator);
+        }
+
+        private void stopAllAnimator() {
             ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
             if (valueAnimator != null) {
                 valueAnimator.cancel();
-                mInputAnimatorRef = null;
             }
+            valueAnimator = deRef(mGameAnimatorRef);
+            if (valueAnimator != null) {
+                valueAnimator.cancel();
+            }
+        }
+
+        public void clearAnimation() {
+            stopAllAnimator();
+            mInputAnimatorRef = null;
+            mGameAnimatorRef = null;
+        }
+
+        public void registerAction() {
+            mComponentController.registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT, this);
+            mComponentController.registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE, this);
+            mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_SHOWED, this);
+            mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_HIDDEN, this);
+            mComponentController.registerAction(WatchComponentController.MSG_BACKGROUND_CLICK, this);
         }
 
         @Override
@@ -275,22 +398,47 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             switch (source) {
                 case ComponentController.MSG_ON_ORIENT_PORTRAIT:
                     mIsLandscape = false;
+                    stopAllAnimator();
+                    if (mIsGameMode) {
+                        mComponentController.onEvent(ComponentController.MSG_ENABLE_MOVE_VIEW);
+                        setVisibility(mLiveCommentView, View.VISIBLE);
+                    }
                     return true;
                 case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
                     mIsLandscape = true;
+                    stopAllAnimator();
+                    if (mIsGameMode) { // 游戏直播横屏不需左右滑
+                        mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
+                        setVisibility(mLiveCommentView, View.INVISIBLE);
+                    }
                     return true;
                 case WatchComponentController.MSG_INPUT_VIEW_SHOWED:
+                    if (!mIsGameMode || !mIsLandscape) {
+                        mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
+                    }
                     if (mGiftContinueViewGroup != null) {
                         mGiftContinueViewGroup.onShowInputView();
                     }
                     startInputAnimator(true);
                     return true;
                 case WatchComponentController.MSG_INPUT_VIEW_HIDDEN:
+                    if (!mIsGameMode || !mIsLandscape) { // 游戏直播横屏不需左右滑
+                        mComponentController.onEvent(ComponentController.MSG_ENABLE_MOVE_VIEW);
+                    }
                     if (mGiftContinueViewGroup != null) {
                         mGiftContinueViewGroup.onHideInputView();
                     }
                     startInputAnimator(false);
                     return true;
+                case WatchComponentController.MSG_BACKGROUND_CLICK:
+                    if (mComponentController.onEvent(ComponentController.MSG_HIDE_INPUT_VIEW)) {
+                        return true;
+                    }
+                    if (mIsGameMode && mIsLandscape) {
+                        startGameAnimator();
+                        return true;
+                    }
+                    break;
                 default:
                     break;
             }

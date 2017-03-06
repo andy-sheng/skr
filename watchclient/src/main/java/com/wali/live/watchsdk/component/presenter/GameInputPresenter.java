@@ -41,6 +41,7 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
         registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(WatchComponentController.MSG_ON_BACK_PRESSED);
+        registerAction(WatchComponentController.MSG_HIDE_INPUT_VIEW);
         EventBus.getDefault().register(this);
     }
 
@@ -140,6 +141,8 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
                     return true;
                 case WatchComponentController.MSG_ON_BACK_PRESSED:
                     return mView.processBackPress();
+                case WatchComponentController.MSG_HIDE_INPUT_VIEW:
+                    return mView.hideInputView();
                 default:
                     break;
             }

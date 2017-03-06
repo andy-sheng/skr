@@ -195,7 +195,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
 
         // TEST
-//        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
+        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
     }
 
 
@@ -332,34 +332,34 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 
         // 点击事件代理，左右滑动隐藏组件的逻辑
-        mTouchPresenter = new TouchPresenter(mTouchDelegateView);
-        addBindActivityLifeCycle(mTouchPresenter, true);
-        TouchPresenter.AnimationParams animationParams = new TouchPresenter.AnimationParams();
-        animationParams.views = new View[]{
-                mWatchTopInfoSingleView,
-                mGiftContinueViewGroup,
-                mGiftRoomEffectView,
-                mGiftAnimationView,
-                $(R.id.live_comment_view),
-                $(R.id.bottom_button_view)
-        };
-        mTouchPresenter.setNeedHideViewsPortrait(animationParams);
-        mTouchPresenter.setNeedHideViewsLandscape(animationParams);
-
-        mTouchPresenter.setGestureAdapter(new TouchPresenter.GestureApater() {
-            @Override
-            public boolean onDown() {
-                if (mComponentController != null && mComponentController.onEvent(
-                        WatchComponentController.MSG_HIDE_INPUT_VIEW)) {
-                    return true;
-                }
+//        mTouchPresenter = new TouchPresenter(mTouchDelegateView);
+//        addBindActivityLifeCycle(mTouchPresenter, true);
+//        TouchPresenter.AnimationParams animationParams = new TouchPresenter.AnimationParams();
+//        animationParams.views = new View[]{
+//                mWatchTopInfoSingleView,
+//                mGiftContinueViewGroup,
+//                mGiftRoomEffectView,
+//                mGiftAnimationView,
+//                $(R.id.live_comment_view),
+//                $(R.id.bottom_button_view)
+//        };
+//        mTouchPresenter.setNeedHideViewsPortrait(animationParams);
+//        mTouchPresenter.setNeedHideViewsLandscape(animationParams);
+//
+//        mTouchPresenter.setGestureAdapter(new TouchPresenter.GestureApater() {
+//            @Override
+//            public boolean onDown() {
+//                if (mComponentController != null && mComponentController.onEvent(
+//                        WatchComponentController.MSG_HIDE_INPUT_VIEW)) {
+//                    return true;
+//                }
 //                if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
 //                    mGameModePresenter.hideInputArea();
 //                    return true;
 //                }
-                return false;
-            }
-        });
+//                return false;
+//            }
+//        });
 
         if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) {
             // 是游戏直播间
