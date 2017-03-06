@@ -4,20 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.base.log.MyLog;
-import com.wali.live.dao.ConversationDao;
 import com.wali.live.dao.DaoMaster;
-import com.wali.live.dao.GiftDao;
-import com.wali.live.dao.LiveTokenDao;
-import com.wali.live.dao.LoadingBannerDao;
-import com.wali.live.dao.OwnUserInfoDao;
-import com.wali.live.dao.RegionCnDao;
-import com.wali.live.dao.RegionEnDao;
-import com.wali.live.dao.RegionTwDao;
-import com.wali.live.dao.RelationDao;
-import com.wali.live.dao.RoomGlanceDao;
-import com.wali.live.dao.SixinMessageDao;
-import com.wali.live.dao.UserAccountDao;
-import com.wali.live.dao.WatchHistoryInfoDao;
 
 
 /**

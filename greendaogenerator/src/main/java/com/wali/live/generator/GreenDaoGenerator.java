@@ -35,7 +35,6 @@ public class GreenDaoGenerator {
     public static final String REGION_TW = "RegionTw";
     public static final String LOADING_BANNER = "LoadingBanner";
     public static final String ROOM_GLANCE_TABLE_NAME = "RoomGlance";
-    public static final String WATCH_HISTORY = "WatchHistoryInfo";
 
     public static void main(String[] args) throws Exception {
         Schema schema = new Schema(DB_VERSION, PACKAGE_DAO_NAME);
@@ -46,11 +45,6 @@ public class GreenDaoGenerator {
 
         // 个人资料
         addOwnUserInfo(schema);
-//        //　私信对话列表
-//        addConversation(schema);
-//
-//        // 私信
-//        addChatMessage(schema);
 
         // 商城礼物
         addGift(schema);
@@ -58,20 +52,11 @@ public class GreenDaoGenerator {
         //关注列表
         addRelation(schema);
 
-//        // 口令直播间密码
-//        addLiveToken(schema);
-
         //国家列表
         addCountryCN(schema);
         addCountryEN(schema);
         addCountryTW(schema);
         addLoadingBanner(schema);
-
-//        //用户购票记录
-//        addRoomGlance(schema);
-//
-        addWatchHistory(schema);
-
         new DaoGenerator().generateAll(schema, "data/src/main/java-gen");
     }
 
@@ -243,7 +228,6 @@ public class GreenDaoGenerator {
     }
 
 
-
     /**
      * 增加口令直播间密码记录
      *
@@ -297,24 +281,6 @@ public class GreenDaoGenerator {
         loadingBaner.addStringProperty("shareDesc");
         loadingBaner.addLongProperty("lastShowTime");
         loadingBaner.addStringProperty("localPath");
-    }
-
-    public static void addWatchHistory(final Schema schema) {
-        Entity watchHistory = schema.addEntity(WATCH_HISTORY);
-        watchHistory.implementsSerializable();
-        watchHistory.addStringProperty("id").primaryKey(); //id以userId + 日期以达到以天去重,历史不去重的问题.
-        watchHistory.addLongProperty("userId");
-        watchHistory.addLongProperty("avatar");
-        watchHistory.addStringProperty("userNickname");
-        watchHistory.addStringProperty("signature");
-        watchHistory.addIntProperty("gender");
-        watchHistory.addIntProperty("level");
-        watchHistory.addIntProperty("certificationType");
-        watchHistory.addBooleanProperty("isFollowing");
-        watchHistory.addBooleanProperty("isBothway");
-        watchHistory.addLongProperty("watchTime");
-        watchHistory.addBooleanProperty("isWatch"); //区分观看的类型:直播和回放
-        watchHistory.addIntProperty("fromType"); //直播来源:0 milive; 1 elive
     }
 
     private static void addRoomGlance(Schema schema) {
