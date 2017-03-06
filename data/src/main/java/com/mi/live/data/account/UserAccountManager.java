@@ -87,22 +87,22 @@ public class UserAccountManager {
             MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
 
             AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF,channelid);
-        } else {
-            //
         }
     }
 
     public void logoffWithoutClearAccount(int channelId) {
+        MyLog.w(TAG, "logoffWithoutClearAccount:" + channelId + "  HostChannelManager.getInstance().getChannelId()" + HostChannelManager.getInstance().getChannelId());
         if (channelId == HostChannelManager.getInstance().getChannelId()) {
-            MyUserInfoManager.getInstance().deleteUser();
+            MyUserInfoManager.getInstance().deleteCache();
             // 和当前渠道一致,当前账号置为空
             mAccount = null;
-            // 实名模式登出
-            MiLinkClientAdapter.getsInstance().logoff();
-            // milink 切换成匿名模式
-            MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
-
-            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF,channelId);
+            if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
+                // 实名模式登出
+                MiLinkClientAdapter.getsInstance().logoff();
+                // milink 切换成匿名模式
+                MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
+                AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF, channelId);
+            }
         }
     }
 
