@@ -325,11 +325,6 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
-    public void setLooping(boolean looping) {
-
-    }
-
-    @Override
     public long getCurrentStreamPosition() {
         if (mIjkMediaPlayer != null) {
             return mIjkMediaPlayer.getCurrentStreamPosition();

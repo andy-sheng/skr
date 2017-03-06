@@ -74,8 +74,6 @@ public interface IPlayer {
 
     void setBufferSize(int size);
 
-    void setLooping(boolean looping);
-
     long getCurrentStreamPosition();
 
     void setGravity(Player.SurfaceGravity gravity, int width, int height);
