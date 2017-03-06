@@ -34,7 +34,6 @@ public class StatisticUtils {
             if (Network.hasNetwork(GlobalData.app())) {
                 MiLinkMonitor.getInstance().trace(StatisticsKey.AC_CALL_FACTOR, "", 0, key, code, requestTime,
                         responseTime, 0, 0, 0, UserAccountManager.getInstance().getUuidAsLong() + "");
-                MiStatAdapter.recordCalculateEvent(null, key + "_" + code, 1);
             }
             if (LOG_ENABLE) {
                 MyLog.v(StatisticUtils.TAG + " " + key + " " + (responseTime - requestTime));
@@ -55,7 +54,6 @@ public class StatisticUtils {
         if (Network.hasNetwork(GlobalData.app())) {
             MiLinkMonitor.getInstance().trace(StatisticsKey.AC_CALL_FACTOR, info, 0, key, code, 0,
                     0, 0, 0, 0, UserAccountManager.getInstance().getUuidAsLong() + "");
-            MiStatAdapter.recordCalculateEvent(null, key + "_" + code, 1);
         }
         if (LOG_ENABLE) {
             MyLog.v(StatisticUtils.TAG + " " + key);

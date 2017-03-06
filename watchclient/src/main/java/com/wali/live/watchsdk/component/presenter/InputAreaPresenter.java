@@ -5,13 +5,16 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.base.event.KeyboardEvent;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -75,8 +78,8 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
         if (TextUtils.isEmpty(msg)) {
             return;
         }
-        if (mMyRoomData == null) {
-            MyLog.e("sendBarrage but mMyRoomData is null");
+        if (mMyRoomData != null && !mMyRoomData.canSpeak()) {
+            ToastUtils.showToast(GlobalData.app(), R.string.can_not_speak);
             return;
         }
         BarrageMsg barrageMsg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_TEXT,

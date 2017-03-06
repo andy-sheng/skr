@@ -79,11 +79,11 @@ public class AccountCaller {
     /**
      * 第三方授权登陆
      */
-    public static Observable<ActionParam> login(final int channelId, final int accountType, final String code, final String openId, final String accessToken, final String expires_in,
+    public static Observable<AccountProto.LoginRsp> login(final int channelId, final int accountType, final String code, final String openId, final String accessToken, final String expires_in,
                                                 final String refreshToken) {
-        return Observable.create(new Observable.OnSubscribe<ActionParam>() {
+        return Observable.create(new Observable.OnSubscribe<AccountProto.LoginRsp>() {
             @Override
-            public void call(Subscriber<? super ActionParam> subscriber) {
+            public void call(Subscriber<? super AccountProto.LoginRsp> subscriber) {
                 AccountProto.LoginRsp rsp = AccountLoginManager.loginReq(accountType, code, openId, accessToken, expires_in, refreshToken, String.valueOf(channelId));
                 if (rsp == null) {
                     subscriber.onError(new Exception("rsp is null"));
@@ -103,22 +103,8 @@ public class AccountCaller {
                     userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
 
                     UserAccountManager.getInstance().login(userAccount);
-
-                    Object[] params = new Object[8];
-                    params[0] = rsp.getLoginStatus();
-                    params[1] = rsp.getHasInnerAvatar();
-                    params[2] = rsp.getHasInnerNickname();
-                    params[3] = rsp.hasHasInnerSex();
-                    params[4] = rsp.getHeadimgurl();
-                    params[5] = rsp.getNickname();
-                    params[6] = rsp.getSex();
-                    params[7] = rsp.getIsSetGuide();
-                    actionParam.setParams(params);
                 }
-                actionParam.setAction(MiLinkCommand.COMMAND_LOGIN);
-                actionParam.setErrCode(errCode);
-
-                subscriber.onNext(actionParam);
+                subscriber.onNext(rsp);
                 subscriber.onCompleted();
             }
         });

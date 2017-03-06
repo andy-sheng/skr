@@ -6,9 +6,8 @@ package com.mi.live.engine.media.player.util;
 public class PlayConfig {
 
     public static final int INTERRUPT_MODE_RELEASE_CREATE = 0;
-    public static final int INTERRUPT_MODE_PAUSE_RESUME = 1;
-    public static final int INTERRUPT_MODE_FINISH_OR_ERROR = 2;
-    public static final int INTERRUPT_MODE_ESPORT_PAUSE_RESUME = 3;
+    public static final int INTERRUPT_MODE_FINISH_OR_ERROR = 1;
+    public static final int INTERRUPT_MODE_ESPORT_PAUSE_RESUME = 2;
     public boolean isStream = false;
     public int interruptMode = INTERRUPT_MODE_RELEASE_CREATE;
 

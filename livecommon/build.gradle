@@ -41,7 +41,6 @@ dependencies {
     compile presentationDependencies.androidAppCompat
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.rxJava
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile presentationDependencies.butterKnife
     compile project(':data')
 
@@ -64,12 +63,12 @@ dependencies {
     /**
      *       以下都是支付相关，可以优化，sdk去掉一点
      */
-    compile files('libs/SDK_TY_4.4.33.jar')
+//    compile files('libs/SDK_TY_4.6.11.jar')
     //compile 'com.paypal.sdk:paypal-android-sdk:2.14.3'
     compile files('libs/HyAlipay_release_20161202.jar')
     compile files('libs/HyUcashierpay_release_20161202.jar')
-    compile files('libs/HyWxpay_release_20160620.jar')
-    compile files('libs/MiStats_SDK_Client_1_4_0.jar')
+    compile files('libs/HyWxpay_release_20170116.jar')
+//    compile files('libs/MiStats_SDK_Client_1_4_0.jar')
     compile files('libs/reporter.jar')
     compile files('libs/migamepluginstat_2.jar')
     compile files('libs/libammsdk.jar')

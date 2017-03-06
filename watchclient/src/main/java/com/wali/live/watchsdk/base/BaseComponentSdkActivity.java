@@ -5,7 +5,9 @@ import android.os.Message;
 import android.util.SparseArray;
 
 import com.base.activity.BaseRotateSdkActivity;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.collection.InsertSortLinkedList;
@@ -16,6 +18,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
+import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
@@ -42,6 +45,20 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
      * 控制是否活跃的目的为：当渠道A活跃时其他渠道不能够调用登录接口
      */
     private static AtomicInteger activeNum = new AtomicInteger(0);
+
+    protected boolean is4g() {
+        NetworkReceiver.NetState netCode = NetworkReceiver.getCurrentNetStateCode(GlobalData.app());
+        if (netCode != NetworkReceiver.NetState.NET_NO) {
+            MyLog.w(TAG, "onNetStateChanged netCode = " + netCode);
+            //优先处理错误情况
+            if (netCode == NetworkReceiver.NetState.NET_2G ||
+                    netCode == NetworkReceiver.NetState.NET_3G ||
+                    netCode == NetworkReceiver.NetState.NET_4G) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static boolean isActive() {
         return activeNum.get() != 0;
@@ -101,14 +118,6 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         EventBus.getDefault().post(new WatchOrReplayActivityCreated());
         activeNum.incrementAndGet();
         super.onCreate(savedInstanceState);
-        // 检测有没有登录,走匿名模式
-//        if (!UserAccountManager.getInstance().hasAccount()) {
-//            mLoginPresenter = new LoginPresenter(this);
-//            mLoginPresenter.systemLogin();
-//            // 登录成功再发eventbus出来，原始数据保存起来
-//            // 没有登录
-////            finish();
-//        }
     }
 
     @Subscribe
@@ -221,13 +230,24 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         mGiftRoomEffectView.onActivityCreate();
     }
 
-    public abstract void trySendDataWithServerOnce();
+    protected abstract void trySendDataWithServerOnce();
+
+    protected abstract void tryClearData();
 
     // milink链接成功了,在主线程保证时序
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MiLinkEvent.StatusLogined event) {
         // 登录成功了
         trySendDataWithServerOnce();
+    }
+
+    // milink链接成功了,在主线程保证时序
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AccountEventController.LogOffEvent event) {
+        if (event != null) {
+            MyLog.d(TAG, "log off channelId=" + event.getChannelId());
+            tryClearData();
+        }
     }
 
     @Override

@@ -1,13 +1,18 @@
 package com.wali.live.watchsdk.watch.presenter;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.activity.assist.IBindActivityLIfeCycle;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
+import com.mi.live.data.data.LiveShow;
+import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
@@ -19,9 +24,18 @@ import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.RoomMessageRepository;
 import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 
+import org.greenrobot.eventbus.EventBus;
+
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -55,11 +69,44 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
         mPullRoomMessagePresenter.startWork();
     }
 
+
+    public void queryLiveShowById(final long uuid, final String liveId) {
+        if (uuid <= 0 || TextUtils.isEmpty(liveId)) {
+            // 直播结束
+            EventBus.getDefault().post(new LiveEndEvent());
+            return;
+        }
+        Observable.just(uuid)
+                .map(new Func1<Long, LiveShow>() {
+                    @Override
+                    public LiveShow call(Long userId) {
+                        return UserInfoManager.getLiveShowByUserId(userId);
+                    }
+                }).subscribeOn(Schedulers.io())
+                .compose(mRxActivity.<LiveShow>bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<LiveShow>() {
+                    @Override
+                    public void call(LiveShow liveShow) {
+                        if (liveShow == null || liveShow.getUid() != uuid || !liveId.equals(liveShow.getLiveId())) {
+                            // 直播结束
+                            EventBus.getDefault().post(new LiveEndEvent());
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.w(TAG, throwable);
+                    }
+                });
+    }
+
     @Override
     public void enterLive() {
         //匿名模式不要进入房间,否则有bug
         if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
             pullRoomMessage();
+            queryLiveShowById(mMyRoomData.getUid(), mMyRoomData.getRoomId());
             return;
         }
         if (mHasEnter) {
@@ -102,13 +149,13 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 //                            }
 //                        }
 
-                        if (enterRoomInfo.getRetCode() == 5001) {
+                        if (enterRoomInfo.getRetCode() == ErrorCode.CODE_ROOM_NOT_EXIST) {
                             BarrageMsg.LiveEndMsgExt ext = new BarrageMsg.LiveEndMsgExt();
                             ext.viewerCount = 0;
-                            BarrageMsg msg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_LIVE_END, "直播已经结束", mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), ext);
+                            BarrageMsg msg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_LIVE_END, GlobalData.app().getString(R.string.live_finish), mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), ext);
                             SendBarrageManager.pretendPushBarrage(msg);
-                        } else if (enterRoomInfo.getRetCode() == 5004) {
-                            ToastUtils.showToast("房间不存在");
+                        } else if (enterRoomInfo.getRetCode() == ErrorCode.CODE_PARAM_ERROR) {
+                            ToastUtils.showToast(R.string.token_live_error_toast_room_not_exist);
                         }
                         if (mView != null) {
                             mView.enterLive(enterRoomInfo);

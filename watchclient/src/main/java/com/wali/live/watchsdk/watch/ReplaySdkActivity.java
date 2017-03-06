@@ -1,17 +1,23 @@
 package com.wali.live.watchsdk.watch;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.base.activity.BaseActivity;
+import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.jakewharton.rxbinding.view.RxView;
@@ -26,7 +32,7 @@ import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.barrage.view.LiveCommentView;
-import com.wali.live.common.endlive.UserEndLiveFragment;
+import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
@@ -120,7 +126,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     protected TouchDelegateView mTouchDelegateView;
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
     protected ImageView mRotateBtn;
-    protected ImageView mClostBtn;
+    protected ImageView mCloseBtn;
     protected ReplaySeekBar mReplaySeekBar;
 
     private PhoneStateReceiver mPhoneStateReceiver;
@@ -143,8 +149,10 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 
         ReplayBarrageMessageManager.getInstance().init(mRoomChatMsgManager.toString());//回放弹幕管理
 
-        //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
-        trySendDataWithServerOnce();
+        if (!check4GNet()) {
+            //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
+            trySendDataWithServerOnce();
+        }
     }
 
     /**
@@ -152,10 +160,15 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
      * 所以里面的方法依据要求要具备能被不断调用的能力
      */
     @Override
-    public void trySendDataWithServerOnce() {
+    protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
         startPlayer();
         startGetBarrageTimer();
+    }
+
+    @Override
+    protected void tryClearData() {
+        mUserInfoPresenter.clearLoginFlag();
     }
 
     @Subscribe
@@ -165,6 +178,20 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         } else {
             orientPortrait();
         }
+    }
+
+    private void orientCloseBtn(boolean isLandscape) {
+        if (mCloseBtn == null) {
+            return;
+        }
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
+                mCloseBtn.getLayoutParams();
+        if (!isLandscape && BaseActivity.isProfileMode()) {
+            layoutParams.topMargin = layoutParams.rightMargin + BaseActivity.getStatusBarHeight();
+        } else {
+            layoutParams.topMargin = layoutParams.rightMargin;
+        }
+        mCloseBtn.setLayoutParams(layoutParams);
     }
 
     protected void orientLandscape() {
@@ -177,6 +204,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
         }
+        orientCloseBtn(true);
     }
 
     protected void orientPortrait() {
@@ -189,6 +217,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
         }
+        orientCloseBtn(false);
     }
 
     @Override
@@ -260,7 +289,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
             mGameModePresenter.setGameBarrageViewStub((ViewStub) findViewById(R.id.game_barrage_viewstub));
             mGameModePresenter.setCommentView(mLiveCommentView);
             mGameModePresenter.setWatchTopView(mWatchTopInfoSingleView);
-            mGameModePresenter.setCloseBtn(mClostBtn);
+            mGameModePresenter.setCloseBtn(mCloseBtn);
             mGameModePresenter.setRotateBtn(mRotateBtn);
             mGameModePresenter.setmTouchPresenter(mTouchPresenter);
             addBindActivityLifeCycle(mGameModePresenter, true);
@@ -339,8 +368,8 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                     }
                 });
         //关闭按钮
-        mClostBtn = $(R.id.close_btn);
-        RxView.clicks(mClostBtn)
+        mCloseBtn = $(R.id.close_btn);
+        RxView.clicks(mCloseBtn)
                 .throttleFirst(200, TimeUnit.MILLISECONDS)
                 .subscribe(new Action1<Void>() {
                     @Override
@@ -348,6 +377,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                         finish();
                     }
                 });
+        orientCloseBtn(false);
 
     }
 
@@ -436,12 +466,15 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         }
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
+                mReplayVideoPresenter.enableReconnect(true);
                 mReplayVideoPresenter.resume();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mReplayVideoPresenter.enableReconnect(false);
                 mReplayVideoPresenter.pause();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mReplayVideoPresenter.enableReconnect(false);
                 mReplayVideoPresenter.pause();
                 break;
         }
@@ -510,6 +543,31 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 
     private void viewerTopFromServer(RoomBaseDataModel roomData) {
         mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
+    }
+
+    private boolean check4GNet() {
+        if (is4g()) {
+            MyAlertDialog alertDialog = new MyAlertDialog.Builder(this).create();
+            alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    trySendDataWithServerOnce();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setCancelable(false);
+            alertDialog.show();
+            return true;
+        }
+        return false;
     }
 
     @Override

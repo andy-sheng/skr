@@ -75,8 +75,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
     //TODO notice : surface重新调用
     private boolean mIsNeedReset = true;
-    // 是否重绘背景
-    private boolean mIsClearCanvas = true;
 
     // 保留上次停止的状态
     private boolean mLastStopped = false;
@@ -95,7 +93,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private AudioManager mAudioManager;
     private float mVolumeL = 1, mVolumeR = 1;
     private int mBufferSize = 0;
-    private boolean mLooping = false;
     private IVideoView mVideoView;
     private SurfaceTexture mSurfaceTexture = null;
     private Surface mSurface;
@@ -143,10 +140,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         mIsNeedReset = isNeedReset;
     }
 
-    public void setClearCanvas(boolean clearCanvas) {
-        mIsClearCanvas = clearCanvas;
-    }
-
     public void setVideoStreamBufferTime(float bufferTime) {
         if (mPlayer != null) {
             mPlayer.setBufferTimeMax(bufferTime);
@@ -157,7 +150,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     public void setVideoPath(String path, String host) {
         MyLog.w(TAG, "setVideoPath path=" + path + ", host=" + host);
         if (!TextUtils.isEmpty(path)) {
-            setStreamName(path);
             setVideoURI(Uri.parse(path), host);
         } else {
             MyLog.e(TAG, "setVideoPath but path is empty");
@@ -170,16 +162,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         openVideo();
         mVideoView.onSetVideoURICompleted();
         MyLog.w(TAG, "setVideoURI over");
-    }
-
-    private void setStreamName(String path) {
-        if (!path.isEmpty() && path.contains(".flv")) {
-            mStreamName = path.substring(0, path.lastIndexOf(".flv"));
-        }
-    }
-
-    public String getStreamName() {
-        return mStreamName;
     }
 
     /**
@@ -422,10 +404,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         }
     };
 
-    public boolean hasVideoPlayerCallBack() {
-        return mPlayerCallBack != null;
-    }
-
     @Override
     public void setVideoPlayerCallBack(IPlayerCallBack playerCallBack) {
         mPlayerCallBack = playerCallBack;
@@ -663,10 +641,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         return (mPlayer != null && mCurrentState == STATE_ERROR);
     }
 
-    public boolean isKsyMediaPlayerNull() {
-        return mPlayer == null;
-    }
-
     public void onSurfaceDestroyed() {
         MyLog.d(TAG, "onSurfaceDestroyed");
         if (mPlayer != null) {
@@ -685,12 +659,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 MyLog.d(TAG, "INTERRUPT_MODE_RELEASE_CREATE");
                 release();
                 break;
-            case PlayConfig.INTERRUPT_MODE_PAUSE_RESUME:
-                MyLog.d(TAG, "INTERRUPT_MODE_PAUSE_RESUME");
-                // 保存上次的暂停状态
-                mLastStopped = (mCurrentState != STATE_PLAYING);
-                pause();
-                break;
             case PlayConfig.INTERRUPT_MODE_FINISH_OR_ERROR:
                 MyLog.d(TAG, "INTERRUPT_MODE_FINISH_OR_ERROR");
                 break;
@@ -707,19 +675,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 MyLog.d(TAG, "INTERRUPT_MODE_RELEASE_CREATE");
                 //TODO notice this
                 if (mIsNeedReset) {
-                    openVideo();
-                }
-                break;
-            case PlayConfig.INTERRUPT_MODE_PAUSE_RESUME:
-                MyLog.d(TAG, "INTERRUPT_MODE_PAUSE_RESUME mKsyMediaPlayer is null = "
-                        + (isKsyMediaPlayerNull()) + " , mLastStopped = " + mLastStopped);
-                if (!isKsyMediaPlayerNull()) {
-                    mPlayer.setSurface(mSurface);
-                    // 如果上次不是暂停状态就继续播放
-                    if (!mLastStopped) {
-                        start();
-                    }
-                } else {
                     openVideo();
                 }
                 break;
@@ -776,19 +731,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 MyLog.d(TAG, "INTERRUPT_MODE_RELEASE_CREATE");
                 //TODO notice this
                 if (mIsNeedReset) {
-                    openVideo();
-                }
-                break;
-            case PlayConfig.INTERRUPT_MODE_PAUSE_RESUME:
-                MyLog.d(TAG, "INTERRUPT_MODE_PAUSE_RESUME mPlayer is null = "
-                        + (isKsyMediaPlayerNull()) + " , mLastStopped = " + mLastStopped);
-                if (!isKsyMediaPlayerNull()) {
-                    setSurface();
-                    // 如果上次不是暂停状态就继续播放
-                    if (!mLastStopped) {
-                        start();
-                    }
-                } else {
                     openVideo();
                 }
                 break;
@@ -861,13 +803,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             return mPlayer.getAudioSource();
         }
         return 0;
-    }
-
-    public void setLooping(boolean looping) {
-        mLooping = looping;
-        if (mPlayer != null) {
-            mPlayer.setLooping(mLooping);
-        }
     }
 
     public interface OnReportBitRateListener {

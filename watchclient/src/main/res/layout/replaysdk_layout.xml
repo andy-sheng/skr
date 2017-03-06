@@ -86,8 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_20"
-        android:layout_marginTop="25dp"
+        android:layout_margin="@dimen/margin_20"
         android:src="@drawable/live_icon_close_btn" />
 
     <!--礼物展示需要-->

@@ -1,6 +1,9 @@
 package com.wali.live.watchsdk.watch.presenter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -12,11 +15,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
+import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
-import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.engine.media.player.IMediaPlayer;
@@ -31,6 +34,7 @@ import com.wali.live.ipselect.FeedsIpSelectionHelper;
 import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.video.widget.player.VideoPlayBaseSeekBar;
+import com.wali.live.watchsdk.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -98,7 +102,7 @@ public class VideoPlayerPresenterEx implements
         @Override
         public void onPrepared() {
             MyLog.v(TAG, " onPrepared");
-            if (mVideoPlayerPresenter != null) {
+            if (mVideoPlayerPresenter != null && mVideoPlayerPresenter.isEnableReconnect()) {
                 hideLoading();
                 mIsAlreadyPrepared = true;
                 setSeekBarContainerVisible(true);
@@ -351,6 +355,11 @@ public class VideoPlayerPresenterEx implements
         mVideoPlayerPresenter.resumeTo(resumeTime);
     }
 
+    public void enableReconnect(boolean isEnable) {
+        MyLog.w(TAG, "enableReconnect, isEnable= " + isEnable);
+        mVideoPlayerPresenter.enableReconnect(isEnable);
+    }
+
     @Subscribe
     public void onEvent(SdkEventClass.OrientEvent event) {
         if (event.isLandscape()) {
@@ -499,14 +508,6 @@ public class VideoPlayerPresenterEx implements
         }
     }
 
-    //网络变化toast提示
-    protected void wifiTo4g() {
-        if (isActivate()) {
-            ToastUtils.showToast(com.live.module.common.R.string.feeds_detail_wifi_2_4g_hint);
-        }
-    }
-
-
     //------Runnable--------------------------------------------------------------------------------
     //更新进度条播放进度的Runnable
     Runnable mOnSeekProgressRunnable = new Runnable() {
@@ -555,6 +556,9 @@ public class VideoPlayerPresenterEx implements
 
     @Override
     public void startReconnect(int code) {
+        if (mShowTrafficDialog) {
+            return;
+        }
         mBufferingCount++;
         MyLog.w(TAG, "startReconnect, mBufferingCount=" + mBufferingCount);
         mHandler.removeMessages(MSG_RELOAD_VIDEO);
@@ -613,9 +617,50 @@ public class VideoPlayerPresenterEx implements
         //getActivity().finish();
     }
 
+    private boolean mShowTrafficDialog = false;
+
+    protected void wifiTo4g() {
+        if (!mShowTrafficDialog) {
+            pause();
+            MyAlertDialog alertDialog = new MyAlertDialog.Builder(mContext).create();
+            alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
+            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    mShowTrafficDialog = false;
+                }
+            });
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    mShowTrafficDialog = true;
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    resume();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (mContext instanceof Activity) {
+                        ((Activity) mContext).finish();
+                    }
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setCancelable(false);
+            alertDialog.show();
+        }
+    }
+
     //网络变化toast提示
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
+        MyLog.w(TAG, "EventClass.NetWorkChangeEvent");
         if (null != event) {
             NetworkReceiver.NetState netCode = event.getNetState();
             if (netCode != NetworkReceiver.NetState.NET_NO) {
@@ -628,5 +673,4 @@ public class VideoPlayerPresenterEx implements
             }
         }
     }
-
 }

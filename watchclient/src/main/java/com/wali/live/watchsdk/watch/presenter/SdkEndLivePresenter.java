@@ -3,8 +3,8 @@ package com.wali.live.watchsdk.watch.presenter;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.wali.live.common.endlive.EndLivePresenter;
-import com.wali.live.common.endlive.IUserEndLiveView;
+import com.wali.live.watchsdk.endlive.EndLivePresenter;
+import com.wali.live.watchsdk.endlive.IUserEndLiveView;
 import com.wali.live.proto.RoomRecommend;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;

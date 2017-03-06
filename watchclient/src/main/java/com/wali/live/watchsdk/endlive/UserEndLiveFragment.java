@@ -1,6 +1,5 @@
-package com.wali.live.common.endlive;
+package com.wali.live.watchsdk.endlive;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +20,6 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
-import com.base.utils.SafeGoActivity;
 import com.base.utils.language.LocaleUtil;
 import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -33,11 +31,11 @@ import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.action.VideoAction;
 import com.wali.live.proto.RoomRecommend;
 import com.wali.live.utils.AvatarUtils;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -201,7 +199,7 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
             return;
         }
     }
-
+    
     @Override
     public void initData() {
         AvatarUtils.loadAvatarByUidTs(mAvatarBg, presenter.getOwnerId(), presenter.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
@@ -274,23 +272,25 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
             getActivity().finish();
 
         } else if (i == R.id.end_live_txtHomePage) {
-            String uri = "walilive://channel/channel_id=0";
+//            String uri = "walilive://channel/channel_id=0";
             // 跳到主播主页
-            try {
-                Intent intent = null;
-                intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
-                SafeGoActivity.goCheckUpdateWhenFailed(getActivity(), intent);
-                popFragment();
-            } catch (URISyntaxException e) {
-            }
+//            try {
+//                Intent intent = null;
+//                intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
+//                SafeGoActivity.goCheckUpdateWhenFailed(getActivity(), intent);
+//                popFragment();
+//            } catch (URISyntaxException e) {
+//            }
             // 打点
-            presenter.sendHomePageCommend();
+//            presenter.sendHomePageCommend();
         } else if (i == R.id.end_live_txtFollow) {
-            followAvatar();
+            if (AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+                followAvatar();
+            }
 
         } else if (i == R.id.end_live_ImgAvatar) {
 //            PersonInfoActivity.openActivity(getActivity(), presenter.getOwnerId(), presenter.getOwnerCertType());
-            presenter.sendClickAvatarCommend(presenter.getOwnerId());
+//            presenter.sendClickAvatarCommend(presenter.getOwnerId());
 
         }
     }

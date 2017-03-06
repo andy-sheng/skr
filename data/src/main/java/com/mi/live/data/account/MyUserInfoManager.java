@@ -3,19 +3,22 @@ package com.mi.live.data.account;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.base.thread.ThreadPool;
 import com.base.utils.language.LocaleUtil;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.event.UserInfoEvent;
+import com.mi.live.data.api.request.GetOwninfoRequest;
 import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
 import com.mi.live.data.user.User;
-import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.dao.OwnUserInfo;
 import com.wali.live.proto.UserProto;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import rx.Observable;
 import rx.Observer;
@@ -38,6 +41,8 @@ public class MyUserInfoManager {
 
     private final static MyUserInfoManager sInstance = new MyUserInfoManager();
 
+    Map<Integer,Long> mLastInfoTsMap = new HashMap<>();
+
     /**
      * MyUserInfoManager构造函数, 从
      */
@@ -52,23 +57,22 @@ public class MyUserInfoManager {
     public void init() {
         // 从数据库得到个人信息
         Observable.just(null)
-                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        mMyInfo = readFromDB();
+                        User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
+                        mMyInfo = userInfo;
                     }
                 });
-        // 如果数据
-//        EventBus.getDefault().register(this);
     }
 
     /**
      * 尝试从数据库中　读取用户信息
      */
-    private User readFromDB() {
+    private User readFromDB(int channelId) {
         User user = new User();
-        OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(HostChannelManager.getInstance().getChannelId());
+        OwnUserInfo ownUserInfo = MyUserInfoLocalStore.getInstance().getAccount(channelId);
         MyLog.w(TAG, "ownUserInfo:" + ownUserInfo);
         if (ownUserInfo != null) {
             user.setUid(ownUserInfo.getUid());
@@ -115,90 +119,75 @@ public class MyUserInfoManager {
     /**
      * 保存数据到DB
      */
-    private void saveInfoIntoDB() {
-        if (mMyInfo == null) {
+    private void saveInfoIntoDB(User user, final int channelId) {
+        if (user == null) {
             return;
         }
         OwnUserInfo ownUserInfo = new OwnUserInfo();
-        ownUserInfo.setChannelid(HostChannelManager.getInstance().getChannelId());
-        ownUserInfo.setUid(mMyInfo.getUid());
-        ownUserInfo.setNickname(mMyInfo.getNickname());
-        ownUserInfo.setSign(mMyInfo.getSign());
-        ownUserInfo.setAvatar(mMyInfo.getAvatar());
-        ownUserInfo.setGender(mMyInfo.getGender());
-        ownUserInfo.setLevel(mMyInfo.getLevel());
-        ownUserInfo.setBadge(mMyInfo.getBadge());
-        ownUserInfo.setCertification(mMyInfo.getCertification());
-        ownUserInfo.setCertificationType(mMyInfo.getCertificationType());
-        ownUserInfo.setWaitingCertificationType(mMyInfo.waitingCertificationType);
-        ownUserInfo.setIsInspector(mMyInfo.isInspector());
-        ownUserInfo.setLiveTicketNum(mMyInfo.getLiveTicketNum());
-        ownUserInfo.setFansNum(mMyInfo.getFansNum());
-        ownUserInfo.setFollowNum(mMyInfo.getFollowNum());
-        ownUserInfo.setSendDiamondNum(mMyInfo.getSendDiamondNum());
-        ownUserInfo.setVodNum(mMyInfo.getVodNum());
-        ownUserInfo.setEarnNum(mMyInfo.getEarnNum());
-        ownUserInfo.setDiamondNum(mMyInfo.getDiamondNum());
-        ownUserInfo.setSendVirtualDiamondNum(mMyInfo.getSentVirtualDiamondNum());
-        ownUserInfo.setVirtualDiamondNum(mMyInfo.getVirtualDiamondNum());
-        ownUserInfo.setCoverPhotoJson(mMyInfo.coverPhotoJson);
-        ownUserInfo.setFirstAudit(mMyInfo.firstAudit);
-        ownUserInfo.setRedName(mMyInfo.isRedName());
+        ownUserInfo.setChannelid(channelId);
+        ownUserInfo.setUid(user.getUid());
+        ownUserInfo.setNickname(user.getNickname());
+        ownUserInfo.setSign(user.getSign());
+        ownUserInfo.setAvatar(user.getAvatar());
+        ownUserInfo.setGender(user.getGender());
+        ownUserInfo.setLevel(user.getLevel());
+        ownUserInfo.setBadge(user.getBadge());
+        ownUserInfo.setCertification(user.getCertification());
+        ownUserInfo.setCertificationType(user.getCertificationType());
+        ownUserInfo.setWaitingCertificationType(user.waitingCertificationType);
+        ownUserInfo.setIsInspector(user.isInspector());
+        ownUserInfo.setLiveTicketNum(user.getLiveTicketNum());
+        ownUserInfo.setFansNum(user.getFansNum());
+        ownUserInfo.setFollowNum(user.getFollowNum());
+        ownUserInfo.setSendDiamondNum(user.getSendDiamondNum());
+        ownUserInfo.setVodNum(user.getVodNum());
+        ownUserInfo.setEarnNum(user.getEarnNum());
+        ownUserInfo.setDiamondNum(user.getDiamondNum());
+        ownUserInfo.setSendVirtualDiamondNum(user.getSentVirtualDiamondNum());
+        ownUserInfo.setVirtualDiamondNum(user.getVirtualDiamondNum());
+        ownUserInfo.setCoverPhotoJson(user.coverPhotoJson);
+        ownUserInfo.setFirstAudit(user.firstAudit);
+        ownUserInfo.setRedName(user.isRedName());
         if (LocaleUtil.getSelectedLanguageIndex() != LocaleUtil.INDEX_ENGLISH) {
-            ownUserInfo.setRegion(mMyInfo.getRegion().toByteArray());
+            ownUserInfo.setRegion(user.getRegion().toByteArray());
         }
-        MyUserInfoLocalStore.getInstance().replaceAccount(ownUserInfo);
+        MyUserInfoLocalStore.getInstance().replaceAccount(ownUserInfo, channelId);
     }
-
-
-    Subscription mSyncSubscription;
 
     /**
      * 同步自己的个人信息
      */
     public void syncSelfDetailInfo() {
-        MyLog.w(TAG, "syncSelfDetailInfo");
-        if (mSyncSubscription != null && !mSyncSubscription.isUnsubscribed()) {
+        syncSelfDetailInfo(UserAccountManager.getInstance().getUuidAsLong(),HostChannelManager.getInstance().getChannelId());
+    }
+
+    /**
+     * 同步自己的个人信息
+     */
+    public void syncSelfDetailInfo(final long uuid,final int channelId) {
+        MyLog.w(TAG, "syncSelfDetailInfo,uuid="+uuid+" channelId="+channelId);
+        if(uuid <= 0){
             return;
         }
-        mSyncSubscription = Observable.create(new Observable.OnSubscribe<UserProto.GetOwnInfoRsp>() {
-            @Override
-            public void call(Subscriber<? super UserProto.GetOwnInfoRsp> subscriber) {
-                long uid = UserAccountManager.getInstance().getUuidAsLong();
-                if (uid <= 0) {
-                    subscriber.onError(new Exception("uid<=0"));
-                    return;
-                }
-                UserProto.GetOwnInfoReq req = UserProto
-                        .GetOwnInfoReq
-                        .newBuilder()
-                        .setZuid(uid)
-                        .build();
-                PacketData data = new PacketData();
-                data.setCommand(MiLinkCommand.COMMAND_GET_OWN_INFO);
-                data.setData(req.toByteArray());
-                MyLog.d(TAG + "syncMyOwnerInfo request : \n" + req.toString());
-                PacketData packetData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-                if (packetData != null) {
-                    try {
-                        UserProto.GetOwnInfoRsp rsp = UserProto.GetOwnInfoRsp.parseFrom(packetData.getData());
-                        if (rsp == null || rsp.getErrorCode() != 0) {
-                            subscriber.onError(new Exception("rsp==null || rsp.getErrorCode()!=0"));
-                        }
-                        subscriber.onNext(rsp);
-                        subscriber.onCompleted();
-                    } catch (InvalidProtocolBufferException e) {
-                        subscriber.onError(new Exception("rsp is null"));
-                    }
-                } else {
-                    subscriber.onError(new Exception("uid<=0"));
-                    return;
-                }
-            }
-        })
-                .map(new Func1<UserProto.GetOwnInfoRsp, User>() {
+        Observable.just(0)
+                .map(new Func1<Integer, UserProto.GetOwnInfoRsp>() {
                     @Override
-                    public User call(UserProto.GetOwnInfoRsp rsp) {
+                    public UserProto.GetOwnInfoRsp call(Integer integer) {
+                        GetOwninfoRequest request = new GetOwninfoRequest(uuid);
+                        return request.syncRsp();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
+                .subscribe(new Action1<UserProto.GetOwnInfoRsp>() {
+                    @Override
+                    public void call(UserProto.GetOwnInfoRsp rsp) {
+                        if (rsp == null || rsp.getErrorCode() != MiLinkConstant.ERROR_CODE_SUCCESS) {
+                            readFromDB(channelId);
+                            MyLog.e(TAG, "rsp==null || rsp.getErrorCode()!=0");
+                            return;
+                        }
+                        MyLog.d(TAG,rsp.toString());
                         User user = new User();
                         if (rsp.getPersonalInfo() != null) {
                             user.parse(rsp.getPersonalInfo());
@@ -209,28 +198,18 @@ public class MyUserInfoManager {
                         if (rsp.getRankTopThreeListList() != null) {
                             user.setRankTopThreeList(rsp.getRankTopThreeListList());
                         }
-                        return user;
+                        mLastInfoTsMap.put(channelId, System.currentTimeMillis());
+                        saveInfoIntoDB(user,channelId);
+                        if(channelId == HostChannelManager.getInstance().getChannelId()) {
+                            mMyInfo = user;
+                            EventBus.getDefault().post(new UserInfoEvent());
+                        }
                     }
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<User>() {
+                }, new Action1<Throwable>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, e);
-                        readFromDB();
-                    }
-
-                    @Override
-                    public void onNext(User user) {
-                        mLastInfoTs = System.currentTimeMillis();
-                        mMyInfo = user;
-                        saveInfoIntoDB();
-                        EventBus.getDefault().post(new UserInfoEvent());
+                    public void call(Throwable throwable) {
+                        readFromDB(channelId);
+                        MyLog.e(TAG, throwable);
                     }
                 });
     }
@@ -245,28 +224,17 @@ public class MyUserInfoManager {
         if (mMyInfo == null || mMyInfo.getUid() <= 0) {
             MyLog.w(TAG + " getUser mMyInfo == null || mMyInfo.getUid() <= 0");
             Observable.just(null)
-                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
                     .subscribe(new Action1<Object>() {
                         @Override
                         public void call(Object o) {
-                            mMyInfo = readFromDB();
+                            User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
+                            mMyInfo = userInfo;
                         }
                     });
         }
         return mMyInfo;
     }
-
-
-//    // 不能乱删除哦
-//    public void deleteUser() {
-//        OwnUserInfoDao ownUserInfoDao = GreenDaoManager.getDaoSession(GlobalData.app()).getOwnUserInfoDao();
-//        //清空所有数据
-//        ownUserInfoDao.deleteAll();
-//
-//        mMyInfo = new User(); //清空內存中的值
-//    }
-
-    long mLastInfoTs = 0;
 
     public void setLevel(int level) {
         mMyInfo.setLevel(level);
@@ -289,16 +257,46 @@ public class MyUserInfoManager {
     }
 
     public void updateUserInfoIfNeed() {
+        int channelId = HostChannelManager.getInstance().getChannelId();
+        Long lastInfoTs = mLastInfoTsMap.get(channelId);
+        lastInfoTs = lastInfoTs == null ? 0 : lastInfoTs;
         if (mMyInfo == null
                 || mMyInfo.getUid() <= 0
                 || TextUtils.isEmpty(mMyInfo.getNickname())
-                || (System.currentTimeMillis() - mLastInfoTs > 5 * 60 * 1000)) {
-            syncSelfDetailInfo();
+                || (System.currentTimeMillis() - lastInfoTs > 5 * 60 * 1000)) {
+            syncSelfDetailInfo(UserAccountManager.getInstance().getUuidAsLong(), channelId);
         }
     }
 
+    /**
+     * 登出时删除用户信息
+     */
     public void deleteUser() {
-        MyUserInfoLocalStore.getInstance().deleteAccount(HostChannelManager.getInstance().getChannelId());
+        Observable.just(HostChannelManager.getInstance().getChannelId())
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer channelId) {
+                        MyUserInfoLocalStore.getInstance().deleteAccount(channelId);
+                        return channelId;
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer channelId) {
+                        MyLog.w(TAG, "delete userInfo success,channelId=" + channelId);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
         mMyInfo = new User(); //清空內存中的值
     }
+
+    public void deleteCache(){
+        mMyInfo = new User();
+    }
+
 }

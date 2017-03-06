@@ -420,13 +420,14 @@ public class FragmentNaviUtils {
             ft.addToBackStack(tag);
         }
         ft.add(containerViewId, fragment, tag);
-        if (!fragmentActivity.isFinishing()) {
-//            if (allowStateLoss) {
-//                ft.commitAllowingStateLoss();
-//            } else {
-//                ft.commit();
-//            }
-            ft.commitAllowingStateLoss();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (!fragmentActivity.isFinishing() && !fragmentActivity.isDestroyed()) {
+                ft.commitAllowingStateLoss();
+            }
+        } else {
+            if (!fragmentActivity.isFinishing()) {
+                ft.commitAllowingStateLoss();
+            }
         }
         return fragment;
     }

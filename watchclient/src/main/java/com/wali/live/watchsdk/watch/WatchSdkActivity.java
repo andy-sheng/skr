@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.watch;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -10,19 +12,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.base.activity.BaseActivity;
+import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
 import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
-import com.base.version.VersionCheckTask;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
@@ -42,7 +47,6 @@ import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.base.BaseEvent;
-import com.wali.live.common.endlive.UserEndLiveFragment;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
@@ -58,6 +62,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
+import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -67,7 +72,6 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
-import com.wali.live.watchsdk.watch.presenter.TouchPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
@@ -75,7 +79,6 @@ import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
-import com.wali.live.watchsdk.watch.view.TouchDelegateView;
 import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -155,7 +158,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         initReceiver();
 
         //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
-        trySendDataWithServerOnce();
+        if (!check4GNet()) {
+            trySendDataWithServerOnce();
+        }
     }
 
     @Override
@@ -167,10 +172,16 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
      * 这里的方法会在初始时调用一次，会在账号或milink刚登录上在基类接受event也会调用，
      * 所以里面的方法依据要求要具备能被不断调用的能力
      */
-    public void trySendDataWithServerOnce() {
-        mLiveTaskPresenter.enterLive();
+    @Override
+    protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
+        mLiveTaskPresenter.enterLive();
         startPlayer();
+    }
+
+    @Override
+    protected void tryClearData() {
+        mUserInfoPresenter.clearLoginFlag();
     }
 
     private void initData() {
@@ -239,6 +250,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     }
                 });
         mCloseBtn.setVisibility(View.VISIBLE);
+        orientCloseBtn(isDisplayLandscape());
 
         mRotateBtn = $(R.id.rotate_btn);
         RxView.clicks(mRotateBtn)
@@ -496,12 +508,15 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
         switch (event.type) {
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
+                mVideoPlayerPresenterEx.enableReconnect(true);
                 mVideoPlayerPresenterEx.resume();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
+                mVideoPlayerPresenterEx.enableReconnect(false);
                 mVideoPlayerPresenterEx.pause();
                 break;
             case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
+                mVideoPlayerPresenterEx.enableReconnect(false);
                 mVideoPlayerPresenterEx.pause();
                 break;
         }
@@ -513,9 +528,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
         if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
-            return;
-        } else if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_REFRESH_USER_RELATION) {
-            mUserInfoPresenter.updateOwnerInfoFromServer();
             return;
         }
         if (CommonUtils.isFastDoubleClick()) {
@@ -777,7 +789,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Override
     public void onClickSixin(User user) {
-        VersionCheckTask.checkUpdate(this);
+
     }
 
     @Override
@@ -912,6 +924,20 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+    private void orientCloseBtn(boolean isLandscape) {
+        if (mCloseBtn == null) {
+            return;
+        }
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
+                mCloseBtn.getLayoutParams();
+        if (!isLandscape && BaseActivity.isProfileMode()) {
+            layoutParams.topMargin = layoutParams.rightMargin + BaseActivity.getStatusBarHeight();
+        } else {
+            layoutParams.topMargin = layoutParams.rightMargin;
+        }
+        mCloseBtn.setLayoutParams(layoutParams);
+    }
+
     protected void orientLandscape() {
 //        if (mLiveCommentView != null) {
 //            mLiveCommentView.orientComment(true);
@@ -925,6 +951,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (mComponentController != null) {
             mComponentController.onEvent(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         }
+        orientCloseBtn(true);
     }
 
     protected void orientPortrait() {
@@ -948,6 +975,32 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //                mWatchTopInfoSingleView.setVisibility(View.VISIBLE);
 //            }
 //        }
+        orientCloseBtn(false);
+    }
+
+    private boolean check4GNet() {
+        if (is4g()) {
+            MyAlertDialog alertDialog = new MyAlertDialog.Builder(this).create();
+            alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    trySendDataWithServerOnce();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setCancelable(false);
+            alertDialog.show();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -969,7 +1022,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 roomData.getViewersList().addAll((List) objects[1]);
                 roomData.notifyViewersChange("processViewerTop");
                 break;
-
         }
     }
 }

@@ -1,9 +1,8 @@
-package com.wali.live.common.endlive;
+package com.wali.live.watchsdk.endlive;
 
 import android.os.Bundle;
 
 import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.user.User;
 
 /**

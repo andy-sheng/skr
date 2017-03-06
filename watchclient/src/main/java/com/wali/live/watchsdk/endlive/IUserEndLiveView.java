@@ -1,6 +1,5 @@
-package com.wali.live.common.endlive;
+package com.wali.live.watchsdk.endlive;
 
-import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.proto.RoomRecommend;
 
 import java.util.List;

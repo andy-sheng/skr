@@ -8,13 +8,13 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
-import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.SecurityProto;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
+import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -165,7 +165,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                         onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                         return;
                                     }
-
+                                    UploadService.toUpload(new UploadService.UploadInfo(miSsoLoginRsp,channelId));
                                     onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
                                 } catch (Exception e) {
                                     MyLog.w(TAG, "miSsoLogin error", e);
@@ -201,7 +201,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<ActionParam>() {
+                        .subscribe(new Observer<AccountProto.LoginRsp>() {
                             @Override
                             public void onCompleted() {
                                 MyLog.w(TAG, "miLoginByCode login onCompleted");
@@ -214,10 +214,13 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             }
 
                             @Override
-                            public void onNext(ActionParam actionParam) {
+                            public void onNext(AccountProto.LoginRsp rsp) {
                                 MyLog.w(TAG, "miLoginByCode login onNext");
-                                if (actionParam != null) {
-                                    onEventLogin(channelId, actionParam.getErrCode());
+                                if(rsp.getRetCode() == MiLiveSdkEvent.SUCCESS){
+                                    UploadService.toUpload(new UploadService.UploadInfo(rsp,channelId));
+                                }
+                                if (rsp != null) {
+                                    onEventLogin(channelId, rsp.getRetCode());
                                 } else {
                                     onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                 }
@@ -245,7 +248,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         secureOperate(channelId, packageName, channelSecret, new ISecureCallBack() {
             @Override
             public void process(Object... objects) {
-                MyLog.w(TAG, "clearAccount success callback");
+                MyLog.w(TAG, "clearAccount success before callback channelId=" + channelId);
 
                 // 账号这一块
                 UserAccountManager.getInstance().logoff(channelId);

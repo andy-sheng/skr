@@ -92,7 +92,7 @@
     </RelativeLayout>
 
     <!-- 显示个人签名 -->
-    <com.base.view.AlwaysMarqueeTextView
+    <TextView
         android:id="@+id/my_singature_tv"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
@@ -116,9 +116,9 @@
 
         <TextView
             android:id="@+id/hint_sent_count_tv"
-            android:drawablePadding="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/margin_10"
             android:textColor="@color/color_black_trans_60"
             android:textSize="@dimen/text_size_38" />
 

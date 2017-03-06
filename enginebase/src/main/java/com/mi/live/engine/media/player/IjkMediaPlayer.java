@@ -42,7 +42,7 @@ import java.io.IOException;
  *         Java wrapper of ffplay.
  */
 public final class IjkMediaPlayer extends AbstractMediaPlayer {
-    private final static String TAG = IjkMediaPlayer.class.getSimpleName();
+    private final static String TAG = "IjkMediaPlayer";
 
     private SurfaceHolder mSurfaceHolder;
     private PowerManager.WakeLock mWakeLock = null;
