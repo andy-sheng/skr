@@ -114,8 +114,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     // 礼物特效动画
     protected GiftAnimationView mGiftAnimationView;
-    //
-    protected TouchDelegateView mTouchDelegateView;
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
     /**
      * presenter放在这里
@@ -130,7 +128,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private RoomStatusPresenter mRoomStatusPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
     protected UserInfoPresenter mUserInfoPresenter;
-    private TouchPresenter mTouchPresenter;
 //    private GameModePresenter mGameModePresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
@@ -261,8 +258,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mSdkView = new WatchSdkView(this, mComponentController, mMyRoomData, mRoomChatMsgManager);
         mSdkView.setupSdkView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
 
-        mTouchDelegateView = $(R.id.touch_delegate_view);
-
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
         addBindActivityLifeCycle(mFlyBarrageViewGroup, true);
     }
@@ -330,36 +325,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         addPushProcessor(mRoomStatusPresenter);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
-
-        // 点击事件代理，左右滑动隐藏组件的逻辑
-//        mTouchPresenter = new TouchPresenter(mTouchDelegateView);
-//        addBindActivityLifeCycle(mTouchPresenter, true);
-//        TouchPresenter.AnimationParams animationParams = new TouchPresenter.AnimationParams();
-//        animationParams.views = new View[]{
-//                mWatchTopInfoSingleView,
-//                mGiftContinueViewGroup,
-//                mGiftRoomEffectView,
-//                mGiftAnimationView,
-//                $(R.id.live_comment_view),
-//                $(R.id.bottom_button_view)
-//        };
-//        mTouchPresenter.setNeedHideViewsPortrait(animationParams);
-//        mTouchPresenter.setNeedHideViewsLandscape(animationParams);
-//
-//        mTouchPresenter.setGestureAdapter(new TouchPresenter.GestureApater() {
-//            @Override
-//            public boolean onDown() {
-//                if (mComponentController != null && mComponentController.onEvent(
-//                        WatchComponentController.MSG_HIDE_INPUT_VIEW)) {
-//                    return true;
-//                }
-//                if (mGameModePresenter != null && mGameModePresenter.ismInputViewShow()) {
-//                    mGameModePresenter.hideInputArea();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
 
         if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME) {
             // 是游戏直播间
