@@ -21,6 +21,7 @@ public class ThreadPool {
     private static ExecutorService sPool = null;
     private static ExecutorService sIOPool = null;
     private static ExecutorService sEngineService = null;
+    private static ExecutorService sUserInfoExecutor;
     private static ScheduledThreadPoolExecutor scheduledPool = new ScheduledThreadPoolExecutor(1);
 
     private static Handler sUiHandler = null;
@@ -115,6 +116,10 @@ public class ThreadPool {
         return sEngineService;
     }
 
+    public static ExecutorService getUserInfoExecutor(){
+        return sUserInfoExecutor;
+    }
+
     public static void startup() {
         ThreadUtils.ensureUiThread();
 
@@ -148,12 +153,14 @@ public class ThreadPool {
         sWorkerHandler = new Handler(sHandlerThread.getLooper());
 
         sEngineService = Executors.newSingleThreadExecutor(new MaxPriorityThreadFactory());
+        sUserInfoExecutor = Executors.newSingleThreadExecutor();
     }
 
     public static void shutdown() {
         sPool.shutdown();
         sEngineService.shutdown();
         sHandlerThread.quit();
+        sUserInfoExecutor.shutdown();
     }
 
     public static Handler getUiHandler() {

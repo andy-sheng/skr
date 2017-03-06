@@ -16,7 +16,7 @@ public class HostChannelManager {
     public final static String TAG = HostChannelManager.class.getSimpleName();
     // 当前账号的渠道
     private final static int NO_CHANNEL = 0;
-    private int mChannelId = NO_CHANNEL;
+    private volatile int mChannelId = NO_CHANNEL;
     private String mPackageName = "";
 
     // 账户模式：标准和匿名

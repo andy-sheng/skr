@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.task;
 
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
@@ -18,6 +19,7 @@ import com.wali.live.watchsdk.ipc.service.MiLiveSdkEvent;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.UploadUserInfoRequest;
 
+import cz.msebera.android.httpclient.annotation.NotThreadSafe;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -39,7 +41,7 @@ public class UploadRunnable implements Runnable{
 
     private String mAvatarMd5;
 
-    public UploadRunnable(UploadService.UploadInfo uploadInfo){
+    public UploadRunnable(@NonNull UploadService.UploadInfo uploadInfo){
         mUploadInfo = uploadInfo;
     }
 
@@ -135,7 +137,7 @@ public class UploadRunnable implements Runnable{
             UploadUserInfoRequest request = new UploadUserInfoRequest(mUploadInfo.uuid, nickName, gender, mAvatar, mAvatarMd5, !mUploadInfo.hasInnerSex);
             int retCode = request.sendRequest();
             if (retCode == MiLiveSdkEvent.SUCCESS) {
-                MyUserInfoManager.getInstance().syncSelfDetailInfo();
+                MyUserInfoManager.getInstance().syncSelfDetailInfo(mUploadInfo.uuid, mUploadInfo.channelId);
             }
             MyLog.w(TAG, "upload user info retCode=" + retCode);
         } else {

@@ -47,8 +47,8 @@ public class MyUserInfoLocalStore {
         mOwnUserInfoDao.getDatabase().execSQL(sql);
     }
 
-    public void replaceAccount(OwnUserInfo account) {
-        deleteAccount(account.getChannelid());
+    public void replaceAccount(OwnUserInfo account,int channelId) {
+        deleteAccount(channelId);
         mOwnUserInfoDao.insertOrReplaceInTx(account);
     }
 
