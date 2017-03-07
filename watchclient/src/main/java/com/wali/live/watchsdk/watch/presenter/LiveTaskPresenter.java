@@ -148,17 +148,16 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 //                                mPullRoomMessagePresenter.stopWork();
 //                            }
 //                        }
-
-                        if (enterRoomInfo.getRetCode() == ErrorCode.CODE_ROOM_NOT_EXIST) {
+                        if (mView != null && enterRoomInfo.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                            mView.enterLive(enterRoomInfo);
+                        } else {
                             BarrageMsg.LiveEndMsgExt ext = new BarrageMsg.LiveEndMsgExt();
                             ext.viewerCount = 0;
+                            if (enterRoomInfo.getRetCode() == ErrorCode.CODE_PARAM_ERROR) {
+                                ToastUtils.showToast(R.string.token_live_error_toast_room_not_exist);
+                            }
                             BarrageMsg msg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_LIVE_END, GlobalData.app().getString(R.string.live_finish), mMyRoomData.getRoomId(), mMyRoomData.getUid(), System.currentTimeMillis(), ext);
                             SendBarrageManager.pretendPushBarrage(msg);
-                        } else if (enterRoomInfo.getRetCode() == ErrorCode.CODE_PARAM_ERROR) {
-                            ToastUtils.showToast(R.string.token_live_error_toast_room_not_exist);
-                        }
-                        if (mView != null) {
-                            mView.enterLive(enterRoomInfo);
                         }
                         mHasEnter = true;
                     }
