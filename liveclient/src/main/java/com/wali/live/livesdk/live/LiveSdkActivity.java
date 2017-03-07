@@ -17,8 +17,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
+import com.base.event.SdkEventClass;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -27,6 +29,7 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.image.fresco.processor.BlurPostprocessor;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
@@ -34,7 +37,6 @@ import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
-import com.base.version.VersionCheckTask;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.HostChannelManager;
@@ -42,9 +44,7 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.base.BaseSdkActivity;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
-import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.data.location.Address;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -66,7 +66,6 @@ import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.dns.ILiveReconnect;
 import com.wali.live.livesdk.R;
@@ -85,7 +84,6 @@ import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.presenter.RoomInfoPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
-import com.wali.live.livesdk.live.receiver.TelephoneStateReceiver;
 import com.wali.live.livesdk.live.task.IActionCallBack;
 import com.wali.live.livesdk.live.utils.LocationHelper;
 import com.wali.live.livesdk.live.view.CountDownView;
@@ -94,6 +92,7 @@ import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveProto;
+import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
@@ -204,7 +203,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     private LiveRoomPresenter mLiveRoomPresenter;
     private TextView mToHomeBtn;
 
-    private TelephoneStateReceiver mTelephoneStateReceiver = null; //监听电话打入
+    private PhoneStateReceiver mPhoneStateReceiver = null; //监听电话打入
     private MyAlertDialog mPhoneInterruptDialog;
 
     private ScreenStateReceiver mScreenStateReceiver; //屏幕状态监听
@@ -256,6 +255,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Override
     public void trySendDataWithServerOnce() {
+
+    }
+
+    @Override
+    protected void tryClearData() {
+
     }
 
     private void prepareGameLive() {
@@ -370,7 +375,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         if (mScreenStateReceiver != null) {
             unregisterReceiver(mScreenStateReceiver);
         }
-        TelephoneStateReceiver.unregisterReceiver(this, mTelephoneStateReceiver);
+        PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
         sRecording = false;
         if (mComponentController != null) {
             mComponentController.release();
@@ -432,7 +437,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Override
     public void onClickSixin(User user) {
-        VersionCheckTask.checkUpdate(this);
+
     }
 
     /**
@@ -605,7 +610,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     private void postPrepare() {
         // 注册监听
-        mTelephoneStateReceiver = TelephoneStateReceiver.registerReceiver(this);
+        mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
         registerScreenStateReceiver();
 
         // 顶部view
