@@ -107,6 +107,12 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                 MyLog.d(TAG, "onScrollStateChangd,newState:" + newState + ",mOnBottom:" + mOnBottom);
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     mDraging = false;
+
+                    // 个数小于等于0就直接返回
+                    if (mAdapter.getItemCount() <= 0) {
+                        return;
+                    }
+
                     // 停下来判断是否是最后一个
                     int firstVisiblePosition = mLayoutManager.findFirstVisibleItemPosition();
                     MyLog.d(TAG, "onScrollStateChangd firstVisiblePosition :" + firstVisiblePosition);
