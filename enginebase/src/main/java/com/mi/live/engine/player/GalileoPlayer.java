@@ -116,16 +116,6 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
-    public void setOnBufferingUpdateListener(final IMediaPlayer.OnBufferingUpdateListener listener) {
-        ThreadPool.runOnEngine(new Runnable() {
-            @Override
-            public void run() {
-                mIjkMediaPlayer.setOnBufferingUpdateListener(listener);
-            }
-        }, "setOnBufferingUpdateListener");
-    }
-
-    @Override
     public void setOnSeekCompleteListener(final IMediaPlayer.OnSeekCompleteListener listener) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override
