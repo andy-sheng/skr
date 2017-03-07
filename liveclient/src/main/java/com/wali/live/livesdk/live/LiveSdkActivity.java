@@ -62,7 +62,6 @@ import com.mi.live.engine.streamer.StreamerConfig;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
-import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
@@ -188,7 +187,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     protected LiveTopInfoSingleView mTopInfoSingleView;
 
-    protected LiveCommentView mLiveCommentView; //弹幕区view
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
 
     protected TextView mTipsTv;
@@ -388,9 +386,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     protected void orientLandscape() {
-        if (mLiveCommentView != null) {
-            mLiveCommentView.orientComment(true);
-        }
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(true);
         }
@@ -406,9 +401,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     protected void orientPortrait() {
-        if (mLiveCommentView != null) {
-            mLiveCommentView.orientComment(false);
-        }
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(false);
         }
@@ -620,12 +612,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         mTopInfoSingleView.initViewUseData();
         mTopInfoSingleView.setVisibility(View.VISIBLE);
 
-        // 弹幕
-        mLiveCommentView = $(R.id.comment_rv);
-        mLiveCommentView.setSoundEffectsEnabled(false);
-        addBindActivityLifeCycle(mLiveCommentView, true);
-        mLiveCommentView.setToken(mRoomChatMsgManager.toString());
-
         // 礼物
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);
         addBindActivityLifeCycle(mGiftContinueViewGroup, true);
@@ -660,7 +646,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         mTipsTv = $(R.id.tips_tv);
 
         mComponentController = new LiveComponentController();
-        mSdkView = new LiveSdkView(this, mComponentController, mMyRoomData);
+        mSdkView = new LiveSdkView(this, mComponentController, mMyRoomData, mRoomChatMsgManager);
         mSdkView.setupSdkView();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);

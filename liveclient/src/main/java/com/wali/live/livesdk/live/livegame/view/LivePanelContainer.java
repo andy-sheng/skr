@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import com.wali.live.component.view.BasePanelContainer;
 import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
-import com.wali.live.component.view.panel.BaseSettingPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 
 /**
  * Created by yangli on 17-2-14.
@@ -18,7 +18,7 @@ import com.wali.live.component.view.panel.BaseSettingPanel;
 public class LivePanelContainer extends
         BasePanelContainer<LivePanelContainer.IPresenter, LivePanelContainer.IView, RelativeLayout> {
 
-    private BaseSettingPanel mSettingPanel;
+    private BaseBottomPanel mSettingPanel;
 
     public LivePanelContainer(@NonNull RelativeLayout panelContainer) {
         super(panelContainer);
@@ -59,7 +59,7 @@ public class LivePanelContainer extends
 
     public interface IPresenter {
         @Nullable
-        BaseSettingPanel createSettingPanel();
+        BaseBottomPanel createSettingPanel();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

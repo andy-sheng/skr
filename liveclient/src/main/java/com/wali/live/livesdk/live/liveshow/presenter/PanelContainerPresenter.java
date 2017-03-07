@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.livegame.presenter;
+package com.wali.live.livesdk.live.liveshow.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,9 +8,9 @@ import com.base.log.MyLog;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.panel.BaseBottomPanel;
-import com.wali.live.livesdk.live.livegame.LiveComponentController;
-import com.wali.live.livesdk.live.livegame.view.LivePanelContainer;
-import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
+import com.wali.live.livesdk.live.liveshow.LiveComponentController;
+import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
+import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -41,7 +41,7 @@ public class PanelContainerPresenter extends
         if (mView == null || mView.getRealView() == null) {
             return null;
         }
-        return new GameSettingPanel((RelativeLayout) mView.getRealView(), mLiveRoomChatMsgManager);
+        return new LiveSettingPanel((RelativeLayout) mView.getRealView());
     }
 
     @Nullable

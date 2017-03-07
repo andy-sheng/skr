@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.component.view;
+package com.wali.live.livesdk.live.liveshow.view;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,12 +15,12 @@ import com.wali.live.component.view.panel.BaseBottomPanel;
  *
  * @module 底部面板视图, 游戏直播
  */
-public class WatchPanelContainer extends
-        BasePanelContainer<WatchPanelContainer.IPresenter, WatchPanelContainer.IView, RelativeLayout> {
+public class LivePanelContainer extends
+        BasePanelContainer<LivePanelContainer.IPresenter, LivePanelContainer.IView, RelativeLayout> {
 
     private BaseBottomPanel mSettingPanel;
 
-    public WatchPanelContainer(@NonNull RelativeLayout panelContainer) {
+    public LivePanelContainer(@NonNull RelativeLayout panelContainer) {
         super(panelContainer);
     }
 
@@ -32,12 +32,20 @@ public class WatchPanelContainer extends
         class ComponentView implements IView {
             @Override
             public boolean processBackPress() {
-                return WatchPanelContainer.this.hidePanel(true);
+                return LivePanelContainer.this.hidePanel(true);
+            }
+
+            @Override
+            public void showSettingPanel() {
+                if (mSettingPanel == null && mPresenter != null) {
+                    mSettingPanel = mPresenter.createSettingPanel();
+                }
+                LivePanelContainer.this.showPanel(mSettingPanel, true);
             }
 
             @Override
             public void onOrientation(boolean isLandscape) {
-                WatchPanelContainer.this.onOrientation(isLandscape);
+                LivePanelContainer.this.onOrientation(isLandscape);
             }
 
             @Nullable
@@ -50,6 +58,8 @@ public class WatchPanelContainer extends
     }
 
     public interface IPresenter {
+        @Nullable
+        BaseBottomPanel createSettingPanel();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -57,6 +67,11 @@ public class WatchPanelContainer extends
          * 响应返回键事件
          */
         boolean processBackPress();
+
+        /**
+         * 显示设置面板
+         */
+        void showSettingPanel();
     }
 
 }

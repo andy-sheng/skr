@@ -19,17 +19,22 @@ import com.base.log.MyLog;
  *
  * @module 底部面板
  */
-public abstract class BaseSettingPanel<CONTENT extends View, CONTAINER extends ViewGroup> {
+public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends ViewGroup> {
     protected String TAG = getTAG();
 
     protected final static int PANEL_WIDTH_LANDSCAPE = GlobalData.screenWidth;
 
-    protected @NonNull CONTAINER mParentView;
-    protected @NonNull CONTENT mContentView;
-    protected @NonNull AnimationHelper mAnimationHelper;
+    @NonNull
+    protected CONTAINER mParentView;
+    @NonNull
+    protected CONTENT mContentView;
+    @NonNull
+    protected AnimationHelper mAnimationHelper;
+
     protected boolean mIsLandscape = false;
 
-    protected abstract @LayoutRes int getLayoutResId();
+    @LayoutRes
+    protected abstract int getLayoutResId();
 
     protected <T> T $(int id) {
         return (T) mContentView.findViewById(id);
@@ -40,10 +45,10 @@ public abstract class BaseSettingPanel<CONTENT extends View, CONTAINER extends V
     }
 
     protected String getTAG() {
-        return BaseSettingPanel.class.getSimpleName();
+        return BaseBottomPanel.class.getSimpleName();
     }
 
-    public BaseSettingPanel(@NonNull CONTAINER parentView) {
+    public BaseBottomPanel(@NonNull CONTAINER parentView) {
         mParentView = parentView;
     }
 
@@ -160,19 +165,19 @@ public abstract class BaseSettingPanel<CONTENT extends View, CONTAINER extends V
                         if (!isShow) {
                             ratio = 1 - ratio;
                         }
-                        BaseSettingPanel.this.onAnimationValue(ratio, isShow);
+                        BaseBottomPanel.this.onAnimationValue(ratio, isShow);
                     }
                 });
                 valueAnimator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-                        BaseSettingPanel.this.onAnimationStart(isShow);
+                        BaseBottomPanel.this.onAnimationStart(isShow);
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         MyLog.w(TAG, "moveAnimator onAnimationEnd");
-                        BaseSettingPanel.this.onAnimationEnd(isShow);
+                        BaseBottomPanel.this.onAnimationEnd(isShow);
                     }
                 });
             }

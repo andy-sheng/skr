@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.livegame;
+package com.wali.live.livesdk.live.liveshow;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -17,10 +17,10 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
-import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
-import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
-import com.wali.live.livesdk.live.livegame.view.LivePanelContainer;
+import com.wali.live.livesdk.live.liveshow.presenter.BottomButtonPresenter;
+import com.wali.live.livesdk.live.liveshow.presenter.PanelContainerPresenter;
+import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
+import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
@@ -61,11 +61,9 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     public LiveSdkView(
             @NonNull Activity activity,
             @NonNull LiveComponentController componentController,
-            @NonNull RoomBaseDataModel myRoomData,
-            @NonNull LiveRoomChatMsgManager roomChatMsgManager) {
+            @NonNull RoomBaseDataModel myRoomData) {
         super(activity, componentController);
         mMyRoomData = myRoomData;
-        mRoomChatMsgManager = roomChatMsgManager;
     }
 
     @Override
@@ -134,13 +132,13 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
 
         // 滑动
         {
-//            View view = $(R.id.touch_view);
-//            if (view == null) {
-//                return;
-//            }
-//            TouchPresenter presenter = new TouchPresenter(mComponentController, view);
-//            addComponentView(presenter);
-//            presenter.setViewSet(mHorizontalMoveSet);
+            View view = $(R.id.touch_view);
+            if (view == null) {
+                return;
+            }
+            TouchPresenter presenter = new TouchPresenter(mComponentController, view);
+            addComponentView(presenter);
+            presenter.setViewSet(mHorizontalMoveSet);
         }
 
         mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到

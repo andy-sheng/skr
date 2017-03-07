@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.support.annotation.FloatRange;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,11 +59,11 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     protected LiveRoomChatMsgManager mRoomChatMsgManager;
 
     @Nullable
-    protected GiftContinueViewGroup mGiftContinueViewGroup;
-    @Nullable
-    protected View mWatchTopInfoSingleView;
+    protected View mTopInfoView;
     @Nullable
     protected View mLiveCommentView;
+    @Nullable
+    protected GiftContinueViewGroup mGiftContinueViewGroup;
 
     protected boolean mIsGameMode = false;
     protected boolean mIsLandscape = false;
@@ -137,22 +136,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         setupSdkView();
     }
 
-    private void addViewToSet(int[] idSet, List<View>... listSet) {
-        if (idSet == null || listSet == null) {
-            return;
-        }
-        for (int id : idSet) {
-            View view = $(id);
-            for (List<View> viewSet : listSet) {
-                viewSet.add(view);
-            }
-        }
-    }
-
     @Override
     public void setupSdkView() {
         mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
-        mWatchTopInfoSingleView = $(R.id.watch_top_info_view); // 顶部view
+        mTopInfoView = $(R.id.watch_top_info_view); // 顶部view
 
         // 弹幕区
         {
@@ -238,32 +225,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到
     }
 
-    public class Action implements ComponentPresenter.IAction {
+    public class Action extends BaseSdkView.Action {
 
-        private <T> T deRef(WeakReference<?> reference) {
-            return reference != null ? (T) reference.get() : null;
-        }
-
-        private void setAlpha(View view, @FloatRange(from = 0.0f, to = 1.0f) float alpha) {
-            if (view != null) {
-                view.setAlpha(alpha);
-            }
-        }
-
-        private void setVisibility(View view, int visibility) {
-            if (view != null) {
-                view.setVisibility(visibility);
-            }
-        }
-
-        private WeakReference<ValueAnimator> mInputAnimatorRef; // 输入框弹起时，隐藏
-        private boolean mInputShow = false;
-
-        /**
-         * 输入框显示时，隐藏弹幕区和头部区
-         * 弹幕区只在横屏下才需要显示和隐藏，直接修改visibility，在显示动画开始时显示，在消失动画结束时消失。
-         */
-        private void startInputAnimator(boolean inputShow) {
+        @Override
+        protected void startInputAnimator(boolean inputShow) {
             if (mInputShow == inputShow) {
                 return;
             }
@@ -284,7 +249,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     if (mInputShow) {
                         value = 1.0f - value;
                     }
-                    setAlpha(mWatchTopInfoSingleView, value);
+                    setAlpha(mTopInfoView, value);
                 }
             });
             valueAnimator.addListener(new AnimatorListenerAdapter() {
@@ -295,16 +260,16 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                             setVisibility(mLiveCommentView, View.GONE);
                         }
                     } else {
-                        setVisibility(mWatchTopInfoSingleView, View.VISIBLE);
+                        setVisibility(mTopInfoView, View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mInputShow) {
-                        setVisibility(mWatchTopInfoSingleView, View.GONE);
+                        setVisibility(mTopInfoView, View.GONE);
                     } else {
-                        setAlpha(mWatchTopInfoSingleView, 1.0f);
+                        setAlpha(mTopInfoView, 1.0f);
                         if (mIsLandscape && !mIsGameMode) {
                             setVisibility(mLiveCommentView, View.VISIBLE);
                         }
@@ -375,7 +340,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             mGameAnimatorRef = new WeakReference<>(valueAnimator);
         }
 
-        private void stopAllAnimator() {
+        @Override
+        protected void stopAllAnimator() {
             ValueAnimator valueAnimator = deRef(mInputAnimatorRef);
             if (valueAnimator != null) {
                 valueAnimator.cancel();
@@ -386,18 +352,11 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
         }
 
+        @Override
         public void clearAnimation() {
             stopAllAnimator();
             mInputAnimatorRef = null;
             mGameAnimatorRef = null;
-        }
-
-        public void registerAction() {
-            mComponentController.registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT, this);
-            mComponentController.registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE, this);
-            mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_SHOWED, this);
-            mComponentController.registerAction(WatchComponentController.MSG_INPUT_VIEW_HIDDEN, this);
-            mComponentController.registerAction(WatchComponentController.MSG_BACKGROUND_CLICK, this);
         }
 
         @Override

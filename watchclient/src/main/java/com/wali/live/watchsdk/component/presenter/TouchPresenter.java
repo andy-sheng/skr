@@ -47,6 +47,13 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
     private int mFlingThreshold = FLING_THRESHOLD_NORMAL;
 
     public void setViewSet(
+            @NonNull List<View> horizontalSet) {
+        mHorizontalSet = horizontalSet;
+        mVerticalSet = new ArrayList<>(0);
+        mIsGameMode = false;
+    }
+
+    public void setViewSet(
             @NonNull List<View> horizontalSet,
             @NonNull List<View> verticalSet,
             boolean isGameMode) {

@@ -9,8 +9,8 @@ ${IMPORT}
  *
  * @module [TODO add module]
  */
-public class ${NAME}Presenter extends ComponentPresenter<${NAME}View.IView>
-		implements ${NAME}View.IPresenter {
+public class ${NAME}Presenter extends ComponentPresenter<${NAME}Panel.IView>
+		implements ${NAME}Panel.IPresenter {
     private static final String TAG = "${NAME}Presenter";
 
 	@Nullable

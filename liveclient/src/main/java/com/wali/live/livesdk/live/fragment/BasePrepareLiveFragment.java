@@ -208,6 +208,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected void finish() {
+        MyLog.w(TAG, "finish");
         FragmentNaviUtils.popFragmentFromStack(getActivity());
     }
 

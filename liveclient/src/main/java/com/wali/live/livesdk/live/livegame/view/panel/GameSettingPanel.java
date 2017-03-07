@@ -11,7 +11,7 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.HostChannelManager;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.view.panel.BaseSettingPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
 
@@ -24,14 +24,14 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  *
  * @module 设置面板
  */
-public class GameSettingPanel extends BaseSettingPanel<LinearLayout, RelativeLayout> implements View.OnClickListener {
+public class GameSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
+        implements View.OnClickListener {
     public static final boolean DEFAULT_FORBID_GIFT = false;
     public static final boolean DEFAULT_FORBID_SYS = false;
     public static final boolean DEFAULT_FORBID_CHAT = false;
 
-    private
     @Nullable
-    LiveRoomChatMsgManager mLiveRoomChatMsgManager;
+    private LiveRoomChatMsgManager mLiveRoomChatMsgManager;
 
     private View mForbidGiftTv;
     private View mForbidSystemTv;
