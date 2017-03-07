@@ -547,7 +547,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                                 temp1.addAll(top10List);
                                 temp1.addAll(otherList);
                                 // 保证头像个数不可能大于观众人数
-                                if (temp1.size() > viewerCount) {
+                                if (temp1.size() > viewerCount && viewerCount > 0) {
                                     return temp1.subList(0, viewerCount);
                                 }
                                 return temp1;
