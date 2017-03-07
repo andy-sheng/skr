@@ -6,7 +6,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.push.IPushMsgProcessor;
@@ -31,8 +30,6 @@ public class RoomStatusPresenter implements IPushMsgProcessor {
 
     private static final int MSG_ANCHOR_JOIN = 107;  // 主播回到房间
 
-    MyAlertDialog mDialog;
-
     Handler mUIHandler;
 
     LiveRoomChatMsgManager mRoomChatMsgManager;
@@ -54,9 +51,6 @@ public class RoomStatusPresenter implements IPushMsgProcessor {
             roomBaseDataModel.setLiveEnd(true);
             BarrageMsg.LiveEndMsgExt ext = (BarrageMsg.LiveEndMsgExt) msg.getMsgExt();
             roomBaseDataModel.setViewerCnt(ext.viewerCount);
-            if (mDialog != null && mDialog.isShowing()) {
-                mDialog.dismiss();
-            }
             ensureHandlerNotNull();
             // 直播结束
             EventBus.getDefault().post(new LiveEndEvent());

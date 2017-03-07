@@ -15,8 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.BaseFragment;
-import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
@@ -51,7 +51,7 @@ import rx.functions.Action1;
  * @module 新版直播结束页面 （用户界面）
  * Created by jiyangli on 16-7-4.
  */
-public class UserEndLiveFragment extends MyRxFragment implements View.OnClickListener, IUserEndLiveView {
+public class UserEndLiveFragment extends BaseEventBusFragment implements View.OnClickListener, IUserEndLiveView {
     private static final String TAG = UserEndLiveFragment.class.getSimpleName();
     public static final String EXTRA_OWNER_ID = "extra_owner_id";
     public static final String EXTRA_ROOM_ID = "extra_room_id";
@@ -235,13 +235,12 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
         AvatarUtils.loadAvatarByUidTs(mAvatarBg, presenter.getOwnerId(), presenter.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         AvatarUtils.loadAvatarByUidTs(imgAvatar, presenter.getOwnerId(), 0, true);
 
-        if (!TextUtils.isEmpty(presenter.getNickName())) {
+        if (TextUtils.isEmpty(presenter.getNickName()) || presenter.isMyReplay()) {
+            txtFollow.setVisibility(View.INVISIBLE);
+        } else {
             txtAvatarName.setText(presenter.getNickName());
             txtFollow.setVisibility(View.VISIBLE);
-        } else {
-            txtFollow.setVisibility(View.INVISIBLE);
         }
-
         if (presenter.getViewerCount() < 0) {
             txtViewer.setVisibility(View.INVISIBLE);
         } else {
@@ -283,12 +282,6 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
         } else {
             MyLog.d(TAG, "Language is not zh_CN");
             hideAvatarZone();
-        }
-
-        if (presenter.isMyReplay()) {
-            txtFollow.setVisibility(View.INVISIBLE);
-        } else {
-            txtFollow.setVisibility(View.VISIBLE);
         }
     }
 
@@ -514,7 +507,6 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
             hideAvatarZone();
         }
     }
-
 
     /**
      * 打开直播结束页面
