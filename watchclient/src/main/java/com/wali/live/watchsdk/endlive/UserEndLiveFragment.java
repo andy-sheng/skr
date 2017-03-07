@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.endlive;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,9 +27,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.live.module.common.R;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
+import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.common.action.VideoAction;
 import com.wali.live.proto.RoomRecommend;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -110,7 +112,6 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
         }
     }
 
-
     @Override
     public int getRequestCode() {
         return 0;
@@ -185,27 +186,61 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
         int type = event.eventType;
         long uuid = event.uuid;
         if (presenter.getOwnerId() == uuid) {
-            if (type == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW) {
-                txtFollow.setText(getResources().getString(R.string.live_ended_concerned));
-                txtFollow.setTextColor(getResources().getColor(R.color.color_white_trans_40));
-                txtFollow.setBackgroundResource(R.drawable.followed_button_normal);
-            } else if (type == FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW) {
-                txtFollow.setText(getResources().getString(R.string.add_follow));
-                txtFollow.setBackgroundResource(R.drawable.chat_room_button);
-                txtFollow.setTextColor(getResources().getColor(R.color.color_black_trans_90));
-                txtFollow.setTag(VideoAction.ACTION_END_CONCERN);
-                txtFollow.setOnClickListener(this);
-            }
-            return;
+            updateFollowTv(type != FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW);
         }
     }
-    
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(RoomDataChangeEvent event) {
+        if (event == null) {
+            return;
+        }
+        MyLog.w(TAG, "RoomDataChangeEvent " + event.type);
+        switch (event.type) {
+            case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
+                RoomBaseDataModel roomBaseDataModel = event.source;
+                if (roomBaseDataModel != null) {
+                    String nickName = roomBaseDataModel.getNickName();
+                    if (!TextUtils.isEmpty(nickName)) {
+                        txtAvatarName.setText(nickName);
+                    }
+                    updateFollowTv(roomBaseDataModel.isFocused());
+                    if (txtFollow.getVisibility() != View.VISIBLE) {
+                        txtFollow.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+            break;
+            default:
+                break;
+        }
+    }
+
+    private void updateFollowTv(boolean isFocused) {
+        MyLog.w(TAG, "isFocused=" + isFocused);
+        if (isFocused) {
+            txtFollow.setText(getResources().getString(R.string.live_ended_concerned));
+            txtFollow.setTextColor(getResources().getColor(R.color.color_white_trans_40));
+            txtFollow.setBackgroundResource(R.drawable.followed_button_normal);
+        } else {
+            txtFollow.setText(getResources().getString(R.string.add_follow));
+            txtFollow.setBackgroundResource(R.drawable.chat_room_button);
+            txtFollow.setTextColor(getResources().getColor(R.color.color_black_trans_90));
+            txtFollow.setOnClickListener(this);
+        }
+    }
+
     @Override
     public void initData() {
         AvatarUtils.loadAvatarByUidTs(mAvatarBg, presenter.getOwnerId(), presenter.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         AvatarUtils.loadAvatarByUidTs(imgAvatar, presenter.getOwnerId(), 0, true);
 
-        txtAvatarName.setText(presenter.getNickName());
+        if (!TextUtils.isEmpty(presenter.getNickName())) {
+            txtAvatarName.setText(presenter.getNickName());
+            txtFollow.setVisibility(View.VISIBLE);
+        } else {
+            txtFollow.setVisibility(View.INVISIBLE);
+        }
 
         if (presenter.getViewerCount() < 0) {
             txtViewer.setVisibility(View.INVISIBLE);
@@ -218,7 +253,6 @@ public class UserEndLiveFragment extends MyRxFragment implements View.OnClickLis
             txtFollow.setBackgroundResource(R.drawable.followed_button_normal);
         } else {
             txtFollow.setText(getResources().getString(R.string.add_follow));
-            txtFollow.setTag(VideoAction.ACTION_END_CONCERN);
             txtFollow.setOnClickListener(this);
         }
 
