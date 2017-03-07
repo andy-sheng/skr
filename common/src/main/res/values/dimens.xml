@@ -196,6 +196,7 @@
     <dimen name="view_dimen_502">167.33dp</dimen>
     <dimen name="view_dimen_510">170dp</dimen>
     <dimen name="view_dimen_520">173.33dp</dimen>
+    <dimen name="view_dimen_532">177.33dip</dimen>
     <dimen name="view_dimen_540">180dp</dimen>
     <dimen name="view_dimen_560">186.67dp</dimen>
     <dimen name="view_dimen_572">171dip</dimen>

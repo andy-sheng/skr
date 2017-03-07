@@ -92,4 +92,11 @@
     <string name="network_change_tip">Using mobile data may generate additional carrier fees</string>
     <string name="warm_prompt">Attention</string>
     <string name="phone_interrupt">Session was paused before you picked up the call. Your phone conversations are always private.</string>
+    <string name="low">Low</string>
+    <string name="middle">Medium</string>
+    <string name="high">High</string>
+    <string name="select_cover">Select cover</string>
+    <string name="quanzi_default_name">Select a circle</string>
+    <string name="add_topic">Add topic</string>
+    <string name="quanzi_name">%s circle</string>
 </resources>

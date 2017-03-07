@@ -92,5 +92,12 @@
     <string name="network_change_tip">您当前正在使用非wifi网络进行直播，可能会产生流量费用</string>
     <string name="warm_prompt">温馨提示</string>
     <string name="phone_interrupt">电话接听前，直播已经暂停，您的通话不会对外传播，现在您可以继续直播。</string>
+    <string name="low">低</string>
+    <string name="middle">中</string>
+    <string name="high">高</string>
+    <string name="select_cover">设置封面</string>
+    <string name="quanzi_default_name">选择圈子</string>
+    <string name="add_topic">添加话题</string>
+    <string name="quanzi_name">%s圈子</string>
 
 </resources>

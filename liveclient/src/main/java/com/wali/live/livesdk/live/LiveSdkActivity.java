@@ -224,11 +224,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.livesdk_layout);
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
-
         getLocation();
         setupRequiredComponent();
-        openOrientation();
+
         prepareGameLive();
+
+        openOrientation();
         mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
         mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
         // 封面模糊图
@@ -263,7 +264,15 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     private void prepareGameLive() {
         MyLog.w(TAG, "prepareGameLive");
-        PrepareGameLiveFragment.openFragment(this, REQUEST_PREPARE_LIVE, this);
+        com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment.openFragment(
+                this, REQUEST_PREPARE_LIVE, this);
+        mRoomChatMsgManager.setIsGameLiveMode(true);
+    }
+
+    private void prepareShowLive() {
+        MyLog.w(TAG, "prepareShowLive");
+        com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment.openFragment(
+                this, REQUEST_PREPARE_LIVE, this);
         mRoomChatMsgManager.setIsGameLiveMode(true);
     }
 

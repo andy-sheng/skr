@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.fragment;
+package com.wali.live.livesdk.live.livegame.fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,6 +31,7 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
+import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -40,12 +41,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 /**
- * Created by yangli on 16-11-28.
+ * Created by yangli on 2017/3/7.
  *
  * @module 游戏直播准备页
  */
-@Deprecated
-public class PrepareGameLiveFragment extends BasePrepareLiveFragment {
+public class PrepareLiveFragment extends BasePrepareLiveFragment {
+    private static final String TAG = "PrepareGameLiveFragment";
+
     public static final String EXTRA_GAME_LIVE_QUALITY = "extra_game_live_quality";
 
     public static final int LOW_CLARITY = 0;
@@ -74,7 +76,6 @@ public class PrepareGameLiveFragment extends BasePrepareLiveFragment {
             showQualityDialog();
         } else if (i == R.id.standard_definition || i == R.id.high_definition || i == R.id.super_definition) {
             selectQuality(v);
-        } else {
         }
     }
 
@@ -264,9 +265,12 @@ public class PrepareGameLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
-    public static void openFragment(BaseComponentSdkActivity activity, int requestCode, FragmentDataListener listener) {
+    public static void openFragment(
+            BaseComponentSdkActivity activity,
+            int requestCode,
+            FragmentDataListener listener) {
         BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
-                PrepareGameLiveFragment.class, null, true, false, true);
+                PrepareLiveFragment.class, null, true, false, true);
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }
