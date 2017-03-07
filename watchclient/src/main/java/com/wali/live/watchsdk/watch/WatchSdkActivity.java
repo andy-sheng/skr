@@ -99,6 +99,8 @@ import java.util.concurrent.TimeUnit;
 import rx.Observer;
 import rx.functions.Action1;
 
+import static android.view.View.GONE;
+
 
 /**
  * Created by lan on 16/11/25.
@@ -299,7 +301,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                             mGiftContinueViewGroup.onShowInputView();
                         }
                         if (mLiveCommentView != null && isDisplayLandscape()) {
-                            mLiveCommentView.setVisibility(View.GONE);
+                            mLiveCommentView.setVisibility(GONE);
                         }
                         return true;
                     case WatchComponentController.MSG_INPUT_VIEW_HIDDEN:
@@ -574,7 +576,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         switch (event.mType) {
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                 if (mBlurIv.getVisibility() == View.VISIBLE) {
-                    mBlurIv.setVisibility(View.GONE);
+                    mBlurIv.setVisibility(GONE);
                 }
                 break;
         }
