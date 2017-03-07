@@ -30,8 +30,6 @@ public interface IPlayer {
 
     void setOnCompletionListener(IMediaPlayer.OnCompletionListener listener);
 
-    void setOnBufferingUpdateListener(IMediaPlayer.OnBufferingUpdateListener listener);
-
     void setOnSeekCompleteListener(IMediaPlayer.OnSeekCompleteListener listener);
 
     void setOnVideoSizeChangedListener(IMediaPlayer.OnVideoSizeChangedListener listener);

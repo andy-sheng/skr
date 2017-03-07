@@ -86,7 +86,7 @@ dependencies {
     compile(presentationDependencies.androidAppCompat) {
         exclude module: 'support-v4'
     }
-     compile project(':watchclient')
+    compile project(':watchclient')
 //    compile project(':liveclient')
     compile files('libs/crasheye_2.1.5.jar')
 }

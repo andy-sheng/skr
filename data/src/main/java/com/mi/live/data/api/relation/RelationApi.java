@@ -10,7 +10,6 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
-import com.mi.live.data.repository.datasource.WatchHistoryInfoDaoAdapter;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.Rank;
 import com.wali.live.proto.RelationProto;
@@ -96,7 +95,6 @@ public class RelationApi {
                     FollowOrUnfollowEvent event = new FollowOrUnfollowEvent(FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW, target);
                     event.isBothFollow = response.getIsBothway();
                     EventBus.getDefault().post(event);
-                    WatchHistoryInfoDaoAdapter.getInstance().updateWatchHistoryInfo(event);
                     return response.getIsBothway() ? FOLLOW_STATE_BOTH_WAY : FOLLOW_STATE_SUCCESS;
                 }
             }
@@ -122,7 +120,6 @@ public class RelationApi {
                 MyLog.v(TAG + "unFollow result:" + response.getCode());
                 if (response.getCode() == RESULT_CODE_SUCCESS) {
                     EventBus.getDefault().post(new FollowOrUnfollowEvent(FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW, target));
-                    WatchHistoryInfoDaoAdapter.getInstance().updateWatchHistoryInfo(new FollowOrUnfollowEvent(FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW, target));
                     return true;
                 }
             }
