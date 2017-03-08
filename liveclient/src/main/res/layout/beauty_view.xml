@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/beauty_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10.67dp"
+        android:src="@drawable/start_live_icon_beauty" />
+
+    <LinearLayout
+        android:id="@+id/beauty_level_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/beauty_btn"
+        android:layout_marginRight="12dp"
+        android:layout_toLeftOf="@+id/beauty_btn"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/close_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:text="@string/close"
+            android:textColor="@color/bg_beauty_level"
+            android:textSize="@dimen/text_size_42" />
+
+        <TextView
+            android:id="@+id/low_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:text="@string/low"
+            android:textColor="@color/bg_beauty_level"
+            android:textSize="@dimen/text_size_42" />
+
+        <TextView
+            android:id="@+id/middle_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:text="@string/middle"
+            android:textColor="@color/bg_beauty_level"
+            android:textSize="@dimen/text_size_42" />
+
+        <TextView
+            android:id="@+id/high_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/high"
+            android:textColor="@color/bg_beauty_level"
+            android:textSize="@dimen/text_size_42" />
+
+    </LinearLayout>
+
+</merge>

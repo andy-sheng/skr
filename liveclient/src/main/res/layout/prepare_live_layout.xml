@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_black_trans_50">
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_black_trans_50">
 
     <TextView
         android:id="@+id/location"
@@ -20,7 +20,7 @@
         android:shadowRadius="2"
         android:text="@string/default_location_hint"
         android:textColor="@color/color_white_trans_80"
-        android:textSize="@dimen/text_size_36" />
+        android:textSize="@dimen/text_size_36"/>
 
     <ImageView
         android:id="@+id/turn_over"
@@ -31,70 +31,17 @@
         android:layout_marginRight="@dimen/margin_40"
         android:layout_marginTop="20dp"
         android:padding="10.67dp"
-        android:src="@drawable/start_live_icon_flip" />
+        android:src="@drawable/start_live_icon_flip"/>
 
-    <ImageView
-        android:id="@+id/beauty_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_10"
-        android:layout_marginTop="20dp"
-        android:layout_toLeftOf="@+id/turn_over"
-        android:padding="10.67dp"
-        android:src="@drawable/start_live_icon_beauty" />
-
-    <LinearLayout
-        android:id="@+id/beauty_level_container"
+    <!--分享按钮区域-->
+    <com.wali.live.livesdk.live.view.BeautyView
+        android:id="@+id/beauty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="28dp"
-        android:layout_toLeftOf="@+id/beauty_btn"
-        android:gravity="right"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/close_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:gravity="center"
-            android:text="@string/close"
-            android:textColor="@color/bg_beauty_level"
-            android:textSize="@dimen/text_size_42" />
-
-        <TextView
-            android:id="@+id/low_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:gravity="center"
-            android:text="@string/low"
-            android:textColor="@color/bg_beauty_level"
-            android:textSize="@dimen/text_size_42" />
-
-        <TextView
-            android:id="@+id/middle_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:gravity="center"
-            android:text="@string/middle"
-            android:textColor="@color/bg_beauty_level"
-            android:textSize="@dimen/text_size_42" />
-
-        <TextView
-            android:id="@+id/high_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/high"
-            android:textColor="@color/bg_beauty_level"
-            android:textSize="@dimen/text_size_42" />
-
-    </LinearLayout>
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@+id/turn_over"/>
 
     <!--封面/直播标题等-->
     <RelativeLayout
@@ -124,7 +71,7 @@
                     android:id="@+id/cover_big"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="visible" />
+                    android:visibility="visible"/>
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/cover_view"
@@ -140,7 +87,7 @@
                     fresco:roundTopRight="false"
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/color_white"
-                    fresco:roundingBorderWidth="1dp" />
+                    fresco:roundingBorderWidth="1dp"/>
 
                 <TextView
                     android:id="@+id/cover_text"
@@ -153,11 +100,11 @@
                     android:gravity="top"
                     android:text="@string/select_cover"
                     android:textColor="@color/color_white80_pressed_white40"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
 
             </RelativeLayout>
 
-            <com.wali.live.view.NoMenuEditText
+            <EditText
                 android:id="@+id/live_title_et"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
@@ -178,7 +125,7 @@
                 android:textColorHint="@color/color_white_trans_70"
                 android:textCursorDrawable="@drawable/edit_text_input_cursor"
                 android:textIsSelectable="false"
-                android:textSize="@dimen/text_size_44" />
+                android:textSize="@dimen/text_size_44"/>
         </RelativeLayout>
 
         <View
@@ -186,7 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_below="@+id/title_container"
-            android:background="@color/color_white_trans_20" />
+            android:background="@color/color_white_trans_20"/>
 
         <LinearLayout
             android:id="@+id/bottom_container"
@@ -214,13 +161,13 @@
                     android:shadowRadius="1"
                     android:text="@string/quanzi_default_name"
                     android:textColor="@color/color_white_pressed_white60_selected_fed533"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="1px"
                 android:layout_height="28.67dp"
-                android:background="@color/color_white_trans_20" />
+                android:background="@color/color_white_trans_20"/>
 
             <RelativeLayout
                 android:id="@+id/add_topic_container"
@@ -240,20 +187,12 @@
                     android:shadowRadius="1"
                     android:text="@string/add_topic"
                     android:textColor="@color/color_white_pressed_white60"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
             </RelativeLayout>
 
         </LinearLayout>
 
     </RelativeLayout>
-
-    <!--分享按钮区域-->
-    <com.wali.live.video.view.PreLiveShareButtonView
-        android:id="@+id/share_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/begin_btn"
-        android:layout_centerHorizontal="true" />
 
     <!--开始直播按钮-->
     <TextView
@@ -268,7 +207,7 @@
         android:gravity="center"
         android:text="@string/live_start"
         android:textColor="@color/color_black_trans_80"
-        android:textSize="@dimen/text_size_44" />
+        android:textSize="@dimen/text_size_44"/>
 
     <!--关闭按钮-->
     <ImageView
@@ -281,6 +220,6 @@
         android:layout_marginTop="42dp"
         android:padding="10dp"
         android:scaleType="centerInside"
-        android:src="@drawable/video_close_white_bg" />
+        android:src="@drawable/video_close_white_bg"/>
 
 </RelativeLayout>

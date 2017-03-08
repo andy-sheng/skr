@@ -23,9 +23,9 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.dialog.MyAlertDialog;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
-import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -39,7 +39,6 @@ import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -49,7 +48,7 @@ import java.util.List;
  * Created by zyh on 2017/2/8.
  */
 
-public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
+public abstract class BasePrepareLiveFragment extends BaseEventBusFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
@@ -136,7 +135,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         MyLog.w(TAG, "createView");
-        EventBus.getDefault().register(this);
         return inflater.inflate(getLayoutResId(), container, false);
     }
 
@@ -144,7 +142,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     public void onDestroyView() {
         super.onDestroyView();
         mRoomTagPresenter.stop();
-        EventBus.getDefault().unregister(this);
     }
 
     protected void initContentView() {

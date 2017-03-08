@@ -227,8 +227,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         getLocation();
         setupRequiredComponent();
 
-        prepareGameLive();
-
+//        prepareGameLive();
+        prepareShowLive();
         openOrientation();
         mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
         mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
