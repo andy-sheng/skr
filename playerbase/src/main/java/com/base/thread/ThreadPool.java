@@ -9,9 +9,7 @@ import java.util.concurrent.Future;
 /**
  * Created by chenyong on 2017/3/7.
  */
-
 public class ThreadPool {
-
     private static ExecutorService sEngineService = Executors.newSingleThreadExecutor();
 
     public static Future<?> runOnEngine(final Runnable r, final String from) {
@@ -20,10 +18,10 @@ public class ThreadPool {
                 @Override
                 public void run() {
                     long begin = System.currentTimeMillis();
-                    MyLog.d("ThreadForEngine","exec "+from+" begin");
+                    MyLog.d("ThreadForEngine", "exec " + from + " begin");
                     r.run();
                     long end = System.currentTimeMillis();
-                    MyLog.d("ThreadForEngine","exec "+from+",time:"+(end-begin));
+                    MyLog.d("ThreadForEngine", "exec " + from + ",time:" + (end - begin));
                 }
             });
         }
