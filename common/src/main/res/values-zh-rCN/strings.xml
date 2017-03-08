@@ -13,6 +13,8 @@
     <string name="message_sdcard_permission">读写手机存储已被禁止，请在系统设置中开启。现在设置?</string>
     <string name="title_location_permission">开启定位权限</string>
     <string name="message_location_permission">定位已被禁止，请在系统设置中开启。现在设置?</string>
+    <string name="title_phone_permission">开启获取手机信息权限</string>
+    <string name="message_phone_permission">手机信息权限已被禁止，请在系统设置中开启。现在设置?</string>
     <string name="setting_title">设置</string>
     <string name="cancel">取消</string>
     <plurals name="days_ago">
