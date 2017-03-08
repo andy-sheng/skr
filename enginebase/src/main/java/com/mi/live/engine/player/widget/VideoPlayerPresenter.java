@@ -499,6 +499,8 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 mPlayer.setSurface(null);
                 mPlayer.release();
                 mPlayer = null;
+                mUri = null;
+                mIsReconnectEnable = false;
                 mCurrentState = STATE_IDLE;
                 if (mPlayerCallBack != null) {
                     mPlayerCallBack.onReleased();
