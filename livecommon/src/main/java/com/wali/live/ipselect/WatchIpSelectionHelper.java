@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.base.global.GlobalData;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.Constants;
 import com.mi.live.data.report.keyflow.KeyFlowReportManager;
@@ -22,7 +21,7 @@ import java.util.List;
 public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
     private static final String TAG = "WatchIpSelectionHelper";
 
-    private boolean mIsForceDropRate = PreferenceUtils.getSettingBoolean(GlobalData.app(),
+    private boolean mIsForceDropRate = PreferenceUtils.getSettingBoolean(com.base.global.GlobalData.app(),
             PreferenceUtils.KEY_DEBUG_DROP_BITRATE, false);
     private boolean mIsDropRate = false;
 
