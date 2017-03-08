@@ -66,18 +66,19 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
+import com.wali.live.component.BaseSdkView;
 import com.wali.live.dns.ILiveReconnect;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
+import com.wali.live.livesdk.live.component.BaseLiveController;
 import com.wali.live.livesdk.live.dns.MultiCdnIpSelectionHelper;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.EndLiveFragment;
 import com.wali.live.livesdk.live.fragment.PrepareGameLiveFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
-import com.wali.live.livesdk.live.livegame.LiveComponentController;
-import com.wali.live.livesdk.live.livegame.LiveSdkView;
+import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.operator.LiveOperator;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
@@ -191,8 +192,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     protected TextView mTipsTv;
 
-    protected LiveComponentController mComponentController;
-    protected LiveSdkView mSdkView;
+    protected BaseLiveController mComponentController;
+    protected BaseSdkView mSdkView;
 
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     protected GiftAnimationView mGiftAnimationView; // 礼物特效动画
@@ -228,7 +229,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         setupRequiredComponent();
 
 //        prepareGameLive();
-        prepareShowLive();
+        mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
         openOrientation();
         mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
         mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -239,6 +240,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     private void setupRequiredComponent() {
+        mComponentController = new LiveComponentController(mMyRoomData, mRoomChatMsgManager);
         mLiveOperator = new LiveOperator();
         mIpSelectionHelper = new MultiCdnIpSelectionHelper(this, this);
     }
@@ -270,10 +272,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     private void prepareShowLive() {
-        MyLog.w(TAG, "prepareShowLive");
-        com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment.openFragment(
-                this, REQUEST_PREPARE_LIVE, this);
-        mRoomChatMsgManager.setIsGameLiveMode(true);
+        mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
     }
 
     @Override
@@ -352,7 +351,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     private void resumeGameLive() {
         // onResume 更新游戏直播静音按钮
         if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_DEFAULT);
+            mComponentController.onEvent(BaseLiveController.MSG_DEFAULT);
         }
     }
 
@@ -399,7 +398,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             mTopInfoSingleView.onScreenOrientationChanged(true);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
+            mComponentController.onEvent(BaseLiveController.MSG_ON_ORIENT_LANDSCAPE);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
@@ -414,7 +413,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             mTopInfoSingleView.onScreenOrientationChanged(false);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
+            mComponentController.onEvent(BaseLiveController.MSG_ON_ORIENT_PORTRAIT);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
@@ -654,8 +653,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
         mTipsTv = $(R.id.tips_tv);
 
-        mComponentController = new LiveComponentController();
-        mSdkView = new LiveSdkView(this, mComponentController, mMyRoomData, mRoomChatMsgManager);
+        mSdkView = mComponentController.createSdkView(this);
         mSdkView.setupSdkView();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
@@ -670,7 +668,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             @Override
             public void onClick(View v) {
                 if (mComponentController != null) {
-                    mComponentController.onEvent(LiveComponentController.MSG_HIDE_INPUT_VIEW);
+                    mComponentController.onEvent(BaseLiveController.MSG_HIDE_INPUT_VIEW);
                 }
             }
         });
@@ -1047,7 +1045,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     @Override
     public void onBackPressed() {
         if (mComponentController != null && mComponentController.onEvent(
-                LiveComponentController.MSG_ON_BACK_PRESSED)) {
+                BaseLiveController.MSG_ON_BACK_PRESSED)) {
             return;
         }
         processBack(true);

@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
-import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
@@ -34,7 +32,7 @@ import java.util.List;
 /**
  * Created by yangli on 2017/2/18.
  *
- * @module 游戏直播页面
+ * @module 秀场直播页面
  */
 public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     private static final String TAG = "LiveSdkView";
@@ -43,11 +41,6 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     protected final Action mAction = new Action();
 
     private final List<View> mHorizontalMoveSet = new ArrayList<>();
-
-    @NonNull
-    protected RoomBaseDataModel mMyRoomData;
-    @NonNull
-    protected LiveRoomChatMsgManager mRoomChatMsgManager;
 
     @Nullable
     protected View mTopInfoView;
@@ -60,10 +53,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
 
     public LiveSdkView(
             @NonNull Activity activity,
-            @NonNull LiveComponentController componentController,
-            @NonNull RoomBaseDataModel myRoomData) {
+            @NonNull LiveComponentController componentController) {
         super(activity, componentController);
-        mMyRoomData = myRoomData;
     }
 
     @Override
@@ -79,7 +70,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             }
             LiveCommentPresenter presenter = new LiveCommentPresenter(mComponentController);
             addComponentView(view, presenter);
-            view.setToken(mRoomChatMsgManager.toString());
+            view.setToken(mComponentController.mRoomChatMsgManager.toString());
 
             mLiveCommentView = view;
         }
@@ -90,7 +81,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             if (view == null) {
                 return;
             }
-            InputAreaPresenter presenter = new InputAreaPresenter(mComponentController, mMyRoomData);
+            InputAreaPresenter presenter = new InputAreaPresenter(
+                    mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
         }
 
@@ -117,7 +109,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             relativeLayout.setVisibility(View.VISIBLE);
             LiveBottomButton view = new LiveBottomButton(relativeLayout);
             BottomButtonPresenter presenter =
-                    new BottomButtonPresenter(mComponentController, mComponentController.mGameLivePresenter);
+                    new BottomButtonPresenter(mComponentController);
             addComponentView(view, presenter);
         }
 
