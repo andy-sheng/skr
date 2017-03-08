@@ -6,11 +6,15 @@ import android.text.TextUtils;
 
 import com.base.log.MyLog;
 import com.base.utils.network.NetworkUtils;
+import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.report.ReportProtocol;
 import com.mi.live.data.report.keyflow.KeyFlowReportManager;
 import com.wali.live.dns.IDnsStatusListener;
 import com.wali.live.dns.IStreamUrl;
 import com.wali.live.dns.PreDnsManager;
+import com.wali.live.utils.AppNetworkUtils;
+import com.wali.live.video.manager.ReportManager;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,6 +26,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -45,13 +50,14 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
     protected int mHttpIpIndex = 0;
     protected final List<String> mLocalIpSet = new ArrayList<>();
     protected final List<String> mHttpIpSet = new ArrayList<>();
+    private final List<String> mGuaranteeIpSet = new ArrayList<>();
     private boolean mIsDnsReady = false;
 
     protected Context mContext;
     protected String mOriginalStreamUrl = ""; // 服务端下发的推/拉流原始地址，包含有域名
     protected String mProtocol = ""; // 协议
     protected String mHost = ""; // 域名
-
+    private long mUserId = MyUserInfoManager.getInstance().getUser().getUid();
     private Subscription mLocalAndHttpSub;
     private Subscription mGuaranteeSub;
     private IDnsStatusListener mDnsStatusListener;
@@ -219,6 +225,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
 
     private void clearIpCache() {
         clearDnsIpCache();
+        mGuaranteeIpSet.clear();
     }
 
     /**
@@ -285,14 +292,24 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
         }
     }
 
+    protected void fetchFromGuaranteeIpSet(final @NonNull PreDnsManager.IpInfo ipInfo) {
+        if (!mGuaranteeIpSet.isEmpty()) { // Local和Http都用完，且保底IP不为空，则返回全部保底IP，并重置Local和Http的访问索引
+            MyLog.d(TAG, "queryNewIpSet mGuaranteeIpSet");
+            ipInfo.httpIpSet.addAll(mGuaranteeIpSet);
+            mGuaranteeIpSet.clear();
+            mHttpIpIndex = 0;
+            mLocalIpIndex = 0;
+        }
+    }
+
     protected void onIpSetRunOut(final @NonNull PreDnsManager.IpInfo ipInfo) {
         MyLog.w(TAG, "onIpSetRunOut");
         if (mHttpIpSet.isEmpty() && mLocalIpSet.isEmpty()) { // 都用完了，若Local和Http集为空，拉取Local和Http
             MyLog.d(TAG, "queryNewIpSet fetchIpSetByHost");
             fetchIpSetByHost(mHost, mContext, false);
-        } else {
-            mHttpIpIndex = 0;
-            mLocalIpIndex = 0;
+        } else { // 拉取保底IP
+            MyLog.d(TAG, "queryNewIpSet fetchGuaranteeIpSet");
+            fetchGuaranteeIpSet(mHost, mOriginalStreamUrl, mUserId, false);
         }
     }
 
@@ -302,6 +319,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
         if (!ipInfo.isEmpty()) {
             return ipInfo;
         }
+        fetchFromGuaranteeIpSet(ipInfo);
         if (!ipInfo.isEmpty()) {
             return ipInfo;
         }
@@ -395,6 +413,72 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
                         MyLog.e(TAG, "fetchIpSetByHost failed, exception=" + throwable);
                     }
                 });
+    }
+
+    // 在IO线程发起请求，在主线程处理请求结果
+    private void fetchGuaranteeIpSet(final String host, final String videoUrl, final long userId, boolean forceCloseFormer) {
+        if (TextUtils.isEmpty(host) || TextUtils.isEmpty(videoUrl)) {
+            MyLog.e(TAG, "fetchGuaranteeIpSet, but host or videoUrl is null");
+            return;
+        }
+        MyLog.w(TAG, "fetchGuaranteeIpSet host=" + host + ", videoUrl=" + videoUrl + ", userId=" + userId + ", forceCloseFormer=" + forceCloseFormer);
+        if (mGuaranteeSub != null && !mGuaranteeSub.isUnsubscribed()) {
+            if (!forceCloseFormer) {
+                return;
+            }
+            mGuaranteeSub.unsubscribe();
+            mGuaranteeSub = null;
+        }
+        incrementFetchGuaranteeIpCnt();
+        mGuaranteeSub = Observable.just(0)
+                .map(new Func1<Integer,  List<String>>() {
+                    @Override
+                    public  List<String> call(Integer integer) {
+                        return getGuaranteeIpSet(host, videoUrl, userId);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<String>>() {
+                    @Override
+                    public void call(List<String> retList) {
+                        mGuaranteeIpSet.clear();
+                        mGuaranteeIpSet.addAll(retList);
+                        if (mGuaranteeIpSet.isEmpty()) { // 若拉取保底IP返回空，则使用循环使用HttpIpSet和LocalIpSet
+                            mHttpIpIndex = 0;
+                            mLocalIpIndex = 0;
+                        }
+                        MyLog.w(TAG, "fetchGuaranteeIpSet done");
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "fetchGuaranteeIpSet failed, exception=" + throwable);
+                    }
+                });
+    }
+
+    // 保底IP拉取，拉取到IP列表之后执行跑马再返回
+    private List<String> getGuaranteeIpSet(String host, String originalStreamUrl, long userId) {
+        MyLog.d(TAG, "getGuaranteeIpSet");
+        List<String> ipList = new ArrayList<>();
+        if (TextUtils.isEmpty(originalStreamUrl)) {
+            return ipList;
+        }
+        String url = generateUrlForGuaranteeIp(host, originalStreamUrl);
+        if (!TextUtils.isEmpty(url)) {
+            List<String> ipRsp = ReportManager.getQueryIpRsp(
+                    MiLinkClientAdapter.getsInstance().getClientIp(), url, ReportManager.TYPE_NET);
+            if (ipRsp != null && !ipRsp.isEmpty()) {
+                for (String ipStr : ipRsp) {
+                    if (!ipList.contains(ipStr)) { // 去重
+                        ipList.add(ipStr);
+                    }
+                }
+            }
+            MyLog.w(TAG, "getGuaranteeIpSet url=" + url + ", ipList=" + ipList);
+        }
+        return AppNetworkUtils.hourseTraceSync(ipList); // 跑个马，拿个相对好的排序
     }
 
     /**
