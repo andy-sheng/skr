@@ -13,9 +13,6 @@ import android.view.Surface;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.base.utils.CommonUtils;
-import com.base.utils.Constants;
-import com.base.utils.sdcard.SDCardUtils;
 import com.mi.live.engine.media.player.IMediaPlayer;
 import com.mi.live.engine.media.player.MediaInfo;
 import com.mi.live.engine.media.player.util.PlayConfig;
@@ -24,11 +21,8 @@ import com.mi.live.engine.player.IPlayer;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.enums.PlayerWorkingMode;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import rx.Subscription;
 
 /**
  * Created by linjinbin on 16/7/6.
@@ -41,6 +35,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     //TODO 自定义
     public static final int INTERRUPT_MODE_DEFAULT = -1;
     public static final String NEED_BLACK_IDENTIFY_STR = "playui=";
+    public static float PLAYER_BUFFER_TIME = 5.0f;//播放器的缓冲时间
 
     //TODO 这些状态仿照金山代码,目前来看没有具体作用
     private static final int STATE_ERROR = -1;
@@ -212,13 +207,9 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
             if (mPlayer == null) {
                 mPlayer = new GalileoPlayer(GlobalData.app(), mPlayerMode, mTransferObserver, mTagInfo);
-                mPlayer.setBufferTimeMax(Constants.PLAYER_BUFFER_TIME);//设置缓冲时间5s
+                mPlayer.setBufferTimeMax(PLAYER_BUFFER_TIME);//设置缓冲时间5s
                 mPlayer.setTimeout(5, 5);
                 mPlayer.setVolume(mVolumeL, mVolumeR);
-                String logPath = CommonUtils.getUniqueFilePath(new File(SDCardUtils.getKsyLogPath()), System.currentTimeMillis() + ".log");
-                if (!TextUtils.isEmpty(logPath)) {
-                    mPlayer.setLogPath(logPath);
-                }
 
                 mPlayer.setOnPreparedListener(mPreparedListener);
                 mPlayer.setOnVideoSizeChangedListener(mSizeChangedListener);
@@ -492,7 +483,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             }
             mDuration = mPlayer.getDuration();
             mCurrentState = STATE_PAUSED;
-            stopBitRateSampling();
         }
     }
 
@@ -502,7 +492,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         if (null != mAudioManager) {
             mAudioManager.abandonAudioFocus(null);
         }
-        stopBitRateSampling();
         synchronized (MEDIA_PLAYER_LOCK) {
             if (mPlayer != null) {
                 mPlayer.reset();
@@ -566,16 +555,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         }
         mDuration = -1l;
         return mDuration;
-    }
-
-    private Subscription mBitRateSubscription;
-
-    public void stopBitRateSampling() {
-        MyLog.d(TAG, "stopBitRateSampling");
-        if (mBitRateSubscription != null && !mBitRateSubscription.isUnsubscribed()) {
-            mBitRateSubscription.unsubscribe();
-            mBitRateSubscription = null;
-        }
     }
 
     // 获取调试信息

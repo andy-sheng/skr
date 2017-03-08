@@ -91,11 +91,6 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
-    public void setLogPath(String path) {
-
-    }
-
-    @Override
     public void setOnPreparedListener(final IMediaPlayer.OnPreparedListener listener) {
         ThreadPool.runOnEngine(new Runnable() {
             @Override

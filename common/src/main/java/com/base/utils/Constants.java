@@ -66,7 +66,6 @@ public class Constants {
     public static final int PLAYER_BUFFER_MAX_TIME_LIMIT = 8;//秒
     public static final int PLAYER_BUFFER_MIN_TIME_LIMIT = 4;//秒
     public static final int PLAYER_KADUN_RELOAD_TIME = 5000;//毫秒
-    public static float PLAYER_BUFFER_TIME = 5.0f;//播放器的缓冲时间
 
     //翻页默认offset和一次拉取最大值
     public static final int DEFAULT_OFFSET = 0;

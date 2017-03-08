@@ -24,8 +24,6 @@ public interface IPlayer {
 
     void setTimeout(int prepareTimeout, int readTimeout);
 
-    void setLogPath(String path);
-
     void setOnPreparedListener(IMediaPlayer.OnPreparedListener listener);
 
     void setOnCompletionListener(IMediaPlayer.OnCompletionListener listener);
