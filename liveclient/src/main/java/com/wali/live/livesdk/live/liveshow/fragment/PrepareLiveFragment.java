@@ -23,6 +23,7 @@ import com.wali.live.common.action.VideoAction;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
+import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -236,9 +237,11 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     public static void openFragment(
             BaseComponentSdkActivity fragmentActivity,
             int requestCode,
-            FragmentDataListener listener) {
-        BaseFragment fragment = FragmentNaviUtils.addFragment(fragmentActivity, R.id.main_act_container,
+            FragmentDataListener listener,
+            MagicParamPresenter magicParamPresenter) {
+        PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(fragmentActivity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
+        // fragment.setMagicParamPresenter(magicParamPresenter);
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }

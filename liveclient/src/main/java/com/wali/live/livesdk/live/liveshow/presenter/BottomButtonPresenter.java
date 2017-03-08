@@ -7,7 +7,6 @@ import com.base.log.MyLog;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
-import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -18,16 +17,11 @@ public class BottomButtonPresenter extends
         ComponentPresenter<LiveBottomButton.IView> implements LiveBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
-    @Nullable
-    private GameLivePresenter mGameLivePresenter;
-
     public BottomButtonPresenter(
-            @NonNull IComponentController componentController,
-            @Nullable GameLivePresenter gameLivePresenter) {
+            @NonNull IComponentController componentController) {
         super(componentController);
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        mGameLivePresenter = gameLivePresenter;
     }
 
     @Override
@@ -38,13 +32,6 @@ public class BottomButtonPresenter extends
     @Override
     public void showSettingPanel() {
         mComponentController.onEvent(LiveComponentController.MSG_SHOW_SETTING_PANEL);
-    }
-
-    @Override
-    public void muteAudio(boolean isMute) {
-        if (mGameLivePresenter != null) {
-            mGameLivePresenter.muteMic(isMute);
-        }
     }
 
     @Nullable

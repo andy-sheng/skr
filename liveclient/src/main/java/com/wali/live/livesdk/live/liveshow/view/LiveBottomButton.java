@@ -29,7 +29,6 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
 
     protected View mCommentBtn;
     protected View mSettingBtn;
-    protected View mMuteBtn;
 
     @Override
     protected String getTAG() {
@@ -48,19 +47,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mSettingBtn = createImageView(R.drawable.live_icon_set_btn);
         addCreatedView(mSettingBtn, R.id.setting_btn);
 
-        mMuteBtn = createImageView(R.drawable.live_icon_mute_btn);
-        addCreatedView(mMuteBtn, R.id.mute_btn);
-
         // 横竖屏时按钮排列顺序
-        mRightBtnSetPort.add(mMuteBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mCommentBtn);
 
         orientChild(mIsLandscape);
-    }
-
-    public void updateMuteAudio(boolean isMute) {
-        mMuteBtn.setSelected(isMute);
     }
 
     @Override
@@ -86,11 +77,6 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         } else if (id == R.id.setting_btn) {
             mPresenter.showSettingPanel();
             msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SET;
-        } else if (id == R.id.mute_btn) {
-            boolean isSelected = !view.isSelected();
-            view.setSelected(isSelected);
-            mPresenter.muteAudio(isSelected);
-            msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SILENT;
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -129,11 +115,6 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 显示设置面板
          */
         void showSettingPanel();
-
-        /**
-         * 禁音/取消禁音
-         */
-        void muteAudio(boolean isMute);
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
