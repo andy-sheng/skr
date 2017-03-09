@@ -1,5 +1,6 @@
 package com.wali.live.component.view;
 
+import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -42,8 +43,12 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         mPresenter = presenter;
     }
 
+    protected final Context getContext() {
+        return mContentContainer.getContext();
+    }
+
     protected final ImageView createImageView(@DrawableRes int resId) {
-        ImageView imageView = new ImageView(mContentContainer.getContext());
+        ImageView imageView = new ImageView(getContext());
         imageView.setImageResource(resId);
         return imageView;
     }

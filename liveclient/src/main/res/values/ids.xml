@@ -2,6 +2,8 @@
 <resources>
     <!--底部按钮相关-->
     <item type="id" name="setting_btn"/>
+    <item type="id" name="plus_btn"/>
+    <item type="id" name="magic_btn"/>
     <item type="id" name="mute_btn"/>
     <item type="id" name="barrage_btn"/>
 </resources>

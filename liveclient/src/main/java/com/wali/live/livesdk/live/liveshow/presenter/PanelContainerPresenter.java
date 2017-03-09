@@ -32,6 +32,8 @@ public class PanelContainerPresenter extends
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(LiveComponentController.MSG_ON_BACK_PRESSED);
         registerAction(LiveComponentController.MSG_SHOW_SETTING_PANEL);
+        registerAction(LiveComponentController.MSG_SHOW_PLUS_PANEL);
+        registerAction(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
     }
 
@@ -65,8 +67,16 @@ public class PanelContainerPresenter extends
                     mView.onOrientation(true);
                     return true;
                 case LiveComponentController.MSG_SHOW_SETTING_PANEL:
-                    mView.showSettingPanel();
-                    return true;
+                    // TODO 显示设置面板
+                    // mView.showSettingPanel();
+                    // return true;
+                    break;
+                case LiveComponentController.MSG_SHOW_PLUS_PANEL:
+                    // TODO 显示直播加面板
+                    break;
+                case LiveComponentController.MSG_SHOW_MAGIC_PANEL:
+                    // TODO 显示美妆面板
+                    break;
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
                     return mView.processBackPress();
                 default:

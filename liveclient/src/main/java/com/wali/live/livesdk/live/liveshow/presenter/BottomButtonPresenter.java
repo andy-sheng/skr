@@ -30,8 +30,18 @@ public class BottomButtonPresenter extends
     }
 
     @Override
+    public void showPlusPanel() {
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_PLUS_PANEL);
+    }
+
+    @Override
     public void showSettingPanel() {
         mComponentController.onEvent(LiveComponentController.MSG_SHOW_SETTING_PANEL);
+    }
+
+    @Override
+    public void showMagicPanel() {
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
     }
 
     @Nullable

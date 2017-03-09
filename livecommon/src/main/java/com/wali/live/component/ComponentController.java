@@ -54,7 +54,7 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     private static final int MSG_POPUP_FIRST = 31000;
     public static final int MSG_SHOW_SETTING_PANEL  = MSG_POPUP_FIRST;     // 显示 设置面板
     public static final int MSG_SHOW_MAGIC_PANEL    = MSG_POPUP_FIRST + 1; // 显示 美妆面板
-    public static final int MSG_SHOW_SHARE_PANEL    = MSG_POPUP_FIRST + 2; // 显示 分享面板
+    public static final int MSG_SHOW_PLUS_PANEL     = MSG_POPUP_FIRST + 2; // 显示 分享面板
     public static final int MSG_SHOW_GIFT_PANEL     = MSG_POPUP_FIRST + 3; // 显示 礼物面板
 
     private static final int MSG_MORE_FIRST = 40000;

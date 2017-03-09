@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
@@ -15,13 +16,19 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.BottomButtonPresenter;
+import com.wali.live.livesdk.live.liveshow.presenter.LiveDisplayPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.PanelContainerPresenter;
+import com.wali.live.livesdk.live.liveshow.presenter.button.MagicControlBtnPresenter;
+import com.wali.live.livesdk.live.liveshow.presenter.button.PlusControlBtnPresenter;
 import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
+import com.wali.live.livesdk.live.liveshow.view.LiveDisplayView;
 import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
+import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
+import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
-import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 
@@ -55,6 +62,18 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             @NonNull Activity activity,
             @NonNull LiveComponentController componentController) {
         super(activity, componentController);
+        addMissingView();
+    }
+
+    private void addMissingView() {
+        // 画面
+        LiveDisplayView view = new LiveDisplayView(mActivity);
+        LiveDisplayPresenter presenter = new LiveDisplayPresenter(mComponentController);
+        addComponentView(view, presenter);
+        // add view to activity
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addViewUnderAnchor(view, layoutParams, 0);
     }
 
     @Override
@@ -111,6 +130,30 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController);
             addComponentView(view, presenter);
+
+            // 直播加按钮
+            {
+                PlusControlBtnView btnView = $(R.id.plus_btn);
+                if (btnView == null) {
+                    MyLog.e(TAG, "missing R.id.plus_btn");
+                    return;
+                }
+                PlusControlBtnPresenter btnPresenter = new PlusControlBtnPresenter(
+                        mComponentController, mActivity.getApplicationContext());
+                addComponentView(btnView, btnPresenter);
+            }
+
+            // 美妆按钮
+            {
+                MagicControlBtnView btnView = $(R.id.magic_btn);
+                if (btnView == null) {
+                    MyLog.e(TAG, "missing R.id.magic_btn");
+                    return;
+                }
+                MagicControlBtnPresenter btnPresenter =
+                        new MagicControlBtnPresenter(mComponentController);
+                addComponentView(btnView, btnPresenter);
+            }
         }
 
         addViewToSet(new int[]{
@@ -124,13 +167,13 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
 
         // 滑动
         {
-            View view = $(R.id.touch_view);
-            if (view == null) {
-                return;
-            }
-            TouchPresenter presenter = new TouchPresenter(mComponentController, view);
-            addComponentView(presenter);
-            presenter.setViewSet(mHorizontalMoveSet);
+//            View view = $(R.id.touch_view);
+//            if (view == null) {
+//                return;
+//            }
+//            TouchPresenter presenter = new TouchPresenter(mComponentController, view);
+//            addComponentView(presenter);
+//            presenter.setViewSet(mHorizontalMoveSet);
         }
 
         mAction.registerAction(); // 最后注册该Action，任何事件mAction都最后收到

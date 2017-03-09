@@ -1,5 +1,9 @@
 package ${PACKAGE};
 
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
+import android.view.View;
+
 ${IMPORT}
 
 /**
@@ -15,14 +19,11 @@ public class ${NAME}View implements IComponentView<${NAME}View.IPresenter, ${NAM
 	@Nullable
 	protected IPresenter mPresenter;
 
-	// Auto-generated to easy use findViewById
 	protected final <T extends View> T $(@IdRes int resId) {
 		return (T) findViewById(resId);
 	}
 
-	// Auto-generated to easy use setOnClickListener
-	protected final void $click(@IdRes int resId, View.OnClickListener listener) {
-		View view = $(resId);
+	protected final void $click(View view, View.OnClickListener listener) {
 		if (view != null) {
 			view.setOnClickListener(listener);
 		}

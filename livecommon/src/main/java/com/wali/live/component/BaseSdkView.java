@@ -9,8 +9,10 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.base.presenter.Presenter;
+import com.live.module.common.R;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.IComponentView;
 
@@ -27,8 +29,12 @@ import java.util.List;
 public abstract class BaseSdkView<T extends ComponentController> {
     private static final String TAG = "BaseSdkView";
 
-    protected @NonNull Activity mActivity;
-    protected @NonNull T mComponentController;
+    protected
+    @NonNull
+    Activity mActivity;
+    protected
+    @NonNull
+    T mComponentController;
     protected final List<IComponentView> mComponentViewSet = new ArrayList<>();
     protected final List<ComponentPresenter> mComponentPresenterSet = new ArrayList<>();
 
@@ -36,6 +42,12 @@ public abstract class BaseSdkView<T extends ComponentController> {
     @CheckResult
     protected final <V extends View> V $(@IdRes int id) {
         return (V) mActivity.findViewById(id);
+    }
+
+    @Nullable
+    @CheckResult
+    protected final <V extends View> V $(@NonNull ViewGroup viewGroup, @IdRes int id) {
+        return (V) viewGroup.findViewById(id);
     }
 
     protected final void addViewToSet(int[] idSet, List<View>... listSet) {
@@ -47,6 +59,36 @@ public abstract class BaseSdkView<T extends ComponentController> {
             for (List<View> viewSet : listSet) {
                 viewSet.add(view);
             }
+        }
+    }
+
+    // add view to activity
+    protected final <T extends View> void addViewAboveAnchor(
+            @NonNull T view,
+            @NonNull ViewGroup.LayoutParams params,
+            @IdRes int anchorId) {
+        ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+        View anchorView = $(anchorId);
+        int pos = anchorView != null ? rootView.indexOfChild(anchorView) : -1;
+        if (pos >= 0) {
+            rootView.addView(view, pos + 1, params);
+        } else {
+            rootView.addView(view, params);
+        }
+    }
+
+    // add view to activity
+    protected final <T extends View> void addViewUnderAnchor(
+            @NonNull T view,
+            @NonNull ViewGroup.LayoutParams params,
+            @IdRes int anchorId) {
+        ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+        View anchorView = $(anchorId);
+        int pos = anchorView != null ? rootView.indexOfChild(anchorView) : -1;
+        if (pos >= 0) {
+            rootView.addView(view, pos, params);
+        } else {
+            rootView.addView(view, 0, params);
         }
     }
 

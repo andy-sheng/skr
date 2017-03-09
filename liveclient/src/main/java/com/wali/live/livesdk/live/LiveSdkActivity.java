@@ -72,13 +72,13 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
 import com.wali.live.livesdk.live.component.BaseLiveController;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.dns.MultiCdnIpSelectionHelper;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.EndLiveFragment;
 import com.wali.live.livesdk.live.fragment.PrepareGameLiveFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
-import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.operator.LiveOperator;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
@@ -166,6 +166,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     protected GameLivePresenter mGameLivePresenter;
     protected RoomInfoPresenter mRoomInfoPresenter;
 
+    protected boolean mIsGameLive = false;
+    protected StreamerPresenter mStreamerPresenter;
+
     private final MyUIHandler mUIHandler = new MyUIHandler(this);
     private ExecutorService mHeartbeatService;
 
@@ -228,8 +231,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         getLocation();
         setupRequiredComponent();
 
+        if (!mIsGameLive) {
+            setupConfig(GalileoConstants.LIVE_LOW_RESOLUTION_WIDTH, GalileoConstants.LIVE_LOW_RESOLUTION_HEIGHT, true);
+        }
 //        prepareGameLive();
         mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
+
         openOrientation();
         mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
         mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -240,7 +247,15 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     private void setupRequiredComponent() {
-        mComponentController = new LiveComponentController(mMyRoomData, mRoomChatMsgManager);
+        if (mIsGameLive) {
+            mComponentController = new com.wali.live.livesdk.live.livegame.LiveComponentController(
+                    mMyRoomData, mRoomChatMsgManager);
+        } else {
+            mComponentController = new com.wali.live.livesdk.live.liveshow.LiveComponentController(
+                    mMyRoomData, mRoomChatMsgManager);
+        }
+        mSdkView = mComponentController.createSdkView(this);
+        mStreamerPresenter = new StreamerPresenter(mComponentController);
         mLiveOperator = new LiveOperator();
         mIpSelectionHelper = new MultiCdnIpSelectionHelper(this, this);
     }
@@ -494,11 +509,18 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         MyLog.w(TAG, "create streamer");
         mStreamer = new GalileoStreamer(GlobalData.app(), UserAccountManager.getInstance().getUuid(), width, height, hasMicSource);
         mStreamer.setConfig(builder.build());
+        if (!mIsGameLive) {
+            mStreamer.setDisplayPreview($(R.id.galileo_surface_view));
+            // TODO 设置滤镜参数
+//            mStreamer.setVideoFilterIntensity(StreamerUtils.getFilterIntensityInteger() / 100f);
+//            mStreamer.setVideoFilter(StreamerUtils.getFilter());
+        }
         String clientIp = MiLinkClientAdapter.getsInstance().getClientIp();
         if (!TextUtils.isEmpty(clientIp)) {
             mStreamer.setClientPublicIp(clientIp);
         }
         MyLog.w(TAG, "create streamer over");
+        mStreamerPresenter.setStreamer(mStreamer);
     }
 
     @Override
@@ -572,7 +594,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         addPresent(mRoomTextMsgPresenter);
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPresent(mGiftPresenter);
-        initGameLivePresenter();
+        if (mIsGameLive) {
+            initGameLivePresenter();
+        }
     }
 
     private void initGameLivePresenter() {
@@ -653,7 +677,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
         mTipsTv = $(R.id.tips_tv);
 
-        mSdkView = mComponentController.createSdkView(this);
         mSdkView.setupSdkView();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);

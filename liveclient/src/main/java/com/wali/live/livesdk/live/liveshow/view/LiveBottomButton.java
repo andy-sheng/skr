@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.mi.live.data.account.HostChannelManager;
@@ -13,6 +12,8 @@ import com.wali.live.component.view.BaseBottomButton;
 import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
+import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.statistics.StatisticsKey;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
@@ -27,7 +28,8 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresenter, LiveBottomButton.IView> {
     private static final String TAG = "LiveBottomButton";
 
-    protected View mCommentBtn;
+    protected View mPlusBtn;
+    protected View mMagicBtn;
     protected View mSettingBtn;
 
     @Override
@@ -41,27 +43,26 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     protected void initView() {
-        mCommentBtn = createImageView(R.drawable.live_icon_comment_btn);
-        addCreatedView(mCommentBtn, R.id.comment_btn);
+        mPlusBtn = new PlusControlBtnView(getContext());
+        addCreatedView(mPlusBtn, R.id.plus_btn);
+
+        mMagicBtn = new MagicControlBtnView(getContext());
+        addCreatedView(mMagicBtn, R.id.magic_btn);
 
         mSettingBtn = createImageView(R.drawable.live_icon_set_btn);
         addCreatedView(mSettingBtn, R.id.setting_btn);
 
         // 横竖屏时按钮排列顺序
+        mLeftBtnSetPort.add(mPlusBtn);
+
         mRightBtnSetPort.add(mSettingBtn);
-        mRightBtnSetPort.add(mCommentBtn);
+        mRightBtnSetPort.add(mMagicBtn);
+
+        mBottomBtnSetLand.add(mPlusBtn);
+        mBottomBtnSetLand.add(mSettingBtn);
+        mBottomBtnSetLand.add(mMagicBtn);
 
         orientChild(mIsLandscape);
-    }
-
-    @Override
-    protected void orientSelf(boolean isLandscape) {
-        // 无论横竖屏，都在右下角，采用竖屏位置参数
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mContentContainer.getLayoutParams();
-        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
     }
 
     @Override
@@ -112,9 +113,19 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         void showInputView();
 
         /**
+         * 显示直播加面板
+         */
+        void showPlusPanel();
+
+        /**
          * 显示设置面板
          */
         void showSettingPanel();
+
+        /**
+         * 显示美妆面板
+         */
+        void showMagicPanel();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

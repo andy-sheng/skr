@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -78,6 +79,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected RoomTagPresenter mRoomTagPresenter;
     protected int mTagIndex = -1;
 
+    @CallSuper
     @Override
     public void onClick(View v) {
         if (isFastDoubleClick()) {
@@ -92,7 +94,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             onLocationBtnClick();
         } else if (i == R.id.tag_name_container) {
             onTagNameBtnClick();
-        } else {
         }
     }
 

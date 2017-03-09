@@ -22,7 +22,6 @@ public class ${NAME}Panel extends BaseBottomPanel<LinearLayout, RelativeLayout>
 	@Nullable
 	protected IPresenter mPresenter;
 
-	// Auto-generated to easy use setOnClickListener
 	protected final void $click(View view, View.OnClickListener listener) {
 		if (view != null) {
 			view.setOnClickListener(listener);

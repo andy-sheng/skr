@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -84,20 +83,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
         mAction.clearAnimation();
     }
 
-    private final <T extends View> void addView(
-            @NonNull T view,
-            @NonNull ViewGroup.LayoutParams params,
-            @IdRes int anchorId) {
-        ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
-        View anchorView = $(anchorId);
-        int pos = anchorView != null ? rootView.indexOfChild(anchorView) : -1;
-        if (pos >= 0) {
-            rootView.addView(view, pos + 1, params);
-        } else {
-            rootView.addView(view, params);
-        }
-    }
-
     public void setupSdkView(boolean isGameMode) {
         mIsGameMode = isGameMode;
         if (mIsGameMode) {
@@ -113,7 +98,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addView(view, layoutParams, R.id.input_area_view);
+                addViewAboveAnchor(view, layoutParams, R.id.input_area_view);
             }
 
             // 游戏直播横屏弹幕
@@ -130,7 +115,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 layoutParams.rightMargin = DisplayUtils.dip2px(56f);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addView(view, layoutParams, R.id.comment_rv);
+                addViewAboveAnchor(view, layoutParams, R.id.comment_rv);
             }
         }
         setupSdkView();

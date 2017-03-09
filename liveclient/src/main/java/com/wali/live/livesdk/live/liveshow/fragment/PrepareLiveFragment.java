@@ -7,19 +7,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
-import com.base.keyboard.KeyboardUtils;
-import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
-import com.base.utils.CommonUtils;
 import com.base.utils.language.LocaleUtil;
-import com.wali.live.common.action.VideoAction;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
@@ -47,11 +41,15 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     private MyAlertDialog.Builder builder;
 
-    private RelativeLayout mSelectLayout;
-    private TextView mSelect;
-    private RelativeLayout mAddTopicContainer;
     private ImageView mTurnOverIv;
+    protected RelativeLayout mCoverArea;
+    private RelativeLayout mAddTopicContainer;
 
+    private final void $click(View view, View.OnClickListener listener) {
+        if (view != null) {
+            view.setOnClickListener(listener);
+        }
+    }
 
     @Override
     public String getTAG() {
@@ -69,90 +67,60 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    private void initData() {
-    }
-
-    @Override
-    protected void bindView() {
-        super.bindView();
-        initData();
+    public void onClick(View v) {
+        super.onClick(v);
+        int id = v.getId();
+        if (id == R.id.turn_over) {
+            StatisticsWorker.getsInstance().sendCommand(
+                    StatisticsWorker.AC_APP, StatisticsKey.KEY_PRE_LIVE_CAMERA, 1);
+            // TODO 切换前后置相机
+        } else if (id == R.id.cover_layout) {
+            // TODO 跳转到添加封面页
+        } else if (id == R.id.add_topic_container) {
+            // TODO 跳转到添加话题页
+            // 将新的Fragment(TopicRecommendFragment)加(add)到栈中,并隐藏PrepareLiveFragment
+//            TopicRecommendFragment.openFragment((BaseAppActivity) getActivity(), new TopicRecommendFragment.ITopicDataChangeListener() {
+//                @Override
+//                public void onTopicDataChanged(String topic) {
+//                    MyLog.d(TAG, "onTopicDataChanged " + topic);
+//                    if (!TextUtils.isEmpty(topic)) {
+//                        mTitleTextWatcher.setTopicDefaultWay(TOPIC_FROM_TMATY);
+//                        mLiveTitleEt.setText(topic);
+//                    } else {
+//                        if (TextUtils.isEmpty(mLiveTitleEt.getText())) {
+//                            mLiveTitleEt.setHint(R.string.prepare_live_edittext_hint);
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onTopicFragmentFinished() {
+//                    MyLog.d(TAG, "onTopicFragmentFinished");
+//                    mRootView.setVisibility(View.VISIBLE);
+//                    mAddTopicContainer.setClickable(false);
+//                }
+//
+//                @Override
+//                public void onTopicFragmentDestoryed() {
+//                    mAddTopicContainer.setClickable(true);
+//                }
+//            });
+//            KeyboardUtils.hideKeyboard(getActivity());
+//            mRootView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void initContentView() {
         super.initContentView();
 
-        mTurnOverIv = (ImageView) mRootView.findViewById(R.id.turn_over);
-        mTurnOverIv.setTag(VideoAction.ACTION_VIDEO_CAMERA_SWITCH);
-        mTurnOverIv.setOnClickListener(this);
+        mTurnOverIv = $(R.id.turn_over);
+        mCoverArea = $(R.id.cover_layout);
+        mAddTopicContainer = $(R.id.add_topic_container);
 
-        mAddTopicContainer = (RelativeLayout) mRootView.findViewById(R.id.add_topic_container);
-        mAddTopicContainer.setTag(VideoAction.ACTION_PREPARE_ADD_TOPIC);
-        mAddTopicContainer.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        int action = 0;
-        try {
-            if (v.getTag() != null) {
-                action = Integer.valueOf(String.valueOf(v.getTag()));
-            }
-        } catch (NumberFormatException e) {
-            MyLog.e(TAG, e);
-            return;
-        }
-
-        if (CommonUtils.isFastDoubleClick()) {
-            return;
-        }
-
-        switch (action) {
-            case VideoAction.ACTION_PREPARE_ADD_TOPIC:
-                /*
-                * 将新的Fragment(TopicRecommendFragment)加(add)到栈中,并隐藏PrepareLiveFragment
-                * */
-//                TopicRecommendFragment.openFragment((BaseAppActivity) getActivity(), new TopicRecommendFragment.ITopicDataChangeListener() {
-//                    @Override
-//                    public void onTopicDataChanged(String topic) {
-//                        MyLog.d(TAG, "onTopicDataChanged " + topic);
-//                        if (!TextUtils.isEmpty(topic)) {
-//                            mTitleTextWatcher.setTopicDefaultWay(TOPIC_FROM_TMATY);
-//                            mLiveTitleEt.setText(topic);
-//                        } else {
-//                            if (TextUtils.isEmpty(mLiveTitleEt.getText())) {
-//                                mLiveTitleEt.setHint(R.string.prepare_live_edittext_hint);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onTopicFragmentFinished() {
-//                        MyLog.d(TAG, "onTopicFragmentFinished");
-//                        mRootView.setVisibility(View.VISIBLE);
-//                        mAddTopicContainer.setClickable(false);
-//                    }
-//
-//                    @Override
-//                    public void onTopicFragmentDestoryed() {
-//                        mAddTopicContainer.setClickable(true);
-//                    }
-//                });
-                KeyboardUtils.hideKeyboard(getActivity());
-                mRootView.setVisibility(View.GONE);
-                break;
-            case VideoAction.ACTION_VIDEO_CAMERA_SWITCH:
-                StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_PRE_LIVE_CAMERA, 1);
-//                EventController.onActionCamera(EventClass.CameraEvent.EVENT_TYPE_SWITCH);
-                break;
-            default:
-                break;
-        }
+        $click(mTurnOverIv, this);
+        $click(mCoverArea, this);
+        $click(mAddTopicContainer, this);
     }
 
     @Override

@@ -14,7 +14,7 @@ class_import = "import " + root_package + ".presenter." + name + "Presenter;"
 view = TemplateInfo(class_package, class_import)
 out_file = root_path + "/view/" + name + "View.java"
 checkPath(root_path + "/view/")
-view.writeToFile("./TemplateView.java", out_file)
+view.writeToFile("./template/TemplateView.java", out_file)
 
 # 生成Presenter
 class_package = root_package + ".presenter"
@@ -22,4 +22,4 @@ class_import = "import " + root_package + ".view." + name + "View;"
 view = TemplateInfo(class_package, class_import)
 out_file = root_path + "/presenter/" + name + "Presenter.java"
 checkPath(root_path + "/presenter/")
-view.writeToFile("./TemplatePresenter.java", out_file)
+view.writeToFile("./template/TemplatePresenter.java", out_file)
