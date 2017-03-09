@@ -25,11 +25,6 @@ public class BottomButtonPresenter extends
     }
 
     @Override
-    public void showInputView() {
-        mComponentController.onEvent(LiveComponentController.MSG_SHOW_INPUT_VIEW);
-    }
-
-    @Override
     public void showPlusPanel() {
         mComponentController.onEvent(LiveComponentController.MSG_SHOW_PLUS_PANEL);
     }

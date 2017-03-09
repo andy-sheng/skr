@@ -95,4 +95,6 @@
     <string name="quanzi_default_name">選擇圈子</string>
     <string name="add_topic">增加話題</string>
     <string name="quanzi_name">%s圈子</string>
+    <string name="live_plus_atmosphere">氛圍</string>
+    <string name="live_plus_comment">消息</string>
 </resources>

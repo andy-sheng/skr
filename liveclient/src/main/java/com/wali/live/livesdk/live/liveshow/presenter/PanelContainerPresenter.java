@@ -9,7 +9,10 @@ import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
+import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;
 import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
+import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
+import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
 
 /**
@@ -17,16 +20,18 @@ import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
  *
  * @module 底部面板表现, 游戏直播
  */
-public class PanelContainerPresenter extends
-        ComponentPresenter<LivePanelContainer.IView> implements LivePanelContainer.IPresenter {
+public class PanelContainerPresenter extends ComponentPresenter<LivePanelContainer.IView>
+        implements LivePanelContainer.IPresenter {
     private static final String TAG = "PanelContainerPresenter";
 
     @Nullable
     protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
 
     private BaseBottomPanel mSettingPanel;
-//    private LiveSettingPanel mPlusPanel;
-//    private LiveSettingPanel mMagicPanel;
+    private BaseBottomPanel mMagicPanel;
+    private LivePlusPanel mPlusPanel;
+
+    private LivePlusPresenter mLivePlusPresenter;
 
     public PanelContainerPresenter(
             @NonNull IComponentController componentController,
@@ -41,6 +46,16 @@ public class PanelContainerPresenter extends
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mPlusPanel != null) {
+            mLivePlusPresenter.destroy();
+            mLivePlusPresenter = null;
+            mPlusPanel = null;
+        }
+    }
+
     private boolean showSettingPanel() {
         if (mSettingPanel == null) {
             mSettingPanel = new LiveSettingPanel((RelativeLayout) mView.getRealView());
@@ -49,11 +64,20 @@ public class PanelContainerPresenter extends
     }
 
     private boolean showPlusPanel() {
-        return false;
+        if (mPlusPanel == null) {
+            mPlusPanel = new LivePlusPanel((RelativeLayout) mView.getRealView());
+            mLivePlusPresenter = new LivePlusPresenter(mComponentController);
+            mPlusPanel.setPresenter(mLivePlusPresenter);
+            mLivePlusPresenter.setComponentView(mPlusPanel.getViewProxy());
+        }
+        return mView.showPanel(mPlusPanel);
     }
 
     private boolean showMagicPanel() {
-        return false;
+        if (mMagicPanel == null) {
+            mMagicPanel = new LiveMagicPanel((RelativeLayout) mView.getRealView());
+        }
+        return mView.showPanel(mMagicPanel);
     }
 
     @Nullable

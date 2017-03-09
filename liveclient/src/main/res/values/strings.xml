@@ -99,4 +99,6 @@
     <string name="quanzi_default_name">Select a circle</string>
     <string name="add_topic">Add topic</string>
     <string name="quanzi_name">%s circle</string>
+    <string name="live_plus_atmosphere">Effects</string>
+    <string name="live_plus_comment">Messages</string>
 </resources>

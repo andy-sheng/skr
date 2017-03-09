@@ -72,12 +72,15 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         }
         int id = view.getId();
         String msgType = "";
-        if (id == R.id.comment_btn) {
-            mPresenter.showInputView();
-            msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SENDMESSAGE;
+        if (id == R.id.plus_btn) {
+            mPresenter.showPlusPanel();
+            // TODO 增加打点
         } else if (id == R.id.setting_btn) {
             mPresenter.showSettingPanel();
             msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SET;
+        } else if (id == R.id.magic_btn) {
+            mPresenter.showMagicPanel();
+            // TODO 增加打点
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -107,11 +110,6 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     public interface IPresenter {
-        /**
-         * 显示输入界面
-         */
-        void showInputView();
-
         /**
          * 显示直播加面板
          */
