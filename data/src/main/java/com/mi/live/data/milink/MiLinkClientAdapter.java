@@ -7,6 +7,7 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.milink.callback.MiLinkChannelStatusObserver;
 import com.mi.live.data.milink.callback.MiLinkEventListener;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
 import com.mi.live.data.milink.callback.MiLinkStatusObserver;
@@ -29,6 +30,8 @@ public class MiLinkClientAdapter {
     MiLinkPacketDispatcher mMiLinkPacketDispatcher = new MiLinkPacketDispatcher();
     MiLinkEventListener mMiLinkEventListener = new MiLinkEventListener();
     MiLinkStatusObserver mMiLinkStatusObserver = new MiLinkStatusObserver();
+    // 重新new MiLinkChannelStatusObserver，取消登录事件
+    MiLinkChannelStatusObserver mMiLinkChannelStatusObserver = new MiLinkChannelStatusObserver();
 
     private String clientIp;
 
@@ -45,7 +48,7 @@ public class MiLinkClientAdapter {
 
         mMiLinkChannelClient = new MiLinkChannelClient();
         mMiLinkChannelClient.setEventListener(mMiLinkEventListener);
-        mMiLinkChannelClient.setMilinkStateObserver(mMiLinkStatusObserver);
+        mMiLinkChannelClient.setMilinkStateObserver(mMiLinkChannelStatusObserver);
         mMiLinkChannelClient.setPacketListener(mMiLinkPacketDispatcher);
     }
 
@@ -238,8 +241,8 @@ public class MiLinkClientAdapter {
         }
     }
 
-    private void setChannelId(PacketData packet){
-        if(packet!=null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0){
+    private void setChannelId(PacketData packet) {
+        if (packet != null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0) {
             packet.setChannelId(String.valueOf(HostChannelManager.getInstance().getChannelId()));
         }
     }

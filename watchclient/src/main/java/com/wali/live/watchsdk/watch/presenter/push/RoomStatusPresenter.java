@@ -52,9 +52,10 @@ public class RoomStatusPresenter implements IPushMsgProcessor {
             BarrageMsg.LiveEndMsgExt ext = (BarrageMsg.LiveEndMsgExt) msg.getMsgExt();
             roomBaseDataModel.setViewerCnt(ext.viewerCount);
             ensureHandlerNotNull();
+
+            MyLog.w(TAG + " B_MSG_TYPE_LIVE_END");
             // 直播结束
             EventBus.getDefault().post(new LiveEndEvent());
-
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TOP_GET) {
             //TODO 于锐
 //            LiveRoomCharactorManager.getInstance().setTopRank(roomBaseDataModel.getUid(), UserAccountManager.getInstance().getUuidAsLong());

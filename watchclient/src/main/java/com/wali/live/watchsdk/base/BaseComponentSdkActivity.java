@@ -238,13 +238,16 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MiLinkEvent.StatusLogined event) {
         // 登录成功了
-        trySendDataWithServerOnce();
+        if (event != null) {
+            MyLog.d(TAG, "StatusLogined");
+            trySendDataWithServerOnce();
+        }
     }
 
     // milink链接成功了,在主线程保证时序
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEventController.LogOffEvent event) {
-        if (event != null) {
+        if (event != null && event.getEventType() == AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF) {
             MyLog.d(TAG, "log off channelId=" + event.getChannelId());
             tryClearData();
         }

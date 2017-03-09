@@ -426,7 +426,6 @@ public class UserInfoManager {
                 } else {
                     return new LiveShow();
                 }
-
             } else {
                 return new LiveShow();
             }

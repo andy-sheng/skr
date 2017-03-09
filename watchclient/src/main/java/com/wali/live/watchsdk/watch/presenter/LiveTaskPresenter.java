@@ -72,6 +72,7 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 
     public void queryLiveShowById(final long uuid, final String liveId) {
         if (uuid <= 0 || TextUtils.isEmpty(liveId)) {
+            MyLog.d(TAG, "queryLiveShowById uuid=" + uuid + ", liveId=" + liveId);
             // 直播结束
             EventBus.getDefault().post(new LiveEndEvent());
             return;
@@ -80,7 +81,8 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
                 .map(new Func1<Long, LiveShow>() {
                     @Override
                     public LiveShow call(Long userId) {
-                        return UserInfoManager.getLiveShowByUserId(userId);
+                        LiveShow liveShow = UserInfoManager.getLiveShowByUserId(userId);
+                        return liveShow;
                     }
                 }).subscribeOn(Schedulers.io())
                 .compose(mRxActivity.<LiveShow>bindUntilEvent(ActivityEvent.DESTROY))
@@ -89,6 +91,8 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
                     @Override
                     public void call(LiveShow liveShow) {
                         if (liveShow == null || liveShow.getUid() != uuid || !liveId.equals(liveShow.getLiveId())) {
+                            MyLog.d(TAG, "queryLiveShowById uuid=" + uuid + " liveId=" + liveId +
+                                    ", liveShow uid=" + liveShow.getUid() + " liveId=" + liveShow.getLiveId());
                             // 直播结束
                             EventBus.getDefault().post(new LiveEndEvent());
                         }

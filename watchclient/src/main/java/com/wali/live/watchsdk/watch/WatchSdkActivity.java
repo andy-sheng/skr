@@ -482,6 +482,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     // 直播结束
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LiveEndEvent event) {
+        MyLog.d(TAG, "liveEndEvent");
+
         stopPlayer();
         showEndLiveFragment(true);
     }
