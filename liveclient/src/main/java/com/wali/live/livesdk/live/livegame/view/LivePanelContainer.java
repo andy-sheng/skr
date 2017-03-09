@@ -36,11 +36,9 @@ public class LivePanelContainer extends
             }
 
             @Override
-            public void showSettingPanel() {
-                if (mSettingPanel == null && mPresenter != null) {
-                    mSettingPanel = mPresenter.createSettingPanel();
-                }
-                LivePanelContainer.this.showPanel(mSettingPanel, true);
+            public boolean showPanel(@Nullable BaseBottomPanel panel) {
+                LivePanelContainer.this.showPanel(panel, true);
+                return true;
             }
 
             @Override
@@ -58,8 +56,6 @@ public class LivePanelContainer extends
     }
 
     public interface IPresenter {
-        @Nullable
-        BaseBottomPanel createSettingPanel();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
@@ -69,9 +65,9 @@ public class LivePanelContainer extends
         boolean processBackPress();
 
         /**
-         * 显示设置面板
+         * 显示面板
          */
-        void showSettingPanel();
+        boolean showPanel(@Nullable BaseBottomPanel panel);
     }
 
 }

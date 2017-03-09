@@ -24,6 +24,10 @@ public class PanelContainerPresenter extends
     @Nullable
     protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
 
+    private BaseBottomPanel mSettingPanel;
+//    private LiveSettingPanel mPlusPanel;
+//    private LiveSettingPanel mMagicPanel;
+
     public PanelContainerPresenter(
             @NonNull IComponentController componentController,
             @Nullable LiveRoomChatMsgManager liveRoomChatMsgManager) {
@@ -37,13 +41,19 @@ public class PanelContainerPresenter extends
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
     }
 
-    @Nullable
-    @Override
-    public BaseBottomPanel createSettingPanel() {
-        if (mView == null || mView.getRealView() == null) {
-            return null;
+    private boolean showSettingPanel() {
+        if (mSettingPanel == null) {
+            mSettingPanel = new LiveSettingPanel((RelativeLayout) mView.getRealView());
         }
-        return new LiveSettingPanel((RelativeLayout) mView.getRealView());
+        return mView.showPanel(mSettingPanel);
+    }
+
+    private boolean showPlusPanel() {
+        return false;
+    }
+
+    private boolean showMagicPanel() {
+        return false;
     }
 
     @Nullable
@@ -67,16 +77,11 @@ public class PanelContainerPresenter extends
                     mView.onOrientation(true);
                     return true;
                 case LiveComponentController.MSG_SHOW_SETTING_PANEL:
-                    // TODO 显示设置面板
-                    // mView.showSettingPanel();
-                    // return true;
-                    break;
+                    return showSettingPanel();
                 case LiveComponentController.MSG_SHOW_PLUS_PANEL:
-                    // TODO 显示直播加面板
-                    break;
+                    return showPlusPanel();
                 case LiveComponentController.MSG_SHOW_MAGIC_PANEL:
-                    // TODO 显示美妆面板
-                    break;
+                    return showMagicPanel();
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
                     return mView.processBackPress();
                 default:

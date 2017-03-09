@@ -24,6 +24,8 @@ public class PanelContainerPresenter extends
     @Nullable
     protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
 
+    private BaseBottomPanel mSettingPanel;
+
     public PanelContainerPresenter(
             @NonNull IComponentController componentController,
             @Nullable LiveRoomChatMsgManager liveRoomChatMsgManager) {
@@ -35,13 +37,12 @@ public class PanelContainerPresenter extends
         mLiveRoomChatMsgManager = liveRoomChatMsgManager;
     }
 
-    @Nullable
-    @Override
-    public BaseBottomPanel createSettingPanel() {
-        if (mView == null || mView.getRealView() == null) {
-            return null;
+    private boolean showSettingPanel() {
+        if (mSettingPanel == null) {
+            mSettingPanel = new GameSettingPanel(
+                    (RelativeLayout) mView.getRealView(), mLiveRoomChatMsgManager);
         }
-        return new GameSettingPanel((RelativeLayout) mView.getRealView(), mLiveRoomChatMsgManager);
+        return mView.showPanel(mSettingPanel);
     }
 
     @Nullable
@@ -65,8 +66,7 @@ public class PanelContainerPresenter extends
                     mView.onOrientation(true);
                     return true;
                 case LiveComponentController.MSG_SHOW_SETTING_PANEL:
-                    mView.showSettingPanel();
-                    return true;
+                    return showSettingPanel();
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
                     return mView.processBackPress();
                 default:
