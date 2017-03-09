@@ -67,7 +67,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected boolean mIsAddHistory = true;
     protected TitleTextWatcher mTitleTextWatcher;
 
-    protected TextView mLocation;
+    protected TextView mLocationTv;
     protected TextView mBeginBtn;
     protected TextView mTagNameTv;
     protected ViewGroup mTagNameContainer;
@@ -155,8 +155,8 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             }
         });
 
-        mLocation = $(R.id.location);
-        mLocation.setOnClickListener(this);
+        mLocationTv = $(R.id.location_tv);
+        mLocationTv.setOnClickListener(this);
         mBeginBtn = $(R.id.begin_btn);
         mBeginBtn.setOnClickListener(this);
         mTagNameContainer = $(R.id.tag_name_container);
@@ -220,7 +220,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         } else {
             city = getString(R.string.default_location_hint);
         }
-        mLocation.setText(city);
+        mLocationTv.setText(city);
     }
 
     protected abstract void openLive();

@@ -88,6 +88,7 @@
     <string name="network_change_tip">您當前正在使用非wifi網路進行直播，可能會產生流量費用</string>
     <string name="warm_prompt">溫馨提示</string>
     <string name="phone_interrupt">電話接聽前，直播已經暫停，您的通話不會對外傳播，現在您可以繼續直播。</string>
+    <string name="close">低</string>
     <string name="low">低</string>
     <string name="middle">中</string>
     <string name="high">高</string>

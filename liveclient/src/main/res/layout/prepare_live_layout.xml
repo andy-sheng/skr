@@ -6,7 +6,7 @@
                 android:background="@color/color_black_trans_50">
 
     <TextView
-        android:id="@+id/location"
+        android:id="@+id/location_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -33,7 +33,6 @@
         android:padding="10.67dp"
         android:src="@drawable/start_live_icon_flip"/>
 
-    <!--分享按钮区域-->
     <com.wali.live.livesdk.live.view.BeautyView
         android:id="@+id/beauty_view"
         android:layout_width="wrap_content"
