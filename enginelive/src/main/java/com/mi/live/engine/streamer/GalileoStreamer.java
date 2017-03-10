@@ -13,6 +13,7 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.thread.ThreadPool;
 import com.mi.live.engine.base.EngineEventClass;
+import com.mi.live.engine.base.GalileoConferenceManager;
 import com.mi.live.engine.base.GalileoConstants;
 import com.mi.live.engine.base.GalileoDeviceManager;
 import com.mi.live.engine.base.GalileoRenderManager;
@@ -23,6 +24,9 @@ import com.xiaomi.broadcaster.dataStruct.RtmpServerInfo;
 import com.xiaomi.broadcaster.enums.VCNetworkQuality;
 import com.xiaomi.broadcaster.enums.VCSessionErrType;
 import com.xiaomi.broadcaster.enums.VCSessionState;
+import com.xiaomi.conferencemanager.ConferenceManager;
+import com.xiaomi.conferencemanager.Model.MonitorData;
+import com.xiaomi.conferencemanager.callback.ConferenceCallback;
 import com.xiaomi.devicemanager.DeviceManager;
 import com.xiaomi.rendermanager.RenderManager;
 import com.xiaomi.rendermanager.videoRender.VideoStreamsView;
@@ -103,6 +107,148 @@ public class GalileoStreamer implements IStreamer {
         float displayHeight = 1;
         int layer = 0;
     }
+
+    private ConferenceCallback mConferenceCallBack = new ConferenceCallback() {
+
+        @Override
+        public void onReconnectStatus(int i) {
+
+        }
+
+        @Override
+        public void onNetworkStatus(String s, int i, int i1) {
+
+        }
+
+        @Override
+        public void onReceivedRemoteFrameStatus(String s, int i) {
+
+        }
+
+        @Override
+        public void onLoad(boolean b) {
+        }
+
+        @Override
+        public void onJoin(String s) {
+
+        }
+
+        @Override
+        public void onLeave(String s) {
+
+        }
+
+        @Override
+        public void onError(String s, ConferenceManager.EngineErrorTypeT engineErrorTypeT) {
+            switch (engineErrorTypeT) {
+                case ENGINE_START_CAMERA_FAILED:
+                    EventBus.getDefault().post(new EngineEventClass.StreamerEvent(EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_CAMERA_FAILED));
+                    break;
+                case ENGINE_START_MIC_FAILED:
+                    EventBus.getDefault().post(new EngineEventClass.StreamerEvent(EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_MIC_FAILED));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public void onCallEnded() {
+
+        }
+
+        @Override
+        public void onRemoteVidStreamCreated(String s) {
+
+        }
+
+        @Override
+        public void onRemoteVidStreamRemoved(String s) {
+
+        }
+
+        @Override
+        public void onRemoteVidResize(String s, int i, int i1) {
+
+        }
+
+        @Override
+        public void onStartCamera() {
+            MyLog.w(TAG, "onStartCamera");
+            bindLocalRender();
+        }
+
+        @Override
+        public void onStopCamera() {
+            MyLog.w(TAG, "onStopCamera");
+        }
+
+        @Override
+        public void onLocalVidStreamActive() {
+
+        }
+
+        @Override
+        public void onLocalVidStreamDeactive() {
+
+        }
+
+        @Override
+        public void onConferenceLeaved() {
+
+        }
+
+        @Override
+        public void onConferenceJoined() {
+
+        }
+
+        @Override
+        public void onGetFirstAudioSample() {
+
+        }
+
+        @Override
+        public void onGetFirstVideoSample() {
+
+        }
+
+        @Override
+        public void onAccessServerError(int i) {
+
+        }
+
+        @Override
+        public void OnSelectionChanged(String[] strings) {
+
+        }
+
+        @Override
+        public void onGetBestConnectionTime(int i, int i1, MonitorData.Type type) {
+
+        }
+
+        @Override
+        public void onGetSpeekerDetect(String[] strings) {
+
+        }
+
+        @Override
+        public void onReflectorDown() {
+
+        }
+
+        @Override
+        public void onReportTraffic(int i) {
+
+        }
+
+        @Override
+        public void onScreamChange(int i) {
+
+        }
+    };
 
     private BroadcastCallback mBroadcastCallback = new BroadcastCallback() {
         @Override
@@ -199,6 +345,8 @@ public class GalileoStreamer implements IStreamer {
                 GalileoRenderManager.INSTANCE.init(context);
                 mRenderManager = GalileoRenderManager.INSTANCE.getRenderManager();
                 if (mDeviceManager != null && mRenderManager != null) {
+                    GalileoConferenceManager.INSTANCE.init(context, mDeviceManager.getInstance(), userId);
+                    GalileoConferenceManager.INSTANCE.setStreamerConferenceCallback(mConferenceCallBack);
                     mBroadCaster = new BroadCaster();
                     mBroadCaster.constructSession(context, mBroadcastCallback, GalileoConstants.LIVE_LOW_RESOLUTION_HEIGHT, GalileoConstants.LIVE_LOW_RESOLUTION_WIDTH, height, width, DEFAULT_FRAME_RATE, DEFAULT_BIT_RATE, mDeviceManager.getInstance(), hasMicSource);
                     mDeviceManager.setSpeaker(!mHeadsetPlugged);
@@ -391,6 +539,8 @@ public class GalileoStreamer implements IStreamer {
                     mBroadCaster = null;
                     mDeviceManager = null;
                     mRenderManager = null;
+                    GalileoConferenceManager.INSTANCE.setStreamerConferenceCallback(null);
+                    GalileoConferenceManager.INSTANCE.destroy();
                     GalileoDeviceManager.INSTANCE.destroy();
                     GalileoRenderManager.INSTANCE.destroy();
                 }
