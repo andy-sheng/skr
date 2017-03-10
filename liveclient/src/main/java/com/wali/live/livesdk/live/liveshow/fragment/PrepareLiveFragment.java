@@ -1,8 +1,6 @@
 package com.wali.live.livesdk.live.liveshow.fragment;
 
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +16,7 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
+import com.wali.live.livesdk.live.view.BeautyView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -31,12 +30,6 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private static final String TAG = "PrepareShowLiveFragment";
 
-    // 口令直播间的密码
-    public static final String EXTRA_LIVE_PASSWORD = "extra_live_password";
-    public static final String EXTRA_LIVE_TICKET_ID = "extra_live_ticket_id";
-    public static final String EXTRA_LIVE_TICKET_PRICE = "extra_live_ticket_price";
-    public static final String EXTRA_LIVE_GLANCE_ENABLE = "extra_live_glance_enable";
-
     public static final int REQUEST_RECIPIENT_SELECT = 1000;
 
     private MyAlertDialog.Builder builder;
@@ -44,6 +37,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private ImageView mTurnOverIv;
     protected RelativeLayout mCoverArea;
     private RelativeLayout mAddTopicContainer;
+    private BeautyView mBeautyView;
 
     private final void $click(View view, View.OnClickListener listener) {
         if (view != null) {
@@ -113,11 +107,25 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     protected void initContentView() {
         super.initContentView();
-
         mTurnOverIv = $(R.id.turn_over);
         mCoverArea = $(R.id.cover_layout);
         mAddTopicContainer = $(R.id.add_topic_container);
+        mBeautyView = $(R.id.beauty_view);
+        mBeautyView.setBeautyCallBack(new BeautyView.BeautyCallBack() {
+            @Override
+            public void showMultiBeautyAnim() {
+                //隐藏相机和地理位置
+                mLocationTv.setVisibility(View.INVISIBLE);
+                mTurnOverIv.setVisibility(View.INVISIBLE);
+            }
 
+            @Override
+            public void hideMultiBeautyAnim() {
+                //显示相机和地理位置
+                mLocationTv.setVisibility(View.VISIBLE);
+                mTurnOverIv.setVisibility(View.VISIBLE);
+            }
+        });
         $click(mTurnOverIv, this);
         $click(mCoverArea, this);
         $click(mAddTopicContainer, this);
@@ -209,7 +217,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             MagicParamPresenter magicParamPresenter) {
         PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(fragmentActivity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
-        // fragment.setMagicParamPresenter(magicParamPresenter);
+//         fragment.setMagicParamPresenter(magicParamPresenter);
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }
