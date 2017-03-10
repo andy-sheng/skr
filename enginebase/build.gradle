@@ -30,11 +30,13 @@ android {
 
         player {
         }
+
+        playerplugin {
+        }
     }
 }
 
 dependencies {
-    provided project(':common')
     def presentationDependencies = rootProject.ext.presentationDependencies
     def dataDependencies = rootProject.ext.dataDependencies
     def testDependencies = rootProject.ext.dataTestDependencies
@@ -49,10 +51,17 @@ dependencies {
             flavorType = "live"
         } else if (task.contains("player")) {
             flavorType = "player"
+        } else {
+            flavorType = "playerplugin"
         }
     }
     if (flavorType == "live") {
         compile files('libs/conferencemanager.jar')
+    }
+    if (flavorType != "playerplugin") {
+        provided project(':common')
+    } else {
+        compile files(':playerbase')
     }
 }
 
@@ -61,4 +70,6 @@ configurations {
     liveRelease
     playerDebug
     playerRelease
+    playerpluginDebug
+    playerpluginRelease
 }
