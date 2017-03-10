@@ -15,14 +15,19 @@ import java.util.List;
 /**
  * Created by zjn on 16-9-8.
  * 彩蛋礼物包
+ *
  * @module 礼物橱窗
  */
-public class PeckOfGift extends Gift{
+public class PeckOfGift extends Gift {
     public static final String TAG = "PeckOfGift";
 
     private List<PeckOfGiftInfo> peckOfGiftInfoList = new ArrayList<>();
 
     public void completeGiftInfo(String jsonConfigPath) {
+        if (!peckOfGiftInfoList.isEmpty()) {
+            return;
+        }
+
         JSONObject jsonObject = null;
         try {
             MyLog.d(TAG, "jsonConfigPath:" + jsonConfigPath);
@@ -70,7 +75,7 @@ public class PeckOfGift extends Gift{
     public String toString() {
         return "PeckOfGift{" +
                 "peckOfGiftInfoList=" + peckOfGiftInfoList +
-                '}'+super.toString();
+                '}' + super.toString();
     }
 
     public static class PeckOfGiftInfo {
