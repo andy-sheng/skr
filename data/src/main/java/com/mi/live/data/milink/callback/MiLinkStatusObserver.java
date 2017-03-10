@@ -1,8 +1,7 @@
 package com.mi.live.data.milink.callback;
 
-import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.mi.live.data.milink.event.MiLinkEvent;
 import com.base.log.MyLog;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.milink.sdk.client.MiLinkObserver;
 import com.mi.milink.sdk.data.Const;
 
@@ -15,16 +14,18 @@ import java.util.Observable;
  * Created by MK on 15-3-30.
  */
 public class MiLinkStatusObserver extends MiLinkObserver {
+    protected final String TAG = getTAG();
 
-    private static final String TAG = "MLinkStatusObserver";
-
-    private int mConnectState;//当前连接状态
-
-    private int mLoginState;//当前登录状态
+    protected int mConnectState;    //当前连接状态
+    protected int mLoginState;      //当前登录状态
 
     public MiLinkStatusObserver() {
         mConnectState = Const.SessionState.Disconnected;
         mLoginState = Const.LoginState.NotLogin;
+    }
+
+    protected String getTAG() {
+        return "MLinkStatusObserver";
     }
 
     /**

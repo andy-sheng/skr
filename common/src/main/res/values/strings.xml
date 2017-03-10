@@ -17,6 +17,8 @@
     <string name="message_sdcard_permission">Can\'t read or write files. Allow now?</string>
     <string name="title_location_permission">Give location permissions</string>
     <string name="message_location_permission">Allow access to location info in Settings?</string>
+    <string name="title_phone_permission">Give device info permissions</string>
+    <string name="message_phone_permission">Allow access to device info in Settings?</string>
     <string name="setting_title">Settings</string>
     <string name="cancel">Cancel</string>
     <plurals name="days_ago">

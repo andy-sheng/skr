@@ -38,6 +38,7 @@ import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.repository.GiftRepository;
@@ -91,6 +92,8 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observer;
 import rx.functions.Action1;
+
+import static android.view.View.GONE;
 
 
 /**
@@ -175,6 +178,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Override
     protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
+        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
+            viewerTopFromServer(mMyRoomData);
+        }
         mLiveTaskPresenter.enterLive();
         startPlayer();
     }
@@ -182,6 +188,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Override
     protected void tryClearData() {
         mUserInfoPresenter.clearLoginFlag();
+    }
+
+    @Override
+    protected String getTAG() {
+        return "WatchSdkActivity";
     }
 
     private void initData() {
@@ -404,6 +415,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     // 直播结束
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LiveEndEvent event) {
+        MyLog.d(TAG, "liveEndEvent");
+
         stopPlayer();
         showEndLiveFragment(true);
     }
@@ -494,7 +507,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         switch (event.mType) {
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                 if (mBlurIv.getVisibility() == View.VISIBLE) {
-                    mBlurIv.setVisibility(View.GONE);
+                    mBlurIv.setVisibility(GONE);
                 }
                 break;
         }

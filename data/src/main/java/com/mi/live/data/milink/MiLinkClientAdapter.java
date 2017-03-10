@@ -7,6 +7,7 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.milink.callback.MiLinkChannelStatusObserver;
 import com.mi.live.data.milink.callback.MiLinkEventListener;
 import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
 import com.mi.live.data.milink.callback.MiLinkStatusObserver;
@@ -29,6 +30,8 @@ public class MiLinkClientAdapter {
     MiLinkPacketDispatcher mMiLinkPacketDispatcher = new MiLinkPacketDispatcher();
     MiLinkEventListener mMiLinkEventListener = new MiLinkEventListener();
     MiLinkStatusObserver mMiLinkStatusObserver = new MiLinkStatusObserver();
+    // 重新new MiLinkChannelStatusObserver，取消登录事件
+    MiLinkChannelStatusObserver mMiLinkChannelStatusObserver = new MiLinkChannelStatusObserver();
 
     private String clientIp;
 
@@ -45,7 +48,7 @@ public class MiLinkClientAdapter {
 
         mMiLinkChannelClient = new MiLinkChannelClient();
         mMiLinkChannelClient.setEventListener(mMiLinkEventListener);
-        mMiLinkChannelClient.setMilinkStateObserver(mMiLinkStatusObserver);
+        mMiLinkChannelClient.setMilinkStateObserver(mMiLinkChannelStatusObserver);
         mMiLinkChannelClient.setPacketListener(mMiLinkPacketDispatcher);
     }
 
@@ -158,9 +161,6 @@ public class MiLinkClientAdapter {
     }
 
     private boolean checkChannelCommand(final PacketData packet) {
-        if (true) {
-            return true;
-        }
         for (String command : accessCommand) {
             if (packet.getCommand().equals(command)) {
                 return true;
@@ -171,9 +171,38 @@ public class MiLinkClientAdapter {
     }
 
     private static String[] accessCommand = new String[]{
-            MiLinkCommand.COMMAND_HOT_CHANNEL_LIST,
+            MiLinkCommand.COMMAND_ACCOUNT_VERIFY_ASSISTANT,
+            MiLinkCommand.COMMAND_LIVE_ROOM_INFO,
+            MiLinkCommand.COMMAND_LIVE_VIEWER_TOP,
+            MiLinkCommand.COMMAND_LIVE_VIEWERINFO,
+            MiLinkCommand.COMMAND_LIVE_ROOM_INFO_CHANGE,
+            MiLinkCommand.COMMAND_LIVE_ROOM_TAG,
             MiLinkCommand.COMMAND_LIST_TAGLIVE,
-            MiLinkCommand.COMMAND_LIST_CHANNEL
+            MiLinkCommand.COMMAND_RECOMMEND_ROOM,
+            MiLinkCommand.COMMAND_PUSH_BARRAGE,
+            MiLinkCommand.COMMAND_SYNC_SYSMSG,
+            MiLinkCommand.COMMAND_PUSH_SYSMSG,
+            MiLinkCommand.COMMAND_REPLAY_BARRAGE,
+            MiLinkCommand.COMMAND_GET_USER_INFO_BY_ID,
+            MiLinkCommand.COMMAND_GET_OWN_INFO,
+            MiLinkCommand.COMMAND_GET_HOMEPAGE,
+            MiLinkCommand.COMMAND_LOGIN,
+            MiLinkCommand.COMMAND_GET_SERVICE_TOKEN,
+            MiLinkCommand.COMMAND_ACCOUNT_XIAOMI_SSO_LOGIN,
+            MiLinkCommand.COMMAND_GET_RANK_LIST_V2,
+            MiLinkCommand.COMMAND_GET_CONFIG,
+            MiLinkCommand.COMMAND_STAT_REPORT,
+            MiLinkCommand.COMMAND_DELAY_REPORT,
+            MiLinkCommand.COMMAND_IP_SELECT_QUERY,
+            MiLinkCommand.COMMAND_ROOM_VIEWER,
+            MiLinkCommand.COMMAND_GET_LIVE_ROOM,
+            MiLinkCommand.COMMAND_PUSH_LOGLEVEL,
+            MiLinkCommand.COMMAND_PUSH_GLOBAL_MSG,
+            MiLinkCommand.COMMAND_EFFECT_GET,
+            MiLinkCommand.COMMAND_PULL_ROOM_MESSAGE,
+            MiLinkCommand.COMMAND_HOT_CHANNEL_LIST,
+            MiLinkCommand.COMMAND_GIFT_GET_LIST,
+            MiLinkCommand.COMMAND_LIVE_LEAVE
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {
@@ -212,8 +241,8 @@ public class MiLinkClientAdapter {
         }
     }
 
-    private void setChannelId(PacketData packet){
-        if(packet!=null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0){
+    private void setChannelId(PacketData packet) {
+        if (packet != null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0) {
             packet.setChannelId(String.valueOf(HostChannelManager.getInstance().getChannelId()));
         }
     }

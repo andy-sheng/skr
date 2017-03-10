@@ -32,7 +32,6 @@ import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.barrage.view.LiveCommentView;
-import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
@@ -46,6 +45,7 @@ import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
@@ -169,6 +169,11 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     @Override
     protected void tryClearData() {
         mUserInfoPresenter.clearLoginFlag();
+    }
+
+    @Override
+    public String getTAG() {
+        return "ReplaySdkActivity";
     }
 
     @Subscribe

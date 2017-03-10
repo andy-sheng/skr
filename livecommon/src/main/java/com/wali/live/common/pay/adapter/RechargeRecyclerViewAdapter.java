@@ -1,6 +1,5 @@
 package com.wali.live.common.pay.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,12 +23,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
+import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.base.utils.DeviceUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.layout.LayoutUtils;
 import com.jakewharton.rxbinding.view.RxView;
@@ -37,27 +38,24 @@ import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.pay.constant.PayConstant;
+import com.wali.live.common.pay.constant.PayWay;
 import com.wali.live.common.pay.constant.RechargeConfig;
+import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.common.pay.handler.OneDayQuotaHandler;
 import com.wali.live.common.pay.handler.RechargeActionHandler;
 import com.wali.live.common.pay.handler.SingleDealQuotaHandler;
-import com.wali.live.common.pay.utils.PayStatisticUtils;
-import com.wali.live.common.pay.view.PayWaySwitchDialogHolder;
-import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.common.pay.constant.PayWay;
-import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.common.pay.model.Diamond;
 import com.wali.live.common.pay.model.SkuDetail;
 import com.wali.live.common.pay.presenter.RechargePresenter;
-import com.base.fragment.utils.FragmentNaviUtils;
+import com.wali.live.common.pay.utils.PayStatisticUtils;
+import com.wali.live.common.pay.view.PayWaySwitchDialogHolder;
+import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.common.view.ErrorView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -124,17 +122,29 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private BaseAdapter mGridViewAdapter;
     private ImageView sharp;
     private TextView saleTip;
-    /**弹出窗口*/
+    /**
+     * 弹出窗口
+     */
     private PopupWindow mPopupWindow;
-    /**弹出窗口附着的gridView itemView，用于应用从后台返回时恢复弹窗*/
+    /**
+     * 弹出窗口附着的gridView itemView，用于应用从后台返回时恢复弹窗
+     */
     private View mPopupWindowAttatchedView;
-    /**弹出窗口所在的gridView位置[0,n)，用于应用从后台返回时恢复弹窗*/
+    /**
+     * 弹出窗口所在的gridView位置[0,n)，用于应用从后台返回时恢复弹窗
+     */
     private int mPopupWindowPosition;
-    /**用户选择的金额(单位：分)，用于在不同支付方式间跳转后确定{@link #mPopupWindowPosition}*/
+    /**
+     * 用户选择的金额(单位：分)，用于在不同支付方式间跳转后确定{@link #mPopupWindowPosition}
+     */
     private int mUserSelectedPrice;
-    /**GridView的item的实际高度*/
+    /**
+     * GridView的item的实际高度
+     */
     private int itemHeightPx;
-    /**用户主动切换支付方式时的对话框*/
+    /**
+     * 用户主动切换支付方式时的对话框
+     */
     private PayWaySwitchDialogHolder mPayWaySwitchDialogHolder;
 
     /////////////////逻辑控制状态相关//////////////////////
@@ -142,11 +152,17 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
      * 最近一次选择的支付方式的充值列表类型
      */
     private int mLastRechargeListType;
-    /**当{@link RechargeFragment#mIsFirstRecharge}为true时有意义，表示是首次充值的第几个界面，取值范围[1,2]<br/>非首次充值只有第2个界面*/
+    /**
+     * 当{@link RechargeFragment#mIsFirstRecharge}为true时有意义，表示是首次充值的第几个界面，取值范围[1,2]<br/>非首次充值只有第2个界面
+     */
     private int mStep;
-    /**首次充值*/
+    /**
+     * 首次充值
+     */
     private boolean mIsFirstRecharge;
-    /**单笔限额处理器*/
+    /**
+     * 单笔限额处理器
+     */
     private RechargeActionHandler mFirstRechargeActionHandler;
     private RechargePresenter mRechargePresenter;
 
@@ -157,11 +173,12 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     /**
      * 需要在随后调用
      * <ul>
-     *     <li>{@link #setIsFirstRecharge(boolean)}(required)</li>
-     *     <li>{@link #setPayWayList(List)}(required)</li>
-     *     <li>{@link #setRechargePresenter(RechargePresenter)}(required)</li>
-     *     <li> {@link #setLastRechargeListType(int)}(optional)</li>
+     * <li>{@link #setIsFirstRecharge(boolean)}(required)</li>
+     * <li>{@link #setPayWayList(List)}(required)</li>
+     * <li>{@link #setRechargePresenter(RechargePresenter)}(required)</li>
+     * <li> {@link #setLastRechargeListType(int)}(optional)</li>
      * </ul>
+     *
      * @param activity
      */
     public RechargeRecyclerViewAdapter(@NonNull Context activity) {
@@ -561,6 +578,8 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+                        // 支付方式使用了deviceId，在使用前申请一下修复权限问题
+                        DeviceUtils.getDeviceId();
                         //选择钻石数后，点击立即付款一次，上报一次
                         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, PayStatisticUtils.getRechargeTemplate(CLICK_PAY_BTN, getCurrentPayWay()), TIMES, "1");
                         switch (getCurrentPayWay()) {
@@ -601,8 +620,8 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 subscriber.onCompleted();
             }
         })
-        .subscribeOn(Schedulers.io())
-        .subscribe();
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     private ListAdapter getGridViewAdapter() {
@@ -975,6 +994,7 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
      * 这里会修改{@link #mPopupWindowPosition}，然后RechargePriceAdapter#notifyDataSetChanged()后
      * 会重新调用{@link #mGridViewAdapter}的getView()，在那里
      * 根据{@link #mPopupWindowPosition}设置{@link #mPopupWindowAttatchedView}
+     *
      * @param rechargeList
      */
     @MainThread
@@ -1011,6 +1031,7 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     /**
      * 大额充值引导时，自动切换支付方式
+     *
      * @param item
      * @param newPayWay
      */
@@ -1062,6 +1083,7 @@ class BalanceViewHolder extends RecyclerView.ViewHolder {
 class DividerViewHolder extends RecyclerView.ViewHolder {
     View mChoosePayWayTip;
     View mBlank;
+
     public DividerViewHolder(View itemView) {
         super(itemView);
         mChoosePayWayTip = itemView.findViewById(R.id.choose_pay_way_tip);
@@ -1105,7 +1127,10 @@ class ErrorViewHolder extends RecyclerView.ViewHolder {
         mErrorView = (ErrorView) itemView.findViewById(R.id.price_list_error_view);
     }
 }
-/**GridView用的ViewHolder*/
+
+/**
+ * GridView用的ViewHolder
+ */
 class GridViewItemViewHolder {
     View itemView;
     BaseImageView cornerIcon;

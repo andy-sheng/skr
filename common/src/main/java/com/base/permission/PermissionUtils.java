@@ -308,6 +308,15 @@ public class PermissionUtils {
                         okCallback,
                         cancelCallback);
                 break;
+            case READ_PHONE_STATE:
+                DialogUtils.showNormalDialog(activity,
+                        R.string.title_phone_permission,
+                        R.string.message_phone_permission,
+                        R.string.setting_title,
+                        R.string.cancel,
+                        okCallback,
+                        cancelCallback);
+                break;
             default:
                 break;
         }
