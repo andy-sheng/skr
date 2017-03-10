@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
+    publishNonDefault true
+
     compileSdkVersion rootProject.ext.androidCompileSdkVersion
     buildToolsVersion rootProject.ext.androidBuildToolsVersion
 
@@ -18,6 +20,15 @@ android {
     lintOptions {
         abortOnError false
     }
+    productFlavors {
+        live {
+
+        }
+
+        player {
+
+        }
+    }
 }
 
 dependencies {
@@ -32,4 +43,12 @@ dependencies {
     compile files('libs/devicemanager.jar')
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
+    compile files('libs/conferencemanager.jar')
+}
+
+configurations {
+    liveDebug
+    liveRelease
+    playerDebug
+    playerRelease
 }
