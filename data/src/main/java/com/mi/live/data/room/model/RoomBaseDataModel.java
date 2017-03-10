@@ -91,11 +91,17 @@ public class RoomBaseDataModel implements Serializable {
         this.mTicketId = ticketId;
     }
 
-    /**门票直播ID*/
+    /**
+     * 门票直播ID
+     */
     private int mTicketId;
-    /**门票直播价格，回放的价格是这个的一半*/
+    /**
+     * 门票直播价格，回放的价格是这个的一半
+     */
     private int mTicketPrice;
-    /**是否允许试看*/
+    /**
+     * 是否允许试看
+     */
     private boolean mGlanceEnable;
 
     public int getGetMessageMode() {
@@ -125,6 +131,7 @@ public class RoomBaseDataModel implements Serializable {
 
     /**
      * 获取房间类型
+     *
      * @return liveType Live.proto里定义的type 和 LiveManager
      */
     public int getLiveType() {
@@ -133,6 +140,7 @@ public class RoomBaseDataModel implements Serializable {
 
     /**
      * 设置房间类型
+     *
      * @param liveType Live.proto里定义的type 和 LiveManager
      */
     public void setLiveType(int liveType) {
@@ -141,6 +149,7 @@ public class RoomBaseDataModel implements Serializable {
 
     /**
      * 获取回放类型
+     *
      * @return 定义在LiveShow.proto BackInfo.replay_type 和 BackShowListData
      */
     public int getReplayType() {
@@ -149,6 +158,7 @@ public class RoomBaseDataModel implements Serializable {
 
     /**
      * 设置回放类型
+     *
      * @param replayType 定义在LiveShow.proto BackInfo.replay_type 和 BackShowListData
      */
     public void setReplayType(int replayType) {
@@ -278,8 +288,8 @@ public class RoomBaseDataModel implements Serializable {
     }
 
     public void setTicket(int ticket) {
-        if(ticket<mOwner.getLiveTicketNum()){
-          return;
+        if (ticket < mOwner.getLiveTicketNum()) {
+            return;
         }
         mOwner.setLiveTicketNum(ticket);
         EventBus.getDefault().post(new RoomDataChangeEvent(this, RoomDataChangeEvent.TYPE_CHANGE_TICKET));
@@ -304,18 +314,18 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setUser(User newUser) {
         if (newUser != null) {
-            if(newUser.getUid() == mOwner.getUid()){
-                if(newUser.getLiveTicketNum()<=0){
+            if (newUser.getUid() == mOwner.getUid()) {
+                if (newUser.getLiveTicketNum() <= 0) {
                     newUser.setLiveTicketNum(mOwner.getLiveTicketNum());
                 }
-                if(TextUtils.isEmpty(newUser.getNickname())){
+                if (TextUtils.isEmpty(newUser.getNickname())) {
                     newUser.setNickname(mOwner.getNickname());
                 }
-                if(newUser.getAvatar()<=0 && mOwner.getAvatar()>0){
+                if (newUser.getAvatar() <= 0 && mOwner.getAvatar() > 0) {
                     newUser.setAvatar(mOwner.getAvatar());
                 }
 
-                if(newUser.getFansNum()<=0){
+                if (newUser.getFansNum() <= 0) {
                     newUser.setFansNum(mOwner.getFansNum());
                 }
 

@@ -135,6 +135,19 @@ public class UserInfoManager {
         return null;
     }
 
+    public static UserProto.PersonalData getPersonalDataById(long uuid) {
+        UserProto.GetPersonalDataByIdRsp rsp = getPersonalDataByIdReq(uuid);
+        if (rsp == null) {
+            return null;
+        }
+        UserProto.PersonalData personalData = rsp.getPersonalData();
+        if (rsp.getErrorCode() == ErrorCode.CODE_SUCCESS && personalData != null) {
+            return personalData;
+
+        }
+        return null;
+    }
+
     /**
      * MiLinkCommand : zhibo.user.getuserinfobyid
      * 由ID获取用户信息
@@ -170,7 +183,7 @@ public class UserInfoManager {
      * MiLinkCommand : zhibo.user.getpersonaldata
      * 获取个人数据
      */
-    public static UserProto.GetPersonalDataByIdRsp getPersonalDataByUuid(long uuid) {
+    public static UserProto.GetPersonalDataByIdRsp getPersonalDataByIdReq(long uuid) {
         UserProto.GetPersonalDataByIdReq req = UserProto.GetPersonalDataByIdReq.newBuilder()
                 .setZuid(uuid)
                 .build();

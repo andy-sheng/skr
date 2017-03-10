@@ -7,6 +7,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.proto.UserProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,12 +35,18 @@ public class UserInfoPresenter {
     // 如果从登录过来，也需要更新，因为可能主播是自己关注过的
     private boolean mHasUpdateFromLogin = false;
 
+    // 拉取personalData信息
+    private boolean mHasUpdateOwnerData = false;
+
     // 更新主播信息
     public void updateOwnerInfo() {
         if (!mHasUpdateOwnerInfo) {
             updateOwnerInfoFromServer(false);
         } else if (!mHasUpdateFromLogin) {
             updateOwnerInfoFromServer(true);
+        }
+        if (!mHasUpdateOwnerData) {
+            updateOwnerDataFromServer();
         }
     }
 
@@ -83,6 +90,42 @@ public class UserInfoPresenter {
                             mMyRoomData.setNickname(user.getNickname());
                             mMyRoomData.getUser().setIsFocused(user.isFocused());
                             EventBus.getDefault().post(new RoomDataChangeEvent(mMyRoomData, RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE));
+                        }
+                    }
+                });
+    }
+
+    private void updateOwnerDataFromServer() {
+        MyLog.w(TAG, "User data update");
+        Observable
+                .create(new Observable.OnSubscribe<Integer>() {
+                    @Override
+                    public void call(Subscriber<? super Integer> subscriber) {
+                        UserProto.PersonalData personalData = UserInfoManager.getPersonalDataById(mMyRoomData.getUid());
+                        if (personalData != null) {
+                            subscriber.onNext(personalData.getMliveTicketNum());
+                        }
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(mRxActivity.<Integer>bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Integer ticket) {
+                        if (ticket != null) {
+                            mHasUpdateOwnerData = true;
+                            mMyRoomData.setTicket(ticket);
                         }
                     }
                 });
