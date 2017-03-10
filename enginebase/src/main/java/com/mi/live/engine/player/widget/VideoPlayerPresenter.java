@@ -420,21 +420,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     }
 
     @Override
-    public void resumeTo(long msec) {
-        if (null == mPlayer) {
-            return;
-        }
-        MyLog.w(TAG, "seekTo " + msec);
-        if (msec >= 0) {
-            try {
-                mPlayer.seekTo(msec);
-            } catch (IllegalStateException e) {
-                MyLog.e(e);
-            }
-        }
-    }
-
-    @Override
     public void setIpList(List<String> httpIpList, List<String> localIpList) {
         if (mPlayer != null) {
             MyLog.w(TAG, "setIpList httpIpList=" + httpIpList + ", localIpList=" + localIpList);
@@ -580,15 +565,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             return 0l;
         }
         return mPlayer.getCurrentStreamPosition();
-    }
-
-    @Override
-    public long getResumePosition() {
-        if (mPlayer != null) {
-            return mPlayer.getCurrentPosition();
-        } else {
-            return 0;
-        }
     }
 
     @Override

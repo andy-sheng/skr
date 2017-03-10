@@ -48,10 +48,6 @@ public interface IPlayerPresenter {
 
     long getMessageStamp();
 
-    long getResumePosition();
-
-    void resumeTo(long msec);
-
     /**
      * Note: 由于setIpList底层可能需要根据协议添加默认端口，所以，该接口最好在setVideoPath调用之后调用
      */

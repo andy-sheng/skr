@@ -350,9 +350,9 @@ public class VideoPlayerPresenterEx implements
     }
 
     private void reconnect() {
-        long resumeTime = mVideoPlayerPresenter.getResumePosition();
-        MyLog.w(TAG, "reconnect, resumeTime= " + resumeTime);
-        mVideoPlayerPresenter.resumeTo(resumeTime);
+        long currentPosition = mVideoPlayerPresenter.getCurrentPosition();
+        MyLog.w(TAG, "reconnect, currentPosition= " + currentPosition);
+        mVideoPlayerPresenter.seekTo(currentPosition);
     }
 
     public void enableReconnect(boolean isEnable) {
