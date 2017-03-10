@@ -28,5 +28,6 @@ dependencies {
     def testDependencies = rootProject.ext.dataTestDependencies
     compile presentationDependencies.androidAppCompat
     compile files('libs/broadcaster.jar')
-    compile project(':enginebase')
+    debugCompile project(path: ':enginebase', configuration: "liveDebug")
+    releaseCompile project(path: ':enginebase', configuration: "liveRelease")
 }

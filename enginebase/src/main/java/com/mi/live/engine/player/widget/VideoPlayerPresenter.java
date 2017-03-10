@@ -97,7 +97,8 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private long mTransferObserver = 0;
     private PlayerWorkingMode mPlayerMode = PlayerWorkingMode.PlayerWorkingLipSyncMode;
     private boolean mIsReconnectEnable = true;
-    private String mTagInfo;
+    private String mUserId;
+    private String mClientIp;
 
     public VideoPlayerPresenter(int videoWidth, int videoHeight) {
         mVideoHeight = videoHeight;
@@ -206,7 +207,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             mMediaInfo = null;
 
             if (mPlayer == null) {
-                mPlayer = new GalileoPlayer(GlobalData.app(), mPlayerMode, mTransferObserver, mTagInfo);
+                mPlayer = new GalileoPlayer(GlobalData.app(), mPlayerMode, mTransferObserver, mUserId, mClientIp);
                 mPlayer.setBufferTimeMax(PLAYER_BUFFER_TIME);//设置缓冲时间5s
                 mPlayer.setTimeout(5, 5);
                 mPlayer.setVolume(mVolumeL, mVolumeR);
@@ -778,9 +779,11 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         mPlayerMode = mode;
     }
 
-    public void setLogInfo(String userId, String clientIp) {
-        if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(clientIp)) {
-            mTagInfo = userId + ":" + clientIp;
-        }
+    public void setUserId(String userId) {
+        mUserId = userId;
+    }
+
+    public void setClientIp(String clientIp) {
+        mClientIp = clientIp;
     }
 }

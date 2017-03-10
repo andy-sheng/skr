@@ -248,7 +248,8 @@ public class VideoPlayerPresenterEx implements
         mVideoPlayerPresenter.setRealTime(realTime);
         mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
         mVideoPlayerPresenter.setBufferSize(500);
-        mVideoPlayerPresenter.setLogInfo(UserAccountManager.getInstance().getUuid(), MiLinkClientAdapter.getsInstance().getClientIp());
+        mVideoPlayerPresenter.setUserId(UserAccountManager.getInstance().getUuid());
+        mVideoPlayerPresenter.setClientIp(MiLinkClientAdapter.getsInstance().getClientIp());
         if (mSeekBar != null) {
             mSeekBar.setVideoPlaySeekBarListener(mVideoPlaySeekBarListener);
             mSeekBar.setPlayBtnSelected(isPlaying());
