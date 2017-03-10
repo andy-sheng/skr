@@ -8,7 +8,6 @@ import android.view.SurfaceHolder;
 import com.base.global.GlobalData;
 import com.base.thread.ThreadPool;
 import com.base.utils.display.DisplayUtils;
-import com.mi.live.engine.BuildConfig;
 import com.mi.live.engine.base.GalileoConferenceManager;
 import com.mi.live.engine.base.GalileoDeviceManager;
 import com.mi.live.engine.media.player.IMediaPlayer;
@@ -36,9 +35,7 @@ public class GalileoPlayer implements IPlayer {
             @Override
             public void run() {
                 GalileoDeviceManager.INSTANCE.init(context);
-                if (BuildConfig.FLAVOR.equals("live")) {
-                    GalileoConferenceManager.INSTANCE.init(context, GalileoDeviceManager.INSTANCE.getDeviceManger().getInstance(), userId);
-                }
+                GalileoConferenceManager.INSTANCE.init(context, GalileoDeviceManager.INSTANCE.getDeviceManger().getInstance(), userId);
                 String tag = TextUtils.isEmpty(clientIp) ? "" : userId + ":" + clientIp;
                 mIjkMediaPlayer = new IjkMediaPlayer(context, tag, mode, observer);
                 mIjkMediaPlayer.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit, GlobalData.screenWidth, GlobalData.screenHeight);
@@ -278,9 +275,7 @@ public class GalileoPlayer implements IPlayer {
             public void run() {
                 mIjkMediaPlayer.release();
                 mIjkMediaPlayer = null;
-                if (BuildConfig.FLAVOR.equals("live")) {
-                    GalileoConferenceManager.INSTANCE.destroy();
-                }
+                GalileoConferenceManager.INSTANCE.destroy();
                 GalileoDeviceManager.INSTANCE.destroy();
             }
         }, "release");
