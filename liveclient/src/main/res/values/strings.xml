@@ -114,4 +114,9 @@
     <string name="face_beauty">Beautify</string>
     <string name="expression">Live selfie masks</string>
     <string name="filter">Filter</string>
+
+    <string name="filter_normal">Regular</string>
+    <string name="filter_sweet">Sweet</string>
+    <string name="filter_crema">Sepia</string>
+    <string name="filter_nashville">Retro</string>
 </resources>

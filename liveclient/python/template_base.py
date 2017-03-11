@@ -48,9 +48,9 @@ class TemplateInfo:
             print "warning: " + outFile + " already existed!"
             return
         content = ""
-        input = open(tmplFile);
+        input = open(tmplFile)
         try:
-            content = input.read();
+            content = input.read()
         finally:
             input.close()
 
@@ -62,7 +62,7 @@ class TemplateInfo:
             .replace("${COMMAND}", self.COMMAND)
 
         out = open(outFile, "w")
-        out.write(content);
-        out.close();
+        out.write(content)
+        out.close()
 
         print "generate " + outFile + " done!"

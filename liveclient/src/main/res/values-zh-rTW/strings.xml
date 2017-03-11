@@ -110,4 +110,9 @@
     <string name="face_beauty">美顏</string>
     <string name="expression">魔法表情</string>
     <string name="filter">濾鏡</string>
+
+    <string name="filter_normal">普通</string>
+    <string name="filter_sweet">甜蜜</string>
+    <string name="filter_crema">復古</string>
+    <string name="filter_nashville">舊時光</string>
 </resources>
