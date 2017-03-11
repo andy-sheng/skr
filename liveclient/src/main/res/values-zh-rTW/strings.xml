@@ -98,4 +98,16 @@
     <string name="quanzi_name">%s圈子</string>
     <string name="live_plus_atmosphere">氛圍</string>
     <string name="live_plus_comment">消息</string>
+
+    <string name="original">無混響</string>
+    <string name="recording_studio">錄音棚</string>
+    <string name="ktv">KTV</string>
+    <string name="concert">演唱會</string>
+    <string name="choose_hifi">高保真</string>
+    <string name="mirror_image">自拍鏡像</string>
+    <string name="switch_camera">切換相機</string>
+    <string name="flash_light">閃光燈</string>
+    <string name="face_beauty">美顏</string>
+    <string name="expression">魔法表情</string>
+    <string name="filter">濾鏡</string>
 </resources>

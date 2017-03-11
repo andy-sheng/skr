@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
-import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
+import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;
 import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
@@ -24,18 +24,15 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
         implements LivePanelContainer.IPresenter {
     private static final String TAG = "PanelContainerPresenter";
 
-    @Nullable
-    protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
-
     private BaseBottomPanel mSettingPanel;
-    private BaseBottomPanel mMagicPanel;
+    private LiveMagicPanel mMagicPanel;
     private LivePlusPanel mPlusPanel;
 
-    private LivePlusPresenter mLivePlusPresenter;
+    private LivePlusPresenter mPlusPresenter;
+    private LiveMagicPresenter mMagicPresenter;
 
     public PanelContainerPresenter(
-            @NonNull IComponentController componentController,
-            @Nullable LiveRoomChatMsgManager liveRoomChatMsgManager) {
+            @NonNull IComponentController componentController) {
         super(componentController);
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
@@ -43,16 +40,20 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
         registerAction(LiveComponentController.MSG_SHOW_SETTING_PANEL);
         registerAction(LiveComponentController.MSG_SHOW_PLUS_PANEL);
         registerAction(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
-        mLiveRoomChatMsgManager = liveRoomChatMsgManager;
     }
 
     @Override
     public void destroy() {
         super.destroy();
         if (mPlusPanel != null) {
-            mLivePlusPresenter.destroy();
-            mLivePlusPresenter = null;
+            mPlusPresenter.destroy();
+            mPlusPresenter = null;
             mPlusPanel = null;
+        }
+        if (mMagicPresenter != null) {
+            mMagicPresenter.destroy();
+            mMagicPresenter = null;
+            mMagicPanel = null;
         }
     }
 
@@ -66,9 +67,9 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
     private boolean showPlusPanel() {
         if (mPlusPanel == null) {
             mPlusPanel = new LivePlusPanel((RelativeLayout) mView.getRealView());
-            mLivePlusPresenter = new LivePlusPresenter(mComponentController);
-            mPlusPanel.setPresenter(mLivePlusPresenter);
-            mLivePlusPresenter.setComponentView(mPlusPanel.getViewProxy());
+            mPlusPresenter = new LivePlusPresenter(mComponentController);
+            mPlusPanel.setPresenter(mPlusPresenter);
+            mPlusPresenter.setComponentView(mPlusPanel.getViewProxy());
         }
         return mView.showPanel(mPlusPanel);
     }
@@ -76,6 +77,9 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
     private boolean showMagicPanel() {
         if (mMagicPanel == null) {
             mMagicPanel = new LiveMagicPanel((RelativeLayout) mView.getRealView());
+            mMagicPresenter = new LiveMagicPresenter(mComponentController);
+            mMagicPanel.setPresenter(mMagicPresenter);
+            mMagicPresenter.setComponentView(mMagicPanel.getViewProxy());
         }
         return mView.showPanel(mMagicPanel);
     }

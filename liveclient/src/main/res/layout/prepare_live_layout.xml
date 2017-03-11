@@ -221,4 +221,9 @@
         android:scaleType="centerInside"
         android:src="@drawable/video_close_white_bg"/>
 
+    <RelativeLayout
+        android:id="@+id/bottom_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>

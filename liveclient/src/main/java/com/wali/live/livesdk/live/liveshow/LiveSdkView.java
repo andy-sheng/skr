@@ -16,7 +16,6 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.LiveDisplayPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.PanelContainerPresenter;
@@ -113,8 +112,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             LivePanelContainer view = new LivePanelContainer(relativeLayout);
-            PanelContainerPresenter presenter = new PanelContainerPresenter(
-                    mComponentController, mComponentController.mRoomChatMsgManager);
+            PanelContainerPresenter presenter = new PanelContainerPresenter(mComponentController);
             addComponentView(view, presenter);
         }
 

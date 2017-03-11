@@ -10,12 +10,18 @@ import com.base.dialog.MyAlertDialog;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.language.LocaleUtil;
+import com.wali.live.component.ComponentController;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
+import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
+import com.wali.live.livesdk.live.liveshow.presenter.PanelContainerPresenter;
+import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
 import com.wali.live.livesdk.live.view.BeautyView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.statistics.StatisticsKey;
@@ -129,6 +135,19 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         $click(mTurnOverIv, this);
         $click(mCoverArea, this);
         $click(mAddTopicContainer, this);
+
+        RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
+        if (relativeLayout == null) {
+            MyLog.e(TAG, "missing R.id.bottom_panel_view");
+            return;
+        }
+        ComponentController componentController = ((LiveSdkActivity) getContext()).mComponentController;
+        LivePanelContainer view = new LivePanelContainer(relativeLayout);
+        PanelContainerPresenter presenter = new PanelContainerPresenter(componentController);
+        view.setPresenter(presenter);
+        presenter.setComponentView(view.getViewProxy());
+
+        componentController.onEvent(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
     }
 
     @Override

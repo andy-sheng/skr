@@ -45,7 +45,7 @@ public abstract class BasePanelContainer<PRESENTER, VIEW extends IViewProxy, VIE
         });
     }
 
-    protected boolean hidePanel(boolean useAnimation) {
+    protected final boolean hidePanel(boolean useAnimation) {
         if (mCurrPanel != null) {
             mCurrPanel.hideSelf(useAnimation);
             mCurrPanel = null;

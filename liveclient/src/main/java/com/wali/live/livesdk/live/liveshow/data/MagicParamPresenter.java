@@ -15,6 +15,8 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.engine.base.GalileoConstants;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
+import com.wali.live.livesdk.live.component.utils.MagicParamUtils;
+import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.proto.CloudParamsProto;
 import com.wali.live.statistics.StatisticsKey;
 
@@ -41,34 +43,6 @@ public class MagicParamPresenter extends BaseParamPresenter {
     private final MagicParams mMagicParams = new MagicParams();
 
     private Subscription mFaceBeautySub;
-
-    /**
-     * 查询滤镜配置
-     */
-    public boolean isOpenFilter() {
-        return mMagicParams.mFilter;
-    }
-
-    /**
-     * 查询美颜配置
-     */
-    public boolean isOpenBeauty() {
-        return mMagicParams.mBeauty[0] != 0 || mMagicParams.mBeauty.length > 1;
-    }
-
-    /**
-     * 查询多级美颜配置
-     */
-    public boolean isOpenBeautyLevel() {
-        return mMagicParams.mBeauty.length > 1;
-    }
-
-    /**
-     * 查询多级美颜级别
-     */
-    public int[] getBeautyLevels() {
-        return mMagicParams.mBeauty;
-    }
 
     public MagicParamPresenter(
             @NonNull IComponentController componentController,
@@ -186,16 +160,20 @@ public class MagicParamPresenter extends BaseParamPresenter {
         }
     }
 
-    private static class MagicParams {
+    public static class MagicParams {
         private int[] mBeauty = new int[]{GalileoConstants.BEAUTY_LEVEL_HIGH};
         private boolean mFilter = true;
+        private int mFilterIntensity = 100;
+        private boolean mExpression = false;
 
-        private void loadParams(@NonNull Context context) {
+        public void loadParams(@NonNull Context context) {
             String codeStr = PreferenceUtils.getSettingString(context, KEY_MAGIC_PARAM_SUPPORT_CODE, "");
             try {
                 JSONObject jsonObject = new JSONObject(codeStr);
                 mBeauty = (int[]) jsonObject.opt("beauty");
                 mFilter = jsonObject.optBoolean("filter");
+                mFilterIntensity = MagicParamUtils.getFilterIntensity();
+                mExpression = !PlusParamUtils.isHideExpression(true);
             } catch (Exception e) {
                 MyLog.e(TAG, "loadParams failed, exception=" + e);
             }
@@ -213,7 +191,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
             }
         }
 
-        public void parseParams(@NonNull CloudParamsProto.GetCameraResponse rsp) {
+        private void parseParams(@NonNull CloudParamsProto.GetCameraResponse rsp) {
             if (rsp.hasOpenFilter()) {
                 mFilter = rsp.getOpenFilter();
             }
@@ -228,5 +206,55 @@ public class MagicParamPresenter extends BaseParamPresenter {
                 mBeauty[0] = rsp.getCameraLevels(0);
             }
         }
+
+        /**
+         * 是否允许开启滤镜
+         */
+        public boolean isFilter() {
+            return mFilter;
+        }
+
+        /**
+         * 查询滤镜强度
+         */
+        public int getFilterIntensity() {
+            return mFilterIntensity;
+        }
+
+        /**
+         * 是否允许开启表情
+         */
+        public boolean isExpression() {
+            return mExpression;
+        }
+
+        /**
+         * 是否允许开启美颜
+         */
+        public boolean isBeauty() {
+            return mBeauty[0] != 0 || mBeauty.length > 1;
+        }
+
+        /**
+         * 是否是单极美颜
+         */
+        public boolean isSingleBeauty() {
+            return mBeauty.length == 1 && mBeauty[0] != 0;
+        }
+
+        /**
+         * 是否是多级美颜
+         */
+        public boolean isMultiBeauty() {
+            return mBeauty.length > 1;
+        }
+
+        /**
+         * 查询多级美颜级别
+         */
+        public int[] getBeautyLevels() {
+            return mBeauty;
+        }
+
     }
 }

@@ -32,12 +32,12 @@ public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHo
             mInflater = LayoutInflater.from(parent.getContext());
         }
         View view = mInflater.inflate(R.layout.plus_item, null);
-        return new PlusHolder(view);
+        return new PlusHolder(view, mItemPlusWidth);
     }
 
     @Override
     public void onBindViewHolder(PlusHolder holder, int position) {
-        holder.bindView(mPlusItems.get(position));
+        holder.bindView(mPlusItems.get(position), mListener);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHo
 
     public void setPlusData(List<PlusItem> plusItems) {
         mPlusItems.clear();
-        if (mPlusItems != null) {
+        if (plusItems != null) {
             mPlusItems.addAll(plusItems);
         }
         notifyDataSetChanged();
@@ -57,23 +57,23 @@ public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHo
         mListener = listener;
     }
 
-    public class PlusHolder extends RecyclerView.ViewHolder {
+    public static class PlusHolder extends RecyclerView.ViewHolder {
         TextView mTvPlus;
 
-        public PlusHolder(View view) {
+        public PlusHolder(View view, int width) {
             super(view);
             mTvPlus = (TextView) view.findViewById(R.id.tv_plus);
             RecyclerView.LayoutParams params =
-                    new RecyclerView.LayoutParams(mItemPlusWidth, mItemPlusWidth);
+                    new RecyclerView.LayoutParams(width, width);
             itemView.setLayoutParams(params);
         }
 
-        public void bindView(PlusItem plusItem) {
+        public void bindView(PlusItem plusItem, View.OnClickListener listener) {
             mTvPlus.setId(plusItem.idRes);
             mTvPlus.setText(plusItem.titleRes);
             mTvPlus.setCompoundDrawablesWithIntrinsicBounds(0, plusItem.iconRes, 0, 0);
             mTvPlus.setEnabled(plusItem.isClickable);
-            mTvPlus.setOnClickListener(mListener);
+            mTvPlus.setOnClickListener(listener);
         }
     }
 

@@ -102,4 +102,16 @@
     <string name="quanzi_name">%s circle</string>
     <string name="live_plus_atmosphere">Effects</string>
     <string name="live_plus_comment">Messages</string>
+
+    <string name="original">No reverb</string>
+    <string name="recording_studio">Studio</string>
+    <string name="ktv">KTV</string>
+    <string name="concert">Concert</string>
+    <string name="choose_hifi">High fidelity</string>
+    <string name="mirror_image">Mirror camera</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="flash_light">Flash</string>
+    <string name="face_beauty">Beautify</string>
+    <string name="expression">Live selfie masks</string>
+    <string name="filter">Filter</string>
 </resources>

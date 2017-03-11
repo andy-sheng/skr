@@ -195,7 +195,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     protected TextView mTipsTv;
 
-    protected BaseLiveController mComponentController;
+    public BaseLiveController mComponentController;
     protected BaseSdkView mSdkView;
 
     protected GiftContinueViewGroup mGiftContinueViewGroup;

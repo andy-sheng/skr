@@ -44,7 +44,7 @@ public abstract class PreferenceUtils {
 
     public static final String PREF_KEY_FILTER_INTENSITY = "pref_key_filter_intensity";
 
-    public static final String PREF_KEY_FILTER_CATEGORY_POSITION = "pref_key_filter_category_position";
+    public static final String PREF_KEY_FILTER_CATEGORY = "pref_key_filter_category";
 
     public static final String KEY_ACCEPT_CONVENTION = "key_accept_convention";
 
