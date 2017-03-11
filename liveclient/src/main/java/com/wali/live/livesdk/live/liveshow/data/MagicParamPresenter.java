@@ -22,6 +22,8 @@ import com.wali.live.statistics.StatisticsKey;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -161,7 +163,8 @@ public class MagicParamPresenter extends BaseParamPresenter {
     }
 
     public static class MagicParams {
-        private int[] mBeauty = new int[]{GalileoConstants.BEAUTY_LEVEL_HIGH};
+        private int[] mBeauty = new int[]{GalileoConstants.BEAUTY_LEVEL_OFF, GalileoConstants.BEAUTY_LEVEL_HIGH};
+        private int mBeautyLevel = GalileoConstants.BEAUTY_LEVEL_HIGH;
         private boolean mFilter = true;
         private int mFilterIntensity = 100;
         private boolean mExpression = false;
@@ -172,6 +175,12 @@ public class MagicParamPresenter extends BaseParamPresenter {
                 JSONObject jsonObject = new JSONObject(codeStr);
                 mBeauty = (int[]) jsonObject.opt("beauty");
                 mFilter = jsonObject.optBoolean("filter");
+                mBeautyLevel = MagicParamUtils.getBeautyLevel();
+                int pos = Arrays.asList(mBeauty).indexOf(mBeautyLevel);
+                if (pos == -1) {
+                    // 如果上次的美颜级别不在支持的列表中，则使用支持级别的最大值
+                    mBeautyLevel = mBeauty[mBeauty.length - 1];
+                }
                 mFilterIntensity = MagicParamUtils.getFilterIntensity();
                 mExpression = !PlusParamUtils.isHideExpression(true);
             } catch (Exception e) {
@@ -198,12 +207,12 @@ public class MagicParamPresenter extends BaseParamPresenter {
             int count = rsp.getCameraLevelsCount();
             if (count > 1) { // 多级美颜
                 mBeauty = new int[count + 1];
-                mBeauty[0] = 0;
+                mBeauty[0] = GalileoConstants.BEAUTY_LEVEL_OFF;
                 for (int i = 0; i < count; ++i) {
                     mBeauty[i + 1] = rsp.getCameraLevels(i);
                 }
             } else if (count == 1) { // 单级美颜
-                mBeauty[0] = rsp.getCameraLevels(0);
+                mBeauty[1] = rsp.getCameraLevels(0);
             }
         }
 
@@ -232,21 +241,28 @@ public class MagicParamPresenter extends BaseParamPresenter {
          * 是否允许开启美颜
          */
         public boolean isBeauty() {
-            return mBeauty[0] != 0 || mBeauty.length > 1;
+            return mBeauty[1] != GalileoConstants.BEAUTY_LEVEL_OFF;
         }
 
         /**
          * 是否是单极美颜
          */
         public boolean isSingleBeauty() {
-            return mBeauty.length == 1 && mBeauty[0] != 0;
+            return mBeauty.length == 2 && mBeauty[1] != GalileoConstants.BEAUTY_LEVEL_OFF;
         }
 
         /**
          * 是否是多级美颜
          */
         public boolean isMultiBeauty() {
-            return mBeauty.length > 1;
+            return mBeauty.length > 2;
+        }
+
+        /**
+         * 查询美颜级别
+         */
+        public int getBeautyLevel() {
+            return mBeautyLevel;
         }
 
         /**

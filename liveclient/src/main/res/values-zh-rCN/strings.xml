@@ -120,4 +120,11 @@
     <string name="filter_sweet">甜蜜</string>
     <string name="filter_crema">复古</string>
     <string name="filter_nashville">旧时光</string>
+    <string name="filter_aden">午后</string>
+    <string name="filter_gingham">恋空</string>
+    <string name="filter_stinson">蜜茶</string>
+    <string name="filter_clarendon">青涩</string>
+    <string name="filter_juno">暖阳</string>
+    <string name="filter_dogpatch">小清新</string>
+    <string name="filter_gray">黑白</string>
 </resources>

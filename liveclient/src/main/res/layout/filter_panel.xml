@@ -27,6 +27,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_50"
+            android:enabled="false"
             android:gravity="center"
             android:text="@string/low"
             android:textColor="@color/color_white_trans_35"
@@ -56,6 +57,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_50"
+            android:enabled="false"
             android:text="@string/high"
             android:textColor="@color/color_white_trans_35"
             android:textSize="@dimen/control_panel_text_size" />

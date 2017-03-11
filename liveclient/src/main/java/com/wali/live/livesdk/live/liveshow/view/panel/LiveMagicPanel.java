@@ -7,9 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.base.view.RotatedSeekBar;
+import com.mi.live.engine.base.GalileoConstants;
 import com.wali.live.component.view.BasePanelContainer;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
@@ -19,6 +22,7 @@ import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.VolumeAdjuster;
+import com.wali.live.livesdk.live.view.SwitchButton;
 
 import java.util.List;
 
@@ -41,7 +45,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
     private ViewGroup mTabContainer;
 
     private PanelContainer mPanelContainer;
-    MagicParamPresenter.MagicParams mMagicParams;
+    private MagicParamPresenter.MagicParams mMagicParams;
 
     private View mBeautyBtn;
     private View mFilterBtn;
@@ -188,6 +192,11 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
          * 同步滤镜子面板数据
          */
         void syncFilterData();
+
+        /**
+         * 设置美颜
+         */
+        void setBeautyLevel(int beautyLevel);
     }
 
     public interface IView extends IViewProxy {
@@ -205,6 +214,17 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
     // 美颜子面板
     private class BeautyPanel extends BaseBottomPanel<LinearLayout, RelativeLayout> {
 
+        private final float[] mSeekBarPosIndex = new float[]{0, 0.34f, 0.66f, 1};
+        private final int[] mBeautyLevel = new int[]{
+                GalileoConstants.BEAUTY_LEVEL_OFF,
+                GalileoConstants.BEAUTY_LEVEL_LOW,
+                GalileoConstants.BEAUTY_LEVEL_MIDDLE,
+                GalileoConstants.BEAUTY_LEVEL_HIGHEST
+        };
+
+        private RotatedSeekBar mSeekBar;
+        private SwitchButton mSwitchButton;
+
         public BeautyPanel(@NonNull RelativeLayout parentView) {
             super(parentView);
         }
@@ -221,6 +241,42 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         @Override
         protected void inflateContentView() {
             super.inflateContentView();
+
+            mSwitchButton = $(R.id.switch_btn);
+            mSeekBar = $(R.id.seek_bar);
+
+            if (mSwitchButton != null) {
+                mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (LiveMagicPanel.this.mPresenter != null) {
+                            LiveMagicPanel.this.mPresenter.setBeautyLevel(
+                                    isChecked ? mBeautyLevel[0] : mBeautyLevel[1]);
+                        }
+                    }
+                });
+            }
+
+            if (mSeekBar != null) {
+                mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(RotatedSeekBar rotatedSeekBar, float percent, boolean fromUser) {
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(RotatedSeekBar rotatedSeekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
+                        int index = (int) (rotatedSeekBar.getPercent() * 6  + 1) / 2; // 滑条级别：0, 1, 2, 3
+                        rotatedSeekBar.setPercent(mSeekBarPosIndex[index]);
+                        if (LiveMagicPanel.this.mPresenter != null) {
+                            LiveMagicPanel.this.mPresenter.setBeautyLevel(mBeautyLevel[index]);
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -277,9 +333,9 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                     this.mParentView.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
             if (mMagicParams == null) {
-                mFilterAdjuster.setup(this.$(R.id.param_adjuster_view));
+                mFilterAdjuster.setup((ViewGroup) $(R.id.param_adjuster_view));
             } else {
-                mFilterAdjuster.setup(this.$(R.id.param_adjuster_view),
+                mFilterAdjuster.setup((ViewGroup) $(R.id.param_adjuster_view),
                         mMagicParams.getFilterIntensity());
             }
         }
@@ -312,6 +368,12 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
         public PanelContainer(@NonNull RelativeLayout panelContainer) {
             super(panelContainer);
+            mPanelContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 空操作，覆盖基类行为，不调用hidePanel
+                }
+            });
         }
 
         @Override
@@ -329,6 +391,9 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         protected void showFilterPanel() {
             if (mFilterPanel == null) {
                 mFilterPanel = new FilterPanel(this.mPanelContainer);
+                if (LiveMagicPanel.this.mPresenter != null) {
+                    LiveMagicPanel.this.mPresenter.syncFilterData();
+                }
             }
             showPanel(mFilterPanel, false);
         }

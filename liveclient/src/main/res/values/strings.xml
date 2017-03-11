@@ -119,4 +119,11 @@
     <string name="filter_sweet">Sweet</string>
     <string name="filter_crema">Sepia</string>
     <string name="filter_nashville">Retro</string>
+    <string name="filter_aden">Afternoon</string>
+    <string name="filter_gingham">Amour</string>
+    <string name="filter_stinson">Sweet tea</string>
+    <string name="filter_clarendon">Icy</string>
+    <string name="filter_juno">Warm</string>
+    <string name="filter_dogpatch">Fresh</string>
+    <string name="filter_gray">B&amp;W</string>
 </resources>

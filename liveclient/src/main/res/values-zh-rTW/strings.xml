@@ -115,4 +115,11 @@
     <string name="filter_sweet">甜蜜</string>
     <string name="filter_crema">復古</string>
     <string name="filter_nashville">舊時光</string>
+    <string name="filter_aden">午後</string>
+    <string name="filter_gingham">戀空</string>
+    <string name="filter_stinson">蜜茶</string>
+    <string name="filter_clarendon">青澀</string>
+    <string name="filter_juno">暖陽</string>
+    <string name="filter_dogpatch">小清新</string>
+    <string name="filter_gray">黑白</string>
 </resources>
