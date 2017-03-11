@@ -16,6 +16,7 @@ while i < count:
     command = sys.argv[i]
     i += 1
     if command.lower() == "-h" or command.lower() == "--help":
+        print 'usage:'
         print '-s [string source] [string source] ... (note: if use -S, a new empty line will be inserted before each item)'
         print '-I [drawable source] [drawable source] ...'
         print '-D [dimen source] [dimen source] ...'
@@ -30,3 +31,5 @@ while i < count:
             resList.append(item)
             i += 1
         copier.doCopy(resList)
+    else:
+        print 'unknown command: ' + command + ', run -h or --help for help'
