@@ -19,6 +19,7 @@ if not os.path.exists(dst_res_path):
           + os.path.basename(__file__)
     exit()
 
+# 图片资源拷贝
 class CopyDrawableRes:
     ensureItem = False
 
@@ -64,9 +65,12 @@ class CopyDrawableRes:
 
         if os.path.exists(dstFile):
             print 'warning: res already exists in dst path'
+            if self.ensureItem and resFile.lower().endswith(".xml"):
+                self.__ensureItem(dstFile)
+                return True
             return False
 
-        shutil.copy (srcFile, dstFile)
+        shutil.copy(srcFile, dstFile)
 
         if self.ensureItem and resFile.lower().endswith(".xml"):
             self.__ensureItem(dstFile)
@@ -75,7 +79,30 @@ class CopyDrawableRes:
         pass
 
     def __ensureItem(self, xmlFile):
-        # TODO implement this func
+        print "\nensure item for: " + xmlFile
+        content = ""
+        input = open(xmlFile, "r")
+        try:
+            content = input.read()
+        finally:
+            input.close()
+
+        subItemList = []
+        start = 0
+        while True:
+            start = content.find('"@drawable/', start)
+            if start == -1:
+                break
+            end = content.find('"', start + 1)
+            if end == -1:
+                break
+            subItemList.append(content[(start + len('"@drawable/')):end])
+            start = end
+            pass
+
+        if subItemList and len(subItemList) > 0:
+            self.doCopy(subItemList)
+
         pass
 
 # 字符串资源拷贝
@@ -90,7 +117,7 @@ class CopyStringRes:
         pass
 
     def doCopy(self, itemList):
-        print "copy string resource for: " + "".join(itemList)
+        print "\ncopy string resource for: " + "".join(itemList)
         if not itemList or len(itemList) == 0:
             return
         print "copy default"

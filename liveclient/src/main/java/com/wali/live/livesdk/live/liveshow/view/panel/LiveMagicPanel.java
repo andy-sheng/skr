@@ -104,6 +104,10 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         mFilterBtn = $(R.id.filter);
         mExpressionBtn = $(R.id.expression);
 
+        $click(mBeautyBtn, this);
+        $click(mFilterBtn, this);
+        $click(mExpressionBtn, this);
+
         mPanelContainer = new PanelContainer(mSubPanelView);
         mSingleChooser.setup(mTabContainer, 0);
 

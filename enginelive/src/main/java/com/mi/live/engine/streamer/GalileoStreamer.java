@@ -382,6 +382,7 @@ public class GalileoStreamer implements IStreamer {
 
     @Override
     public void setDisplayPreview(View surfaceView) {
+        MyLog.w(TAG, "setDisplayPreview");
         mLocalPreview = (VideoStreamsView) surfaceView;
     }
 

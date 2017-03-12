@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_black_trans_90"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <!--人声调节-->
+        <RelativeLayout
+            android:id="@+id/volume_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_230"
+            android:layout_marginTop="3.33dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/minimize_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/live_anchor_microphone_minimize" />
+
+            <com.base.view.RotatedSeekBar
+                android:id="@+id/volume_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                app:appSeekBarLeftPadding="10dp"
+                app:appSeekBarRightPadding="10dp"
+                app:appShapeColorBK="@color/color_white_trans_50"
+                app:appShapeColorFT="#FED533"
+                app:appShapeSize="@dimen/view_dimen_2"
+                app:appThumbDrawable="@drawable/live_icon_jindutiao_yuan_white"
+                app:appThumbDrawablePress="@drawable/live_icon_jindutiao_yuan_yellow"
+                app:appThumbSize="15.33dp"
+                app:appThumbSizePress="10.67dp" />
+
+            <ImageView
+                android:id="@+id/maximize_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/live_anchor_microphone_maximize" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.33dp"
+            android:background="@color/color_white_trans_20" />
+
+        <!--混响选项-->
+        <LinearLayout
+            android:id="@+id/reverb_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_300"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/original"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/margin_18"
+                android:drawableTop="@drawable/live_anchor_setting_original"
+                android:gravity="center"
+                android:text="@string/original"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+
+            <TextView
+                android:id="@+id/recording_studio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/margin_18"
+                android:drawableTop="@drawable/live_anchor_setting_recording"
+                android:gravity="center"
+                android:text="@string/recording_studio"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+
+            <TextView
+                android:id="@+id/ktv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/margin_18"
+                android:drawableTop="@drawable/live_anchor_setting_ktv"
+                android:gravity="center"
+                android:text="@string/ktv"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+
+            <TextView
+                android:id="@+id/concert"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/margin_18"
+                android:drawableTop="@drawable/live_anchor_setting_concert"
+                android:gravity="center"
+                android:text="@string/concert"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.33dp"
+            android:background="@color/color_white_trans_20" />
+
+        <!--高保真-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_120"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/choose_hifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/live_anchor_choose_hifi"
+                android:drawablePadding="6.67dp"
+                android:gravity="center"
+                android:text="@string/choose_hifi"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.33dp"
+            android:background="@color/color_white_trans_20" />
+    </LinearLayout>
+
+    <!--相机设置-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_270"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/mirror_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/live_anchor_list_text"
+                android:duplicateParentState="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="6.67dp"
+                android:text="@string/mirror_image"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/switch_camera"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/live_anchor_list_camera"
+                android:duplicateParentState="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="6.67dp"
+                android:text="@string/switch_camera"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/flash_light"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/live_anchor_list_flashlight"
+                android:duplicateParentState="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="6.67dp"
+                android:text="@string/flash_light"
+                android:textColor="@color/bottom_panel_btn_photo_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

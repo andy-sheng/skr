@@ -147,7 +147,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         view.setPresenter(presenter);
         presenter.setComponentView(view.getViewProxy());
 
-        componentController.onEvent(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
+        componentController.onEvent(LiveComponentController.MSG_SHOW_SETTING_PANEL);
     }
 
     @Override
