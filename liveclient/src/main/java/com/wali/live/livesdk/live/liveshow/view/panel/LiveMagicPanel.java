@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.base.view.RotatedSeekBar;
-import com.mi.live.engine.base.GalileoConstants;
 import com.wali.live.component.view.BasePanelContainer;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
@@ -45,7 +44,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
     private ViewGroup mTabContainer;
 
     private PanelContainer mPanelContainer;
-    private MagicParamPresenter.MagicParams mMagicParams;
+    private boolean mIsMultiBeauty = false;
 
     private View mBeautyBtn;
     private View mFilterBtn;
@@ -143,7 +142,6 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                 if (magicParams == null) {
                     return;
                 }
-                mMagicParams = magicParams;
                 int enableCount = 0;
                 if (magicParams.isFilter()) {
                     ++enableCount;
@@ -157,26 +155,47 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                     ++enableCount;
                     mBeautyBtn.setVisibility(View.VISIBLE);
                 }
-                if (enableCount <= 1) {
+                mIsMultiBeauty = magicParams.isMultiBeauty();
+                if (enableCount <= 1) { // 少于两个可见，则不需显示底部Tab
                     mSplitter.setVisibility(View.GONE);
                     mTabContainer.setVisibility(View.GONE);
-                    if (enableCount == 1) {
-                        if (magicParams.isBeauty()) {
-                            mPanelContainer.showBeautyPanel();
-                        } else if (magicParams.isFilter()) {
-                            mPanelContainer.showFilterPanel();
-                        } else if (magicParams.isExpression()) {
-                            mPanelContainer.showExpressionPanel();
-                        }
-                    }
+                }
+                if (magicParams.isBeauty()) { // 按优先级，显示默认的子面板
+                    mBeautyBtn.setSelected(true);
+                    mPanelContainer.showBeautyPanel();
+                } else if (magicParams.isFilter()) {
+                    mFilterBtn.setSelected(true);
+                    mPanelContainer.showFilterPanel();
+                } else if (magicParams.isExpression()) {
+                    mExpressionBtn.setSelected(true);
+                    mPanelContainer.showExpressionPanel();
                 }
             }
 
             @Override
-            public void onFilterData(List<FilterItemAdapter.FilterItem> filterItems, String currFilter) {
-                if (mPanelContainer.mFilterPanel != null) {
-                    mPanelContainer.mFilterPanel.mAdapter.setItemData(filterItems, currFilter);
+            public void onBeautyData(int currPosition) {
+                if (mPanelContainer.mBeautyPanel != null) {
+                    mPanelContainer.mBeautyPanel.onCurrPosition(currPosition);
                 }
+            }
+
+            @Override
+            public void onFilterData(List<FilterItemAdapter.FilterItem> filterItems) {
+                if (mPanelContainer.mFilterPanel != null) {
+                    mPanelContainer.mFilterPanel.mAdapter.setItemData(filterItems);
+                }
+            }
+
+            @Override
+            public void onFilterData(String filter, int intensity) {
+                if (mPanelContainer.mFilterPanel != null) {
+                    mPanelContainer.mFilterPanel.mAdapter.setCurrFilter(filter);
+                    mPanelContainer.mFilterPanel.mFilterAdjuster.setVolume(intensity);
+                }
+            }
+
+            @Override
+            public void onExpressionData(List<FilterItemAdapter.FilterItem> filterItems, int currPosition) {
             }
         }
         return new ComponentView();
@@ -184,46 +203,80 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
     public interface IPresenter {
         /**
-         * 同步美妆面板按钮状态
+         * 同步美妆面板状态
          */
         void syncPanelStatus();
 
         /**
-         * 同步滤镜子面板数据
+         * 同步美颜数据
+         */
+        void syncBeautyData();
+
+        /**
+         * 同步滤镜数据
          */
         void syncFilterData();
 
         /**
+         * 同步表情数据
+         */
+        void syncExpressionData();
+
+        /**
          * 设置美颜
          */
-        void setBeautyLevel(int beautyLevel);
+        void setBeauty(int index);
+
+        /**
+         * 设置滤镜
+         */
+        void setFilter(String filter);
+
+        /**
+         * 设置滤镜强度
+         */
+        void setFilterIntensity(int intensity);
+
+        /**
+         * 设置表情
+         */
+        void setExpression(int index);
     }
 
     public interface IView extends IViewProxy {
         /**
-         * 同步美妆面板按钮状态
+         * 同步美妆面板按钮可用性
          */
         void onPanelStatus(MagicParamPresenter.MagicParams magicParams);
 
         /**
-         * 同步滤镜子面板数据
+         * 同步美颜数据
          */
-        void onFilterData(List<FilterItemAdapter.FilterItem> filterItems, String currFilter);
+        void onBeautyData(int currPosition);
+
+        /**
+         * 同步滤镜数据
+         */
+        void onFilterData(List<FilterItemAdapter.FilterItem> filterItems);
+
+        /**
+         * 同步滤镜数据
+         */
+        void onFilterData(String filter, int intensity);
+
+        /**
+         * 同步表情数据
+         */
+        void onExpressionData(List<FilterItemAdapter.FilterItem> filterItems, int currPosition);
     }
 
     // 美颜子面板
     private class BeautyPanel extends BaseBottomPanel<LinearLayout, RelativeLayout> {
 
         private final float[] mSeekBarPosIndex = new float[]{0, 0.34f, 0.66f, 1};
-        private final int[] mBeautyLevel = new int[]{
-                GalileoConstants.BEAUTY_LEVEL_OFF,
-                GalileoConstants.BEAUTY_LEVEL_LOW,
-                GalileoConstants.BEAUTY_LEVEL_MIDDLE,
-                GalileoConstants.BEAUTY_LEVEL_HIGHEST
-        };
 
-        private RotatedSeekBar mSeekBar;
         private SwitchButton mSwitchButton;
+        private RotatedSeekBar mSeekBar;
 
         public BeautyPanel(@NonNull RelativeLayout parentView) {
             super(parentView);
@@ -231,10 +284,18 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
         @Override
         protected int getLayoutResId() {
-            if (mMagicParams != null && mMagicParams.isMultiBeauty()) {
+            if (mIsMultiBeauty) {
                 return R.layout.single_beauty_panel;
             } else {
                 return R.layout.multi_beauty_panel;
+            }
+        }
+
+        private void onCurrPosition(int currPosition) {
+            if (mSwitchButton != null) {
+                mSwitchButton.setChecked(currPosition > 0);
+            } else if (mSeekBar != null) {
+                mSeekBar.setPercent(mSeekBarPosIndex[currPosition]);
             }
         }
 
@@ -243,20 +304,18 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
             super.inflateContentView();
 
             mSwitchButton = $(R.id.switch_btn);
-            mSeekBar = $(R.id.seek_bar);
-
             if (mSwitchButton != null) {
                 mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (LiveMagicPanel.this.mPresenter != null) {
-                            LiveMagicPanel.this.mPresenter.setBeautyLevel(
-                                    isChecked ? mBeautyLevel[0] : mBeautyLevel[1]);
+                            LiveMagicPanel.this.mPresenter.setBeauty(isChecked ? 1 : 0);
                         }
                     }
                 });
             }
 
+            mSeekBar = $(R.id.seek_bar);
             if (mSeekBar != null) {
                 mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
                     @Override
@@ -269,13 +328,17 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
                     @Override
                     public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
-                        int index = (int) (rotatedSeekBar.getPercent() * 6  + 1) / 2; // 滑条级别：0, 1, 2, 3
+                        int index = (int) (rotatedSeekBar.getPercent() * 6 + 1) / 2; // 滑条级别：0, 1, 2, 3
                         rotatedSeekBar.setPercent(mSeekBarPosIndex[index]);
                         if (LiveMagicPanel.this.mPresenter != null) {
-                            LiveMagicPanel.this.mPresenter.setBeautyLevel(mBeautyLevel[index]);
+                            LiveMagicPanel.this.mPresenter.setBeauty(index);
                         }
                     }
                 });
+            }
+
+            if (LiveMagicPanel.this.mPresenter != null) {
+                LiveMagicPanel.this.mPresenter.syncBeautyData();
             }
         }
     }
@@ -289,27 +352,19 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                 new FilterItemAdapter.IFilterItemListener() {
                     @Override
                     public void onItemSelected(String filter) {
-//                        notifyOnFilter(FILTER_SAMPLE_PARAMS[position]);
-//                        StatisticsAlmightyWorker.getsInstance().recordDelay(StatisticsKey.AC_APP,
-//                                StatisticsKey.KEY, String.format(StatisticsKey.KEY_FILTER_CLICK, FILTER_STATISTICS_KEY[position]),
-//                                StatisticsKey.TIMES, "1");
-//                        PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_FILTER_CATEGORY_POSITION, position);
+                        if (LiveMagicPanel.this.mPresenter != null) {
+                            LiveMagicPanel.this.mPresenter.setFilter(filter);
+                        }
                     }
                 });
 
         private final VolumeAdjuster mFilterAdjuster = new VolumeAdjuster(
-                new VolumeAdjuster.IAdjusterListener() {
-                    @Override
-                    public void onMinimizeBtn(boolean isSelected) {
-                    }
-
-                    @Override
-                    public void onMaximizeBtn() {
-                    }
-
+                new VolumeAdjuster.AdjusterWrapper() {
                     @Override
                     public void onChangeVolume(@IntRange(from = 0, to = 100) int volume) {
-//                        notifyOnFilterIntensity(((float) volume) / 100.f);
+                        if (LiveMagicPanel.this.mPresenter != null) {
+                            LiveMagicPanel.this.mPresenter.setFilterIntensity(volume);
+                        }
                     }
                 }
         );
@@ -332,17 +387,18 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
             mRecyclerView.setLayoutManager(new LinearLayoutManager(
                     this.mParentView.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-            if (mMagicParams == null) {
-                mFilterAdjuster.setup((ViewGroup) $(R.id.param_adjuster_view));
-            } else {
-                mFilterAdjuster.setup((ViewGroup) $(R.id.param_adjuster_view),
-                        mMagicParams.getFilterIntensity());
+            mFilterAdjuster.setup((ViewGroup) $(R.id.param_adjuster_view));
+
+            if (LiveMagicPanel.this.mPresenter != null) {
+                LiveMagicPanel.this.mPresenter.syncFilterData();
             }
         }
     }
 
     // 表情子面板
     private class ExpressionPanel extends BaseBottomPanel<RecyclerView, RelativeLayout> {
+
+        private RecyclerView mRecyclerView;
 
         public ExpressionPanel(@NonNull RelativeLayout parentView) {
             super(parentView);
@@ -356,6 +412,10 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         @Override
         protected void inflateContentView() {
             super.inflateContentView();
+
+            if (LiveMagicPanel.this.mPresenter != null) {
+                LiveMagicPanel.this.mPresenter.syncExpressionData();
+            }
         }
     }
 
@@ -391,9 +451,6 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         protected void showFilterPanel() {
             if (mFilterPanel == null) {
                 mFilterPanel = new FilterPanel(this.mPanelContainer);
-                if (LiveMagicPanel.this.mPresenter != null) {
-                    LiveMagicPanel.this.mPresenter.syncFilterData();
-                }
             }
             showPanel(mFilterPanel, false);
         }

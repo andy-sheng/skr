@@ -15,7 +15,6 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.engine.base.GalileoConstants;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.livesdk.live.component.utils.MagicParamUtils;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.proto.CloudParamsProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -163,26 +162,19 @@ public class MagicParamPresenter extends BaseParamPresenter {
     }
 
     public static class MagicParams {
-        private int[] mBeauty = new int[]{GalileoConstants.BEAUTY_LEVEL_OFF, GalileoConstants.BEAUTY_LEVEL_HIGH};
-        private int mBeautyLevel = GalileoConstants.BEAUTY_LEVEL_HIGH;
-        private boolean mFilter = true;
-        private int mFilterIntensity = 100;
-        private boolean mExpression = false;
+        private int[] beauty = new int[]{ // 可用的美颜级别
+                GalileoConstants.BEAUTY_LEVEL_OFF,
+                GalileoConstants.BEAUTY_LEVEL_HIGH};
+        private boolean isFilter = true; // 滤镜是否可用
+        private boolean isExpression = false; // 魔法表情是否可用
 
         public void loadParams(@NonNull Context context) {
             String codeStr = PreferenceUtils.getSettingString(context, KEY_MAGIC_PARAM_SUPPORT_CODE, "");
             try {
                 JSONObject jsonObject = new JSONObject(codeStr);
-                mBeauty = (int[]) jsonObject.opt("beauty");
-                mFilter = jsonObject.optBoolean("filter");
-                mBeautyLevel = MagicParamUtils.getBeautyLevel();
-                int pos = Arrays.asList(mBeauty).indexOf(mBeautyLevel);
-                if (pos == -1) {
-                    // 如果上次的美颜级别不在支持的列表中，则使用支持级别的最大值
-                    mBeautyLevel = mBeauty[mBeauty.length - 1];
-                }
-                mFilterIntensity = MagicParamUtils.getFilterIntensity();
-                mExpression = !PlusParamUtils.isHideExpression(true);
+                beauty = (int[]) jsonObject.opt("beauty");
+                isFilter = jsonObject.optBoolean("filter");
+                isExpression = !PlusParamUtils.isHideExpression(true);
             } catch (Exception e) {
                 MyLog.e(TAG, "loadParams failed, exception=" + e);
             }
@@ -191,8 +183,8 @@ public class MagicParamPresenter extends BaseParamPresenter {
         private void saveParams(@NonNull Context context) {
             try {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("beauty", mBeauty);
-                jsonObject.put("filter", mFilter);
+                jsonObject.put("beauty", beauty);
+                jsonObject.put("filter", isFilter);
                 PreferenceUtils.setSettingString(context, KEY_MAGIC_PARAM_SUPPORT_CODE, jsonObject.toString());
                 PreferenceUtils.setSettingLong(context, KEY_MAGIC_PARAM_SYNC_TIMESTAMP, System.currentTimeMillis());
             } catch (Exception e) {
@@ -202,75 +194,55 @@ public class MagicParamPresenter extends BaseParamPresenter {
 
         private void parseParams(@NonNull CloudParamsProto.GetCameraResponse rsp) {
             if (rsp.hasOpenFilter()) {
-                mFilter = rsp.getOpenFilter();
+                isFilter = rsp.getOpenFilter();
             }
             int count = rsp.getCameraLevelsCount();
             if (count > 1) { // 多级美颜
-                mBeauty = new int[count + 1];
-                mBeauty[0] = GalileoConstants.BEAUTY_LEVEL_OFF;
+                beauty = new int[count + 1];
+                beauty[0] = GalileoConstants.BEAUTY_LEVEL_OFF;
                 for (int i = 0; i < count; ++i) {
-                    mBeauty[i + 1] = rsp.getCameraLevels(i);
+                    beauty[i + 1] = rsp.getCameraLevels(i);
                 }
             } else if (count == 1) { // 单级美颜
-                mBeauty[1] = rsp.getCameraLevels(0);
+                beauty[1] = rsp.getCameraLevels(0);
             }
         }
 
         /**
-         * 是否允许开启滤镜
-         */
-        public boolean isFilter() {
-            return mFilter;
-        }
-
-        /**
-         * 查询滤镜强度
-         */
-        public int getFilterIntensity() {
-            return mFilterIntensity;
-        }
-
-        /**
-         * 是否允许开启表情
-         */
-        public boolean isExpression() {
-            return mExpression;
-        }
-
-        /**
-         * 是否允许开启美颜
+         * 美颜是否可用
          */
         public boolean isBeauty() {
-            return mBeauty[1] != GalileoConstants.BEAUTY_LEVEL_OFF;
-        }
-
-        /**
-         * 是否是单极美颜
-         */
-        public boolean isSingleBeauty() {
-            return mBeauty.length == 2 && mBeauty[1] != GalileoConstants.BEAUTY_LEVEL_OFF;
+            return beauty[1] != GalileoConstants.BEAUTY_LEVEL_OFF;
         }
 
         /**
          * 是否是多级美颜
          */
         public boolean isMultiBeauty() {
-            return mBeauty.length > 2;
+            return beauty.length > 2;
         }
 
         /**
-         * 查询美颜级别
+         * 查找level的索引
          */
-        public int getBeautyLevel() {
-            return mBeautyLevel;
+        public int findBeautyPos(int level) {
+            int index = Arrays.asList(beauty).indexOf(level);
+            return index >= 0 ? index : (beauty.length - 1);
         }
 
         /**
-         * 查询多级美颜级别
+         * 滤镜是否可用
          */
-        public int[] getBeautyLevels() {
-            return mBeauty;
+        public boolean isFilter() {
+            return isFilter;
         }
 
+        /**
+         * 表情是否可用
+         */
+        public boolean isExpression() {
+            // return isExpression; TODO 完善表情模块
+            return false;
+        }
     }
 }

@@ -51,11 +51,12 @@ public class VolumeAdjuster implements View.OnClickListener {
         }
     }
 
-    public void setup(@NonNull ViewGroup viewGroup) {
-        setup(viewGroup, 50);
+    public void setup(@NonNull ViewGroup viewGroup, @IntRange(from = 0, to = 100) int volume) {
+        mCurrVolume = mSavedVolume = volume;
+        setup(viewGroup);
     }
 
-    public void setup(@NonNull ViewGroup viewGroup, @IntRange(from = 0, to = 100) int volume) {
+    public void setup(@NonNull ViewGroup viewGroup) {
         if (mViewGroup != null && mViewGroup != viewGroup) {
             reset();
         }
@@ -66,8 +67,6 @@ public class VolumeAdjuster implements View.OnClickListener {
         mMaximizeBtn = $(R.id.maximize_btn);
         $click(mMinimizeBtn, this);
         $click(mMaximizeBtn, this);
-
-        mCurrVolume = mSavedVolume = volume;
 
         mSeekBar.setPercent(mCurrVolume / 100f);
         mSeekBar.setOnRotatedSeekBarChangeListener(new RotatedSeekBar.OnRotatedSeekBarChangeListener() {
@@ -144,5 +143,20 @@ public class VolumeAdjuster implements View.OnClickListener {
 
         void onChangeVolume(@IntRange(from = 0, to = 100) int volume);
 
+    }
+
+    public static class AdjusterWrapper implements IAdjusterListener {
+
+        @Override
+        public void onMinimizeBtn(boolean isSelected) {
+        }
+
+        @Override
+        public void onMaximizeBtn() {
+        }
+
+        @Override
+        public void onChangeVolume(@IntRange(from = 0, to = 100) int volume) {
+        }
     }
 }
