@@ -180,5 +180,40 @@ class CopyStringRes:
             out.write(dstData)
         finally:
             out.close()
+        pass
 
+# layout资源拷贝
+class CopyLayoutRes:
+    def __del__(self):
+        pass
+
+    def doCopy(self, itemList):
+        print "copy layout for: ".join(itemList)
+        if not itemList or len(itemList) == 0:
+            return
+        print "copy layout"
+        for srcItem in itemList:
+           print "copy layout " + srcItem
+           ret = self.__doCopy("/layout/", srcItem)
+           if not ret:
+               print "copy /layout/ " + srcItem
+               self.__doCopy("/layout/", srcItem)
+        pass
+
+
+    def __doCopy(self, resPath,fileName):
+        srcFile = org_res_path + resPath + fileName
+        dstPath = dst_res_path + resPath
+
+        if not os.path.exists(dstPath):
+            os.makedirs(dstPath)
+
+        try:
+            shutil.copy(srcFile, dstPath)
+        # eg. src and dest are the same file
+        except shutil.Error as e:
+            print('Error: 1 %s' % e)
+        # eg. source or destination doesn't exist
+        except IOError as e:
+            print('Error: 2 %s' % e.strerror)
         pass

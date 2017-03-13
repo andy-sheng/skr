@@ -43,5 +43,15 @@ while i < count:
             i += 1
         print ""
         copier.doCopy(resList)
+    elif command.lower() == "-l":
+        copier = CopyLayoutRes()
+        resList = []
+        while i < count:
+           item = sys.argv[i]
+           if item[0] == "-":
+               break
+           resList.append(item)
+           i += 1
+        copier.doCopy(resList)
     else:
         print 'unknown command: ' + command + ', run -h or --help'
