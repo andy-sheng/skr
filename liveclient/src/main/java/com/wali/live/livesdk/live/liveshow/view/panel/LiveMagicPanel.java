@@ -12,11 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.base.view.RotatedSeekBar;
-import com.wali.live.component.view.BasePanelContainer;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
@@ -104,9 +104,6 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         mBeautyBtn = $(R.id.face_beauty);
         mFilterBtn = $(R.id.filter);
 //        mExpressionBtn = $(R.id.expression);
-        $click(mBeautyBtn, this);
-        $click(mFilterBtn, this);
-//        $click(mExpressionBtn, this);
 
         mPanelContainer = new PanelContainer(mSubPanelView);
         mSingleChooser.setup(mTabContainer, 0);
@@ -167,14 +164,14 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                     mTabContainer.setVisibility(View.GONE);
                 }
                 if (magicParams.isBeauty()) { // 按优先级，显示默认的子面板
-                    mBeautyBtn.setSelected(true);
+                    mSingleChooser.setSelection(mBeautyBtn);
                     mPanelContainer.showBeautyPanel();
                 } else if (magicParams.isFilter()) {
-                    mFilterBtn.setSelected(true);
+                    mSingleChooser.setSelection(mFilterBtn);
                     mPanelContainer.showFilterPanel();
                 }
 //                else if (magicParams.isExpression()) {
-//                    mExpressionBtn.setSelected(true);
+//                    mSingleChooser.setSelection(mExpressionBtn);
 //                    mPanelContainer.showExpressionPanel();
 //                }
             }
@@ -428,46 +425,47 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 //    }
 
     // 子面板容器
-    private class PanelContainer extends BasePanelContainer<Object, IViewProxy, RelativeLayout> {
+    private class PanelContainer extends BaseContainerPresenter<RelativeLayout> {
 
         private BeautyPanel mBeautyPanel;
         private FilterPanel mFilterPanel;
 //        private ExpressionPanel mExpressionPanel;
 
-        public PanelContainer(@NonNull RelativeLayout panelContainer) {
-            super(panelContainer);
-            mPanelContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 空操作，覆盖基类行为，不调用hidePanel
-                }
-            });
+        @Override
+        protected String getTAG() {
+            return TAG;
         }
 
-        @Override
-        public IViewProxy getViewProxy() {
-            return null;
+        public PanelContainer(@NonNull RelativeLayout relativeLayout) {
+            super(null);
+            setComponentView(relativeLayout);
         }
 
         protected void showBeautyPanel() {
             if (mBeautyPanel == null) {
-                mBeautyPanel = new BeautyPanel(this.mPanelContainer);
+                mBeautyPanel = new BeautyPanel(mView);
             }
             showPanel(mBeautyPanel, false);
         }
 
         protected void showFilterPanel() {
             if (mFilterPanel == null) {
-                mFilterPanel = new FilterPanel(this.mPanelContainer);
+                mFilterPanel = new FilterPanel(mView);
             }
             showPanel(mFilterPanel, false);
         }
 
 //        protected void showExpressionPanel() {
 //            if (mExpressionPanel == null) {
-//                mExpressionPanel = new ExpressionPanel(this.mPanelContainer);
+//                mExpressionPanel = new ExpressionPanel(mView);
 //            }
 //            showPanel(mExpressionPanel, false);
 //        }
+
+        @Nullable
+        @Override
+        protected IAction createAction() {
+            return null;
+        }
     }
 }

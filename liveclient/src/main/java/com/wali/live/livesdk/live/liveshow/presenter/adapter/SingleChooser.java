@@ -36,7 +36,7 @@ public class SingleChooser implements View.OnClickListener {
         mListener = listener;
     }
 
-    private boolean setSelection(View view) {
+    public boolean setSelection(View view) {
         if (mSelectedView != null && mSelectedView == view) {
             return false;
         }
