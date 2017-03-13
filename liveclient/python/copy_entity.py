@@ -184,6 +184,10 @@ class CopyStringRes:
 
 # layout资源拷贝
 class CopyLayoutRes:
+
+    def __init__(self):
+        pass
+
     def __del__(self):
         pass
 
