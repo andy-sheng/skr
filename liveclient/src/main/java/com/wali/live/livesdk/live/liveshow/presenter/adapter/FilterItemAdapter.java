@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ResImage;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.wali.live.common.listener.OnItemClickListener;
 import com.wali.live.livesdk.R;
 
 import java.util.ArrayList;
@@ -30,8 +29,6 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Vi
     private static final String TAG = FilterItemAdapter.class.getSimpleName();
 
     private List<FilterItem> mFilterItems = new ArrayList<>();
-
-    private OnItemClickListener mClickListener;
 
     private int mCurrPosition; // 默认是0，普通
 
@@ -58,15 +55,25 @@ public class FilterItemAdapter extends RecyclerView.Adapter<FilterItemAdapter.Vi
         mListener = listener;
     }
 
-    public void setItemData(List<FilterItem> sampleItemList, String currFilter) {
+    public void moveToCurrent(RecyclerView recyclerView) {
+        recyclerView.scrollToPosition(mCurrPosition);
+    }
+
+    public void setCurrFilter(String currFilter) {
+        if (!TextUtils.isEmpty(currFilter)) {
+            int position = mFilterItems.indexOf(currFilter);
+            if (mCurrPosition != position) {
+                mCurrPosition = position;
+            }
+        }
+    }
+
+    public void setItemData(List<FilterItem> sampleItemList) {
         if (sampleItemList != null && !sampleItemList.isEmpty()) {
             mFilterItems.clear();
             mFilterItems.addAll(sampleItemList);
+            notifyDataSetChanged();
         }
-        if (!TextUtils.isEmpty(currFilter)) {
-            mCurrPosition = mFilterItems.indexOf(currFilter);
-        }
-        notifyDataSetChanged();
     }
 
     @Override
