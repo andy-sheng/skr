@@ -1,6 +1,5 @@
 package com.base.global;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 

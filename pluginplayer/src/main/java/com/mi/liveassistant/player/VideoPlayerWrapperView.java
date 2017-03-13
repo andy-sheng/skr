@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import com.base.ipselect.IDnsStatusListener;
 import com.base.ipselect.WatchIpSelectionHelper;
 import com.base.log.MyLog;
 import com.mi.live.engine.media.player.IMediaPlayer;
@@ -18,7 +19,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by lan on 17/3/10.
  */
-public class VideoPlayerWrapperView extends VideoPlayerTextureView {
+public class VideoPlayerWrapperView extends VideoPlayerTextureView implements IDnsStatusListener {
     // 域名解析、重连相关
     public static final int MSG_RELOAD_VIDEO = 100;             // onInfo开始buffer时，reload数据的标记。
     public static final int PLAYER_KADUN_RELOAD_TIME = 5000;    //毫秒
@@ -40,19 +41,19 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView {
 
         @Override
         public void onCompletion() {
-            MyLog.v(TAG, " onCompletion");
+            MyLog.v(TAG, "onCompletion");
             mIsCompletion = true;
         }
 
         @Override
         public void onError(int errCode) {
-            MyLog.v(TAG, " onError " + errCode);
+            MyLog.v(TAG, "onError " + errCode);
             pause();
         }
 
         @Override
         public void onInfo(int info) {
-            MyLog.v(TAG + " onInfo int " + info);
+            MyLog.v(TAG, "onInfo int " + info);
         }
 
         @Override
@@ -86,9 +87,13 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView {
                 default:
                     break;
             }
-            MyLog.v(TAG, " onInfo " + msg.toString());
+            MyLog.v(TAG, "onInfo " + msg.toString());
         }
     };
+
+    protected String getTAG() {
+        return getClass().getSimpleName();
+    }
 
     public VideoPlayerWrapperView(Context context) {
         super(context);
@@ -102,14 +107,26 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView {
         super(context, attrs, defStyleAttr);
     }
 
+    @Override
+    protected void init(Context context) {
+        super.init(context);
+
+        mIpSelectionHelper = new WatchIpSelectionHelper(context, this);
+
+        mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
+        mVideoPlayerPresenter.setBufferSize(500);
+    }
+
     public void play(String videoUrl) {
         if (!TextUtils.isEmpty(videoUrl)) {
             //ip优选
-            mIpSelectionHelper.setOriginalStreamUrl(videoUrl);
-            mIpSelectionHelper.ipSelect();
+//            mIpSelectionHelper.setOriginalStreamUrl(videoUrl);
+//            mIpSelectionHelper.ipSelect();
+//
+//            mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
+//            mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
 
-            mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
-            mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
+            mVideoPlayerPresenter.setVideoPath(videoUrl, "");
 
             MyLog.w(TAG, "mIpSelectionHelper.getStreamUrl() = " + mIpSelectionHelper.getStreamUrl());
             MyLog.w(TAG, "mIpSelectionHelper.getSelectedHttpIpList() = " + mIpSelectionHelper.getSelectedHttpIpList());
@@ -138,6 +155,19 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView {
         mVideoPlayerPresenter.seekTo(currentPosition);
     }
 
+    public void enableReconnect(boolean isEnable) {
+        MyLog.w(TAG, "enableReconnect, isEnable= " + isEnable);
+        mVideoPlayerPresenter.enableReconnect(isEnable);
+    }
+
+    @Override
+    public void onDnsReady() {
+        MyLog.w(TAG, "onDnsReady");
+        if (mIpSelectionHelper.isStuttering()) {
+            startReconnect();
+        }
+    }
+
     // 继续播放
     public void resume() {
         if (mIsCompletion) {
@@ -157,6 +187,10 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView {
         mVideoPlayerPresenter.release();
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
+        }
+
+        if (mIpSelectionHelper != null) {
+            mIpSelectionHelper.destroy();
         }
     }
 
