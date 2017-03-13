@@ -68,7 +68,7 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
         }
     }
 
-    private void init(Context context) {
+    protected void init(Context context) {
         mVideoWidth = 0;
         mVideoHeight = 0;
         mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight);
