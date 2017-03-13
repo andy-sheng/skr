@@ -23,8 +23,12 @@ import java.util.List;
 public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHolder> {
     private LayoutInflater mInflater;
     private ArrayList<PlusItem> mPlusItems = new ArrayList<>(0);
-    private int mItemPlusWidth = GlobalData.screenWidth >> 1;
+    private int mItemWidth = 0;
     private View.OnClickListener mListener;
+
+    public PlusItemAdapter(int itemWidth) {
+        this.mItemWidth = itemWidth;
+    }
 
     @Override
     public PlusHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,7 +36,7 @@ public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHo
             mInflater = LayoutInflater.from(parent.getContext());
         }
         View view = mInflater.inflate(R.layout.plus_item, null);
-        return new PlusHolder(view, mItemPlusWidth);
+        return new PlusHolder(view, mItemWidth);
     }
 
     @Override

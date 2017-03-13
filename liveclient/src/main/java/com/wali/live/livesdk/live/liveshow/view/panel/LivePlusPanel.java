@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.global.GlobalData;
 import com.wali.live.common.gift.adapter.viewHolder.decoration.BaseItemDecoration;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
@@ -69,7 +70,7 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
 
     public LivePlusPanel(@NonNull RelativeLayout parentView) {
         super(parentView);
-        mAdapter = new PlusItemAdapter();
+        mAdapter = new PlusItemAdapter(GlobalData.screenWidth / MAX_COUNT_IN_LINE);
     }
 
     @Override

@@ -22,6 +22,35 @@ public class LiveSettingPresenter extends ComponentPresenter<LiveSettingPanel.IV
         super(componentController);
     }
 
+    @Override
+    public void setVolume(int volume) {
+    }
+
+    @Override
+    public void setReverb(int reverb) {
+    }
+
+    @Override
+    public void enableHifi(boolean enable) {
+    }
+
+    @Override
+    public void switchCamera() {
+    }
+
+    @Override
+    public boolean isBackCamera() {
+        return false;
+    }
+
+    @Override
+    public void enableMirrorImage(boolean enable) {
+    }
+
+    @Override
+    public void enableFlashLight(boolean enable) {
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {

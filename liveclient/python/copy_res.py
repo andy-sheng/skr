@@ -30,6 +30,7 @@ while i < count:
                 break
             resList.append(item)
             i += 1
+        print ""
         copier.doCopy(resList)
     elif command.lower() == "-i":
         copier = CopyDrawableRes(command == "-I")
@@ -40,6 +41,7 @@ while i < count:
                 break
             resList.append(item)
             i += 1
+        print ""
         copier.doCopy(resList)
     elif command.lower() == "-l":
         copier = CopyLayoutRes()

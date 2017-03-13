@@ -175,9 +175,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     private LiveOperator mLiveOperator;
 
     // 域名解析、重连相关
-    private
     @NonNull
-    MultiCdnIpSelectionHelper mIpSelectionHelper;
+    private MultiCdnIpSelectionHelper mIpSelectionHelper;
     private boolean mIsStarted = false;
 
     private GiftPresenter mGiftPresenter;
@@ -342,7 +341,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
-        resumeGameLive();
+        if (mIsGameLive) {
+            resumeGameLive();
+        } else {
+            resumeStream();
+        }
     }
 
     @Override
@@ -364,16 +367,22 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     private void resumeGameLive() {
-        // onResume 更新游戏直播静音按钮
+        // onResume TODO 更新游戏直播静音按钮
         if (mComponentController != null) {
             mComponentController.onEvent(BaseLiveController.MSG_DEFAULT);
         }
     }
 
     private void resumeStream() {
-        mGameLivePresenter.resumeStream();
-        mRoomInfoPresenter.resumeTimer();
-        mIsForeground = true;
+        if (mIsGameLive) {
+            mGameLivePresenter.resumeStream();
+            mRoomInfoPresenter.resumeTimer();
+            mIsForeground = true;
+        } else {
+            if (mStreamer != null) {
+                mStreamer.resume();
+            }
+        }
         if (!TextUtils.isEmpty(mMyRoomData.getRoomId()) && sRecording) {
             new ZuidActiveRequest(mMyRoomData.getRoomId()).async();
             mUIHandler.removeMessages(MSG_END_LIVE_FOR_TIMEOUT);
