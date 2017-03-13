@@ -1,4 +1,4 @@
-package com.wali.live;
+package com.mi.liveassistant.player;
 
 import android.content.Context;
 import android.os.Handler;

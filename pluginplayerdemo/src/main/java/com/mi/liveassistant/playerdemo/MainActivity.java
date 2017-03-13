@@ -3,7 +3,7 @@ package com.mi.liveassistant.playerdemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.wali.live.VideoPlayerWrapperView;
+import com.mi.liveassistant.player.VideoPlayerWrapperView;
 
 public class MainActivity extends AppCompatActivity {
     private VideoPlayerWrapperView mPlayerWrapperView;

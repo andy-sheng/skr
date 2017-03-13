@@ -47,12 +47,12 @@ dependencies {
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
     gradle.startParameter.getTaskNames().each { task ->
-        if (task.contains("live")) {
-            flavorType = "live"
+        if (task.contains("playerplugin")) {
+            flavorType = "playerplugin"
         } else if (task.contains("player")) {
             flavorType = "player"
         } else {
-            flavorType = "playerplugin"
+            flavorType = "live"
         }
     }
     if (flavorType == "live") {
