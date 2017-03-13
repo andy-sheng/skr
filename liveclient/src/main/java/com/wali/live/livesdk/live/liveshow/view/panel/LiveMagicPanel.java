@@ -48,7 +48,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
     private View mBeautyBtn;
     private View mFilterBtn;
-    private View mExpressionBtn;
+//    private View mExpressionBtn;
 
     private final SingleChooser mSingleChooser = new SingleChooser(
             new SingleChooser.IChooserListener() {
@@ -60,11 +60,12 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                     int id = view.getId();
                     if (id == R.id.face_beauty) {
                         mPanelContainer.showBeautyPanel();
-                    } else if (id == R.id.expression) {
-                        mPanelContainer.showExpressionPanel();
                     } else if (id == R.id.filter) {
                         mPanelContainer.showFilterPanel();
                     }
+//                    else if (id == R.id.expression) {
+//                        mPanelContainer.showExpressionPanel();
+//                    }
                 }
             });
 
@@ -102,11 +103,10 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
         mBeautyBtn = $(R.id.face_beauty);
         mFilterBtn = $(R.id.filter);
-        mExpressionBtn = $(R.id.expression);
-
+//        mExpressionBtn = $(R.id.expression);
         $click(mBeautyBtn, this);
         $click(mFilterBtn, this);
-        $click(mExpressionBtn, this);
+//        $click(mExpressionBtn, this);
 
         mPanelContainer = new PanelContainer(mSubPanelView);
         mSingleChooser.setup(mTabContainer, 0);
@@ -151,10 +151,10 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                     ++enableCount;
                     mFilterBtn.setVisibility(View.VISIBLE);
                 }
-                if (magicParams.isExpression()) {
-                    ++enableCount;
-                    mExpressionBtn.setVisibility(View.VISIBLE);
-                }
+//                if (magicParams.isExpression()) {
+//                    ++enableCount;
+//                    mExpressionBtn.setVisibility(View.VISIBLE);
+//                }
                 if (magicParams.isBeauty()) {
                     ++enableCount;
                     mBeautyBtn.setVisibility(View.VISIBLE);
@@ -170,10 +170,11 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                 } else if (magicParams.isFilter()) {
                     mFilterBtn.setSelected(true);
                     mPanelContainer.showFilterPanel();
-                } else if (magicParams.isExpression()) {
-                    mExpressionBtn.setSelected(true);
-                    mPanelContainer.showExpressionPanel();
                 }
+//                else if (magicParams.isExpression()) {
+//                    mExpressionBtn.setSelected(true);
+//                    mPanelContainer.showExpressionPanel();
+//                }
             }
 
             @Override
@@ -399,36 +400,37 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         }
     }
 
-    // 表情子面板
-    private class ExpressionPanel extends BaseBottomPanel<RecyclerView, RelativeLayout> {
-
-        private RecyclerView mRecyclerView;
-
-        public ExpressionPanel(@NonNull RelativeLayout parentView) {
-            super(parentView);
-        }
-
-        @Override
-        protected int getLayoutResId() {
-            return R.layout.expression_panel;
-        }
-
-        @Override
-        protected void inflateContentView() {
-            super.inflateContentView();
-
-            if (LiveMagicPanel.this.mPresenter != null) {
-                LiveMagicPanel.this.mPresenter.syncExpressionData();
-            }
-        }
-    }
+    // 注释掉，暂时不支持表情
+//    // 表情子面板
+//    private class ExpressionPanel extends BaseBottomPanel<RecyclerView, RelativeLayout> {
+//
+//        private RecyclerView mRecyclerView;
+//
+//        public ExpressionPanel(@NonNull RelativeLayout parentView) {
+//            super(parentView);
+//        }
+//
+//        @Override
+//        protected int getLayoutResId() {
+//            return R.layout.expression_panel;
+//        }
+//
+//        @Override
+//        protected void inflateContentView() {
+//            super.inflateContentView();
+//
+//            if (LiveMagicPanel.this.mPresenter != null) {
+//                LiveMagicPanel.this.mPresenter.syncExpressionData();
+//            }
+//        }
+//    }
 
     // 子面板容器
     private class PanelContainer extends BasePanelContainer<Object, IViewProxy, RelativeLayout> {
 
         private BeautyPanel mBeautyPanel;
         private FilterPanel mFilterPanel;
-        private ExpressionPanel mExpressionPanel;
+//        private ExpressionPanel mExpressionPanel;
 
         public PanelContainer(@NonNull RelativeLayout panelContainer) {
             super(panelContainer);
@@ -459,11 +461,11 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
             showPanel(mFilterPanel, false);
         }
 
-        protected void showExpressionPanel() {
-            if (mExpressionPanel == null) {
-                mExpressionPanel = new ExpressionPanel(this.mPanelContainer);
-            }
-            showPanel(mExpressionPanel, false);
-        }
+//        protected void showExpressionPanel() {
+//            if (mExpressionPanel == null) {
+//                mExpressionPanel = new ExpressionPanel(this.mPanelContainer);
+//            }
+//            showPanel(mExpressionPanel, false);
+//        }
     }
 }
