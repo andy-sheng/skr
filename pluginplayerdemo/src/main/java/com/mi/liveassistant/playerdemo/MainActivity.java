@@ -20,13 +20,32 @@ public class MainActivity extends AppCompatActivity {
         GlobalData.setApplication(getApplication());
 
         mPlayerWrapperView = (VideoPlayerWrapperView) findViewById(R.id.player_view);
+        mPlayerWrapperView.setVideoTransMode(VideoPlayerWrapperView.TRANS_MODE_CENTER_INSIDE);
 
         mPlayBtn = (TextView) findViewById(R.id.play_btn);
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayerWrapperView.play("http://v2.zb.mi.com/live/21050016_1489389103.flv?playui=0");
+                mPlayerWrapperView.play("http://v2.zb.mi.com/live/2591387_1489395737.flv?playui=0");
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPlayerWrapperView.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPlayerWrapperView.resume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPlayerWrapperView.stop();
     }
 }
