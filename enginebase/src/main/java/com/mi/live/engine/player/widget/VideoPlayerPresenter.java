@@ -236,6 +236,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 mPlayerCallBack.onLoad();
             }
             mCurrentState = STATE_PREPARING;
+            MyLog.v(TAG, "openVideo playState=" + mCurrentState);
         } catch (IOException e) {
             MyLog.e(TAG, "Unable to open content: " + mUri, e);
             mCurrentState = STATE_ERROR;
@@ -319,6 +320,8 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         @Override
         public void onPrepared(IMediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
+            MyLog.v(TAG, "onPrepared playState=" + mCurrentState);
+
             mVideoWidth = mp.getVideoWidth();
             mVideoHeight = mp.getVideoHeight();
             if (mPlayer != null) {
@@ -342,8 +345,9 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     private IMediaPlayer.OnCompletionListener mCompletionListener = new IMediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(IMediaPlayer mp) {
-            MyLog.w(TAG, "onCompletion");
             mCurrentState = STATE_PLAYBACK_COMPLETED;
+            MyLog.v(TAG, "onCompletion playState=" + mCurrentState);
+
             if (mPlayerCallBack != null) {
                 mPlayerCallBack.onCompletion();
             }
@@ -371,9 +375,9 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         public boolean onInfo(IMediaPlayer mp, int what, int extra) {
             switch (what) {
                 case IMediaPlayer.MEDIA_INFO_RELOADED:
-                    MyLog.w(TAG, "MEDIA_INFO_RELOADED");
                     //重新reload后,不会调用onPrepared,所以在这里重置状态
                     mCurrentState = STATE_PREPARED;
+                    MyLog.v(TAG, "MEDIA_INFO_RELOADED playState=" + mCurrentState);
                     break;
                 default:
                     break;
@@ -430,18 +434,17 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
 
     @Override
     public void start() {
-        MyLog.w(TAG, "start " + isInPlaybackState() + " , mCurrentState = " + mCurrentState);
+        MyLog.w(TAG, "startState=" + isInPlaybackState() + ", currentState=" + mCurrentState);
         if (isInPlaybackState()) {
             mPlayer.start();
             mCurrentState = STATE_PLAYING;
+            MyLog.v(TAG, "start playState=" + mCurrentState);
         } else if (isInErrorState()) {
-            //TODO 是否使用reload
             mPlayer.reset();
             try {
                 mPlayer.setDataSource(mUri.toString(), mHost);
                 mPlayer.prepareAsync(mRealTime);
                 setSurface();
-//                        mPlayer.setSurface(mSurfaceHolder.getSurface());
             } catch (Exception e) {
                 MyLog.e(TAG, e);
             }
@@ -452,7 +455,6 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     public void reset() {
         if (null != mPlayer) {
             MyLog.w(TAG, "reset");
-            //TODO 是否要设置idle状态
             mPlayer.reset();
         }
     }
@@ -469,6 +471,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
             }
             mDuration = mPlayer.getDuration();
             mCurrentState = STATE_PAUSED;
+            MyLog.v(TAG, "pause playState=" + mCurrentState);
         }
     }
 
@@ -487,7 +490,10 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                 mPlayer = null;
                 mUri = null;
                 mIsReconnectEnable = false;
+
                 mCurrentState = STATE_IDLE;
+                MyLog.v(TAG, "release playState=" + mCurrentState);
+
                 if (mPlayerCallBack != null) {
                     mPlayerCallBack.onReleased();
                 }
@@ -589,7 +595,7 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
     }
 
     private boolean isInPlaybackState() {
-        MyLog.v(TAG, "PlaybackState " + mCurrentState);
+        MyLog.v(TAG, "isInPlaybackState playState=" + mCurrentState);
         return (mPlayer != null && mCurrentState != STATE_ERROR
                 && mCurrentState != STATE_IDLE && mCurrentState != STATE_PREPARING);
     }

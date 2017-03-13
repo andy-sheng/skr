@@ -33,10 +33,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
     private VideoPlayerCallBackWrapper mIPlayerCallBack = new VideoPlayerCallBackWrapper() {
         @Override
         public void onPrepared() {
-            MyLog.v(TAG, " onPrepared");
-            if (mVideoPlayerPresenter != null && mVideoPlayerPresenter.isEnableReconnect()) {
-                //TODO
-            }
+            MyLog.v(TAG, "onPrepared");
         }
 
         @Override
@@ -47,25 +44,22 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
 
         @Override
         public void onError(int errCode) {
-            MyLog.v(TAG, "onError " + errCode);
+            MyLog.v(TAG, "onError code=" + errCode);
             pause();
         }
 
         @Override
         public void onInfo(int info) {
-            MyLog.v(TAG, "onInfo int " + info);
+            MyLog.v(TAG, "onInfo int=" + info);
         }
 
         @Override
         public void onInfo(Message msg) {
-            onInfo(msg.what);
+            MyLog.v(TAG, "onInfo int=" + msg.what + " , msg=" + msg.toString());
             switch (msg.what) {
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
                     MyLog.w(TAG, "MEDIA_INFO_BUFFERING_START");
                     if (mIpSelectionHelper != null) {
-                        if (!mIpSelectionHelper.isStuttering()) {
-                            //TODO
-                        }
                         mIpSelectionHelper.updateStutterStatus(true);
 
                         mHandler.removeMessages(MSG_RELOAD_VIDEO);
@@ -75,9 +69,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
                     MyLog.w(TAG, "MEDIA_INFO_BUFFERING_END");
                     if (mIpSelectionHelper != null) {
-                        if (mIpSelectionHelper.isStuttering()) {
-                            //TODO
-                        }
                         mIpSelectionHelper.updateStutterStatus(false);
 
                         mHandler.removeMessages(MSG_RELOAD_VIDEO);
@@ -87,7 +78,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                 default:
                     break;
             }
-            MyLog.v(TAG, "onInfo " + msg.toString());
         }
     };
 
@@ -119,18 +109,15 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
 
     public void play(String videoUrl) {
         if (!TextUtils.isEmpty(videoUrl)) {
-            //ip优选
-//            mIpSelectionHelper.setOriginalStreamUrl(videoUrl);
-//            mIpSelectionHelper.ipSelect();
-//
-//            mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
-//            mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
+            mIpSelectionHelper.setOriginalStreamUrl(videoUrl);
+            mIpSelectionHelper.ipSelect();
 
-            mVideoPlayerPresenter.setVideoPath(videoUrl, "");
+            mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
+            mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
 
-            MyLog.w(TAG, "mIpSelectionHelper.getStreamUrl() = " + mIpSelectionHelper.getStreamUrl());
-            MyLog.w(TAG, "mIpSelectionHelper.getSelectedHttpIpList() = " + mIpSelectionHelper.getSelectedHttpIpList());
-            MyLog.w(TAG, "mIpSelectionHelper.getSelectedLocalIpList() = " + mIpSelectionHelper.getSelectedLocalIpList());
+            MyLog.w(TAG, "ipSelect streamUrl = " + mIpSelectionHelper.getStreamUrl());
+            MyLog.w(TAG, "ipSelect http ipList = " + mIpSelectionHelper.getSelectedHttpIpList());
+            MyLog.w(TAG, "ipSelect local ipList = " + mIpSelectionHelper.getSelectedLocalIpList());
 
             mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
             resume();
@@ -155,11 +142,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         mVideoPlayerPresenter.seekTo(currentPosition);
     }
 
-    public void enableReconnect(boolean isEnable) {
-        MyLog.w(TAG, "enableReconnect, isEnable= " + isEnable);
-        mVideoPlayerPresenter.enableReconnect(isEnable);
-    }
-
     @Override
     public void onDnsReady() {
         MyLog.w(TAG, "onDnsReady");
@@ -168,21 +150,20 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         }
     }
 
-    // 继续播放
     public void resume() {
         if (mIsCompletion) {
             mIsCompletion = false;
             mVideoPlayerPresenter.seekTo(0);
         }
         mVideoPlayerPresenter.start();
+        mVideoPlayerPresenter.enableReconnect(true);
     }
 
-    // 暂停播放
     public void pause() {
+        mVideoPlayerPresenter.enableReconnect(false);
         mVideoPlayerPresenter.pause();
     }
 
-    // 停止播放
     public void stop() {
         mVideoPlayerPresenter.release();
         if (mHandler != null) {
