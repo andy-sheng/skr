@@ -18,7 +18,6 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
-import com.wali.live.livesdk.live.livegame.view.LivePanelContainer;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
@@ -92,10 +91,10 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 MyLog.e(TAG, "missing R.id.bottom_panel_view");
                 return;
             }
-            LivePanelContainer view = new LivePanelContainer(relativeLayout);
             PanelContainerPresenter presenter = new PanelContainerPresenter(
                     mComponentController, mComponentController.mRoomChatMsgManager);
-            addComponentView(view, presenter);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
         }
 
         // 底部按钮

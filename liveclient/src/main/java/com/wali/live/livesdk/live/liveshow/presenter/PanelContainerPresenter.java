@@ -19,7 +19,7 @@ import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
 /**
  * Created by yangli on 2017/3/13.
  *
- * @module 面板表现基类
+ * @module 秀场直播底部面板表现
  */
 public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayout> {
     private static final String TAG = "PanelContainerPresenter";
@@ -138,7 +138,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                     hidePanel(false);
                     return true;
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
-                    return hidePanel(false);
+                    return hidePanel(true);
                 default:
                     break;
             }

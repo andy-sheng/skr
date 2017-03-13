@@ -146,13 +146,6 @@
         android:src="@drawable/live_icon_close_btn"
         android:visibility="gone" />
 
-    <!--底部面板(供BasePanelContainer使用)-->
-    <RelativeLayout
-        android:id="@+id/bottom_panel_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
     <!--输入框-->
     <com.wali.live.watchsdk.component.view.InputAreaView
         android:id="@+id/input_area_view"

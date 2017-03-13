@@ -24,14 +24,12 @@ import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
-import com.wali.live.watchsdk.component.presenter.PanelContainerPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
-import com.wali.live.watchsdk.component.view.WatchPanelContainer;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -146,19 +144,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 return;
             }
             InputAreaPresenter presenter = new InputAreaPresenter(mComponentController, mMyRoomData);
-            addComponentView(view, presenter);
-        }
-
-        // 底部面板
-        {
-            RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
-            if (relativeLayout == null) {
-                MyLog.e(TAG, "missing R.id.bottom_panel_view");
-                return;
-            }
-            WatchPanelContainer view = new WatchPanelContainer(relativeLayout);
-            PanelContainerPresenter presenter = new PanelContainerPresenter(
-                    mComponentController, mComponentController.mRoomChatMsgManager);
             addComponentView(view, presenter);
         }
 
