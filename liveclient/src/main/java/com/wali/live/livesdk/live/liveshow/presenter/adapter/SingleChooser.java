@@ -21,26 +21,38 @@ public class SingleChooser implements View.OnClickListener {
     private View mSelectedView;
 
     private <T extends View> T $(@IdRes int resId) {
-        return (T) mViewGroup.findViewById(resId);
+        return mViewGroup != null ? (T) mViewGroup.findViewById(resId) : null;
     }
 
     @Override
-    public void onClick(View v) {
-        if (mSelectedView != null && mSelectedView == v) {
-            return;
-        }
-        if (mSelectedView != null) {
-            mSelectedView.setSelected(false);
-        }
-        mSelectedView = v;
-        mSelectedView.setSelected(true);
-        if (mListener != null) {
+    public void onClick(View view) {
+        boolean ret = setSelection(view);
+        if (ret && mListener != null) {
             mListener.onItemSelected(mSelectedView);
         }
     }
 
     public SingleChooser(IChooserListener listener) {
         mListener = listener;
+    }
+
+    private boolean setSelection(View view) {
+        if (mSelectedView != null && mSelectedView == view) {
+            return false;
+        }
+        if (mSelectedView != null) {
+            mSelectedView.setSelected(false);
+        }
+        mSelectedView = view;
+        mSelectedView.setSelected(true);
+        return true;
+    }
+
+    public void setSelection(@IdRes int selectedId) {
+        View view = $(selectedId);
+        if (view != null) {
+            setSelection(view);
+        }
     }
 
     public void setup(@NonNull ViewGroup viewGroup, @IdRes int selectedId) {
@@ -76,7 +88,6 @@ public class SingleChooser implements View.OnClickListener {
         mViewGroup = null;
         mSelectedView = null;
     }
-
 
     public interface IChooserListener {
 

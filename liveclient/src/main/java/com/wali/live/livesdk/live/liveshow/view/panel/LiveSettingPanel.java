@@ -9,10 +9,9 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.mi.live.engine.base.GalileoConstants;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.VolumeAdjuster;
 import com.wali.live.statistics.StatisticsKey;
@@ -20,17 +19,15 @@ import com.wali.live.statistics.StatisticsWorker;
 
 /**
  * Created by yangli on 2017/03/07.
- * <p>
- * Generated using create_bottom_panel.py
  *
  * @module 秀场设置面板视图
  */
 public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
-        implements View.OnClickListener, IComponentView<LiveSettingPanel.IPresenter, LiveSettingPanel.IView> {
+        implements View.OnClickListener {
     private static final String TAG = "LiveSettingPanel";
 
     @Nullable
-    protected IPresenter mPresenter;
+    protected StreamerPresenter mPresenter;
 
     private ViewGroup mVolumeView;
     private ViewGroup mReverbView;
@@ -59,7 +56,7 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
                     StatisticsWorker.getsInstance().sendCommand(
                             StatisticsWorker.AC_APP, StatisticsKey.KEY_LIVING_VOICE_ADJUST, 1);
                     if (mPresenter != null) {
-                        mPresenter.setVolume(volume);
+                        mPresenter.setVoiceVolume(volume);
                     }
                 }
             });
@@ -100,12 +97,13 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
 
     @Override
     public void onClick(View v) {
+        if (mPresenter == null) {
+            return;
+        }
         int id = v.getId();
         if (id == R.id.choose_hifi) {
             v.setSelected(!v.isSelected());
-            if (mPresenter != null) {
-                mPresenter.enableHifi(v.isSelected());
-            }
+            mPresenter.enableHifi(v.isSelected());
         } else if (id == R.id.switch_camera) {
             updateSwitchCamera();
         } else if (id == R.id.mirror_image) {
@@ -120,13 +118,11 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
         return R.layout.setting_control_panel;
     }
 
-    @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
-    }
-
-    public LiveSettingPanel(@NonNull RelativeLayout parentView) {
+    public LiveSettingPanel(
+            @NonNull RelativeLayout parentView,
+            @Nullable StreamerPresenter presenter) {
         super(parentView);
+        mPresenter = presenter;
     }
 
     @Override
@@ -145,16 +141,40 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
         $click(mFlashLightBtn, this);
         $click(R.id.switch_camera, this);
 
+        mContentView.setSoundEffectsEnabled(false);
+        $click(mContentView, this);
+
         mVolumeAdjuster.setup(mVolumeView, 50);
         mSingleChooser.setup(mReverbView, R.id.original);
+
+        if (mPresenter != null) {
+            mMirrorImageBtn.setSelected(mPresenter.isMirrorImage());
+            mFlashLightBtn.setSelected(mPresenter.isFlashLight());
+            mFlashLightBtn.setEnabled(mPresenter.isBackCamera());
+            mChooseHifi.setSelected(mPresenter.isHifi());
+            switch (mPresenter.getReverb()) {
+                case GalileoConstants.TYPE_RECORDING_STUDIO:
+                    mSingleChooser.setSelection(R.id.recording_studio);
+                    break;
+                case GalileoConstants.TYPE_KTV:
+                    mSingleChooser.setSelection(R.id.ktv);
+                    break;
+                case GalileoConstants.TYPE_CONCERT:
+                    mSingleChooser.setSelection(R.id.concert);
+                    break;
+                case GalileoConstants.TYPE_ORIGINAL: // fall through
+                default:
+                    mSingleChooser.setSelection(R.id.original);
+                    break;
+            }
+        }
     }
 
     @Override
     public void onOrientation(boolean isLandscape) {
         super.onOrientation(isLandscape);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
         if (mIsLandscape) {
             layoutParams.width = PANEL_WIDTH_LANDSCAPE;
         } else {
@@ -188,60 +208,5 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
                 StatisticsWorker.AC_APP, StatisticsKey.KEY_LIVING_PHOTO_FLASH, 1);
         mFlashLightBtn.setSelected(enable);
         mPresenter.enableFlashLight(enable);
-    }
-
-    @Override
-    public IView getViewProxy() {
-        /**
-         * 局部内部类，用于Presenter回调通知该View改变状态
-         */
-        class ComponentView implements IView {
-            @Nullable
-            @Override
-            public <T extends View> T getRealView() {
-                return null;
-            }
-        }
-        return new ComponentView();
-    }
-
-    public interface IPresenter {
-        /**
-         * 设置人声音量
-         */
-        void setVolume(int volume);
-
-        /**
-         * 设置混响
-         */
-        void setReverb(int reverb);
-
-        /**
-         * 开启高保真
-         */
-        void enableHifi(boolean enable);
-
-        /**
-         * 切换前后置摄像头
-         */
-        void switchCamera();
-
-        /**
-         * 当前是否为后置摄像头
-         */
-        boolean isBackCamera();
-
-        /**
-         * 开启镜像
-         */
-        void enableMirrorImage(boolean enable);
-
-        /**
-         * 开启闪光灯
-         */
-        void enableFlashLight(boolean enable);
-    }
-
-    public interface IView extends IViewProxy {
     }
 }

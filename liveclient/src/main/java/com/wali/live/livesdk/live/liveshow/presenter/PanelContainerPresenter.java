@@ -6,11 +6,10 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;
-import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveSettingPresenter;
 import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
@@ -25,17 +24,20 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
         implements LivePanelContainer.IPresenter {
     private static final String TAG = "PanelContainerPresenter";
 
+    private StreamerPresenter mStreamerPresenter;
+
     private LiveSettingPanel mSettingPanel;
     private LiveMagicPanel mMagicPanel;
     private LivePlusPanel mPlusPanel;
 
-    private LiveSettingPresenter mSettingPresenter;
     private LivePlusPresenter mPlusPresenter;
     private LiveMagicPresenter mMagicPresenter;
 
     public PanelContainerPresenter(
-            @NonNull IComponentController componentController) {
+            @NonNull IComponentController componentController,
+            @NonNull StreamerPresenter streamerPresenter) {
         super(componentController);
+        mStreamerPresenter = streamerPresenter;
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(LiveComponentController.MSG_ON_BACK_PRESSED);
@@ -61,10 +63,8 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
 
     private boolean showSettingPanel() {
         if (mSettingPanel == null) {
-            mSettingPanel = new LiveSettingPanel((RelativeLayout) mView.getRealView());
-            mSettingPresenter = new LiveSettingPresenter(mComponentController);
-            mSettingPanel.setPresenter(mSettingPresenter);
-            mSettingPresenter.setComponentView(mSettingPanel.getViewProxy());
+            mSettingPanel = new LiveSettingPanel(
+                    (RelativeLayout) mView.getRealView(), mStreamerPresenter);
         }
         return mView.showPanel(mSettingPanel);
     }

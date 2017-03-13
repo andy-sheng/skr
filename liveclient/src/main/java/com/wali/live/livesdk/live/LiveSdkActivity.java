@@ -516,7 +516,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         builder.setFrameRate(15);
         builder.setSampleAudioRateInHz(44100);
         MyLog.w(TAG, "create streamer");
-        mStreamer = new GalileoStreamer(GlobalData.app(), UserAccountManager.getInstance().getUuid(), width, height, hasMicSource);
+        mStreamer = mComponentController.createStreamer(width, height, hasMicSource);
         mStreamer.setConfig(builder.build());
         if (!mIsGameLive) {
             mStreamer.setDisplayPreview($(R.id.galileo_surface_view));

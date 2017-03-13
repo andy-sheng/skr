@@ -143,7 +143,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
         ComponentController componentController = ((LiveSdkActivity) getContext()).mComponentController;
         LivePanelContainer view = new LivePanelContainer(relativeLayout);
-        PanelContainerPresenter presenter = new PanelContainerPresenter(componentController);
+        PanelContainerPresenter presenter = new PanelContainerPresenter(
+                componentController, ((LiveComponentController) componentController).mStreamerPresenter);
         view.setPresenter(presenter);
         presenter.setComponentView(view.getViewProxy());
 

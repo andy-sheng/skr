@@ -5,8 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.fragment.FragmentDataListener;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.engine.streamer.GalileoStreamer;
+import com.mi.live.engine.streamer.IStreamer;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.live.component.BaseLiveController;
@@ -50,6 +54,13 @@ public class LiveComponentController extends BaseLiveController {
         MyLog.w(TAG, "prepareShowLive");
         PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener);
         mRoomChatMsgManager.setIsGameLiveMode(true);
+    }
+
+    @Override
+    public IStreamer createStreamer(int width, int height, boolean hasMicSource) {
+        IStreamer streamer = new GalileoStreamer(GlobalData.app(),
+                UserAccountManager.getInstance().getUuid(), width, height, hasMicSource);
+        return streamer;
     }
 
     @Override

@@ -7,10 +7,14 @@ import android.support.annotation.Nullable;
 import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.engine.streamer.GalileoStreamer;
+import com.mi.live.engine.streamer.IStreamer;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.live.component.BaseLiveController;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -28,9 +32,11 @@ public class LiveComponentController extends BaseLiveController {
     @NonNull
     protected LiveRoomChatMsgManager mRoomChatMsgManager; // 房间弹幕管理
 
+    @NonNull
+    public StreamerPresenter mStreamerPresenter;
+
     // 美妆参数拉取
-    protected MagicParamPresenter mMagicParamPresenter =
-            new MagicParamPresenter(this, GlobalData.app());
+    protected MagicParamPresenter mMagicParamPresenter;
 
     @Nullable
     @Override
@@ -43,6 +49,9 @@ public class LiveComponentController extends BaseLiveController {
             @NonNull LiveRoomChatMsgManager roomChatMsgManager) {
         mMyRoomData = myRoomData;
         mRoomChatMsgManager = roomChatMsgManager;
+
+        mMagicParamPresenter = new MagicParamPresenter(this, GlobalData.app());
+        mStreamerPresenter = new StreamerPresenter(this);
     }
 
     @Override
@@ -53,6 +62,14 @@ public class LiveComponentController extends BaseLiveController {
         MyLog.w(TAG, "prepareShowLive");
         PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener, mMagicParamPresenter);
         mRoomChatMsgManager.setIsGameLiveMode(false);
+    }
+
+    @Override
+    public IStreamer createStreamer(int width, int height, boolean hasMicSource) {
+        IStreamer streamer = new GalileoStreamer(GlobalData.app(),
+                UserAccountManager.getInstance().getUuid(), width, height, hasMicSource);
+        mStreamerPresenter.setStreamer(streamer);
+        return streamer;
     }
 
     @Override

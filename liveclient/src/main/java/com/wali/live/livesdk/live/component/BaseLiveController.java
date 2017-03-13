@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.base.fragment.FragmentDataListener;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.engine.streamer.IStreamer;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
@@ -25,6 +26,11 @@ public abstract class BaseLiveController extends ComponentController {
             BaseComponentSdkActivity fragmentActivity,
             int requestCode,
             FragmentDataListener listener);
+
+    /**
+     * 创建Streamer
+     */
+    public abstract IStreamer createStreamer(int width, int height, boolean hasMicSource);
 
     /**
      * 创建SdkView
