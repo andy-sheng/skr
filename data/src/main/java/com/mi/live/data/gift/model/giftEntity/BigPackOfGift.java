@@ -25,6 +25,9 @@ public class BigPackOfGift extends Gift {
     private List<PackOfGiftInfo> packOfGiftInfoList = new ArrayList<>();
 
     public void completeGiftInfo(String jsonConfigPath) {
+        if (!packOfGiftInfoList.isEmpty()) {
+            return;
+        }
         JSONObject jsonObject = null;
         try {
             MyLog.d(TAG, "jsonConfigPath:" + jsonConfigPath);
@@ -77,7 +80,7 @@ public class BigPackOfGift extends Gift {
                 '}' + super.toString();
     }
 
-    public static class PackOfGiftInfo{
+    public static class PackOfGiftInfo {
         private int giftId;
         private int giftSendNum;
 

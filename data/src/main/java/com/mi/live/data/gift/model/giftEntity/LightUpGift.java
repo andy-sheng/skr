@@ -26,6 +26,10 @@ public class LightUpGift extends Gift {
     List<String> imageList = new ArrayList<>(5);//图片地址列表
 
     public void completeGiftInfo(String jsonConfigPath) {
+        if (!imageList.isEmpty()) {
+            return;
+        }
+
         JSONObject jsonObject = null;
         try {
             MyLog.d(TAG, "jsonConfigPath:" + jsonConfigPath);

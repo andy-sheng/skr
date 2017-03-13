@@ -67,6 +67,15 @@ public class BigAnimationGift extends Gift {
     }
 
     public void completeGiftInfo(String jsonConfigPath) {
+        if (!animationListForPortrait.isEmpty()
+                || !animationListForLandscape.isEmpty()
+                || backgroundLandscapeConfig != null
+                || backgroundPortraitConfig != null
+                || foregroundLandscapeConfig != null
+                || foregroundPortraitConfig != null) {
+            return;
+        }
+
         JSONObject jsonObject = null;
         try {
             MyLog.d(TAG, "jsonConfigPath:" + jsonConfigPath);
