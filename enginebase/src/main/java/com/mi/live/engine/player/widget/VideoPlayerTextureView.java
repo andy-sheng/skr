@@ -21,15 +21,20 @@ import com.xiaomi.player.Player;
  * 记得同步修改VideoPlayerView，以后统一
  */
 public class VideoPlayerTextureView extends TextureView implements SurfaceTextureListener, IVideoView, IPlayerTextureView {
-    private static final String TAG = VideoPlayerTextureView.class.getSimpleName();
-    private int mVideoWidth, mVideoHeight;
-    private float mShiftUpRatio;
+    protected final String TAG = getTAG();
+
+    protected int mVideoWidth, mVideoHeight;
+    protected float mShiftUpRatio;
 
     public static final int TRANS_MODE_CENTER_CROP = 0;
     public static final int TRANS_MODE_CENTER_INSIDE = 1;
-    private int mVideoTransMode = TRANS_MODE_CENTER_CROP;
+    protected int mVideoTransMode = TRANS_MODE_CENTER_CROP;
 
-    private VideoPlayerPresenter mVideoPlayerPresenter;
+    protected VideoPlayerPresenter mVideoPlayerPresenter;
+
+    protected String getTAG() {
+        return getClass().getSimpleName();
+    }
 
     public VideoPlayerTextureView(Context context) {
         super(context);
@@ -68,10 +73,8 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
         mVideoHeight = 0;
         mVideoPlayerPresenter = new VideoPlayerPresenter(mVideoWidth, mVideoHeight);
         mVideoPlayerPresenter.setView(this);
-        // 设置SurfaceTexture listener
         setSurfaceTextureListener(this);
 
-//        mCurrentState = STATE_IDLE;
         if (context instanceof Activity) {
             ((Activity) context).setVolumeControlStream(AudioManager.STREAM_MUSIC);
         }
@@ -83,9 +86,8 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
     }
 
     @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width,
-                                          int height) {
-        MyLog.d(TAG, "Meg1234 surfaceCreated");
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        MyLog.d(TAG, "onSurfaceTextureAvailable");
         mVideoPlayerPresenter.onSurfaceTextureAvailable(surface);
     }
 
@@ -178,5 +180,4 @@ public class VideoPlayerTextureView extends TextureView implements SurfaceTextur
     public int getShiftUpMargin() {
         return (int) (mShiftUpRatio * GlobalData.screenHeight / 2);
     }
-
 }
