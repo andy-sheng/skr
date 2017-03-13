@@ -18,6 +18,7 @@ android {
     lintOptions {
         abortOnError false
     }
+    rootProject.ext.flavorType = "live"
 }
 
 dependencies {

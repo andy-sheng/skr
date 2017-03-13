@@ -91,4 +91,6 @@ ext {
     developmentDependencies = [
             leakCanary: "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
     ]
+
+    flavorType = ""
 }

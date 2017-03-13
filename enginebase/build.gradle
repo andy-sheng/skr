@@ -1,9 +1,5 @@
 apply plugin: 'com.android.library'
 
-ext {
-    flavorType = ""
-}
-
 android {
     publishNonDefault true
 
@@ -46,19 +42,10 @@ dependencies {
     compile files('libs/devicemanager.jar')
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
-    gradle.startParameter.getTaskNames().each { task ->
-        if (task.contains("playerplugin")) {
-            flavorType = "playerplugin"
-        } else if (task.contains("player")) {
-            flavorType = "player"
-        } else {
-            flavorType = "live"
-        }
-    }
-    if (flavorType == "live") {
+    if (rootProject.ext.flavorType == "live") {
         compile files('libs/conferencemanager.jar')
-    }
-    if (flavorType != "playerplugin") {
+        provided project(':common')
+    } else if (rootProject.ext.flavorType == "player") {
         provided project(':common')
     } else {
         compile project(':playerbase')
