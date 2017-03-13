@@ -61,7 +61,7 @@ dependencies {
     if (flavorType != "playerplugin") {
         provided project(':common')
     } else {
-        compile files(':playerbase')
+        compile project(':playerbase')
     }
 }
 
