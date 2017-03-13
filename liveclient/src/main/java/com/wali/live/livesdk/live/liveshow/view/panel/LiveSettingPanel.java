@@ -180,6 +180,7 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
         } else {
             layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         }
+        mContentView.setLayoutParams(layoutParams);
     }
 
     private void updateSwitchCamera() {

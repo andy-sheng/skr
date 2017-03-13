@@ -56,7 +56,8 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_SHOW_MAGIC_PANEL      = MSG_POPUP_FIRST + 1; // 显示 美妆面板
     public static final int MSG_SHOW_PLUS_PANEL       = MSG_POPUP_FIRST + 2; // 显示 分享面板
     public static final int MSG_SHOW_GIFT_PANEL       = MSG_POPUP_FIRST + 3; // 显示 礼物面板
-    public static final int MSG_SHOW_ATMOSPHERE_VIEW = MSG_POPUP_FIRST + 4; // 显示 氛围面板
+    public static final int MSG_HIDE_BOTTOM_PANEL     = MSG_POPUP_FIRST + 4; // 隐藏 底部面板
+    public static final int MSG_SHOW_ATMOSPHERE_VIEW  = MSG_POPUP_FIRST + 5; // 显示 氛围面板
 
     private static final int MSG_MORE_FIRST = 40000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST; // 强制旋转UI

@@ -2,26 +2,26 @@ package com.wali.live.livesdk.live.liveshow.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
+import com.wali.live.livesdk.live.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;
-import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
 
 /**
- * Created by yangli on 2017/2/18.
+ * Created by yangli on 2017/3/13.
  *
- * @module 底部面板表现, 游戏直播
+ * @module 面板表现基类
  */
-public class PanelContainerPresenter extends ComponentPresenter<LivePanelContainer.IView>
-        implements LivePanelContainer.IPresenter {
+public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayout> {
     private static final String TAG = "PanelContainerPresenter";
 
     private StreamerPresenter mStreamerPresenter;
@@ -33,8 +33,13 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
     private LivePlusPresenter mPlusPresenter;
     private LiveMagicPresenter mMagicPresenter;
 
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
     public PanelContainerPresenter(
-            @NonNull IComponentController componentController,
+            @NonNull ComponentPresenter.IComponentController componentController,
             @NonNull StreamerPresenter streamerPresenter) {
         super(componentController);
         mStreamerPresenter = streamerPresenter;
@@ -44,6 +49,18 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
         registerAction(LiveComponentController.MSG_SHOW_SETTING_PANEL);
         registerAction(LiveComponentController.MSG_SHOW_PLUS_PANEL);
         registerAction(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
+        registerAction(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
+    }
+
+    @Override
+    public void setComponentView(@Nullable RelativeLayout relativeLayout) {
+        super.setComponentView(relativeLayout);
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hidePanel(true);
+            }
+        });
     }
 
     @Override
@@ -61,65 +78,69 @@ public class PanelContainerPresenter extends ComponentPresenter<LivePanelContain
         }
     }
 
-    private boolean showSettingPanel() {
+    private void showSettingPanel() {
         if (mSettingPanel == null) {
-            mSettingPanel = new LiveSettingPanel(
-                    (RelativeLayout) mView.getRealView(), mStreamerPresenter);
+            mSettingPanel = new LiveSettingPanel(mView, mStreamerPresenter);
         }
-        return mView.showPanel(mSettingPanel);
+        showPanel(mSettingPanel, true);
     }
 
-    private boolean showPlusPanel() {
+    private void showPlusPanel() {
         if (mPlusPanel == null) {
-            mPlusPanel = new LivePlusPanel((RelativeLayout) mView.getRealView());
+            mPlusPanel = new LivePlusPanel(mView);
             mPlusPresenter = new LivePlusPresenter(mComponentController);
             mPlusPanel.setPresenter(mPlusPresenter);
             mPlusPresenter.setComponentView(mPlusPanel.getViewProxy());
         }
-        return mView.showPanel(mPlusPanel);
+        showPanel(mPlusPanel, true);
     }
 
-    private boolean showMagicPanel() {
+    private void showMagicPanel() {
         if (mMagicPanel == null) {
-            mMagicPanel = new LiveMagicPanel((RelativeLayout) mView.getRealView());
+            mMagicPanel = new LiveMagicPanel(mView);
             mMagicPresenter = new LiveMagicPresenter(mComponentController);
             mMagicPanel.setPresenter(mMagicPresenter);
             mMagicPresenter.setComponentView(mMagicPanel.getViewProxy());
         }
-        return mView.showPanel(mMagicPanel);
+        showPanel(mMagicPanel, true);
     }
 
     @Nullable
     @Override
-    protected IAction createAction() {
+    protected ComponentPresenter.IAction createAction() {
         return new Action();
     }
 
-    public class Action implements IAction {
+    public class Action implements ComponentPresenter.IAction {
         @Override
-        public boolean onAction(int source, @Nullable Params params) {
+        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
             if (mView == null) {
                 MyLog.e(TAG, "onAction but mView is null, source=" + source);
                 return false;
             }
             switch (source) {
                 case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mView.onOrientation(false);
+                    onOrientation(false);
                     return true;
                 case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mView.onOrientation(true);
+                    onOrientation(true);
                     return true;
                 case LiveComponentController.MSG_SHOW_SETTING_PANEL:
-                    return showSettingPanel();
+                    showSettingPanel();
+                    return true;
                 case LiveComponentController.MSG_SHOW_PLUS_PANEL:
-                    return showPlusPanel();
+                    showPlusPanel();
+                    return true;
                 case LiveComponentController.MSG_SHOW_MAGIC_PANEL:
-                    return showMagicPanel();
+                    showMagicPanel();
+                    return true;
+                case LiveComponentController.MSG_HIDE_BOTTOM_PANEL:
+                    hidePanel(false);
+                    return true;
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
-                    return mView.processBackPress();
+                    return hidePanel(false);
                 default:
                     break;
-
             }
             return false;
         }

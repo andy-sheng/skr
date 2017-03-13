@@ -135,10 +135,17 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
         }
     }
 
-    @CallSuper
     protected void onAnimationValue(
             @FloatRange(from = 0.0, to = 1.0) float value, boolean isShow) {
         mContentView.setAlpha(value);
+        // TODO setTranslation会有问题，后续处理 YangLi
+//        if (mIsLandscape) {
+//            mContentView.setTranslationX(mContentView.getMeasuredWidth() * (1.0f - value));
+//            mContentView.setTranslationY(0);
+//        } else {
+//            mContentView.setTranslationX(0);
+//            mContentView.setTranslationY(mContentView.getMeasuredHeight() * (1.0f - value));
+//        }
     }
 
     @CallSuper
@@ -176,7 +183,6 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        MyLog.w(TAG, "moveAnimator onAnimationEnd");
                         BaseBottomPanel.this.onAnimationEnd(isShow);
                     }
                 });

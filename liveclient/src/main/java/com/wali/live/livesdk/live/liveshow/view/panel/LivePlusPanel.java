@@ -55,7 +55,6 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
         } else if (id == R.id.comment_btn) {
             mPresenter.showInputView();
         }
-        hideSelf(true);
     }
 
     @Override
@@ -76,11 +75,13 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
     @Override
     protected void inflateContentView() {
         super.inflateContentView();
+
         RecyclerView recyclerView = $(R.id.recycler_view);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(mContentView.getContext(), MAX_COUNT_IN_LINE));
         mAdapter.setOnClickListener(this);
         recyclerView.addItemDecoration(new PlusItemDecoration(MAX_COUNT_IN_LINE));
+
         if (mPresenter != null) {
             mPresenter.syncPlusBtnConfig();
         }
@@ -89,14 +90,14 @@ public class LivePlusPanel extends BaseBottomPanel<RecyclerView, RelativeLayout>
     @Override
     public void onOrientation(boolean isLandscape) {
         super.onOrientation(isLandscape);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
         if (mIsLandscape) {
             layoutParams.width = PANEL_WIDTH_LANDSCAPE;
         } else {
             layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         }
+        mContentView.setLayoutParams(layoutParams);
     }
 
     @Override

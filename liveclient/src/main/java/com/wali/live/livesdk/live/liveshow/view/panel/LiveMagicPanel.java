@@ -119,7 +119,8 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
     @Override
     public void onOrientation(boolean isLandscape) {
         super.onOrientation(isLandscape);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         if (mIsLandscape) {
@@ -127,6 +128,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         } else {
             layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         }
+        mContentView.setLayoutParams(layoutParams);
     }
 
     @Override

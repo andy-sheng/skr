@@ -33,10 +33,9 @@ public class LiveComponentController extends BaseLiveController {
     protected LiveRoomChatMsgManager mRoomChatMsgManager; // 房间弹幕管理
 
     @NonNull
-    public StreamerPresenter mStreamerPresenter;
-
-    // 美妆参数拉取
-    protected MagicParamPresenter mMagicParamPresenter;
+    protected StreamerPresenter mStreamerPresenter; // 推流器
+    @NonNull
+    protected MagicParamPresenter mMagicParamPresenter; // 美妆参数拉取
 
     @Nullable
     @Override

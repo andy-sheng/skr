@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @module 基础架构表现
  */
-public abstract class ComponentPresenter<VIEW extends IViewProxy> extends RxLifeCyclePresenter {
+public abstract class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
 
     @NonNull
     protected IComponentController mComponentController;

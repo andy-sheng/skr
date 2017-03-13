@@ -23,7 +23,6 @@ import com.wali.live.livesdk.live.liveshow.presenter.button.MagicControlBtnPrese
 import com.wali.live.livesdk.live.liveshow.presenter.button.PlusControlBtnPresenter;
 import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
 import com.wali.live.livesdk.live.liveshow.view.LiveDisplayView;
-import com.wali.live.livesdk.live.liveshow.view.LivePanelContainer;
 import com.wali.live.livesdk.live.liveshow.view.button.MagicControlBtnView;
 import com.wali.live.livesdk.live.liveshow.view.button.PlusControlBtnView;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
@@ -111,10 +110,10 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 MyLog.e(TAG, "missing R.id.bottom_panel_view");
                 return;
             }
-            LivePanelContainer view = new LivePanelContainer(relativeLayout);
             PanelContainerPresenter presenter = new PanelContainerPresenter(
                     mComponentController, mComponentController.mStreamerPresenter);
-            addComponentView(view, presenter);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
         }
 
         // 底部按钮
@@ -182,6 +181,53 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     public class Action extends BaseSdkView.Action {
 
         @Override
+        public void registerAction() {
+            super.registerAction();
+            mComponentController.registerAction(ComponentController.MSG_SHOW_ATMOSPHERE_VIEW, this);
+        }
+
+        @Override
+        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
+            switch (source) {
+                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
+                    mIsLandscape = false;
+                    stopAllAnimator();
+                    return true;
+                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                    mIsLandscape = true;
+                    stopAllAnimator();
+                    return true;
+                case LiveComponentController.MSG_INPUT_VIEW_SHOWED:
+                    if (!mIsLandscape) {
+                        mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
+                    }
+                    if (mGiftContinueViewGroup != null) {
+                        mGiftContinueViewGroup.onShowInputView();
+                    }
+                    startInputAnimator(true);
+                    return true;
+                case LiveComponentController.MSG_INPUT_VIEW_HIDDEN:
+                    if (!mIsLandscape) { // 游戏直播横屏不需左右滑
+                        mComponentController.onEvent(ComponentController.MSG_ENABLE_MOVE_VIEW);
+                    }
+                    if (mGiftContinueViewGroup != null) {
+                        mGiftContinueViewGroup.onHideInputView();
+                    }
+                    startInputAnimator(false);
+                    return true;
+                case LiveComponentController.MSG_BACKGROUND_CLICK:
+                    if (mComponentController.onEvent(ComponentController.MSG_HIDE_INPUT_VIEW)) {
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+
+
+        @Override
         protected void startInputAnimator(boolean inputShow) {
             if (mInputShow == inputShow) {
                 return;
@@ -246,46 +292,6 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
         public void clearAnimation() {
             stopAllAnimator();
             mInputAnimatorRef = null;
-        }
-
-        @Override
-        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            switch (source) {
-                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
-                    mIsLandscape = false;
-                    stopAllAnimator();
-                    return true;
-                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
-                    mIsLandscape = true;
-                    stopAllAnimator();
-                    return true;
-                case LiveComponentController.MSG_INPUT_VIEW_SHOWED:
-                    if (!mIsLandscape) {
-                        mComponentController.onEvent(ComponentController.MSG_DISABLE_MOVE_VIEW);
-                    }
-                    if (mGiftContinueViewGroup != null) {
-                        mGiftContinueViewGroup.onShowInputView();
-                    }
-                    startInputAnimator(true);
-                    return true;
-                case LiveComponentController.MSG_INPUT_VIEW_HIDDEN:
-                    if (!mIsLandscape) { // 游戏直播横屏不需左右滑
-                        mComponentController.onEvent(ComponentController.MSG_ENABLE_MOVE_VIEW);
-                    }
-                    if (mGiftContinueViewGroup != null) {
-                        mGiftContinueViewGroup.onHideInputView();
-                    }
-                    startInputAnimator(false);
-                    return true;
-                case LiveComponentController.MSG_BACKGROUND_CLICK:
-                    if (mComponentController.onEvent(ComponentController.MSG_HIDE_INPUT_VIEW)) {
-                        return true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            return false;
         }
     }
 }

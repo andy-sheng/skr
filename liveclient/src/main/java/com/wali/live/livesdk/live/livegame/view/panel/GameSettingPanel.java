@@ -95,7 +95,7 @@ public class GameSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
 
     @Override
     protected void onAnimationValue(@FloatRange(from = 0.0, to = 1.0) float value, boolean isShow) {
-        super.onAnimationValue(value, isShow);
+        mContentView.setAlpha(value);
         mContentView.setTranslationX(0);
         mContentView.setTranslationY(mContentView.getHeight() * (1.0f - value));
     }
