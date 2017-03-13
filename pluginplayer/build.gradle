@@ -16,12 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    rootProject.ext.flavorType = "pluginplayer"
 }
 
 dependencies {
     compile presentationDependencies.androidAppCompat
-
     debugCompile project(path: ':enginebase', configuration: "playerpluginDebug")
     releaseCompile project(path: ':enginebase', configuration: "playerpluginRelease")
 }

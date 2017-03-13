@@ -42,13 +42,15 @@ dependencies {
     compile files('libs/devicemanager.jar')
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
-    if (rootProject.ext.flavorType == "live") {
-        compile files('libs/conferencemanager.jar')
-        provided project(':common')
-    } else if (rootProject.ext.flavorType == "player") {
-        provided project(':common')
-    } else {
-        compile project(':playerbase')
+    gradle.startParameter.getTaskNames().each { task ->
+        if (task.contains("pluginplayer")) {
+            compile project(':playerbase')
+        } else {
+            if (flavorType == "live") {
+                compile files('libs/conferencCemanager.jar')
+            }
+            provided project(':common')
+        }
     }
 }
 

@@ -92,5 +92,5 @@ ext {
             leakCanary: "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
     ]
 
-    flavorType = ""
+    flavorType = "player"
 }

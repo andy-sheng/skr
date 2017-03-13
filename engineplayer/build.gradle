@@ -18,7 +18,6 @@ android {
     lintOptions {
         abortOnError false
     }
-    rootProject.ext.flavorType = "player"
 }
 
 dependencies {
