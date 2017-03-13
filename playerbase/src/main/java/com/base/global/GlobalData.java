@@ -73,4 +73,9 @@ public class GlobalData {
         }
         return executors[level];
     }
+
+    static {
+        System.loadLibrary("gnustl_shared");
+        System.loadLibrary("broadcast");
+    }
 }
