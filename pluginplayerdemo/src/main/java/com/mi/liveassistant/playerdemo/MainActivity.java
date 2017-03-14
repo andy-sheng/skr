@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayerWrapperView.play("http://v2.zb.mi.com/live/25146987_1489457101.flv?playui=0");
+                mPlayerWrapperView.play("http://v2.zb.mi.com/live/25790957_1489470242.flv?playui=0");
             }
         });
     }
@@ -43,6 +43,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayerWrapperView.stop();
+        mPlayerWrapperView.release();
     }
 }

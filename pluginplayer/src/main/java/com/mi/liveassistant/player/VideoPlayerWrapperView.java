@@ -63,7 +63,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                     MyLog.w(TAG, "MEDIA_INFO_BUFFERING_START");
                     if (mIpSelectionHelper != null) {
                         mIpSelectionHelper.updateStutterStatus(true);
-
                         mHandler.removeMessages(MSG_RELOAD_VIDEO);
                         mHandler.sendEmptyMessageDelayed(MSG_RELOAD_VIDEO, PLAYER_KADUN_RELOAD_TIME);
                     }
@@ -72,9 +71,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                     MyLog.w(TAG, "MEDIA_INFO_BUFFERING_END");
                     if (mIpSelectionHelper != null) {
                         mIpSelectionHelper.updateStutterStatus(false);
-
                         mHandler.removeMessages(MSG_RELOAD_VIDEO);
-                        mHandler.sendEmptyMessageDelayed(MSG_RELOAD_VIDEO, PLAYER_KADUN_RELOAD_TIME);
                     }
                     break;
                 default:
@@ -101,11 +98,9 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
 
     @Override
     protected void init(Context context) {
-        GlobalData.setApplication(((Activity)context).getApplication());
+        GlobalData.setApplication(((Activity) context).getApplication());
         super.init(context);
-
         mIpSelectionHelper = new WatchIpSelectionHelper(context, this);
-
         mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
         mVideoPlayerPresenter.setBufferSize(500);
     }
@@ -114,14 +109,11 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         if (!TextUtils.isEmpty(videoUrl)) {
             mIpSelectionHelper.setOriginalStreamUrl(videoUrl);
             mIpSelectionHelper.ipSelect();
-
             mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
             mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
-
             MyLog.w(TAG, "ipSelect streamUrl = " + mIpSelectionHelper.getStreamUrl());
             MyLog.w(TAG, "ipSelect http ipList = " + mIpSelectionHelper.getSelectedHttpIpList());
             MyLog.w(TAG, "ipSelect local ipList = " + mIpSelectionHelper.getSelectedLocalIpList());
-
             mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
             resume();
         }
@@ -132,7 +124,6 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         mHandler.removeMessages(MSG_RELOAD_VIDEO);
         if (mIpSelectionHelper != null) {
             mIpSelectionHelper.ipSelect();
-
             mVideoPlayerPresenter.setVideoPath(mIpSelectionHelper.getStreamUrl(), mIpSelectionHelper.getStreamHost());
             mVideoPlayerPresenter.setIpList(mIpSelectionHelper.getSelectedHttpIpList(), mIpSelectionHelper.getSelectedLocalIpList());
         }
@@ -167,12 +158,11 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         mVideoPlayerPresenter.pause();
     }
 
-    public void stop() {
+    public void release() {
         mVideoPlayerPresenter.release();
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
-
         if (mIpSelectionHelper != null) {
             mIpSelectionHelper.destroy();
         }
