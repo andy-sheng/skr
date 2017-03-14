@@ -47,7 +47,7 @@ dependencies {
             compile project(':playerbase')
         } else {
             if (flavorType == "live") {
-                compile files('libs/conferencCemanager.jar')
+                compile files('libs/conferencemanager.jar')
             }
             provided project(':common')
         }
