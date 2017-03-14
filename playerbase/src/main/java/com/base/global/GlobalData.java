@@ -1,5 +1,6 @@
 package com.base.global;
 
+import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
@@ -27,20 +28,22 @@ public class GlobalData {
 
     private static ThreadPoolExecutor executors[] = new ThreadPoolExecutor[1];
 
-    private static Context sApplication;
+    private static Application sApplication;
 
     public static DisplayMetrics displayMetrics;
     public static int screenWidth = 0;
     public static int screenHeight = 0;
 
-    public static Context app() {
+    public static Application app() {
         return sApplication;
     }
 
-    public static void setApplication(Context app) {
-        sApplication = app;
-        recordScreenParam(app);
-        initialize();
+    public static void setApplication(Application app) {
+        if (sApplication == null) {
+            sApplication = app;
+            recordScreenParam(app);
+            initialize();
+        }
     }
 
     public static int getRequestCode() {

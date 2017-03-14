@@ -1,5 +1,6 @@
 package com.mi.liveassistant.player;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -7,6 +8,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import com.base.global.GlobalData;
 import com.base.ipselect.IDnsStatusListener;
 import com.base.ipselect.WatchIpSelectionHelper;
 import com.base.log.MyLog;
@@ -99,6 +101,7 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
 
     @Override
     protected void init(Context context) {
+        GlobalData.setApplication(((Activity)context).getApplication());
         super.init(context);
 
         mIpSelectionHelper = new WatchIpSelectionHelper(context, this);
