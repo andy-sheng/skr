@@ -28,6 +28,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.gift.model.giftEntity.BigAnimationGift;
+import com.wali.live.common.gift.manager.GiftInterceptor;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
 import com.wali.live.utils.vm.VMArguUtils;
 
@@ -43,7 +44,7 @@ import java.util.List;
  * 大动画播放
  * Created by chengsimin on 16/3/1.
  */
-public class GiftAnimationView extends RelativeLayout implements IBindActivityLIfeCycle {
+public class GiftAnimationView extends RelativeLayout implements IBindActivityLIfeCycle, GiftInterceptor.OnAddGift {
 
     public static String TAG = "GiftAnimationView";
 
@@ -52,6 +53,8 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
     public SimpleDraweeView mBackgroundAnimationView = null;
 
     public GiftMoveAnimationView mMoveAnimationView = null;
+
+    private GiftInterceptor mGiftInterceptor;
 
     public GiftAnimationView(Context context) {
         super(context);
@@ -71,6 +74,7 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
 
     public void init(Context context) {
         initBigAnimationPlayControl((RxActivity) context);
+        mGiftInterceptor = new GiftInterceptor(this);
     }
 
     private boolean mIsLandscape = false;//是否是竖屏
@@ -395,6 +399,7 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        mGiftInterceptor.onActivityCreate();
     }
 
     public void onActivityDestroy() {
@@ -404,6 +409,7 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
         if (mBigAnimationControl != null) {
             mBigAnimationControl.destroy();
         }
+        mGiftInterceptor.onActivityDestroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -411,9 +417,14 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
         if (event != null) {
             GiftRecvModel model = (GiftRecvModel) event.obj1;
             if (model != null) {
-                mBigAnimationControl.add(new GiftRecvModelWithCpu(model), model.isFromSelf());
+                mGiftInterceptor.add(model);
             }
         }
+    }
+
+    @Override
+    public void add(GiftRecvModel model) {
+        mBigAnimationControl.add(new GiftRecvModelWithCpu(model), model.isFromSelf());
     }
 
     //    @Subscribe(threadMode = ThreadMode.POSTING)

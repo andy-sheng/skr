@@ -599,8 +599,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
     protected void updateManagers() {
     }
 
-
-    abstract public void onUserInfoComplete();
+    public abstract void onUserInfoComplete();
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(RoomDataChangeEvent event) {

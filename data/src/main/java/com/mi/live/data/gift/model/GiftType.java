@@ -19,6 +19,9 @@ public class GiftType {
     public static final int BIG_PACK_OF_GIFT = 10;
     public static final int Mi_COIN_GIFT = 11;
     public static final int PRIVILEGE_GIFT = 12;
-    /**门票也是一种礼物*/
+    /**
+     * 门票也是一种礼物
+     */
     public static final int TICKET_GIFT = 13;
+    public static final int MAGIC_GIFT = 15;
 }

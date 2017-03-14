@@ -30,11 +30,13 @@ android {
 
         player {
         }
+
+        playerplugin {
+        }
     }
 }
 
 dependencies {
-    provided project(':common')
     def presentationDependencies = rootProject.ext.presentationDependencies
     def dataDependencies = rootProject.ext.dataDependencies
     def testDependencies = rootProject.ext.dataTestDependencies
@@ -45,14 +47,14 @@ dependencies {
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
     gradle.startParameter.getTaskNames().each { task ->
-        if (task.contains("live")) {
-            flavorType = "live"
-        } else if (task.contains("player")) {
-            flavorType = "player"
+        if (task.contains("pluginplayer")) {
+            compile project(':playerbase')
+        } else {
+            if (flavorType == "live") {
+                compile files('libs/conferencCemanager.jar')
+            }
+            provided project(':common')
         }
-    }
-    if (flavorType == "live") {
-        compile files('libs/conferencemanager.jar')
     }
 }
 
@@ -61,4 +63,6 @@ configurations {
     liveRelease
     playerDebug
     playerRelease
+    playerpluginDebug
+    playerpluginRelease
 }

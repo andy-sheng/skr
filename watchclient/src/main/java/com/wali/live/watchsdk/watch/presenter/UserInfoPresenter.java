@@ -31,15 +31,17 @@ public class UserInfoPresenter {
     }
 
     private boolean mHasUpdateOwnerInfo = false;
+
     // 如果从登录过来，也需要更新，因为可能主播是自己关注过的
     private boolean mHasUpdateFromLogin = false;
 
     // 更新主播信息
     public void updateOwnerInfo() {
+        // 第一次默认拉名片HomePage，第二次登录拉info更新关注状态，因为接口更快
         if (!mHasUpdateOwnerInfo) {
-            updateOwnerInfoFromServer(false);
+            updateHomePageFromServer();
         } else if (!mHasUpdateFromLogin) {
-            updateOwnerInfoFromServer(true);
+            updateOwnerInfoFromServer();
         }
     }
 
@@ -48,8 +50,46 @@ public class UserInfoPresenter {
         mHasUpdateFromLogin = false;
     }
 
-    private void updateOwnerInfoFromServer(final boolean isFromLogin) {
-        MyLog.w(TAG, "User info update from login=" + isFromLogin);
+    private void updateHomePageFromServer() {
+        MyLog.w(TAG, "update home page");
+        Observable
+                .create(new Observable.OnSubscribe<User>() {
+                    @Override
+                    public void call(Subscriber<? super User> subscriber) {
+                        subscriber.onNext(UserInfoManager.getUserInfoByUuid(mMyRoomData.getUid(), false));
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(mRxActivity.<User>bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<User>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        if (user != null) {
+                            mHasUpdateOwnerInfo = true;
+
+                            mMyRoomData.setNickname(user.getNickname());
+                            mMyRoomData.getUser().setIsFocused(user.isFocused());
+                            mMyRoomData.setTicket(user.getLiveTicketNum());
+
+                            EventBus.getDefault().post(new RoomDataChangeEvent(mMyRoomData, RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE));
+                        }
+                    }
+                });
+    }
+
+    private void updateOwnerInfoFromServer() {
+        MyLog.w(TAG, "update owner info");
         Observable
                 .create(new Observable.OnSubscribe<User>() {
                     @Override
@@ -74,11 +114,7 @@ public class UserInfoPresenter {
                     @Override
                     public void onNext(User user) {
                         if (user != null) {
-                            if (isFromLogin) {
-                                mHasUpdateFromLogin = true;
-                            } else {
-                                mHasUpdateOwnerInfo = true;
-                            }
+                            mHasUpdateFromLogin = true;
 
                             mMyRoomData.setNickname(user.getNickname());
                             mMyRoomData.getUser().setIsFocused(user.isFocused());
