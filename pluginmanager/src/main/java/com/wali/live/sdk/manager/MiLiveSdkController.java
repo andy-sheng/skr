@@ -41,11 +41,15 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
 
-    private static final String ACTION_OPEN_WATCH = "open_watch";
-    private static final String ACTION_OPEN_REPLAY = "open_replay";
     private static final String ACTION_LOGIN_OAUTH = "login_oauth";
     private static final String ACTION_LOGIN_SSO = "login_sso";
     private static final String ACTION_CLEAR_ACCOUNT = "clear_account";
+
+    private static final String ACTION_OPEN_WATCH = "open_watch";
+    private static final String ACTION_OPEN_REPLAY = "open_replay";
+
+    private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
+    private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
 
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
@@ -74,6 +78,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_LOGIN_OAUTH, 204000);
         mMinVersionMap.put(ACTION_LOGIN_SSO, 204000);
         mMinVersionMap.put(ACTION_CLEAR_ACCOUNT, 204000);
+
+        mMinVersionMap.put(ACTION_OPEN_NORMAL_LIVE, 204015);
+        mMinVersionMap.put(ACTION_OPEN_GAME_LIVE, 204015);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -246,6 +253,33 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void loginByMiAccountOAuth(String authCode, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_LOGIN_OAUTH, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().loginByMiAccountOAuth(authCode);
+    }
+
+    @Override
+    public void loginByMiAccountSso(long miid, String serviceToken, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_LOGIN_SSO, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, serviceToken);
+    }
+
+    @Override
+    public void clearAccount(IAssistantCallback callback) {
+        if (!checkVersion(ACTION_CLEAR_ACCOUNT, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().clearAccount();
+    }
+
+    @Override
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
@@ -275,40 +309,26 @@ public class MiLiveSdkController implements IMiLiveSdk {
         jumpToSdk(activity, bundle, ACTION_OPEN_REPLAY, callback);
     }
 
-//    @Override
-//    public void openGameLive() {
-//        if (hasInstallLiveSdk()) {
-//            MiLiveSdkServiceProxy.getInstance().openGameLive();
-//        } else {
-//            ToastUtils.showToast(R.string.cannot_find_livesdk);
-//        }
-//    }
-
     @Override
-    public void loginByMiAccountOAuth(String authCode, IAssistantCallback callback) {
-        if (!checkVersion(ACTION_LOGIN_OAUTH, callback)) {
+    public void openNormalLive(Activity activity, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_NORMAL_LIVE, callback)) {
             return;
         }
         checkHasInit();
-        MiLiveSdkServiceProxy.getInstance().loginByMiAccountOAuth(authCode);
+
+        Bundle bundle = getBasicBundle();
+        jumpToSdk(activity, bundle, ACTION_OPEN_NORMAL_LIVE, callback);
     }
 
     @Override
-    public void loginByMiAccountSso(long miid, String serviceToken, IAssistantCallback callback) {
-        if (!checkVersion(ACTION_LOGIN_SSO, callback)) {
+    public void openGameLive(Activity activity, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_GAME_LIVE, callback)) {
             return;
         }
         checkHasInit();
-        MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, serviceToken);
-    }
 
-    @Override
-    public void clearAccount(IAssistantCallback callback) {
-        if (!checkVersion(ACTION_CLEAR_ACCOUNT, callback)) {
-            return;
-        }
-        checkHasInit();
-        MiLiveSdkServiceProxy.getInstance().clearAccount();
+        Bundle bundle = getBasicBundle();
+        jumpToSdk(activity, bundle, ACTION_OPEN_GAME_LIVE, callback);
     }
 
     @Override

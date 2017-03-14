@@ -56,7 +56,6 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.live.engine.base.EngineEventClass;
 import com.mi.live.engine.base.GalileoConstants;
-import com.mi.live.engine.streamer.GalileoStreamer;
 import com.mi.live.engine.streamer.IStreamer;
 import com.mi.live.engine.streamer.StreamerConfig;
 import com.mi.milink.sdk.aidl.PacketData;
@@ -128,6 +127,8 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveReconnect, FragmentDataListener, IActionCallBack,
         FloatPersonInfoFragment.FloatPersonInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
 
+    public static final String EXTRA_GAME_LIVE = "extra_game_live";
+
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
     public static final int REQUEST_PREPARE_LIVE = 1000;
 
@@ -166,7 +167,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     protected GameLivePresenter mGameLivePresenter;
     protected RoomInfoPresenter mRoomInfoPresenter;
 
-    protected boolean mIsGameLive = false;
+    protected boolean mIsGameLive;
     protected StreamerPresenter mStreamerPresenter;
 
     private final MyUIHandler mUIHandler = new MyUIHandler(this);
@@ -227,6 +228,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.livesdk_layout);
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
+
+        initData();
         getLocation();
         setupRequiredComponent();
 
@@ -243,6 +246,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         mBlurIv = $(R.id.blur_iv);
         AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
+    }
+
+    private void initData() {
+        Intent data = getIntent();
+        if (data != null) {
+            mIsGameLive = data.getBooleanExtra(EXTRA_GAME_LIVE, false);
+        }
     }
 
     private void setupRequiredComponent() {
@@ -1326,8 +1336,19 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         }
     }
 
+    /**
+     * 秀场直播
+     */
     public static void openActivity(BaseSdkActivity activity) {
+        openActivity(activity, false);
+    }
+
+    /**
+     * 区分是否是游戏直播还是秀场直播
+     */
+    public static void openActivity(BaseSdkActivity activity, boolean isGameLive) {
         Intent intent = new Intent(activity, LiveSdkActivity.class);
+        intent.putExtra(EXTRA_GAME_LIVE, isGameLive);
         activity.startActivity(intent);
     }
 }
