@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/cover_container"
+        android:layout_width="@dimen/view_dimen_270"
+        android:layout_height="@dimen/view_dimen_270"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="21.66dp"
+        android:background="@drawable/live_addcover">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/cover_big"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/cover_view"
+            android:layout_width="33.33dp"
+            android:layout_height="33.33dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/text_size_58"
+            android:background="@drawable/bg_cover"
+            android:visibility="visible"
+            fresco:roundBottomLeft="false"
+            fresco:roundBottomRight="false"
+            fresco:roundTopLeft="false"
+            fresco:roundTopRight="false"
+            fresco:roundedCornerRadius="5dp"
+            fresco:roundingBorderColor="@color/color_white"
+            fresco:roundingBorderWidth="1dp"/>
+
+        <TextView
+            android:id="@+id/cover_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cover_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin_45"
+            android:layout_marginTop="@dimen/margin_18"
+            android:gravity="top"
+            android:text="@string/select_cover"
+            android:textColor="@color/select_cover"
+            android:textSize="@dimen/text_size_36"/>
+
+    </RelativeLayout>
+</merge>

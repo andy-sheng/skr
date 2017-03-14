@@ -45,4 +45,8 @@
         <!-- Present the text in ALL CAPS. This may use a small-caps form when available. -->
         <attr name="textAllCaps" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ClipImageSize">
+        <attr name="clip_image_height" format="integer" />
+    </declare-styleable>
 </resources>

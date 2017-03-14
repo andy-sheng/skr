@@ -1,5 +1,7 @@
 package com.wali.live.livesdk.live.liveshow.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,13 +12,17 @@ import com.base.dialog.MyAlertDialog;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.language.LocaleUtil;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
+import com.wali.live.livesdk.live.image.ClipImageActivity;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
+import com.wali.live.livesdk.live.manager.PrepareLiveCoverManager;
 import com.wali.live.livesdk.live.view.BeautyView;
+import com.wali.live.livesdk.live.view.SelectCoverView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -38,6 +44,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     protected RelativeLayout mCoverArea;
     private RelativeLayout mAddTopicContainer;
     private BeautyView mBeautyView;
+    private SelectCoverView mCoverView;
 
     private final void $click(View view, View.OnClickListener listener) {
         if (view != null) {
@@ -126,6 +133,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
                 mTurnOverIv.setVisibility(View.VISIBLE);
             }
         });
+        mCoverView = $(R.id.cover_layout);
+        mCoverView.setFragment(this);
+
         $click(mTurnOverIv, this);
         $click(mCoverArea, this);
         $click(mAddTopicContainer, this);
@@ -208,6 +218,23 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
                     GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, mRoomTag.toJsonString());
         }
         openPublicLive();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        MyLog.w(TAG, "onActivityResult requestCode : " + requestCode);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case PrepareLiveCoverManager.REQUEST_CODE_TAKE_PHOTO:
+            case ClipImageActivity.REQUEST_CODE_CROP:
+                if (mCoverView != null)
+                    mCoverView.onActivityResult(requestCode, resultCode, data);
+                break;
+            default:
+                break;
+        }
     }
 
     public static void openFragment(
