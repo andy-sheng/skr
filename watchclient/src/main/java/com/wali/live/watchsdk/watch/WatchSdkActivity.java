@@ -457,6 +457,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     @Override
+    public void finish() {
+        KeyboardUtils.hideKeyboardImmediately(this);
+        super.finish();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         stopPlayer();
