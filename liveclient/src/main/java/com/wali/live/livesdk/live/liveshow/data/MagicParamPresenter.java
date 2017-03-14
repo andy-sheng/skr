@@ -230,6 +230,10 @@ public class MagicParamPresenter extends BaseParamPresenter {
             return index >= 0 ? index : (beauty.length - 1);
         }
 
+        public int getBeautyLevel(int index) {
+            return beauty[index];
+        }
+
         /**
          * 滤镜是否可用
          */

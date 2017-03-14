@@ -42,7 +42,7 @@ public abstract class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
     }
 
     public ComponentPresenter(@NonNull IComponentController componentController) {
-        this.mComponentController = componentController;
+        mComponentController = componentController;
     }
 
     /**
