@@ -32,6 +32,7 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     protected AnimationHelper mAnimationHelper;
 
     protected boolean mIsLandscape = false;
+    protected boolean mIsShow = false;
 
     @LayoutRes
     protected abstract int getLayoutResId();
@@ -62,7 +63,15 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
                 mParentView.getContext()).inflate(getLayoutResId(), mParentView, false);
     }
 
+    public boolean isShow() {
+        return mIsShow;
+    }
+
     public void showSelf(boolean useAnimation, boolean isLandscape) {
+        if (mIsShow) {
+            return;
+        }
+        mIsShow = true;
         if (!containsInParent()) {
             addSelfToParent();
             onOrientation(isLandscape);
@@ -73,16 +82,20 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
             if (mAnimationHelper == null) {
                 mAnimationHelper = new AnimationHelper();
             }
-            mAnimationHelper.startAnimation(true);
+            mAnimationHelper.startAnimation();
         } else {
             mContentView.setVisibility(View.VISIBLE);
         }
     }
 
     public void hideSelf(boolean useAnimation) {
+        if (!mIsShow) {
+            return;
+        }
+        mIsShow = false;
         if (containsInParent()) {
             if (useAnimation && mAnimationHelper != null) {
-                mAnimationHelper.startAnimation(false);
+                mAnimationHelper.startAnimation();
             } else {
                 removeSelfFromParent();
             }
@@ -127,16 +140,16 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     }
 
     @CallSuper
-    protected void onAnimationStart(boolean isShow) {
-        MyLog.w(TAG, "onAnimationStart isShow=" + isShow);
-        if (isShow) {
+    protected void onAnimationStart() {
+        MyLog.w(TAG, "onAnimationStart isShow=" + mIsShow);
+        if (mIsShow) {
             mContentView.setAlpha(0.0f);
             mContentView.setVisibility(View.VISIBLE);
         }
     }
 
     protected void onAnimationValue(
-            @FloatRange(from = 0.0, to = 1.0) float value, boolean isShow) {
+            @FloatRange(from = 0.0, to = 1.0) float value) {
         mContentView.setAlpha(value);
         // TODO setTranslation会有问题，后续处理 YangLi
 //        if (mIsLandscape) {
@@ -149,9 +162,9 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     }
 
     @CallSuper
-    protected void onAnimationEnd(boolean isShow) {
-        MyLog.w(TAG, "onAnimationEnd isShow=" + isShow);
-        if (!isShow) {
+    protected void onAnimationEnd() {
+        MyLog.w(TAG, "onAnimationEnd isShow=" + mIsShow);
+        if (!mIsShow) {
             removeSelfFromParent();
         }
     }
@@ -159,7 +172,6 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     // 面板动画辅助类
     protected class AnimationHelper {
         private ValueAnimator valueAnimator;
-        private boolean isShow = false;
 
         private void setupAnimation() {
             if (valueAnimator == null) {
@@ -169,29 +181,28 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float ratio = (float) animation.getAnimatedValue();
-                        if (!isShow) {
+                        if (!mIsShow) {
                             ratio = 1 - ratio;
                         }
-                        BaseBottomPanel.this.onAnimationValue(ratio, isShow);
+                        BaseBottomPanel.this.onAnimationValue(ratio);
                     }
                 });
                 valueAnimator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-                        BaseBottomPanel.this.onAnimationStart(isShow);
+                        BaseBottomPanel.this.onAnimationStart();
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        BaseBottomPanel.this.onAnimationEnd(isShow);
+                        BaseBottomPanel.this.onAnimationEnd();
                     }
                 });
             }
         }
 
-        private void startAnimation(boolean isShow) {
+        private void startAnimation() {
             setupAnimation();
-            this.isShow = isShow;
             if (!valueAnimator.isRunning()) {
                 valueAnimator.start();
             }

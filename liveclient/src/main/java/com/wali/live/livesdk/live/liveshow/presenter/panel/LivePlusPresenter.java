@@ -38,11 +38,13 @@ public class LivePlusPresenter extends ComponentPresenter<LivePlusPanel.IView>
 
     @Override
     public void showAtmosphereView() {
+        mComponentController.onEvent(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
         mComponentController.onEvent(LiveComponentController.MSG_SHOW_ATMOSPHERE_VIEW);
     }
 
     @Override
     public void showInputView() {
+        mComponentController.onEvent(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
         mComponentController.onEvent(LiveComponentController.MSG_SHOW_INPUT_VIEW);
     }
 
