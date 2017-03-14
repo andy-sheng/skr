@@ -19,7 +19,42 @@ android {
 }
 
 dependencies {
-    compile presentationDependencies.androidAppCompat
+    provided presentationDependencies.androidAppCompat
     debugCompile project(path: ':enginebase', configuration: "playerpluginDebug")
     releaseCompile project(path: ':enginebase', configuration: "playerpluginRelease")
+}
+
+task makePlayerJar(type: Jar, dependsOn: build) {
+    delete('build/libs/playerplugin-noproguard.jar')
+    //指定生成的jar名
+    baseName 'playerplugin-noproguard'
+    //从哪里打包class文件 ,打的包可以在build/libs中找到
+    from('build/intermediates/classes/debug/', configurations.compile.collect {
+        it.isDirectory() ? it : zipTree(it)
+    })
+    exclude '**/BuildConfig.class'
+    exclude '**/R.class'
+    exclude '**/R$*.class'
+}
+
+task proguardPlayerJar(type: proguard.gradle.ProGuardTask, dependsOn: makePlayerJar) {
+    delete('build/libs/playerplugin.jar')
+    // 依赖库
+    def sdkDir = android.getSdkDirectory().getAbsolutePath()
+    if (sdkDir == null) {
+        sdkDir = android.plugin.getSdkFolder().getAbsolutePath()
+    }
+    libraryjars sdkDir + '/platforms/' + android.compileSdkVersion.toString() + '/android.jar'
+    // 输入路径
+    injars 'build/libs/playerplugin-noproguard.jar'
+    // 输出路径
+    outjars 'build/libs/playerplugin.jar'
+    // 添加配置信息
+    configuration android.getDefaultProguardFile('proguard-android.txt')
+    configuration 'proguard-rules.pro'
+}
+
+task buildPlayerJar(type: Copy, dependsOn: proguardPlayerJar) {
+    from 'build/libs/playerplugin.jar'
+    into '../pluginplayerdemo/libs'
 }

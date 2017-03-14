@@ -37,7 +37,7 @@ dependencies {
 }
 
 task makeJar(type: Jar, dependsOn: build) {
-    delete('build/libs/pushsdk-noproguard.jar')
+    delete('build/libs/liveplugin-noproguard.jar')
     //指定生成的jar名
     baseName 'liveplugin-noproguard'
     //从哪里打包class文件 ,打的包可以在build/libs中找到
