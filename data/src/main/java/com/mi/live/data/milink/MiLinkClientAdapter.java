@@ -185,6 +185,7 @@ public class MiLinkClientAdapter {
             MiLinkCommand.COMMAND_REPLAY_BARRAGE,
             MiLinkCommand.COMMAND_GET_USER_INFO_BY_ID,
             MiLinkCommand.COMMAND_GET_OWN_INFO,
+            MiLinkCommand.COMMAND_GET_PERRSONAL_DATA,
             MiLinkCommand.COMMAND_GET_HOMEPAGE,
             MiLinkCommand.COMMAND_LOGIN,
             MiLinkCommand.COMMAND_GET_SERVICE_TOKEN,

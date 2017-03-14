@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile presentationDependencies.androidAppCompat
+    debugCompile project(path: ':enginebase', configuration: "playerpluginDebug")
+    releaseCompile project(path: ':enginebase', configuration: "playerpluginRelease")
 }

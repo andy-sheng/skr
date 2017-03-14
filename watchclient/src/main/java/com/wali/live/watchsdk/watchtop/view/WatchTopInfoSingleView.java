@@ -305,12 +305,9 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         }
     }
 
+    @Override
     public void initViewUseData() {
-        updateAnchorNickName();
-        updateOwnerView();
-        updateTicketView();
-        updateViewerCountView();
-        updateViewers();
+        super.initViewUseData();
         setRoomAttachment(currentAttachmentList, currentZuid, currentRoomid);
         if (mIsAnchor) {
 //            updateManagers();
@@ -321,7 +318,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             hideFollowBtn(false);
         }
     }
-
 
     @Override
     public void onUserInfoComplete() {

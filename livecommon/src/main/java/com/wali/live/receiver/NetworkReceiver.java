@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 import com.base.log.MyLog;
+import com.mi.live.data.repository.GiftRepository;
 import com.wali.live.event.EventClass;
 import com.wali.live.network.ImageUrlDNSManager;
 
@@ -48,6 +49,7 @@ public class NetworkReceiver extends BroadcastReceiver {
             }
             MyLog.w(TAG, netState + "");
             EventBus.getDefault().post(new EventClass.NetWorkChangeEvent(netState));
+            GiftRepository.onChangeNetState();
         }
         mLastNetState = netState;
     }

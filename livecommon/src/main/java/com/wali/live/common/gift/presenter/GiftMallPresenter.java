@@ -46,6 +46,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -84,7 +85,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     private Gift mRandomGift = null;
 
-    private long continueId = System.currentTimeMillis();
+    private volatile long continueId = System.currentTimeMillis();
 
     private ContinueSendNumber mContinueSend = new ContinueSendNumber(); // 连送次数
 
@@ -205,6 +206,18 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
             return;
         }
 
+        /**
+         * 这个礼物送出的时间，根据送出的时间去判断要不要去改mContinueSend的num，
+         * 因为可能第一个连送的最一个（或n个）还没有返回response的时候下一个连送已经开始
+         * 这个时候会影响continueId和连送num的值
+         */
+
+        final Long[] requestTime = {System.currentTimeMillis()};
+        /**
+         * 记录这个连送的continueId,因为这个请求回来的时候全局的continueId可能已经改变了
+         */
+        final Long[] requestContinueId = new Long[1];
+
         Observable.just(buyGiftWithCard.gift)
                 .flatMap(new Func1<Gift, Observable<Gift>>() {
                     @Override
@@ -272,12 +285,19 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                     public GiftProto.BuyGiftRsp call(Gift gift) {
                         if (mContinueSend.get() == 1) {
                             continueId = System.currentTimeMillis();
+                            //设置最新continueId
+                            mContinueSend.setContinueId(continueId);
                         }
                         useGiftCard[0] = buyGiftWithCard.canUseCard();
+                        //保存此次请求发出时间
+                        requestTime[0] = System.currentTimeMillis();
+                        //保存此次请求continuId
+                        requestContinueId[0] = continueId;
+
                         if (buyGiftWithCard.gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GAME_ROOM_GIFT) {
-                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(), timestamp, continueId, null, mRoomType, useGiftCard[0], true);
+                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(requestContinueId[0]), timestamp, requestContinueId[0], null, mRoomType, useGiftCard[0], true);
                         } else {
-                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(), timestamp, continueId, null, mRoomType, useGiftCard[0], false);
+                            return GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mContinueSend.get(requestContinueId[0]), timestamp, requestContinueId[0], null, mRoomType, useGiftCard[0], false);
                         }
                     }
                 })
@@ -335,10 +355,10 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             buyGift = sendGift[0];
                         }
                         BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(buyGift.getGiftId(), buyGift.getName(), buyGift.getCatagory(),
-                                buyGift.getSendDescribe(), mContinueSend.get(), buyGiftRsp.getReceiverTotalTickets(),
-                                buyGiftRsp.getTicketUpdateTime(), continueId, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), buyGiftRsp.getRedPacketId(), "", 0, false);
+                                buyGift.getSendDescribe(), mContinueSend.get(requestContinueId[0]), buyGiftRsp.getReceiverTotalTickets(),
+                                buyGiftRsp.getTicketUpdateTime(), requestContinueId[0], mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), buyGiftRsp.getRedPacketId(), "", 0, false);
                         BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
-                        mContinueSend.add();
+                        mContinueSend.add(requestTime[0], requestContinueId[0]);
 
                         // 更新card
                         List<GiftProto.VGiftCard> giftCardListList = buyGiftRsp.getGiftCardListList();
@@ -412,7 +432,13 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
                         if (mGiftMallView.getIsBuyGiftBySendBtn()) {
                             if (buyGiftWithCard.gift.getCanContinuous()) {
-                                mGiftMallView.setContinueSendBtnNum(mContinueSend.get() - 1);
+                                /**
+                                 * 如果当前continueId不是请求时候的continueId，则不不去更新连送按钮的数据，
+                                 * 只有最新的连送才需要更新连送数据
+                                 */
+                                if (requestContinueId[0] == mContinueSend.getCurrentContinueId()) {
+                                    mGiftMallView.setContinueSendBtnNum(mContinueSend.get(requestContinueId[0]) - 1);
+                                }
                                 mSountDownSubscription = mGiftMallView.countDown();
                             } else {
                                 giftDisPlayItemView.hideContinueSendBtn();
@@ -429,7 +455,14 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 giftDisPlayItemView.showContinueSendBtn(false);
                                 giftDisPlayItemView.changeCornerStatus(buyGiftWithCard.gift.getIcon(), true);
                             }
-                            giftDisPlayItemView.setContinueSendGiftNum(mContinueSend.get() - 1);
+
+                            /**
+                             * 如果当前continueId不是请求时候的continueId，则不需要去更新橱窗的连送数据，
+                             * 应该是最新的连送才会显示连送数据 （现在橱窗显示的x5,表示连送5个）
+                             */
+                            if (requestContinueId[0] == mContinueSend.getCurrentContinueId()) {
+                                giftDisPlayItemView.setContinueSendGiftNum(mContinueSend.get(requestContinueId[0]) - 1);
+                            }
                         }
 
                         if (useGiftCard[0]) {
@@ -945,19 +978,67 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         }
     }
 
-    static class ContinueSendNumber {
-        private int num = 1;
 
+    static class ContinueSendNumber {
+        HashMap<Long, Integer> mContinueMap = new HashMap();
+        private volatile int num = 1;
+        private long lastResetTime = System.currentTimeMillis();
+        private long currentContinueId = 0l;
+
+        //记录最后一个reset的时间，以防reset完之后有上一个reset的数据更改num
         public synchronized void reset() {
+            //目前之保存最近一次连送的信息
+            mContinueMap.clear();
+            if (currentContinueId != 0) {
+                /**
+                 * 有可能上一个连送的最后一个（或最后n个）还没返回，但新的连送已经开始，
+                 * 所以需要分开两个连送数据，保存上一个连送的数据
+                 */
+                mContinueMap.put(currentContinueId, num);
+            }
+
+            lastResetTime = System.currentTimeMillis();
+
+            /**
+             * 设置一个无意义数字，表示已经从新开始连送，但是还没有设置continueId，
+             * 以防在礼物橱窗的错误的位置显示连送的标，因为这个很可能是上一个连送的数了
+             */
+            currentContinueId = -1;
             num = 1;
         }
 
-        public synchronized void add() {
-            num++;
+        public synchronized void setContinueId(long continueId) {
+            currentContinueId = continueId;
+        }
+
+        public synchronized long getCurrentContinueId() {
+            return currentContinueId;
+        }
+
+        public synchronized void add(long requestTime, long continueId) {
+            if (requestTime > lastResetTime) {
+                num++;
+            } else {
+                mContinueMap.put(continueId, mContinueMap.get(continueId) + 1);
+            }
         }
 
         public synchronized int get() {
             return num;
         }
+
+        public synchronized int get(long continueId) {
+            /**
+             * 有时候虽然已经reset了，但是新的continueId还没有设置，这个continueId
+             * 的值可能在map里面
+             */
+            if (mContinueMap.containsKey(continueId)) {
+                return mContinueMap.get(continueId);
+            }
+
+            return num;
+
+        }
     }
+
 }

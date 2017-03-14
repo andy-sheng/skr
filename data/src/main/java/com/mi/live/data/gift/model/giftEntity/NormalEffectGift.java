@@ -26,6 +26,9 @@ public class NormalEffectGift extends Gift {
     List<BigContinue> bigCons = new ArrayList<>();//小礼物连击触发大礼物
 
     public void completeGiftInfo(String jsonConfigPath) {
+        if (!flags.isEmpty() || !bigCons.isEmpty()) {
+            return;
+        }
         JSONObject jsonObject = null;
         try {
             MyLog.d(TAG, "jsonConfigPath:" + jsonConfigPath);

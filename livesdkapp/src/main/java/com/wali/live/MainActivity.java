@@ -8,10 +8,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.data.LiveShow;
+import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
@@ -23,6 +28,8 @@ import com.wali.live.channel.presenter.IChannelView;
 import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.watch.WatchSdkActivity;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -33,6 +40,8 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 //import com.wali.live.livesdk.live.LiveSdkActivity;
@@ -46,6 +55,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
     protected ChannelRecyclerAdapter mRecyclerAdapter;
+    protected EditText mInputEditText;
 
     protected IChannelPresenter mPresenter;
     protected long mChannelId = 201;
@@ -121,6 +131,47 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
         mRecyclerAdapter = new ChannelRecyclerAdapter(this, mChannelId);
         mRecyclerView.setAdapter(mRecyclerAdapter);
+
+        mInputEditText = $(R.id.live_input_tv);
+
+        $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(mInputEditText.getText())) {
+                    ToastUtils.showToast("主播id不能为空");
+                    return;
+                }
+                Observable.just(0).map(new Func1<Integer, Object>() {
+                    @Override
+                    public Object call(Integer integer) {
+                        LiveShow liveShow = UserInfoManager.getLiveShowByUserId(Long.parseLong(mInputEditText.getText().toString()));
+                        if (liveShow == null) {
+                            return null;
+                        }
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl())
+                                .setAvatar(liveShow.getAvatar())
+                                .setCoverUrl(liveShow.getCoverUrl())
+                                .setLiveType(6)
+                                .build();
+                        WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
+                        return null;
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                MyLog.e(TAG, throwable);
+                            }
+                        });
+
+            }
+        });
     }
 
     private void initPresenters() {

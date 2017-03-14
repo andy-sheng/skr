@@ -1,7 +1,6 @@
 package com.mi.live.data.repository;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
@@ -18,8 +17,8 @@ import com.base.utils.IOUtils;
 import com.base.utils.MD5;
 import com.base.utils.image.ImageUrlDNSManager;
 import com.base.utils.network.Network;
+import com.base.utils.network.NetworkUtils;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.manager.GiftPushMsgProcesser;
 import com.mi.live.data.gift.mapper.GiftTypeMapper;
@@ -28,7 +27,6 @@ import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.gift.model.GiftType;
 import com.mi.live.data.gift.model.giftEntity.BigPackOfGift;
 import com.mi.live.data.location.Location;
-import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.push.model.BarrageMsg;
@@ -50,6 +48,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +59,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
@@ -79,6 +77,10 @@ public class GiftRepository {
     public static String KEY_PULL_GIFTLIST_TIMESTAMP = "key_pull_giftlist_timestamp";
     public static String TAG = "GiftRepository";
 
+    //资源已经存在的礼物
+    private static HashMap<Integer, Gift> mExistedGift = new HashMap<>();
+    //绿色通道，无论那种都要下载
+    private static HashSet<Integer> mGreenChannelGift = new HashSet<>();
     /**
      * 专门用于下载礼物动画资源
      */
@@ -251,6 +253,7 @@ public class GiftRepository {
                     }
                 }).subscribeOn(Schedulers.io());
     }
+
     /**
      * 拉取该房间运营位信息
      */
@@ -286,6 +289,7 @@ public class GiftRepository {
                     }
                 }).subscribeOn(Schedulers.io());
     }
+
     /**
      * 点击运营位计数
      */
@@ -348,7 +352,7 @@ public class GiftRepository {
         }
         GiftProto.BuyGiftReq req = reqBuilder.build();
         PacketData data = new PacketData();
-        if(isFromGameRoom) {
+        if (isFromGameRoom) {
             data.setCommand(MiLinkCommand.COMMAND_GIFT_BUY_GAME_ROOM);
         } else {
             data.setCommand(MiLinkCommand.COMMAND_GIFT_BUY);
@@ -389,6 +393,14 @@ public class GiftRepository {
     }
 
     /**
+     * 网络发生变化重新请求
+     */
+    public static void onChangeNetState() {
+        MyLog.w(TAG, "onChangeNetState begin");
+        checkAnimationResOfCache();
+    }
+
+    /**
      * 检查所有gift的动画资源是否准备妥当
      */
     private static void checkAnimationResOfCache() {
@@ -396,10 +408,19 @@ public class GiftRepository {
         synchronized (mCache) {
             if (mCache.size() > 0) {
                 for (Gift gift : mCache) {
-                    String jsonFilePath = checkOneAnimationRes(gift);
-                    if (!TextUtils.isEmpty(jsonFilePath)) {
-                        gift.completeGiftInfo(jsonFilePath);
+                    /**
+                     * 1.如果在绿色通道里，就必须下载，
+                     * 2.如果没有，(1)wifi下 && (2)橱窗可见的情况下下载
+                     */
+                    if (mGreenChannelGift.contains(gift.getGiftId())
+                            || (NetworkUtils.isWifi(GlobalData.app())
+                            && gift.getCanSale())) {
+                        String jsonFilePath = checkOneAnimationRes(gift);
+                        if (!TextUtils.isEmpty(jsonFilePath)) {
+                            gift.completeGiftInfo(jsonFilePath);
+                        }
                     }
+
                 }
             }
         }
@@ -425,10 +446,24 @@ public class GiftRepository {
                 return null;
             } else {
                 MyLog.w(TAG, "giftName:" + gift.getName() + " resource exist,go on!");
+                if (!TextUtils.isEmpty(jsonFilePath)) {
+                    gift.completeGiftInfo(jsonFilePath);
+                }
+                addGiftToExistedSet(gift);
                 return jsonFilePath;
             }
         } else {
             return null;
+        }
+    }
+
+    /**
+     * 当执行完checkOneAnimationRes()后用这个方法得到一个礼物的资源是否已经存在
+     */
+    public static Gift checkExistedGiftRes(int giftId) {
+        MyLog.d(TAG, "checkOneAnimationRes");
+        synchronized (mExistedGift) {
+            return mExistedGift.get(giftId);
         }
     }
 
@@ -514,6 +549,8 @@ public class GiftRepository {
                 // 填充该礼物的剩余属性信息
                 String jsonFilePath = getConfigJsonPathIfResExist(unZipFile, gift.getConfigJsonFileName());
                 gift.completeGiftInfo(jsonFilePath);
+                notifyGiftDownloadSuccess(gift);
+                addGiftToExistedSet(gift);
             }
         } else {
             MyLog.w(TAG, "download gift resource failed");
@@ -551,6 +588,18 @@ public class GiftRepository {
         }
         return null;
     }
+
+    private static void notifyGiftDownloadSuccess(Gift gift) {
+        MyLog.w(TAG, "notifyGiftDownloadSuccess gift=" + gift.toString());
+        EventBus.getDefault().post(new GiftEventClass.GiftDownloadSuc(gift));
+    }
+
+    private static void addGiftToExistedSet(Gift gift) {
+        synchronized (mExistedGift) {
+            mExistedGift.put(gift.getGiftId(), gift);
+        }
+    }
+
 
     private static Handler mainHandler = new Handler(Looper.getMainLooper());
     private static boolean isLoading = false;
@@ -701,6 +750,10 @@ public class GiftRepository {
      * @return
      */
     public static void fillGiftEntityById(GiftRecvModel model) {
+        //添加必须需要下载的礼物，以防mCache里没有重新syncGiftList()，再去下载
+        synchronized (mGreenChannelGift) {
+            mGreenChannelGift.add(model.getGiftId());
+        }
         //这里有些耗时
         synchronized (mCache) {
             for (Gift gift : mCache) {

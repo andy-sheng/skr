@@ -168,6 +168,7 @@ public class MiLinkCommand {
     public static final String COMMAND_GET_USER_INFO_BY_ID = "zhibo.user.getuserinfobyid";
     public static final String COMMAND_GET_USER_LIST_BY_ID = "zhibo.user.mutigetuserinfo";
     public static final String COMMAND_GET_OWN_INFO = "zhibo.user.getowninfo";      //获取自己的信息
+    @Deprecated
     public static final String COMMAND_GET_PERRSONAL_DATA = "zhibo.user.getpersonaldata";
     public static final String COMMAND_GET_HOMEPAGE = "zhibo.user.gethomepage";
     public static final String COMMAND_UPLOAD_USER_SETTING = "zhibo.user.uploadusersetting";

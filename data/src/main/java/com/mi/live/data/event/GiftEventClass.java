@@ -1,5 +1,7 @@
 package com.mi.live.data.event;
 
+import com.wali.live.dao.Gift;
+
 /**
  * Created by zjn on 16-11-30.
  */
@@ -83,6 +85,20 @@ public class GiftEventClass {
 
         public GiftCardPush(Object obj1) {
             this.obj1 = obj1;
+        }
+    }
+
+    /**
+     * 当一个大礼物下载成功
+     */
+    public static class GiftDownloadSuc {
+        Gift mGift;
+        public GiftDownloadSuc(Gift gift){
+            mGift = gift;
+        }
+
+        public Gift getGift() {
+            return mGift;
         }
     }
 }

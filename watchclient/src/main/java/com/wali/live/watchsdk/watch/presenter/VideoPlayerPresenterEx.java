@@ -20,6 +20,7 @@ import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.base.utils.Constants;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.engine.media.player.IMediaPlayer;
@@ -152,7 +153,7 @@ public class VideoPlayerPresenterEx implements
                         mIpSelectionHelper.updateStutterStatus(true);
                     }
                     mHandler.removeMessages(MSG_RELOAD_VIDEO);
-                    mHandler.sendEmptyMessageDelayed(MSG_RELOAD_VIDEO, com.base.utils.Constants.PLAYER_KADUN_RELOAD_TIME);
+                    mHandler.sendEmptyMessageDelayed(MSG_RELOAD_VIDEO, Constants.PLAYER_KADUN_RELOAD_TIME);
                     break;
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
                     MyLog.w(TAG, "MEDIA_INFO_BUFFERING_END");
