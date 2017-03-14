@@ -8,6 +8,7 @@ import com.base.log.MyLog;
 import com.mi.live.engine.base.GalileoConstants;
 import com.mi.live.engine.streamer.IStreamer;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.livesdk.live.component.utils.MagicParamUtils;
 
 /**
  * Created by yangli on 2017/03/08.
@@ -20,12 +21,19 @@ public class StreamerPresenter extends ComponentPresenter {
     private static final String TAG = "StreamerPresenter";
 
     private int mMusicVolume = 50; // 音乐音量
+
+    // 通过设置面板调节的参数
     private int mVoiceVolume = 50; // 人声音量
     private boolean mMirrorImage = true; // 是否开启镜像
     private boolean mBackCamera = false; // 是否为后置摄像头
     private boolean mFlashLight = false; // 是否开启闪光灯
     private boolean mHifi = false; // 是否开启高保真
     private int mReverb = GalileoConstants.TYPE_ORIGINAL; // 混响类型
+
+    // 通过美妆面板调节的参数
+    private int mBeautyLevel = MagicParamUtils.getBeautyLevel();
+    private int mFilterIntensity = MagicParamUtils.getFilterIntensity();
+    private String mFilter = "";
 
     private IStreamer mStreamer;
 
@@ -103,7 +111,7 @@ public class StreamerPresenter extends ComponentPresenter {
 
     // 开启镜像
     public void enableMirrorImage(boolean enable) {
-        if (mStreamer != null) {
+        if (mStreamer != null && mMirrorImage != enable) {
             mMirrorImage = enable;
             if (!mBackCamera) {
                 mStreamer.setMirrorMode(mMirrorImage);
@@ -117,7 +125,7 @@ public class StreamerPresenter extends ComponentPresenter {
 
     // 开启闪光灯
     public void enableFlashLight(boolean enable) {
-        if (mStreamer != null) {
+        if (mStreamer != null && mFlashLight != enable) {
             mFlashLight = enable;
             mStreamer.toggleTorch(mFlashLight);
         }
@@ -132,6 +140,43 @@ public class StreamerPresenter extends ComponentPresenter {
         if (mStreamer != null) {
             mStreamer.playAtmosphereMusic(path);
         }
+    }
+
+    // 设置美颜
+    public void setBeautyLevel(int beautyLevel) {
+        if (mStreamer != null && mBeautyLevel != beautyLevel) {
+            mBeautyLevel = beautyLevel;
+            mStreamer.setBeautyLevel(beautyLevel);
+        }
+    }
+
+    public int getBeautyLevel() {
+        return mBeautyLevel;
+    }
+
+    // 设置滤镜
+    public void setFilter(@NonNull String filter) {
+        if (mStreamer != null && mFilter.equals(filter)) {
+            mFilter = filter;
+            mStreamer.setVideoFilter(filter);
+        }
+    }
+
+    public String getFilter() {
+        return mFilter;
+    }
+
+    // 设置滤镜强度
+    public void setFilterIntensity(int intensity) {
+        if (mStreamer != null && mFilterIntensity != intensity) {
+            mFilterIntensity = intensity;
+            mStreamer.setVideoFilterIntensity(intensity / 100f);
+            MagicParamUtils.saveFilterIntensity(intensity);
+        }
+    }
+
+    public int getFilterIntensity() {
+        return mFilterIntensity;
     }
 
     public class Action implements IAction {

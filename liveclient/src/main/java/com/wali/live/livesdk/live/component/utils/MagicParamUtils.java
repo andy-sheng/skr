@@ -29,14 +29,4 @@ public class MagicParamUtils {
         return PreferenceUtils.getSettingInt(
                 GlobalData.app(), PreferenceUtils.PREF_KEY_FILTER_INTENSITY, 100);
     }
-
-    public static void saveFilterCategory(String category) {
-        PreferenceUtils.setSettingString(
-                GlobalData.app(), PreferenceUtils.PREF_KEY_FILTER_CATEGORY, category);
-    }
-
-    public static String getFilterCategory() {
-        return PreferenceUtils.getSettingString(
-                GlobalData.app(), PreferenceUtils.PREF_KEY_FILTER_CATEGORY, "com.wali.live.videofilter.basic");
-    }
 }

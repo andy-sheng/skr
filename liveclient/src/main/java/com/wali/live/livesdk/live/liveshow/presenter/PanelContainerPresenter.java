@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.base.presenter.Presenter;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.component.presenter.BaseContainerPresenter;
@@ -15,6 +16,8 @@ import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by yangli on 2017/3/13.
@@ -26,12 +29,12 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
 
     private StreamerPresenter mStreamerPresenter;
 
-    private LiveSettingPanel mSettingPanel;
-    private LiveMagicPanel mMagicPanel;
-    private LivePlusPanel mPlusPanel;
+    private WeakReference<LiveSettingPanel> mSettingPanelRef;
+    private WeakReference<LiveMagicPanel> mMagicPanelRef;
+    private WeakReference<LivePlusPanel> mPlusPanelRef;
 
-    private LivePlusPresenter mPlusPresenter;
-    private LiveMagicPresenter mMagicPresenter;
+    private WeakReference<LivePlusPresenter> mPlusPresenterRef;
+    private WeakReference<LiveMagicPresenter> mMagicPresenterRef;
 
     @Override
     protected String getTAG() {
@@ -66,43 +69,63 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     @Override
     public void destroy() {
         super.destroy();
-        if (mPlusPanel != null) {
-            mPlusPresenter.destroy();
-            mPlusPresenter = null;
-            mPlusPanel = null;
+
+        mSettingPanelRef = null;
+
+        Presenter plusPresenter = deRef(mPlusPresenterRef);
+        if (plusPresenter != null) {
+            plusPresenter.destroy();
         }
-        if (mMagicPresenter != null) {
-            mMagicPresenter.destroy();
-            mMagicPresenter = null;
-            mMagicPanel = null;
+        mPlusPresenterRef = null;
+        mPlusPanelRef = null;
+
+        Presenter magicPresenter = deRef(mMagicPresenterRef);
+        if (magicPresenter != null) {
+            magicPresenter.destroy();
         }
+        mMagicPresenterRef = null;
+        mMagicPanelRef = null;
     }
 
     private void showSettingPanel() {
-        if (mSettingPanel == null) {
-            mSettingPanel = new LiveSettingPanel(mView, mStreamerPresenter);
+        LiveSettingPanel panel = deRef(mSettingPanelRef);
+        if (panel == null) {
+            panel = new LiveSettingPanel(mView, mStreamerPresenter);
+            mSettingPanelRef = new WeakReference<>(panel);
         }
-        showPanel(mSettingPanel, true);
+        showPanel(panel, true);
     }
 
     private void showPlusPanel() {
-        if (mPlusPanel == null) {
-            mPlusPanel = new LivePlusPanel(mView);
-            mPlusPresenter = new LivePlusPresenter(mComponentController);
-            mPlusPanel.setPresenter(mPlusPresenter);
-            mPlusPresenter.setComponentView(mPlusPanel.getViewProxy());
+        LivePlusPanel panel = deRef(mPlusPanelRef);
+        if (panel == null) {
+            panel = new LivePlusPanel(mView);
+            mPlusPanelRef = new WeakReference<>(panel);
+            LivePlusPresenter presenter = deRef(mPlusPresenterRef);
+            if (presenter == null) {
+                presenter = new LivePlusPresenter(mComponentController);
+                mPlusPresenterRef = new WeakReference<>(presenter);
+            }
+            panel.setPresenter(presenter);
+            presenter.setComponentView(panel.getViewProxy());
         }
-        showPanel(mPlusPanel, true);
+        showPanel(panel, true);
     }
 
     private void showMagicPanel() {
-        if (mMagicPanel == null) {
-            mMagicPanel = new LiveMagicPanel(mView);
-            mMagicPresenter = new LiveMagicPresenter(mComponentController);
-            mMagicPanel.setPresenter(mMagicPresenter);
-            mMagicPresenter.setComponentView(mMagicPanel.getViewProxy());
+        LiveMagicPanel panel = deRef(mMagicPanelRef);
+        if (panel == null) {
+            panel = new LiveMagicPanel(mView, mStreamerPresenter);
+            mMagicPanelRef = new WeakReference<>(panel);
+            LiveMagicPresenter presenter = deRef(mMagicPresenterRef);
+            if (presenter == null) {
+                presenter = new LiveMagicPresenter();
+                mMagicPresenterRef = new WeakReference<>(presenter);
+            }
+            panel.setPresenter(presenter);
+            presenter.setComponentView(panel.getViewProxy());
         }
-        showPanel(mMagicPanel, true);
+        showPanel(panel, true);
     }
 
     @Nullable

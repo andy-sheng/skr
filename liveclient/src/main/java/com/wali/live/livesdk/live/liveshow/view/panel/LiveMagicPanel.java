@@ -12,10 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.base.view.RotatedSeekBar;
+import com.mi.live.engine.base.GalileoConstants;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
@@ -33,11 +35,15 @@ import java.util.List;
  * @module 秀场美妆面板视图
  */
 public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
-        implements View.OnClickListener, IComponentView<LiveMagicPanel.IPresenter, LiveMagicPanel.IView> {
+        implements IComponentView<LiveMagicPanel.IPresenter, LiveMagicPanel.IView> {
     private static final String TAG = "LiveMagicPanel";
 
-    @Nullable
+    @NonNull
     protected IPresenter mPresenter;
+    @NonNull
+    protected StreamerPresenter mStreamerPresenter;
+
+    private MagicParamPresenter.MagicParams mMagicParams;
 
     private RelativeLayout mSubPanelView;
     private View mSplitter;
@@ -54,9 +60,6 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
             new SingleChooser.IChooserListener() {
                 @Override
                 public void onItemSelected(View view) {
-                    if (mPresenter == null) {
-                        return;
-                    }
                     int id = view.getId();
                     if (id == R.id.face_beauty) {
                         mPanelContainer.showBeautyPanel();
@@ -69,16 +72,6 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                 }
             });
 
-    protected final void $click(View view, View.OnClickListener listener) {
-        if (view != null) {
-            view.setOnClickListener(listener);
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-    }
-
     @Override
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
@@ -89,8 +82,11 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         return R.layout.magic_control_panel;
     }
 
-    public LiveMagicPanel(@NonNull RelativeLayout parentView) {
+    public LiveMagicPanel(
+            @NonNull RelativeLayout parentView,
+            @NonNull StreamerPresenter streamerPresenter) {
         super(parentView);
+        mStreamerPresenter = streamerPresenter;
     }
 
     @Override
@@ -108,8 +104,10 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         mPanelContainer = new PanelContainer(mSubPanelView);
         mSingleChooser.setup(mTabContainer, 0);
 
-        if (mPresenter != null) {
+        if (mMagicParams == null) {
             mPresenter.syncPanelStatus();
+        } else {
+            onPanelStatus(mMagicParams);
         }
     }
 
@@ -118,14 +116,45 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         super.onOrientation(isLandscape);
         RelativeLayout.LayoutParams layoutParams =
                 (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         if (mIsLandscape) {
             layoutParams.width = PANEL_WIDTH_LANDSCAPE;
         } else {
             layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         }
         mContentView.setLayoutParams(layoutParams);
+    }
+
+    private void onPanelStatus(MagicParamPresenter.MagicParams magicParams) {
+        mMagicParams = magicParams;
+        int enableCount = 0;
+        if (magicParams.isFilter()) {
+            ++enableCount;
+            mFilterBtn.setVisibility(View.VISIBLE);
+        }
+//        if (magicParams.isExpression()) {
+//            ++enableCount;
+//            mExpressionBtn.setVisibility(View.VISIBLE);
+//        }
+        if (magicParams.isBeauty()) {
+            ++enableCount;
+            mBeautyBtn.setVisibility(View.VISIBLE);
+        }
+        mIsMultiBeauty = magicParams.isMultiBeauty();
+        if (enableCount <= 1) { // 少于两个可见，则不需显示底部Tab
+            mSplitter.setVisibility(View.GONE);
+            mTabContainer.setVisibility(View.GONE);
+        }
+        if (magicParams.isBeauty()) { // 按优先级，显示默认的子面板
+            mSingleChooser.setSelection(mBeautyBtn);
+            mPanelContainer.showBeautyPanel();
+        } else if (magicParams.isFilter()) {
+            mSingleChooser.setSelection(mFilterBtn);
+            mPanelContainer.showFilterPanel();
+        }
+//        else if (magicParams.isExpression()) {
+//            mSingleChooser.setSelection(mExpressionBtn);
+//            mPanelContainer.showExpressionPanel();
+//        }
     }
 
     @Override
@@ -142,64 +171,14 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
             @Override
             public void onPanelStatus(MagicParamPresenter.MagicParams magicParams) {
-                if (magicParams == null) {
-                    return;
-                }
-                int enableCount = 0;
-                if (magicParams.isFilter()) {
-                    ++enableCount;
-                    mFilterBtn.setVisibility(View.VISIBLE);
-                }
-//                if (magicParams.isExpression()) {
-//                    ++enableCount;
-//                    mExpressionBtn.setVisibility(View.VISIBLE);
-//                }
-                if (magicParams.isBeauty()) {
-                    ++enableCount;
-                    mBeautyBtn.setVisibility(View.VISIBLE);
-                }
-                mIsMultiBeauty = magicParams.isMultiBeauty();
-                if (enableCount <= 1) { // 少于两个可见，则不需显示底部Tab
-                    mSplitter.setVisibility(View.GONE);
-                    mTabContainer.setVisibility(View.GONE);
-                }
-                if (magicParams.isBeauty()) { // 按优先级，显示默认的子面板
-                    mSingleChooser.setSelection(mBeautyBtn);
-                    mPanelContainer.showBeautyPanel();
-                } else if (magicParams.isFilter()) {
-                    mSingleChooser.setSelection(mFilterBtn);
-                    mPanelContainer.showFilterPanel();
-                }
-//                else if (magicParams.isExpression()) {
-//                    mSingleChooser.setSelection(mExpressionBtn);
-//                    mPanelContainer.showExpressionPanel();
-//                }
-            }
-
-            @Override
-            public void onBeautyData(int currPosition) {
-                if (mPanelContainer.mBeautyPanel != null) {
-                    mPanelContainer.mBeautyPanel.onCurrPosition(currPosition);
+                if (magicParams != null) {
+                    LiveMagicPanel.this.onPanelStatus(magicParams);
                 }
             }
 
             @Override
             public void onFilterData(List<FilterItemAdapter.FilterItem> filterItems) {
-                if (mPanelContainer.mFilterPanel != null) {
-                    mPanelContainer.mFilterPanel.mAdapter.setItemData(filterItems);
-                }
-            }
-
-            @Override
-            public void onFilterData(String filter, int intensity) {
-                if (mPanelContainer.mFilterPanel != null) {
-                    mPanelContainer.mFilterPanel.mAdapter.setCurrFilter(filter);
-                    mPanelContainer.mFilterPanel.mFilterAdjuster.setVolume(intensity);
-                }
-            }
-
-            @Override
-            public void onExpressionData(List<FilterItemAdapter.FilterItem> filterItems, int currPosition) {
+                mPanelContainer.mFilterPanel.onFilterData(filterItems);
             }
         }
         return new ComponentView();
@@ -212,39 +191,9 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         void syncPanelStatus();
 
         /**
-         * 同步美颜数据
-         */
-        void syncBeautyData();
-
-        /**
          * 同步滤镜数据
          */
         void syncFilterData();
-
-        /**
-         * 同步表情数据
-         */
-        void syncExpressionData();
-
-        /**
-         * 设置美颜
-         */
-        void setBeauty(int index);
-
-        /**
-         * 设置滤镜
-         */
-        void setFilter(String filter);
-
-        /**
-         * 设置滤镜强度
-         */
-        void setFilterIntensity(int intensity);
-
-        /**
-         * 设置表情
-         */
-        void setExpression(int index);
     }
 
     public interface IView extends IViewProxy {
@@ -254,24 +203,9 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
         void onPanelStatus(MagicParamPresenter.MagicParams magicParams);
 
         /**
-         * 同步美颜数据
-         */
-        void onBeautyData(int currPosition);
-
-        /**
          * 同步滤镜数据
          */
         void onFilterData(List<FilterItemAdapter.FilterItem> filterItems);
-
-        /**
-         * 同步滤镜数据
-         */
-        void onFilterData(String filter, int intensity);
-
-        /**
-         * 同步表情数据
-         */
-        void onExpressionData(List<FilterItemAdapter.FilterItem> filterItems, int currPosition);
     }
 
     // 美颜子面板
@@ -295,14 +229,6 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
             }
         }
 
-        private void onCurrPosition(int currPosition) {
-            if (mSwitchButton != null) {
-                mSwitchButton.setChecked(currPosition > 0);
-            } else if (mSeekBar != null) {
-                mSeekBar.setPercent(mSeekBarPosIndex[currPosition]);
-            }
-        }
-
         @Override
         protected void inflateContentView() {
             super.inflateContentView();
@@ -312,9 +238,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                 mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (LiveMagicPanel.this.mPresenter != null) {
-                            LiveMagicPanel.this.mPresenter.setBeauty(isChecked ? 1 : 0);
-                        }
+                        mStreamerPresenter.setBeautyLevel(mMagicParams.getBeautyLevel(isChecked ? 1 : 0));
                     }
                 });
             }
@@ -334,15 +258,15 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                     public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
                         int index = (int) (rotatedSeekBar.getPercent() * 6 + 1) / 2; // 滑条级别：0, 1, 2, 3
                         rotatedSeekBar.setPercent(mSeekBarPosIndex[index]);
-                        if (LiveMagicPanel.this.mPresenter != null) {
-                            LiveMagicPanel.this.mPresenter.setBeauty(index);
-                        }
+                        mStreamerPresenter.setBeautyLevel(mMagicParams.getBeautyLevel(index));
                     }
                 });
             }
 
-            if (LiveMagicPanel.this.mPresenter != null) {
-                LiveMagicPanel.this.mPresenter.syncBeautyData();
+            if (mSwitchButton != null) {
+                mSwitchButton.setChecked(mStreamerPresenter.getBeautyLevel() != GalileoConstants.BEAUTY_LEVEL_OFF);
+            } else if (mSeekBar != null) {
+                mSeekBar.setPercent(mSeekBarPosIndex[mMagicParams.findBeautyPos(mStreamerPresenter.getBeautyLevel())]);
             }
         }
     }
@@ -356,9 +280,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                 new FilterItemAdapter.IFilterItemListener() {
                     @Override
                     public void onItemSelected(String filter) {
-                        if (LiveMagicPanel.this.mPresenter != null) {
-                            LiveMagicPanel.this.mPresenter.setFilter(filter);
-                        }
+                        mStreamerPresenter.setFilter(filter);
                     }
                 });
 
@@ -366,9 +288,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
                 new VolumeAdjuster.AdjusterWrapper() {
                     @Override
                     public void onChangeVolume(@IntRange(from = 0, to = 100) int volume) {
-                        if (LiveMagicPanel.this.mPresenter != null) {
-                            LiveMagicPanel.this.mPresenter.setFilterIntensity(volume);
-                        }
+                        mStreamerPresenter.setFilterIntensity(volume);
                     }
                 }
         );
@@ -393,9 +313,15 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
             mFilterAdjuster.setup((ViewGroup) $(R.id.param_adjuster_view));
 
-            if (LiveMagicPanel.this.mPresenter != null) {
-                LiveMagicPanel.this.mPresenter.syncFilterData();
+            if (mPresenter != null) {
+                mPresenter.syncFilterData();
             }
+        }
+
+        public void onFilterData(List<FilterItemAdapter.FilterItem> filterItems) {
+            mAdapter.setItemData(filterItems);
+            mAdapter.setCurrFilter(mStreamerPresenter.getFilter());
+            mFilterAdjuster.setVolume(mStreamerPresenter.getFilterIntensity());
         }
     }
 
@@ -418,8 +344,8 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 //        protected void inflateContentView() {
 //            super.inflateContentView();
 //
-//            if (LiveMagicPanel.this.mPresenter != null) {
-//                LiveMagicPanel.this.mPresenter.syncExpressionData();
+//            if (mPresenter != null) {
+//                mPresenter.syncExpressionData();
 //            }
 //        }
 //    }

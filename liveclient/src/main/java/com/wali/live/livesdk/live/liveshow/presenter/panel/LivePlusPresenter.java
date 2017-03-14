@@ -31,8 +31,7 @@ public class LivePlusPresenter extends ComponentPresenter<LivePlusPanel.IView>
         implements LivePlusPanel.IPresenter {
     private static final String TAG = "LivePlusPresenter";
 
-    public LivePlusPresenter(
-            @NonNull IComponentController componentController) {
+    public LivePlusPresenter(@NonNull IComponentController componentController) {
         super(componentController);
     }
 
