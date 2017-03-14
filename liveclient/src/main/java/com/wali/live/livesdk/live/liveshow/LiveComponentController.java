@@ -31,7 +31,6 @@ public class LiveComponentController extends BaseLiveController {
     protected RoomBaseDataModel mMyRoomData; // 房间数据
     @NonNull
     protected LiveRoomChatMsgManager mRoomChatMsgManager; // 房间弹幕管理
-
     @NonNull
     protected StreamerPresenter mStreamerPresenter; // 推流器
     @NonNull

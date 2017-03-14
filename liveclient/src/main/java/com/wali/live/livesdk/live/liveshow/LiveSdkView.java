@@ -17,6 +17,7 @@ import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.liveshow.presenter.BottomButtonPresenter;
+import com.wali.live.livesdk.live.liveshow.presenter.FloatContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.LiveDisplayPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.button.MagicControlBtnPresenter;
@@ -113,6 +114,14 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             PanelContainerPresenter presenter = new PanelContainerPresenter(
                     mComponentController, mComponentController.mStreamerPresenter);
             presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
+        }
+
+        // 音效面板
+        {
+            FloatContainerPresenter presenter = new FloatContainerPresenter(
+                    mComponentController, mComponentController.mStreamerPresenter);
+            presenter.setComponentView((RelativeLayout) $(R.id.main_act_container));
             addComponentView(presenter);
         }
 

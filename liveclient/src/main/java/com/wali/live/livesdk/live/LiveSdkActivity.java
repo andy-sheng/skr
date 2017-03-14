@@ -166,7 +166,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     protected GameLivePresenter mGameLivePresenter;
     protected RoomInfoPresenter mRoomInfoPresenter;
 
-    protected boolean mIsGameLive = true;
+    protected boolean mIsGameLive = false;
     protected StreamerPresenter mStreamerPresenter;
 
     private final MyUIHandler mUIHandler = new MyUIHandler(this);

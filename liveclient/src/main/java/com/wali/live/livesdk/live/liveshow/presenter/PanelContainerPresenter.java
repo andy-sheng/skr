@@ -135,7 +135,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                     showMagicPanel();
                     return true;
                 case LiveComponentController.MSG_HIDE_BOTTOM_PANEL:
-                    hidePanel(false);
+                    hidePanel(true);
                     return true;
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
                     return hidePanel(true);

@@ -127,6 +127,13 @@ public class StreamerPresenter extends ComponentPresenter {
         return mFlashLight;
     }
 
+    // 播放音效
+    public void playAtmosphere(String path) {
+        if (mStreamer != null) {
+            mStreamer.playAtmosphereMusic(path);
+        }
+    }
+
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
