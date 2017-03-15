@@ -437,7 +437,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             }
         }
 
-        private void formatInputString(String text, int strIndex) {
+        public void formatInputString(String text, int strIndex) {
             enableWatch = false;
             SpannableStringBuilder str = new SpannableStringBuilder(text);
             int len = text.length();

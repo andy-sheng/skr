@@ -12,6 +12,7 @@ import com.base.dialog.MyAlertDialog;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.language.LocaleUtil;
@@ -37,6 +38,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private static final String TAG = "PrepareShowLiveFragment";
 
     public static final int REQUEST_RECIPIENT_SELECT = 1000;
+    final int mTopicLenMax = 28;
 
     private MyAlertDialog.Builder builder;
 
@@ -75,39 +77,17 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             StatisticsWorker.getsInstance().sendCommand(
                     StatisticsWorker.AC_APP, StatisticsKey.KEY_PRE_LIVE_CAMERA, 1);
             // TODO 切换前后置相机
-        } else if (id == R.id.cover_layout) {
-            // TODO 跳转到添加封面页
         } else if (id == R.id.add_topic_container) {
-            // TODO 跳转到添加话题页
-            // 将新的Fragment(TopicRecommendFragment)加(add)到栈中,并隐藏PrepareLiveFragment
-//            TopicRecommendFragment.openFragment((BaseAppActivity) getActivity(), new TopicRecommendFragment.ITopicDataChangeListener() {
-//                @Override
-//                public void onTopicDataChanged(String topic) {
-//                    MyLog.d(TAG, "onTopicDataChanged " + topic);
-//                    if (!TextUtils.isEmpty(topic)) {
-//                        mTitleTextWatcher.setTopicDefaultWay(TOPIC_FROM_TMATY);
-//                        mLiveTitleEt.setText(topic);
-//                    } else {
-//                        if (TextUtils.isEmpty(mLiveTitleEt.getText())) {
-//                            mLiveTitleEt.setHint(R.string.prepare_live_edittext_hint);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onTopicFragmentFinished() {
-//                    MyLog.d(TAG, "onTopicFragmentFinished");
-//                    mRootView.setVisibility(View.VISIBLE);
-//                    mAddTopicContainer.setClickable(false);
-//                }
-//
-//                @Override
-//                public void onTopicFragmentDestoryed() {
-//                    mAddTopicContainer.setClickable(true);
-//                }
-//            });
-//            KeyboardUtils.hideKeyboard(getActivity());
-//            mRootView.setVisibility(View.GONE);
+            // TODO 跳转到添加话题页 暫時接的老版的話題方式
+            mLiveTitleEt.requestFocus();
+            String addStr = "##";
+            String result = mLiveTitleEt.getText().toString() + addStr;
+            if (result.length() > mTopicLenMax) {
+                mTitleTextWatcher.formatInputString(mLiveTitleEt.getText().toString(), mLiveTitleEt.getSelectionStart());
+            } else {
+                mTitleTextWatcher.formatInputString(result, mLiveTitleEt.getText().length() + 1);
+                KeyboardUtils.showKeyboard(getActivity(), mLiveTitleEt);
+            }
         }
     }
 

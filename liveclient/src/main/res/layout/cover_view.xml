@@ -48,6 +48,5 @@
             android:text="@string/select_cover"
             android:textColor="@color/select_cover"
             android:textSize="@dimen/text_size_36"/>
-
     </RelativeLayout>
 </merge>
