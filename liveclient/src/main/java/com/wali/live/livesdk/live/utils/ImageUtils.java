@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
  */
 
 public class ImageUtils {
+    public static final String AVATAR_TEMP_DIR = "/Xiaomi/WALI_LIVE_SDK/.temp/";      //临时文件路径, 比如裁剪后的图片临时文件存放在这里
 
     public static Bitmap readArgbtmap(Context context, int resId) {
         BitmapFactory.Options opt = new BitmapFactory.Options();

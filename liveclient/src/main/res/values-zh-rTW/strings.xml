@@ -122,4 +122,17 @@
     <string name="filter_juno">暖陽</string>
     <string name="filter_dogpatch">小清新</string>
     <string name="filter_gray">黑白</string>
+    <string name="uploading">正在上傳圖片....</string>
+    <string name="upload_failed">上傳失敗！</string>
+    <string name="unknown_error">對不起，伺服器出錯了，請稍後重試</string>
+    <string name="select_done">完成(%1$d/%2$d)</string>
+    <string name="saving_image">正在儲存圖片</string>
+    <string name="photo_select_over_limit">最多只能選擇 %d 張照片</string>
+    <string name="photo_select">選擇</string>
+    <string name="photo_preview_title">%1$d/%2$d</string>
+    <string name="photo_lib_title">已選擇%d項</string>
+    <string name="photo_file_list">圖片清單</string>
+    <string name="photo">照片</string>
+    <string name="empty_tips">頁面暫時為空</string>
+    <string name="add_photo_pick_title">選擇圖片</string>
 </resources>

@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/photo_dv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        app:placeholderImage="@color/color_black_trans_40" />
+
+    <ImageView
+        android:id="@+id/foreground_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/color_white_trans_30"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/check_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/photo_dv"
+        android:layout_alignRight="@id/photo_dv"
+        android:padding="@dimen/margin_20" />
+
+    <ImageView
+        android:id="@+id/video_tag_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/photo_dv"
+        android:layout_alignLeft="@id/photo_dv"
+        android:padding="10dp"
+        android:src="@drawable/image_photo_video"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/video_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/photo_dv"
+        android:layout_alignRight="@id/photo_dv"
+        android:padding="10dp"
+        android:shadowColor="@color/color_black_trans_50"
+        android:shadowRadius="1"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/text_size_42"
+        android:visibility="gone" />
+</RelativeLayout>
