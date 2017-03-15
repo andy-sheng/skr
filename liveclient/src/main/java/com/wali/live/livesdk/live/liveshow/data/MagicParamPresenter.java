@@ -7,6 +7,9 @@ import android.text.TextUtils;
 
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -18,8 +21,6 @@ import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.proto.CloudParamsProto;
 import com.wali.live.statistics.StatisticsKey;
-
-import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -49,6 +50,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
             @NonNull IComponentController componentController,
             @NonNull Context context) {
         super(componentController, context);
+        syncMagicParams();
     }
 
     @Override
@@ -162,18 +164,20 @@ public class MagicParamPresenter extends BaseParamPresenter {
     }
 
     public static class MagicParams {
+        @Expose
         private int[] beauty = new int[]{ // 可用的美颜级别
                 GalileoConstants.BEAUTY_LEVEL_OFF,
                 GalileoConstants.BEAUTY_LEVEL_HIGH};
+        @Expose
         private boolean isFilter = true; // 滤镜是否可用
         private boolean isExpression = false; // 魔法表情是否可用
 
         public void loadParams(@NonNull Context context) {
             String codeStr = PreferenceUtils.getSettingString(context, KEY_MAGIC_PARAM_SUPPORT_CODE, "");
             try {
-                JSONObject jsonObject = new JSONObject(codeStr);
-                beauty = (int[]) jsonObject.opt("beauty");
-                isFilter = jsonObject.optBoolean("filter");
+                MagicParams magicParams = new Gson().fromJson(codeStr, MagicParams.class);
+                beauty = magicParams.beauty;
+                isFilter = magicParams.isFilter;
                 isExpression = !PlusParamUtils.isHideExpression(true);
             } catch (Exception e) {
                 MyLog.e(TAG, "loadParams failed, exception=" + e);
@@ -182,10 +186,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
 
         private void saveParams(@NonNull Context context) {
             try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("beauty", beauty);
-                jsonObject.put("filter", isFilter);
-                PreferenceUtils.setSettingString(context, KEY_MAGIC_PARAM_SUPPORT_CODE, jsonObject.toString());
+                PreferenceUtils.setSettingString(context, KEY_MAGIC_PARAM_SUPPORT_CODE, new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this));
                 PreferenceUtils.setSettingLong(context, KEY_MAGIC_PARAM_SYNC_TIMESTAMP, System.currentTimeMillis());
             } catch (Exception e) {
                 MyLog.e(TAG, "saveParams failed, exception=" + e);

@@ -18,9 +18,9 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.language.LocaleUtil;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.image.ClipImageActivity;
-import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.manager.PrepareLiveCoverManager;
 import com.wali.live.livesdk.live.view.BeautyView;
 import com.wali.live.livesdk.live.view.SelectCoverView;
@@ -39,6 +39,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     public static final int REQUEST_RECIPIENT_SELECT = 1000;
     final int mTopicLenMax = 28;
+    private StreamerPresenter mStreamerPresenter;
 
     private MyAlertDialog.Builder builder;
 
@@ -77,6 +78,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             StatisticsWorker.getsInstance().sendCommand(
                     StatisticsWorker.AC_APP, StatisticsKey.KEY_PRE_LIVE_CAMERA, 1);
             // TODO 切换前后置相机
+            mStreamerPresenter.switchCamera();
         } else if (id == R.id.add_topic_container) {
             // TODO 跳转到添加话题页 暫時接的老版的話題方式
             mLiveTitleEt.requestFocus();
@@ -94,10 +96,17 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     protected void initContentView() {
         super.initContentView();
+        mRootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardUtils.hideKeyboardImmediately(getActivity());
+            }
+        });
         mTurnOverIv = $(R.id.turn_over);
         mCoverArea = $(R.id.cover_layout);
         mAddTopicContainer = $(R.id.add_topic_container);
         mBeautyView = $(R.id.beauty_view);
+        mBeautyView.setStreamerPresenter(mStreamerPresenter);
         mBeautyView.setBeautyCallBack(new BeautyView.BeautyCallBack() {
             @Override
             public void showMultiBeautyAnim() {
@@ -217,14 +226,18 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
+    public void setStreamerPresenter(StreamerPresenter streamerPresenter) {
+        mStreamerPresenter = streamerPresenter;
+    }
+
     public static void openFragment(
             BaseComponentSdkActivity fragmentActivity,
             int requestCode,
             FragmentDataListener listener,
-            MagicParamPresenter magicParamPresenter) {
+            StreamerPresenter streamerPresenter) {
         PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(fragmentActivity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
-//         fragment.setMagicParamPresenter(magicParamPresenter);
+        fragment.setStreamerPresenter(streamerPresenter);
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }

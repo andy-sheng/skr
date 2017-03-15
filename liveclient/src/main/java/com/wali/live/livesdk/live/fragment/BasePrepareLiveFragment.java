@@ -82,9 +82,10 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     @CallSuper
     @Override
     public void onClick(View v) {
-        if (isFastDoubleClick()) {
+        if (isFastDoubleClick() || getActivity() == null) {
             return;
         }
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
         int i = v.getId();
         if (i == R.id.begin_btn) {
             onBeginBtnClick();

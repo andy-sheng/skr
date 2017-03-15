@@ -5,33 +5,61 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.base.global.GlobalData;
 import com.mi.live.engine.base.GalileoConstants;
 import com.wali.live.livesdk.R;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
+import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
+import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;
 
 /**
  * Created by zyh on 2017/3/7.
  */
 
-public class BeautyView extends RelativeLayout implements View.OnClickListener {
-    public static final int FACE_BEAUTY_DISABLED = 0;
-    public static final int FACE_BEAUTY_MULTI_LEVEL = 1;
-    public static final int FACE_BEAUTY_DEFAULT = 2;
+public class BeautyView extends RelativeLayout {
 
-    private int mBeautySupportCode = FACE_BEAUTY_MULTI_LEVEL;
-    private int mBeautyLevel = GalileoConstants.BEAUTY_LEVEL_HIGHEST;
     private ImageView mBeautyIv;
-    private View mMultiBeautyContainer;
-    private boolean mShowBeautyContainer = false;
+    private ViewGroup mMultiBeautyContainer;
 
+    private boolean mShowBeautyContainer = false;
     private BeautyCallBack mBeautyCallBack;
-    private View mPreSelectView;
+    private MagicParamPresenter.MagicParams mMagicParams;
+    private StreamerPresenter mStreamerPresenter;
+
+    private final SingleChooser mSingleChooser = new SingleChooser(
+            new SingleChooser.IChooserListener() {
+                @Override
+                public void onItemSelected(View view) {
+                    int i = view.getId();
+                    int level;
+                    if (i == R.id.high_tv) {
+                        level = 3;
+                    } else if (i == R.id.middle_tv) {
+                        level = 2;
+                    } else if (i == R.id.low_tv) {
+                        level = 1;
+                    } else {
+                        level = 0;
+                    }
+                    updateBeautyIv(mMagicParams.getBeautyLevel(level));
+                    showBeautyLevelContainer(false);
+                }
+            });
 
     public void setBeautyCallBack(BeautyCallBack beautyCallBack) {
         mBeautyCallBack = beautyCallBack;
+    }
+
+    public void setStreamerPresenter(StreamerPresenter presenter) {
+        mStreamerPresenter = presenter;
+        if (mStreamerPresenter != null) {
+            beautyIndexSelectInMulti(mStreamerPresenter.getBeautyLevel());
+        }
     }
 
     public BeautyView(Context context) {
@@ -51,73 +79,62 @@ public class BeautyView extends RelativeLayout implements View.OnClickListener {
 
     private void init(Context context) {
         inflate(context, R.layout.beauty_view, this);
+        initData();
         initView();
+    }
+
+    private void initData() {
+        mMagicParams = new MagicParamPresenter.MagicParams();
+        mMagicParams.loadParams(GlobalData.app());
     }
 
     private void initView() {
         mBeautyIv = (ImageView) findViewById(R.id.beauty_btn);
         mBeautyIv.setSelected(true);
-        mBeautyIv.setOnClickListener(this);
-        mMultiBeautyContainer = findViewById(R.id.beauty_level_container);
+        mBeautyIv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBeautyLevelContainer(!mShowBeautyContainer);
+            }
+        });
 
-        findViewById(R.id.high_tv).setOnClickListener(this);
-        findViewById(R.id.middle_tv).setOnClickListener(this);
-        findViewById(R.id.low_tv).setOnClickListener(this);
-        findViewById(R.id.close_tv).setOnClickListener(this);
+        if (!mMagicParams.isBeauty()) {
+            mBeautyIv.setVisibility(View.INVISIBLE);
+        } else if (mMagicParams.isMultiBeauty()) {
+            mMultiBeautyContainer = (ViewGroup) findViewById(R.id.beauty_level_container);
+        }
     }
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.beauty_btn) {
-            showBeautyLevelContainer(!mShowBeautyContainer);
-        } else {
-            int level = GalileoConstants.BEAUTY_LEVEL_HIGHEST;
-            if (mPreSelectView != null) {
-                if (mPreSelectView.equals(v)) {
-                    return;
-                }
-                mPreSelectView.setSelected(false);
-            }
-            mPreSelectView = v;
-            mPreSelectView.setSelected(true);
-            if (i == R.id.high_tv) {
-                level = GalileoConstants.BEAUTY_LEVEL_HIGHEST;
-            } else if (i == R.id.middle_tv) {
-                level = GalileoConstants.BEAUTY_LEVEL_MIDDLE;
-            } else if (i == R.id.low_tv) {
-                level = GalileoConstants.BEAUTY_LEVEL_LOW;
-            } else if (i == R.id.close_tv) {
-                level = GalileoConstants.BEAUTY_LEVEL_OFF;
+    private void beautyIndexSelectInMulti(int beautyLevel) {
+        if (mMultiBeautyContainer != null) {
+            int selectId;
+            if (mMagicParams.getBeautyLevel(3) == beautyLevel) {
+                selectId = R.id.high_tv;
+            } else if (mMagicParams.getBeautyLevel(2) == beautyLevel) {
+                selectId = R.id.middle_tv;
+            } else if (mMagicParams.getBeautyLevel(1) == beautyLevel) {
+                selectId = R.id.low_tv;
             } else {
-                //默认level值
+                selectId = R.id.close_tv;
             }
-            if (level != mBeautyLevel) {
-                updateBeautyIv(level);
-            }
-            showBeautyLevelContainer(false);
+            mSingleChooser.setup(mMultiBeautyContainer, selectId);
         }
     }
 
     private void showBeautyLevelContainer(boolean showBeautyContainer) {
-        switch (mBeautySupportCode) {
-            case FACE_BEAUTY_MULTI_LEVEL:
-                mShowBeautyContainer = showBeautyContainer;
-                if (showBeautyContainer) {
-                    if (mMultiBeautyContainer.getVisibility() != View.VISIBLE) {
-                        mMultiBeautyContainer.setVisibility(View.VISIBLE);
-                    }
-                    showBeautyAnim();
-                } else {
-                    hideBeautyAnim();
+        if (mMultiBeautyContainer != null) { //多级美颜
+            mShowBeautyContainer = showBeautyContainer;
+            if (showBeautyContainer) {
+                if (mMultiBeautyContainer.getVisibility() != View.VISIBLE) {
+                    mMultiBeautyContainer.setVisibility(View.VISIBLE);
                 }
-                break;
-            case FACE_BEAUTY_DEFAULT:
-                mBeautyIv.setSelected(!mBeautyIv.isSelected());
-                updateBeautyIv(mBeautyIv.isSelected() ? mBeautyLevel : GalileoConstants.BEAUTY_LEVEL_OFF);
-                break;
-            default:
-                break;
+                showBeautyAnim();
+            } else {
+                hideBeautyAnim();
+            }
+        } else { //单级美颜
+            mBeautyIv.setSelected(!mBeautyIv.isSelected());
+            updateBeautyIv(mBeautyIv.isSelected() ? mMagicParams.getBeautyLevel(1) : mMagicParams.getBeautyLevel(0));
         }
     }
 
@@ -216,9 +233,10 @@ public class BeautyView extends RelativeLayout implements View.OnClickListener {
     }
 
     private void updateBeautyIv(int beautyLevel) {
-        mBeautyLevel = beautyLevel;
         mBeautyIv.setSelected(beautyLevel != GalileoConstants.BEAUTY_LEVEL_OFF);
-//        TODO 通知 Livesdk的引擎更新美颜级别
+        if (mStreamerPresenter != null) {
+            mStreamerPresenter.setBeautyLevel(beautyLevel);
+        }
     }
 
     public interface BeautyCallBack {

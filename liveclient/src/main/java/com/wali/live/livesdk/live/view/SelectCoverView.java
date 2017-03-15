@@ -15,6 +15,7 @@ import com.base.dialog.MyAlertDialog;
 import com.base.fragment.MyRxFragment;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -117,6 +118,7 @@ public class SelectCoverView extends RelativeLayout implements View.OnClickListe
         if (mFragment == null || mFragment.isDetached()) {
             return;
         }
+        KeyboardUtils.hideKeyboardImmediately(mFragment.getActivity());
         MyAlertDialog.Builder builder = new MyAlertDialog.Builder(mFragment.getContext());
         builder.setItems(getResources().getStringArray(R.array.cover_item), new DialogInterface.OnClickListener() {
             @Override
