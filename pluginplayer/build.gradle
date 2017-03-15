@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile presentationDependencies.androidAppCompat
+    provided presentationDependencies.androidAppCompat
     debugCompile project(path: ':enginebase', configuration: "playerpluginDebug")
     releaseCompile project(path: ':enginebase', configuration: "playerpluginRelease")
 }
