@@ -64,10 +64,10 @@ public abstract class BaseContainerPresenter<VIEW_GROUP extends ViewGroup>
 
     @CallSuper
     public void onOrientation(boolean isLandscape) {
-        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         if (mIsLandscape == isLandscape) {
             return;
         }
+        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         mIsLandscape = isLandscape;
         if (mCurrPanel != null) {
             mCurrPanel.onOrientation(mIsLandscape);

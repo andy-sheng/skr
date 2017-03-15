@@ -118,8 +118,7 @@ public class FloatAtmospherePanel extends BaseBottomPanel<MoveViewGroup, Relativ
     }
 
     @Override
-    public void onOrientation(boolean isLandscape) {
-        super.onOrientation(isLandscape);
+    protected void orientSelf() {
         if (mContentView.getMeasuredHeight() == 0) {
             mContentView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
@@ -131,8 +130,8 @@ public class FloatAtmospherePanel extends BaseBottomPanel<MoveViewGroup, Relativ
             mPanelWidth = Math.min(mContentView.getMeasuredWidth(), mContentView.getMeasuredHeight());
             mPanelHeight = Math.max(mContentView.getMeasuredWidth(), mContentView.getMeasuredHeight());
         }
-        mContentView.resetMoveRound(isLandscape);
-        if (isLandscape) {
+        mContentView.resetMoveRound(mIsLandscape);
+        if (mIsLandscape) {
             mContentView.setOrientation(LinearLayout.HORIZONTAL);
             layoutParams.leftMargin = mScreenHeight - mPanelWidth - mPanelHeight;
             layoutParams.topMargin = mScreenWidth - mPanelWidth;

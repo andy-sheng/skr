@@ -36,10 +36,10 @@ public class FloatContainerPresenter extends ComponentPresenter<RelativeLayout> 
     }
 
     public void onOrientation(boolean isLandscape) {
-        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         if (mIsLandscape == isLandscape) {
             return;
         }
+        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
         mIsLandscape = isLandscape;
         if (mAtmospherePanel != null && mAtmospherePanel.isShow()) {
             mAtmospherePanel.onOrientation(isLandscape);

@@ -102,10 +102,22 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
         }
     }
 
-    @CallSuper
-    public void onOrientation(boolean isLandscape) {
-        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
-        mIsLandscape = isLandscape;
+    protected void orientSelf() {
+        ViewGroup.LayoutParams layoutParams = mContentView.getLayoutParams();
+        if (mIsLandscape) {
+            layoutParams.width = PANEL_WIDTH_LANDSCAPE;
+        } else {
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        mContentView.setLayoutParams(layoutParams);
+    }
+
+    public final void onOrientation(boolean isLandscape) {
+        if (mIsLandscape != isLandscape) {
+            MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
+            mIsLandscape = isLandscape;
+            orientSelf();
+        }
     }
 
     private void addSelfToParent() {

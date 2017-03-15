@@ -170,19 +170,6 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
         }
     }
 
-    @Override
-    public void onOrientation(boolean isLandscape) {
-        super.onOrientation(isLandscape);
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-        if (mIsLandscape) {
-            layoutParams.width = PANEL_WIDTH_LANDSCAPE;
-        } else {
-            layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-        }
-        mContentView.setLayoutParams(layoutParams);
-    }
-
     private void updateSwitchCamera() {
         MyLog.w(TAG, "updateSwitchCamera");
         StatisticsWorker.getsInstance().sendCommand(

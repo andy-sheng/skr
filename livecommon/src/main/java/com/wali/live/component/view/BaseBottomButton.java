@@ -34,7 +34,8 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
     protected final List<View> mBottomBtnSetLand = new ArrayList<>();
 
     protected boolean mIsLandscape = false;
-    protected @Nullable PRESENTER mPresenter;
+    @Nullable
+    protected PRESENTER mPresenter;
 
     protected abstract String getTAG();
 
@@ -69,21 +70,6 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         mContentContainer.setPadding(BTN_MARGIN, BTN_MARGIN, BTN_MARGIN, BTN_MARGIN);
     }
 
-    protected void orientSelf(boolean isLandscape) {
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mContentContainer.getLayoutParams();
-        if (isLandscape) {
-            lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        } else {
-            lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        }
-    }
-
     private void resetChildLayout(RelativeLayout.LayoutParams lp) {
         lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
         lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
@@ -110,8 +96,8 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         view.setLayoutParams(layoutParams);
     }
 
-    protected void orientChild(boolean isLandscape) {
-        if (isLandscape) {
+    protected final void orientChild() {
+        if (mIsLandscape) {
             int guardId = 0;
             for (View view : mBottomBtnSetLand) {
                 alignViewToGuard(view, guardId, RelativeLayout.ABOVE, RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -131,10 +117,24 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         }
     }
 
-    public void onOrientation(boolean isLandscape) {
-        mIsLandscape = isLandscape;
-        orientSelf(mIsLandscape);
-        orientChild(mIsLandscape);
+    protected void orientSelf() {
+        RelativeLayout.LayoutParams lp =
+                (RelativeLayout.LayoutParams) mContentContainer.getLayoutParams();
+        if (mIsLandscape) {
+            lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        } else {
+            lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+    }
+
+    public final void onOrientation(boolean isLandscape) {
+        if (mIsLandscape != isLandscape) {
+            mIsLandscape = isLandscape;
+            orientSelf();
+            orientChild();
+        }
     }
 
 }

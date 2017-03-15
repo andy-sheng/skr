@@ -62,7 +62,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mBottomBtnSetLand.add(mSettingBtn);
         mBottomBtnSetLand.add(mMagicBtn);
 
-        orientChild(mIsLandscape);
+        orientChild();
     }
 
     @Override

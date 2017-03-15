@@ -71,20 +71,6 @@ public class GameSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
     }
 
     @Override
-    public void onOrientation(boolean isLandscape) {
-        super.onOrientation(isLandscape);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        if (mIsLandscape) {
-            layoutParams.width = PANEL_WIDTH_LANDSCAPE;
-        } else {
-            layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-        }
-    }
-
-    @Override
     protected void onAnimationStart() {
         super.onAnimationStart();
         if (mIsShow) {
