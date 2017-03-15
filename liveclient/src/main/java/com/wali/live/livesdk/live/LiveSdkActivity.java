@@ -12,11 +12,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
 import com.base.activity.BaseSdkActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
@@ -427,6 +429,20 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         }
     }
 
+    private void orientCloseBtn(boolean isLandscape) {
+        if (mCloseBtn == null) {
+            return;
+        }
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
+                mCloseBtn.getLayoutParams();
+        if (!isLandscape && BaseActivity.isProfileMode()) {
+            layoutParams.topMargin = layoutParams.rightMargin + BaseActivity.getStatusBarHeight();
+        } else {
+            layoutParams.topMargin = layoutParams.rightMargin;
+        }
+        mCloseBtn.setLayoutParams(layoutParams);
+    }
+
     protected void orientLandscape() {
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(true);
@@ -440,6 +456,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         if (mGameLivePresenter != null) {
             mGameLivePresenter.onOrientation(true);
         }
+        orientCloseBtn(true);
     }
 
     protected void orientPortrait() {
@@ -455,6 +472,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         if (mGameLivePresenter != null) {
             mGameLivePresenter.onOrientation(false);
         }
+        orientCloseBtn(false);
     }
 
     @Override
@@ -684,6 +702,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                                 TIMES, "1");
                     }
                 });
+        orientCloseBtn(isDisplayLandscape());
 
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPushProcessor(mGiftPresenter);
