@@ -108,6 +108,7 @@
         android:id="@+id/bottom_panel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/transparent"
         android:visibility="gone" />
 
     <!--输入框-->

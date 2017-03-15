@@ -72,7 +72,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
         // add view to activity
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addViewUnderAnchor(view, layoutParams, R.id.live_top_info_view);
+        addViewUnderAnchor(view, layoutParams, $(R.id.live_top_info_view));
     }
 
     @Override

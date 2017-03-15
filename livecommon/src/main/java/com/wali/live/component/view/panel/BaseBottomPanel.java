@@ -163,14 +163,13 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     protected void onAnimationValue(
             @FloatRange(from = 0.0, to = 1.0) float value) {
         mContentView.setAlpha(value);
-        // TODO setTranslation会有问题，后续处理 YangLi
-//        if (mIsLandscape) {
-//            mContentView.setTranslationX(mContentView.getMeasuredWidth() * (1.0f - value));
-//            mContentView.setTranslationY(0);
-//        } else {
-//            mContentView.setTranslationX(0);
-//            mContentView.setTranslationY(mContentView.getMeasuredHeight() * (1.0f - value));
-//        }
+        if (mIsLandscape) {
+            mContentView.setTranslationX(mContentView.getWidth() * (1.0f - value));
+            mContentView.setTranslationY(0);
+        } else {
+            mContentView.setTranslationX(0);
+            mContentView.setTranslationY(mContentView.getHeight() * (1.0f - value));
+        }
     }
 
     @CallSuper
