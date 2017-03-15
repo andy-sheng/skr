@@ -44,7 +44,7 @@ dependencies {
     compile files('libs/player.jar')
     gradle.startParameter.getTaskNames().each { task ->
         if (task.contains("pluginplayer")) {
-            compile project(':playerbase')
+            provided project(':playerbase')
         } else {
             if (flavorType == "live") {
                 compile files('libs/conferencemanager.jar')
