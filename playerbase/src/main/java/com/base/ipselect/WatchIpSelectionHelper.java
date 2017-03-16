@@ -1,7 +1,6 @@
 package com.base.ipselect;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -17,9 +16,7 @@ public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
 
     private boolean mIsDropRate = false;
 
-    public WatchIpSelectionHelper(
-            @NonNull Context context,
-            IDnsStatusListener dnsStatusListener) {
+    public WatchIpSelectionHelper(Context context, IDnsStatusListener dnsStatusListener) {
         super(context, dnsStatusListener);
     }
 
@@ -55,10 +52,7 @@ public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
     }
 
     @Override
-    public String generateUrlForIp(
-            @NonNull String originalStreamUrl,
-            @NonNull String host,
-            String selectedIp) {
+    public String generateUrlForIp(String originalStreamUrl, String host, String selectedIp) {
         String url = originalStreamUrl;
         int start = originalStreamUrl.indexOf(host);
         if (start != -1) {

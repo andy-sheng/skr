@@ -1,6 +1,5 @@
 package com.base.ipselect;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
@@ -115,9 +114,7 @@ public enum PreDnsManager {
     }
 
     // Local-Dns解析，拉取到IP列表之后执行跑马再返回
-    public static
-    @NonNull
-    List<String> getLocalDnsIpSet(String host) {
+    public static List<String> getLocalDnsIpSet(String host) {
         MyLog.w(TAG, "getLocalDnsIpSet domain=" + host);
         List<String> ipList = new ArrayList<>();
         try {
@@ -138,9 +135,7 @@ public enum PreDnsManager {
     }
 
     // Http-Dns解析，拉取到IP列表之后执行跑马再返回
-    public static
-    @NonNull
-    List<String> getHttpDnsIpSet(String host) {
+    public static List<String> getHttpDnsIpSet(String host) {
         MyLog.w(TAG, "getHttpDnsIpSet domain=" + host);
         List<String> ipList = new ArrayList<>();
         try {
@@ -216,7 +211,7 @@ public enum PreDnsManager {
         public final boolean needSetDomain;
         public final List<String> portList;
 
-        public DomainInfo(boolean needSetHost, @NonNull List<String> portList) {
+        public DomainInfo(boolean needSetHost, List<String> portList) {
             this.needSetDomain = needSetHost;
             this.portList = portList;
         }
@@ -231,7 +226,7 @@ public enum PreDnsManager {
             httpIpSet = new ArrayList<>();
         }
 
-        public IpInfo(@NonNull List<String> localIpSet, @NonNull List<String> httpIpSet) {
+        public IpInfo(List<String> localIpSet, List<String> httpIpSet) {
             this.localIpSet = localIpSet;
             this.httpIpSet = httpIpSet;
         }
@@ -252,14 +247,14 @@ public enum PreDnsManager {
             return ipList;
         }
 
-        private String formatIpV6(@NonNull String ip) {
+        private String formatIpV6(String ip) {
             if (ip.contains(":") && ip.indexOf(":") != ip.lastIndexOf(":") && !ip.startsWith("[")) {
                 return "[" + ip + "]"; // IpV6需加[]
             }
             return ip;
         }
 
-        private void addPortInfo(@NonNull List<String> ipList, List<String> portList) {
+        private void addPortInfo(List<String> ipList, List<String> portList) {
             List<String> tmpIpList = new ArrayList<>(ipList);
             ipList.clear();
             for (String ip : tmpIpList) {
