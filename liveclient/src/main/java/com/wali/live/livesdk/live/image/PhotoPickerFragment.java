@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
@@ -27,7 +29,6 @@ import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
 import com.base.activity.BaseRotateSdkActivity;
-import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.MyRxFragment;
@@ -180,6 +181,8 @@ public class PhotoPickerFragment extends MyRxFragment implements OnClickListener
         protected void processMessage(Message msg) {
         }
     };
+
+    private Handler mUiHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public int getRequestCode() {
@@ -455,7 +458,7 @@ public class PhotoPickerFragment extends MyRxFragment implements OnClickListener
                                 if (mFragmentAnimationEnd) {
                                     mPhotoAdapter.setPhotoList(result);
                                 } else {
-                                    mCustomHandlerThread.postDelayed(new Runnable() {
+                                    mUiHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             mPhotoAdapter.setPhotoList(result);
@@ -526,7 +529,7 @@ public class PhotoPickerFragment extends MyRxFragment implements OnClickListener
                                 if (mFragmentAnimationEnd) {
                                     mFileAdapter.setFolderList(result);
                                 } else {
-                                    mCustomHandlerThread.postDelayed(new Runnable() {
+                                    mUiHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             mFileAdapter.setFolderList(result);
@@ -736,6 +739,7 @@ public class PhotoPickerFragment extends MyRxFragment implements OnClickListener
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.destroy();
         }
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.wali.live.livesdk.live.view;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -26,30 +27,10 @@ public class BeautyView extends RelativeLayout {
     private ImageView mBeautyIv;
     private ViewGroup mMultiBeautyContainer;
 
-    private boolean mShowBeautyContainer = false;
     private BeautyCallBack mBeautyCallBack;
     private MagicParamPresenter.MagicParams mMagicParams;
     private StreamerPresenter mStreamerPresenter;
-
-    private final SingleChooser mSingleChooser = new SingleChooser(
-            new SingleChooser.IChooserListener() {
-                @Override
-                public void onItemSelected(View view) {
-                    int i = view.getId();
-                    int level;
-                    if (i == R.id.high_tv) {
-                        level = 3;
-                    } else if (i == R.id.middle_tv) {
-                        level = 2;
-                    } else if (i == R.id.low_tv) {
-                        level = 1;
-                    } else {
-                        level = 0;
-                    }
-                    updateBeautyIv(mMagicParams.getBeautyLevel(level));
-                    showBeautyLevelContainer(false);
-                }
-            });
+    private SingleChooser mSingleChooser;
 
     public void setBeautyCallBack(BeautyCallBack beautyCallBack) {
         mBeautyCallBack = beautyCallBack;
@@ -57,19 +38,33 @@ public class BeautyView extends RelativeLayout {
 
     public void setStreamerPresenter(StreamerPresenter presenter) {
         mStreamerPresenter = presenter;
-        if (mStreamerPresenter != null) {
-            beautyIndexSelectInMulti(mStreamerPresenter.getBeautyLevel());
+        if (mStreamerPresenter != null && mSingleChooser != null) {
+            int index = mMagicParams.findBeautyPos(mStreamerPresenter.getBeautyLevel());
+            switch (index) {
+                case 3:
+                    mSingleChooser.setSelection(R.id.high_tv);
+                    break;
+                case 2:
+                    mSingleChooser.setSelection(R.id.middle_tv);
+                    break;
+                case 1:
+                    mSingleChooser.setSelection(R.id.low_tv);
+                    break;
+                case 0:
+                    mSingleChooser.setSelection(R.id.close_tv);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     public BeautyView(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public BeautyView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public BeautyView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -91,50 +86,49 @@ public class BeautyView extends RelativeLayout {
     private void initView() {
         mBeautyIv = (ImageView) findViewById(R.id.beauty_btn);
         mBeautyIv.setSelected(true);
-        mBeautyIv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBeautyLevelContainer(!mShowBeautyContainer);
-            }
-        });
 
         if (!mMagicParams.isBeauty()) {
             mBeautyIv.setVisibility(View.INVISIBLE);
         } else if (mMagicParams.isMultiBeauty()) {
-            mMultiBeautyContainer = (ViewGroup) findViewById(R.id.beauty_level_container);
-        }
-    }
-
-    private void beautyIndexSelectInMulti(int beautyLevel) {
-        if (mMultiBeautyContainer != null) {
-            int selectId;
-            if (mMagicParams.getBeautyLevel(3) == beautyLevel) {
-                selectId = R.id.high_tv;
-            } else if (mMagicParams.getBeautyLevel(2) == beautyLevel) {
-                selectId = R.id.middle_tv;
-            } else if (mMagicParams.getBeautyLevel(1) == beautyLevel) {
-                selectId = R.id.low_tv;
-            } else {
-                selectId = R.id.close_tv;
-            }
-            mSingleChooser.setup(mMultiBeautyContainer, selectId);
-        }
-    }
-
-    private void showBeautyLevelContainer(boolean showBeautyContainer) {
-        if (mMultiBeautyContainer != null) { //多级美颜
-            mShowBeautyContainer = showBeautyContainer;
-            if (showBeautyContainer) {
-                if (mMultiBeautyContainer.getVisibility() != View.VISIBLE) {
-                    mMultiBeautyContainer.setVisibility(View.VISIBLE);
+            mBeautyIv.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //多級美顏
+                    if (mMultiBeautyContainer.getVisibility() != View.VISIBLE) {
+                        showBeautyAnim();
+                    } else {
+                        hideBeautyAnim();
+                    }
                 }
-                showBeautyAnim();
-            } else {
-                hideBeautyAnim();
-            }
-        } else { //单级美颜
-            mBeautyIv.setSelected(!mBeautyIv.isSelected());
-            updateBeautyIv(mBeautyIv.isSelected() ? mMagicParams.getBeautyLevel(1) : mMagicParams.getBeautyLevel(0));
+            });
+            mMultiBeautyContainer = (ViewGroup) findViewById(R.id.beauty_level_container);
+            mSingleChooser = new SingleChooser(
+                    new SingleChooser.IChooserListener() {
+                        @Override
+                        public void onItemSelected(View view) {
+                            int i = view.getId();
+                            if (i == R.id.high_tv) {
+                                updateBeautyIv(mMagicParams.getBeautyLevel(3));
+                            } else if (i == R.id.middle_tv) {
+                                updateBeautyIv(mMagicParams.getBeautyLevel(2));
+                            } else if (i == R.id.low_tv) {
+                                updateBeautyIv(mMagicParams.getBeautyLevel(1));
+                            } else if (i == R.id.close_tv) {
+                                updateBeautyIv(mMagicParams.getBeautyLevel(0));
+                            }
+                            hideBeautyAnim();
+                        }
+                    });
+            mSingleChooser.setup(mMultiBeautyContainer, 0);
+        } else {
+            mBeautyIv.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean isSelect = !view.isSelected();
+                    view.setSelected(isSelect);
+                    updateBeautyIv(mMagicParams.getBeautyLevel(isSelect ? 1 : 0));
+                }
+            });
         }
     }
 
@@ -149,27 +143,14 @@ public class BeautyView extends RelativeLayout {
             mShowAnimation = ValueAnimator.ofFloat(0.0f, 1.0f);
             mShowAnimation.setDuration(300);
             mShowAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            mShowAnimation.addListener(new Animator.AnimatorListener() {
+            mShowAnimation.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
                     if (mBeautyCallBack != null) {
                         mBeautyCallBack.showMultiBeautyAnim();
                     }
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
+                    mMultiBeautyContainer.setVisibility(View.VISIBLE);
                 }
             });
             mShowAnimation.addUpdateListener(
@@ -195,27 +176,14 @@ public class BeautyView extends RelativeLayout {
             mHideAnimation = ValueAnimator.ofFloat(1.0f, 0.0f);
             mHideAnimation.setDuration(300);
             mHideAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            mHideAnimation.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
+            mHideAnimation.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
                     if (mBeautyCallBack != null) {
                         mBeautyCallBack.hideMultiBeautyAnim();
                     }
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
+                    mMultiBeautyContainer.setVisibility(View.GONE);
                 }
             });
             mHideAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

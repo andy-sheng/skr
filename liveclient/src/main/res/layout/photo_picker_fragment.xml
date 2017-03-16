@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -8,7 +8,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"/>
 
     <LinearLayout
         android:id="@+id/viewpager_container"
@@ -25,13 +25,13 @@
             android:id="@+id/photo_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_130"
-            android:background="@color/color_fcfcfc" />
+            android:background="@color/color_fcfcfc"/>
 
         <View
             android:id="@+id/horizontal_line"
             android:layout_width="match_parent"
             android:layout_height="0.33dp"
-            android:background="@color/color_e5e5e5" />
+            android:background="@color/color_e5e5e5"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/section_pager"
@@ -41,7 +41,7 @@
             android:fadingEdge="none"
             android:fadingEdgeLength="0dp"
             android:overScrollMode="never"
-            android:requiresFadingEdge="none" />
+            android:requiresFadingEdge="none"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -61,25 +61,25 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="@dimen/margin_30"
-            android:background="@color/colorPrimary"
+            android:background="@color/color_white_trans_80"
             android:drawableLeft="@drawable/topbar_icon_all_back_bg"
             android:gravity="left|center_vertical"
             android:textColor="@color/color_black_tran_70"
-            android:textSize="@dimen/text_size_44" />
+            android:textSize="@dimen/text_size_44"/>
 
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
             android:layout_below="@+id/folder_name"
-            android:background="@color/color_line_e0dfde" />
+            android:background="@color/color_line_e0dfde"/>
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/line" />
+            android:layout_below="@+id/line"/>
 
     </RelativeLayout>
 
@@ -93,7 +93,7 @@
         android:gravity="center"
         android:text="@string/empty_tips"
         android:textColor="@color/color_black_trans_40"
-        android:textSize="13.33dp" />
+        android:textSize="13.33dp"/>
 
 </RelativeLayout>
 
