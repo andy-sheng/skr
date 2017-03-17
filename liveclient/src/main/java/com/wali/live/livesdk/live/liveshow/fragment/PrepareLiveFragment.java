@@ -2,6 +2,7 @@ package com.wali.live.livesdk.live.liveshow.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.text.TextUtils;
 import android.view.View;
@@ -201,6 +202,12 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
+    protected void putCommonData(Bundle bundle) {
+        super.putCommonData(bundle);
+        bundle.putString(EXTRA_LIVE_COVER_URL, mCoverView.getCoverUrl());
+    }
+
+    @Override
     protected void openLive() {
         if (mRoomTag != null) {
             PreferenceUtils.setSettingString(
@@ -223,6 +230,14 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mCoverView != null) {
+            mCoverView.onDestroy();
         }
     }
 

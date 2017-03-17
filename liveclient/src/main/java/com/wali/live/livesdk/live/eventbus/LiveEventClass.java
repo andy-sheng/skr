@@ -88,6 +88,4 @@ public class LiveEventClass {
             return TAG + " isUpdated=" + isUpdated + " uuid=" + uuid + " roomId=" + roomId + " " + msgRule.toString();
         }
     }
-
-
 }

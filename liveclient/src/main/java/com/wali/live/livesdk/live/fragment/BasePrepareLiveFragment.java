@@ -73,7 +73,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected ViewGroup mTagNameContainer;
     protected EditText mLiveTitleEt;
     protected ImageView mCloseBtn;
-    protected String mCoverUrl = "";
 
     protected RoomTag mRoomTag;
     protected RoomTagPresenter mRoomTagPresenter;
@@ -244,7 +243,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected void putCommonData(Bundle bundle) {
         // 产品要求支持多个分享
         bundle.putString(EXTRA_LIVE_TITLE, mLiveTitleEt.getText().toString().trim());
-        bundle.putString(EXTRA_LIVE_COVER_URL, mCoverUrl);
         // 添加标签
         if (mRoomTag != null) {
             bundle.putSerializable(EXTRA_LIVE_TAG_INFO, mRoomTag);

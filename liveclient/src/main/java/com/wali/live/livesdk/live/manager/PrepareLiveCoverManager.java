@@ -202,8 +202,7 @@ public class PrepareLiveCoverManager {
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         //TODO 通知LiveSdkActivity是方向机资源
-//                        EventController.onActionCamera(CameraEvent.EVENT_TYPE_PAUSE);
-
+//                        EventBus.getDefault().post(new LiveEventClass.CameraEvent(LiveEventClass.CameraEvent.EVENT_TYPE_PAUSE));
                         subscriber.onNext(null);
                         subscriber.onCompleted();
                     }
