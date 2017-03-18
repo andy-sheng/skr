@@ -109,6 +109,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             public <T extends View> T getRealView() {
                 return (T) mContentContainer;
             }
+
+            @Override
+            public void updateMuteBtn(boolean isMute) {
+                mMuteBtn.setSelected(isMute);
+            }
         }
         return new ComponentView();
     }
@@ -131,5 +136,10 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
+        /**
+         * 更新禁音按钮状态
+         */
+        void updateMuteBtn(boolean isMute);
+
     }
 }

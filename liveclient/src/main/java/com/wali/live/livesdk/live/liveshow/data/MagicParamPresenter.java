@@ -62,7 +62,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
         }
     }
 
-    private void syncMagicParams() {
+    public void syncMagicParams() {
         if (mFaceBeautySub != null && !mFaceBeautySub.isUnsubscribed()) {
             return;
         }

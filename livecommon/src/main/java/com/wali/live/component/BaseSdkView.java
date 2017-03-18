@@ -29,12 +29,11 @@ import java.util.List;
 public abstract class BaseSdkView<T extends ComponentController> {
     private static final String TAG = "BaseSdkView";
 
-    protected
     @NonNull
-    Activity mActivity;
-    protected
+    protected Activity mActivity;
     @NonNull
-    T mComponentController;
+    protected T mComponentController;
+
     protected final List<IComponentView> mComponentViewSet = new ArrayList<>();
     protected final List<ComponentPresenter> mComponentPresenterSet = new ArrayList<>();
 

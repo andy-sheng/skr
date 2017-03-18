@@ -209,11 +209,7 @@ public class LiveMagicPanel extends BaseBottomPanel<LinearLayout, RelativeLayout
 
         @Override
         protected int getLayoutResId() {
-            if (mIsMultiBeauty) {
-                return R.layout.single_beauty_panel;
-            } else {
-                return R.layout.multi_beauty_panel;
-            }
+            return mIsMultiBeauty ? R.layout.multi_beauty_panel : R.layout.single_beauty_panel;
         }
 
         @Override

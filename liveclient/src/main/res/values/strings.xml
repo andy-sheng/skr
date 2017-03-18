@@ -139,4 +139,6 @@
     <string name="photo_lib_title">%d selected</string>
     <string name="unknown_error">Unknown error</string>
     <string name="empty_tips">Empty</string>
+
+    <string name="camera_occupy">Camera is busy</string>
 </resources>

@@ -152,6 +152,7 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
             mFlashLightBtn.setSelected(mPresenter.isFlashLight());
             mFlashLightBtn.setEnabled(mPresenter.isBackCamera());
             mChooseHifi.setSelected(mPresenter.isHifi());
+            mVolumeAdjuster.setVolume(mPresenter.getVoiceVolume());
             switch (mPresenter.getReverb()) {
                 case GalileoConstants.TYPE_RECORDING_STUDIO:
                     mSingleChooser.setSelection(R.id.recording_studio);

@@ -27,6 +27,7 @@ public class BottomButtonPresenter extends
         super(componentController);
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(LiveComponentController.MSG_ON_ACTIVITY_RESUMED);
         mGameLivePresenter = gameLivePresenter;
     }
 
@@ -67,6 +68,12 @@ public class BottomButtonPresenter extends
                 case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
                     mView.onOrientation(true);
                     return true;
+                case LiveComponentController.MSG_ON_ACTIVITY_RESUMED:
+                    if (mGameLivePresenter != null) {
+                        mView.updateMuteBtn(mGameLivePresenter.isMuteMic());
+                        return true;
+                    }
+                    break;
                 default:
                     break;
             }

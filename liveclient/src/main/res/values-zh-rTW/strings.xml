@@ -135,4 +135,6 @@
     <string name="photo">照片</string>
     <string name="empty_tips">頁面暫時為空</string>
     <string name="add_photo_pick_title">選擇圖片</string>
+
+    <string name="camera_occupy">相機使用中</string>
 </resources>

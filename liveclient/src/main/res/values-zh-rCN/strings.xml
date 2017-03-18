@@ -142,4 +142,6 @@
     <string name="upload_failed">上传失败！</string>
     <string name="uploading">正在上传图片....</string>
 
+
+    <string name="camera_occupy">摄像头被占用</string>
 </resources>

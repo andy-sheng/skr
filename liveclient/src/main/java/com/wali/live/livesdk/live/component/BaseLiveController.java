@@ -1,15 +1,14 @@
 package com.wali.live.livesdk.live.component;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import android.content.Intent;
+import android.view.View;
 
 import com.base.fragment.FragmentDataListener;
-import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.engine.streamer.IStreamer;
-import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
-import com.wali.live.livesdk.live.LiveSdkActivity;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
@@ -30,10 +29,32 @@ public abstract class BaseLiveController extends ComponentController {
     /**
      * 创建Streamer
      */
-    public abstract IStreamer createStreamer(int width, int height, boolean hasMicSource);
+    public abstract IStreamer createStreamer(View surfaceView, int clarity, Intent intent);
 
     /**
      * 创建SdkView
      */
     public abstract BaseSdkView createSdkView(Activity activity);
+
+    public void onStartLive() {
+    }
+
+    public void onStopLive() {
+    }
+
+    public void onResumeStream() {
+    }
+
+    public void onPauseStream() {
+    }
+
+    public void onActivityResumed() {
+    }
+
+    public void onActivityPaused() {
+    }
+
+    public void onActivityStopped() {
+    }
+
 }
