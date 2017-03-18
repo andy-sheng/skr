@@ -29,7 +29,7 @@ public abstract class BaseLiveController extends ComponentController {
     /**
      * 创建Streamer
      */
-    public abstract IStreamer createStreamer(View surfaceView, int clarity, Intent intent);
+    public abstract void createStreamer(View surfaceView, int clarity, Intent intent);
 
     /**
      * 创建SdkView

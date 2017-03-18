@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -211,6 +212,17 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
 
     public int getFilterIntensity() {
         return mFilterIntensity;
+    }
+
+    public void setDisplayPreview(View surfaceView) {
+        if (mStreamer != null) {
+            mStreamer.setDisplayPreview(surfaceView);
+            if (surfaceView != null) {
+                mStreamer.setVideoFilterIntensity(mFilterIntensity);
+                mStreamer.setVideoFilter(mFilter);
+                mStreamer.setBeautyLevel(mBeautyLevel);
+            }
+        }
     }
 
     public void setOriginalStreamUrl(List<LiveCommonProto.UpStreamUrl> originalStreamUrlList, String originalUdpStreamUrl) {

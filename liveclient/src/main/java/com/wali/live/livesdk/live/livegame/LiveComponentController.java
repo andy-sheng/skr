@@ -83,9 +83,10 @@ public class LiveComponentController extends BaseLiveController {
     }
 
     @Override
-    public IStreamer createStreamer(View surfaceView, int clarity, @NonNull Intent intent) {
+    public void createStreamer(View surfaceView, int clarity, @NonNull Intent intent) {
+        MyLog.w(TAG, "create streamer");
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
-        int width = 0, height = 0;
+        int width, height;
         switch (clarity) {
             case PrepareLiveFragment.LOW_CLARITY:
                 width = GalileoConstants.GAME_LOW_RESOLUTION_WIDTH;
@@ -110,7 +111,6 @@ public class LiveComponentController extends BaseLiveController {
         builder.setAutoAdjustBitrate(true);
         builder.setFrameRate(15);
         builder.setSampleAudioRateInHz(44100);
-        MyLog.w(TAG, "create streamer");
         IStreamer streamer = new GalileoStreamer(GlobalData.app(),
                 UserAccountManager.getInstance().getUuid(), width, height, false);
         streamer.setConfig(builder.build());
@@ -118,11 +118,11 @@ public class LiveComponentController extends BaseLiveController {
         if (!TextUtils.isEmpty(clientIp)) {
             streamer.setClientPublicIp(clientIp);
         }
+        mStreamerPresenter.setStreamer(streamer);
         mGameLivePresenter = new GameLivePresenter(streamer, mRoomChatMsgManager, mMyRoomData,
                 width, height, intent, mRoomChatMsgManager.toString());
         mRoomInfoPresenter = new RoomInfoPresenter(mGameLivePresenter);
         MyLog.w(TAG, "create streamer over");
-        return streamer;
     }
 
     @Override
@@ -182,7 +182,6 @@ public class LiveComponentController extends BaseLiveController {
             mRoomInfoPresenter.pause();
         }
     }
-
 
     @Override
     public void onActivityStopped() {

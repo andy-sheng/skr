@@ -84,7 +84,8 @@ public class LiveComponentController extends BaseLiveController {
     }
 
     @Override
-    public IStreamer createStreamer(@NonNull View surfaceView, int clarity, Intent intent) {
+    public void createStreamer(@NonNull View surfaceView, int clarity, Intent intent) {
+        MyLog.w(TAG, "create streamer");
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
         String videoRate = PreferenceUtils.getSettingString(
                 GlobalData.app(), PreferenceKeys.PREF_KEY_VIDEO_RATE, null);
@@ -100,21 +101,17 @@ public class LiveComponentController extends BaseLiveController {
         builder.setAutoAdjustBitrate(true);
         builder.setFrameRate(15);
         builder.setSampleAudioRateInHz(44100);
-        MyLog.w(TAG, "create streamer");
         int width = GalileoConstants.LIVE_LOW_RESOLUTION_WIDTH, height = GalileoConstants.LIVE_LOW_RESOLUTION_HEIGHT;
         IStreamer streamer = new GalileoStreamer(GlobalData.app(),
                 UserAccountManager.getInstance().getUuid(), width, height, true);
         streamer.setConfig(builder.build());
-        streamer.setDisplayPreview(surfaceView);
-//        // TODO 设置滤镜参数
-//        mStreamer.setVideoFilterIntensity(StreamerUtils.getFilterIntensityInteger() / 100f);
-//        mStreamer.setVideoFilter(StreamerUtils.getFilter());
         String clientIp = MiLinkClientAdapter.getsInstance().getClientIp();
         if (!TextUtils.isEmpty(clientIp)) {
             streamer.setClientPublicIp(clientIp);
         }
+        mStreamerPresenter.setStreamer(streamer);
+        mStreamerPresenter.setDisplayPreview(surfaceView);
         MyLog.w(TAG, "create streamer over");
-        return streamer;
     }
 
     @Override

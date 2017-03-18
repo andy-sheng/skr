@@ -57,7 +57,6 @@ import com.mi.live.data.repository.RoomMessageRepository;
 import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
-import com.mi.live.engine.streamer.IStreamer;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
@@ -214,8 +213,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         setupRequiredComponent();
 
         if (!mIsGameLive) {
-            IStreamer streamer = mComponentController.createStreamer($(R.id.galileo_surface_view), 0, null);
-            mStreamerPresenter.setStreamer(streamer);
+            mComponentController.createStreamer($(R.id.galileo_surface_view), 0, null);
         }
         mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
 
@@ -280,8 +278,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         MyLog.w(TAG, "finish");
         super.finish();
         overridePendingTransition(R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
-//        mStreamerPresenter.stopLive();
-//        mComponentController.onStopLive();
     }
 
     public void getLocation() {
@@ -545,8 +541,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPresent(mGiftPresenter);
         if (mIsGameLive) {
-            IStreamer streamer = mComponentController.createStreamer(null, mClarity, mScreenRecordIntent);
-            mStreamerPresenter.setStreamer(streamer);
+            mComponentController.createStreamer(null, mClarity, mScreenRecordIntent);
         }
     }
 
