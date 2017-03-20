@@ -28,6 +28,7 @@ import com.wali.live.livesdk.live.view.SelectCoverView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
@@ -169,8 +170,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             hideTag();
             return;
         }
-        String jsonString = PreferenceUtils.getSettingString(
-                GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, "");
+        String jsonString = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, "");
         if (!TextUtils.isEmpty(jsonString)) {
             try {
                 mRoomTag = new RoomTag(jsonString);
@@ -209,9 +209,11 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     protected void openLive() {
+        if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+            return;
+        }
         if (mRoomTag != null) {
-            PreferenceUtils.setSettingString(
-                    GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, mRoomTag.toJsonString());
+            PreferenceUtils.setSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, mRoomTag.toJsonString());
         }
         openPublicLive();
     }
