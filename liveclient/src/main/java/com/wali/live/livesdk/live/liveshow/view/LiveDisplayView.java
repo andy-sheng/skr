@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.base.log.MyLog;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
@@ -57,6 +58,12 @@ public class LiveDisplayView extends RelativeLayout implements IComponentView<Li
         inflate(context, R.layout.live_display_view, this);
     }
 
+    public void onOrientation(boolean isLandscape) {
+        MyLog.d(TAG, "onOrientation isLandscape=" + isLandscape);
+
+
+    }
+
     @Override
     public IView getViewProxy() {
         /**
@@ -76,5 +83,6 @@ public class LiveDisplayView extends RelativeLayout implements IComponentView<Li
     }
 
     public interface IView extends IViewProxy {
+
     }
 }

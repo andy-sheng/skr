@@ -214,6 +214,12 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
         return mFilterIntensity;
     }
 
+    public void setAngle(int angle) {
+        if (mStreamer != null) {
+            mStreamer.setAngle(angle, 0);
+        }
+    }
+
     public void setDisplayPreview(View surfaceView) {
         if (mStreamer != null) {
             mStreamer.setDisplayPreview(surfaceView);
@@ -289,6 +295,8 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
         }
         mStreamer.resume();
     }
+
+    //
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EngineEventClass.StreamerEvent event) {

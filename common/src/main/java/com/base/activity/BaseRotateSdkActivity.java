@@ -7,7 +7,7 @@ import android.provider.Settings;
 import android.view.OrientationEventListener;
 import android.view.WindowManager;
 
-import com.base.event.SdkEventController;
+import com.base.event.SdkEventClass;
 import com.base.fragment.IRotateActivity;
 import com.base.keyboard.KeyboardUtils;
 
@@ -127,7 +127,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     }
 
     private void notifyOrientation(int orientation) {
-        SdkEventController.postOrient(orientation);
+        SdkEventClass.postOrient(orientation);
     }
 
     private void rotateOrientation() {

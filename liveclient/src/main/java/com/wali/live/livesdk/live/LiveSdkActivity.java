@@ -415,9 +415,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
         }
-//        if (mGameLivePresenter != null) {
-//            mGameLivePresenter.onOrientation(true);
-//        }
         orientCloseBtn(true);
     }
 
@@ -431,9 +428,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
         }
-//        if (mGameLivePresenter != null) {
-//            mGameLivePresenter.onOrientation(false);
-//        }
         orientCloseBtn(false);
     }
 
@@ -652,6 +646,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                     break;
                 default:
                     break;
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SdkEventClass.OrientEvent event) {
+        MyLog.w(TAG, "OrientEvent");
+        if (event != null && mStreamerPresenter != null) {
+            if (!mIsGameLive) {
+                mStreamerPresenter.setAngle(event.orientation);
             }
         }
     }
