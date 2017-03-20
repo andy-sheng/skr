@@ -209,8 +209,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     public void forceLandscape() {
         if (!isDisplayLandscape()) {
             mScreenOrientation = ORIENTATION_LANDSCAPE_NORMAL;
-            rotateOrientation();
-            notifyOrientation(mScreenDisplayOrientation);
+            rotateOrientationIfNeed();
         }
         mOpenOrientation = false;
     }
@@ -219,8 +218,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     public void forcePortrait() {
         if (!isDisplayPortrait()) {
             mScreenOrientation = ORIENTATION_PORTRAIT_NORMAL;
-            rotateOrientation();
-            notifyOrientation(mScreenDisplayOrientation);
+            rotateOrientationIfNeed();
         }
         mOpenOrientation = false;
     }
@@ -229,8 +227,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     public void forceRotate(int screenOrientation) {
         if (mScreenOrientation != screenOrientation) {
             mScreenOrientation = screenOrientation;
-            rotateOrientation();
-            notifyOrientation(mScreenDisplayOrientation);
+            rotateOrientationIfNeed();
         }
         mOpenOrientation = false;
     }
@@ -239,8 +236,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     public void tempForceLandscape() {
         int tempOrientation = mScreenOrientation;
         mScreenOrientation = ORIENTATION_LANDSCAPE_NORMAL;
-        rotateOrientation();
-        notifyOrientation(mScreenDisplayOrientation);
+        rotateOrientationIfNeed();
         mScreenOrientation = tempOrientation;
     }
 
@@ -248,8 +244,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     public void tempForcePortrait() {
         int tempOrientation = mScreenOrientation;
         mScreenOrientation = ORIENTATION_PORTRAIT_NORMAL;
-        rotateOrientation();
-        notifyOrientation(mScreenDisplayOrientation);
+        rotateOrientationIfNeed();
         mScreenOrientation = tempOrientation;
     }
 
