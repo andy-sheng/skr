@@ -296,8 +296,6 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
         mStreamer.resume();
     }
 
-    //
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EngineEventClass.StreamerEvent event) {
         MyLog.w(TAG, "onEventMainThread");
