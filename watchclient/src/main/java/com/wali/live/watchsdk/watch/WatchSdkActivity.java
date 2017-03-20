@@ -83,6 +83,7 @@ import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.RoomSytemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 import com.wali.live.watchsdk.watch.view.TouchDelegateView;
@@ -146,6 +147,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private GameModePresenter mGameModePresenter;
 
     private PhoneStateReceiver mPhoneStateReceiver;
+    private RoomSytemMsgPresenter mRoomSytemMsgPresenter;
 
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
         @Override
@@ -383,6 +385,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
         mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomStatusPresenter);
+
+        mRoomSytemMsgPresenter = new RoomSytemMsgPresenter(this, mRoomChatMsgManager, mVideoPlayerPresenterEx);
+        addPushProcessor(mRoomSytemMsgPresenter);
 
         mUserInfoPresenter = new UserInfoPresenter(this, mMyRoomData);
 

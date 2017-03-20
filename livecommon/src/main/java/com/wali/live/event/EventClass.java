@@ -114,4 +114,40 @@ public abstract class EventClass {
             this.type = type;
         }
     }
+
+    /**
+     * 发送弹幕频率限制更改事件
+     */
+    public static class MsgRuleChangedEvent {
+        private String roomId;
+
+        private int speakPeriod;
+
+        private int oriSpeakPeriod;
+
+        private boolean unrepeatable;
+
+        public MsgRuleChangedEvent(String roomId, int speakPeriod, int oriSpeakPeriod, boolean unrepeatable) {
+            this.roomId = roomId;
+            this.speakPeriod = speakPeriod;
+            this.oriSpeakPeriod = oriSpeakPeriod;
+            this.unrepeatable = unrepeatable;
+        }
+
+        public String getRoomId() {
+            return roomId;
+        }
+
+        public int getSpeakPeriod() {
+            return speakPeriod;
+        }
+
+        public int getOriSpeakPeriod() {
+            return oriSpeakPeriod;
+        }
+
+        public boolean isUnrepeatable() {
+            return unrepeatable;
+        }
+    }
 }

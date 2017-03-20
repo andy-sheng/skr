@@ -398,6 +398,11 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             public void onOrientation(boolean isLandscape) {
                 InputAreaView.this.onOrientation(isLandscape);
             }
+
+            @Override
+            public EditText getInputView() {
+                return mInputView;
+            }
         }
         return new ComponentView();
     }
@@ -454,5 +459,9 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
          * 设置是否显示飘屏弹幕开关按钮
          */
         void enableFlyBarrage(boolean isEnable);
+
+
+        EditText getInputView();
+
     }
 }
