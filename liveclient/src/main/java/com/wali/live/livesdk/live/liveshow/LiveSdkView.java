@@ -55,6 +55,9 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     @Nullable
     protected GiftContinueViewGroup mGiftContinueViewGroup;
 
+    @Nullable
+    protected RelativeLayout mFloatContainer;
+
     protected boolean mIsLandscape = false;
 
     public LiveSdkView(
@@ -73,6 +76,12 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addViewUnderAnchor(view, layoutParams, $(R.id.live_top_info_view));
+
+        // FloatContainer，放在BottomButtonView的下方，目前用来放氛围面板：FloatAtmospherePanel
+        mFloatContainer = new RelativeLayout(mActivity);
+        layoutParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addViewUnderAnchor(mFloatContainer, layoutParams, $(R.id.bottom_button_view));
     }
 
     @Override
@@ -121,7 +130,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
         {
             FloatContainerPresenter presenter = new FloatContainerPresenter(
                     mComponentController, mComponentController.mStreamerPresenter);
-            presenter.setComponentView((RelativeLayout) $(R.id.main_act_container));
+            presenter.setComponentView(mFloatContainer);
             addComponentView(presenter);
         }
 
