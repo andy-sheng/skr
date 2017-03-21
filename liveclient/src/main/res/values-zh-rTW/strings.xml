@@ -22,6 +22,7 @@
     <string name="game_unmute_microphone">已開麥克風，粉絲可以聽見你的聲音了</string>
     <string name="game_save_picture_success">已儲存截圖至%s</string>
     <string name="game_save_picture_failed">儲存失敗，請稍後重試</string>
+    <string name="normal_live_tag_title">請選擇發佈直播的圈子</string>
     <string name="live_ended">直播結束</string>
     <string name="live_private_tip">私密直播不能保存</string>
     <string name="live_ended_back">返回首頁</string>

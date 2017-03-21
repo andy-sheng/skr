@@ -156,7 +156,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             mGameClarityTv.setText(mQualityArray[mQualityIndex]);
             mGameClarityTv.setSelected(true);
         }
-
     }
 
     @Override
@@ -285,6 +284,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     public void hideTag() {
-        //游戏直播,不需要hideTag
+        // 游戏直播,不需要hideTag
     }
 }

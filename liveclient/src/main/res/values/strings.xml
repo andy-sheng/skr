@@ -23,6 +23,7 @@
     <string name="game_unmute_microphone">Microphone is on</string>
     <string name="game_save_picture_success">Screenshot saved in %s</string>
     <string name="game_save_picture_failed">Couldn\'t save, try again later</string>
+    <string name="normal_live_tag_title">Select a circle</string>
     <string name="live_ended">Session ended</string>
     <string name="live_private_tip">Can\'t save private live stream</string>
     <string name="live_ended_back">Back to Home</string>

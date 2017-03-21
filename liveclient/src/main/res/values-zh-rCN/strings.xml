@@ -23,6 +23,7 @@
     <string name="game_unmute_microphone">已开麦克风，粉丝可以听见你的声音了</string>
     <string name="game_save_picture_success">已保存截图至%s</string>
     <string name="game_save_picture_failed">保存失败，请稍后再试</string>
+    <string name="normal_live_tag_title">请选择发布直播的圈子</string>
     <string name="live_ended">直播结束</string>
 
     <string name="live_private_tip">私密直播不予与保存</string>
