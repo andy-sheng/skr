@@ -60,12 +60,13 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
 
     private void startTimer() {
         stopTimer();
+        MyLog.d(TAG, "restartTimer");
         mTimerSubscription = Observable.interval(1, 3, TimeUnit.MINUTES)
                 .compose(this.<Long>bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        MyLog.e(TAG, "mTimerSubscription start");
+                        MyLog.w(TAG, "mTimerSubscription start");
                         GameLivePresenter gameLivePresenter = mGameLivePresenter;
                         if (gameLivePresenter == null) {
                             MyLog.e(TAG, "mGameLivePresenter is null");
@@ -87,6 +88,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
     }
 
     private void stopTimer() {
+        MyLog.d(TAG, "stopTimer");
         if (mTimerSubscription != null && !mTimerSubscription.isUnsubscribed()) {
             mTimerSubscription.unsubscribe();
         }
@@ -175,6 +177,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
     }
 
     private void stopRoomInfo() {
+        MyLog.d(TAG, "stopRoomInfo");
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
@@ -182,18 +185,21 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
 
     @Override
     public void destroy() {
+        MyLog.d(TAG, "destroy");
         super.destroy();
         mIsAlive = false;
         mGameLivePresenter = null;
     }
 
     public void pauseTimer() {
+        MyLog.d(TAG, "pauseTimer");
         mIsAlive = false;
         stopRoomInfo();
         stopTimer();
     }
 
     public void resumeTimer() {
+        MyLog.d(TAG, "resumeTimer");
         mIsAlive = true;
         startTimer();
     }
