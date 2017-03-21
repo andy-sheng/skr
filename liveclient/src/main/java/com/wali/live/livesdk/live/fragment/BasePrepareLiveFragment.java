@@ -157,12 +157,16 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
 
         mLocationTv = $(R.id.location_tv);
         mLocationTv.setOnClickListener(this);
+
         mBeginBtn = $(R.id.begin_btn);
         mBeginBtn.setOnClickListener(this);
+
         mTagNameContainer = $(R.id.tag_name_container);
         mTagNameContainer.setOnClickListener(this);
+
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
+
         mTagNameTv = $(R.id.tag_name_tv);
     }
 
@@ -277,6 +281,9 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
                 builder.setTitle(R.string.game_live_tag_title);
                 break;
             default:
+                builder.setTitle(R.string.normal_live_tag_title);
+                mTagIndex = mTagIndex == -1 ? tagArray.length - 1 : mTagIndex;
+                mRoomTag = roomTags.get(mTagIndex);
                 break;
         }
         updateTagName();
