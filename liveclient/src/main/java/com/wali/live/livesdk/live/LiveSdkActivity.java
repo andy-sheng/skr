@@ -321,6 +321,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     @Override
+    public boolean isStatusBarDark() {
+        return false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);

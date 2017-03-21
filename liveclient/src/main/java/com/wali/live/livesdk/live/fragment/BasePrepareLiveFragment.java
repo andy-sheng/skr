@@ -90,7 +90,7 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             onBeginBtnClick();
         } else if (i == R.id.close_btn) {
             onCloseBtnClick();
-        } else if (i == R.id.location) {
+        } else if (i == R.id.location_tv) {
             onLocationBtnClick();
         } else if (i == R.id.tag_name_container) {
             onTagNameBtnClick();
