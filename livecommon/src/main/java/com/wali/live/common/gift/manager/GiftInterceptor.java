@@ -37,7 +37,6 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
 
     public GiftInterceptor(@NonNull OnAddGift addGift) {
         mOnAddGift = addGift;
-        EventBus.getDefault().register(this);
     }
 
     public void add(final GiftRecvModel model) {
@@ -101,7 +100,7 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
         Iterator<GiftRecvModel> iter = models.iterator();
         while (iter.hasNext()) {
             GiftRecvModel model = iter.next();
-            if (gift.getGiftId() == model.getGiftId() && mOnAddGift != null) {
+            if (gift.getGiftId() == model.getGiftId()) {
                 MyLog.w(TAG, "findModel:" + gift);
                 models.remove(model);
                 mOnAddGift.add(model);
@@ -122,12 +121,13 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        mOnAddGift = null;
     }
 
     @Override
     public void onActivityCreate() {
-
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public interface OnAddGift {
