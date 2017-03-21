@@ -174,6 +174,7 @@
     <string name="pay_error_code_client_not_install">沒有安裝軟體</string>
     <string name="pay_error_code_network_error">網路錯誤</string>
     <string name="pay_error_code_get_order_error">訂單串號取得失敗</string>
+    <string name="pay_error_code_pay_info_error">取得支付資訊錯誤</string>
 
     <string name="last_100_records_bottom">僅展示最近100條加值記錄</string>
     <string name="recharge_record_empry_tip">加值鑽石可以為心愛的主播送禮物哦~</string>

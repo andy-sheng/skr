@@ -36,6 +36,7 @@ import com.mi.live.data.account.XiaoMiOAuth;
 import com.mi.live.data.account.event.UserInfoEvent;
 import com.wali.live.common.pay.constant.PayConstant;
 import com.wali.live.common.pay.constant.PayWay;
+import com.wali.live.common.pay.constant.RechargeConfig;
 import com.wali.live.common.pay.manager.PayManager;
 import com.wali.live.common.pay.model.BalanceDetail;
 import com.wali.live.common.pay.model.Diamond;
@@ -88,6 +89,7 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 import static com.xiaomi.gamecenter.alipay.config.ResultCode.ALIPAY_CANCEL;
 import static com.xiaomi.gamecenter.alipay.config.ResultCode.ALIPAY_ERROR;
 import static com.xiaomi.gamecenter.alipay.config.ResultCode.CREATE_UNDEFINEORDER_ERROR;
+import static com.xiaomi.gamecenter.alipay.config.ResultCode.GET_PAYINTO_ERROR;
 import static com.xiaomi.gamecenter.alipay.config.ResultCode.GET_SESSION_ERROR;
 import static com.xiaomi.gamecenter.alipay.config.ResultCode.NET_ERROR;
 import static com.xiaomi.gamecenter.alipay.config.ResultCode.SCANPAY_CANCEL;
@@ -754,6 +756,8 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
                 return getString(R.string.pay_error_code_network_error);
             case TOAST_CREATE_UNDEFINE_ORDER_ERROR:
                 return getString(R.string.pay_error_code_get_order_error);
+            case GET_PAYINTO_ERROR:
+                return getString(R.string.pay_error_code_pay_info_error);
         }
         return "";
     }
@@ -823,11 +827,10 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
         try {
             hyWxPay = HyWxPay.getInstance();
         } catch (IllegalStateException e) {
-            MyLog.e(TAG, "init alipay sdk fail, init here", e);
+            MyLog.e(TAG, "init HyWxPay sdk fail, init here", e);
             HyWxPay.init(GlobalData.app(), String.valueOf(XiaoMiOAuth.APP_ID_PAY), XiaoMiOAuth.APP_KEY_PAY);
             hyWxPay = HyWxPay.getInstance();
         }
-
         hyWxPay.pay(mRechargeView.getActivity(), purchase, new com.xiaomi.gamecenter.wxpay.PayResultCallback() {
             @Override
             public void onError(int errorCode, String msg) {
