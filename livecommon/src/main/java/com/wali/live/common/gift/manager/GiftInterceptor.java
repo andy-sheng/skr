@@ -2,17 +2,10 @@ package com.wali.live.common.gift.manager;
 
 import android.support.annotation.NonNull;
 
-import com.base.activity.assist.IBindActivityLIfeCycle;
 import com.base.log.MyLog;
-import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftRecvModel;
-import com.mi.live.data.gift.model.GiftType;
 import com.mi.live.data.repository.GiftRepository;
 import com.wali.live.dao.Gift;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -28,7 +21,7 @@ import rx.schedulers.Schedulers;
  * 大礼物拦截器
  */
 
-public class GiftInterceptor implements IBindActivityLIfeCycle {
+public class GiftInterceptor {
     private static final String TAG = GiftInterceptor.class.getSimpleName();
     //最大数量
     private static final int maxSize = 10;
@@ -95,7 +88,7 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
         models.add(model);
     }
 
-    private void findModel(Gift gift) {
+    public void findModel(Gift gift) {
         MyLog.d(TAG, "findModel:" + gift);
         Iterator<GiftRecvModel> iter = models.iterator();
         while (iter.hasNext()) {
@@ -105,28 +98,6 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
                 models.remove(model);
                 mOnAddGift.add(model);
             }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(GiftEventClass.GiftDownloadSuc event) {
-        Gift gift = event.getGift();
-        if (gift.getCatagory() != GiftType.MAGIC_GIFT) {
-            findModel(gift);
-        }
-    }
-
-    @Override
-    public void onActivityDestroy() {
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    public void onActivityCreate() {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
         }
     }
 
