@@ -55,16 +55,17 @@ public class MyUserInfoManager {
     }
 
     public void init() {
-        // 从数据库得到个人信息
-        Observable.just(null)
-                .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
-                        mMyInfo = userInfo;
-                    }
-                });
+//        // 从数据库得到个人信息
+//        Observable.just(null)
+//                .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
+//                .subscribe(new Action1<Object>() {
+//                    @Override
+//                    public void call(Object o) {
+//                        User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
+//                        mMyInfo = userInfo;
+//                    }
+//                });
+        syncSelfDetailInfo();
     }
 
     /**
