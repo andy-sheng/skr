@@ -224,7 +224,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
         if (mStreamer != null) {
             mStreamer.setDisplayPreview(surfaceView);
             if (surfaceView != null) {
-                mStreamer.setVideoFilterIntensity(mFilterIntensity);
+                mStreamer.setVideoFilterIntensity(mFilterIntensity / 100f);
                 mStreamer.setVideoFilter(mFilter);
                 mStreamer.setBeautyLevel(mBeautyLevel);
             }
