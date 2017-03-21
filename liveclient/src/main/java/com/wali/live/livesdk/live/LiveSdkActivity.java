@@ -36,6 +36,7 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.CommonUtils;
+import com.base.utils.DeviceUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
@@ -308,15 +309,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return mLocation.getCity();
         }
         return "";
-    }
-
-    @Subscribe
-    public void onEvent(SdkEventClass.OrientEvent event) {
-        if (event.isLandscape()) {
-            orientLandscape();
-        } else {
-            orientPortrait();
-        }
     }
 
     @Subscribe
@@ -662,9 +654,17 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SdkEventClass.OrientEvent event) {
         MyLog.w(TAG, "OrientEvent");
-        if (event != null && mStreamerPresenter != null) {
-            if (!mIsGameLive) {
-                mStreamerPresenter.setAngle(event.orientation);
+        if (event != null) {
+            if (event.isLandscape()) {
+                orientLandscape();
+            } else {
+                orientPortrait();
+            }
+
+            if (mStreamerPresenter != null) {
+                if (!mIsGameLive) {
+                    mStreamerPresenter.setAngle(event.orientation);
+                }
             }
         }
     }
@@ -827,6 +827,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void beginLiveToServer() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
+        // 金山云需要read_phone_state，所以提前检测下
+        DeviceUtils.getDeviceId();
 
         startCountDown();
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
