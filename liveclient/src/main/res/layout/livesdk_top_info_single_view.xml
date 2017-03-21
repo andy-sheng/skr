@@ -7,9 +7,9 @@
         android:id="@+id/owner_container_root"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6.67dp"
-        android:layout_marginRight="6.67dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginRight="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_80">
 
         <RelativeLayout
             android:id="@+id/owner_container"
@@ -20,9 +20,8 @@
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/owner_iv"
-                android:layout_width="34.66dp"
-                android:layout_height="34.66dp"
-                android:layout_margin="1dp"/>
+                android:layout_width="@dimen/view_dimen_100"
+                android:layout_height="@dimen/view_dimen_100"/>
 
             <RelativeLayout
                 android:id="@+id/name_and_viewer_num_area"
@@ -74,17 +73,17 @@
             android:id="@+id/user_badge_iv"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:layout_marginLeft="24.66dp"
-            android:layout_marginTop="24.66dp"
+            android:layout_marginLeft="@dimen/margin_66"
+            android:layout_marginTop="@dimen/margin_60"
             android:scaleType="fitStart"
             android:visibility="visible"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/avatar_rv"
             android:layout_width="match_parent"
-            android:layout_height="40.66dp"
+            android:layout_height="@dimen/view_dimen_100"
             android:layout_marginLeft="6.66dp"
-            android:layout_marginRight="48dp"
+            android:layout_marginRight="@dimen/margin_120"
             android:layout_toRightOf="@id/owner_container"
             android:fadingEdge="none"
             android:fadingEdgeLength="0dp"

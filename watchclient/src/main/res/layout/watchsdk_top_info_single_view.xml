@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true">
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentTop="true">
 
     <RelativeLayout
         android:id="@+id/owner_container_root"
@@ -23,8 +22,7 @@
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/owner_iv"
                 android:layout_width="@dimen/view_dimen_100"
-                android:layout_height="@dimen/view_dimen_100" />
-
+                android:layout_height="@dimen/view_dimen_100"/>
 
             <!--主播连麦中时头像右下方的小图标-->
             <ImageView
@@ -35,7 +33,7 @@
                 android:layout_alignRight="@id/owner_iv"
                 android:scaleType="fitCenter"
                 android:src="@drawable/link_anchor_icon_connecting"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:id="@+id/name_and_viewer_num_area"
@@ -62,7 +60,7 @@
                     android:shadowRadius="1"
                     android:singleLine="true"
                     android:textColor="@color/color_white"
-                    android:textSize="@dimen/text_size_34" />
+                    android:textSize="@dimen/text_size_34"/>
 
                 <TextView
                     android:id="@+id/view_tv"
@@ -76,7 +74,7 @@
                     android:shadowDy="1"
                     android:shadowRadius="1"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_28" />
+                    android:textSize="@dimen/text_size_28"/>
 
                 <ImageView
                     android:id="@+id/iv_user_icon"
@@ -86,7 +84,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/name_tv"
                     android:layout_marginTop="4dp"
-                    android:src="@drawable/live_icon_people" />
+                    android:src="@drawable/live_icon_people"/>
             </RelativeLayout>
 
             <TextView
@@ -107,7 +105,7 @@
                 android:text="@string/follow"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_36"
-                android:visibility="visible" />
+                android:visibility="visible"/>
             <!--连麦主播嘉宾间的连接符、嘉宾的头像及头像右下小图标-->
             <RelativeLayout
                 android:id="@+id/link_guest_area"
@@ -130,7 +128,7 @@
                     android:id="@+id/guest_iv"
                     android:layout_width="@dimen/view_dimen_100"
                     android:layout_height="@dimen/view_dimen_100"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"/>
 
                 <ImageView
                     android:id="@+id/link_guest_icon"
@@ -139,7 +137,7 @@
                     android:layout_alignBottom="@id/guest_iv"
                     android:layout_alignRight="@id/guest_iv"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/link_guest_icon_connecting" />
+                    android:src="@drawable/link_guest_icon_connecting"/>
 
             </RelativeLayout>
 
@@ -152,7 +150,7 @@
             android:layout_marginLeft="@dimen/margin_66"
             android:layout_marginTop="@dimen/margin_60"
             android:scaleType="fitStart"
-            android:visibility="visible" />
+            android:visibility="visible"/>
 
 
         <android.support.v7.widget.RecyclerView
@@ -165,7 +163,7 @@
             android:fadingEdge="none"
             android:fadingEdgeLength="0dp"
             android:overScrollMode="never"
-            android:requiresFadingEdge="none" />
+            android:requiresFadingEdge="none"/>
 
         <RelativeLayout
             android:id="@+id/ticket_area"
@@ -191,7 +189,7 @@
                 android:shadowRadius="1"
                 android:text="星票"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_32" />
+                android:textSize="@dimen/text_size_32"/>
 
             <TextView
                 android:id="@+id/ticket_tv_down"
@@ -208,7 +206,7 @@
                 android:text=""
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/text_size_32"
-                android:translationY="18dp" />
+                android:translationY="18dp"/>
         </RelativeLayout>
     </RelativeLayout>
 </merge>
