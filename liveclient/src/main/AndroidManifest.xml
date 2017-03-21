@@ -1,5 +1,5 @@
-<manifest package="com.wali.live.livesdk"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.wali.live.livesdk">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <!-- 定位 -->
@@ -23,16 +23,14 @@
         <activity
             android:name="com.wali.live.livesdk.live.LiveSdkActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:exported="true"
             android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeLive"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
+
         <activity
             android:name="com.wali.live.livesdk.live.image.ClipImageActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:exported="false"
             android:screenOrientation="portrait"/>
 
         <service
