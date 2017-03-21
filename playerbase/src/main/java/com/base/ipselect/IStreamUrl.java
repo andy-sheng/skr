@@ -1,7 +1,5 @@
 package com.base.ipselect;
 
-import android.support.annotation.NonNull;
-
 import java.util.List;
 
 /**
@@ -41,10 +39,7 @@ public interface IStreamUrl {
     /**
      * 生成新的URL
      */
-    String generateUrlForIp(
-            @NonNull String originalStreamUrl,
-            @NonNull String host,
-            String selectedIp);
+    String generateUrlForIp(String originalStreamUrl, String host, String selectedIp);
 
     /**
      * 获取当前是否处于卡顿

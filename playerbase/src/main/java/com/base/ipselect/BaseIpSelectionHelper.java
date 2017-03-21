@@ -1,7 +1,6 @@
 package com.base.ipselect;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
@@ -58,9 +57,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
 
     public abstract String getTAG();
 
-    public BaseIpSelectionHelper(
-            @NonNull Context context,
-            IDnsStatusListener dnsStatusListener) {
+    public BaseIpSelectionHelper(Context context, IDnsStatusListener dnsStatusListener) {
         mContext = context;
         mDnsStatusListener = dnsStatusListener;
     }
@@ -95,7 +92,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
         return mSelectedLocalIpList;
     }
 
-    private final String getProtocol(@NonNull String originalStreamUrl) {
+    private final String getProtocol(String originalStreamUrl) {
         int pos = originalStreamUrl.indexOf("://");
         if (pos != -1) {
             return originalStreamUrl.substring(0, pos);
@@ -223,7 +220,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
         }
     }
 
-    protected final void fetchFromHttpAndLocalIpSet(final @NonNull PreDnsManager.IpInfo ipInfo) {
+    protected final void fetchFromHttpAndLocalIpSet(final PreDnsManager.IpInfo ipInfo) {
         MyLog.w(TAG, "fetchFromHttpAndLocalIpSet");
         int httpSize = mHttpIpSet.size(), localSize = mLocalIpSet.size();
         if (mHttpIpIndex < httpSize && mLocalIpIndex < localSize) { // Local和Http都还未用完，各取一个
@@ -245,7 +242,7 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
         }
     }
 
-    protected void onIpSetRunOut(final @NonNull PreDnsManager.IpInfo ipInfo) {
+    protected void onIpSetRunOut(final PreDnsManager.IpInfo ipInfo) {
         MyLog.w(TAG, "onIpSetRunOut");
         if (mHttpIpSet.isEmpty() && mLocalIpSet.isEmpty()) { // 都用完了，若Local和Http集为空，拉取Local和Http
             MyLog.d(TAG, "queryNewIpSet fetchIpSetByHost");

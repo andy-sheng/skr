@@ -34,14 +34,15 @@ android {
 
 dependencies {
     def presentationDependencies = rootProject.ext.presentationDependencies
-    def dataDependencies = rootProject.ext.dataDependencies
-    def testDependencies = rootProject.ext.dataTestDependencies
     compile presentationDependencies.androidAppCompat
+
     // 引擎相关
     compile files('libs/webrtc.jar')
     compile files('libs/devicemanager.jar')
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
+
+
     gradle.startParameter.getTaskNames().each { task ->
         if (task.contains("pluginplayer")) {
             compile project(':playerbase')
