@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 
 import com.base.log.MyLog;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -29,6 +30,7 @@ public class GlobalData {
     private static ThreadPoolExecutor executors[] = new ThreadPoolExecutor[1];
 
     private static Application sApplication;
+    private static RefWatcher sRefWatcher;
 
     public static DisplayMetrics displayMetrics;
     public static int screenWidth = 0;
@@ -38,8 +40,13 @@ public class GlobalData {
         return sApplication;
     }
 
-    public static void setApplication(Application app) {
+    public static RefWatcher getRefWatcher() {
+        return sRefWatcher;
+    }
+
+    public static void setApplication(Application app, RefWatcher refWatcher) {
         sApplication = app;
+        sRefWatcher = refWatcher;
         recordScreenParam(app);
         initialize();
     }

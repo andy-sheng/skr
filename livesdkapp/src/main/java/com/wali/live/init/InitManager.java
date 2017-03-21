@@ -45,7 +45,7 @@ public class InitManager {
     private static String LOGTAG = "WatchSdk";
 
     public static void init(@NonNull Application application) {
-        GlobalData.setApplication(application);
+        GlobalData.setApplication(application, LiveSdkApplication.getRefWatcher());
 
         sPackageName = application.getPackageName();
         sRemoteProcessName = sPackageName + ":remote";
