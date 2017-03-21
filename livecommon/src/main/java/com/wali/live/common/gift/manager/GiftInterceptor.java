@@ -35,12 +35,12 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
     private OnAddGift mOnAddGift;
     private Vector<GiftRecvModel> models = new Vector<>();
 
-    public GiftInterceptor(@NonNull OnAddGift addGift){
+    public GiftInterceptor(@NonNull OnAddGift addGift) {
         mOnAddGift = addGift;
         EventBus.getDefault().register(this);
     }
 
-    public void add(final GiftRecvModel model){
+    public void add(final GiftRecvModel model) {
         Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
@@ -48,7 +48,7 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
                         = GiftRepository.checkExistedGiftRes(model.getGiftId());
                 boolean isExist = !(null == gift);
 
-                if(!isExist){
+                if (!isExist) {
                     GiftRepository.fillGiftEntityById(model);
                 }
 
@@ -64,16 +64,16 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
                     }
 
                     @Override
-                    public void onError(Throwable e){
+                    public void onError(Throwable e) {
                         MyLog.w(TAG, "add onError:" + e);
                     }
 
                     @Override
                     public void onNext(Boolean isExist) {
                         MyLog.w(TAG, "add onNext:" + isExist);
-                        if(isExist && null != mOnAddGift){
+                        if (isExist && mOnAddGift != null) {
                             mOnAddGift.add(model);
-                        }else{
+                        } else {
                             addModel(model);
                         }
                     }
@@ -81,27 +81,27 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
 
     }
 
-    public void clear(){
+    public void clear() {
         models.clear();
     }
 
-    private void addModel(GiftRecvModel model){
+    private void addModel(GiftRecvModel model) {
         MyLog.w(TAG, "addModel:" + model);
         /**
          * 最多存maxSize礼物
          */
-        if(models.size() > maxSize){
+        if (models.size() > maxSize) {
             models.remove(0);
         }
         models.add(model);
     }
 
-    private void findModel(Gift gift){
+    private void findModel(Gift gift) {
         MyLog.d(TAG, "findModel:" + gift);
         Iterator<GiftRecvModel> iter = models.iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             GiftRecvModel model = iter.next();
-            if(gift.getGiftId() == model.getGiftId()){
+            if (gift.getGiftId() == model.getGiftId() && mOnAddGift != null) {
                 MyLog.w(TAG, "findModel:" + gift);
                 models.remove(model);
                 mOnAddGift.add(model);
@@ -119,9 +119,10 @@ public class GiftInterceptor implements IBindActivityLIfeCycle {
 
     @Override
     public void onActivityDestroy() {
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        mOnAddGift = null;
     }
 
     @Override
