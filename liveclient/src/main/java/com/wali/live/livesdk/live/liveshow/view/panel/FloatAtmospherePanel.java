@@ -1,5 +1,6 @@
 package com.wali.live.livesdk.live.liveshow.view.panel;
 
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -143,6 +144,18 @@ public class FloatAtmospherePanel extends BaseBottomPanel<MoveViewGroup, Relativ
             layoutParams.topMargin = PANEL_TOP_MARGIN_PORTRAIT;
             mContentView.setPivotX(mPanelWidth / 2);
             mContentView.setPivotY(PANEL_PIVOT_DELTA_Y);
+        }
+    }
+
+    @Override
+    protected void onAnimationValue(@FloatRange(from = 0.0, to = 1.0) float value) {
+        mContentView.setAlpha(value);
+        if (mIsLandscape) {
+            mContentView.setScaleX(value);
+            mContentView.setScaleY(1.0f);
+        } else {
+            mContentView.setScaleY(value);
+            mContentView.setScaleX(1.0f);
         }
     }
 }

@@ -32,6 +32,8 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     protected AnimationHelper mAnimationHelper;
 
     protected boolean mIsLandscape = false;
+    protected boolean mHasFirstOriented = false;
+
     protected boolean mIsShow = false;
 
     @LayoutRes
@@ -113,8 +115,10 @@ public abstract class BaseBottomPanel<CONTENT extends View, CONTAINER extends Vi
     }
 
     public final void onOrientation(boolean isLandscape) {
-        if (mIsLandscape != isLandscape) {
-            MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
+        MyLog.w(TAG, "onOrientation isLandscape=" + isLandscape);
+        // 增加mHasFirstOriented变量，标识首次的初始化
+        if (mIsLandscape != isLandscape || !mHasFirstOriented) {
+            mHasFirstOriented = true;
             mIsLandscape = isLandscape;
             orientSelf();
         }
