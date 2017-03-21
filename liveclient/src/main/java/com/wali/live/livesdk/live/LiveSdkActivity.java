@@ -1,6 +1,7 @@
 package com.wali.live.livesdk.live;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -316,6 +317,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         } else {
             orientPortrait();
         }
+    }
+
+    @Subscribe
+    public void onEvent(SdkEventClass.BringFrontEvent event) {
+        MyLog.d(TAG, "bring front event");
+        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
+        am.moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_WITH_HOME);
     }
 
     @Override
@@ -817,6 +825,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     //开始动画,并且开始推流
     private void beginLiveToServer() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
         startCountDown();
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
                 "", mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
