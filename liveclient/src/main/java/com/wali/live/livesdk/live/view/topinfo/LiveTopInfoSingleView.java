@@ -5,8 +5,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.base.utils.display.DisplayUtils;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.watchsdk.watchtop.view.WatchTopInfoBaseView;
@@ -104,5 +106,18 @@ public class LiveTopInfoSingleView extends WatchTopInfoBaseView {
                 EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER, null, null));
             }
         });
+    }
+
+    public void onScreenOrientationChanged(boolean isLandScape) {
+        super.onScreenOrientationChanged(isLandScape);
+        LayoutParams lpAvatar = (RelativeLayout.LayoutParams) mAvatarRv.getLayoutParams();
+        LayoutParams lpContainer = (RelativeLayout.LayoutParams) findViewById(R.id.owner_container_root).getLayoutParams();
+        if (isLandScape) {
+            lpAvatar.rightMargin = DisplayUtils.dip2px(AVATAR_MARGIN_RIGHT_LANDSCAPE);
+            lpContainer.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_LANDSCAPE);
+        } else {
+            lpAvatar.rightMargin = DisplayUtils.dip2px(AVATAR_MARGIN_RIGHT_PORTRAIT);
+            lpContainer.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_PORTRAIT);
+        }
     }
 }

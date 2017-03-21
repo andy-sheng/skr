@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
@@ -75,11 +76,6 @@ import rx.schedulers.Schedulers;
  */
 public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
     public static final String TAG = "WatchTopInfoSingleView";
-
-    public static final float AVATAR_MARGIN_TOP_PORTRAIT = 26.67f;
-    public static final float AVATAR_MARGIN_TOP_LANDSCAPE = 6.67f;
-    public static final float AVATAR_MARGIN_RIGHT_PORTRAIT = 48f;
-    public static final float AVATAR_MARGIN_RIGHT_LANDSCAPE = 48f;
 
     private TextView mFollowBtnTv;
 
@@ -570,17 +566,12 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
         LayoutParams lpAvatar = (RelativeLayout.LayoutParams) mAvatarRv.getLayoutParams();
         LayoutParams lpContainer = (RelativeLayout.LayoutParams) findViewById(R.id.owner_container_root).getLayoutParams();
         if (isLandScape) {
-//            lpAvatar.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_LANDSCAPE);
             lpAvatar.rightMargin = DisplayUtils.dip2px(AVATAR_MARGIN_RIGHT_LANDSCAPE);
             lpContainer.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_LANDSCAPE);
-
-
         } else {
-//            lpAvatar.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_PORTRAIT);
             lpAvatar.rightMargin = DisplayUtils.dip2px(AVATAR_MARGIN_RIGHT_PORTRAIT);
             lpContainer.topMargin = DisplayUtils.dip2px(AVATAR_MARGIN_TOP_PORTRAIT);
         }
-//        redrawFollowGuidePopupWindow();
     }
 
     /**
@@ -699,7 +690,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                                                     @Override
                                                     public void call(Void aVoid) {
                                                         //xx时间后才可以点击
-                                                        ToastUtils.showToast(com.base.global.GlobalData.app().getApplicationContext(), "每" + click.getClickInterval() + "秒可以点击一次");
+                                                        ToastUtils.showToast(GlobalData.app().getApplicationContext(), "每" + click.getClickInterval() + "秒可以点击一次");
                                                     }
                                                 });
 
