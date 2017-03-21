@@ -191,7 +191,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
 
     // 设置滤镜
     public void setFilter(@NonNull String filter) {
-        if (mStreamer != null && mFilter.equals(filter)) {
+        if (mStreamer != null && !mFilter.equals(filter)) {
             mFilter = filter;
             mStreamer.setVideoFilter(filter);
         }
