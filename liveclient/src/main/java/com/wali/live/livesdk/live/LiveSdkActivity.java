@@ -95,7 +95,6 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
-import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 
@@ -157,7 +156,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private GiftPresenter mGiftPresenter;
     private RoomTextMsgPresenter mRoomTextMsgPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
-    private RoomStatusPresenter mRoomStatusPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
 
     protected BaseImageView mBlurIv; // 高斯蒙层
@@ -590,8 +588,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         addPushProcessor(mRoomTextMsgPresenter);
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomViewerPresenter);
-        mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
-        addPushProcessor(mRoomStatusPresenter);
 
         mTipsTv = $(R.id.tips_tv);
 
@@ -719,7 +715,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 break;
         }
     }
-
 
     private void processEndLive(int errCode, Object... objects) {
         switch (errCode) {
@@ -1129,7 +1124,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private class Action implements ComponentPresenter.IAction {
-
         @Override
         public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
             switch (source) {
