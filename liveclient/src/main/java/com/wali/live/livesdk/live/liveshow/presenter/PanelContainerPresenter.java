@@ -90,7 +90,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private void showSettingPanel() {
         LiveSettingPanel panel = deRef(mSettingPanelRef);
         if (panel == null) {
-            panel = new LiveSettingPanel(mView, mStreamerPresenter);
+            panel = new LiveSettingPanel(mView, mStreamerPresenter, mComponentController);
             mSettingPanelRef = new WeakReference<>(panel);
         }
         showPanel(panel, true);
