@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.base.utils.Constants;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -17,17 +16,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private static final String TAG = "WXPayEntryActivity";
 
-    public static final String APP_ID;
+    public static final String APP_ID = "wx1359869fd0d5dae0";
 
     private IWXAPI api;
-
-    static {
-        if (Constants.isTestBuild) {
-            APP_ID = "wxf703eba7b0387387";
-        } else {
-            APP_ID = "wx0b1f5dd377f1cc6c";
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

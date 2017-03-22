@@ -183,6 +183,7 @@
     <string name="pay_error_code_client_not_install">没有安装客户端</string>
     <string name="pay_error_code_network_error">网络错误</string>
     <string name="pay_error_code_get_order_error">订单串获取错误</string>
+    <string name="pay_error_code_pay_info_error">获取支付信息错误</string>
     <string name="recharge_record_empry_tip">充钻石可以为心爱的主播送礼物哦~</string>
     <string name="last_100_records_bottom">仅展示最近100条充值记录</string>
     <string name="paypal_response_data_error">PayPal返回数据错误</string>

@@ -228,6 +228,7 @@
     <string name="pay_error_code_client_not_install">Install Mi Wallet first</string>
     <string name="pay_error_code_network_error">Network error</string>
     <string name="pay_error_code_get_order_error">Couldn\'t get info</string>
+    <string name="pay_error_code_pay_info_error">Couldn\'t get payment info</string>
 
     <string name="recharge_record_empry_tip">Buy gems to send gifts to the host</string>
     <string name="last_100_records_bottom">Only show recent 100 records</string>
