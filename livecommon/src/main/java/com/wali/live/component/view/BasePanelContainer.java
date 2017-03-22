@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.log.MyLog;
-import com.wali.live.component.view.panel.BaseSettingPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 
 /**
  * Created by yangli on 17-2-14.
@@ -21,12 +21,12 @@ public abstract class BasePanelContainer<PRESENTER, VIEW extends IViewProxy, VIE
     protected @Nullable PRESENTER mPresenter;
 
     protected @NonNull VIEW_GROUP mPanelContainer;
-    protected BaseSettingPanel<? extends View, VIEW_GROUP> mCurrPanel;
+    protected BaseBottomPanel<? extends View, VIEW_GROUP> mCurrPanel;
 
     protected boolean mIsLandscape = false;
 
     protected String getTAG() {
-        return BaseSettingPanel.class.getSimpleName();
+        return BaseBottomPanel.class.getSimpleName();
     }
 
     @Override
@@ -45,7 +45,7 @@ public abstract class BasePanelContainer<PRESENTER, VIEW extends IViewProxy, VIE
         });
     }
 
-    protected boolean hidePanel(boolean useAnimation) {
+    protected final boolean hidePanel(boolean useAnimation) {
         if (mCurrPanel != null) {
             mCurrPanel.hideSelf(useAnimation);
             mCurrPanel = null;
@@ -55,7 +55,7 @@ public abstract class BasePanelContainer<PRESENTER, VIEW extends IViewProxy, VIE
         }
     }
 
-    protected void showPanel(@Nullable BaseSettingPanel panel, boolean useAnimation) {
+    protected void showPanel(@Nullable BaseBottomPanel panel, boolean useAnimation) {
         if (mCurrPanel != null && mCurrPanel == panel) {
             return;
         }

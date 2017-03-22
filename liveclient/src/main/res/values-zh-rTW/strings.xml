@@ -22,6 +22,7 @@
     <string name="game_unmute_microphone">已開麥克風，粉絲可以聽見你的聲音了</string>
     <string name="game_save_picture_success">已儲存截圖至%s</string>
     <string name="game_save_picture_failed">儲存失敗，請稍後重試</string>
+    <string name="normal_live_tag_title">請選擇發佈直播的圈子</string>
     <string name="live_ended">直播結束</string>
     <string name="live_private_tip">私密直播不能保存</string>
     <string name="live_ended_back">返回首頁</string>
@@ -88,4 +89,53 @@
     <string name="network_change_tip">您當前正在使用非wifi網路進行直播，可能會產生流量費用</string>
     <string name="warm_prompt">溫馨提示</string>
     <string name="phone_interrupt">電話接聽前，直播已經暫停，您的通話不會對外傳播，現在您可以繼續直播。</string>
+    <string name="close">低</string>
+    <string name="low">低</string>
+    <string name="middle">中</string>
+    <string name="high">高</string>
+    <string name="select_cover">設定封面</string>
+    <string name="quanzi_default_name">選擇圈子</string>
+    <string name="add_topic">增加話題</string>
+    <string name="quanzi_name">%s圈子</string>
+    <string name="live_plus_atmosphere">氛圍</string>
+    <string name="live_plus_comment">消息</string>
+
+    <string name="original">無混響</string>
+    <string name="recording_studio">錄音棚</string>
+    <string name="ktv">KTV</string>
+    <string name="concert">演唱會</string>
+    <string name="choose_hifi">高保真</string>
+    <string name="mirror_image">自拍鏡像</string>
+    <string name="switch_camera">切換相機</string>
+    <string name="flash_light">閃光燈</string>
+    <string name="face_beauty">美顏</string>
+    <string name="expression">魔法表情</string>
+    <string name="filter">濾鏡</string>
+
+    <string name="filter_normal">普通</string>
+    <string name="filter_sweet">甜蜜</string>
+    <string name="filter_crema">復古</string>
+    <string name="filter_nashville">舊時光</string>
+    <string name="filter_aden">午後</string>
+    <string name="filter_gingham">戀空</string>
+    <string name="filter_stinson">蜜茶</string>
+    <string name="filter_clarendon">青澀</string>
+    <string name="filter_juno">暖陽</string>
+    <string name="filter_dogpatch">小清新</string>
+    <string name="filter_gray">黑白</string>
+    <string name="uploading">正在上傳圖片....</string>
+    <string name="upload_failed">上傳失敗！</string>
+    <string name="unknown_error">對不起，伺服器出錯了，請稍後重試</string>
+    <string name="select_done">完成(%1$d/%2$d)</string>
+    <string name="saving_image">正在儲存圖片</string>
+    <string name="photo_select_over_limit">最多只能選擇 %d 張照片</string>
+    <string name="photo_select">選擇</string>
+    <string name="photo_preview_title">%1$d/%2$d</string>
+    <string name="photo_lib_title">已選擇%d項</string>
+    <string name="photo_file_list">圖片清單</string>
+    <string name="photo">照片</string>
+    <string name="empty_tips">頁面暫時為空</string>
+    <string name="add_photo_pick_title">選擇圖片</string>
+
+    <string name="camera_occupy">相機使用中</string>
 </resources>

@@ -11,7 +11,7 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.HostChannelManager;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.component.view.panel.BaseSettingPanel;
+import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
 
@@ -24,14 +24,14 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  *
  * @module 设置面板
  */
-public class GameSettingPanel extends BaseSettingPanel<LinearLayout, RelativeLayout> implements View.OnClickListener {
+public class GameSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
+        implements View.OnClickListener {
     public static final boolean DEFAULT_FORBID_GIFT = false;
     public static final boolean DEFAULT_FORBID_SYS = false;
     public static final boolean DEFAULT_FORBID_CHAT = false;
 
-    private
     @Nullable
-    LiveRoomChatMsgManager mLiveRoomChatMsgManager;
+    private LiveRoomChatMsgManager mLiveRoomChatMsgManager;
 
     private View mForbidGiftTv;
     private View mForbidSystemTv;
@@ -71,31 +71,17 @@ public class GameSettingPanel extends BaseSettingPanel<LinearLayout, RelativeLay
     }
 
     @Override
-    public void onOrientation(boolean isLandscape) {
-        super.onOrientation(isLandscape);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        if (mIsLandscape) {
-            layoutParams.width = PANEL_WIDTH_LANDSCAPE;
-        } else {
-            layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-        }
-    }
-
-    @Override
-    protected void onAnimationStart(boolean isShow) {
-        super.onAnimationStart(isShow);
-        if (isShow) {
+    protected void onAnimationStart() {
+        super.onAnimationStart();
+        if (mIsShow) {
             mContentView.setTranslationX(0);
             mContentView.setTranslationY(mContentView.getHeight());
         }
     }
 
     @Override
-    protected void onAnimationValue(@FloatRange(from = 0.0, to = 1.0) float value, boolean isShow) {
-        super.onAnimationValue(value, isShow);
+    protected void onAnimationValue(@FloatRange(from = 0.0, to = 1.0) float value) {
+        mContentView.setAlpha(value);
         mContentView.setTranslationX(0);
         mContentView.setTranslationY(mContentView.getHeight() * (1.0f - value));
     }

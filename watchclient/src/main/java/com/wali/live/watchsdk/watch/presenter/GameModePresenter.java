@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 /**
  * Created by chengsimin on 2017/1/14.
  */
-
+@Deprecated
 public class GameModePresenter implements IBindActivityLIfeCycle {
 
     RxActivity mActivity;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -23,15 +24,15 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.dialog.MyAlertDialog;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
-import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
@@ -39,7 +40,6 @@ import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -49,7 +49,7 @@ import java.util.List;
  * Created by zyh on 2017/2/8.
  */
 
-public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
+public abstract class BasePrepareLiveFragment extends BaseEventBusFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
@@ -67,33 +67,33 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected boolean mIsAddHistory = true;
     protected TitleTextWatcher mTitleTextWatcher;
 
-    protected TextView mLocation;
+    protected TextView mLocationTv;
     protected TextView mBeginBtn;
     protected TextView mTagNameTv;
     protected ViewGroup mTagNameContainer;
     protected EditText mLiveTitleEt;
     protected ImageView mCloseBtn;
-    protected String mCoverUrl = "";
 
     protected RoomTag mRoomTag;
     protected RoomTagPresenter mRoomTagPresenter;
     protected int mTagIndex = -1;
 
+    @CallSuper
     @Override
     public void onClick(View v) {
-        if (isFastDoubleClick()) {
+        if (isFastDoubleClick() || getActivity() == null) {
             return;
         }
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
         int i = v.getId();
         if (i == R.id.begin_btn) {
             onBeginBtnClick();
         } else if (i == R.id.close_btn) {
             onCloseBtnClick();
-        } else if (i == R.id.location) {
+        } else if (i == R.id.location_tv) {
             onLocationBtnClick();
         } else if (i == R.id.tag_name_container) {
             onTagNameBtnClick();
-        } else {
         }
     }
 
@@ -136,7 +136,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         MyLog.w(TAG, "createView");
-        EventBus.getDefault().register(this);
         return inflater.inflate(getLayoutResId(), container, false);
     }
 
@@ -144,7 +143,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     public void onDestroyView() {
         super.onDestroyView();
         mRoomTagPresenter.stop();
-        EventBus.getDefault().unregister(this);
     }
 
     protected void initContentView() {
@@ -157,14 +155,18 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             }
         });
 
-        mLocation = $(R.id.location);
-        mLocation.setOnClickListener(this);
+        mLocationTv = $(R.id.location_tv);
+        mLocationTv.setOnClickListener(this);
+
         mBeginBtn = $(R.id.begin_btn);
         mBeginBtn.setOnClickListener(this);
+
         mTagNameContainer = $(R.id.tag_name_container);
         mTagNameContainer.setOnClickListener(this);
+
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
+
         mTagNameTv = $(R.id.tag_name_tv);
     }
 
@@ -208,6 +210,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected void finish() {
+        MyLog.w(TAG, "finish");
         FragmentNaviUtils.popFragmentFromStack(getActivity());
     }
 
@@ -221,7 +224,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         } else {
             city = getString(R.string.default_location_hint);
         }
-        mLocation.setText(city);
+        mLocationTv.setText(city);
     }
 
     protected abstract void openLive();
@@ -244,7 +247,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected void putCommonData(Bundle bundle) {
         // 产品要求支持多个分享
         bundle.putString(EXTRA_LIVE_TITLE, mLiveTitleEt.getText().toString().trim());
-        bundle.putString(EXTRA_LIVE_COVER_URL, mCoverUrl);
         // 添加标签
         if (mRoomTag != null) {
             bundle.putSerializable(EXTRA_LIVE_TAG_INFO, mRoomTag);
@@ -279,6 +281,9 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
                 builder.setTitle(R.string.game_live_tag_title);
                 break;
             default:
+                builder.setTitle(R.string.normal_live_tag_title);
+                mTagIndex = mTagIndex == -1 ? tagArray.length - 1 : mTagIndex;
+                mRoomTag = roomTags.get(mTagIndex);
                 break;
         }
         updateTagName();
@@ -438,7 +443,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             }
         }
 
-        private void formatInputString(String text, int strIndex) {
+        public void formatInputString(String text, int strIndex) {
             enableWatch = false;
             SpannableStringBuilder str = new SpannableStringBuilder(text);
             int len = text.length();

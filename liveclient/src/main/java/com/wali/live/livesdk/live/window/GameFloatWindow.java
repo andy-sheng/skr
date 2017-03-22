@@ -1,7 +1,6 @@
 package com.wali.live.livesdk.live.window;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -10,10 +9,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.base.global.GlobalData;
+import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.presenter.GameLivePresenter;
 import com.wali.live.livesdk.live.window.dialog.GameConfirmDialog;
 
@@ -148,9 +146,11 @@ public class GameFloatWindow implements IGameFloatPresenter {
     @Override
     public void backToApp() {
         // 返回控制台
-        Intent intent = new Intent(GlobalData.app(), LiveSdkActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        GlobalData.app().startActivity(intent);
+//        Intent intent = new Intent(GlobalData.app(), LiveSdkActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//        GlobalData.app().startActivity(intent);
+
+        SdkEventClass.postBringFront();
         mUiHandler.removeMessages(MSG_HALF_HIDE_FLOAT_BALL);
     }
 

@@ -44,7 +44,7 @@ public abstract class PreferenceUtils {
 
     public static final String PREF_KEY_FILTER_INTENSITY = "pref_key_filter_intensity";
 
-    public static final String PREF_KEY_FILTER_CATEGORY_POSITION = "pref_key_filter_category_position";
+    public static final String PREF_KEY_FILTER_CATEGORY = "pref_key_filter_category";
 
     public static final String KEY_ACCEPT_CONVENTION = "key_accept_convention";
 
@@ -70,6 +70,7 @@ public abstract class PreferenceUtils {
     //搜索框显示的文案以及对应的搜索词
     public static final String PREF_FUZZY_SEARCH_DEFAULT_TEXT = "fuzzy_search_default_text_list";
 
+    public static final String PREF_KEY_LIVE_NORMAL_TAG = "pref_key_live_normal_tag";
     public static final String PREF_KEY_LIVE_GAME_TAG = "pref_key_live_game_tag";
     public static final String PREF_KEY_LIVE_GAME_CLARITY = "pref_key_live_game_clarity";
 

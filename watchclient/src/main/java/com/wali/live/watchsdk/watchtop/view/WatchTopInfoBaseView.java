@@ -62,6 +62,12 @@ import rx.schedulers.Schedulers;
  */
 public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBindActivityLIfeCycle {
     public static final String TAG = WatchTopInfoBaseView.class.getSimpleName();
+
+    public static final float AVATAR_MARGIN_TOP_PORTRAIT = 26.67f;
+    public static final float AVATAR_MARGIN_TOP_LANDSCAPE = 6.67f;
+    public static final float AVATAR_MARGIN_RIGHT_PORTRAIT = 48f;
+    public static final float AVATAR_MARGIN_RIGHT_LANDSCAPE = 48f;
+
     private static final float GRADIENT_WIDTH = 278;
     public static final int EXACT_VIEWER_NUM = 10;
 
@@ -703,7 +709,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
             mTarget.requestLayout();
         }
 
-        public View getmTarget() {
+        public View getTarget() {
             return mTarget;
         }
     }

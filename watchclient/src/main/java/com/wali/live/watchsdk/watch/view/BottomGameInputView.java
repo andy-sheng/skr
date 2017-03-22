@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by Star on 16/12/15.
  */
-
+@Deprecated
 public class BottomGameInputView extends RelativeLayout {
     private final static String TAG = BottomGameInputView.class.getSimpleName();
     private final static int MAX_LEN = 30;

@@ -34,12 +34,13 @@
         android:layout="@layout/viewstub_game_live_home_btn" />
 
     <!--评论栏-->
-    <com.wali.live.common.barrage.view.LiveCommentView
-        android:id="@+id/comment_rv"
+    <com.wali.live.watchsdk.component.view.LiveCommentView
+        android:id="@+id/live_comment_view"
         android:layout_width="match_parent"
         android:layout_height="160.33dip"
         android:layout_above="@+id/input_area_view"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_marginRight="70dp"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
@@ -47,7 +48,6 @@
         android:paddingLeft="6dip"
         android:paddingRight="6.67dip"
         android:requiresFadingEdge="none" />
-
 
     <TextView
         android:id="@+id/tips_tv"
@@ -65,7 +65,7 @@
         layout="@layout/component_gift_continue_view_group"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        android:layout_above="@id/comment_rv"
+        android:layout_above="@id/live_comment_view"
         android:layout_marginBottom="61.33dip" />
 
     <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
@@ -91,15 +91,15 @@
         android:id="@+id/bottom_button_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 
     <ImageView
         android:id="@+id/close_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_20"
-        android:layout_marginTop="25dp"
+        android:layout_margin="@dimen/margin_20"
         android:src="@drawable/live_icon_close_btn"
         android:visibility="gone" />
 
@@ -108,6 +108,7 @@
         android:id="@+id/bottom_panel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/transparent"
         android:visibility="gone" />
 
     <!--输入框-->

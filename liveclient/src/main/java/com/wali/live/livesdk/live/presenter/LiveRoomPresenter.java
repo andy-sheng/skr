@@ -170,29 +170,4 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                 });
 
     }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void destroy() {
-
-    }
 }

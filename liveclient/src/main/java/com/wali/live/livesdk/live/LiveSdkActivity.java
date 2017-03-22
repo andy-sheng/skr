@@ -1,24 +1,29 @@
 package com.wali.live.livesdk.live;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.base.activity.BaseActivity;
+import com.base.activity.BaseSdkActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
+import com.base.event.SdkEventClass;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -27,14 +32,13 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.image.fresco.processor.BlurPostprocessor;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
-import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
-import com.base.version.VersionCheckTask;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.HostChannelManager;
@@ -42,50 +46,40 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.base.BaseSdkActivity;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
-import com.mi.live.data.event.SdkEventClass;
 import com.mi.live.data.location.Address;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
-import com.mi.live.data.preference.PreferenceKeys;
+import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.mi.live.data.query.model.MessageRule;
+import com.mi.live.data.repository.RoomMessageRepository;
+import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
-import com.mi.live.engine.base.EngineEventClass;
-import com.mi.live.engine.base.GalileoConstants;
-import com.mi.live.engine.streamer.GalileoStreamer;
-import com.mi.live.engine.streamer.IStreamer;
-import com.mi.live.engine.streamer.StreamerConfig;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
-import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.common.keyboard.KeyboardUtils;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
-import com.wali.live.dns.ILiveReconnect;
+import com.wali.live.component.BaseSdkView;
+import com.wali.live.component.ComponentController;
+import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
-import com.wali.live.livesdk.live.dns.MultiCdnIpSelectionHelper;
+import com.wali.live.livesdk.live.component.BaseLiveController;
+import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.EndLiveFragment;
-import com.wali.live.livesdk.live.fragment.PrepareGameLiveFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
-import com.wali.live.livesdk.live.livegame.LiveComponentController;
-import com.wali.live.livesdk.live.livegame.LiveSdkView;
-import com.wali.live.livesdk.live.operator.LiveOperator;
-import com.wali.live.livesdk.live.presenter.GameLivePresenter;
+import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
-import com.wali.live.livesdk.live.presenter.RoomInfoPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
-import com.wali.live.livesdk.live.receiver.TelephoneStateReceiver;
 import com.wali.live.livesdk.live.task.IActionCallBack;
 import com.wali.live.livesdk.live.utils.LocationHelper;
 import com.wali.live.livesdk.live.view.CountDownView;
@@ -94,6 +88,7 @@ import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.proto.LiveProto;
+import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
@@ -101,17 +96,14 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
-import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
-import com.xiaomi.broadcaster.enums.VCSessionErrType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -126,62 +118,44 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 /**
  * Created by chenyong on 2017/2/8.
  */
-public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveReconnect, FragmentDataListener, IActionCallBack,
+public class LiveSdkActivity extends BaseComponentSdkActivity implements FragmentDataListener, IActionCallBack,
         FloatPersonInfoFragment.FloatPersonInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
+
+    public static final String EXTRA_GAME_LIVE = "extra_game_live";
 
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
     public static final int REQUEST_PREPARE_LIVE = 1000;
 
-    private static final int HEARTBEAT_DURATION = 10 * 1000;        //心跳间隔时间
-    private static final int HEARTBEAT_TIMEOUT = 120 * 1000;        //心跳超时时间
-    private static final int RECONNECT_TIMEOUT = 5 * 1000;          //卡顿超时换IP时间
-    private static final int START_STREAM_TIMEOUT = 5 * 1000;       //推流超时时间
-    private static final int BACKGROUND_TIMEOUT = 10 * 60 * 1000;   //刷新房间信息区间
+    private static final int HEARTBEAT_DURATION = 10 * 1000;        // 心跳间隔时间
+    private static final int HEARTBEAT_TIMEOUT = 120 * 1000;        // 心跳超时时间
+    private static final int BACKGROUND_TIMEOUT = 10 * 60 * 1000;   // 刷新房间信息区间
 
-    private static final int MSG_SHOW_NETWORK_NOT_GOOD_TIPS = 105;  //显示网络不佳信息
-    private static final int MSG_HIDE_NETWORK_NOT_GOOD_TIPS = 106;  //隐藏网络不佳信息
-    private static final int MSG_SHOW_NETWORK_CHANGE_TIPS = 108;    //显示网络切换信息
-    private static final int MSG_HIDE_NETWORK_CHANGE_TIPS = 109;    //隐藏网络切换信息
+    private static final int MSG_SHOW_NETWORK_NOT_GOOD_TIPS = 105;  // 显示网络不佳信息
+    private static final int MSG_HIDE_NETWORK_NOT_GOOD_TIPS = 106;  // 隐藏网络不佳信息
+    private static final int MSG_SHOW_NETWORK_CHANGE_TIPS = 108;    // 显示网络切换信息
+    private static final int MSG_HIDE_NETWORK_CHANGE_TIPS = 109;    // 隐藏网络切换信息
 
-    private static final int MSG_HEARTBEAT = 201;                   //心跳
-    private static final int MSG_HEARTBEAT_TIMEOUT = 202;           //心跳超时
-    private static final int MSG_START_STREAM_TIMEOUT = 203;        //推流超时
-    private static final int MSG_ROOM_NOT_EXIT = 204;               //房间不存在
-    private static final int MSG_END_LIVE = 205;                    //停止直播
-    private static final int MSG_START_STREAM_FAILED = 210;         //推流失败
-    private static final int MSG_END_LIVE_FOR_TIMEOUT = 211;        //超时退出房间
-    private static final int MSG_SHOW_MIC_OCCUPY = 213;             //麦克风被占用提示
-    private static final int MSG_START_STREAM = 214;                //启动流
+    private static final int MSG_END_LIVE = 201;                    // 停止直播
+    private static final int MSG_END_LIVE_FOR_TIMEOUT = 202;        // 超时退出房间
+    private static final int MSG_HEARTBEAT = 203;                   // 心跳
+    private static final int MSG_HEARTBEAT_TIMEOUT = 204;           // 心跳超时
+    private static final int MSG_ROOM_NOT_EXIT = 205;               // 房间不存在
 
     public static boolean sRecording = false; //将其变为静态并暴露给外面，用于各种跳转判定
-    public static final int[] VIDEO_RATE_360P = new int[]{400, 600, 800};
     private boolean mIsLiveEnd;
     private int mLastTicket;
     private Location mLocation = null;
     private Intent mScreenRecordIntent;
     private String mLiveTitle;
     private RoomTag mRoomTag;
-    private int mClarity = PrepareGameLiveFragment.LOW_CLARITY;
 
-    protected IStreamer mStreamer;
-    protected GameLivePresenter mGameLivePresenter;
-    protected RoomInfoPresenter mRoomInfoPresenter;
+    protected boolean mIsGameLive;
 
     private final MyUIHandler mUIHandler = new MyUIHandler(this);
-    private ExecutorService mHeartbeatService;
-
-    private LiveOperator mLiveOperator;
-
-    // 域名解析、重连相关
-    private
-    @NonNull
-    MultiCdnIpSelectionHelper mIpSelectionHelper;
-    private boolean mIsStarted = false;
 
     private GiftPresenter mGiftPresenter;
     private RoomTextMsgPresenter mRoomTextMsgPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
-    private RoomStatusPresenter mRoomStatusPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
 
     protected BaseImageView mBlurIv; // 高斯蒙层
@@ -189,13 +163,17 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     protected LiveTopInfoSingleView mTopInfoSingleView;
 
-    protected LiveCommentView mLiveCommentView; //弹幕区view
     protected FlyBarrageViewGroup mFlyBarrageViewGroup;
 
     protected TextView mTipsTv;
 
-    protected LiveComponentController mComponentController;
-    protected LiveSdkView mSdkView;
+    protected StreamerPresenter mStreamerPresenter;
+    protected BaseLiveController mComponentController;
+    protected BaseSdkView mSdkView;
+
+    protected RoomMessagePresenter mPullRoomMessagePresenter;
+    protected ExecutorService mHeartbeatService;
+    protected boolean mIsPaused = false;
 
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     protected GiftAnimationView mGiftAnimationView; // 礼物特效动画
@@ -204,7 +182,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     private LiveRoomPresenter mLiveRoomPresenter;
     private TextView mToHomeBtn;
 
-    private TelephoneStateReceiver mTelephoneStateReceiver = null; //监听电话打入
+    private PhoneStateReceiver mPhoneStateReceiver = null; //监听电话打入
     private MyAlertDialog mPhoneInterruptDialog;
 
     private ScreenStateReceiver mScreenStateReceiver; //屏幕状态监听
@@ -228,10 +206,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         setContentView(R.layout.livesdk_layout);
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
 
+        initData();
         getLocation();
         setupRequiredComponent();
+
+        if (!mIsGameLive) {
+            mComponentController.createStreamer($(R.id.galileo_surface_view), 0, null);
+        }
+        mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
+
         openOrientation();
-        prepareGameLive();
         mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
         mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
         // 封面模糊图
@@ -240,9 +224,34 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                 AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
     }
 
+    private void initData() {
+        Intent data = getIntent();
+        if (data != null) {
+            mIsGameLive = data.getBooleanExtra(EXTRA_GAME_LIVE, false);
+        }
+    }
+
     private void setupRequiredComponent() {
-        mLiveOperator = new LiveOperator();
-        mIpSelectionHelper = new MultiCdnIpSelectionHelper(this, this);
+        mStreamerPresenter = new StreamerPresenter(mMyRoomData);
+        if (mIsGameLive) {
+            mComponentController = new com.wali.live.livesdk.live.livegame.LiveComponentController(
+                    mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
+        } else {
+            mComponentController = new com.wali.live.livesdk.live.liveshow.LiveComponentController(
+                    mMyRoomData, mRoomChatMsgManager, mStreamerPresenter);
+        }
+        mStreamerPresenter.setComponentController(mComponentController);
+        mSdkView = mComponentController.createSdkView(this);
+
+        addPresent(mStreamerPresenter);
+
+        Action action = new Action();
+        mComponentController.registerAction(ComponentController.MSG_END_LIVE_UNEXPECTED, action);
+        mComponentController.registerAction(ComponentController.MSG_END_LIVE_FOR_TIMEOUT, action);
+        mComponentController.registerAction(ComponentController.MSG_OPEN_MIC_FAILED, action);
+        if (!mIsGameLive) {
+            mComponentController.registerAction(ComponentController.MSG_OPEN_CAMERA_FAILED, action);
+        }
     }
 
     private void registerScreenStateReceiver() {
@@ -258,10 +267,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     public void trySendDataWithServerOnce() {
     }
 
-    private void prepareGameLive() {
-        MyLog.w(TAG, "prepareGameLive");
-        PrepareGameLiveFragment.openFragment(this, REQUEST_PREPARE_LIVE, this);
-        mRoomChatMsgManager.setIsGameLiveMode(true);
+    @Override
+    protected void tryClearData() {
     }
 
     @Override
@@ -269,7 +276,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         MyLog.w(TAG, "finish");
         super.finish();
         overridePendingTransition(R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
-        clear();
     }
 
     public void getLocation() {
@@ -304,74 +310,78 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     @Subscribe
-    public void onEvent(SdkEventClass.OrientEvent event) {
-        if (event.isLandscape()) {
-            orientLandscape();
-        } else {
-            orientPortrait();
-        }
+    public void onEvent(SdkEventClass.BringFrontEvent event) {
+        MyLog.d(TAG, "bring front event");
+        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
+        am.moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_WITH_HOME);
+    }
+
+    @Override
+    public boolean isStatusBarDark() {
+        return false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
-        resumeGameLive();
+        if (!mIsGameLive) {
+            resumeStream();
+        }
+        mComponentController.onActivityResumed();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mIsForeground = true;
+        if (!mIsGameLive) {
+            pauseStream();
+        }
+        mComponentController.onActivityPaused();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mComponentController.onActivityStopped();
     }
 
     private void pauseStream() {
-        mGameLivePresenter.pauseStream();
-        mRoomInfoPresenter.pauseTimer();
-        mIsForeground = false;
-        if (!TextUtils.isEmpty(mMyRoomData.getRoomId()) && sRecording) {
-            //TODO 这里会有耗时，初始化这个pb对象会在static中耗时
+        mIsPaused = true;
+        if (!mIsGameLive) {
+            mStreamerPresenter.stopPreview();
+        }
+        mComponentController.onPauseStream();
+        if (sRecording && !TextUtils.isEmpty(mMyRoomData.getRoomId())) { // TODO 这里会有耗时，初始化这个pb对象会在static中耗时
             new ZuidSleepRequest(mMyRoomData.getRoomId()).async();
             mUIHandler.removeMessages(MSG_END_LIVE_FOR_TIMEOUT);
             mUIHandler.sendEmptyMessageDelayed(MSG_END_LIVE_FOR_TIMEOUT, BACKGROUND_TIMEOUT);
         }
     }
 
-    private void resumeGameLive() {
-        // onResume 更新游戏直播静音按钮
-        if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_DEFAULT);
-        }
-    }
-
     private void resumeStream() {
-        mGameLivePresenter.resumeStream();
-        mRoomInfoPresenter.resumeTimer();
-        mIsForeground = true;
-        if (!TextUtils.isEmpty(mMyRoomData.getRoomId()) && sRecording) {
+        mIsPaused = false;
+        if (!mIsGameLive) {
+            mStreamerPresenter.startPreview();
+        }
+        mComponentController.onResumeStream();
+        if (sRecording && !TextUtils.isEmpty(mMyRoomData.getRoomId())) {
             new ZuidActiveRequest(mMyRoomData.getRoomId()).async();
             mUIHandler.removeMessages(MSG_END_LIVE_FOR_TIMEOUT);
-        }
-    }
-
-    //引擎的释放统一在clear处理.
-    private void clear() {
-        if (mStreamer != null) {
-            mStreamer.stopMusic();
-            mStreamer.destroy();
-            mStreamer = null;
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        clear();
         if (mScreenStateReceiver != null) {
             unregisterReceiver(mScreenStateReceiver);
         }
-        TelephoneStateReceiver.unregisterReceiver(this, mTelephoneStateReceiver);
-        sRecording = false;
+        PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
+        if (sRecording) {
+            stopRecord("onDestroy");
+            sRecording = false;
+        }
         if (mComponentController != null) {
             mComponentController.release();
             mComponentController = null;
@@ -382,40 +392,44 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         }
     }
 
-    protected void orientLandscape() {
-        if (mLiveCommentView != null) {
-            mLiveCommentView.orientComment(true);
+    private void orientCloseBtn(boolean isLandscape) {
+        if (mCloseBtn == null) {
+            return;
         }
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
+                mCloseBtn.getLayoutParams();
+        if (!isLandscape && BaseActivity.isProfileMode()) {
+            layoutParams.topMargin = layoutParams.rightMargin + BaseActivity.getStatusBarHeight();
+        } else {
+            layoutParams.topMargin = layoutParams.rightMargin;
+        }
+        mCloseBtn.setLayoutParams(layoutParams);
+    }
+
+    protected void orientLandscape() {
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(true);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
+            mComponentController.onEvent(BaseLiveController.MSG_ON_ORIENT_LANDSCAPE);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(true);
         }
-        if (mGameLivePresenter != null) {
-            mGameLivePresenter.onOrientation(true);
-        }
+        orientCloseBtn(true);
     }
 
     protected void orientPortrait() {
-        if (mLiveCommentView != null) {
-            mLiveCommentView.orientComment(false);
-        }
         if (mTopInfoSingleView != null) {
             mTopInfoSingleView.onScreenOrientationChanged(false);
         }
         if (mComponentController != null) {
-            mComponentController.onEvent(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
+            mComponentController.onEvent(BaseLiveController.MSG_ON_ORIENT_PORTRAIT);
         }
         if (mGiftContinueViewGroup != null) {
             mGiftContinueViewGroup.setOrient(false);
         }
-        if (mGameLivePresenter != null) {
-            mGameLivePresenter.onOrientation(false);
-        }
+        orientCloseBtn(false);
     }
 
     @Override
@@ -432,7 +446,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Override
     public void onClickSixin(User user) {
-        VersionCheckTask.checkUpdate(this);
+
     }
 
     /**
@@ -448,52 +462,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
         FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
                 mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
-    }
-
-
-    private void setupConfig(int width, int height, boolean hasMicSource) {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-
-        StreamerConfig.Builder builder = new StreamerConfig.Builder();
-        String videoRate = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PREF_KEY_VIDEO_RATE, null);
-        if (!TextUtils.isEmpty(videoRate)) {
-            String[] videoRates = videoRate.split(",");
-            MyLog.w(TAG, Arrays.toString(videoRates));
-            for (int i = 0; i < videoRates.length; i++) {
-                VIDEO_RATE_360P[i] = Integer.valueOf(videoRates[i]);
-            }
-        }
-        if (hasMicSource) {
-            builder.setMinAverageVideoBitrate(VIDEO_RATE_360P[0]);
-            builder.setMaxAverageVideoBitrate(VIDEO_RATE_360P[2]);
-        } else {
-            switch (width) {
-                case GalileoConstants.GAME_LOW_RESOLUTION_WIDTH:
-                    builder.setMinAverageVideoBitrate(500);
-                    builder.setMaxAverageVideoBitrate(500);
-                    break;
-                case GalileoConstants.GAME_MEDIUM_RESOLUTION_WIDTH:
-                    builder.setMinAverageVideoBitrate(1000);
-                    builder.setMaxAverageVideoBitrate(1000);
-                    break;
-                case GalileoConstants.GAME_HIGH_RESOLUTION_WIDTH:
-                    builder.setMinAverageVideoBitrate(2000);
-                    builder.setMaxAverageVideoBitrate(2000);
-                    break;
-            }
-        }
-        builder.setAutoAdjustBitrate(true);
-        builder.setFrameRate(15);
-        builder.setSampleAudioRateInHz(44100);
-        MyLog.w(TAG, "create streamer");
-        mStreamer = new GalileoStreamer(GlobalData.app(), UserAccountManager.getInstance().getUuid(), width, height, hasMicSource);
-        mStreamer.setConfig(builder.build());
-        String clientIp = MiLinkClientAdapter.getsInstance().getClientIp();
-        if (!TextUtils.isEmpty(clientIp)) {
-            mStreamer.setClientPublicIp(clientIp);
-        }
-        MyLog.w(TAG, "create streamer over");
     }
 
     @Override
@@ -560,42 +528,15 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
         mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
         mMyRoomData.setLiveTitle(mLiveTitle);
-        mClarity = bundle.getInt(PrepareGameLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareGameLiveFragment.MEDIUM_CLARITY);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
         addPresent(mRoomTextMsgPresenter);
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPresent(mGiftPresenter);
-        initGameLivePresenter();
-    }
-
-    private void initGameLivePresenter() {
-        switch (mClarity) {
-            case PrepareGameLiveFragment.LOW_CLARITY:
-                setupConfig(GalileoConstants.GAME_LOW_RESOLUTION_WIDTH, GalileoConstants.GAME_LOW_RESOLUTION_HEIGHT, false);
-                mGameLivePresenter = new GameLivePresenter(mStreamer, mRoomChatMsgManager, mMyRoomData, GalileoConstants.GAME_LOW_RESOLUTION_WIDTH,
-                        GalileoConstants.GAME_LOW_RESOLUTION_HEIGHT, mScreenRecordIntent, mRoomChatMsgManager.toString());
-                break;
-            case PrepareGameLiveFragment.MEDIUM_CLARITY:
-                setupConfig(GalileoConstants.GAME_MEDIUM_RESOLUTION_WIDTH, GalileoConstants.GAME_MEDIUM_RESOLUTION_HEIGHT, false);
-                mGameLivePresenter = new GameLivePresenter(mStreamer, mRoomChatMsgManager, mMyRoomData, GalileoConstants.GAME_MEDIUM_RESOLUTION_WIDTH,
-                        GalileoConstants.GAME_MEDIUM_RESOLUTION_HEIGHT, mScreenRecordIntent, mRoomChatMsgManager.toString());
-                break;
-            case PrepareGameLiveFragment.HIGH_CLARITY:
-                setupConfig(GalileoConstants.GAME_HIGH_RESOLUTION_WIDTH, GalileoConstants.GAME_HIGH_RESOLUTION_HEIGHT, false);
-                mGameLivePresenter = new GameLivePresenter(mStreamer, mRoomChatMsgManager, mMyRoomData, GalileoConstants.GAME_HIGH_RESOLUTION_WIDTH,
-                        GalileoConstants.GAME_HIGH_RESOLUTION_HEIGHT, mScreenRecordIntent, mRoomChatMsgManager.toString());
-                break;
-            default:
-                setupConfig(GalileoConstants.GAME_HIGH_RESOLUTION_WIDTH, GalileoConstants.GAME_HIGH_RESOLUTION_HEIGHT, false);
-                mGameLivePresenter = new GameLivePresenter(mStreamer, mRoomChatMsgManager, mMyRoomData, GalileoConstants.GAME_HIGH_RESOLUTION_WIDTH,
-                        GalileoConstants.GAME_HIGH_RESOLUTION_HEIGHT, mScreenRecordIntent, mRoomChatMsgManager.toString());
-                break;
+        if (mIsGameLive) {
+            mComponentController.createStreamer(null, bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY), mScreenRecordIntent);
         }
-        addPresent(mGameLivePresenter);
-        mRoomInfoPresenter = new RoomInfoPresenter(mGameLivePresenter);
-        addPresent(mRoomInfoPresenter);
     }
 
     private void startCountDown() {
@@ -605,7 +546,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     private void postPrepare() {
         // 注册监听
-        mTelephoneStateReceiver = TelephoneStateReceiver.registerReceiver(this);
+        mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
         registerScreenStateReceiver();
 
         // 顶部view
@@ -614,12 +555,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         mTopInfoSingleView.setMyRoomDataSet(mMyRoomData);
         mTopInfoSingleView.initViewUseData();
         mTopInfoSingleView.setVisibility(View.VISIBLE);
-
-        // 弹幕
-        mLiveCommentView = $(R.id.comment_rv);
-        mLiveCommentView.setSoundEffectsEnabled(false);
-        addBindActivityLifeCycle(mLiveCommentView, true);
-        mLiveCommentView.setToken(mRoomChatMsgManager.toString());
 
         // 礼物
         mGiftContinueViewGroup = $(R.id.gift_continue_vg);
@@ -642,6 +577,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                                 TIMES, "1");
                     }
                 });
+        orientCloseBtn(isDisplayLandscape());
 
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPushProcessor(mGiftPresenter);
@@ -649,13 +585,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         addPushProcessor(mRoomTextMsgPresenter);
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomViewerPresenter);
-        mRoomStatusPresenter = new RoomStatusPresenter(mRoomChatMsgManager);
-        addPushProcessor(mRoomStatusPresenter);
 
         mTipsTv = $(R.id.tips_tv);
 
-        mComponentController = new LiveComponentController();
-        mSdkView = new LiveSdkView(this, mComponentController, mMyRoomData);
         mSdkView.setupSdkView();
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
@@ -670,7 +602,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             @Override
             public void onClick(View v) {
                 if (mComponentController != null) {
-                    mComponentController.onEvent(LiveComponentController.MSG_HIDE_INPUT_VIEW);
+                    mComponentController.onEvent(BaseLiveController.MSG_HIDE_INPUT_VIEW);
                 }
             }
         });
@@ -678,24 +610,21 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LiveEventClass.SystemEvent event) {
-        MyLog.w(TAG, "onEventMainThread PhoneStateEvent");
-        if (event != null) {
+        if (event != null && mComponentController != null) {
+            MyLog.w(TAG, "onEventMainThread PhoneStateEvent");
             switch (event.type) {
-                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_IDLE: {
+                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_IDLE:
                     resumeStream();
-                }
-                break;
-                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_RING: {
+                    break;
+                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_RING:
                     if (mPhoneInterruptDialog == null || !mPhoneInterruptDialog.isShowing()) {
                         mPhoneInterruptDialog = DialogUtils.showAlertDialog(this, getString(R.string.warm_prompt), getString(R.string.phone_interrupt), getString(R.string.i_know));
                     }
                     pauseStream();
-                }
-                break;
-                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_NEW_OUTGOING_CALL: {
+                    break;
+                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_NEW_OUTGOING_CALL:
                     pauseStream();
-                }
-                break;
+                    break;
                 default:
                     break;
             }
@@ -704,7 +633,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LiveEventClass.ScreenStateEvent event) {
-        if (event != null) {
+        if (event != null && mComponentController != null) {
             MyLog.w(TAG, "onEvent ScreenStateEvent state=" + event.screenState);
             switch (event.screenState) {
                 case LiveEventClass.ScreenStateEvent.ACTION_SCREEN_OFF:
@@ -720,134 +649,26 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EngineEventClass.StreamerEvent event) {
-        MyLog.w(TAG, "onEventMainThread");
+    public void onEventMainThread(SdkEventClass.OrientEvent event) {
+        MyLog.w(TAG, "OrientEvent");
         if (event != null) {
-            switch (event.type) {
-                case EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_STREAM_SUCC:
-                    //推流成功
-                    MyLog.w(TAG, "EVENT_TYPE_OPEN_STREAM_SUCC ");
-                    mUIHandler.removeMessages(MSG_START_STREAM);
-                    mUIHandler.removeMessages(MSG_START_STREAM_TIMEOUT);
-                    mUIHandler.removeMessages(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
-                    mUIHandler.sendEmptyMessage(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
-                    mUIHandler.removeMessages(MSG_HEARTBEAT);
-                    mUIHandler.sendEmptyMessage(MSG_HEARTBEAT);
-                    mUIHandler.removeMessages(MSG_HEARTBEAT_TIMEOUT);
-                    mUIHandler.sendEmptyMessageDelayed(MSG_HEARTBEAT_TIMEOUT, HEARTBEAT_TIMEOUT);
-                    mIpSelectionHelper.onPushStreamSuccess();
-                    mIpSelectionHelper.updateStutterStatus(false);
-                    if (mGameLivePresenter != null) {
-                        mGameLivePresenter.updateStutterStatus(false);
-                    }
-                    break;
-                case EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_CAMERA_FAILED:
-                    MyLog.e(TAG, "EVENT_TYPE_OPEN_CAMERA_FAILED");
-//                    mUIHandler.sendEmptyMessage(MSG_SHOW_CAMERA_OCCUPY);
-                    break;
-                case EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_MIC_FAILED:
-                    MyLog.e(TAG, "EVENT_TYPE_OPEN_MIC_FAILED");
-                    mUIHandler.sendEmptyMessage(MSG_SHOW_MIC_OCCUPY);
-                    break;
-                case EngineEventClass.StreamerEvent.EVENT_TYPE_ERROR:
-                case EngineEventClass.StreamerEvent.EVENT_TYPE_NEED_RECONNECT: // fall through
-                    MyLog.e(TAG, (event.type == EngineEventClass.StreamerEvent.EVENT_TYPE_ERROR ? "EVENT_TYPE_ERROR" : "EVENT_TYPE_NEED_RECONNECT"));
-                    VCSessionErrType errType = (VCSessionErrType) event.obj;
-                    processReconnect(event.type);
-                    break;
-                case EngineEventClass.StreamerEvent.EVENT_TYPE_ON_STREAM_CLOSED:
-                    MyLog.w(TAG, "EVENT_TYPE_ON_STREAM_CLOSED");
-                    break;
-                default:
-                    break;
+            if (event.isLandscape()) {
+                orientLandscape();
+            } else {
+                orientPortrait();
+            }
+
+            if (mStreamerPresenter != null) {
+                if (!mIsGameLive) {
+                    mStreamerPresenter.setAngle(event.orientation);
+                }
             }
         }
-    }
-
-    private void processReconnect(int type) {
-        if (!mIpSelectionHelper.isStuttering()) {
-            mUIHandler.sendEmptyMessage(MSG_SHOW_NETWORK_NOT_GOOD_TIPS);
-            mUIHandler.removeMessages(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
-        }
-        mUIHandler.removeMessages(MSG_START_STREAM_TIMEOUT);
-        mUIHandler.sendEmptyMessageDelayed(MSG_START_STREAM_TIMEOUT, START_STREAM_TIMEOUT);
-        mIpSelectionHelper.updateStutterStatus(true);
-        if (mGameLivePresenter != null) {
-            mGameLivePresenter.updateStutterStatus(true);
-        }
-        mUIHandler.removeMessages(MSG_START_STREAM);
-        startReconnect(type);
     }
 
     @Override
     protected String getTAG() {
         return "LiveSdkActivity" + "@" + this.hashCode();
-    }
-
-    @Override
-    public void onDnsReady() {
-        MyLog.w(TAG, "onDnsReady");
-        if (sRecording) {
-            doStartStream();
-        }
-    }
-
-    @Override
-    public void doStartStream() {
-        if (mStreamer != null && !mIsStarted) {
-            MyLog.w(TAG, "doStartStream");
-            ipSelect();
-            mUIHandler.removeMessages(MSG_START_STREAM);
-            mIsStarted = true;
-            mStreamer.startStreamEx(mIpSelectionHelper.getRtmpServerInfos());
-        } else {
-            MyLog.w(TAG, "doStartStream is ignored, mIsStarted=" + mIsStarted);
-        }
-    }
-
-    @Override
-    public void startStream() {
-        if (mIpSelectionHelper.isDnsReady()) {
-            MyLog.w(TAG, "startStream");
-            doStartStream();
-        } else {
-            mUIHandler.removeMessages(MSG_START_STREAM);
-            mUIHandler.sendEmptyMessageDelayed(MSG_START_STREAM, RECONNECT_TIMEOUT); // 等待onDnsReady事件5秒之后，强制启动
-            MyLog.w(TAG, "startStream but dns not ready");
-        }
-    }
-
-    @Override
-    public void stopStream() {
-        if (mStreamer != null && mIsStarted) {
-            MyLog.w(TAG, "stopStream");
-            mStreamer.toggleTorch(false);
-            mStreamer.stopStream();
-            mIsStarted = false;
-            clear();
-        } else {
-            MyLog.w(TAG, "stopStream is ignored, mIsStarted=" + mIsStarted);
-        }
-    }
-
-    @Override
-    public final boolean ipSelect() {
-        return mIpSelectionHelper.ipSelect();
-    }
-
-    @Override
-    public void startReconnect(int code) {
-        if (mStreamer != null) {
-            MyLog.w(TAG, "startReconnect, start real reconnect");
-            mStreamer.stopStream();
-            mIsStarted = false;
-            mUIHandler.removeMessages(MSG_START_STREAM);
-            if (code == EngineEventClass.StreamerEvent.EVENT_TYPE_ERROR) { // 延迟启动
-                mUIHandler.sendEmptyMessageDelayed(MSG_START_STREAM, RECONNECT_TIMEOUT);
-            } else {
-                mUIHandler.sendEmptyMessage(MSG_START_STREAM);
-            }
-        }
     }
 
     @Override
@@ -899,7 +720,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                 break;
         }
     }
-
 
     private void processEndLive(int errCode, Object... objects) {
         switch (errCode) {
@@ -1002,10 +822,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
 
     //开始动画,并且开始推流
     private void beginLiveToServer() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         startCountDown();
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
                 "", mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
-
     }
 
     private void processStartRecord(String liveId, long createTime, String shareUrl,
@@ -1013,7 +834,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         MyLog.w(TAG, "processStartRecord");
         mMyRoomData.setRoomId(liveId);
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
-        mIpSelectionHelper.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
+        mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
         startRecord();
         syncSystemMessage();
     }
@@ -1031,23 +852,92 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
         MyLog.w(TAG, "startRecord sRecording=" + sRecording);
         if (!sRecording) {
             sRecording = true;
-            mHeartbeatService = Executors.newSingleThreadExecutor();
-            startStream();
-            mLiveOperator.onStartRecord(this, mStreamer, mMyRoomData);
-            if (mGameLivePresenter != null) {
-                mGameLivePresenter.startGameLive();
+            if (mHeartbeatService == null) {
+                mHeartbeatService = Executors.newSingleThreadExecutor();
             }
-            if (mRoomInfoPresenter != null) {
-                mRoomInfoPresenter.startLiveCover(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+            mUIHandler.sendEmptyMessage(MSG_HEARTBEAT);
+            mUIHandler.sendEmptyMessageDelayed(MSG_HEARTBEAT_TIMEOUT, HEARTBEAT_TIMEOUT);
+            if (mPullRoomMessagePresenter == null) {
+                mPullRoomMessagePresenter = new RoomMessagePresenter(
+                        mMyRoomData, new RoomMessageRepository(new RoomMessageStore()), this);
             }
-            mUIHandler.sendEmptyMessageDelayed(MSG_START_STREAM_TIMEOUT, START_STREAM_TIMEOUT);
+            mPullRoomMessagePresenter.startWork();
+            mStreamerPresenter.startLive();
+            mComponentController.onStartLive();
         }
+    }
+
+    private void stopRecord(String reason) {
+        MyLog.w(TAG, "stopRecord = " + sRecording + ",from:" + reason);
+        // 如果正在进行voip通话
+        if (sRecording) {
+            sRecording = false;
+            mUIHandler.removeMessages(MSG_HEARTBEAT);
+            mUIHandler.removeMessages(MSG_HEARTBEAT_TIMEOUT);
+            if (mHeartbeatService != null) {
+                mHeartbeatService.shutdownNow();
+                mHeartbeatService = null;
+            }
+            if (mPullRoomMessagePresenter != null) {
+                mPullRoomMessagePresenter.stopWork();
+                mPullRoomMessagePresenter.destroy();
+                mPullRoomMessagePresenter = null;
+            }
+            mStreamerPresenter.stopLive();
+            mComponentController.onStopLive();
+            endLiveToServer();
+            mUIHandler.removeCallbacksAndMessages(null);
+            // 防止服务器返回太慢,超时1s
+            mUIHandler.sendEmptyMessageDelayed(MSG_END_LIVE, 1000);
+        } else {
+            enterEndFragment();
+        }
+    }
+
+    protected void sendHeartBeat() {
+        if (mHeartbeatService == null) {
+            return;
+        }
+        mHeartbeatService.execute(new Runnable() {
+            @Override
+            public void run() {
+                LiveProto.HeartBeatReq.Builder builder = LiveProto.HeartBeatReq.newBuilder()
+                        .setLiveId(mMyRoomData.getRoomId())
+                        .setStatus((mIsGameLive ^ mIsForeground) && !mIsPaused ? 0 : 1);
+                builder.setMicuidStatus(0);
+                PacketData data = new PacketData();
+                data.setCommand(MiLinkCommand.COMMAND_LIVE_HB);
+                data.setData(builder.build().toByteArray());
+                MyLog.v(TAG, "LiveHeartbeat request : \n" + builder.toString());
+                PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+                if (rspData == null) {
+                    return;
+                }
+                try {
+                    LiveProto.HeartBeatRsp rsp = LiveProto.HeartBeatRsp.parseFrom(rspData.getData());
+                    MyLog.w(TAG, "LiveHeartbeat response : \n" + rsp.toString());
+                    switch (rsp.getRetCode()) {
+                        case ErrorCode.CODE_SUCCESS:
+                            mUIHandler.removeMessages(MSG_HEARTBEAT_TIMEOUT);
+                            mUIHandler.sendEmptyMessageDelayed(MSG_HEARTBEAT_TIMEOUT, HEARTBEAT_TIMEOUT);
+                            break;
+                        case ErrorCode.CODE_ROOM_NOT_EXIST:
+                            mUIHandler.sendEmptyMessage(MSG_ROOM_NOT_EXIT);
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
         if (mComponentController != null && mComponentController.onEvent(
-                LiveComponentController.MSG_ON_BACK_PRESSED)) {
+                BaseLiveController.MSG_ON_BACK_PRESSED)) {
             return;
         }
         processBack(true);
@@ -1076,27 +966,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
             if (isBackPressed) {
                 showStopDialog();
             }
-        }
-    }
-
-    private void stopRecord(String reason) {
-        MyLog.w(TAG, "stopRecord = " + sRecording + ",from:" + reason);
-        // 如果正在进行voip通话
-        if (sRecording) {
-            sRecording = false;
-            mLiveOperator.onStopRecord();
-            endLiveToServer();
-            mUIHandler.removeCallbacksAndMessages(null);
-            // 防止服务器返回太慢,超时1s
-            mUIHandler.sendEmptyMessageDelayed(MSG_END_LIVE, 1000);
-            if (mGameLivePresenter != null) {
-                mGameLivePresenter.stopGameLive();
-            }
-            if (mRoomInfoPresenter != null) {
-                mRoomInfoPresenter.destroy();
-            }
-        } else {
-            enterEndFragment();
         }
     }
 
@@ -1225,47 +1094,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                     MyLog.v(TAG, "MSG_HIDE_TIPS");
                     activity.hideInfoTips(activity.getString(R.string.network_change_tip));
                     break;
-                case MSG_START_STREAM:
-                    MyLog.v(TAG, "MSG_START_STREAM");
-                    activity.doStartStream();
+                case MSG_END_LIVE_FOR_TIMEOUT:
+                    MyLog.w(TAG, "MSG_END_LIVE_FOR_TIMEOUT");
+                    activity.stopRecord("MSG_END_LIVE_FOR_TIMEOUT");
                     break;
                 case MSG_HEARTBEAT:
                     MyLog.w(TAG, "MSG_HEARTBEAT");
-                    if (!activity.mHeartbeatService.isShutdown()) {
-                        activity.mHeartbeatService.submit(new Runnable() {
-                            @Override
-                            public void run() {
-                                LiveProto.HeartBeatReq.Builder builder = LiveProto.HeartBeatReq.newBuilder()
-                                        .setLiveId(activity.mMyRoomData.getRoomId())
-                                        .setStatus(activity.mIsForeground ? 0 : 1);
-                                builder.setMicuidStatus(0);
-                                PacketData data = new PacketData();
-                                data.setCommand(MiLinkCommand.COMMAND_LIVE_HB);
-                                data.setData(builder.build().toByteArray());
-                                MyLog.v(TAG, "LiveHeartbeat request : \n" + builder.toString());
-                                PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-                                if (rspData != null) {
-                                    try {
-                                        LiveProto.HeartBeatRsp rsp = LiveProto.HeartBeatRsp.parseFrom(rspData.getData());
-                                        MyLog.w(TAG, "LiveHeartbeat response : \n" + rsp.toString());
-                                        switch (rsp.getRetCode()) {
-                                            case ErrorCode.CODE_SUCCESS:
-                                                removeMessages(MSG_HEARTBEAT_TIMEOUT);
-                                                sendEmptyMessageDelayed(MSG_HEARTBEAT_TIMEOUT, HEARTBEAT_TIMEOUT);
-                                                break;
-                                            case ErrorCode.CODE_ROOM_NOT_EXIST:
-                                                sendEmptyMessage(MSG_ROOM_NOT_EXIT);
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    } catch (InvalidProtocolBufferException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        });
-                    }
+                    activity.sendHeartBeat();
                     removeMessages(MSG_HEARTBEAT);
                     sendEmptyMessageDelayed(MSG_HEARTBEAT, HEARTBEAT_DURATION);
                     break;
@@ -1273,31 +1108,57 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements ILiveRe
                     MyLog.w(TAG, "MSG_HEARTBEAT_TIMEOUT");
                     activity.endLiveUnexpected(R.string.network_offline_warning);
                     break;
-                case MSG_START_STREAM_TIMEOUT:
-                    MyLog.w(TAG, "MSG_START_STREAM_TIMEOUT");
-                    activity.processReconnect(0);
-                    break;
-                case MSG_ROOM_NOT_EXIT:
-                    MyLog.w(TAG, "MSG_ROOM_NOT_EXIT");
-                    activity.endLiveUnexpected(R.string.network_offline_warning);
-                    break;
-                case MSG_START_STREAM_FAILED:
-                    MyLog.w(TAG, "MSG_START_STREAM_FAILED");
-                    activity.endLiveUnexpected(R.string.start_stream_failure);
-                    break;
-                case MSG_END_LIVE_FOR_TIMEOUT:
-                    activity.stopRecord("MSG_END_LIVE_FOR_TIMEOUT");
-                    break;
-                case MSG_SHOW_MIC_OCCUPY:
-                    DialogUtils.showAlertDialog(activity, activity.getString(R.string.setting_dialog_black_title),
-                            activity.getString(R.string.mic_occupy), activity.getString(R.string.ok));
+                default:
                     break;
             }
         }
     }
 
+    /**
+     * 秀场直播
+     */
     public static void openActivity(BaseSdkActivity activity) {
+        openActivity(activity, false);
+    }
+
+    /**
+     * 区分是否是游戏直播还是秀场直播
+     */
+    public static void openActivity(BaseSdkActivity activity, boolean isGameLive) {
         Intent intent = new Intent(activity, LiveSdkActivity.class);
+        intent.putExtra(EXTRA_GAME_LIVE, isGameLive);
         activity.startActivity(intent);
+    }
+
+    private class Action implements ComponentPresenter.IAction {
+        @Override
+        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
+            switch (source) {
+                case ComponentController.MSG_END_LIVE_UNEXPECTED: {
+                    int resId = params.getItem(0);
+                    endLiveUnexpected(resId);
+                    return true;
+                }
+                case ComponentController.MSG_OPEN_CAMERA_FAILED:
+                    DialogUtils.showAlertDialog(LiveSdkActivity.this, getString(R.string.setting_dialog_black_title),
+                            getString(R.string.camera_occupy), getString(R.string.ok));
+                    return true;
+                case ComponentController.MSG_OPEN_MIC_FAILED:
+                    DialogUtils.showAlertDialog(LiveSdkActivity.this, getString(R.string.setting_dialog_black_title),
+                            getString(R.string.mic_occupy), getString(R.string.ok));
+                    return true;
+                case ComponentController.MSG_ON_STREAM_SUCCESS:
+                    mUIHandler.removeMessages(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
+                    mUIHandler.sendEmptyMessage(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
+                    return true;
+                case ComponentController.MSG_ON_STREAM_RECONNECT:
+                    mUIHandler.sendEmptyMessage(MSG_SHOW_NETWORK_NOT_GOOD_TIPS);
+                    mUIHandler.removeMessages(MSG_HIDE_NETWORK_NOT_GOOD_TIPS);
+                    return true;
+                default:
+                    break;
+            }
+            return false;
+        }
     }
 }

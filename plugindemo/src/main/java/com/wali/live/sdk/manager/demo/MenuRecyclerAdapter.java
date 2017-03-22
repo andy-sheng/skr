@@ -85,12 +85,38 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         });
             }
         }));
-//        mDataList.add(new Bean("开启游戏直播(AIDL)", new Runnable() {
-//            @Override
-//            public void run() {
-//                MiLiveSdkController.openGameLive();
-//            }
-//        }));
+        mDataList.add(new Bean("开启秀场直播(Intent)", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().openNormalLive(mActivity, new IMiLiveSdk.IAssistantCallback() {
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("notifyVersionLow");
+                    }
+
+                    @Override
+                    public void notifyNotInstall() {
+                        ToastUtils.showToast("notifyNotInstall");
+                    }
+                });
+            }
+        }));
+        mDataList.add(new Bean("开启游戏直播(Intent)", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().openGameLive(mActivity, new IMiLiveSdk.IAssistantCallback() {
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("notifyVersionLow");
+                    }
+
+                    @Override
+                    public void notifyNotInstall() {
+                        ToastUtils.showToast("notifyNotInstall");
+                    }
+                });
+            }
+        }));
         mDataList.add(new Bean("宿主传OAuth登录账号(AIDL)", new Runnable() {
             @Override
             public void run() {

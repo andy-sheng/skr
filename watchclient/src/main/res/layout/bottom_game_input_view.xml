@@ -1,64 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/game_input_container"
-            android:layout_width="280.66dp"
-            android:layout_height="42.66dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/game_input_container"
-            android:visibility="visible"
-            android:layout_marginBottom="@dimen/margin_20">
+    <RelativeLayout
+        android:id="@+id/game_input_container"
+        android:layout_width="280.66dp"
+        android:layout_height="42.66dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:background="@drawable/game_input_container"
+        android:visibility="visible">
 
-            <EditText
-                android:id="@+id/game_input_area"
-                android:layout_width="232dp"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_20"
-                android:background="@null"
-                android:drawableBottom="@drawable/game_input_line"
-                android:paddingBottom="@dimen/margin_20"
-                android:paddingTop="@dimen/margin_20"
-                android:imeOptions="flagNoFullscreen"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:textColor="@color/color_white_trans_50"
-                android:textCursorDrawable="@drawable/game_text_cursor"
-                android:textSize="@dimen/margin_36" />
+        <EditText
+            android:id="@+id/game_input_area"
+            android:layout_width="232dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:background="@null"
+            android:drawableBottom="@drawable/game_input_line"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:imeOptions="flagNoFullscreen"
+            android:paddingBottom="@dimen/margin_20"
+            android:paddingTop="@dimen/margin_20"
+            android:textColor="@color/color_white_trans_50"
+            android:textCursorDrawable="@drawable/game_text_cursor"
+            android:textSize="@dimen/margin_36" />
 
-            <View
-                android:id="@+id/view_placeholder"
-                android:layout_width="232dp"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_20"
-                android:paddingBottom="@dimen/margin_20"
-                android:paddingTop="@dimen/margin_20" />
+        <View
+            android:id="@+id/view_placeholder"
+            android:layout_width="232dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:paddingBottom="@dimen/margin_20"
+            android:paddingTop="@dimen/margin_20" />
 
-            <TextView
-                android:id="@+id/send_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_26"
-                android:layout_toRightOf="@+id/game_input_area"
-                android:text="@string/send"
-                android:textColor="@color/color_white_trans_50"
-                android:textSize="@dimen/margin_36" />
+        <TextView
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_26"
+            android:layout_toRightOf="@+id/game_input_area"
+            android:gravity="center"
+            android:text="@string/send"
+            android:textColor="@color/color_white_trans_50"
+            android:textSize="@dimen/margin_36" />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/barrage_btn"
-            android:layout_width="42.66dp"
-            android:layout_height="42.66dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/margin_20"
-            android:layout_marginLeft="@dimen/margin_30"
-            android:layout_toRightOf="@+id/game_input_container"
-            android:background="@drawable/bg_open_barrage"
-            android:visibility="visible" />
+    <ImageView
+        android:id="@+id/barrage_btn"
+        android:layout_width="42.66dp"
+        android:layout_height="42.66dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_toRightOf="@+id/game_input_container"
+        android:background="@drawable/bg_open_barrage"
+        android:visibility="visible" />
 
 </merge>

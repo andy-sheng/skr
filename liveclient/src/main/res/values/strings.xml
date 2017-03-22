@@ -23,6 +23,7 @@
     <string name="game_unmute_microphone">Microphone is on</string>
     <string name="game_save_picture_success">Screenshot saved in %s</string>
     <string name="game_save_picture_failed">Couldn\'t save, try again later</string>
+    <string name="normal_live_tag_title">Select a circle</string>
     <string name="live_ended">Session ended</string>
     <string name="live_private_tip">Can\'t save private live stream</string>
     <string name="live_ended_back">Back to Home</string>
@@ -92,4 +93,53 @@
     <string name="network_change_tip">Using mobile data may generate additional carrier fees</string>
     <string name="warm_prompt">Attention</string>
     <string name="phone_interrupt">Session was paused before you picked up the call. Your phone conversations are always private.</string>
+    <string name="close">Close</string>
+    <string name="low">Low</string>
+    <string name="middle">Medium</string>
+    <string name="high">High</string>
+    <string name="select_cover">Select cover</string>
+    <string name="quanzi_default_name">Select a circle</string>
+    <string name="add_topic">Add topic</string>
+    <string name="quanzi_name">%s circle</string>
+    <string name="live_plus_atmosphere">Effects</string>
+    <string name="live_plus_comment">Messages</string>
+
+    <string name="original">No reverb</string>
+    <string name="recording_studio">Studio</string>
+    <string name="ktv">KTV</string>
+    <string name="concert">Concert</string>
+    <string name="choose_hifi">High fidelity</string>
+    <string name="mirror_image">Mirror camera</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="flash_light">Flash</string>
+    <string name="face_beauty">Beautify</string>
+    <string name="expression">Live selfie masks</string>
+    <string name="filter">Filter</string>
+
+    <string name="filter_normal">Regular</string>
+    <string name="filter_sweet">Sweet</string>
+    <string name="filter_crema">Sepia</string>
+    <string name="filter_nashville">Retro</string>
+    <string name="filter_aden">Afternoon</string>
+    <string name="filter_gingham">Amour</string>
+    <string name="filter_stinson">Sweet tea</string>
+    <string name="filter_clarendon">Icy</string>
+    <string name="filter_juno">Warm</string>
+    <string name="filter_dogpatch">Fresh</string>
+    <string name="filter_gray">B&amp;W</string>
+    <string name="saving_image">Saving\u2026</string>
+    <string name="upload_failed">Couldn\'t upload</string>
+    <string name="uploading">Uploading\u2026</string>
+    <string name="photo_select_over_limit">Can select up to %d photos</string>
+    <string name="select_done">Done (%1$d/%2$d)</string>
+    <string name="photo_select">Select</string>
+    <string name="photo_preview_title">%1$d/%2$d</string>
+    <string name="photo">Photo</string>
+    <string name="photo_file_list">Gallery</string>
+    <string name="add_photo_pick_title">Select photo</string>
+    <string name="photo_lib_title">%d selected</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="empty_tips">Empty</string>
+
+    <string name="camera_occupy">Camera is busy</string>
 </resources>

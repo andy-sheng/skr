@@ -2,6 +2,8 @@ package com.base.event;
 
 import com.base.activity.BaseRotateSdkActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by lan on 15-4-15.
  *
@@ -14,12 +16,22 @@ public abstract class SdkEventClass {
     public static class OrientEvent {
         public int orientation = BaseRotateSdkActivity.ORIENTATION_DEFAULT;
 
-        public OrientEvent(int orientation) {
+        private OrientEvent(int orientation) {
             this.orientation = orientation;
         }
-        public boolean isLandscape(){
-            return orientation  == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_NORMAL || orientation==BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_REVERSED;
+
+        public boolean isLandscape() {
+            return orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_NORMAL || orientation == BaseRotateSdkActivity.ORIENTATION_LANDSCAPE_REVERSED;
         }
+    }
+
+    /**
+     * 直播，观看页面的屏幕旋转事件
+     */
+    public static void postOrient(int orientation) {
+        OrientEvent event = new OrientEvent(orientation);
+        // 采用postSticky保证监听者在注册监听时即能收到一个横竖屏事件
+        EventBus.getDefault().postSticky(event);
     }
 
     /**
@@ -27,5 +39,15 @@ public abstract class SdkEventClass {
      */
     public static class FinishActivityEvent {
 
+    }
+
+    public static class BringFrontEvent {
+        private BringFrontEvent() {
+        }
+    }
+
+    public static void postBringFront() {
+        BringFrontEvent event = new BringFrontEvent();
+        EventBus.getDefault().postSticky(event);
     }
 }

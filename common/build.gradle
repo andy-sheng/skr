@@ -104,4 +104,6 @@ dependencies {
     // 写日志的库
 //    compile 'com.orhanobut:logger:1.15'
 //    compile 'com.jakewharton.timber:timber:4.3.1'
+
+    provided 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }

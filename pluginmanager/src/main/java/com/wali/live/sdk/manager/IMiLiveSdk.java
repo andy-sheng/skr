@@ -33,20 +33,6 @@ public interface IMiLiveSdk {
     String getChannelSecret();
 
     /**
-     * 打开直播观看页面
-     *
-     * @version 204000
-     */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
-
-    /**
-     * 打开直播回放页面
-     *
-     * @version 204000
-     */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
-
-    /**
      * OAuth登录
      *
      * @version 204000
@@ -66,6 +52,34 @@ public interface IMiLiveSdk {
      * @version 204000
      */
     void clearAccount(IAssistantCallback callback);
+
+    /**
+     * 打开直播观看页面
+     *
+     * @version 204000
+     */
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+
+    /**
+     * 打开直播回放页面
+     *
+     * @version 204000
+     */
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+
+    /**
+     * 打开普通直播页面
+     *
+     * @version 204015
+     */
+    void openNormalLive(Activity activity, IAssistantCallback callback);
+
+    /**
+     * 打开游戏直播页面
+     *
+     * @version 204015
+     */
+    void openGameLive(Activity activity, IAssistantCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手

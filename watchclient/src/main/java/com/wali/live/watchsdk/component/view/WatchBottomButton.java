@@ -86,12 +86,12 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mBottomBtnSetLand.add(mCommentBtn);
         //mBottomBtnSetLand.add(mRotateBtn);
 
-        orientChild(mIsLandscape);
+        orientChild();
     }
 
     @Override
-    public void onOrientation(boolean isLandscape) {
-        super.onOrientation(isLandscape);
+    protected void orientSelf() {
+        super.orientSelf();
         if (mIsGameMode && mIsLandscape) {
             mCommentBtn.setVisibility(View.GONE);
         } else {

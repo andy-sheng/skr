@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center">
+
+        <com.base.view.RotatedSeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="@dimen/view_dimen_830"
+            android:layout_height="match_parent"
+            app:appPercenteMax="0.98"
+            app:appPercenteMin="0.02"
+            app:appProgressDrawableBK="@drawable/live_anchor_list_beauty_progress_bg"
+            app:appProgressDrawableFT="@drawable/live_anchor_list_beauty_progress"
+            app:appRotatedAngle="0"
+            app:appSeekBarLeftPadding="15dp"
+            app:appSeekBarRightPadding="15dp"
+            app:appThumbDrawable="@drawable/live_icon_jindutiao_yuan_white"
+            app:appThumbDrawablePress="@drawable/live_icon_jindutiao_yuan_yellow"
+            app:appThumbSize="15.33dp"
+            app:appThumbSizePress="10.67dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/close"
+            android:textColor="@color/color_white_trans_35"
+            android:textSize="@dimen/control_panel_text_size"
+            android:translationX="-96dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/low"
+            android:textColor="@color/color_white_trans_35"
+            android:textSize="@dimen/control_panel_text_size"
+            android:translationX="-32.5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/middle"
+            android:textColor="@color/color_white_trans_35"
+            android:textSize="@dimen/control_panel_text_size"
+            android:translationX="32.5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/high"
+            android:textColor="@color/color_white_trans_35"
+            android:textSize="@dimen/control_panel_text_size"
+            android:translationX="96dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

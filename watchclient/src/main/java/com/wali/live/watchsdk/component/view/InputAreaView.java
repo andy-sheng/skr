@@ -380,7 +380,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             }
 
             @Override
-            public void onKeyboardHided() {
+            public void onKeyboardHidden() {
                 if (getVisibility() != View.VISIBLE) {
                     return;
                 }
@@ -453,7 +453,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         /**
          * 键盘隐藏
          */
-        void onKeyboardHided();
+        void onKeyboardHidden();
 
         /**
          * 设置是否显示飘屏弹幕开关按钮

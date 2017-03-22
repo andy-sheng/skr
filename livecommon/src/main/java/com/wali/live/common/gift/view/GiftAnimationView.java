@@ -27,9 +27,11 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftRecvModel;
+import com.mi.live.data.gift.model.GiftType;
 import com.mi.live.data.gift.model.giftEntity.BigAnimationGift;
 import com.wali.live.common.gift.manager.GiftInterceptor;
 import com.wali.live.common.gift.utils.AnimationPlayControlTemplate;
+import com.wali.live.dao.Gift;
 import com.wali.live.utils.vm.VMArguUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -399,7 +401,6 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        mGiftInterceptor.onActivityCreate();
     }
 
     public void onActivityDestroy() {
@@ -409,7 +410,6 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
         if (mBigAnimationControl != null) {
             mBigAnimationControl.destroy();
         }
-        mGiftInterceptor.onActivityDestroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -419,6 +419,14 @@ public class GiftAnimationView extends RelativeLayout implements IBindActivityLI
             if (model != null) {
                 mGiftInterceptor.add(model);
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(GiftEventClass.GiftDownloadSuc event) {
+        Gift gift = event.getGift();
+        if (gift.getCatagory() != GiftType.MAGIC_GIFT) {
+            mGiftInterceptor.findModel(gift);
         }
     }
 

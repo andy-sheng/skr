@@ -5,6 +5,7 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
 import com.base.log.MyLog;
+import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
@@ -65,66 +66,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         //nothing to do
     }
 
-    public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType) {
-        MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
-
-        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
-            @Override
-            public void postSuccess() {
-                MyLog.w(TAG, "openWatch by activity success callback");
-
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                        .setLiveType(liveType)
-                        .build();
-                WatchSdkActivity.openActivity(activity, roomInfo);
-                activity.finish();
-            }
-
-            @Override
-            public void postError() {
-                MyLog.w(TAG, "openWatch by activity postError callback");
-                activity.finish();
-            }
-
-            @Override
-            public void processFailure() {
-                MyLog.w(TAG, "openWatch by activity failure callback");
-                activity.finish();
-            }
-        });
-    }
-
-    public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl, final int liveType) {
-        MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
-
-        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
-            @Override
-            public void postSuccess() {
-                MyLog.w(TAG, "openReplay by activity success callback");
-
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                        .setLiveType(liveType)
-                        .build();
-                WatchSdkActivity.openActivity(activity, roomInfo);
-                activity.finish();
-            }
-
-            @Override
-            public void postError() {
-                MyLog.w(TAG, "openReplay by activity postError callback");
-                activity.finish();
-            }
-
-            @Override
-            public void processFailure() {
-                MyLog.w(TAG, "openReplay by activity failure callback");
-                activity.finish();
-            }
-        });
-    }
-
     @Override
     public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
@@ -165,7 +106,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                         onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                         return;
                                     }
-                                    UploadService.toUpload(new UploadService.UploadInfo(miSsoLoginRsp,channelId));
+                                    UploadService.toUpload(new UploadService.UploadInfo(miSsoLoginRsp, channelId));
                                     onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
                                 } catch (Exception e) {
                                     MyLog.w(TAG, "miSsoLogin error", e);
@@ -216,8 +157,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             @Override
                             public void onNext(AccountProto.LoginRsp rsp) {
                                 MyLog.w(TAG, "miLoginByCode login onNext");
-                                if(rsp.getRetCode() == MiLiveSdkEvent.SUCCESS){
-                                    UploadService.toUpload(new UploadService.UploadInfo(rsp,channelId));
+                                if (rsp.getRetCode() == MiLiveSdkEvent.SUCCESS) {
+                                    UploadService.toUpload(new UploadService.UploadInfo(rsp, channelId));
                                 }
                                 if (rsp != null) {
                                     onEventLogin(channelId, rsp.getRetCode());
@@ -258,6 +199,124 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void processFailure() {
                 MyLog.w(TAG, "clearAccount failure callback");
+            }
+        });
+    }
+
+    public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
+                          final long playerId, final String liveId, final String videoUrl, final int liveType) {
+        MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
+
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                MyLog.w(TAG, "openWatch by activity success callback");
+                // 直接跳转
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                        .setLiveType(liveType)
+                        .build();
+                WatchSdkActivity.openActivity(activity, roomInfo);
+                activity.finish();
+            }
+
+            @Override
+            public void postError() {
+                MyLog.w(TAG, "openWatch by activity postError callback");
+                activity.finish();
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "openWatch by activity failure callback");
+                activity.finish();
+            }
+        });
+    }
+
+    public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
+                           final long playerId, final String liveId, final String videoUrl, final int liveType) {
+        MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
+
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                MyLog.w(TAG, "openReplay by activity success callback");
+                // 直接跳转
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                        .setLiveType(liveType)
+                        .build();
+                WatchSdkActivity.openActivity(activity, roomInfo);
+                activity.finish();
+            }
+
+            @Override
+            public void postError() {
+                MyLog.w(TAG, "openReplay by activity postError callback");
+                activity.finish();
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "openReplay by activity failure callback");
+                activity.finish();
+            }
+        });
+    }
+
+    public void openNormalLive(final Activity activity, final int channelId, final String packageName, String channelSecret,
+                               final ICommonCallBack callback) {
+        MyLog.w(TAG, "openNormalLive by activity channelId=" + channelId);
+
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                MyLog.w(TAG, "openNormalLive by activity success callback");
+                // 上层回调跳转
+                if (callback != null) {
+                    callback.process(null);
+                }
+                activity.finish();
+            }
+
+            @Override
+            public void postError() {
+                MyLog.w(TAG, "openNormalLive by activity postError callback");
+                activity.finish();
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "openNormalLive by activity failure callback");
+                activity.finish();
+            }
+        });
+    }
+
+    public void openGameLive(final Activity activity, final int channelId, final String packageName, String channelSecret,
+                             final ICommonCallBack callback) {
+        MyLog.w(TAG, "openGameLive by activity channelId=" + channelId);
+
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                MyLog.w(TAG, "openGameLive by activity success callback");
+                // 上层回调跳转
+                if (callback != null) {
+                    callback.process(null);
+                }
+                activity.finish();
+            }
+
+            @Override
+            public void postError() {
+                MyLog.w(TAG, "openGameLive by activity postError callback");
+                activity.finish();
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.w(TAG, "openGameLive by activity failure callback");
+                activity.finish();
             }
         });
     }

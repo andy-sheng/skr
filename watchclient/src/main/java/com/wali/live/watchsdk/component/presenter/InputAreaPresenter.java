@@ -115,7 +115,6 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
     @Override
     public void destroy() {
         super.destroy();
-        MyLog.d(TAG, "destroy()");
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -130,15 +129,12 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
             return;
         }
         switch (event.eventType) {
-            case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: // fall through
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE_ALWAYS_SEND:
                 int keyboardHeight = Integer.parseInt(String.valueOf(event.obj1));
                 mView.onKeyboardShowed(keyboardHeight);
                 break;
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
-                mView.onKeyboardHided();
-                break;
-            default:
+                mView.onKeyboardHidden();
                 break;
         }
     }
@@ -314,6 +310,7 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
         @Override
         public boolean onAction(int source, @Nullable Params params) {
             if (mView == null) {
+                MyLog.e(TAG, "onAction but mView is null, source=" + source);
                 return false;
             }
             switch (source) {

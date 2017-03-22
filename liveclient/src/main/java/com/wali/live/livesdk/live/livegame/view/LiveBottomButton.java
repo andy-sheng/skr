@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.mi.live.data.account.HostChannelManager;
@@ -56,7 +55,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mCommentBtn);
 
-        orientChild(mIsLandscape);
+        orientChild();
     }
 
     public void updateMuteAudio(boolean isMute) {
@@ -64,13 +63,8 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     @Override
-    protected void orientSelf(boolean isLandscape) {
+    protected void orientSelf() {
         // 无论横竖屏，都在右下角，采用竖屏位置参数
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mContentContainer.getLayoutParams();
-        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
     }
 
     @Override
@@ -115,6 +109,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             public <T extends View> T getRealView() {
                 return (T) mContentContainer;
             }
+
+            @Override
+            public void updateMuteBtn(boolean isMute) {
+                mMuteBtn.setSelected(isMute);
+            }
         }
         return new ComponentView();
     }
@@ -137,5 +136,10 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
+        /**
+         * 更新禁音按钮状态
+         */
+        void updateMuteBtn(boolean isMute);
+
     }
 }

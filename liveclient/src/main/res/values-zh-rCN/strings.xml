@@ -23,6 +23,7 @@
     <string name="game_unmute_microphone">已开麦克风，粉丝可以听见你的声音了</string>
     <string name="game_save_picture_success">已保存截图至%s</string>
     <string name="game_save_picture_failed">保存失败，请稍后再试</string>
+    <string name="normal_live_tag_title">请选择发布直播的圈子</string>
     <string name="live_ended">直播结束</string>
 
     <string name="live_private_tip">私密直播不予与保存</string>
@@ -92,5 +93,56 @@
     <string name="network_change_tip">您当前正在使用非wifi网络进行直播，可能会产生流量费用</string>
     <string name="warm_prompt">温馨提示</string>
     <string name="phone_interrupt">电话接听前，直播已经暂停，您的通话不会对外传播，现在您可以继续直播。</string>
+    <string name="close">关</string>
+    <string name="low">低</string>
+    <string name="middle">中</string>
+    <string name="high">高</string>
+    <string name="select_cover">设置封面</string>
+    <string name="quanzi_default_name">选择圈子</string>
+    <string name="add_topic">添加话题</string>
+    <string name="quanzi_name">%s圈子</string>
+    <string name="live_plus_atmosphere">氛围</string>
+    <string name="live_plus_comment">消息</string>
 
+    <string name="original">无混响</string>
+    <string name="recording_studio">录音棚</string>
+    <string name="ktv">KTV</string>
+    <string name="concert">演唱会</string>
+    <string name="choose_hifi">高保真</string>
+    <string name="mirror_image">自拍镜像</string>
+    <string name="switch_camera">翻转摄像头</string>
+    <string name="flash_light">闪光灯</string>
+    <string name="face_beauty">美颜</string>
+    <string name="expression">魔法表情</string>
+    <string name="filter">滤镜</string>
+
+
+    <string name="filter_normal">普通</string>
+    <string name="filter_sweet">甜蜜</string>
+    <string name="filter_crema">复古</string>
+    <string name="filter_nashville">旧时光</string>
+    <string name="filter_aden">午后</string>
+    <string name="filter_gingham">恋空</string>
+    <string name="filter_stinson">蜜茶</string>
+    <string name="filter_clarendon">青涩</string>
+    <string name="filter_juno">暖阳</string>
+    <string name="filter_dogpatch">小清新</string>
+    <string name="filter_gray">黑白</string>
+
+    <string name="saving_image">正在保存图片</string>
+    <string name="add_photo_pick_title">选择图片</string>
+    <string name="empty_tips">页面暂时为空</string>
+    <string name="photo">照片</string>
+    <string name="photo_file_list">图库列表</string>
+    <string name="photo_lib_title">已选择%d项</string>
+    <string name="photo_preview_title">%1$d/%2$d</string>
+    <string name="photo_select">选择</string>
+    <string name="photo_select_over_limit">最多只能选择 %d 张照片</string>
+    <string name="select_done">完成(%1$d/%2$d)</string>
+    <string name="unknown_error">对不起，服务器开小差了，请稍后重试</string>
+    <string name="upload_failed">上传失败！</string>
+    <string name="uploading">正在上传图片....</string>
+
+
+    <string name="camera_occupy">摄像头被占用</string>
 </resources>

@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.base.fragment.BaseFragment;
-import com.base.fragment.utils.ILeakWatch;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.mi.liveassistant.BuildConfig;
@@ -17,7 +15,7 @@ import com.squareup.leakcanary.RefWatcher;
  *
  * @description 第三方应用可以继承WatchSdkApplication，或者直接使用InitManager
  */
-public class LiveSdkApplication extends Application implements ILeakWatch {
+public class LiveSdkApplication extends Application {
     private static final String TAG = LiveSdkApplication.class.getSimpleName();
 
     private static RefWatcher sRefWatcher;
@@ -25,8 +23,8 @@ public class LiveSdkApplication extends Application implements ILeakWatch {
     @Override
     public void onCreate() {
         super.onCreate();
-        InitManager.init(this);
         initializeLeakDetection();
+        InitManager.init(this);
     }
 
     protected void attachBaseContext(Context base) {
@@ -44,10 +42,7 @@ public class LiveSdkApplication extends Application implements ILeakWatch {
         }
     }
 
-    @Override
-    public void watchFragment(BaseFragment baseFragment) {
-        if (sRefWatcher != null) {
-            sRefWatcher.watch(this);
-        }
+    public static RefWatcher getRefWatcher() {
+        return sRefWatcher;
     }
 }

@@ -5,4 +5,9 @@
         <item>High</item>
         <item>Super</item>
     </string-array>
+    <string-array name="cover_item">
+        <item>Camera</item>
+        <item>Select from Gallery</item>
+        <item>Cancel</item>
+    </string-array>
 </resources>

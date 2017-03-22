@@ -3,6 +3,7 @@ package com.wali.live.livesdk.live.livegame.presenter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.base.log.MyLog;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
@@ -26,6 +27,7 @@ public class BottomButtonPresenter extends
         super(componentController);
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(LiveComponentController.MSG_ON_ACTIVITY_RESUMED);
         mGameLivePresenter = gameLivePresenter;
     }
 
@@ -56,6 +58,7 @@ public class BottomButtonPresenter extends
         @Override
         public boolean onAction(int source, @Nullable Params params) {
             if (mView == null) {
+                MyLog.e(TAG, "onAction but mView is null, source=" + source);
                 return false;
             }
             switch (source) {
@@ -65,6 +68,12 @@ public class BottomButtonPresenter extends
                 case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
                     mView.onOrientation(true);
                     return true;
+                case LiveComponentController.MSG_ON_ACTIVITY_RESUMED:
+                    if (mGameLivePresenter != null) {
+                        mView.updateMuteBtn(mGameLivePresenter.isMuteMic());
+                        return true;
+                    }
+                    break;
                 default:
                     break;
             }

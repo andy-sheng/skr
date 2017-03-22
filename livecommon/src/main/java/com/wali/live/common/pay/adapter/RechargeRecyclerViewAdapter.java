@@ -1,5 +1,6 @@
 package com.wali.live.common.pay.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -29,8 +30,8 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.utils.CommonUtils;
-import com.base.utils.DeviceUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.layout.LayoutUtils;
 import com.jakewharton.rxbinding.view.RxView;
@@ -578,28 +579,31 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        // 支付方式使用了deviceId，在使用前申请一下修复权限问题
-                        DeviceUtils.getDeviceId();
-                        //选择钻石数后，点击立即付款一次，上报一次
-                        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, PayStatisticUtils.getRechargeTemplate(CLICK_PAY_BTN, getCurrentPayWay()), TIMES, "1");
-                        switch (getCurrentPayWay()) {
-                            // 微信支付SDK有未安装微信的返回码
-                            //case WEIXIN:
-                            //    scribeAppNotInstall("com.tencent.mm", PayWay.WEIXIN);
-                            //    break;
-                            case ZHIFUBAO:
-                                scribeAppNotInstall("com.eg.android.AlipayGphone", PayWay.ZHIFUBAO);
-                                break;
-                        }
+                        PermissionUtils.requestPermissionDialog((Activity) mContext, PermissionUtils.PermissionType.READ_PHONE_STATE, new PermissionUtils.IPermissionCallback() {
+                            @Override
+                            public void okProcess() {
+                                //选择钻石数后，点击立即付款一次，上报一次
+                                StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, PayStatisticUtils.getRechargeTemplate(CLICK_PAY_BTN, getCurrentPayWay()), TIMES, "1");
+                                switch (getCurrentPayWay()) {
+                                    // 微信支付SDK有未安装微信的返回码
+                                    //case WEIXIN:
+                                    //    scribeAppNotInstall("com.tencent.mm", PayWay.WEIXIN);
+                                    //    break;
+                                    case ZHIFUBAO:
+                                        scribeAppNotInstall("com.eg.android.AlipayGphone", PayWay.ZHIFUBAO);
+                                        break;
+                                }
 
-                        Diamond data = mRechargeList.get(mPopupWindowPosition);
-                        if (data == null) {
-                            MyLog.e(TAG, "Diamond is null, position:" + mPopupWindowPosition);
-                            return;
-                        }
-                        if (!mFirstRechargeActionHandler.intercept(data)) {
-                            mRechargePresenter.recharge(data, getCurrentPayWay());
-                        }
+                                Diamond data = mRechargeList.get(mPopupWindowPosition);
+                                if (data == null) {
+                                    MyLog.e(TAG, "Diamond is null, position:" + mPopupWindowPosition);
+                                    return;
+                                }
+                                if (!mFirstRechargeActionHandler.intercept(data)) {
+                                    mRechargePresenter.recharge(data, getCurrentPayWay());
+                                }
+                            }
+                        });
                     }
                 }, new Action1<Throwable>() {
                     @Override
