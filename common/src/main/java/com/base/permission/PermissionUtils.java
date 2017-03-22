@@ -187,13 +187,17 @@ public class PermissionUtils {
      * 当在系统权限管理中没有相应权限时，显示开启权限提示弹窗
      */
     public static void requestPermissionDialog(final Activity activity, final PermissionType type) {
-        requestPermissionDialog(activity, type, null, null);
+        requestPermissionDialog(activity, type, null, null, null);
+    }
+
+    public static void requestPermissionDialog(final Activity activity, final PermissionType type, final IPermissionCallback grantCallback) {
+        requestPermissionDialog(activity, type, grantCallback, null, null);
     }
 
     /**
      * 当在系统权限管理中没有相应权限时，显示开启权限提示弹窗
      */
-    public static void requestPermissionDialog(final Activity activity, final PermissionType type, final DialogUtils.IDialogCallback okCallback, final DialogUtils.IDialogCallback cancelCallback) {
+    public static void requestPermissionDialog(final Activity activity, final PermissionType type, final IPermissionCallback grantCallback, final DialogUtils.IDialogCallback okCallback, final DialogUtils.IDialogCallback cancelCallback) {
         String permission = "android.permission." + type;
         if (!PermissionUtils.checkPermissionWithType(activity, type)) {
             MyLog.d(TAG, "requestPermissionDialog permission: " + permission);
@@ -204,6 +208,9 @@ public class PermissionUtils {
                         public void call(Permission permission) {
                             MyLog.d(TAG, "requestPermissionDialog permission: " + permission);
                             if (permission.granted) {
+                                if (grantCallback != null) {
+                                    grantCallback.okProcess();
+                                }
                             } else if (permission.shouldShowRequestPermissionRationale) {
                                 showPermissionDialog(activity, type, okCallback, cancelCallback);
                             } else {
@@ -216,6 +223,10 @@ public class PermissionUtils {
                             MyLog.e(throwable);
                         }
                     });
+        } else {
+           if (grantCallback != null) {
+               grantCallback.okProcess();
+           }
         }
     }
 
@@ -332,7 +343,7 @@ public class PermissionUtils {
         MyLog.d(TAG, "sCheckNecessaryPermissionDialogShow: " + sCheckNecessaryPermissionDialogShow);
         if (!PermissionUtils.checkSdcardAlertWindow(GlobalData.app()) && !sCheckNecessaryPermissionDialogShow) {
             // 自杀
-            PermissionUtils.requestPermissionDialog(activity, PermissionType.WRITE_EXTERNAL_STORAGE, new DialogUtils.IDialogCallback() {
+            PermissionUtils.requestPermissionDialog(activity, PermissionType.WRITE_EXTERNAL_STORAGE, null, new DialogUtils.IDialogCallback() {
                 @Override
                 public void process(DialogInterface dialogInterface, int i) {
                     MyLog.d(TAG, "checkNecessaryPermission ok");

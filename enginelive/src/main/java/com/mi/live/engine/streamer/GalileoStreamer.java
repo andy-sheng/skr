@@ -141,16 +141,7 @@ public class GalileoStreamer implements IStreamer {
 
         @Override
         public void onError(String s, ConferenceManager.EngineErrorTypeT engineErrorTypeT) {
-            switch (engineErrorTypeT) {
-                case ENGINE_START_CAMERA_FAILED:
-                    EventBus.getDefault().post(new EngineEventClass.StreamerEvent(EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_CAMERA_FAILED));
-                    break;
-                case ENGINE_START_MIC_FAILED:
-                    EventBus.getDefault().post(new EngineEventClass.StreamerEvent(EngineEventClass.StreamerEvent.EVENT_TYPE_OPEN_MIC_FAILED));
-                    break;
-                default:
-                    break;
-            }
+
         }
 
         @Override

@@ -15,6 +15,7 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.language.LocaleUtil;
 import com.wali.live.livesdk.R;
@@ -46,7 +47,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private MyAlertDialog.Builder builder;
 
     private ImageView mTurnOverIv;
-    protected RelativeLayout mCoverArea;
     private RelativeLayout mAddTopicContainer;
     private BeautyView mBeautyView;
     private SelectCoverView mCoverView;
@@ -105,7 +105,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             }
         });
         mTurnOverIv = $(R.id.turn_over);
-        mCoverArea = $(R.id.cover_layout);
         mAddTopicContainer = $(R.id.add_topic_container);
         mBeautyView = $(R.id.beauty_view);
         mBeautyView.setStreamerPresenter(mStreamerPresenter);
@@ -128,7 +127,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mCoverView.setFragment(this);
 
         $click(mTurnOverIv, this);
-        $click(mCoverArea, this);
+        $click(mCoverView, this);
         $click(mAddTopicContainer, this);
     }
 
@@ -209,13 +208,21 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     protected void openLive() {
-        if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
-            return;
+        if (PermissionUtils.checkCamera(getContext())) {
+            if (PermissionUtils.checkRecordAudio(getContext())) {
+                if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+                    return;
+                }
+                if (mRoomTag != null) {
+                    PreferenceUtils.setSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, mRoomTag.toJsonString());
+                }
+                openPublicLive();
+            } else {
+                PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
+            }
+        } else {
+            PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.CAMERA);
         }
-        if (mRoomTag != null) {
-            PreferenceUtils.setSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, mRoomTag.toJsonString());
-        }
-        openPublicLive();
     }
 
     @Override

@@ -160,35 +160,40 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     protected void onBeginBtnClick() {
-        if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
-            return;
-        }
-        if (CommonUtils.isLocalChina() && mRoomTag == null) {
-            ToastUtils.showToast(R.string.game_choose_tag_tip);
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (PermissionUtils.checkSystemAlertWindow(getContext())) {
-                if (PermissionUtils.checkRecordAudio(getContext())) {
-                    getActivity().startActivityForResult(
-                            ((MediaProjectionManager) GlobalData.app()
-                                    .getSystemService(Context.MEDIA_PROJECTION_SERVICE)).createScreenCaptureIntent(),
-                            LiveSdkActivity.REQUEST_MEDIA_PROJECTION);
-                } else {
-                    PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
+        PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.READ_PHONE_STATE, new PermissionUtils.IPermissionCallback() {
+            @Override
+            public void okProcess() {
+                if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
+                    return;
                 }
-            } else {
-                if (VersionManager.getCurrentSdkVersion() >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getActivity())) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:" + "com.mi.liveassistant"));
-                    startActivityForResult(intent, 10);
+                if (CommonUtils.isLocalChina() && mRoomTag == null) {
+                    ToastUtils.showToast(R.string.game_choose_tag_tip);
+                    return;
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (PermissionUtils.checkSystemAlertWindow(getContext())) {
+                        if (PermissionUtils.checkRecordAudio(getContext())) {
+                            getActivity().startActivityForResult(
+                                    ((MediaProjectionManager) GlobalData.app()
+                                            .getSystemService(Context.MEDIA_PROJECTION_SERVICE)).createScreenCaptureIntent(),
+                                    LiveSdkActivity.REQUEST_MEDIA_PROJECTION);
+                        } else {
+                            PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
+                        }
+                    } else {
+                        if (VersionManager.getCurrentSdkVersion() >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getActivity())) {
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:" + "com.mi.liveassistant"));
+                            startActivityForResult(intent, 10);
+                        } else {
+                            PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.SYSTEM_ALERT_WINDOW);
+                        }
+                    }
                 } else {
-                    PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.SYSTEM_ALERT_WINDOW);
+                    ToastUtils.showToast(R.string.third_party_system_version_error);
                 }
             }
-        } else {
-            ToastUtils.showToast(R.string.third_party_system_version_error);
-        }
+        });
     }
 
     @Override

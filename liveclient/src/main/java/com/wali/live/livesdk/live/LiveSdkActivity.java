@@ -36,7 +36,6 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.CommonUtils;
-import com.base.utils.DeviceUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
@@ -77,8 +76,8 @@ import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.EndLiveFragment;
-import com.wali.live.livesdk.live.fragment.PrepareGameLiveFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
+import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
 import com.wali.live.livesdk.live.task.IActionCallBack;
@@ -149,7 +148,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private Intent mScreenRecordIntent;
     private String mLiveTitle;
     private RoomTag mRoomTag;
-    private int mClarity = PrepareGameLiveFragment.LOW_CLARITY;
 
     protected boolean mIsGameLive;
 
@@ -530,7 +528,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
         mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
         mMyRoomData.setLiveTitle(mLiveTitle);
-        mClarity = bundle.getInt(PrepareGameLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareGameLiveFragment.MEDIUM_CLARITY);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
@@ -538,7 +535,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPresent(mGiftPresenter);
         if (mIsGameLive) {
-            mComponentController.createStreamer(null, mClarity, mScreenRecordIntent);
+            mComponentController.createStreamer(null, bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY), mScreenRecordIntent);
         }
     }
 
@@ -827,10 +824,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void beginLiveToServer() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-
-        // 金山云需要read_phone_state，所以提前检测下
-        DeviceUtils.getDeviceId();
-
         startCountDown();
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
                 "", mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);

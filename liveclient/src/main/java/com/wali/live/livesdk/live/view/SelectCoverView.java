@@ -17,6 +17,7 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.HttpImage;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.assist.Attachment;
@@ -115,28 +116,33 @@ public class SelectCoverView extends RelativeLayout implements View.OnClickListe
     }
 
     private void showCoverSelectDialog() {
-        if (mFragment == null || mFragment.isDetached()) {
-            return;
-        }
-        KeyboardUtils.hideKeyboardImmediately(mFragment.getActivity());
-        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(mFragment.getContext());
-        builder.setItems(getResources().getStringArray(R.array.cover_item), new DialogInterface.OnClickListener() {
+        PermissionUtils.requestPermissionDialog((Activity) getContext(), PermissionUtils.PermissionType.READ_PHONE_STATE, new PermissionUtils.IPermissionCallback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case MENU_PHOTO_TAKE:
-                        mPrepareLiveCoverManager.onClickTakePicButton(mFragment);
-                        break;
-                    case MENU_PHOTO_CHOOSE:
-                        mPrepareLiveCoverManager.onClickSelectPicButton();
-                        break;
-                    default:
-                        break;
+            public void okProcess() {
+                if (mFragment == null || mFragment.isDetached()) {
+                    return;
                 }
-                dialog.dismiss();
+                KeyboardUtils.hideKeyboardImmediately(mFragment.getActivity());
+                MyAlertDialog.Builder builder = new MyAlertDialog.Builder(mFragment.getContext());
+                builder.setItems(getResources().getStringArray(R.array.cover_item), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case MENU_PHOTO_TAKE:
+                                mPrepareLiveCoverManager.onClickTakePicButton(mFragment);
+                                break;
+                            case MENU_PHOTO_CHOOSE:
+                                mPrepareLiveCoverManager.onClickSelectPicButton();
+                                break;
+                            default:
+                                break;
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
             }
         });
-        builder.create().show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
