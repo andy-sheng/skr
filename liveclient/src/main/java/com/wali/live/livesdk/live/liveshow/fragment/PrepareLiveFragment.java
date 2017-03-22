@@ -18,6 +18,7 @@ import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.language.LocaleUtil;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
@@ -258,10 +259,11 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             BaseComponentSdkActivity fragmentActivity,
             int requestCode,
             FragmentDataListener listener,
-            StreamerPresenter streamerPresenter) {
+            StreamerPresenter streamerPresenter, RoomBaseDataModel roomBaseDataModel) {
         PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(fragmentActivity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
         fragment.setStreamerPresenter(streamerPresenter);
+        fragment.setMyRoomData(roomBaseDataModel);
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }

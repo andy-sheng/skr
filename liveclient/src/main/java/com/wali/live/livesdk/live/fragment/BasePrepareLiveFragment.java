@@ -24,24 +24,21 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
+import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -49,7 +46,7 @@ import java.util.List;
  * Created by zyh on 2017/2/8.
  */
 
-public abstract class BasePrepareLiveFragment extends BaseEventBusFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
+public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
@@ -64,6 +61,8 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     public final static int TOPIC_FROM_TMATY = 1;
     public final static int TOPIC_FROM_CUSTOM = 0;
 
+    @NonNull
+    protected RoomBaseDataModel mMyRoomData;
     protected boolean mIsAddHistory = true;
     protected TitleTextWatcher mTitleTextWatcher;
 
@@ -77,6 +76,12 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected RoomTag mRoomTag;
     protected RoomTagPresenter mRoomTagPresenter;
     protected int mTagIndex = -1;
+    protected String mCity;
+
+    public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
+        mMyRoomData = myRoomData;
+        mCity = myRoomData.getLocation();
+    }
 
     @CallSuper
     @Override
@@ -117,9 +122,12 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     }
 
     private void onLocationBtnClick() {
-        if (getActivity() != null && getActivity() instanceof LiveSdkActivity) {
-            ((LiveSdkActivity) getActivity()).getLocation();
+        if (!TextUtils.isEmpty(mCity)) {
+            mCity = "";
+        } else {
+            mCity = mMyRoomData.getLocation();
         }
+        updateLocationView();
     }
 
     private void onTagNameBtnClick() {
@@ -187,9 +195,17 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         MyLog.w(TAG, "bindView");
         initContentView();
         initTitleView();
-        updateLocationView();
+        setLocationTvState();
         initPresenters();
         initTagName();
+    }
+
+    protected void setLocationTvState() {
+        if (TextUtils.isEmpty(mCity)) {
+            mLocationTv.setVisibility(View.GONE);
+        } else {
+            updateLocationView();
+        }
     }
 
     @Override
@@ -215,16 +231,12 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     }
 
     private void updateLocationView() {
-        String city;
-        if (getActivity() == null || isDetached()) {
-            return;
-        }
-        if (!TextUtils.isEmpty(((LiveSdkActivity) getActivity()).getCity())) {
-            city = ((LiveSdkActivity) getActivity()).getCity();
+        if (!TextUtils.isEmpty(mCity)) {
+            mLocationTv.setText(mCity);
         } else {
-            city = getString(R.string.default_location_hint);
+            mLocationTv.setText(getString(R.string.default_location_hint));
         }
-        mLocationTv.setText(city);
+
     }
 
     protected abstract void openLive();
@@ -321,14 +333,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             default:
                 break;
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(LocationEvent event) {
-        updateLocationView();
-    }
-
-    public static class LocationEvent {
     }
 
     protected static class TitleTextWatcher implements TextWatcher {

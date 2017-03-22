@@ -25,7 +25,7 @@ import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
-import com.base.presenter.Presenter;
+import com.base.presenter.RxLifeCyclePresenter;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.rx.RefuseRetryExeption;
 import com.base.utils.rx.RxRetryAssist;
@@ -36,7 +36,6 @@ import com.mi.live.data.account.XiaoMiOAuth;
 import com.mi.live.data.account.event.UserInfoEvent;
 import com.wali.live.common.pay.constant.PayConstant;
 import com.wali.live.common.pay.constant.PayWay;
-import com.wali.live.common.pay.constant.RechargeConfig;
 import com.wali.live.common.pay.manager.PayManager;
 import com.wali.live.common.pay.model.BalanceDetail;
 import com.wali.live.common.pay.model.Diamond;
@@ -107,7 +106,7 @@ import static com.xiaomi.gamecenter.ucashier.config.ResultCode.TOAST_PAY_FAIL;
  * @module 充值
  * Created by rongzhisheng on 16-7-1.
  */
-public class RechargePresenter implements Presenter, PayManager.PullRechargeListIface {
+public class RechargePresenter extends RxLifeCyclePresenter implements PayManager.PullRechargeListIface {
     private static final String TAG = RechargePresenter.class.getSimpleName();
 
     // Google Play 相关常量
@@ -142,27 +141,8 @@ public class RechargePresenter implements Presenter, PayManager.PullRechargeList
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
     public void destroy() {
+        super.destroy();
         EventBus.getDefault().unregister(this);
     }
 

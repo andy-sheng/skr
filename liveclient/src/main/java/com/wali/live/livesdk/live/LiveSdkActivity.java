@@ -34,7 +34,6 @@ import com.base.image.fresco.image.ImageFactory;
 import com.base.image.fresco.processor.BlurPostprocessor;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
-import com.base.permission.PermissionUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
@@ -47,7 +46,6 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
-import com.mi.live.data.location.Address;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
@@ -81,7 +79,6 @@ import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
 import com.wali.live.livesdk.live.receiver.ScreenStateReceiver;
 import com.wali.live.livesdk.live.task.IActionCallBack;
-import com.wali.live.livesdk.live.utils.LocationHelper;
 import com.wali.live.livesdk.live.view.CountDownView;
 import com.wali.live.livesdk.live.view.topinfo.LiveTopInfoSingleView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
@@ -207,7 +204,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
 
         initData();
-        getLocation();
         setupRequiredComponent();
 
         if (!mIsGameLive) {
@@ -276,37 +272,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         MyLog.w(TAG, "finish");
         super.finish();
         overridePendingTransition(R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
-    }
-
-    public void getLocation() {
-        if (PermissionUtils.checkAccessLocation(this)) {
-            if (mLocation == null || TextUtils.isEmpty(mLocation.getCity())) {
-                LocationHelper.getInstance().getAddress(new LocationHelper.AddressCallback() {
-                    @Override
-                    public void returnAddress(double latitude, double longitude, com.baidu.location.Address address) {
-                        if (address != null) {
-                            mLocation = new Location(latitude, longitude, new Address(address.country, address.province, address.city));
-                            mMyRoomData.setLocation(mLocation.getCity());
-                            EventBus.getDefault().post(new BasePrepareLiveFragment.LocationEvent());
-                        }
-                    }
-                });
-            } else {
-                mLocation = null;
-                mMyRoomData.setLocation("");
-                EventBus.getDefault().post(new BasePrepareLiveFragment.LocationEvent());
-            }
-        } else {
-            PermissionUtils.requestPermissionDialog(this, PermissionUtils.PermissionType.ACCESS_COARSE_LOCATION);
-        }
-    }
-
-    public String getCity() {
-        MyLog.w(TAG, "getCity mLocation != null" + (mLocation != null));
-        if (mLocation != null) {
-            return mLocation.getCity();
-        }
-        return "";
     }
 
     @Subscribe

@@ -11,7 +11,6 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.assist.Attachment;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.wali.live.common.MessageType;
-import com.wali.live.proto.LiveMallProto;
 import com.wali.live.task.TaskCallBackWrapper;
 import com.wali.live.upload.UploadTask;
 import com.wali.live.utils.AttachmentUtils;
@@ -19,7 +18,6 @@ import com.wali.live.watchsdk.ipc.service.MiLiveSdkEvent;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.UploadUserInfoRequest;
 
-import cz.msebera.android.httpclient.annotation.NotThreadSafe;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
