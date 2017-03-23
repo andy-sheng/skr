@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.mi.live.data.location.Location;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.http.HttpUtils;
 import com.wali.live.sdk.manager.http.SimpleRequest;
@@ -40,6 +41,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_LIVE_ID = "extra_live_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
+
+    private static final String EXTRA_LOCATION = "extra_location";
 
     private static final String ACTION_LOGIN_OAUTH = "login_oauth";
     private static final String ACTION_LOGIN_SSO = "login_sso";
@@ -79,8 +82,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_LOGIN_SSO, 204000);
         mMinVersionMap.put(ACTION_CLEAR_ACCOUNT, 204000);
 
-        mMinVersionMap.put(ACTION_OPEN_NORMAL_LIVE, 204015);
-        mMinVersionMap.put(ACTION_OPEN_GAME_LIVE, 204015);
+        mMinVersionMap.put(ACTION_OPEN_NORMAL_LIVE, 205001);
+        mMinVersionMap.put(ACTION_OPEN_GAME_LIVE, 205001);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -310,24 +313,30 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openNormalLive(Activity activity, IAssistantCallback callback) {
+    public void openNormalLive(Activity activity, Location location, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_NORMAL_LIVE, callback)) {
             return;
         }
         checkHasInit();
 
         Bundle bundle = getBasicBundle();
+        if (location != null) {
+            bundle.putParcelable(EXTRA_LOCATION, location);
+        }
         jumpToSdk(activity, bundle, ACTION_OPEN_NORMAL_LIVE, callback);
     }
 
     @Override
-    public void openGameLive(Activity activity, IAssistantCallback callback) {
+    public void openGameLive(Activity activity, Location location, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_GAME_LIVE, callback)) {
             return;
         }
         checkHasInit();
 
         Bundle bundle = getBasicBundle();
+        if (location != null) {
+            bundle.putParcelable(EXTRA_LOCATION, location);
+        }
         jumpToSdk(activity, bundle, ACTION_OPEN_GAME_LIVE, callback);
     }
 

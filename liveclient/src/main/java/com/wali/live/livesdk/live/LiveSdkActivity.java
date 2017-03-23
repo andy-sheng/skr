@@ -118,7 +118,8 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 public class LiveSdkActivity extends BaseComponentSdkActivity implements FragmentDataListener, IActionCallBack,
         FloatPersonInfoFragment.FloatPersonInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
 
-    public static final String EXTRA_GAME_LIVE = "extra_game_live";
+    private static final String EXTRA_IS_GAME_LIVE = "extra_is_game_live";
+    private static final String EXTRA_LOCATION = "extra_location";
 
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
     public static final int REQUEST_PREPARE_LIVE = 1000;
@@ -139,14 +140,15 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private static final int MSG_ROOM_NOT_EXIT = 205;               // 房间不存在
 
     public static boolean sRecording = false; //将其变为静态并暴露给外面，用于各种跳转判定
+
     private boolean mIsLiveEnd;
     private int mLastTicket;
-    private Location mLocation = null;
     private Intent mScreenRecordIntent;
     private String mLiveTitle;
     private RoomTag mRoomTag;
 
-    protected boolean mIsGameLive;
+    private boolean mIsGameLive;
+    private Location mLocation;
 
     private final MyUIHandler mUIHandler = new MyUIHandler(this);
 
@@ -223,7 +225,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void initData() {
         Intent data = getIntent();
         if (data != null) {
-            mIsGameLive = data.getBooleanExtra(EXTRA_GAME_LIVE, false);
+            mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
+            mLocation = data.getParcelableExtra(EXTRA_LOCATION);
         }
     }
 
@@ -1079,22 +1082,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
-    /**
-     * 秀场直播
-     */
-    public static void openActivity(BaseSdkActivity activity) {
-        openActivity(activity, false);
-    }
-
-    /**
-     * 区分是否是游戏直播还是秀场直播
-     */
-    public static void openActivity(BaseSdkActivity activity, boolean isGameLive) {
-        Intent intent = new Intent(activity, LiveSdkActivity.class);
-        intent.putExtra(EXTRA_GAME_LIVE, isGameLive);
-        activity.startActivity(intent);
-    }
-
     private class Action implements ComponentPresenter.IAction {
         @Override
         public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
@@ -1125,5 +1112,25 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             }
             return false;
         }
+    }
+
+
+    /**
+     * 秀场直播
+     */
+    public static void openActivity(BaseSdkActivity activity, Location location) {
+        openActivity(activity, location, false);
+    }
+
+    /**
+     * 区分是否是游戏直播还是秀场直播
+     */
+    public static void openActivity(BaseSdkActivity activity, Location location, boolean isGameLive) {
+        Intent intent = new Intent(activity, LiveSdkActivity.class);
+        if (location != null) {
+            intent.putExtra(EXTRA_LOCATION, location);
+        }
+        intent.putExtra(EXTRA_IS_GAME_LIVE, isGameLive);
+        activity.startActivity(intent);
     }
 }

@@ -76,7 +76,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
             @Override
             public void onClick(View v) {
                 if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
-                    LiveSdkActivity.openActivity(MainActivity.this);
+                    LiveSdkActivity.openActivity(MainActivity.this, null);
                 }
             }
         });
