@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.wali.live.common.gift.view.GiftContinueViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gift_continue_vg"
-    android:layout_width="wrap_content"
-    android:layout_height="140dp"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentTop="true"
-    android:layout_marginBottom="61.33dip" />

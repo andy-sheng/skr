@@ -31,24 +31,24 @@ dependencies {
     embedded project(':enginelive')
     embedded project(path: ':enginebase', configuration: "liveRelease")
     embedded project(':common')
+//
+//    embedded("com.facebook.fresco:animated-base:0.14.1")
+//    embedded("com.facebook.fresco:animated-gif:0.14.1")
+//    embedded("com.facebook.fresco:animated-webp:0.14.1")
+//    embedded("com.facebook.fresco:fresco:0.14.1")
+//    embedded("com.facebook.fresco:fbcore:0.14.1")
+//    embedded("com.facebook.fresco:drawee:0.14.1")
+//    embedded("com.facebook.fresco:imagepipeline:0.14.1")
+//    embedded("com.facebook.fresco:imagepipeline-base:0.14.1")
+//    embedded("com.facebook.fresco:imagepipeline-okhttp:0.14.1")
+//    embedded("com.facebook.fresco:webpsupport:0.14.1")
 
-    embedded("com.facebook.fresco:animated-base:0.14.1")
-    embedded("com.facebook.fresco:animated-gif:0.14.1")
-    embedded("com.facebook.fresco:animated-webp:0.14.1")
-    embedded("com.facebook.fresco:fresco:0.14.1")
-    embedded("com.facebook.fresco:fbcore:0.14.1")
-    embedded("com.facebook.fresco:drawee:0.14.1")
-    embedded("com.facebook.fresco:imagepipeline:0.14.1")
-    embedded("com.facebook.fresco:imagepipeline-base:0.14.1")
-    embedded("com.facebook.fresco:imagepipeline-okhttp:0.14.1")
-    embedded("com.facebook.fresco:webpsupport:0.14.1")
-
-    embedded("com.squareup.okhttp:okhttp:2.7.4")
+//    embedded("com.squareup.okhttp:okhttp:2.7.4")
 
 //    embedded("com.android.support:recyclerview-v7:24.2.1")
 
-    embedded("com.trello:rxlifecycle:0.4.0")
+//    embedded("com.trello:rxlifecycle:0.4.0")
 
-    embedded('org.greenrobot:eventbus:3.0.0')
-    embedded('org.slf4j:slf4j-api:1.7.21')
+//    embedded('org.greenrobot:eventbus:3.0.0')
+//    embedded('org.slf4j:slf4j-api:1.7.21')
 }
