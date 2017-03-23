@@ -42,8 +42,6 @@
         <attr name="textColorHint" format="reference|color" />
         <!-- Color of the links. -->
         <attr name="textColorLink" format="reference|color" />
-        <!-- Present the text in ALL CAPS. This may use a small-caps form when available. -->
-        <attr name="textAllCaps" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ClipImageSize">

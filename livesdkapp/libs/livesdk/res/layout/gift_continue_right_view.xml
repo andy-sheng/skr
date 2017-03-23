@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="65dp">
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="155dp"
+        android:layout_height="36.66dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/live_bg_gift_s"
+        android:paddingLeft="40dp">
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/sender_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:roundAsCircle="false"
+            app:roundingBorderColor="@color/color_4f6ba5"
+            app:roundingBorderWidth="1dp" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/sender_iv"
+            android:layout_marginRight="6.66dp"
+            android:layout_toLeftOf="@id/sender_iv"
+            android:singleLine="true"
+            android:text="我就是Angelababy啊"
+            android:textColor="@color/color_white"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/info_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/sender_iv"
+            android:layout_alignRight="@id/name_tv"
+            android:layout_marginBottom="1dp"
+            android:singleLine="true"
+            android:text="送了玫瑰花"
+            android:textColor="#ffff8c08"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+
+    <com.wali.live.common.gift.view.GiftPictureAnimationView
+        android:id="@+id/gift_picture_vg"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@id/container"
+        android:layout_marginBottom="-3dp"
+        android:layout_marginLeft="-45dp"
+        android:layout_toRightOf="@id/container"
+        />
+
+    <com.wali.live.common.gift.view.GiftNumberAnimationView
+        android:id="@+id/gift_number_vg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/gift_picture_vg"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/gift_picture_vg"
+        android:paddingRight="2dp" />
+
+</merge>

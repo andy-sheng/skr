@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:id="@+id/tips_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="33.33dp"
+    android:paddingLeft="@dimen/margin_30"
+    android:paddingRight="@dimen/margin_30">
+
+    <TextView
+        android:id="@+id/tips_tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33.33dp"
+        android:text="@string/admin_manager_tips"
+        android:textColor="@color/color_black_trans_40"
+        android:textSize="12dp"/>
+
+    <TextView
+
+        android:id="@+id/tips_tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5.33dp"
+        android:text="@string/admin_banspeaker_tips_1"
+        android:textColor="@color/color_black_trans_40"
+        android:textSize="12dp"/>
+
+    <TextView
+
+        android:id="@+id/tips_tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5.33dp"
+        android:text="@string/admin_banspeaker_tips_2"
+        android:textColor="@color/color_black_trans_40"
+        android:textSize="12dp"/>
+
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 按钮不可用状态时显示这个状态 -->
+    <item android:drawable="@drawable/live_gift_button_cross_disabled" android:state_enabled="false" />
+
+    <item android:drawable="@drawable/live_gift_button_cross_pressed" android:state_pressed="true" />
+
+    <!-- 按钮可用，并且处于正常状态时显示这个状态 -->
+    <item android:drawable="@drawable/live_gift_button_cross_normal" />
+</selector>

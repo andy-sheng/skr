@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view
+    class="com.base.dialog.MyAlertController$RecycleListView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/select_dialog_listview"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    android:overScrollMode="ifContentScrolls"
+    android:background="@color/color_transparent"
+    android:listSelector="@drawable/transparent_drawable"
+    android:cacheColorHint="@android:color/transparent"
+    android:divider="@null"
+    android:layoutAnimation="@null" />

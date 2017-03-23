@@ -5,8 +5,8 @@ import android.widget.LinearLayout;
 
 import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
-import com.wali.live.channel.viewmodel.ChannelLiveViewModel;
 import com.mi.liveassistant.R;
+import com.wali.live.channel.viewmodel.ChannelLiveViewModel;
 
 import java.util.Arrays;
 

@@ -7,11 +7,11 @@ import android.view.WindowManager;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.mi.liveassistant.R;
 import com.wali.live.channel.presenter.ChannelPresenter;
 import com.wali.live.channel.presenter.IChannelView;
 import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.channel.viewmodel.ChannelLiveViewModel;
-import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 

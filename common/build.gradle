@@ -48,6 +48,7 @@ dependencies {
 //    testCompile 'junit:junit:4.12'
 
     compile 'org.greenrobot:eventbus:3.0.0'
+
     compile 'com.google.code.gson:gson:2.6.2'
     def presentationDependencies = rootProject.ext.presentationDependencies
     def dataDependencies = rootProject.ext.dataDependencies

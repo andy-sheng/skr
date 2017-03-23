@@ -67,14 +67,17 @@ buildscript {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.1'
 
     def presentationDependencies = rootProject.ext.presentationDependencies
-    def dataDependencies = rootProject.ext.dataDependencies
-    def testDependencies = rootProject.ext.dataTestDependencies
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.rxJava
 
@@ -83,13 +86,15 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
-    compile(presentationDependencies.androidAppCompat) {
-        exclude module: 'support-v4'
-    }
-    if (flavorType == "live") {
-        compile project(':liveclient')
-    } else {
-        compile project(':watchclient')
-    }
+    compile presentationDependencies.androidAppCompat
+
+    compile(name: 'livesdk', ext: 'aar')
+
+//    if (flavorType == "live") {
+//        compile project(':liveclient')
+//    } else {
+//        compile project(':watchclient')
+//    }
     compile files('libs/crasheye_2.1.5.jar')
+    compile 'com.android.support:recyclerview-v7:24.2.1'
 }

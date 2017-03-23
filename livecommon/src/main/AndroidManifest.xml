@@ -41,7 +41,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
-            android:name="com.mi.liveassistant.wxapi.WXPayEntryActivity"
+            android:name="com.mi.livesdk.wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />

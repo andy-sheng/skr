@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.base.common.BuildConfig;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
-import com.mi.liveassistant.BuildConfig;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 

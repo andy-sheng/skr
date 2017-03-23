@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/hotspot_rylv"
+        android:background="@drawable/live_hotspot_toast_bg"
+        android:layout_width="720px"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never" />
+    <RelativeLayout
+        android:id="@+id/rl_hotspot_triangle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:id="@+id/iv_hotspot_triangle"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/live_hotspot_toast_triangle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

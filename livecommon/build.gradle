@@ -33,15 +33,13 @@ buildscript {
 
 // 放一些直播业务的基础公共类
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     def presentationDependencies = rootProject.ext.presentationDependencies
-    def dataDependencies = rootProject.ext.dataDependencies
-    def testDependencies = rootProject.ext.dataTestDependencies
     compile presentationDependencies.androidAppCompat
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.rxJava
     compile presentationDependencies.butterKnife
+
     compile project(':data')
 
 //    /*

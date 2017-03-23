@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/loading_zone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/buffering_pb"
+            style="@style/Theme.AppCompat.Light"
+            android:layout_width="@dimen/buffer_width"
+            android:layout_height="@dimen/buffer_height"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buffering_pb"
+            android:layout_centerHorizontal="true"
+            android:text="@string/in_process"
+            android:textColor="@color/black"
+            android:textSize="20dp"/>
+    </RelativeLayout>
+</RelativeLayout>

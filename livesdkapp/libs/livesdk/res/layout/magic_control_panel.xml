@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:background="@color/color_black_trans_90"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <!--用于放置弹出的美颜/滤镜/魔法表情面板-->
+    <RelativeLayout
+        android:id="@+id/sub_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/splitter"
+        android:layout_width="match_parent"
+        android:layout_height="0.33dp"
+        android:background="@color/color_white_trans_20" />
+
+    <!--控制按钮区域-->
+    <LinearLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_270"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/face_beauty"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/face_beauty_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/live_bottom_beauty_btn"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/face_beauty"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/expression"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/expression_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/live_bottom_expression_btn"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="@string/expression"
+                    android:textColor="@color/bottom_panel_btn_txt_color"
+                    android:textSize="@dimen/control_panel_text_size" />
+
+                <ImageView
+                    android:id="@+id/alert_red_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/little_red_dot"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/filter_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/live_bottom_filter_btn"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/filter"
+                android:textColor="@color/bottom_panel_btn_txt_color"
+                android:textSize="@dimen/control_panel_text_size" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

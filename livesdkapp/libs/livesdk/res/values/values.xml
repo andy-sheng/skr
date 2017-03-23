@@ -1,0 +1,2297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cover_item">
+        <item>Camera</item>
+        <item>Select from Gallery</item>
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="default_smiley_texts">
+        <item>"hi~"</item> <!-- 0: 打招呼 -->
+        <item>":D"</item> <!-- 1: 哈哈大笑 -->
+        <item>":P"</item> <!-- 2: 得意 -->
+        <item>"囧:"</item> <!-- 3: 囧 -->
+        <item>"::>_&lt;::"</item> <!-- 4: 可怜 -->
+        <item>"&lt;_>|||"</item> <!-- 5: 汗 -->
+        <item>"∩_∩"</item> <!-- 6: 偷笑 -->
+        <item>"bye~"</item> <!-- 7: 拜拜 -->
+        <item>"^口^"</item> <!-- 8:尴尬 -->
+        <item>"〒_〒"</item> <!-- 9: 哭 -->
+        <item>"∠※"</item> <!-- 10: 一束花 -->
+        <item>":'("</item> <!-- 11: 悲伤 -->
+        <item>"一-一"</item> <!-- 12: 秘密 -->
+        <item>"b_d"</item> <!-- 13: 酷 -->
+        <item>"*^?^*"</item> <!-- 14: 啵一个 -->
+        <item>"^~^"</item> <!-- 15: 幸福 -->
+        <item>"$_$"</item> <!-- 16: 见钱眼开 -->
+        <item>":)"</item> <!-- 17: 微笑 -->
+        <item>"^_^"</item> <!-- 18: 可爱 -->
+        <item>"ˋ^ˊ"</item> <!-- 19: 生气 -->
+        <item>"ˋ_ˊ"</item> <!-- 20: 震惊 -->
+        <item>"°ο°"</item> <!-- 21: 晕 -->
+        <item>"^o^"</item> <!-- 22: 欢呼 -->
+        <item>"⊙o⊙"</item> <!-- 23: 惊讶 -->
+        <item>"?_?"</item> <!-- 24:疑问 -->
+        <item>"Huh~"</item> <!-- 25: 想睡了 -->
+        <item>"ˉ^ˉ"</item> <!-- 26: 不以为然 -->
+        <item>"→_→"</item> <!-- 27: 怀疑 -->
+        <item>"@ο@"</item> <!-- 28: 肯定 -->
+        <item>"^人^"</item> <!-- 29: 拜托了 -->
+        <item>"hands~"</item> <!-- 30: 合作 -->
+        <item>"oVo"</item> <!-- 31: 胜利 -->
+        <item>"ōk"</item> <!-- 32:OK -->
+        <item>"-?o-?"</item> <!-- 33:小猪 -->
+        <item>"night~"</item> <!-- 34:夜晚 -->
+        <item>"smoke~"</item> <!-- 35:抽烟 -->
+    </string-array>
+    <string-array name="pref_entries_pixel_format">
+        <item>Auto Select</item>
+        <item>RGB 565</item>
+        <item>RGB 888</item>
+        <item>RGBX 8888</item>
+        <item>YV12</item>
+        <item>OpenGL ES2</item>
+    </string-array>
+    <string-array name="pref_entries_player">
+        <item>Auto Select</item>
+        <item>AndroidMediaPlayer</item>
+        <item>IjkMediaPlayer</item>
+        <item>IjkExoMediaPlayer</item>
+    </string-array>
+    <string-array name="pref_entry_summaries_pixel_format">
+        <item>Auto Select</item>
+        <item>RGB 565</item>
+        <item>RGB 888</item>
+        <item>RGBX 8888</item>
+        <item>YV12</item>
+        <item>OpenGL ES2</item>
+    </string-array>
+    <string-array name="pref_entry_summaries_player">
+        <item>Auto Select</item>
+        <item>AndroidMediaPlayer</item>
+        <item>IjkMediaPlayer</item>
+        <item>IjkExoMediaPlayer</item>
+    </string-array>
+    <string-array name="pref_entry_values_pixel_format">
+        <item/>
+        <item>fcc-rv16</item>
+        <item>fcc-rv24</item>
+        <item>fcc-rv32</item>
+        <item>fcc-yv12</item>
+        <item>fcc-_es2</item>
+    </string-array>
+    <string-array name="pref_entry_values_player">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="quality_arrays">
+        <item>Standard</item>
+        <item>High</item>
+        <item>Super</item>
+    </string-array>
+    <string-array name="smiley_car_texts">
+        <item>【民宅】</item>
+        <item>【学校】</item>
+        <item>【办公楼】</item>
+        <item>【别墅】</item>
+        <item>【医院】</item>
+        <item>【银行】</item>
+        <item>【24小时店】</item>
+        <item>【爱情酒店】</item>
+        <item>【酒店】</item>
+        <item>【婚礼】</item>
+        <item>【教堂】</item>
+        <item>【气象台】</item>
+        <item>【清晨】</item>
+        <item>【傍晚】</item>
+        <item>【流行街】</item>
+        <item>【寺庙】</item>
+        <item>【城堡】</item>
+        <item>【帐篷】</item>
+        <item>【烟囱】</item>
+        <item>【铁塔】</item>
+        <item>【山峰】</item>
+        <item>【日落】</item>
+        <item>【日出】</item>
+        <item>【流星】</item>
+        <item>【自由女神】</item>
+        <item>【彩虹】</item>
+        <item>【摩天轮】</item>
+        <item>【喷泉】</item>
+        <item>【过山车】</item>
+        <item>【轮船】</item>
+        <item>【赛艇】</item>
+        <item>【帆船】</item>
+        <item>【小车】</item>
+        <item>【轿车】</item>
+        <item>【TAXI】</item>
+        <item>【警车】</item>
+        <item>【消防车】</item>
+        <item>【救护车】</item>
+        <item>【货车】</item>
+        <item>【电车】</item>
+        <item>【火车】</item>
+        <item>【地铁】</item>
+        <item>【一卡通】</item>
+        <item>【加油站】</item>
+        <item>【红绿灯】</item>
+        <item>【警示】</item>
+        <item>【路障】</item>
+        <item>【盾牌】</item>
+        <item>【老虎机】</item>
+        <item>【红白蓝】</item>
+        <item>【发廊】</item>
+        <item>【川】</item>
+        <item>【投降】</item>
+        <item>【日本】</item>
+        <item>【韩国】</item>
+        <item>【美国】</item>
+        <item>【法国】</item>
+        <item>【西班牙】</item>
+        <item>【意大利】</item>
+        <item>【俄罗斯】</item>
+        <item>【英格兰】</item>
+        <item>【德国】</item>
+    </string-array>
+    <integer-array name="smiley_car_texts_global">
+        <item>0xe036</item>
+        <item>0xe157</item>
+        <item>0xe038</item>
+        <item>0xe153</item>
+        <item>0xe155</item>
+        <item>0xe14d</item>
+        <item>0xe156</item>
+        <item>0xe501</item>
+        <item>0xe158</item>
+        <item>0xe43d</item>
+        <item>0xe037</item>
+        <item>0xe504</item>
+        <item>0xe44a</item>
+        <item>0xe146</item>
+        <item>0xe50a</item>
+        <item>0xe505</item>
+        <item>0xe506</item>
+        <item>0xe122</item>
+        <item>0xe508</item>
+        <item>0xe509</item>
+        <item>0xe03b</item>
+        <item>0xe04d</item>
+        <item>0xe449</item>
+        <item>0xe44b</item>
+        <item>0xe51d</item>
+        <item>0xe44c</item>
+        <item>0xe124</item>
+        <item>0xe121</item>
+        <item>0xe433</item>
+        <item>0xe202</item>
+        <item>0xe135</item>
+        <item>0xe01c</item>
+        <item>0xe42e</item>
+        <item>0xe01b</item>
+        <item>0xe15a</item>
+        <item>0xe432</item>
+        <item>0xe430</item>
+        <item>0xe431</item>
+        <item>0xe42f</item>
+        <item>0xe01e</item>
+        <item>0xe039</item>
+        <item>0xe01f</item>
+        <item>0xe125</item>
+        <item>0xe03a</item>
+        <item>0xe14e</item>
+        <item>0xe252</item>
+        <item>0xe137</item>
+        <item>0xe209</item>
+        <item>0xe133</item>
+        <item>0xe150</item>
+        <item>0xe320</item>
+        <item>0xe123</item>
+        <item>0xe143</item>
+        <item>0xe50b</item>
+        <item>0xe514</item>
+        <item>0xe50c</item>
+        <item>0xe50d</item>
+        <item>0xe511</item>
+        <item>0xe50f</item>
+        <item>0xe512</item>
+        <item>0xe510</item>
+        <item>0xe50e</item>
+    </integer-array>
+    <string-array name="smiley_life_texts">
+        <item>【竹桩】</item>
+        <item>【小公仔】</item>
+        <item>【书包】</item>
+        <item>【中山装】</item>
+        <item>【鲤鱼旗】</item>
+        <item>【烟花】</item>
+        <item>【星坠】</item>
+        <item>【风纸】</item>
+        <item>【中秋】</item>
+        <item>【唱片】</item>
+        <item>【手机】</item>
+        <item>【传真】</item>
+        <item>【DVD】</item>
+        <item>【磁带】</item>
+        <item>【音响】</item>
+        <item>【广播】</item>
+        <item>【摇铃】</item>
+        <item>【收音机】</item>
+        <item>【卫星站】</item>
+        <item>【录影带】</item>
+        <item>【放大镜】</item>
+        <item>【剪子】</item>
+        <item>【成交】</item>
+        <item>【打电话】</item>
+        <item>【发邮件】</item>
+        <item>【公告】</item>
+        <item>【马桶】</item>
+        <item>【椅子】</item>
+        <item>【黄金】</item>
+        <item>【棒球】</item>
+        <item>【网球】</item>
+        <item>【高尔夫】</item>
+        <item>【台球】</item>
+        <item>【游泳】</item>
+        <item>【冲浪】</item>
+        <item>【滑雪】</item>
+        <item>【黑桃】</item>
+        <item>【红桃】</item>
+        <item>【梅花】</item>
+        <item>【方块】</item>
+        <item>【飞镖】</item>
+        <item>【拍电影】</item>
+        <item>【写信】</item>
+        <item>【看书】</item>
+        <item>【画板】</item>
+        <item>【演唱】</item>
+        <item>【喇叭】</item>
+        <item>【萨克斯】</item>
+        <item>【M】</item>
+        <item>【皮鞋】</item>
+        <item>【凉鞋】</item>
+        <item>【靴子】</item>
+        <item>【T恤】</item>
+        <item>【衬衫】</item>
+        <item>【裙子】</item>
+        <item>【和服】</item>
+        <item>【领结】</item>
+        <item>【礼帽】</item>
+        <item>【女帽】</item>
+        <item>【男包】</item>
+        <item>【抹茶】</item>
+        <item>【碗壶】</item>
+        <item>【刀叉】</item>
+        <item>【盖饭】</item>
+        <item>【便当】</item>
+        <item>【饭团】</item>
+        <item>【饼】</item>
+        <item>【米饭】</item>
+        <item>【汤】</item>
+        <item>【面包】</item>
+        <item>【煎蛋】</item>
+        <item>【麻辣烫】</item>
+        <item>【糖葫芦】</item>
+        <item>【冰激淋】</item>
+        <item>【糕点】</item>
+        <item>【橘子】</item>
+        <item>【西瓜】</item>
+        <item>【草莓】</item>
+        <item>【茄子】</item>
+        <item>【番茄】</item>
+    </string-array>
+    <integer-array name="smiley_life_texts_global">
+        <item>0xe436</item>
+        <item>0xe438</item>
+        <item>0xe43a</item>
+        <item>0xe439</item>
+        <item>0xe43b</item>
+        <item>0xe117</item>
+        <item>0xe440</item>
+        <item>0xe442</item>
+        <item>0xe446</item>
+        <item>0xe127</item>
+        <item>0xe00a</item>
+        <item>0xe00b</item>
+        <item>0xe316</item>
+        <item>0xe129</item>
+        <item>0xe141</item>
+        <item>0xe142</item>
+        <item>0xe317</item>
+        <item>0xe128</item>
+        <item>0xe14b</item>
+        <item>0xe211</item>
+        <item>0xe114</item>
+        <item>0xe313</item>
+        <item>0xe116</item>
+        <item>0xe104</item>
+        <item>0xe103</item>
+        <item>0xe102</item>
+        <item>0xe140</item>
+        <item>0xe11f</item>
+        <item>0xe031</item>
+        <item>0xe016</item>
+        <item>0xe015</item>
+        <item>0xe014</item>
+        <item>0xe42c</item>
+        <item>0xe42d</item>
+        <item>0xe017</item>
+        <item>0xe013</item>
+        <item>0xe20e</item>
+        <item>0xe20c</item>
+        <item>0xe20f</item>
+        <item>0xe20d</item>
+        <item>0xe130</item>
+        <item>0xe324</item>
+        <item>0xe301</item>
+        <item>0xe148</item>
+        <item>0xe502</item>
+        <item>0xe30a</item>
+        <item>0xe042</item>
+        <item>0xe040</item>
+        <item>0xe12c</item>
+        <item>0xe007</item>
+        <item>0xe31a</item>
+        <item>0xe31b</item>
+        <item>0xe006</item>
+        <item>0xe302</item>
+        <item>0xe319</item>
+        <item>0xe321</item>
+        <item>0xe314</item>
+        <item>0xe503</item>
+        <item>0xe318</item>
+        <item>0xe11e</item>
+        <item>0xe338</item>
+        <item>0xe30b</item>
+        <item>0xe043</item>
+        <item>0xe341</item>
+        <item>0xe34c</item>
+        <item>0xe342</item>
+        <item>0xe33d</item>
+        <item>0xe33e</item>
+        <item>0xe34d</item>
+        <item>0xe339</item>
+        <item>0xe147</item>
+        <item>0xe343</item>
+        <item>0xe33c</item>
+        <item>0xe43f</item>
+        <item>0xe046</item>
+        <item>0xe346</item>
+        <item>0xe348</item>
+        <item>0xe347</item>
+        <item>0xe34a</item>
+        <item>0xe349</item>
+    </integer-array>
+    <string-array name="smiley_nature_texts">
+        <item>【旋风】</item>
+        <item>【金丝猴】</item>
+        <item>【奔马】</item>
+        <item>【骆驼】</item>
+        <item>【牧羊】</item>
+        <item>【大象】</item>
+        <item>【小鸡】</item>
+        <item>【小青鱼】</item>
+        <item>【捧花】</item>
+        <item>【桃花】</item>
+        <item>【郁金香】</item>
+        <item>【四叶草】</item>
+        <item>【向日葵】</item>
+        <item>【枫叶】</item>
+        <item>【绿叶】</item>
+        <item>【落叶】</item>
+        <item>【水稻】</item>
+        <item>【扇贝】</item>
+    </string-array>
+    <integer-array name="smiley_nature_texts_global">
+        <item>0xe443</item>
+        <item>0xe528</item>
+        <item>0xe134</item>
+        <item>0xe530</item>
+        <item>0xe529</item>
+        <item>0xe526</item>
+        <item>0xe523</item>
+        <item>0xe019</item>
+        <item>0xe306</item>
+        <item>0xe030</item>
+        <item>0xe304</item>
+        <item>0xe110</item>
+        <item>0xe305</item>
+        <item>0xe118</item>
+        <item>0xe447</item>
+        <item>0xe119</item>
+        <item>0xe444</item>
+        <item>0xe441</item>
+    </integer-array>
+    <string-array name="smiley_normal_texts">
+        <item>【猫咪】</item>
+        <item>【鼹鼠】</item>
+        <item>【兔】</item>
+        <item>【狐狸】</item>
+        <item>【野猪】</item>
+        <item>【蛇】</item>
+        <item>【企鹅】</item>
+        <item>【海豚】</item>
+        <item>【海浪】</item>
+        <item>【音乐】</item>
+        <item>【红花】</item>
+        <item>【电视】</item>
+        <item>【开锁】</item>
+        <item>【橄榄球】</item>
+        <item>【钻石】</item>
+        <item>【面条】</item>
+        <item>【F1】</item>
+        <item>【安慰】</item>
+        <item>【我信了】</item>
+        <item>【亲】</item>
+        <item>【安逸】</item>
+        <item>【吐舌】</item>
+        <item>【闭目】</item>
+        <item>【诧异】</item>
+        <item>【哀怨】</item>
+        <item>【哇哇哭】</item>
+        <item>【谢谢】</item>
+        <item>【雪花】</item>
+        <item>【黄心】</item>
+        <item>【蓝心】</item>
+        <item>【紫心】</item>
+        <item>【粉心】</item>
+        <item>【绿心】</item>
+        <item>【动心】</item>
+        <item>【愤怒】</item>
+        <item>【放P】</item>
+        <item>【音符】</item>
+        <item>【石头】</item>
+        <item>【布】</item>
+        <item>【停】</item>
+        <item>【蝴蝶】</item>
+        <item>【等等】</item>
+        <item>【祈福】</item>
+        <item>【看上帝】</item>
+        <item>【鼓掌呢】</item>
+        <item>【走路】</item>
+        <item>【跑步】</item>
+        <item>【牵手】</item>
+        <item>【跳舞】</item>
+        <item>【芭蕾】</item>
+        <item>【抱头】</item>
+        <item>【NO】</item>
+        <item>【请】</item>
+        <item>【膜拜】</item>
+        <item>【按摩】</item>
+        <item>【剪发】</item>
+        <item>【美甲】</item>
+        <item>【baby】</item>
+        <item>【奶奶】</item>
+        <item>【爷爷】</item>
+        <item>【青年】</item>
+        <item>【潮人】</item>
+        <item>【阿拉伯人】</item>
+        <item>【工人】</item>
+        <item>【警察】</item>
+        <item>【公主】</item>
+        <item>【卫兵】</item>
+        <item>【踩一脚】</item>
+        <item>【kiss】</item>
+        <item>【耳朵】</item>
+        <item>【眼睛】</item>
+        <item>【鼻子】</item>
+    </string-array>
+    <string-array name="smiley_normal_texts_global">
+        <item>0xe04f</item>
+        <item>0xe524</item>
+        <item>0xe52c</item>
+        <item>0xe52a</item>
+        <item>0xe52f</item>
+        <item>0xe52d</item>
+        <item>0xe055</item>
+        <item>0xe520</item>
+        <item>0xe43e</item>
+        <item>0xe03e</item>
+        <item>0xe303</item>
+        <item>0xe12a</item>
+        <item>0xe145</item>
+        <item>0xe42b</item>
+        <item>0xe035</item>
+        <item>0xe33f</item>
+        <item>0xe132</item>
+        <item>[feel better]</item>
+        <item>[trust me]</item>
+        <item>0xe417</item>
+        <item>0xe40a</item>
+        <item>0xe409</item>
+        <item>0xe403</item>
+        <item>0xe401</item>
+        <item>0xe406</item>
+        <item>0xe412</item>
+        <item>[Thanks]</item>
+        <item>[snow flake]</item>
+        <item>0xe32c</item>
+        <item>0xe32a</item>
+        <item>0xe32d</item>
+        <item>0xe328</item>
+        <item>0xe32b</item>
+        <item>0xe327</item>
+        <item>0xe334</item>
+        <item>0xe330</item>
+        <item>0xe326</item>
+        <item>0xe010</item>
+        <item>0xe41e</item>
+        <item>0xe012</item>
+        <item>0xe422</item>
+        <item>0xe427</item>
+        <item>0xe41d</item>
+        <item>0xe00f</item>
+        <item>0xe41f</item>
+        <item>0xe201</item>
+        <item>0xe115</item>
+        <item>0xe428</item>
+        <item>0xe51f</item>
+        <item>0xe429</item>
+        <item>0xe424</item>
+        <item>0xe423</item>
+        <item>0xe253</item>
+        <item>0xe426</item>
+        <item>0xe31e</item>
+        <item>0xe31f</item>
+        <item>0xe31d</item>
+        <item>0xe51a</item>
+        <item>0xe519</item>
+        <item>0xe518</item>
+        <item>0xe515</item>
+        <item>0xe516</item>
+        <item>0xe517</item>
+        <item>0xe51b</item>
+        <item>0xe152</item>
+        <item>0xe51c</item>
+        <item>0xe51e</item>
+        <item>0xe536</item>
+        <item>0xe003</item>
+        <item>0xe41b</item>
+        <item>0xe419</item>
+        <item>0xe41a</item>
+    </string-array>
+    <string-array name="smiley_rubbish_texts">
+        <item>【五角星】</item>
+        <item>【问号】</item>
+        <item>【叹号】</item>
+    </string-array>
+    <integer-array name="smiley_rubbish_texts_global">
+        <item>0xe335</item>
+        <item>0xe336</item>
+        <item>0xe337</item>
+    </integer-array>
+    <string-array name="smiley_sign_texts">
+        <item>【1】</item>
+        <item>【2】</item>
+        <item>【3】</item>
+        <item>【4】</item>
+        <item>【5】</item>
+        <item>【6】</item>
+        <item>【7】</item>
+        <item>【8】</item>
+        <item>【9】</item>
+        <item>【0】</item>
+        <item>【#】</item>
+        <item>【↑】</item>
+        <item>【↓】</item>
+        <item>【←】</item>
+        <item>【→】</item>
+        <item>【右上】</item>
+        <item>【左上】</item>
+        <item>【右下】</item>
+        <item>【左下】</item>
+        <item>【后退】</item>
+        <item>【前进】</item>
+        <item>【快退】</item>
+        <item>【快进】</item>
+        <item>【OK】</item>
+        <item>【new】</item>
+        <item>【top】</item>
+        <item>【顶】</item>
+        <item>【cool】</item>
+        <item>【video】</item>
+        <item>【格子】</item>
+        <item>【信号】</item>
+        <item>【满】</item>
+        <item>【空】</item>
+        <item>【得】</item>
+        <item>【割】</item>
+        <item>【指】</item>
+        <item>【营】</item>
+        <item>【有】</item>
+        <item>【无】</item>
+        <item>【月】</item>
+        <item>【申】</item>
+        <item>【艹】</item>
+        <item>【男女】</item>
+        <item>【小孩】</item>
+        <item>【禁烟】</item>
+        <item>【P】</item>
+        <item>【残疾人】</item>
+        <item>【铁轨】</item>
+        <item>【WC】</item>
+        <item>【秘】</item>
+        <item>【祝】</item>
+        <item>【18禁】</item>
+        <item>【ID】</item>
+        <item>【★】</item>
+        <item>【风扇】</item>
+        <item>【?】</item>
+        <item>【VS】</item>
+        <item>【开机】</item>
+        <item>【关机】</item>
+        <item>【股市】</item>
+        <item>【汇率】</item>
+        <item>【白羊】</item>
+        <item>【金牛】</item>
+        <item>【双子】</item>
+        <item>【巨蟹】</item>
+        <item>【狮子】</item>
+        <item>【处女】</item>
+        <item>【天枰】</item>
+        <item>【天蝎】</item>
+        <item>【射手】</item>
+        <item>【魔羯】</item>
+        <item>【水瓶】</item>
+        <item>【双鱼】</item>
+        <item>【u~】</item>
+        <item>【五芒星】</item>
+        <item>【A型】</item>
+        <item>【B型】</item>
+        <item>【AB型】</item>
+        <item>【O型】</item>
+        <item>【绿灯】</item>
+        <item>【红灯】</item>
+        <item>【紫灯】</item>
+        <item>【12点】</item>
+        <item>【1点】</item>
+        <item>【2点】</item>
+        <item>【3点】</item>
+        <item>【4点】</item>
+        <item>【5点】</item>
+        <item>【6点】</item>
+        <item>【7点】</item>
+        <item>【8点】</item>
+        <item>【9点】</item>
+        <item>【10点】</item>
+        <item>【11点】</item>
+        <item>【版权】</item>
+        <item>【注册商标】</item>
+        <item>【受理商标】</item>
+    </string-array>
+    <integer-array name="smiley_sign_texts_global">
+        <item>0xe21c</item>
+        <item>0xe21d</item>
+        <item>0xe21e</item>
+        <item>0xe21f</item>
+        <item>0xe220</item>
+        <item>0xe221</item>
+        <item>0xe222</item>
+        <item>0xe223</item>
+        <item>0xe224</item>
+        <item>0xe225</item>
+        <item>0xe210</item>
+        <item>0xe232</item>
+        <item>0xe233</item>
+        <item>0xe235</item>
+        <item>0xe234</item>
+        <item>0xe236</item>
+        <item>0xe237</item>
+        <item>0xe238</item>
+        <item>0xe239</item>
+        <item>0xe23b</item>
+        <item>0xe23a</item>
+        <item>0xe23d</item>
+        <item>0xe23c</item>
+        <item>0xe24d</item>
+        <item>0xe212</item>
+        <item>0xe24c</item>
+        <item>0xe213</item>
+        <item>0xe214</item>
+        <item>0xe507</item>
+        <item>0xe203</item>
+        <item>0xe20b</item>
+        <item>0xe22a</item>
+        <item>0xe22b</item>
+        <item>0xe226</item>
+        <item>0xe227</item>
+        <item>0xe22c</item>
+        <item>0xe22d</item>
+        <item>0xe215</item>
+        <item>0xe216</item>
+        <item>0xe217</item>
+        <item>0xe218</item>
+        <item>0xe228</item>
+        <item>0xe151</item>
+        <item>0xe13a</item>
+        <item>0xe208</item>
+        <item>0xe14f</item>
+        <item>0xe20a</item>
+        <item>0xe434</item>
+        <item>0xe309</item>
+        <item>0xe315</item>
+        <item>0xe30d</item>
+        <item>0xe207</item>
+        <item>0xe229</item>
+        <item>0xe206</item>
+        <item>0xe205</item>
+        <item>0xe204</item>
+        <item>0xe12e</item>
+        <item>0xe250</item>
+        <item>0xe251</item>
+        <item>0xe14a</item>
+        <item>0xe149</item>
+        <item>0xe23f</item>
+        <item>0xe240</item>
+        <item>0xe241</item>
+        <item>0xe242</item>
+        <item>0xe243</item>
+        <item>0xe244</item>
+        <item>0xe245</item>
+        <item>0xe246</item>
+        <item>0xe247</item>
+        <item>0xe248</item>
+        <item>0xe249</item>
+        <item>0xe24a</item>
+        <item>0xe24b</item>
+        <item>0xe23e</item>
+        <item>0xe532</item>
+        <item>0xe533</item>
+        <item>0xe534</item>
+        <item>0xe535</item>
+        <item>0xe21a</item>
+        <item>0xe219</item>
+        <item>0xe21b</item>
+        <item>0xe02f</item>
+        <item>0xe024</item>
+        <item>0xe025</item>
+        <item>0xe026</item>
+        <item>0xe027</item>
+        <item>0xe028</item>
+        <item>0xe029</item>
+        <item>0xe02a</item>
+        <item>0xe02b</item>
+        <item>0xe02c</item>
+        <item>0xe02d</item>
+        <item>0xe02e</item>
+        <item>0xe24e</item>
+        <item>0xe24f</item>
+        <item>0xe537</item>
+    </integer-array>
+    <string-array name="smiley_v6_texts">
+        <item>【smile】</item>
+        <item>【crying】</item>
+        <item>【angry】</item>
+        <item>【silly】</item>
+        <item>【No!】</item>
+        <item>【hehe...】</item>
+        <item>【blow a kiss】</item>
+        <item>【scared】</item>
+        <item>【What?!】</item>
+        <item>【happy】</item>
+        <item>【dizzy】</item>
+        <item>【man, serious?!】</item>
+        <item>【clean up nose】</item>
+        <item>【upset】</item>
+        <item>【oh gosh!】</item>
+        <item>【you, low class】</item>
+        <item>【evil smile】</item>
+        <item>【boring】</item>
+        <item>【yummy】</item>
+        <item>【fine】</item>
+        <item>【cry a river】</item>
+        <item>【smoking】</item>
+        <item>【want to sleep】</item>
+        <item>【hungry】</item>
+        <item>【sleeping】</item>
+        <item>【stars eye】</item>
+        <item>【sick】</item>
+        <item>【hum1】</item>
+        <item>【hum2】</item>
+        <item>【please!】</item>
+        <item>【throwing up】</item>
+        <item>【very angry】</item>
+        <item>【childish】</item>
+        <item>【wretched】</item>
+        <item>【laugh】</item>
+        <item>【spitting blood】</item>
+        <item>【make a face】</item>
+        <item>【complacent】</item>
+        <item>【clap】</item>
+        <item>【resentment】</item>
+        <item>【shush】</item>
+        <item>【disappointed】</item>
+        <item>【ahh...】</item>
+        <item>【surprised】</item>
+        <item>【tearful goodbye】</item>
+        <item>【bye bye】</item>
+        <item>【after explosion】</item>
+        <item>【headache】</item>
+        <item>【want a kiss】</item>
+        <item>【greedy】</item>
+        <item>【eat】</item>
+        <item>【can\'t decide】</item>
+        <item>【good night】</item>
+        <item>【do it】</item>
+        <item>【whistling】</item>
+        <item>【Oh】</item>
+        <item>【hey baby】</item>
+        <item>【hug】</item>
+        <item>【candle】</item>
+        <item>【orz】</item>
+        <item>【赞】</item>
+        <item>【求包养】</item>
+        <item>【a little smile】</item>
+        <item>【love】</item>
+        <item>【blowing a kiss】</item>
+        <item>【ah?!】</item>
+        <item>【rage】</item>
+        <item>【man, are you serious?!】</item>
+        <item>【pass out】</item>
+        <item>【cry】</item>
+        <item>【bared its teeth】</item>
+        <item>【screaming】</item>
+        <item>【pain】</item>
+        <item>【give you the glad eye】</item>
+        <item>【cheap smile】</item>
+        <item>【funny face】</item>
+        <item>【worried a lot】</item>
+        <item>【is sick】</item>
+        <item>【worry】</item>
+        <item>【give you a kiss】</item>
+        <item>【cry】</item>
+        <item>【ghost】</item>
+        <item>【santa Claus】</item>
+        <item>【devil】</item>
+        <item>【extraterrestrial】</item>
+        <item>【poo】</item>
+        <item>【angel】</item>
+        <item>【cat】</item>
+        <item>【dog】</item>
+        <item>【pig】</item>
+        <item>【cloud】</item>
+        <item>【sun】</item>
+        <item>【rain】</item>
+        <item>【moon】</item>
+        <item>【stars】</item>
+        <item>【fire】</item>
+        <item>【ightning】</item>
+        <item>【red heart】</item>
+        <item>【a broken heart】</item>
+        <item>【ok】</item>
+        <item>【victory】</item>
+        <item>【good】</item>
+        <item>【weak】</item>
+        <item>【fist】</item>
+        <item>【up】</item>
+        <item>【down】</item>
+    </string-array>
+    <string-array name="smiley_v6_texts_global">
+        <item>[smile]</item>
+        <item>[hurt]</item>
+        <item>[great-anger]</item>
+        <item>[teeth]</item>
+        <item>[surprised]</item>
+        <item>[laughing]</item>
+        <item>[kiss]</item>
+        <item>[shock]</item>
+        <item>[matter]</item>
+        <item>[gelasmus]</item>
+        <item>[dizzy]</item>
+        <item>[sweat]</item>
+        <item>[nose]</item>
+        <item>[finicky]</item>
+        <item>[speechless]</item>
+        <item>[lookdown]</item>
+        <item>[sinister]</item>
+        <item>[pie]</item>
+        <item>[greedy]</item>
+        <item>[shy]</item>
+        <item>[bigcry]</item>
+        <item>[cool]</item>
+        <item>[sleepy]</item>
+        <item>[hungry]</item>
+        <item>[snore]</item>
+        <item>[stareye]</item>
+        <item>[ill]</item>
+        <item>[left-heng]</item>
+        <item>[right-heng]</item>
+        <item>[pity]</item>
+        <item>[vomit]</item>
+        <item>[curse]</item>
+        <item>[blink]</item>
+        <item>[suppose]</item>
+        <item>[laugh]</item>
+        <item>[hematemesis]</item>
+        <item>[grimace]</item>
+        <item>[proud]</item>
+        <item>[applause]</item>
+        <item>[resentment]</item>
+        <item>[hush]</item>
+        <item>[sorry]</item>
+        <item>[embarrassed]</item>
+        <item>[sad]</item>
+        <item>[tear]</item>
+        <item>[sayhi]</item>
+        <item>[badluck]</item>
+        <item>[stress]</item>
+        <item>[mua]</item>
+        <item>[slobber]</item>
+        <item>[eat]</item>
+        <item>[hum]</item>
+        <item>[gobed]</item>
+        <item>[please]</item>
+        <item>[sing]</item>
+        <item>[ahha]</item>
+        <item>[takeflower]</item>
+        <item>[hug]</item>
+        <item>[candle]</item>
+        <item>[orz]</item>
+        <item>[like]</item>
+        <item>[nurturing]</item>
+
+        <item>[tinysmile]</item>
+        <item>[letch]</item>
+        <item>[dear]</item>
+        <item>[stare]</item>
+        <item>[rage]</item>
+        <item>[bigsweat]</item>
+        <item>[dizzied]</item>
+        <item>[cry]</item>
+        <item>[buckteeth]</item>
+        <item>[scream]</item>
+
+        <item>[pain]</item>
+        <item>[naughty]</item>
+        <item>[smirk]</item>
+        <item>[makeface]</item>
+        <item>[littlesweat]</item>
+        <item>[mask]</item>
+        <item>[blue]</item>
+        <item>[duzui]</item>
+        <item>[laughtocry]</item>
+        <item>[ghost]</item>
+        <item>[christmas]</item>
+        <item>[devil]</item>
+        <item>[alien]</item>
+        <item>[shit]</item>
+        <item>[angel]</item>
+        <item>[cat]</item>
+        <item>[dog]</item>
+        <item>[pig]</item>
+        <item>[cloud]</item>
+        <item>[sun]</item>
+        <item>[rain]</item>
+        <item>[moon]</item>
+        <item>[star]</item>
+        <item>[fire]</item>
+        <item>[flash]</item>
+        <item>[heart]</item>
+        <item>[heartbroken]</item>
+        <item>[ok]</item>
+        <item>[yeah]</item>
+        <item>[strong]</item>
+        <item>[weak]</item>
+        <item>[fist]</item>
+        <item>[uper]</item>
+        <item>[down]</item>
+    </string-array>
+    <color name="E5AA1E">#E5AA1E</color>
+    <color name="all_blue_bg_color">#309fed</color>
+    <color name="black">#000000</color>
+    <color name="blue">#006ddc</color>
+    <color name="ccccccc">#cccccc</color>
+    <color name="colorPrimary">#FAFAFA</color>
+    <color name="color_202020">#202020</color>
+    <color name="color_252525">#252525</color>
+    <color name="color_262729">#262729</color>
+    <color name="color_2b2b2b">#2b2b2b</color>
+    <color name="color_2b2b2b_trans_90">#e52b2b2b</color>
+    <color name="color_303133">#303133</color>
+    <color name="color_353535">#353535</color>
+    <color name="color_363636">#363636</color>
+    <color name="color_39383D">#39383D</color>
+    <color name="color_4978ff">#4978ff</color>
+    <color name="color_4f6ba5">#4f6ba5</color>
+    <color name="color_5fffd0">#5fffd0</color>
+    <color name="color_606060">#606060</color>
+    <color name="color_636468">#636468</color>
+    <color name="color_666666">#666666</color>
+    <color name="color_7EEEFF">#7EEEFF</color>
+    <color name="color_7a7a7a">#7a7a7a</color>
+    <color name="color_7c6224">#7c6224</color>
+    <color name="color_82aeff">#82aeff</color>
+    <color name="color_90_dcab42">#e5dcab42</color>
+    <color name="color_999999">#999999</color>
+    <color name="color_E5AA1E_trans_50">#7FE5AA1E</color>
+    <color name="color_a0a0a0">#a0a0a0</color>
+    <color name="color_a3a3a3">#a3a3a3</color>
+    <color name="color_a9a9a9">#a9a9a9</color>
+    <color name="color_background">#F8F8F8</color>
+    <color name="color_bc9244">#bc9244</color>
+    <color name="color_black">#000000</color>
+    <color name="color_black_tran_70">#B2000000</color>
+    <color name="color_black_trans_10">#19000000</color>
+    <color name="color_black_trans_15">#26000000</color>
+    <color name="color_black_trans_18">#2d000000</color>
+    <color name="color_black_trans_2">#05000000</color>
+    <color name="color_black_trans_20">#30000000</color>
+    <color name="color_black_trans_25">#36000000</color>
+    <color name="color_black_trans_30">#4D000000</color>
+    <color name="color_black_trans_35">#8A000000</color>
+    <color name="color_black_trans_40">#66000000</color>
+    <color name="color_black_trans_50">#7F000000</color>
+    <color name="color_black_trans_6">#0F000000</color>
+    <color name="color_black_trans_60">#99000000</color>
+    <color name="color_black_trans_70">#B2000000</color>
+    <color name="color_black_trans_75">#C0000000</color>
+    <color name="color_black_trans_80">#CC000000</color>
+    <color name="color_black_trans_90">#E5000000</color>
+    <color name="color_btn_text_emphasize">#ec2700</color>
+    <color name="color_btn_text_emphasize_2">#4b8d0e</color>
+    <color name="color_btn_text_highlight">#FFFFFF</color>
+    <color name="color_btn_text_normal">#b2000000</color>
+    <color name="color_c5c5c5">#c5c5c5</color>
+    <color name="color_c8c8c8">#c8c8c8</color>
+    <color name="color_cc971b">#cc971b</color>
+    <color name="color_cccccc">#cccccc</color>
+    <color name="color_channel_tab_background">#FEFEFE</color>
+    <color name="color_d3d3d3">#d3d3d3</color>
+    <color name="color_d5d4d4">#d5d4d3</color>
+    <color name="color_d6a756">#d6a756</color>
+    <color name="color_d6d6d6">#d6d6d6</color>
+    <color name="color_dcdcdc">#dcdcdc</color>
+    <color name="color_dfdfdf">#dfdfdf</color>
+    <color name="color_e0e0e0">#e0e0e0</color>
+    <color name="color_e5aa1e">#e5aa1e</color>
+    <color name="color_e5aa3b">#e5aa3b</color>
+    <color name="color_e5e5e5">#e5e5e5</color>
+    <color name="color_e6aa1e">#e6aa1e</color>
+    <color name="color_e6e5e6">#e6e5e6</color>
+    <color name="color_e8b459">#e8b459</color>
+    <color name="color_edeff0">#edeff0</color>
+    <color name="color_eeeeee">#eeeeee</color>
+    <color name="color_f2f2f2">#f2f2f2</color>
+    <color name="color_f5f5f5">#f5f5f5</color>
+    <color name="color_f6b723">#f6b723</color>
+    <color name="color_f76257">#f76257</color>
+    <color name="color_f85b50">#f85b50</color>
+    <color name="color_f8f8f8">#f8f8f8</color>
+    <color name="color_f9e309">#f9e309</color>
+    <color name="color_fafafa">#fafafa</color>
+    <color name="color_fbbf5a">#fbbf5a</color>
+    <color name="color_fbe8bf">#fbe8bf</color>
+    <color name="color_fc3b3f">#fc3b3f</color>
+    <color name="color_fcfcfc">#fcfcfc</color>
+    <color name="color_fd4141">#fd4141</color>
+    <color name="color_fed533">#fed533</color>
+    <color name="color_ff5000">#ff5000</color>
+    <color name="color_ffb21d">#ffb21d</color>
+    <color name="color_ffb619">#ffb619</color>
+    <color name="color_ffbc21">#ffbc21</color>
+    <color name="color_ffbe21">#ffbe21</color>
+    <color name="color_ffd439">#ffd439</color>
+    <color name="color_ffd439_trans_30">#4Dffd439</color>
+    <color name="color_fff83a">#fff83a</color>
+    <color name="color_ffffff">#ffffff</color>
+    <color name="color_line_e0dfde">#e0dfde</color>
+    <color name="color_line_e5e5e5">#e5e5e5</color>
+    <color name="color_split_line">#CBCBCC</color>
+    <color name="color_tab_background">#F5F5F5</color>
+    <color name="color_text_trans50_ffffd6">#7FFFFFD6</color>
+    <color name="color_text_trans90_ffffd6">#E5FFFFD6</color>
+    <color name="color_title_bar">#fafafa</color>
+    <color name="color_transparent">#00000000</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_white_trans_10">#19FFFFFF</color>
+    <color name="color_white_trans_15">#26FFFFFF</color>
+    <color name="color_white_trans_20">#30FFFFFF</color>
+    <color name="color_white_trans_30">#4DFFFFFF</color>
+    <color name="color_white_trans_35">#8AFFFFFF</color>
+    <color name="color_white_trans_40">#66FFFFFF</color>
+    <color name="color_white_trans_50">#7FFFFFFF</color>
+    <color name="color_white_trans_6">#0FFFFFFF</color>
+    <color name="color_white_trans_60">#99FFFFFF</color>
+    <color name="color_white_trans_70">#B2FFFFFF</color>
+    <color name="color_white_trans_75">#C0FFFFFF</color>
+    <color name="color_white_trans_80">#CCFFFFFF</color>
+    <color name="color_white_trans_85">#D9FFFFFF</color>
+    <color name="color_white_trans_90">#E5FFFFFF</color>
+    <color name="color_yellow">#FABB00</color>
+    <color name="common_list_item_normal_bg">#ffffff</color>
+    <color name="f7a66b">#f7a66b</color>
+    <color name="ffd267">#ffd267</color>
+    <color name="gift_free_color">#FFF151</color>
+    <color name="gift_number_fifth">#fa6464</color>
+    <color name="gift_number_first">#5ec1e8</color>
+    <color name="gift_number_forth">#ff8a4a</color>
+    <color name="gift_number_second">#60d178</color>
+    <color name="gift_number_seventh">#7c4dff</color>
+    <color name="gift_number_sixth">#e554ff</color>
+    <color name="gift_number_stroke_blue">#3c6fd7</color>
+    <color name="gift_number_stroke_darkblue">#640b7a</color>
+    <color name="gift_number_stroke_green">#467c00</color>
+    <color name="gift_number_stroke_orange">#c56600</color>
+    <color name="gift_number_stroke_purple">#a645b2</color>
+    <color name="gift_number_stroke_red">#b94600</color>
+    <color name="gift_number_stroke_rosered">#711919</color>
+    <color name="gift_number_third">#f9a825</color>
+    <color name="gold">#bc9244</color>
+    <color name="gray_primary_bg">#e0e0e0</color>
+    <color name="gray_prime">#eeeeee</color>
+    <color name="green">#8cd400</color>
+    <color name="list_item_line">#DFDFDF</color>
+    <color name="list_item_line2">#E5E5E5</color>
+    <color name="lvl_txt_color">#FFFFFF</color>
+    <color name="orange_500">#ff9800</color>
+    <color name="outer_stroketextview">#8df9ff</color>
+    <color name="recharge_balance_number">#fdc533</color>
+    <color name="recharge_exchange_btn_color">#f4b718</color>
+    <color name="recharge_exchange_section_bg">#f6f6f6</color>
+    <color name="recharge_first_recharge_diamond_item_bg_normal">#fcfcfc</color>
+    <color name="recharge_first_recharge_diamond_item_bg_pressed">#ebebeb</color>
+    <color name="recharge_first_recharge_pay_way_bg_pressed">#e6e6eb</color>
+    <color name="red">#a2000d</color>
+    <color name="red_300">#f36c60</color>
+    <color name="text_color_5a5a5a_trans_60">#995a5a5a</color>
+    <color name="text_color_black_trans_90">#E5000000</color>
+    <color name="text_color_e5aa1c">#e5aa1c</color>
+    <color name="text_color_e5aa1c_trans_60">#99e5aa1c</color>
+    <color name="text_color_e5aa1e">#E5AA1E</color>
+    <color name="text_color_e5aa1e_trans_60">#99e5aa1e</color>
+    <color name="text_color_orange">#FF6600</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow_500">#ffeb3b</color>
+    <declare-styleable name="AskewView"><attr format="dimension" name="adjustDistance"/></declare-styleable>
+    <declare-styleable name="BottomButton"><attr name="button_style">
+            <enum name="normal" value="0"/>
+            <enum name="emphasize" value="1"/>
+            <enum name="emphasize2" value="2"/>
+            <enum name="highlight" value="3"/>
+            <enum name="green" value="4"/>
+        </attr><attr name="button_position">
+            <enum name="single" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="center" value="2"/>
+            <enum name="right" value="3"/>
+        </attr><attr name="button_text_style">
+            <enum name="standard" value="0"/>
+            <enum name="plain" value="1"/>
+            <enum name="bold" value="2"/>
+        </attr></declare-styleable>
+    <declare-styleable name="CircularProgressBar"><attr format="integer" name="cpb_progress"/><attr format="color" name="cpb_progressbar_color"/><attr format="color" name="cpb_background_progressbar_color"/><attr format="dimension" name="cpb_progressbar_width"/><attr format="dimension" name="cpb_background_progressbar_width"/></declare-styleable>
+    <declare-styleable name="ClipImageSize"><attr format="integer" name="clip_image_height"/></declare-styleable>
+    <declare-styleable name="GenericDraweeHierarchy"><attr format="integer" name="fadeDuration"/><attr format="float" name="viewAspectRatio"/><attr format="reference" name="placeholderImage"/><attr name="placeholderImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="retryImage"/><attr name="retryImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="failureImage"/><attr name="failureImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="progressBarImage"/><attr name="progressBarImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="integer" name="progressBarAutoRotateInterval"/><attr name="actualImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="backgroundImage"/><attr format="reference" name="overlayImage"/><attr format="reference" name="pressedStateOverlayImage"/><attr format="boolean" name="roundAsCircle"/><attr format="dimension" name="roundedCornerRadius"/><attr format="boolean" name="roundTopLeft"/><attr format="boolean" name="roundTopRight"/><attr format="boolean" name="roundBottomRight"/><attr format="boolean" name="roundBottomLeft"/><attr format="color" name="roundWithOverlayColor"/><attr format="dimension" name="roundingBorderWidth"/><attr format="color" name="roundingBorderColor"/><attr format="dimension" name="roundingBorderPadding"/></declare-styleable>
+    <declare-styleable name="GiftContinueView"><attr format="boolean" name="left"/></declare-styleable>
+    <declare-styleable name="RecyclerView"><attr format="string" name="layoutManager"/><attr name="android:orientation"/><attr name="android:descendantFocusability"/><attr format="integer" name="spanCount"/><attr format="boolean" name="reverseLayout"/><attr format="boolean" name="stackFromEnd"/></declare-styleable>
+    <declare-styleable name="RotatedSeekBar"><attr format="float" name="appShapeBkAlpha"/><attr format="reference" name="appProgressDrawableFT"/><attr format="reference" name="appProgressDrawableBK"/><attr format="dimension" name="appSeekBarLeftPadding"/><attr format="dimension" name="appSeekBarRightPadding"/><attr format="reference" name="appThumbDrawable"/><attr format="dimension" name="appThumbSize"/><attr format="reference" name="appThumbDrawablePress"/><attr format="dimension" name="appThumbSizePress"/><attr format="float" name="appRotatedAngle"/><attr format="float" name="appPercente"/><attr format="float" name="appPercenteMin"/><attr format="float" name="appPercenteMax"/><attr format="dimension" name="appShapeSize"/><attr format="reference|color" name="appShapeColorFT"/><attr format="reference|color" name="appShapeColorBK"/></declare-styleable>
+    <declare-styleable name="SimpleDraweeView"><attr format="string" name="actualImageUri"/></declare-styleable>
+    <declare-styleable name="SwitchButton"><attr format="reference" name="appThumb"/><attr format="reference" name="appTrack"/><attr format="string" name="appTextOn"/><attr format="string" name="appTextOff"/><attr format="dimension" name="appThumbTextPadding"/><attr format="reference" name="appSwitchTextAppearance"/><attr format="dimension" name="appSwitchMinWidth"/><attr format="dimension" name="appSwitchPadding"/></declare-styleable>
+    <declare-styleable name="TextAppearance"><attr format="reference|color" name="switchTextColor"/><attr format="dimension" name="switchTextSize"/><attr name="switchTextStyle">
+            <flag name="normal" value="0"/>
+            <flag name="bold" value="1"/>
+            <flag name="italic" value="2"/>
+        </attr><attr name="switchTypeface">
+            <enum name="normal" value="0"/>
+            <enum name="sans" value="1"/>
+            <enum name="serif" value="2"/>
+            <enum name="monospace" value="3"/>
+        </attr><attr format="reference|color" name="textColorHighlight"/><attr format="reference|color" name="textColorHint"/><attr format="reference|color" name="textColorLink"/></declare-styleable>
+    <declare-styleable name="TintableImageView"><attr format="reference|color" name="tintColor"/></declare-styleable>
+    <declare-styleable name="TitleBar"><attr format="boolean" name="is_profile_mode"/></declare-styleable>
+    <dimen name="ItemSpaceLarge">12dp</dimen>
+    <dimen name="TextSizeLarge">36sp</dimen>
+    <dimen name="WheelItemSpace">8dp</dimen>
+    <dimen name="WheelLabelTextSize">12sp</dimen>
+    <dimen name="WheelPadding">8dp</dimen>
+    <dimen name="WheelTextSize">20sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="barrage_line_space_bottom">0dp</dimen>
+    <dimen name="bind_account_avatar">53.33dip</dimen>
+    <dimen name="bottom_bar_height">45dp</dimen>
+    <dimen name="bottom_panel_container_bottom_margin">50dip</dimen>
+    <dimen name="bottom_panel_container_bottom_margin_land_scape">6.67dip</dimen>
+    <dimen name="bottom_panel_container_left_margin">6.67dip</dimen>
+    <dimen name="bottom_panel_container_left_margin_land_scape">6.67dip</dimen>
+    <dimen name="bottom_panel_container_right_margin">6.67dip</dimen>
+    <dimen name="bottom_panel_container_right_margin_land_scape">44dip</dimen>
+    <dimen name="bottom_panel_container_top_margin">6.67dip</dimen>
+    <dimen name="bottom_panel_container_top_margin_land_scape">6.67dip</dimen>
+    <dimen name="bright_margin_left">20dp</dimen>
+    <dimen name="bright_padding">10dp</dimen>
+    <dimen name="bubble_gif_play_height">16dip</dimen>
+    <dimen name="bubble_gif_play_width">29dip</dimen>
+    <dimen name="buffer_height">60dp</dimen>
+    <dimen name="buffer_width">60dp</dimen>
+    <dimen name="certification_item_height">46.67dip</dimen>
+    <dimen name="channel_half_middle_margin">0.67dp</dimen>
+    <dimen name="channel_half_side_margin">0dp</dimen>
+    <dimen name="channel_middle_margin">1.33dp</dimen>
+    <dimen name="channel_middle_margin_three">5dp</dimen>
+    <dimen name="channel_side_margin">10dp</dimen>
+    <dimen name="channel_title_margin">6.67dp</dimen>
+    <dimen name="comment_avatar_size">40dip</dimen>
+    <dimen name="connect_pk_avatar_size">70dip</dimen>
+    <dimen name="control_panel_text_size">12dp</dimen>
+    <dimen name="controller_large_top">60dp</dimen>
+    <dimen name="controller_large_top_margin">13dp</dimen>
+    <dimen name="controller_seekbar_margin">1dp</dimen>
+    <dimen name="country_code_view_width">45.33dip</dimen>
+    <dimen name="edittext_frame_cursor_10">3.33dip</dimen>
+    <dimen name="event_action_padding">20dp</dimen>
+    <dimen name="event_action_padding_left">6dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="feeds_bottom_btn_size">83.33dip</dimen>
+    <dimen name="feeds_detail_like_avatar_margin">6.67dp</dimen>
+    <dimen name="feeds_detail_like_avatar_width">28.33dp</dimen>
+    <dimen name="feeds_item_title_textsize">@dimen/text_size_50</dimen>
+    <dimen name="gif_pic_height">146.67dip</dimen>
+    <dimen name="gif_pic_width">146.67dip</dimen>
+    <dimen name="heart_view_margin_bottom">20dp</dimen>
+    <dimen name="height_130">43.33dip</dimen>
+    <dimen name="height_170">56.67dip</dimen>
+    <dimen name="height_210">70dip</dimen>
+    <dimen name="height_220">73.33dip</dimen>
+    <dimen name="height_330">111dip</dimen>
+    <dimen name="height_45">15dip</dimen>
+    <dimen name="height_500">166.67dip</dimen>
+    <dimen name="height_550">183.33dip</dimen>
+    <dimen name="height_630">210dip</dimen>
+    <dimen name="item_height">60dip</dimen>
+    <dimen name="item_touch_helper_max_drag_scroll_per_frame">20dp</dimen>
+    <dimen name="item_touch_helper_swipe_escape_max_velocity">800dp</dimen>
+    <dimen name="item_touch_helper_swipe_escape_velocity">120dp</dimen>
+    <dimen name="iv_zan_height">30dip</dimen>
+    <dimen name="iv_zan_width">30dip</dimen>
+    <dimen name="keyboard_default_cross_height">200dip</dimen>
+    <dimen name="keyboard_default_height">270dip</dimen>
+    <dimen name="keyboard_hide_threshold">75dip</dimen>
+    <dimen name="keyboard_min_height">70dip</dimen>
+    <dimen name="line_height">0.333dip</dimen>
+    <dimen name="line_height_10">3.333dip</dimen>
+    <dimen name="line_height_20">6.67dip</dimen>
+    <dimen name="line_height_3">1dip</dimen>
+    <dimen name="line_height_30">10dip</dimen>
+    <dimen name="line_height_4">0.33dp</dimen>
+    <dimen name="list_banner_img_w">123.34dip</dimen>
+    <dimen name="live_bottom_btns_area_height">35.66dip</dimen>
+    <dimen name="login_area_margin">35dp</dimen>
+    <dimen name="login_btn_size">55dip</dimen>
+    <dimen name="lvl_drawable_padding">0dp</dimen>
+    <dimen name="lvl_left_padding">0dp</dimen>
+    <dimen name="lvl_right_padding">1dip</dimen>
+    <dimen name="lvl_small_icon_margin">-9dp</dimen>
+    <dimen name="lvl_small_icon_margin_top">-12dp</dimen>
+    <dimen name="lvl_small_icon_size_height">12dp</dimen>
+    <dimen name="lvl_small_icon_size_width">20dp</dimen>
+    <dimen name="lvl_text_size">9.33dp</dimen>
+    <dimen name="lvl_tv_height">12dip</dimen>
+    <dimen name="lvl_tv_width">26.67dp</dimen>
+    <dimen name="margin_1">0.33dip</dimen>
+    <dimen name="margin_10">3.33dip</dimen>
+    <dimen name="margin_100">33.33dip</dimen>
+    <dimen name="margin_104">34.67dip</dimen>
+    <dimen name="margin_108">36dip</dimen>
+    <dimen name="margin_11">3.67dip</dimen>
+    <dimen name="margin_110">36.66dip</dimen>
+    <dimen name="margin_111">37dip</dimen>
+    <dimen name="margin_114">38dp</dimen>
+    <dimen name="margin_1140">380dip</dimen>
+    <dimen name="margin_12">4dip</dimen>
+    <dimen name="margin_120">40dp</dimen>
+    <dimen name="margin_123">41dp</dimen>
+    <dimen name="margin_1245">415dip</dimen>
+    <dimen name="margin_13">4.33dip</dimen>
+    <dimen name="margin_130">43.33dip</dimen>
+    <dimen name="margin_134">44.67dip</dimen>
+    <dimen name="margin_138">46dip</dimen>
+    <dimen name="margin_14">4.67dip</dimen>
+    <dimen name="margin_140">46.67dip</dimen>
+    <dimen name="margin_144">48dip</dimen>
+    <dimen name="margin_146">48.67dip</dimen>
+    <dimen name="margin_15">5dip</dimen>
+    <dimen name="margin_150">50dip</dimen>
+    <dimen name="margin_154">51.33dip</dimen>
+    <dimen name="margin_16">5.33dip</dimen>
+    <dimen name="margin_160">53.33dip</dimen>
+    <dimen name="margin_168">56dip</dimen>
+    <dimen name="margin_172">57.33dip</dimen>
+    <dimen name="margin_18">6dip</dimen>
+    <dimen name="margin_180">60dp</dimen>
+    <dimen name="margin_2">0.67dip</dimen>
+    <dimen name="margin_20">6.67dip</dimen>
+    <dimen name="margin_200">66.67dp</dimen>
+    <dimen name="margin_204">68dp</dimen>
+    <dimen name="margin_21">7dip</dimen>
+    <dimen name="margin_210">70dp</dimen>
+    <dimen name="margin_22">7.33dip</dimen>
+    <dimen name="margin_220">70.33dp</dimen>
+    <dimen name="margin_23">7.67dip</dimen>
+    <dimen name="margin_24">8dip</dimen>
+    <dimen name="margin_25">8.34dip</dimen>
+    <dimen name="margin_26">8.67dip</dimen>
+    <dimen name="margin_27">9dip</dimen>
+    <dimen name="margin_28">9.33dip</dimen>
+    <dimen name="margin_285">95dip</dimen>
+    <dimen name="margin_3">1dip</dimen>
+    <dimen name="margin_30">10dip</dimen>
+    <dimen name="margin_300">100dip</dimen>
+    <dimen name="margin_32">11dip</dimen>
+    <dimen name="margin_33">11.33dip</dimen>
+    <dimen name="margin_34">11.33dip</dimen>
+    <dimen name="margin_342">114dip</dimen>
+    <dimen name="margin_36">12dip</dimen>
+    <dimen name="margin_360">120dip</dimen>
+    <dimen name="margin_370">123.33dip</dimen>
+    <dimen name="margin_38">12.67dip</dimen>
+    <dimen name="margin_39">13dip</dimen>
+    <dimen name="margin_4">1.33dip</dimen>
+    <dimen name="margin_40">13.33dip</dimen>
+    <dimen name="margin_41">13.66dip</dimen>
+    <dimen name="margin_42">14dip</dimen>
+    <dimen name="margin_44">14.66dip</dimen>
+    <dimen name="margin_45">15dip</dimen>
+    <dimen name="margin_46">15.33dip</dimen>
+    <dimen name="margin_48">16dip</dimen>
+    <dimen name="margin_480">160dip</dimen>
+    <dimen name="margin_5">1.67dip</dimen>
+    <dimen name="margin_50">16.67dip</dimen>
+    <dimen name="margin_52">17.3dip</dimen>
+    <dimen name="margin_53">17.66dip</dimen>
+    <dimen name="margin_54">18dip</dimen>
+    <dimen name="margin_56">18.67dip</dimen>
+    <dimen name="margin_6">2dip</dimen>
+    <dimen name="margin_60">20dip</dimen>
+    <dimen name="margin_62">20.66dip</dimen>
+    <dimen name="margin_64">21dip</dimen>
+    <dimen name="margin_66">22dip</dimen>
+    <dimen name="margin_68">22.67dip</dimen>
+    <dimen name="margin_70">23.33dip</dimen>
+    <dimen name="margin_75">25dip</dimen>
+    <dimen name="margin_76">25.33dip</dimen>
+    <dimen name="margin_78">26dip</dimen>
+    <dimen name="margin_79">26.33dip</dimen>
+    <dimen name="margin_8">2.66dip</dimen>
+    <dimen name="margin_80">26.66dip</dimen>
+    <dimen name="margin_820">273.33dip</dimen>
+    <dimen name="margin_86">28.66dip</dimen>
+    <dimen name="margin_89">29.66dip</dimen>
+    <dimen name="margin_898">299.33dip</dimen>
+    <dimen name="margin_9">3dip</dimen>
+    <dimen name="margin_90">30dip</dimen>
+    <dimen name="margin_900">300dip</dimen>
+    <dimen name="margin_negative_10">-3.33dip</dimen>
+    <dimen name="margin_negative_2">-0.67dip</dimen>
+    <dimen name="margin_negative_4">-1.33dip</dimen>
+    <dimen name="margin_negative_40">-13.33dip</dimen>
+    <dimen name="margin_negative_6">-2dip</dimen>
+    <dimen name="msg_image_max_size_1080">125dip</dimen>
+    <dimen name="msg_image_max_size_480">125dip</dimen>
+    <dimen name="msg_image_max_size_720">125dip</dimen>
+    <dimen name="msg_image_min_size_1080">33.33dip</dimen>
+    <dimen name="msg_image_min_size_480">33.33dip</dimen>
+    <dimen name="msg_image_min_size_720">33.33dip</dimen>
+    <dimen name="my_info_head_cover_Shop_height">307.33dp</dimen>
+    <dimen name="my_info_head_cover_height">275.33dp</dimen>
+    <dimen name="my_info_item_height">58.33dip</dimen>
+    <dimen name="my_info_tab_zone_height">45dip</dimen>
+    <dimen name="person_card_float_top_margin">-37dip</dimen>
+    <dimen name="pic_height">84dip</dimen>
+    <dimen name="pic_width">90dip</dimen>
+    <dimen name="programe_item_height">63.33dip</dimen>
+    <dimen name="rank_avatar_bigsize">44.44dp</dimen>
+    <dimen name="rank_avatar_size">36.67dip</dimen>
+    <dimen name="regist_btn_font_size">18dip</dimen>
+    <dimen name="regist_btn_margin_top">26.66dip</dimen>
+    <dimen name="regist_font_size">14dip</dimen>
+    <dimen name="regist_margin">20dip</dimen>
+    <dimen name="regist_private_policy_font_size">10.66dip</dimen>
+    <dimen name="regist_private_policy_padding_top">16.66dip</dimen>
+    <dimen name="regist_row_height">50dip</dimen>
+    <dimen name="regist_separated_line_height">14dip</dimen>
+    <dimen name="release_bar_height">50dip</dimen>
+    <dimen name="screen_lock_margin_left">75dp</dimen>
+    <dimen name="search_box_height">29dip</dimen>
+    <dimen name="search_box_width">298.33dip</dimen>
+    <dimen name="search_item_avatar_size">38.33dip</dimen>
+    <dimen name="search_item_height">58.33dip</dimen>
+    <dimen name="search_zone_total_height_maintab">43.33dp</dimen>
+    <dimen name="setting_avatar_size">46.67dip</dimen>
+    <dimen name="setting_item_height">49.33dip</dimen>
+    <dimen name="sixin_textview_pading_size">18.33dip</dimen>
+    <dimen name="small_margin_left">10dp</dimen>
+    <dimen name="smileypicker_default_height">270dip</dimen>
+    <dimen name="split_line_height">0.333dp</dimen>
+    <dimen name="text_size_10">3.333dip</dimen>
+    <dimen name="text_size_100">33.33dip</dimen>
+    <dimen name="text_size_110">36.67dip</dimen>
+    <dimen name="text_size_12">4dip</dimen>
+    <dimen name="text_size_120">40dip</dimen>
+    <dimen name="text_size_130">43.333dip</dimen>
+    <dimen name="text_size_15">5dip</dimen>
+    <dimen name="text_size_150">50dip</dimen>
+    <dimen name="text_size_18">6dip</dimen>
+    <dimen name="text_size_190">63.333dip</dimen>
+    <dimen name="text_size_2">0.667dip</dimen>
+    <dimen name="text_size_20">6.667dip</dimen>
+    <dimen name="text_size_21">7dip</dimen>
+    <dimen name="text_size_22">7.333dip</dimen>
+    <dimen name="text_size_24">8dip</dimen>
+    <dimen name="text_size_26">8.667dip</dimen>
+    <dimen name="text_size_27">9dp</dimen>
+    <dimen name="text_size_28">9.33dp</dimen>
+    <dimen name="text_size_29">9.667dip</dimen>
+    <dimen name="text_size_30">10dip</dimen>
+    <dimen name="text_size_32">10.67dip</dimen>
+    <dimen name="text_size_34">11.33dip</dimen>
+    <dimen name="text_size_36">12dp</dimen>
+    <dimen name="text_size_38">12.67dip</dimen>
+    <dimen name="text_size_39">13dip</dimen>
+    <dimen name="text_size_4">1.33dip</dimen>
+    <dimen name="text_size_40">13.33dip</dimen>
+    <dimen name="text_size_41">13.67dip</dimen>
+    <dimen name="text_size_42">14dip</dimen>
+    <dimen name="text_size_44">14.67dip</dimen>
+    <dimen name="text_size_45">15dp</dimen>
+    <dimen name="text_size_46">15.33dip</dimen>
+    <dimen name="text_size_47">15.67dip</dimen>
+    <dimen name="text_size_48">16dip</dimen>
+    <dimen name="text_size_5">1.667dip</dimen>
+    <dimen name="text_size_50">16.67dip</dimen>
+    <dimen name="text_size_52">17.33dip</dimen>
+    <dimen name="text_size_54">18dip</dimen>
+    <dimen name="text_size_55">18.33dip</dimen>
+    <dimen name="text_size_58">19.33dip</dimen>
+    <dimen name="text_size_6">2dip</dimen>
+    <dimen name="text_size_60">18dip</dimen>
+    <dimen name="text_size_65">19.33dip</dimen>
+    <dimen name="text_size_67">22.33dip</dimen>
+    <dimen name="text_size_69">23dip</dimen>
+    <dimen name="text_size_70">23.333dip</dimen>
+    <dimen name="text_size_72">24dip</dimen>
+    <dimen name="text_size_74">24.67dip</dimen>
+    <dimen name="text_size_75">25dip</dimen>
+    <dimen name="text_size_8">2.67dip</dimen>
+    <dimen name="text_size_80">26.67dip</dimen>
+    <dimen name="text_size_90">30dip</dimen>
+    <dimen name="text_size_94">31.33dip</dimen>
+    <dimen name="title_bar_height">40dip</dimen>
+    <dimen name="title_bar_height_not_miui">48.33dip</dimen>
+    <dimen name="title_bar_size">14.67dip</dimen>
+    <dimen name="top_bar_height">45dp</dimen>
+    <dimen name="tpl_banner_item_title_h">43.34dip</dimen>
+    <dimen name="triangle_anchor_height">16.33dp</dimen>
+    <dimen name="triangle_anchor_width">8.66dp</dimen>
+    <dimen name="upgrade_dialog_container_line_spacing">6.00dip</dimen>
+    <dimen name="upgrade_dialog_container_margin_left">21.66dip</dimen>
+    <dimen name="upgrade_dialog_container_margin_right">21.66dip</dimen>
+    <dimen name="upgrade_dialog_container_margin_top">83.33dip</dimen>
+    <dimen name="upgrade_dialog_title_margin_top">33.33dip</dimen>
+    <dimen name="upgrade_icon_left_margin">6.66dip</dimen>
+    <dimen name="view_dimen_1">0.34dp</dimen>
+    <dimen name="view_dimen_10">3.33dp</dimen>
+    <dimen name="view_dimen_100">33.33dip</dimen>
+    <dimen name="view_dimen_1005">335dp</dimen>
+    <dimen name="view_dimen_1010">336.67dp</dimen>
+    <dimen name="view_dimen_1014">338dp</dimen>
+    <dimen name="view_dimen_102">34dip</dimen>
+    <dimen name="view_dimen_1020">340dip</dimen>
+    <dimen name="view_dimen_104">34.66dip</dimen>
+    <dimen name="view_dimen_105">34.66dip</dimen>
+    <dimen name="view_dimen_106">35.33dip</dimen>
+    <dimen name="view_dimen_108">36dip</dimen>
+    <dimen name="view_dimen_110">36.67dip</dimen>
+    <dimen name="view_dimen_112">37.33dip</dimen>
+    <dimen name="view_dimen_114">38dip</dimen>
+    <dimen name="view_dimen_118">39.33dip</dimen>
+    <dimen name="view_dimen_12">4dip</dimen>
+    <dimen name="view_dimen_120">40dip</dimen>
+    <dimen name="view_dimen_125">41.66dip</dimen>
+    <dimen name="view_dimen_1260">420dp</dimen>
+    <dimen name="view_dimen_130">43.34dip</dimen>
+    <dimen name="view_dimen_132">44dip</dimen>
+    <dimen name="view_dimen_135">44.68dip</dimen>
+    <dimen name="view_dimen_136">45.33dip</dimen>
+    <dimen name="view_dimen_14">4.66dp</dimen>
+    <dimen name="view_dimen_140">46.67dp</dimen>
+    <dimen name="view_dimen_1410">470dp</dimen>
+    <dimen name="view_dimen_142">47.33dp</dimen>
+    <dimen name="view_dimen_144">48dp</dimen>
+    <dimen name="view_dimen_148">49.33dp</dimen>
+    <dimen name="view_dimen_15">5dp</dimen>
+    <dimen name="view_dimen_150">50dp</dimen>
+    <dimen name="view_dimen_1510">503.33dp</dimen>
+    <dimen name="view_dimen_155">51.67dp</dimen>
+    <dimen name="view_dimen_157">52.33dp</dimen>
+    <dimen name="view_dimen_16">5.33dp</dimen>
+    <dimen name="view_dimen_160">53.33dp</dimen>
+    <dimen name="view_dimen_162">54dp</dimen>
+    <dimen name="view_dimen_165">55dp</dimen>
+    <dimen name="view_dimen_168">56dp</dimen>
+    <dimen name="view_dimen_1690">563.33dp</dimen>
+    <dimen name="view_dimen_170">56.67dp</dimen>
+    <dimen name="view_dimen_174">58dip</dimen>
+    <dimen name="view_dimen_180">60dp</dimen>
+    <dimen name="view_dimen_185">61.67dp</dimen>
+    <dimen name="view_dimen_190">63.33dp</dimen>
+    <dimen name="view_dimen_195">65dp</dimen>
+    <dimen name="view_dimen_2">0.667dp</dimen>
+    <dimen name="view_dimen_20">6.33dp</dimen>
+    <dimen name="view_dimen_200">66.67dp</dimen>
+    <dimen name="view_dimen_206">68.67dp</dimen>
+    <dimen name="view_dimen_21">7dp</dimen>
+    <dimen name="view_dimen_210">70dp</dimen>
+    <dimen name="view_dimen_22">7.33dp</dimen>
+    <dimen name="view_dimen_220">73.33dp</dimen>
+    <dimen name="view_dimen_222">74dp</dimen>
+    <dimen name="view_dimen_23">7.67dp</dimen>
+    <dimen name="view_dimen_230">76.67dp</dimen>
+    <dimen name="view_dimen_232">77.33dp</dimen>
+    <dimen name="view_dimen_240">80dp</dimen>
+    <dimen name="view_dimen_243">81dp</dimen>
+    <dimen name="view_dimen_25">8.33dp</dimen>
+    <dimen name="view_dimen_250">83.34dp</dimen>
+    <dimen name="view_dimen_254">84.67dip</dimen>
+    <dimen name="view_dimen_26">8.66dp</dimen>
+    <dimen name="view_dimen_260">86.67dp</dimen>
+    <dimen name="view_dimen_27">9dp</dimen>
+    <dimen name="view_dimen_270">90dp</dimen>
+    <dimen name="view_dimen_28">9.33dp</dimen>
+    <dimen name="view_dimen_280">93.33dp</dimen>
+    <dimen name="view_dimen_286">95.33dp</dimen>
+    <dimen name="view_dimen_288">96dp</dimen>
+    <dimen name="view_dimen_291">97dp</dimen>
+    <dimen name="view_dimen_294">98dp</dimen>
+    <dimen name="view_dimen_3">1dp</dimen>
+    <dimen name="view_dimen_30">10dp</dimen>
+    <dimen name="view_dimen_300">100dp</dimen>
+    <dimen name="view_dimen_310">103.33dp</dimen>
+    <dimen name="view_dimen_315">105dp</dimen>
+    <dimen name="view_dimen_32">10.67dp</dimen>
+    <dimen name="view_dimen_320">106.67dp</dimen>
+    <dimen name="view_dimen_328">109.34dp</dimen>
+    <dimen name="view_dimen_330">110dp</dimen>
+    <dimen name="view_dimen_336">112dp</dimen>
+    <dimen name="view_dimen_340">113.33dp</dimen>
+    <dimen name="view_dimen_342">114dp</dimen>
+    <dimen name="view_dimen_35">11.67dp</dimen>
+    <dimen name="view_dimen_36">12dp</dimen>
+    <dimen name="view_dimen_360">120dp</dimen>
+    <dimen name="view_dimen_366">126dp</dimen>
+    <dimen name="view_dimen_370">127dp</dimen>
+    <dimen name="view_dimen_38">12.67dp</dimen>
+    <dimen name="view_dimen_384">128dp</dimen>
+    <dimen name="view_dimen_393">131dp</dimen>
+    <dimen name="view_dimen_40">13.33dip</dimen>
+    <dimen name="view_dimen_400">133.33dp</dimen>
+    <dimen name="view_dimen_408">136dp</dimen>
+    <dimen name="view_dimen_42">14dip</dimen>
+    <dimen name="view_dimen_420">140dp</dimen>
+    <dimen name="view_dimen_440">146.67dp</dimen>
+    <dimen name="view_dimen_442">147.33dp</dimen>
+    <dimen name="view_dimen_45">15dip</dimen>
+    <dimen name="view_dimen_450">150dp</dimen>
+    <dimen name="view_dimen_460">153.33dp</dimen>
+    <dimen name="view_dimen_48">16dip</dimen>
+    <dimen name="view_dimen_480">160dp</dimen>
+    <dimen name="view_dimen_485">161.67dp</dimen>
+    <dimen name="view_dimen_5">1.34dp</dimen>
+    <dimen name="view_dimen_50">16.67dip</dimen>
+    <dimen name="view_dimen_500">166.67dp</dimen>
+    <dimen name="view_dimen_502">167.33dp</dimen>
+    <dimen name="view_dimen_51">17dip</dimen>
+    <dimen name="view_dimen_510">170dp</dimen>
+    <dimen name="view_dimen_520">173.33dp</dimen>
+    <dimen name="view_dimen_532">177.33dip</dimen>
+    <dimen name="view_dimen_540">180dp</dimen>
+    <dimen name="view_dimen_56">18.67dip</dimen>
+    <dimen name="view_dimen_560">186.67dp</dimen>
+    <dimen name="view_dimen_572">171dip</dimen>
+    <dimen name="view_dimen_60">20dp</dimen>
+    <dimen name="view_dimen_600">200dp</dimen>
+    <dimen name="view_dimen_608">202.67dip</dimen>
+    <dimen name="view_dimen_617">205.67dip</dimen>
+    <dimen name="view_dimen_620">206.33dp</dimen>
+    <dimen name="view_dimen_64">21.33dp</dimen>
+    <dimen name="view_dimen_642">214dip</dimen>
+    <dimen name="view_dimen_646">215.33dp</dimen>
+    <dimen name="view_dimen_66">22dp</dimen>
+    <dimen name="view_dimen_68">22.67dip</dimen>
+    <dimen name="view_dimen_680">226.67dip</dimen>
+    <dimen name="view_dimen_70">23.33dp</dimen>
+    <dimen name="view_dimen_700">233.33dp</dimen>
+    <dimen name="view_dimen_72">24dip</dimen>
+    <dimen name="view_dimen_720">240dp</dimen>
+    <dimen name="view_dimen_740">246.67dp</dimen>
+    <dimen name="view_dimen_75">25dip</dimen>
+    <dimen name="view_dimen_760">253.33dp</dimen>
+    <dimen name="view_dimen_780">260dp</dimen>
+    <dimen name="view_dimen_8">2.667dp</dimen>
+    <dimen name="view_dimen_80">26.67dp</dimen>
+    <dimen name="view_dimen_800">266.67dp</dimen>
+    <dimen name="view_dimen_81">27dp</dimen>
+    <dimen name="view_dimen_830">276.67dp</dimen>
+    <dimen name="view_dimen_84">28dp</dimen>
+    <dimen name="view_dimen_840">280dp</dimen>
+    <dimen name="view_dimen_85">28.34dp</dimen>
+    <dimen name="view_dimen_873">291dp</dimen>
+    <dimen name="view_dimen_88">29.34dp</dimen>
+    <dimen name="view_dimen_89">29.67dp</dimen>
+    <dimen name="view_dimen_892">297.33dp</dimen>
+    <dimen name="view_dimen_90">30dp</dimen>
+    <dimen name="view_dimen_900">300dp</dimen>
+    <dimen name="view_dimen_95">31.67dp</dimen>
+    <dimen name="view_dimen_99">33dp</dimen>
+    <dimen name="view_dimen_negative_70">-23.33dp</dimen>
+    <dimen name="vip_icon_size_height">14.4dp</dimen>
+    <dimen name="voice_seekbar_length">142dp</dimen>
+    <dimen name="wall_multi_graph_padding">113.33dip</dimen>
+    <dimen name="wall_one_image_size_long">178dip</dimen>
+    <dimen name="wall_one_image_size_short">119dip</dimen>
+    <dimen name="withdraw_btn_height">48.33dip</dimen>
+    <dimen name="withdraw_btn_height_40">40dp</dimen>
+    <dimen name="withdraw_btn_width">300dip</dimen>
+    <drawable name="color_trans">#00000000</drawable>
+    <item name="atmosphere_btn" type="id"/>
+    <item name="barrage_btn" type="id"/>
+    <item name="comment_btn" type="id"/>
+    <item name="fresco_view_tag" type="id"/>
+    <item name="game_barrage_view" type="id"/>
+    <item name="game_input_view" type="id"/>
+    <item name="gift_btn" type="id"/>
+    <item name="item_touch_helper_previous_elevation" type="id"/>
+    <item name="magic_btn" type="id"/>
+    <item name="mute_btn" type="id"/>
+    <item name="photo_dv" type="id"/>
+    <item name="plus_btn" type="id"/>
+    <item name="red_packet" type="id"/>
+    <item name="setting_btn" type="id"/>
+    <item name="view_height" type="id"/>
+    <item name="view_width" type="id"/>
+    <plurals name="days_ago">
+        <item quantity="one">%d day ago</item>
+        <item quantity="other">%d days ago</item>
+    </plurals>
+    <plurals name="game_comment_number">
+        <item quantity="one">%d person</item>
+        <item quantity="other">%d people</item>
+    </plurals>
+    <plurals name="given_diamond">
+        <item quantity="one">%1$d extra gem</item>
+        <item quantity="other">%1$d extra gems</item>
+    </plurals>
+    <plurals name="gold_diamond">
+        <item quantity="one">%1$s gold gem</item>
+        <item quantity="other">%1$s gold gems</item>
+    </plurals>
+    <plurals name="hour_ago">
+        <item quantity="one">%d hour ago</item>
+        <item quantity="other">%d hours ago</item>
+    </plurals>
+    <plurals name="live_end_ticket">
+        <item quantity="one">This live stream got %d coin</item>
+        <item quantity="other">This live stream got %d coins</item>
+    </plurals>
+    <plurals name="live_end_viewer_cnt">
+        <item quantity="one">%d viewer</item>
+        <item quantity="other">%d viewers</item>
+    </plurals>
+    <plurals name="minute_ago">
+        <item quantity="one">%d minute ago</item>
+        <item quantity="other">%d minutes ago</item>
+    </plurals>
+    <plurals name="months_ago">
+        <item quantity="one">%d month ago</item>
+        <item quantity="other">%d months ago</item>
+    </plurals>
+    <plurals name="recharge_exchange_tip">
+        <item quantity="one">You can get %s gold gem now</item>
+        <item quantity="other">You can get %s gold gems now</item>
+    </plurals>
+    <plurals name="recharge_gold_diamond">
+        <item quantity="one">%1$d gold gem</item>
+        <item quantity="other">%1$d gold gems</item>
+    </plurals>
+    <plurals name="recharge_money_amount">
+        <item quantity="one">%1$s CNY</item>
+        <item quantity="other">%1$s CNY</item>
+    </plurals>
+    <plurals name="recharge_silver_diamond">
+        <item quantity="one">%1$d silver gem</item>
+        <item quantity="other">%1$d silver gems</item>
+    </plurals>
+    <plurals name="sent_diamond_text">
+        <item quantity="one">%1$d gem sent</item>
+        <item quantity="other">%1$d gems sent</item>
+    </plurals>
+    <plurals name="ticket_buyer_count">
+        <item quantity="one">%1$d ticket</item>
+        <item quantity="other">%1$d tickets</item>
+    </plurals>
+    <plurals name="verify_user_level_toast">
+        <item quantity="one">Only users get %d level can send</item>
+        <item quantity="other">Only users get %d levels can send</item>
+    </plurals>
+    <string name="N_A">N/A</string>
+    <string name="TrackType_audio">Audio</string>
+    <string name="TrackType_metadata">Meta data</string>
+    <string name="TrackType_subtitle">Subtitle</string>
+    <string name="TrackType_timedtext">Timed text</string>
+    <string name="TrackType_unknown">Unknown</string>
+    <string name="TrackType_video">Video</string>
+    <string name="VideoView_ar_16_9_fit_parent">16:9 / Fit parent</string>
+    <string name="VideoView_ar_4_3_fit_parent">4:3 / Fit parent</string>
+    <string name="VideoView_ar_aspect_fill_parent">Aspect / Fill parent</string>
+    <string name="VideoView_ar_aspect_fit_parent">Aspect / Fit parent</string>
+    <string name="VideoView_ar_aspect_wrap_content">Aspect / Wrap content</string>
+    <string name="VideoView_ar_match_parent">Free / Fill parent</string>
+    <string name="VideoView_error_button">OK</string>
+    <string name="VideoView_error_text_invalid_progressive_playback">Invalid progressive playback</string>
+    <string name="VideoView_error_text_unknown">Unknown</string>
+    <string name="VideoView_player_AndroidMediaPlayer">Player: AndroidMediaPlayer</string>
+    <string name="VideoView_player_IjkExoMediaPlayer">Player: IjkExoMediaPlayer</string>
+    <string name="VideoView_player_IjkMediaPlayer">Player: IjkMediaPlayer</string>
+    <string name="VideoView_player_none">Player: None</string>
+    <string name="VideoView_render_none">Render: None</string>
+    <string name="VideoView_render_surface_view">Render: SurfaceView</string>
+    <string name="VideoView_render_texture_view">Render: TextureView</string>
+    <string name="a_cache">a-cache</string>
+    <string name="account_withdraw_pay_user_account_not_enough">Insufficient funds</string>
+    <string name="account_withdraw_pay_user_account_not_enough_money">Insufficient funds</string>
+    <string name="account_withdraw_pay_user_account_not_enough_tip">Top up to send gifts. Top up now?</string>
+    <string name="add_follow">Follow</string>
+    <string name="add_photo_pick_title">Select photo</string>
+    <string name="add_topic">Add topic</string>
+    <string name="admin_banspeaker_tips_1">1. This user is only banned in current session and will be allowed next time.</string>
+    <string name="admin_banspeaker_tips_2">2. Banned users can\'t make comments, but can still give gifts.</string>
+    <string name="admin_kick_viewer_barrage">%s is kicked out of the room</string>
+    <string name="admin_manager_tips">Attention:</string>
+    <string name="alipay_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="already_followed">Following</string>
+    <string name="app_name">livesdk</string>
+    <string name="balance_title">Balance</string>
+    <string name="ban_speaker_tips">%s has been banned</string>
+    <string name="ban_speaker_tips2">%1$s has been banned by %2$s</string>
+    <string name="banspeaker_list">Banned</string>
+    <string name="barrage_cancel_manager_body">You are no longer a manager</string>
+    <string name="barrage_close">close barrage</string>
+    <string name="barrage_control_in_min">Once within %d min</string>
+    <string name="barrage_control_in_second">Once within %d s</string>
+    <string name="barrage_enter_live_body">entered the room</string>
+    <string name="barrage_focus_body">followed the host</string>
+    <string name="barrage_frequency_control">控制发言频率</string>
+    <string name="barrage_frequency_control_remove_tips">主播解除了观众发言频率的限制</string>
+    <string name="barrage_frequency_control_tips">主播限制了观众发言频率</string>
+    <string name="barrage_leave_live_body">left the room</string>
+    <string name="barrage_like_body">liked</string>
+    <string name="barrage_message_too_large">Comment is too long, divide it into 2 comments</string>
+    <string name="barrage_not_control">Allow</string>
+    <string name="barrage_not_repeat">主播限制了观众发表重复内容</string>
+    <string name="barrage_not_repeat_remove">主播解除了观众不能发表重复内容的限制</string>
+    <string name="barrage_open">open barrage</string>
+    <string name="barrage_set_manager_body">You\'re set as manager</string>
+    <string name="barrage_share_body">shared the live stream</string>
+    <string name="begin_level_limit">Only hosts above level %d could start live streams during this period of time</string>
+    <string name="begin_level_limit_default">Your level doesn\'t meet the conditions to start a live stream during this period of time</string>
+    <string name="block">Block</string>
+    <string name="block_confirm_tips">User added to blocklist can\'t watch your sessions (permanent)</string>
+    <string name="block_failed">Couldn\'t block</string>
+    <string formatted="false" name="brrage_level_upgrade">Upgrade from level %s to level %s to get more privileges</string>
+    <string name="buy_gift_failed_with_err_code">Couldn\'t buy, error code:</string>
+    <string name="camera_occupy">Camera is busy</string>
+    <string name="can_not_speak">can not speak</string>
+    <string name="cancel">Cancel</string>
+    <string name="cancel_banspeaker">Allow</string>
+    <string name="cancel_banspeaker_fail">Couldn\'t allow comments</string>
+    <string name="cancel_manager">Remove manager</string>
+    <string name="cancle_operating">Cancel</string>
+    <string name="check_camera_video_message">Allow access to camera in Settings?</string>
+    <string name="choose_hifi">High fidelity</string>
+    <string name="click_follow_button_too_many_time">Too many taps</string>
+    <string name="close">Close</string>
+    <string name="comma">, </string>
+    <string name="concert">Concert</string>
+    <string name="confirm_delete_replay">Delete this record?</string>
+    <string name="connect_google_play_fail_toast">Couldn\'t connect to Google Play</string>
+    <string name="connect_mic">Merge audio</string>
+    <string name="connect_peripheral">The host made external devices connected</string>
+    <string name="continue_big_send_text">Send</string>
+    <string name="continue_normal_send_text">Burst</string>
+    <string name="create_order_fail_return_code">Couldn\'t create an order, error code %1$d</string>
+    <string name="create_order_fail_server_timeout">Couldn\'t create an order</string>
+    <string name="create_order_goods_not_exist">Product not exist now</string>
+    <string name="date_today">Today</string>
+    <string name="date_tomorrow">Tomorrow</string>
+    <string name="default_id_hint">Mi Live ID: </string>
+    <string name="default_loading_hint">Just a sec\u2026</string>
+    <string name="default_location_hint">Kepler-452b</string>
+    <string name="default_signature">I\'m the description nobody has written yet</string>
+    <string name="diamond_outcome_hint">Buy gems</string>
+    <string name="do_not_repeated_statement">Don\'t send duplicated comments</string>
+    <string name="doing_now">Processing</string>
+    <string name="empty_edittext_hint">Say something here</string>
+    <string name="empty_tips">Empty</string>
+    <string name="endlive_follow_success">Followed successfully. You will receive notifications about this live stream.</string>
+    <string name="engine_init_timeout">Couldn\'t initialize engine.</string>
+    <string name="enter_live_failure">enter live failure</string>
+    <string name="enter_live_success">enter live success</string>
+    <string name="exceed_max_retry_tip">Network error</string>
+    <string name="exit">Exit</string>
+    <string name="experience">+%1$d Exp</string>
+    <string name="expression">Live selfie masks</string>
+    <string name="face_beauty">Beautify</string>
+    <string name="fans">Fans</string>
+    <string name="feeds_detail_wifi_2_4g_hint">You\'re currently using cellular data. Keep watching anyway?</string>
+    <string name="file_upload_failed_file_error">Couldn\'t upload file</string>
+    <string name="file_upload_failed_path_error">Couldn\'t upload file, local path error</string>
+    <string name="filter">Filter</string>
+    <string name="filter_aden">Afternoon</string>
+    <string name="filter_clarendon">Icy</string>
+    <string name="filter_crema">Sepia</string>
+    <string name="filter_dogpatch">Fresh</string>
+    <string name="filter_gingham">Amour</string>
+    <string name="filter_gray">B&amp;W</string>
+    <string name="filter_juno">Warm</string>
+    <string name="filter_nashville">Retro</string>
+    <string name="filter_normal">Regular</string>
+    <string name="filter_stinson">Sweet tea</string>
+    <string name="filter_sweet">Sweet</string>
+    <string name="flash_light">Flash</string>
+    <string name="follow">Follow</string>
+    <string name="follow_both">Friends</string>
+    <string name="follow_failed">Couldn\\\'t follow</string>
+    <string name="follow_success">Followed successfully</string>
+    <string name="forbid_capture">Allow Mi Live to record screen first</string>
+    <string name="forbid_speak">Ban comments</string>
+    <string name="fps">fps</string>
+    <string name="game_back_to_app_message">Back to Mi Live</string>
+    <string name="game_back_to_home">Session begins. Go back to Home and play the game now</string>
+    <string name="game_cancel_forbid_chat">Allow messages</string>
+    <string name="game_cancel_forbid_gift">Allow notifications of receiving gifts</string>
+    <string name="game_cancel_forbid_system">Allow system messages</string>
+    <string name="game_choose_tag_tip">Select a tag</string>
+    <string name="game_comment_title">Chat room</string>
+    <string name="game_default_name">Select a tag</string>
+    <string name="game_forbid_chat">Chatsdf</string>
+    <string name="game_forbid_chat_toast">Block chatting messagesdf</string>
+    <string name="game_forbid_gift">Gifts</string>
+    <string name="game_forbid_gift_toast">Block notifications of receiving gifts</string>
+    <string name="game_forbid_system">System messages</string>
+    <string name="game_forbid_system_toast">Block system messages</string>
+    <string name="game_forbid_title">Message settings</string>
+    <string name="game_give_one_gift">sent 1 %s</string>
+    <string name="game_live_tag_title">Select a tag</string>
+    <string name="game_live_unexpected_end_toast">Error occurred. Session ended.</string>
+    <string name="game_mute_microphone">Your microphone is muted</string>
+    <string name="game_quality_title">Video quality:</string>
+    <string name="game_quality_title_en">Video quality:</string>
+    <string name="game_save_picture_failed">Couldn\'t save, try again later</string>
+    <string name="game_save_picture_success">Screenshot saved in %s</string>
+    <string name="game_unmute_microphone">Microphone is on</string>
+    <string name="get_gift_list_fail">Couldn\'t get gift list</string>
+    <string name="get_lucky">Random amount</string>
+    <string name="gift">Gifts</string>
+    <string name="gift_card_insufficient">Insufficient gift cards</string>
+    <string name="gift_card_num">"  remaining"</string>
+    <string name="gift_item_diamond_text">Gems</string>
+    <string name="gift_item_mi_coin_text">Mi Credits</string>
+    <string name="gift_mall_balance_tips">Gold gems are virtual currency on Mi Live</string>
+    <string name="gift_mall_guide_page_btn_text">Got it</string>
+    <string name="gift_mall_guide_page_tip">Tap the gift repeatedly to send</string>
+    <string name="gift_mall_mi_coin_tips">Use Mi Credits to buy gifts having marks only</string>
+    <string name="gift_mall_silver_balance_tips">Use silver gems first to send gifts</string>
+    <string name="gift_out_date">This gift isn\'t available</string>
+    <string name="gift_send">sent %1$s</string>
+    <string name="given_diamond">+%1$d (extra)</string>
+    <string name="go_to_login">login</string>
+    <string name="gold_iv_tint">%d gold gems</string>
+    <string name="google_play_buy_fail_msg">Couldn\'t pay</string>
+    <string name="have_been_kicked">您已被踢出该直播间，将无法再进入本场直播</string>
+    <string name="high">High</string>
+    <string name="high_level_brrage_level_upgrade">Upgrade to level %s</string>
+    <string name="home_bottom_main">Home</string>
+    <string name="i_know">Got it</string>
+    <string name="i_sent">I\'ve sent</string>
+    <string name="in_process">Working\u2026</string>
+    <string name="insufficient_balance">Insufficient funds</string>
+    <string name="insufficient_ticket_tip">You don\'t have enough coins</string>
+    <string name="invited">The host invited</string>
+    <string name="justnow">Just now</string>
+    <string name="kick_confirm_btn">Kick out</string>
+    <string name="kick_out">kick out</string>
+    <string name="kick_viewer_brrage">%s is kicked out of the room</string>
+    <string name="kick_viewer_confirm_tips">User kicked out can\'t watch this session (current session)</string>
+    <string name="kick_viewer_fail">Couldn\'t kick out</string>
+    <string name="kick_viewer_success">Kicked out successfully</string>
+    <string name="ktv">KTV</string>
+    <string name="last_100_records_bottom">Only show recent 100 records</string>
+    <string name="leave_live_failure">leave live failure</string>
+    <string name="leave_live_success">leave live success</string>
+    <string name="lianfa">Burst</string>
+    <string name="live">Live</string>
+    <string name="live_delete">Delete replay</string>
+    <string name="live_ended">Session ended</string>
+    <string name="live_ended_back">Back to Home</string>
+    <string name="live_ended_concern">Follow</string>
+    <string name="live_ended_concerned">Following</string>
+    <string name="live_ended_enter_chat_room">Enter the chat room</string>
+    <string name="live_ended_home_page">Visit Home for more fun</string>
+    <string name="live_ended_recommend_hint">Recommendation for you</string>
+    <string name="live_ended_viewer_cnt">Audience: %s</string>
+    <string name="live_failure">Couldn\'t create channel, go back and try again</string>
+    <string name="live_finish">Live stream session ended</string>
+    <string name="live_is_end">Session ended</string>
+    <string name="live_network_error">Network not available, try again later</string>
+    <string name="live_plus_atmosphere">Effects</string>
+    <string name="live_plus_comment">Messages</string>
+    <string name="live_private_tip">Can\'t save private live stream</string>
+    <string name="live_start">Start</string>
+    <string name="live_start_light">I liked</string>
+    <string name="live_ticket">Coins</string>
+    <string name="live_ticket_count">Coins %d</string>
+    <string name="live_ticket_count2">%d coins</string>
+    <string name="live_ticket_count_this_time">This time: %d</string>
+    <string name="live_ticket_count_this_time2">%d this time</string>
+    <string name="live_traffic_negative">Exit</string>
+    <string name="live_traffic_positive">Continue</string>
+    <string name="live_traffic_tip">Use mobile data to watch live streams?</string>
+    <string name="low">Low</string>
+    <string name="luck_draw">The host started a lucky draw</string>
+    <string name="manager">Managers</string>
+    <string name="manager_max_err">You can select up to %d managers</string>
+    <string name="max_len_notice">Can enter up to 30 characters</string>
+    <string name="max_topic_count">Up to %d characters</string>
+    <string name="me">Profile</string>
+    <string name="media_information">Media Information</string>
+    <string name="message_errorcode">%1$s, error code: %2$d</string>
+    <string name="message_floating_window_permission">Allow floating notifications in Settings?</string>
+    <string name="message_get_accounts_permission">Allow access to account in Settings now?</string>
+    <string name="message_location_permission">Allow access to location info in Settings?</string>
+    <string name="message_phone_permission">Allow access to device info in Settings?</string>
+    <string name="message_record_audio_permission">Allow recording audio in Settings?</string>
+    <string name="message_sdcard_permission">Can\'t read or write files. Allow now?</string>
+    <string name="mi__selected_audio_track">*</string>
+    <string name="mi__selected_video_track">*</string>
+    <string name="mi_bit_rate">Bit rate</string>
+    <string name="mi_channels">Channels</string>
+    <string name="mi_codec">Codec</string>
+    <string name="mi_coin_account_frozen">Mi Credits account frozen</string>
+    <string name="mi_coin_consume_timeout">Processing timed out</string>
+    <string name="mi_coin_insufficient_balance">Insufficient funds, top up first.</string>
+    <string name="mi_coin_other_consume_error">Error occurred</string>
+    <string name="mi_coin_risk_control">Account error, contact our customer service</string>
+    <string name="mi_frame_rate">Frame rate</string>
+    <string name="mi_language">Language</string>
+    <string name="mi_length">Length</string>
+    <string name="mi_media">Media</string>
+    <string name="mi_pixel_format">Pixel format</string>
+    <string name="mi_player">Player</string>
+    <string name="mi_profile_level">Profile level</string>
+    <string name="mi_resolution">Resolution</string>
+    <string name="mi_sample_rate">Sample rate</string>
+    <string name="mi_stream_fmt1">Stream #%d</string>
+    <string name="mi_type">Type</string>
+    <string name="mibi_min_pay_money_hint">You can\'t pay less than 1 Mi Credit</string>
+    <string name="mibi_pay_err_msg_buy_fail">Mi Credits: couldn\'t complete payment</string>
+    <string name="mibi_pay_err_msg_operation_in_progress">Mi Credits: paying</string>
+    <string name="mibi_pay_err_msg_pay_cancel">Mi Credits: canceled</string>
+    <string name="mibi_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="mic_occupy">Microphone is busy</string>
+    <string name="michannel_date_format">MM/dd/yyyy</string>
+    <string name="michannel_time_format">HH:mm</string>
+    <string name="middle">Medium</string>
+    <string name="mirror_image">Mirror camera</string>
+    <string name="miwallet">Mi Wallet</string>
+    <string name="miwallet_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="month_day">%1$d/%2$d</string>
+    <string name="month_day_hour_minute">MM/dd HH:mm</string>
+    <string name="more">More</string>
+    <string name="my_attention">Following</string>
+    <string name="net_error_return">No response from the server, check your network</string>
+    <string name="network_change_tip">Using mobile data may generate additional carrier fees</string>
+    <string name="network_disable">Can\'t connect to the network</string>
+    <string name="network_not_good_tip">Connection is too slow, video quality may be affected</string>
+    <string name="network_offline_warning">Can\'t connect to the network</string>
+    <string name="network_unavailable">Could\'t connect to the network</string>
+    <string name="no">Cancel</string>
+    <string name="no_gift_selected">No gifts selected</string>
+    <string name="normal_live_tag_title">Select a circle</string>
+    <string name="not_mi_coin_user">Only Mi Credit users can buy the gifts having marks</string>
+    <string name="not_permission_kick_this_viewer">You have no permissions to kick anyone out</string>
+    <string name="not_permission_to_kick">You have no permissions yet</string>
+    <string name="ok">确定</string>
+    <string name="old_gift_version">Update Mi Live to send the gifts</string>
+    <string name="origin_for_gift_item">Original price</string>
+    <string name="original">No reverb</string>
+    <string name="other_pay_way">Other payment methods</string>
+    <string name="pause_tip">Live stream host will be back soon</string>
+    <string name="pay_error_code_alipay_not_install">Install Alipay first</string>
+    <string name="pay_error_code_cancel">Cancel</string>
+    <string name="pay_error_code_client_not_install">Install Mi Wallet first</string>
+    <string name="pay_error_code_fail">Couldn\'t complete payment</string>
+    <string name="pay_error_code_get_order_error">Couldn\'t get info</string>
+    <string name="pay_error_code_get_session_error">Error occurred</string>
+    <string name="pay_error_code_get_session_fail">Couldn\'t get info</string>
+    <string name="pay_error_code_network_error">Network error</string>
+    <string name="pay_error_code_order_create_fail">Couldn\'t create order</string>
+    <string name="pay_error_code_order_info_error">Error occurred</string>
+    <string name="pay_error_code_order_info_parse_error">Error occurred</string>
+    <string name="pay_error_code_pay_info_error">Couldn\'t get payment info</string>
+    <string name="pay_error_code_wx_not_install">Install WeChat first</string>
+    <string name="pay_way_not_selected">No payment method selected</string>
+    <string name="paypal_response_data_error">Data error</string>
+    <string name="payway_google_wallet">Google Wallet</string>
+    <string name="payway_paypal">PayPal</string>
+    <string name="permission_deny_read_phone_state">can not read phone state,permission deny</string>
+    <string name="phone_interrupt">Session was paused before you picked up the call. Your phone conversations are always private.</string>
+    <string name="photo">Photo</string>
+    <string name="photo_file_list">Gallery</string>
+    <string name="photo_lib_title">%d selected</string>
+    <string name="photo_preview_title">%1$d/%2$d</string>
+    <string name="photo_select">Select</string>
+    <string name="photo_select_over_limit">Can select up to %d photos</string>
+    <string name="please_login">login first</string>
+    <string name="pref_key_enable_background_play">pref.enable_background_play</string>
+    <string name="pref_key_enable_detached_surface_texture">pref.enable_detached_surface_texture</string>
+    <string name="pref_key_enable_no_view">pref.enable_no_view</string>
+    <string name="pref_key_enable_surface_view">pref.enable_surface_view</string>
+    <string name="pref_key_enable_texture_view">pref.enable_texture_view</string>
+    <string name="pref_key_pixel_format">pref.pixel_format</string>
+    <string name="pref_key_player">pref.player</string>
+    <string name="pref_key_using_android_player">pref.using_android_player</string>
+    <string name="pref_key_using_media_codec">pref.using_media_codec</string>
+    <string name="pref_key_using_media_codec_auto_rotate">pref.using_media_codec_auto_rotate</string>
+    <string name="pref_key_using_opensl_es">pref.using_opensl_es</string>
+    <string name="pref_summary_enable_background_play">need Android 4.0+</string>
+    <string name="pref_title_enable_background_play">Enable background play</string>
+    <string name="pref_title_enable_detached_surface_texture">Enable detached SurfaceTexture</string>
+    <string name="pref_title_enable_no_view">Enable NoView</string>
+    <string name="pref_title_enable_surface_view">Enable SurfaceView</string>
+    <string name="pref_title_enable_texture_view">Enable TextureView</string>
+    <string name="pref_title_general">General</string>
+    <string name="pref_title_ijkplayer_audio">Audio: ijkplayer</string>
+    <string name="pref_title_ijkplayer_video">Video: ijkplayer</string>
+    <string name="pref_title_pixel_format">Pixel Format</string>
+    <string name="pref_title_player">Choose Player</string>
+    <string name="pref_title_render_view">RenderView</string>
+    <string name="pref_title_using_android_player">Using system player</string>
+    <string name="pref_title_using_media_codec">Using MediaCodec</string>
+    <string name="pref_title_using_media_codec_auto_rotate">Using MediaCodec auto rotate</string>
+    <string name="pref_title_using_opensl_es">Using OpenSL ES</string>
+    <string name="prepare_live_edittext_hint">Good titles give you more chances to get followers</string>
+    <string name="private_message">Message</string>
+    <string name="pull_diamond_price_list_failed">Couldn\'t get prices</string>
+    <string name="quanzi_default_name">Select a circle</string>
+    <string name="quanzi_name">%s circle</string>
+    <string name="query_order_fail_return_code">Couldn\'t get info, error code %1$d</string>
+    <string name="query_order_fail_server_timeout">Couldn\'t get info</string>
+    <string name="recent">Recent</string>
+    <string name="recharge">Top up</string>
+    <string name="recharge_adjust_amount">Edit amount</string>
+    <string name="recharge_already_expired_tip">Expired</string>
+    <string name="recharge_big_amount_tip">Contact customer service for large amount top-up</string>
+    <string name="recharge_done_tv">Topped up sucessfully</string>
+    <string name="recharge_exceed_miwallet_one_day_quota">Too many Mi Wallet orders, select</string>
+    <string name="recharge_exceed_one_day_quota_tip">Guide</string>
+    <string name="recharge_exceed_weixin_one_day_quota">Too many WeChat Wallet orders, select</string>
+    <string name="recharge_exchange_gem_btn">Exchange</string>
+    <string name="recharge_exchange_gem_btn_tip_detail">Details</string>
+    <string name="recharge_expire_left_day_tip">Expires in %1$dd</string>
+    <string name="recharge_expired_date">%1$s expired</string>
+    <string name="recharge_immediately">Pay now: %1$s</string>
+    <string name="recharge_miwallet_single_amount_too_large">An top-up order more than CNY 3000 isn\'t supported in Mi Wallet now</string>
+    <string name="recharge_not_adjust_continue">Continue to pay</string>
+    <string name="recharge_paypal_price_format">%1$s %2$s</string>
+    <string name="recharge_record_empry_tip">Buy gems to send gifts to the host</string>
+    <string name="recharge_select_pay_way_tip">Choose payment method</string>
+    <string name="recharge_single_big_amount_tip">Large amount top-up</string>
+    <string name="recharge_success">Topped up successfully</string>
+    <string name="recharge_today_expire_tip">Expires today</string>
+    <string name="recharge_use_alipay">Use Alipay</string>
+    <string name="recharge_weixin_single_amount_too_large">An top-up order more than 3000 CNY isn\'t supported in WeChat Wallet now</string>
+    <string name="recharge_will_expire_date">%1$s expired</string>
+    <string name="record_recharge_title">Top-up history</string>
+    <string name="recorded_video">The host recorded a video</string>
+    <string name="recording_studio">Studio</string>
+    <string name="remove_ban_speaker_tips">%s has been allowed comments</string>
+    <string name="remove_ban_speaker_tips2">%1$s has been allowed comments by %2$s</string>
+    <string name="remove_blocked">Remove from blocklist</string>
+    <string name="report">Report</string>
+    <string name="retry">Try again</string>
+    <string name="richer_hongbao">Red envelope</string>
+    <string name="room_admin">Manager</string>
+    <string name="room_setting">Settings</string>
+    <string name="sample">Sample</string>
+    <string name="saving_image">Saving\u2026</string>
+    <string name="select_cover">Select cover</string>
+    <string name="select_done">Done (%1$d/%2$d)</string>
+    <string name="select_pay_way_alipay">Payment method: Alipay</string>
+    <string name="select_pay_way_dialog_title">Choose payment method</string>
+    <string name="select_pay_way_google_wallet">Payment method: Google Wallet</string>
+    <string name="select_pay_way_mibi">Payment method: Mi Credits</string>
+    <string name="select_pay_way_miwallet">Payment method: Mi Wallet</string>
+    <string name="select_pay_way_paypal">Payment method: PayPal</string>
+    <string name="select_pay_way_weixin">Payment method: WeChat Wallet</string>
+    <string name="send">send</string>
+    <string name="send_barrage_interval">距离再次发送内容有%d秒</string>
+    <string name="send_barrage_repeated">主播设定了不能重复发言</string>
+    <string name="send_gift">Send</string>
+    <string name="send_gift_failed">Couldn\'t send gift</string>
+    <string name="set_manager">Set as manager</string>
+    <string name="setting_black_follow_hint">Unblock to follow</string>
+    <string name="setting_dialog_black_title">Attention</string>
+    <string name="setting_title">Settings</string>
+    <string name="settings">Settings</string>
+    <string name="share_pic">The host shared a picture</string>
+    <string name="share_song">The host is playing </string>
+    <string name="share_video">The host shared a video</string>
+    <string name="shop_intro">Store info:</string>
+    <string name="shop_location">Location:\u0020</string>
+    <string name="shop_open_time">Business hours:</string>
+    <string name="show_info">Info</string>
+    <string name="six_in_send_pic_default_text">Received a photo, can\'t view in this version </string>
+    <string name="sixin_conversation_photo">Image</string>
+    <string name="sixin_conversation_vedio">Video</string>
+    <string name="sixin_link">Links</string>
+    <string name="start_stream_failure">Couldn\'t start, go back and try again</string>
+    <string name="stop_live_dialog_message">End the session?</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="sys_manager">System Admin</string>
+    <string name="sys_msg">System messages</string>
+    <string name="third_party_system_version_error">Update system version before you install Mi Live</string>
+    <string name="ticket_buy_live_ticket_tip1">Watch full video</string>
+    <string name="times_mm_dd_format">MM/dd</string>
+    <string name="title_camera_permission">Allow access to camera</string>
+    <string name="title_floating_window_permission">Allow floating notifications</string>
+    <string name="title_get_accounts_permission">Give account permissions</string>
+    <string name="title_location_permission">Give location permissions</string>
+    <string name="title_phone_permission">Give device info permissions</string>
+    <string name="title_record_audio_permission">Allow recording audio</string>
+    <string name="title_sdcard_permission">Allow reading and writing files on internal storage</string>
+    <string name="to_home">Back to Home</string>
+    <string name="toggle_player">Player</string>
+    <string name="toggle_ratio">Scale</string>
+    <string name="toggle_render">Render</string>
+    <string name="token_live_error_toast_room_not_exist">The room doesn\'t exist</string>
+    <string name="top1">The first person in rankings</string>
+    <string name="top1_kick_viewer_barrage">%s is kicked out of the room</string>
+    <string name="top1_msg">You can ban other people\'s comments now</string>
+    <string name="tracks">Tracks</string>
+    <string name="type_to_compose_text_enter_to_send">Enter message</string>
+    <string name="unblock">Remove</string>
+    <string name="unfocus_robot_name">Message from strangers</string>
+    <string name="unfollow_dialog_title">Unfollow?</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="upload_failed">Couldn\'t upload</string>
+    <string name="uploading">Uploading\u2026</string>
+    <string name="use_mi_account_login_miwallet_msg">You\'re using Mi Account %s. Use this account to sign in to Mi Wallet?</string>
+    <string name="use_mi_account_login_title">Sign in with Mi Account</string>
+    <string name="user_level_too_low_cant_buy">Only VIP users can buy the gift</string>
+    <string name="user_send_gift_tip">%1$s sent %2$s</string>
+    <string name="v_cache">v-cache</string>
+    <string name="valid_forever_tip">Never expires</string>
+    <string name="vdec">vdec</string>
+    <string name="verify_offical">Official account: </string>
+    <string name="verify_recommand">Recommended: </string>
+    <string name="verify_sina">Weibo verification: </string>
+    <string name="verify_xiaomi">Mi Live verification: </string>
+    <string name="wait_to_recharge_tv">Waiting for payment</string>
+    <string name="warm_prompt">Attention</string>
+    <string name="watch_owner_name_default">Mi Live</string>
+    <string name="weixin">WeChat</string>
+    <string name="weixin_pay_success_sync_order">Paid successfully, syncing the order</string>
+    <string name="will_expire_tip">About to expire</string>
+    <string name="with_extra_diamond">+ %1$d (Given)</string>
+    <string name="within_1_hour">%d min ago</string>
+    <string name="within_s_secs">Just now</string>
+    <string name="year_month_day">%2$d/%3$d/%1$d</string>
+    <string name="year_month_day_hour_minute">MM/dd/yyyy HH:mm</string>
+    <string name="yes">OK</string>
+    <string name="yesterday_hour_minute">Yesterday %1$d:%2$02d</string>
+    <string name="yesterday_time">Yesterday %s</string>
+    <string name="zhifubao">Alipay</string>
+    <style name="AppThemeLive" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <style name="MyAlertDialog" parent="android:Theme.Dialog">
+        <item name="android:fullDark">@android:color/transparent</item>
+        <item name="android:topDark">@android:color/transparent</item>
+        <item name="android:centerDark">@android:color/transparent</item>
+        <item name="android:bottomDark">@android:color/transparent</item>
+        <item name="android:fullBright">@android:color/transparent</item>
+        <item name="android:topBright">@android:color/transparent</item>
+        <item name="android:centerBright">@android:color/transparent</item>
+        <item name="android:bottomBright">@android:color/transparent</item>
+        <item name="android:bottomMedium">@android:color/transparent</item>
+        <item name="android:centerMedium">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+    <style name="MyDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
+    </style>
+    <style name="PopUpMyAlertDialog" parent="android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fullDark">@android:color/transparent</item>
+        <item name="android:topDark">@android:color/transparent</item>
+        <item name="android:centerDark">@android:color/transparent</item>
+        <item name="android:bottomDark">@android:color/transparent</item>
+        <item name="android:fullBright">@android:color/transparent</item>
+        <item name="android:topBright">@android:color/transparent</item>
+        <item name="android:centerBright">@android:color/transparent</item>
+        <item name="android:bottomBright">@android:color/transparent</item>
+        <item name="android:bottomMedium">@android:color/transparent</item>
+        <item name="android:centerMedium">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+    <style name="Switch">
+        <item name="appTrack">@drawable/switch_btn</item>
+        <item name="appThumb">@drawable/all_switch_bg_button_light</item>
+        <item name="appSwitchTextAppearance">@android:style/TextAppearance.Small</item>
+        <item name="appTextOn"/>
+        <item name="appTextOff"/>
+        <item name="appSwitchMinWidth">36.67dip</item>
+        <item name="android:textColor">#fafafa</item>
+        <item name="android:background">#00FFFFFF</item>
+    </style>
+    <style name="Theme.PopupMessage" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <style name="end_live_type">
+        <item name="android:layout_marginRight">@dimen/view_dimen_12</item>
+        <item name="android:layout_marginTop">@dimen/view_dimen_12</item>
+        <item name="android:background">@drawable/hot_live_icon_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:textColor">@color/color_black_trans_70</item>
+        <item name="android:textSize">@dimen/text_size_30</item>
+    </style>
+    <style name="michannel_type">
+        <item name="android:layout_marginRight">@dimen/view_dimen_20</item>
+        <item name="android:layout_marginTop">@dimen/view_dimen_20</item>
+        <item name="android:background">@drawable/hot_live_icon_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:textColor">@color/color_black_trans_70</item>
+        <item name="android:textSize">@dimen/text_size_30</item>
+    </style>
+</resources>

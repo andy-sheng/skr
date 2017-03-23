@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.log.MyLog;
+import com.mi.liveassistant.R;
 import com.wali.live.channel.holder.BaseHolder;
 import com.wali.live.channel.holder.ThreeCardHolder;
 import com.wali.live.channel.holder.TwoCardHolder;
 import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.channel.viewmodel.ChannelUiType;
 import com.wali.live.channel.viewmodel.ChannelViewModel;
-import com.mi.liveassistant.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
