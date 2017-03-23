@@ -24,13 +24,11 @@ import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
-import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.wali.live.common.pay.adapter.RechargeRecyclerViewAdapter;
 import com.wali.live.common.pay.assist.IPayActivityFlag;
 import com.wali.live.common.pay.constant.PayConstant;
 import com.wali.live.common.pay.constant.PayWay;
 import com.wali.live.common.pay.constant.RechargeConfig;
-import com.wali.live.common.pay.handler.PayPacketHandler;
 import com.wali.live.common.pay.model.Diamond;
 import com.wali.live.common.pay.presenter.RechargePresenter;
 import com.wali.live.common.pay.utils.PayStatisticUtils;
@@ -129,14 +127,8 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
         return inflater.inflate(R.layout.fragment_recharge, container, false);
     }
 
-    static PayPacketHandler sPayPacketHandler;
-
     @Override
     protected void bindView() {
-        if (sPayPacketHandler == null) {
-            sPayPacketHandler = new PayPacketHandler();
-            MiLinkClientAdapter.getsInstance().addPacketDataHandler(sPayPacketHandler);
-        }
 //        mPayWayList = mIsInternationalPayMode ? RechargeConfig.getInternationalPayWayList() : RechargeConfig.getNativePayWayList();
         mPayWayList = RechargeConfig.getNativePayWayList();
         sPayWay = getInitialPayWay();// 设置支付手段的首选项

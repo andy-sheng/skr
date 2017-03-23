@@ -1,6 +1,9 @@
 package com.wali.live.event;
 
+import android.support.annotation.Nullable;
+
 import com.wali.live.common.model.CommentModel;
+import com.wali.live.proto.PayProto;
 import com.wali.live.receiver.NetworkReceiver;
 
 import org.json.JSONObject;
@@ -150,4 +153,14 @@ public abstract class EventClass {
             return unrepeatable;
         }
     }
+
+    public static class PayPush {
+        @Nullable
+        public PayProto.PayPush payPush;
+
+        public PayPush(@Nullable PayProto.PayPush payPush) {
+            this.payPush = payPush;
+        }
+    }
+
 }

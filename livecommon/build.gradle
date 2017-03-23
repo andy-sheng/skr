@@ -70,7 +70,7 @@ dependencies {
     //compile 'com.paypal.sdk:paypal-android-sdk:2.14.3'
     compile files('libs/HyAlipay_release_20161202.jar')
     compile files('libs/HyUcashierpay_release_20161202.jar')
-    compile files('libs/HyWxpay_release_20170116.jar')
+    compile files('libs/HyWxWappay_release_20170307.jar')
     compile files('libs/zxingcore-3.1.0.jar')
 //    compile files('libs/MiStats_SDK_Client_1_4_0.jar')
     compile files('libs/reporter.jar')

@@ -22,6 +22,7 @@ import com.mi.milink.sdk.base.debug.TraceLevel;
 import com.mi.milink.sdk.data.ClientAppInfo;
 import com.mi.milink.sdk.debug.MiLinkLog;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
+import com.wali.live.common.pay.handler.PayPacketHandler;
 import com.wali.live.dns.PreDnsManager;
 import com.wali.live.log.LogHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
@@ -101,6 +102,8 @@ public class InitManager {
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new GiftPacketHandler());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(ReplayBarrageMessageManager.getInstance());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new LogHandler());
+        MiLinkClientAdapter.getsInstance().addPacketDataHandler(new PayPacketHandler());
+
     }
 
     public static void registerAllEventBus() {

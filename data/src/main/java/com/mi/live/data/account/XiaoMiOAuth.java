@@ -3,6 +3,7 @@ package com.mi.live.data.account;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 
+import com.base.utils.Constants;
 import com.xiaomi.account.openauth.XMAuthericationException;
 import com.xiaomi.account.openauth.XiaomiOAuthConstants;
 import com.xiaomi.account.openauth.XiaomiOAuthFuture;
@@ -23,10 +24,20 @@ public class XiaoMiOAuth {
     public static final long APP_ID_LOGIN = 2882303761517438806L;
     public static final String APP_KEY_LOGIN = "5431743870806";
 
-    public static final long APP_ID_PAY = 2882303761517559014L;
-    public static final String APP_KEY_PAY = "5871755944014";
+    public static final long APP_ID_PAY;
+    public static final String APP_KEY_PAY;
 
     static final boolean sKeepCookies = true;
+
+    static {
+        if (Constants.isTestBuild) {
+            APP_ID_PAY = 2882303761517560526L;
+            APP_KEY_PAY = "5121756040526";
+        } else {
+            APP_ID_PAY = 2882303761517559014L;
+            APP_KEY_PAY = "5871755944014";
+        }
+    }
 
     /**
      * 获取小米OAuth登录的code

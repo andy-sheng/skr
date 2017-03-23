@@ -155,6 +155,8 @@ public class MiLinkCommand {
     public static final String COMMAND_PAY_GET_BALANCE_DETAIL = "zhibo.bank.getBalanceDetail";
     /*充值小红点*/
     public static final String COMMAND_PAY_GET_RED_ICON = "zhibo.redpoint.get";
+    public static final String COMMAND_PAY_NOTIFY = "zhibo.bank.payNotify";
+
     /*私信相关*/
     public static final String COMMAND_SEND_CHAT_MSG = "zhibo.send.chatmsg";
     public static final String COMMAND_SEND_READ_MSG = "zhibo.send.readmsg";

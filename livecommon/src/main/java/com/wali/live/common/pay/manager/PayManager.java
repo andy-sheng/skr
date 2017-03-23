@@ -11,6 +11,7 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.toast.ToastUtils;
 import com.live.module.common.R;
+import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -20,7 +21,6 @@ import com.wali.live.common.pay.constant.RechargeConfig;
 import com.wali.live.common.pay.model.Diamond;
 import com.wali.live.common.pay.model.SkuDetail;
 import com.wali.live.common.pay.presenter.RechargePresenter;
-import com.wali.live.common.pay.constant.PayWay;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.PayProto;
 
@@ -117,6 +117,8 @@ public class PayManager {
                 .setPayType(type)
                 .setChannel(getChannelByPayType(type))
                 .setGiveGemCnt(goods.getExtraGive())
+                .setAppChannel(String.valueOf(HostChannelManager.getInstance().getChannelId()))
+                .setAppType(PayProto.AppType.ZHIBO_ZHUSHOU)
                 .build();
         PacketData packetData = new PacketData();
         packetData.setCommand(MiLinkCommand.COMMAND_PAY_CREATE_ORDER);
@@ -435,7 +437,7 @@ public class PayManager {
         }
     }
 
-    public interface  PullRechargeListIface {
+    public interface PullRechargeListIface {
         boolean isNotPullRechargeList();
     }
 

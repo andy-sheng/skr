@@ -34,6 +34,7 @@ import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.XiaoMiOAuth;
 import com.mi.live.data.account.event.UserInfoEvent;
+import com.mi.live.data.api.ErrorCode;
 import com.wali.live.common.pay.constant.PayConstant;
 import com.wali.live.common.pay.constant.PayWay;
 import com.wali.live.common.pay.manager.PayManager;
@@ -51,7 +52,7 @@ import com.xiaomi.gamecenter.alipay.HyAliPay;
 import com.xiaomi.gamecenter.ucashier.HyUcashierPay;
 import com.xiaomi.gamecenter.ucashier.PayResultCallback;
 import com.xiaomi.gamecenter.ucashier.purchase.FeePurchase;
-import com.xiaomi.gamecenter.wxpay.HyWxPay;
+import com.xiaomi.gamecenter.wxwap.HyWxWapPay;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -799,19 +800,19 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
     }
 
     private void payByWeixin(String orderId, int price, final String userInfo) {
-        com.xiaomi.gamecenter.wxpay.purchase.FeePurchase purchase = new com.xiaomi.gamecenter.wxpay.purchase.FeePurchase();
+        com.xiaomi.gamecenter.wxwap.purchase.FeePurchase purchase = new com.xiaomi.gamecenter.wxwap.purchase.FeePurchase();
         purchase.setCpOrderId(orderId);
         purchase.setFeeValue(String.valueOf(price));
         purchase.setCpUserInfo(userInfo);
-        HyWxPay hyWxPay = null;
+        HyWxWapPay hyWxPay = null;
         try {
-            hyWxPay = HyWxPay.getInstance();
+            hyWxPay = HyWxWapPay.getInstance();
         } catch (IllegalStateException e) {
-            MyLog.e(TAG, "init HyWxPay sdk fail, init here", e);
-            HyWxPay.init(GlobalData.app(), String.valueOf(XiaoMiOAuth.APP_ID_PAY), XiaoMiOAuth.APP_KEY_PAY);
-            hyWxPay = HyWxPay.getInstance();
+            MyLog.e(TAG, "init HyWxWapPay sdk fail, init here", e);
+            HyWxWapPay.init(GlobalData.app(), String.valueOf(XiaoMiOAuth.APP_ID_PAY), XiaoMiOAuth.APP_KEY_PAY);
+            hyWxPay = HyWxWapPay.getInstance();
         }
-        hyWxPay.pay(mRechargeView.getActivity(), purchase, new com.xiaomi.gamecenter.wxpay.PayResultCallback() {
+        hyWxPay.pay(mRechargeView.getActivity(), purchase, new com.xiaomi.gamecenter.wxwap.PayResultCallback() {
             @Override
             public void onError(int errorCode, String msg) {
                 String errMsg = String.format("msg:%s, errorCode:%d", msg, errorCode);
@@ -1180,7 +1181,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                             mRechargeView.showToast(getString(R.string.recharge_success));
                         }
                         // 更新列表
-                        // pullPriceListAsync();
+//                         pullPriceListAsync();
                         MyLog.w(TAG, "add diamond success");
 //                        if (getCurrentPayWay() == PayWay.GOOGLEWALLET) {// 离GoogleWallet支付成功还差一步
 //                            try {
@@ -1381,6 +1382,25 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
         // 3、去GooglePlay消费掉这个商品
         consumeGooglePlayProduct(event.receipt);
     }
+
+    /**
+     * 可用钻石数变化的push
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventClass.PayPush event) {
+        if (event == null
+                || event.payPush == null
+                || event.payPush.getRetCode() != ErrorCode.CODE_SUCCESS) {
+            return;
+        }
+        PayProto.PayPush payPush = event.payPush;
+        MyLog.w(TAG, "payPush:" + payPush);
+        // 会通过EventBus发出UserInfoEvent
+        MyUserInfoManager.getInstance().setDiamondNum(payPush.getUsableGemCnt());
+    }
+
     /**
      * giftcard的push
      *
