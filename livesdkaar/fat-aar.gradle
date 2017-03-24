@@ -261,7 +261,7 @@ task generateRJava << {
     }
 }
 
-task collectRClass << {
+task collectRClass(dependsOn: generateRJava) << {
     delete base_r2x_dir
     mkdir base_r2x_dir
 
