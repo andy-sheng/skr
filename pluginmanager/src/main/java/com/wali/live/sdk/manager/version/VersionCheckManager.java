@@ -46,6 +46,9 @@ public class VersionCheckManager {
     public static final String JUMP_CLASS_NAME = "com.wali.live.jump.JumpSdkActivity";
 
     private static final String APP_NAME = "liveassistant";
+    /*Staging APP NAME*/
+    private static final String STAGING_NAME = "liveassistantstaging";
+
     private static final String APP_PLATFORM = "android";
 
     /*SharedPreferences FileName & Key*/
@@ -66,8 +69,9 @@ public class VersionCheckManager {
     private boolean mIsAdditionalUpgrade; // 增量升级
 
     private boolean mIsUpgrading = false;
-
     private boolean mNeedUpdateApp = false;
+
+    private boolean mIsStaging = false;
 
     public static synchronized VersionCheckManager getInstance() {
         if (sInstance == null) {
@@ -88,6 +92,13 @@ public class VersionCheckManager {
         return mIsUpgrading;
     }
 
+    /**
+     * 测试调用的接口，正常线上环境请不要调用
+     */
+    public void setStaging(boolean isStaging) {
+        mIsStaging = isStaging;
+    }
+
     public int checkNewVersion() {
         if (mIsUpgrading) {
             return IS_UPGRADING;
@@ -103,7 +114,8 @@ public class VersionCheckManager {
         String url = String.format(CHECK_GRAY_UPGRADE_INFO, miId);
         List<NameValuePair> postBody = new ArrayList();
         postBody.add(new BasicNameValuePair("uuid", miId));
-        postBody.add(new BasicNameValuePair("app", APP_NAME));
+        // 注意这里为了测试，增加了STAGING_NAME
+        postBody.add(new BasicNameValuePair("app", mIsStaging ? STAGING_NAME : APP_NAME));
         postBody.add(new BasicNameValuePair("platform", APP_PLATFORM));
         postBody.add(new BasicNameValuePair("system", String.valueOf(Build.VERSION.SDK_INT)));
         postBody.add(new BasicNameValuePair("channel", "DEFAULT")); // 渠道号

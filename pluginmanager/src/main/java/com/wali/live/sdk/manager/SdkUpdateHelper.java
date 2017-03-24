@@ -20,10 +20,16 @@ public class SdkUpdateHelper {
     public static final int IS_UPGRADING = VersionCheckManager.IS_UPGRADING;
     public static final int HAS_FORCE_UPGRADE = VersionCheckManager.HAS_FORCE_UPGRADE;
 
-    private @Nullable ExecutorService mExecutor;
-    private @NonNull VersionCheckManager mVersionManager = VersionCheckManager.getInstance();
+    private
+    @Nullable
+    ExecutorService mExecutor;
+    private
+    @NonNull
+    VersionCheckManager mVersionManager = VersionCheckManager.getInstance();
 
-    private @Nullable IMiLiveSdk.IUpdateListener mUpdateListener;
+    private
+    @Nullable
+    IMiLiveSdk.IUpdateListener mUpdateListener;
 
     public SdkUpdateHelper(IMiLiveSdk.IUpdateListener updateListener) {
         mUpdateListener = updateListener;
@@ -56,6 +62,21 @@ public class SdkUpdateHelper {
 
     public void installUpdateSync() {
         mVersionManager.installLocalPackage();
+    }
+
+    /**
+     * @notice 测试环境使用，在功能正式上线后请不要调用
+     */
+    public void setStaging() {
+        mVersionManager.setStaging(true);
+    }
+
+    /**
+     * @notice 测试环境使用，在功能正式上线后请不要调用
+     */
+    public void checkStaging() {
+        setStaging();
+        checkUpdate();
     }
 
     public void checkUpdate() {
