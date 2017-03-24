@@ -87,16 +87,9 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
     compile presentationDependencies.androidAppCompat
+    compile presentationDependencies.recyclerView
 
-    compile(name: 'livesdk', ext: 'aar')
-
-//    if (flavorType == "live") {
-//        compile project(':liveclient')
-//    } else {
-//        compile project(':watchclient')
-//    }
-    compile files('libs/crasheye_2.1.5.jar')
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile presentationDependencies.butterKnife
 
     compile(presentationDependencies.fresco) {
         exclude module: 'support-v4'
@@ -106,6 +99,19 @@ dependencies {
     compile presentationDependencies.frescoWebp
     compile presentationDependencies.frescoWebpSupport
     compile presentationDependencies.frescoGif
+
+    compile(name: 'livesdk', ext: 'aar')
+
+//    if (flavorType == "live") {
+//        compile project(':liveclient')
+//    } else {
+//        compile project(':watchclient')
+//    }
+
+    compile files('libs/crasheye_2.1.5.jar')
+
+    compile 'com.google.code.gson:gson:2.6.2'
+
     compile 'com.trello:rxlifecycle:0.4.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'org.slf4j:slf4j-api:1.7.21'
