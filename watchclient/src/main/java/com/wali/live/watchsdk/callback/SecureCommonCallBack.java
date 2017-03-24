@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.callback;
 
 import com.base.log.MyLog;
 import com.mi.live.data.account.HostChannelManager;
+import com.wali.live.common.pay.constant.RechargeConfig;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -17,7 +18,7 @@ public abstract class SecureCommonCallBack implements ISecureCallBack {
 
     @Override
     public void process(Object... objects) {
-        int channelId = (int) objects[0];
+        final int channelId = (int) objects[0];
         String packageName = (String) objects[1];
         HostChannelManager.getInstance().checkChannel(channelId, packageName)
                 .subscribeOn(Schedulers.io())
@@ -37,6 +38,9 @@ public abstract class SecureCommonCallBack implements ISecureCallBack {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         MyLog.v(TAG, "onNext");
+                        if(aBoolean){
+                            RechargeConfig.initNativePayWays(channelId);
+                        }
                         postSuccess();
                     }
                 });

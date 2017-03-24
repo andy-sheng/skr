@@ -45,6 +45,8 @@ public class HostChannelManager {
     }
 
     /**
+     * 返回的boolean值代表渠道是否有变化
+     *
      * 检查channelid
      */
     public synchronized Observable<Boolean> checkChannel(final int channelId, final String packageName) {
@@ -52,7 +54,7 @@ public class HostChannelManager {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
                 if (channelId == mChannelId) {
-                    subscriber.onNext(true);
+                    subscriber.onNext(false);
                     subscriber.onCompleted();
                     return;
                 }

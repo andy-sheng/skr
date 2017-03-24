@@ -391,7 +391,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             MyLog.w(TAG, "buy gift error:" + msg);
                             if (!TextUtils.isEmpty(msg)) {
                                 if (((GiftException) e).errCode == GiftErrorCode.GIFT_INSUFFICIENT_BALANCE) {
-                                    mGiftMallView.showInsufficientBalanceTips();
+//                                    mGiftMallView.showInsufficientBalanceTips();
+                                    EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
                                 } else {
                                     ToastUtils.showToast(mContext, msg);
                                 }

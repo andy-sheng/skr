@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.callback;
 
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.common.pay.constant.RechargeConfig;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
@@ -17,6 +18,7 @@ public abstract class SecureLoginCallback implements ISecureCallBack {
         if (channelId == HostChannelManager.getInstance().getChannelId() || !BaseComponentSdkActivity.isActive()) {
             UserAccountManager.getInstance().logoffWithoutClearAccount(HostChannelManager.getInstance().getChannelId());
             HostChannelManager.getInstance().setChannelData(channelId, packageName);
+            RechargeConfig.initNativePayWays(channelId);
             postSuccess();
         } else {
             postActive();

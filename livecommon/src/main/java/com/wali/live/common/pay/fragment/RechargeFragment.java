@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.base.activity.BaseActivity;
 import com.base.dialog.MyProgressDialogEx;
 import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -88,10 +89,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
     /**
      * 是否为首次充值
      */
-    private boolean mIsFirstRecharge = PreferenceUtils.getSettingBoolean(
-            GlobalData.app().getSharedPreferences(PayConstant.SP_FILENAME_RECHARGE_CONFIG, Context.MODE_PRIVATE),
-            PayConstant.SP_KEY_IS_FIRST_RECHARGE,
-            true);
+    private boolean mIsFirstRecharge = RechargeConfig.getIsFirstRecharge();
 
     /** 是否存在展开的支付方式,结合{@link #mIsFirstRecharge}使用 */
     //private boolean mExistExpandedPayWay = false;
@@ -107,7 +105,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
     private List<PayWay> mPayWayList;////
 
     //Inject
-    private RechargePresenter mRechargePresenter = new RechargePresenter(this);
+    private RechargePresenter mRechargePresenter;
 
     //////////////////////////////////////////////////////
     /////////////////////////方法//////////////////////////
@@ -130,6 +128,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
     @Override
     protected void bindView() {
 //        mPayWayList = mIsInternationalPayMode ? RechargeConfig.getInternationalPayWayList() : RechargeConfig.getNativePayWayList();
+        mRechargePresenter = new RechargePresenter(this,(BaseActivity) getActivity());
         mPayWayList = RechargeConfig.getNativePayWayList();
         sPayWay = getInitialPayWay();// 设置支付手段的首选项
         // 清空缓存的价格列表，消除缓存在切换支付方式时可能出现问题的隐患
@@ -233,8 +232,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
     private PayWay getInitialPayWay() {
         PayWay defaultPayWay = mPayWayList.get(0);
         PayWay payWay = defaultPayWay;
-        String lastPayWayName = PreferenceUtils.getSettingString(GlobalData.app().getSharedPreferences(PayConstant.SP_FILENAME_RECHARGE_CONFIG, Context.MODE_PRIVATE),
-                PayConstant.SP_KEY_LAST_PAY_WAY, null);
+        String lastPayWayName = RechargeConfig.getLastPaywayName();
         if (!TextUtils.isEmpty(lastPayWayName)) {
             try {
                 payWay = PayWay.valueOf(lastPayWayName.toUpperCase());

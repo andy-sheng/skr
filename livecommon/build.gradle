@@ -80,4 +80,5 @@ dependencies {
     compile files('libs/alipaySingle-20160825.jar')
 //    compile 'com.alibaba.alipay:alipaySingle:20160825@jar'//支付
     compile files('libs/ks3-android-sdk-v-1.4.6.jar')
+    compile files('libs/SDK_TY_4.6.11.jar')
 }

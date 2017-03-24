@@ -45,6 +45,7 @@ import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.common.pay.handler.OneDayQuotaHandler;
 import com.wali.live.common.pay.handler.RechargeActionHandler;
 import com.wali.live.common.pay.handler.SingleDealQuotaHandler;
+import com.wali.live.common.pay.manager.PayManager;
 import com.wali.live.common.pay.model.Diamond;
 import com.wali.live.common.pay.model.SkuDetail;
 import com.wali.live.common.pay.presenter.RechargePresenter;
@@ -430,7 +431,12 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private PayWayViewHolder getPayWayViewHolder(ViewGroup parent) {
-        return new PayWayViewHolder(mLayoutInflater.inflate(R.layout.recharge_pay_way_item_with_arrow, parent, false));
+        PayWayViewHolder payWayViewHolder = new PayWayViewHolder(mLayoutInflater.inflate(R.layout.recharge_pay_way_item_with_arrow, parent, false));
+        if(RechargeConfig.isOnlyOnePayway()){
+            payWayViewHolder.mOtherPayWayTip.setVisibility(View.GONE);
+            payWayViewHolder.mArrow.setVisibility(View.GONE);
+        }
+        return payWayViewHolder;
     }
 
     private void bindPayWayViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
@@ -442,7 +448,11 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         if (!isFirstStep() && mPayWayViewHolder == null) {
             mPayWayViewHolder = payWayViewHolder;
         }
-        payWayViewHolder.mOtherPayWayTip.setVisibility(isFirstStep() ? View.GONE : View.VISIBLE);
+        if(isFirstStep() || RechargeConfig.isOnlyOnePayway()){
+            payWayViewHolder.mOtherPayWayTip.setVisibility(View.GONE);
+        }else{
+            payWayViewHolder.mOtherPayWayTip.setVisibility(View.VISIBLE);
+        }
         PayWay payWay = isFirstStep() ? mPayWayList.get(position - 2) : getCurrentPayWay();
         applySelectedPayWay(false, payWay, payWayViewHolder);
         RxView.clicks(payWayViewHolder.itemView)
@@ -461,10 +471,12 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, PayStatisticUtils.getRechargeTemplate(PRICE_LIST, getCurrentPayWay()), TIMES, "1");
                         } else {
                             //显示选择支付方式的对话框
-                            if (mPayWaySwitchDialogHolder == null) {
-                                mPayWaySwitchDialogHolder = new PayWaySwitchDialogHolder(mContext, mPayWayList, RechargeRecyclerViewAdapter.this);
+                            if (!RechargeConfig.isOnlyOnePayway()) {
+                                if (mPayWaySwitchDialogHolder == null) {
+                                    mPayWaySwitchDialogHolder = new PayWaySwitchDialogHolder(mContext, mPayWayList, RechargeRecyclerViewAdapter.this);
+                                }
+                                mPayWaySwitchDialogHolder.getSelectPayWayDialog(getCurrentPayWay()).show();
                             }
-                            mPayWaySwitchDialogHolder.getSelectPayWayDialog(getCurrentPayWay()).show();
                         }
                     }
                 });
@@ -669,11 +681,19 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
                 // 国际化的支付方式的价格单位不是服务器下发的，需要自己组装在SkuDetail里
                 if (!RechargeConfig.isServerDiamondInfoCanDirectlyUse(RechargeConfig.getRechargeListType(getCurrentPayWay()))) {
-                    SkuDetail skuDetail = data.getSkuDetail();
-                    if (skuDetail != null && !TextUtils.isEmpty(skuDetail.getPrice())) {
-                        gridViewItemViewHolder.price.setText(skuDetail.getPrice());
-                    } else {
-                        MyLog.e(TAG, "skuDetail:" + skuDetail + ", payWay:" + getCurrentPayWay());
+                    if(RechargeConfig.isMibiPayway(RechargeConfig.getRechargeListType(getCurrentPayWay()))){
+                        if (data.getPrice() % 100 == 0) {
+                            gridViewItemViewHolder.price.setText(mContext.getResources().getQuantityString(
+                                    R.plurals.recharge_money_amount, data.getPrice() / 100,
+                                    String.format("%.0f", data.getPrice() / 100.0)));
+                        }
+                    }else {
+                        SkuDetail skuDetail = data.getSkuDetail();
+                        if (skuDetail != null && !TextUtils.isEmpty(skuDetail.getPrice())) {
+                            gridViewItemViewHolder.price.setText(skuDetail.getPrice());
+                        } else {
+                            MyLog.e(TAG, "skuDetail:" + skuDetail + ", payWay:" + getCurrentPayWay());
+                        }
                     }
                 } else {
                     gridViewItemViewHolder.price.setText(mContext.getResources().getQuantityString(
@@ -1101,12 +1121,14 @@ class PayWayViewHolder extends RecyclerView.ViewHolder {
     TextView mPayWayTv;
     TextView mOtherPayWayTip;
     View mBottomLine;
+    View mArrow;
 
     public PayWayViewHolder(View itemView) {
         super(itemView);
         mPayWayTv = (TextView) itemView.findViewById(R.id.pay_way_tv);
         mOtherPayWayTip = (TextView) itemView.findViewById(R.id.other_pay_way_tip_tv);
         mBottomLine = itemView.findViewById(R.id.bottom_line);
+        mArrow = itemView.findViewById(R.id.arrow);
     }
 }
 

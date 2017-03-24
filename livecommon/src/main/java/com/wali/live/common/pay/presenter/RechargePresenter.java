@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.base.activity.BaseActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -37,6 +39,7 @@ import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.common.pay.constant.PayConstant;
 import com.wali.live.common.pay.constant.PayWay;
+import com.wali.live.common.pay.constant.RechargeConfig;
 import com.wali.live.common.pay.manager.PayManager;
 import com.wali.live.common.pay.model.BalanceDetail;
 import com.wali.live.common.pay.model.Diamond;
@@ -49,6 +52,15 @@ import com.wali.live.event.EventClass;
 import com.wali.live.proto.PayProto;
 import com.xiaomi.game.plugin.stat.MiGamePluginStat;
 import com.xiaomi.gamecenter.alipay.HyAliPay;
+import com.xiaomi.gamecenter.sdk.MiCommplatform;
+import com.xiaomi.gamecenter.sdk.MiErrorCode;
+import com.xiaomi.gamecenter.sdk.OnLoginProcessListener;
+import com.xiaomi.gamecenter.sdk.OnPayProcessListener;
+import com.xiaomi.gamecenter.sdk.entry.MiAccountInfo;
+import com.xiaomi.gamecenter.sdk.entry.MiAppInfo;
+import com.xiaomi.gamecenter.sdk.entry.MiAppType;
+import com.xiaomi.gamecenter.sdk.entry.MiBuyInfo;
+import com.xiaomi.gamecenter.sdk.entry.ScreenOrientation;
 import com.xiaomi.gamecenter.ucashier.HyUcashierPay;
 import com.xiaomi.gamecenter.ucashier.PayResultCallback;
 import com.xiaomi.gamecenter.ucashier.purchase.FeePurchase;
@@ -129,6 +141,10 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
      */
     private int mPullRechargeListResponseId;
 
+    private BaseActivity mActivity;
+
+    private Handler mHandle = new Handler();
+
     public RechargePresenter() {
         EventBus.getDefault().register(this);
         PayManager.setRechargePresenter(this);
@@ -136,15 +152,18 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
         MiGamePluginStat.setCheckInitEnv(false);
     }
 
-    public RechargePresenter(IRechargeView view) {
+    public RechargePresenter(IRechargeView view, BaseActivity activity) {
         this();
         setRechargeView(view);
+        mActivity = activity;
     }
 
     @Override
     public void destroy() {
         super.destroy();
         EventBus.getDefault().unregister(this);
+        mActivity = null;
+        mHandle.removeCallbacksAndMessages(null);
     }
 
     public void setRechargeView(IRechargeView view) {
@@ -665,7 +684,9 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                 .subscribe(new Observer<PayProto.CreateOrderResponse>() {
                     @Override
                     public void onCompleted() {
-                        mRechargeView.hideProcessDialog(1000);
+                        if(payWay != PayWay.MIBI) {
+                            mRechargeView.hideProcessDialog(1000);
+                        }
                     }
 
                     @Override
@@ -693,6 +714,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                                 payByAlipay(orderId, price, cpUserInfo);
                                 break;
                             case MIBI:
+                                //todo
+                                payByMibi(orderId, price, cpUserInfo);
                                 break;
                             case MIWALLET:
                                 payByMiWallet(orderId, price, cpUserInfo);
@@ -739,8 +762,9 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                 return getString(R.string.pay_error_code_get_order_error);
             case GET_PAYINTO_ERROR:
                 return getString(R.string.pay_error_code_pay_info_error);
+            default:
+                return getString(R.string.pay_error_code_fail);
         }
-        return "";
     }
 
     /**
@@ -764,7 +788,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                     @Override
                     public void onNext(PayWay payWay) {
                         PreferenceUtils.setSettingString(GlobalData.app().getSharedPreferences(PayConstant.SP_FILENAME_RECHARGE_CONFIG, Context.MODE_PRIVATE),
-                                PayConstant.SP_KEY_LAST_PAY_WAY, payWay.name().toUpperCase());
+                                RechargeConfig.getLastPaywayKey(), payWay.name().toUpperCase());
                     }
                 });
     }
@@ -791,7 +815,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                         public void onNext(Boolean b) {
                             PreferenceUtils.setSettingBoolean(
                                     GlobalData.app().getSharedPreferences(PayConstant.SP_FILENAME_RECHARGE_CONFIG, Context.MODE_PRIVATE),
-                                    PayConstant.SP_KEY_IS_FIRST_RECHARGE,
+                                    RechargeConfig.getIsFirstRechargeKey(),
                                     false);
                         }
                     });
@@ -893,6 +917,83 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                 checkOrder(orderId, userInfo, null, null, true);
             }
         });
+    }
+
+    private void payByMibi(final String orderId, final int price, final String userInfo) {
+
+        MiAppInfo appInfo = new MiAppInfo();
+        appInfo.setAppId(String.valueOf(XiaoMiOAuth.APP_ID_PAY));
+        appInfo.setAppKey(XiaoMiOAuth.APP_KEY_PAY);
+        MiCommplatform.Init(GlobalData.app(), appInfo);
+
+        MiCommplatform.getInstance().miLogin(mActivity, new OnLoginProcessListener() {
+            @Override
+            public void finishLoginProcess(int code, MiAccountInfo miAccountInfo) {
+                mRechargeView.hideProcessDialog(1000);
+                switch (code) {
+                    case MiErrorCode.MI_XIAOMI_PAYMENT_SUCCESS:
+                        // 登陆成功
+                        //获取用户的登陆后的UID（即用户唯一标识）
+                        long uid = miAccountInfo.getUid();
+                        String session = miAccountInfo.getSessionId();
+                        MiBuyInfo miBuyInfo = new MiBuyInfo();
+                        miBuyInfo.setCpOrderId(orderId);//订单号唯一（不为空）
+                        miBuyInfo.setCpUserInfo(userInfo); //此参数在用户支付成功后会透传给CP的服务器
+                        miBuyInfo.setAmount(price / 100);
+                        MiCommplatform.getInstance().miUniPay(mActivity, miBuyInfo, new OnPayProcessListener() {
+                            @Override
+                            public void finishPayProcess(int code) {
+                                switch (code) {
+                                    case MiErrorCode.MI_XIAOMI_PAYMENT_SUCCESS:
+                                        //购买成功
+                                        showToast(getString(R.string.mibi_pay_success_sync_order));
+                                        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
+                                                getRechargeTemplate(SUCCESS, PayWay.MIBI), TIMES, "1");
+                                        checkOrder(orderId, userInfo, null, null, true);
+                                        break;
+                                    case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_PAY_CANCEL:
+                                    case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_PAY_FAILURE:
+                                        //购买失败
+                                        showToast(getErrorMsgByErrorCode(code));
+                                        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
+                                                getRechargeTemplate(CANCEL, PayWay.MIBI), TIMES, "1");
+                                        break;
+                                    case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_ACTION_EXECUTED:
+                                        //操作正在进行中
+                                        break;
+                                    default:
+                                        //购买失败
+                                        showToast(getErrorMsgByErrorCode(code));
+                                        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
+                                                getRechargeTemplate(CANCEL, PayWay.MIBI), TIMES, "1");
+                                        break;
+                                }
+                            }
+                        });
+                        break;
+                    case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_LOGIN_FAIL:
+                    case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_CANCEL:
+                    case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_ACTION_EXECUTED:
+                    default:
+                        //购买失败
+                        showToast(getErrorMsgByErrorCode(code));
+                        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
+                                getRechargeTemplate(CANCEL, PayWay.MIBI), TIMES, "1");
+                        break;
+                }
+            }
+        });
+    }
+
+    private void showToast(final String msg){
+        if (mRechargeView != null) {
+            mHandle.post(new Runnable() {
+                @Override
+                public void run() {
+                    mRechargeView.showToast(msg);
+                }
+            });
+        }
     }
 
     private void payByMiWallet(final String orderId, final int price, final String userInfo) {

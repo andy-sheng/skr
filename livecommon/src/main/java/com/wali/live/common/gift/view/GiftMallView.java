@@ -261,7 +261,8 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                     return false;
                 } else if ((mSelectedGift.gift.getCatagory() == GiftType.Mi_COIN_GIFT && (mSelectedGift.gift.getPrice() / 10) > mGiftMallPresenter.getCurrentTotalBalance())
                         || (mSelectedGift.gift.getCatagory() != GiftType.Mi_COIN_GIFT && mSelectedGift.gift.getPrice() > mGiftMallPresenter.getCurrentTotalBalance())) {
-                    showInsufficientBalanceTips();
+//                    showInsufficientBalanceTips();
+                    EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
                     return false;
                 }
             }
