@@ -14,6 +14,7 @@ import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.component.presenter.OperatingPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
@@ -111,13 +112,25 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             addComponentView(view, presenter);
         }
 
+        // 运营位
+        {
+            RelativeLayout relativeLayout = $(R.id.operating_view);
+            if (relativeLayout == null) {
+                MyLog.e(TAG, "missing R.id.operating_view");
+                return;
+            }
+            OperatingPresenter presenter = new OperatingPresenter(mComponentController);
+            addComponentView(presenter);
+        }
+
         addViewToSet(new int[]{
                 R.id.live_top_info_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
-                R.id.gift_room_effect_view
+                R.id.gift_room_effect_view,
+                R.id.operating_view
         }, mHorizontalMoveSet);
 
         // 滑动

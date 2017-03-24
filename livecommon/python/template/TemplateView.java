@@ -1,25 +1,37 @@
 package ${PACKAGE};
 
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
+import android.view.View;
+
 ${IMPORT}
 
 /**
  * Created by ${USER} on ${DATE}.
  *
+ * Generated using ${COMMAND}
+ *
  * @module [TODO add module]
  */
 public class ${NAME}View implements IComponentView<${NAME}View.IPresenter, ${NAME}View.IView> {
-	
-	// Auto-generated to easy use findViewById
+	private static final String TAG = "${NAME}View";
+
+	@Nullable
+	protected IPresenter mPresenter;
+
 	protected final <T extends View> T $(@IdRes int resId) {
 		return (T) findViewById(resId);
 	}
 
-	// Auto-generated to easy use setOnClickListener
-	protected final void $click(@IdRes int resId, View.OnClickListener listener) {
-		View view = $(resId);
+	protected final void $click(View view, View.OnClickListener listener) {
 		if (view != null) {
 			view.setOnClickListener(listener);
 		}
+	}
+
+	@Override
+	public void setPresenter(@Nullable IPresenter iPresenter) {
+		mPresenter = iPresenter;
 	}
 		
 	@Override
