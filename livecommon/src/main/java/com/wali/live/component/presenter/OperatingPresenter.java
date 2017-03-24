@@ -2,9 +2,9 @@ package com.wali.live.component.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.wali.live.component.view.OperatingView;
 
 /**
  * Created by chenyong on 2017/03/24.
@@ -13,7 +13,8 @@ import com.base.log.MyLog;
  *
  * @module 运营位操作类
  */
-public class OperatingPresenter extends ComponentPresenter<RelativeLayout> {
+public class OperatingPresenter extends ComponentPresenter<OperatingView.IView>
+        implements OperatingView.IPresenter {
     private static final String TAG = "OperatingPresenter";
 
     public OperatingPresenter(@NonNull IComponentController componentController) {

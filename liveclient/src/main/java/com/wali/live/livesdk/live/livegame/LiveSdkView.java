@@ -15,6 +15,7 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.presenter.OperatingPresenter;
+import com.wali.live.component.view.OperatingView;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
@@ -114,13 +115,13 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
 
         // 运营位
         {
-            RelativeLayout relativeLayout = $(R.id.operating_view);
-            if (relativeLayout == null) {
+            OperatingView view = $(R.id.operating_view);
+            if (view == null) {
                 MyLog.e(TAG, "missing R.id.operating_view");
                 return;
             }
             OperatingPresenter presenter = new OperatingPresenter(mComponentController);
-            addComponentView(presenter);
+            addComponentView(view, presenter);
         }
 
         addViewToSet(new int[]{
