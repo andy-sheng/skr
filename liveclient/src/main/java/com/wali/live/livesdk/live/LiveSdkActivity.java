@@ -227,6 +227,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (data != null) {
             mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
             mLocation = data.getParcelableExtra(EXTRA_LOCATION);
+            if (mLocation != null) {
+                mMyRoomData.setCity(mLocation.getCity());
+            }
         }
     }
 
@@ -684,7 +687,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             default:
                 ToastUtils.showToast(GlobalData.app(), R.string.live_failure);
                 EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                        mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getLocation(), mMyRoomData.getUser(), null, null);
+                        mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getCity(), mMyRoomData.getUser(), null, null);
                 break;
         }
     }
@@ -763,7 +766,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 // 这个标记是指直播是否结束
                 try {
                     EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                            mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getLocation(), mMyRoomData.getUser(), null, null);
+                            mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getCity(), mMyRoomData.getUser(), null, null);
                 } catch (Exception e) {
                     MyLog.e(TAG + "process room info" + e);
                 }
@@ -793,7 +796,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         startCountDown();
-        mLiveRoomPresenter.beginLiveByAppInfo(mLocation, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
+        Location location = !TextUtils.isEmpty(mMyRoomData.getCity()) ? mLocation : null;
+        mLiveRoomPresenter.beginLiveByAppInfo(location, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
                 "", mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
     }
 
