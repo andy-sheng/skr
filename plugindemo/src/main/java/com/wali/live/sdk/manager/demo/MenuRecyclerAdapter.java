@@ -156,7 +156,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 if (mSdkUpdateHelper != null) {
-                    mSdkUpdateHelper.checkStaging();
+                    mSdkUpdateHelper.checkUpdate();
                 }
             }
         }));
