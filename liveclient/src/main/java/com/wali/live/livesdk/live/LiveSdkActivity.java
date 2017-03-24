@@ -206,16 +206,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
 
         initData();
+        initRoomData();
+        
         setupRequiredComponent();
 
         if (!mIsGameLive) {
             mComponentController.createStreamer($(R.id.galileo_surface_view), 0, null);
         }
         mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
-
         openOrientation();
-        mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
-        mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
+
         // 封面模糊图
         mBlurIv = $(R.id.blur_iv);
         AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
@@ -227,9 +227,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (data != null) {
             mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
             mLocation = data.getParcelableExtra(EXTRA_LOCATION);
-            if (mLocation != null) {
-                mMyRoomData.setCity(mLocation.getCity());
-            }
+        }
+    }
+
+    private void initRoomData() {
+        if (mLocation != null) {
+            mMyRoomData.setCity(mLocation.getCity());
+        }
+        if (UserAccountManager.getInstance().hasAccount()) {
+            mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+            mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
         }
     }
 
@@ -267,6 +274,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     public void trySendDataWithServerOnce() {
+        if (mMyRoomData.getUid() == 0) {
+            mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+            mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
+        }
     }
 
     @Override
@@ -427,9 +438,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (uid <= 0) {
             return;
         }
-//        TODO 打开注释
-//        clearTop();
-        //打点
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
         FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
                 mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
