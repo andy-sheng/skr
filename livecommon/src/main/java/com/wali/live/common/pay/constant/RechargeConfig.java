@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
-import com.base.utils.Constants;
 import com.live.module.common.R;
 import com.mi.live.data.account.HostChannelManager;
 import com.wali.live.common.pay.model.PayWayInfo;
@@ -27,7 +26,7 @@ public class RechargeConfig {
     private static final String TAG = RechargeConfig.class.getSimpleName();
 
     // 只显示米币支付的渠道
-    private static List<Integer> onlyShowMibiPayWayChannels = Arrays.asList(50010,50011);
+    private static List<Integer> onlyShowMibiPayWayChannels = Arrays.asList(50010, 50011);
 
     // 列表的顺序影响展示顺序,第一个元素为默认支付方式
     private static List<PayWay> sNativePayWayList;
@@ -39,7 +38,7 @@ public class RechargeConfig {
      */
     public static int getRechargeListType(@NonNull PayWay payWay) {
         PayWayInfo payWayInfo = sPayWayInfoMap.get(payWay);
-        if(payWay != null){
+        if (payWay != null) {
             return payWayInfo.mRechargeType;
         }
         IllegalStateException illegalStateException = new IllegalStateException("unexpected payWay:" + payWay);
@@ -54,7 +53,7 @@ public class RechargeConfig {
         return rechargeListType == PayConstant.RECHARGE_LIST_TYPE_NATIVE;
     }
 
-    public static boolean isMibiPayway(int rechargeListType){
+    public static boolean isMibiPayway(int rechargeListType) {
         return rechargeListType == PayConstant.RECHARGE_LIST_TYPE_MIBI;
     }
 
@@ -62,18 +61,14 @@ public class RechargeConfig {
         return sNativePayWayList;
     }
 
-    public static synchronized void initNativePayWays(int channelId){
-        if(onlyShowMibiPayWayChannels.contains(channelId)){
-            sNativePayWayList = Arrays.asList(PayWay.MIBI);
-        }else{
-            sNativePayWayList = Arrays.asList(PayWay.WEIXIN, PayWay.ZHIFUBAO, PayWay.MIWALLET);
-        }
-        //初始化图表及标题信息
+    public static synchronized void initNativePayWays() {
+        sNativePayWayList = Arrays.asList(PayWay.MIBI);
+        //初始化图表及标题信息 - 这个暂时不拿掉
         Map<PayWay, PayWayInfo> map = new HashMap<>();
-        map.put(PayWay.WEIXIN, new PayWayInfo(PayWay.WEIXIN, R.drawable.pay_icon_weixin_pressed, R.string.weixin,PayConstant.RECHARGE_LIST_TYPE_NATIVE));
-        map.put(PayWay.ZHIFUBAO, new PayWayInfo(PayWay.ZHIFUBAO, R.drawable.pay_icon_zhifubao_pressed, R.string.zhifubao,PayConstant.RECHARGE_LIST_TYPE_NATIVE));
-        map.put(PayWay.MIWALLET, new PayWayInfo(PayWay.MIWALLET, R.drawable.pay_icon_miwallet_pressed, R.string.miwallet,PayConstant.RECHARGE_LIST_TYPE_NATIVE));
-        map.put(PayWay.MIBI, new PayWayInfo(PayWay.MIBI,R.drawable.pay_icon_mibi_pressed,R.string.mibi,PayConstant.RECHARGE_LIST_TYPE_MIBI));
+        map.put(PayWay.WEIXIN, new PayWayInfo(PayWay.WEIXIN, R.drawable.pay_icon_weixin_pressed, R.string.weixin, PayConstant.RECHARGE_LIST_TYPE_NATIVE));
+        map.put(PayWay.ZHIFUBAO, new PayWayInfo(PayWay.ZHIFUBAO, R.drawable.pay_icon_zhifubao_pressed, R.string.zhifubao, PayConstant.RECHARGE_LIST_TYPE_NATIVE));
+        map.put(PayWay.MIWALLET, new PayWayInfo(PayWay.MIWALLET, R.drawable.pay_icon_miwallet_pressed, R.string.miwallet, PayConstant.RECHARGE_LIST_TYPE_NATIVE));
+        map.put(PayWay.MIBI, new PayWayInfo(PayWay.MIBI, R.drawable.pay_icon_mibi_pressed, R.string.mibi, PayConstant.RECHARGE_LIST_TYPE_MIBI));
         sPayWayInfoMap = Collections.unmodifiableMap(map);
     }
 
@@ -85,11 +80,11 @@ public class RechargeConfig {
         return sPayWayInfoMap;
     }
 
-    public static String getLastPaywayKey(){
+    public static String getLastPaywayKey() {
         return PayConstant.SP_KEY_LAST_PAY_WAY + HostChannelManager.getInstance().getChannelId();
     }
 
-    public static String getIsFirstRechargeKey(){
+    public static String getIsFirstRechargeKey() {
         return PayConstant.SP_KEY_IS_FIRST_RECHARGE + HostChannelManager.getInstance().getChannelId();
     }
 
@@ -120,7 +115,6 @@ public class RechargeConfig {
     public static boolean isOnlyOnePayway() {
         return sNativePayWayList != null && sNativePayWayList.size() == 1;
     }
-
 
 
 }

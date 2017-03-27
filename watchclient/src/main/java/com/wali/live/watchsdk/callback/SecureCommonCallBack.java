@@ -39,7 +39,7 @@ public abstract class SecureCommonCallBack implements ISecureCallBack {
                     public void onNext(Boolean aBoolean) {
                         MyLog.v(TAG, "onNext");
                         if(aBoolean){
-                            RechargeConfig.initNativePayWays(channelId);
+                            RechargeConfig.initNativePayWays();
                         }
                         postSuccess();
                     }

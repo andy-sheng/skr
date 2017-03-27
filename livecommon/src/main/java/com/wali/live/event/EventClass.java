@@ -6,8 +6,6 @@ import com.wali.live.common.model.CommentModel;
 import com.wali.live.proto.PayProto;
 import com.wali.live.receiver.NetworkReceiver;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 public abstract class EventClass {
@@ -77,14 +75,6 @@ public abstract class EventClass {
     }
 
     public static class ShowRechargeRedPoint {
-    }
-
-    public static class GooglePlayConsumeEvent {
-        public JSONObject receipt;
-
-        public GooglePlayConsumeEvent(JSONObject receipt) {
-            this.receipt = receipt;
-        }
     }
 
     public static class RefreshGameLiveCommentEvent {
