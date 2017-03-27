@@ -57,9 +57,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -94,7 +92,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     private Date mPopupWindowShowTime;
 
-    private List<LiveCommonProto.NewWidgetItem> currentAttachmentList = new ArrayList<LiveCommonProto.NewWidgetItem>();
+    private List<LiveCommonProto.NewWidgetItem> currentAttachmentList = new ArrayList();
     private long currentZuid;
 
     private String currentRoomid;
@@ -117,11 +115,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     @Override
     protected int getLayout(boolean mIsLandScape) {
-//        if (mIsLandscape) {
-//            return R.layout.watch_top_info_single_view_landscape;
-//        } else {
         return R.layout.watchsdk_top_info_single_view;
-//        }
     }
 
     @Override
@@ -636,9 +630,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             return null;
         }
     }
-
-    private Map<Integer, Integer> widgetIDs = new HashMap<>();
-
 
     private final static char[] HEX = "0123456789abcdef".toCharArray();
 

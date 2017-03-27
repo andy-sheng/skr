@@ -27,6 +27,7 @@ import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -49,7 +50,7 @@ public class GameBarrageView extends RelativeLayout
 
     private AnimationPlayControlTemplate<CommentModel> mFlyBarrageControl;
 
-    private ArrayList<FlyBarrageViewWithExtraInfo> mFlyBarrageViewCache = new ArrayList(CACHE_NUMBER);
+    private List<FlyBarrageViewWithExtraInfo> mFlyBarrageViewCache = new ArrayList(CACHE_NUMBER);
 
     @Nullable
     protected IPresenter mPresenter;

@@ -14,16 +14,16 @@ import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.component.presenter.OperatingPresenter;
-import com.wali.live.component.view.OperatingView;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
+import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -115,12 +115,12 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
 
         // 运营位
         {
-            OperatingView view = $(R.id.operating_view);
+            WidgetView view = $(R.id.widget_view);
             if (view == null) {
-                MyLog.e(TAG, "missing R.id.operating_view");
+                MyLog.e(TAG, "missing R.id.widget_view");
                 return;
             }
-            OperatingPresenter presenter = new OperatingPresenter(mComponentController);
+            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
         }
 

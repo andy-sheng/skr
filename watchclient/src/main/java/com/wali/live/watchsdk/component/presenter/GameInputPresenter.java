@@ -87,7 +87,7 @@ public class GameInputPresenter extends ComponentPresenter<GameInputView.IView>
             return;
         }
         // 检查发送频率限制
-        if (mMyRoomData.getmMsgRule() != null && mMyRoomData.getmMsgRule().getSpeakPeriod() == Integer.MAX_VALUE) {
+        if (mMyRoomData.getMsgRule() != null && mMyRoomData.getMsgRule().getSpeakPeriod() == Integer.MAX_VALUE) {
             return;
         }
         String body = SmileyParser.getInstance()

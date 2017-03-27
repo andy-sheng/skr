@@ -1014,7 +1014,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER: {
                 Bundle bundle = new Bundle();
                 bundle.putString(RoomAdminFragment.INTENT_LIVE_ROOM_ID, mMyRoomData.getRoomId());
-                bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, mMyRoomData.getmMsgRule() == null ? new MessageRule() : mMyRoomData.getmMsgRule());
+                bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, mMyRoomData.getMsgRule() == null ? new MessageRule() : mMyRoomData.getMsgRule());
                 bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, mMyRoomData == null ? 0 : mMyRoomData.getUid());
                 FragmentNaviUtils.addFragment(LiveSdkActivity.this, R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
             }

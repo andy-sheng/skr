@@ -23,8 +23,10 @@ public class RoomBaseDataModel implements Serializable {
     public static int NO = 0;
     public static final int SINGLE_MODEL = 0;
     public static final int PK_MODEL = 1;
-    private CopyOnWriteArrayList<ViewerModel> mViewers = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<ViewerModel> mManagers = new CopyOnWriteArrayList<>();
+
+    private CopyOnWriteArrayList<ViewerModel> mViewers = new CopyOnWriteArrayList();
+    private CopyOnWriteArrayList<ViewerModel> mManagers = new CopyOnWriteArrayList();
+
     private User mOwner = new User();
     private String mLocation;
     private int mViewCnt = 0;
@@ -457,7 +459,7 @@ public class RoomBaseDataModel implements Serializable {
         this.mIsForeground = mIsForeground;
     }
 
-    public MessageRule getmMsgRule() {
+    public MessageRule getMsgRule() {
         if (mMsgRule.size() == 0) {
             return null;
         } else {

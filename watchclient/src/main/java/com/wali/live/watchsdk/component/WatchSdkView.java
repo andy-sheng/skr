@@ -24,11 +24,13 @@ import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
+import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 
 import java.lang.ref.WeakReference;
@@ -159,6 +161,17 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController);
             addComponentView(view, presenter);
+        }
+
+        // 运营位
+        {
+            WidgetView view = new WidgetView(mActivity);
+            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mMyRoomData);
+            addComponentView(view, presenter);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            addViewUnderAnchor(view, layoutParams, $(R.id.bottom_button_view));
         }
 
         mVerticalMoveSet.add($(R.id.close_btn));
