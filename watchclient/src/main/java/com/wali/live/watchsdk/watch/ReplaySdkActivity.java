@@ -29,13 +29,13 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.barrage.view.LiveCommentView;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.event.EventClass;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.HotSpotProto;
 import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.receiver.PhoneStateReceiver;
@@ -486,10 +486,10 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(BaseEvent.UserActionEvent event) {
+    public void onEventMainThread(UserActionEvent event) {
         MyLog.e(TAG, "BaseEvent.UserActionEvent");
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
-        if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
+        if (event.type == UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
             return;
         }
@@ -498,7 +498,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         }
 
         switch (event.type) {
-            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
 //                clearTop();
                 viewerTopFromServer((RoomBaseDataModel) event.obj1);
             }

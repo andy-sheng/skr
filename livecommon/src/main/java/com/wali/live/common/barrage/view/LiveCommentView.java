@@ -18,10 +18,10 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
 import com.wali.live.common.model.CommentModel;
+import com.wali.live.event.UserActionEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,14 +44,13 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
     private String mToken;
 
     public ImageView mMoveToLastItemIv;     //点击回到最底部
-
     public MyListView mCommentRv;
 
     private LiveCommentRecyclerAdapter.LiveCommentNameClickListener mNameViewClickListener = null;
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private boolean mDraging = false;
+    private boolean mDragging = false;
 
     private boolean mHasAdjust = false;
 
@@ -91,8 +90,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                 //            MyLog.d(TAG, "setOnTouchListener,event:" + event.getAction());
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
-                        BaseEvent.UserActionEvent userActionEvent = new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_TOUCH_DOWN_COMMENT_RC, 0, 0);
-                        EventBus.getDefault().post(userActionEvent);
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_TOUCH_DOWN_COMMENT_RC, 0, 0);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         break;
@@ -107,7 +105,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 MyLog.d(TAG, "onScrollStateChangd,newState:" + newState + ",mOnBottom:" + mOnBottom);
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    mDraging = false;
+                    mDragging = false;
 
                     // 个数小于等于0就直接返回
                     if (mAdapter.getItemCount() <= 0) {
@@ -123,7 +121,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                         setOnBottom("onScrollStateChanged", false);
                     }
                 } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) { //用户滑动的话则动态跟新maxSize
-                    mDraging = true;
+                    mDragging = true;
                 }
             }
 
@@ -144,8 +142,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
                     if (CommonUtils.isFastDoubleClick(200)) {
                         return;
                     }
-                    BaseEvent.UserActionEvent userActionEvent = new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
-                    EventBus.getDefault().post(userActionEvent);
+                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
                 }
             }
         });
@@ -213,7 +210,7 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
             mLastSetCommentListTs = System.currentTimeMillis();
             if (force) {
                 mAdapter.setLiveCommentList(mDataList, afterRefresh);
-            } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDraging) {
+            } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDragging) {
                 mAdapter.setLiveCommentList(mDataList, afterRefresh);
             } else {
 

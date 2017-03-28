@@ -38,8 +38,8 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.dao.RelationDaoAdapter;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -48,7 +48,6 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -144,7 +143,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomBaseDataModel.getUid(), null));
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomBaseDataModel.getUid(), null);
                     }
                 });
 
@@ -154,7 +153,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                     @Override
                     public void call(Void aVoid) {
                         if (mLinkUser != null) {
-                            EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mLinkUser.getUid(), null));
+                            UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mLinkUser.getUid(), null);
                         } else {
                             MyLog.w(TAG, "mLinkUser == null");
                         }

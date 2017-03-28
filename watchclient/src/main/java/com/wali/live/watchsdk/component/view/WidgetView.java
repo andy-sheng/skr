@@ -9,6 +9,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -29,9 +30,13 @@ import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.jakewharton.rxbinding.view.RxView;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.LiveCommonProto;
+import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 
@@ -41,10 +46,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -56,7 +63,12 @@ import rx.schedulers.Schedulers;
  */
 public class WidgetView extends RelativeLayout
         implements IComponentView<WidgetView.IPresenter, WidgetView.IView> {
-    private static final String TAG = "OperatingView";
+    private static final String TAG = "WidgetView";
+
+    private static final int POS_LEFT_TOP = 0;
+    private static final int POS_RIGHT_TOP = 1;
+    private static final int POS_LEFT_BOTTOM = 2;
+    private static final int POS_RIGHT_BOTTOM = 3;
 
     @Nullable
     protected IPresenter mPresenter;
@@ -143,19 +155,19 @@ public class WidgetView extends RelativeLayout
             LiveCommonProto.NewWidgetItem info = list.get(i);
             switch (info.getPosition()) {
                 case 0://左上角
-                    mWidgetIds.put(info.getWidgetID(), 0);
+                    mWidgetIds.put(info.getWidgetID(), POS_LEFT_TOP);
                     setLeftTopInfo(info);
                     break;
                 case 1://右上角
-                    mWidgetIds.put(info.getWidgetID(), 1);
+                    mWidgetIds.put(info.getWidgetID(), POS_RIGHT_TOP);
                     setRightTopInfo(info);
                     break;
                 case 2://左下角
-                    mWidgetIds.put(info.getWidgetID(), 2);
+                    mWidgetIds.put(info.getWidgetID(), POS_LEFT_BOTTOM);
                     setLeftBottomInfo(info);
                     break;
                 case 3://右下角
-                    mWidgetIds.put(info.getWidgetID(), 3);
+                    mWidgetIds.put(info.getWidgetID(), POS_RIGHT_BOTTOM);
                     setRightBottomInfo(info);
                     break;
             }
@@ -166,7 +178,7 @@ public class WidgetView extends RelativeLayout
      * 设置左上角运营位数据
      */
     private void setLeftTopInfo(LiveCommonProto.NewWidgetItem info) {
-        initWidget(info.getDisplayType(), info, mLeftTopIv, mLeftTopTv, mLeftTopIv2, mLeftTopWv, "left");
+        initWidget(info.getDisplayType(), info, mLeftTopIv, mLeftTopTv, mLeftTopIv2, mLeftTopWv, POS_LEFT_TOP);
         mLeftTopWv.setVisibility(VISIBLE);
     }
 
@@ -174,7 +186,7 @@ public class WidgetView extends RelativeLayout
      * 设置右上角运营位数据
      */
     private void setRightTopInfo(LiveCommonProto.NewWidgetItem info) {
-        initWidget(info.getDisplayType(), info, mRightTopIv, mRightTopTv, mRightTopIv2, mRightTopWv, "right");
+        initWidget(info.getDisplayType(), info, mRightTopIv, mRightTopTv, mRightTopIv2, mRightTopWv, POS_RIGHT_TOP);
         mRightTopWv.setVisibility(VISIBLE);
     }
 
@@ -182,7 +194,7 @@ public class WidgetView extends RelativeLayout
      * 设置左下角运营位数据
      */
     private void setLeftBottomInfo(LiveCommonProto.NewWidgetItem info) {
-        initWidget(info.getDisplayType(), info, mLeftBottomIv, mLeftBottomTv, mLeftBottomIv2, mLeftBottomWv, "leftBottom");
+        initWidget(info.getDisplayType(), info, mLeftBottomIv, mLeftBottomTv, mLeftBottomIv2, mLeftBottomWv, POS_LEFT_BOTTOM);
         mLeftBottomWv.setVisibility(VISIBLE);
     }
 
@@ -190,77 +202,63 @@ public class WidgetView extends RelativeLayout
      * 设置右下角运营位数据
      */
     private void setRightBottomInfo(LiveCommonProto.NewWidgetItem info) {
-        initWidget(info.getDisplayType(), info, mRightBottomIv, mRightBottomTv, mRightBottomIv2, mRightBottomWv, "rightBottom");
+        initWidget(info.getDisplayType(), info, mRightBottomIv, mRightBottomTv, mRightBottomIv2, mRightBottomWv, POS_RIGHT_BOTTOM);
         mRightBottomWv.setVisibility(VISIBLE);
     }
 
     /**
      * 初始化运营位信息
      *
-     * @param type       运营位类型 0：常驻 1：一次性展示 2：轮播展示
-     * @param info       运营位信息
-     * @param imgTop     图片控件
-     * @param txtCounter 计数控件
-     * @param imgDown    点赞图片控件
-     * @param llytClick  根布局点击
+     * @param type      运营位类型 0：常驻 1：一次性展示 2：轮播展示
+     * @param info      运营位信息
+     * @param iv        图片控件
+     * @param countTv   计数控件
+     * @param iv2       点赞图片控件
+     * @param llytClick 根布局点击
+     * @param posFlag   位置标识
      */
-    private void initWidget(int type, LiveCommonProto.NewWidgetItem info, BaseImageView imgTop, final TextView txtCounter, BaseImageView imgDown, LinearLayout llytClick, String widgetDirection) {
+    private void initWidget(int type, final LiveCommonProto.NewWidgetItem info, BaseImageView iv, final TextView countTv, BaseImageView iv2, LinearLayout llytClick, int posFlag) {
         MyLog.i(TAG, "initWidget position = " + info.getPosition() + ",widget id:" + info.getWidgetID());
 
-        imgTop.setVisibility(GONE);
-        txtCounter.setVisibility(GONE);
-        imgDown.setVisibility(GONE);
+        iv.setVisibility(GONE);
+        countTv.setVisibility(GONE);
+        iv2.setVisibility(GONE);
 
-        imgTop.setImageBitmap(null);
-        imgTop.setBackground(null);
+        iv.setImageBitmap(null);
+        iv.setBackground(null);
 
-        imgDown.setImageBitmap(null);
-        imgDown.setBackground(null);
+        iv2.setImageBitmap(null);
+        iv2.setBackground(null);
 
         List<LiveCommonProto.NewWidgetUnit> data = info.getWidgetUintList();
 
         // 第一张图片
         if (data != null && data.size() > 0) {
-            LiveCommonProto.NewWidgetUnit unit = data.get(0);
+            final LiveCommonProto.NewWidgetUnit unit = data.get(0);
             if (unit.hasIcon()) {
-                imgTop.setVisibility(VISIBLE);
-                loadImgFromNet(unit.getIcon(), imgTop, widgetDirection);
+                iv.setVisibility(VISIBLE);
+                loadImgFromNet(unit.getIcon(), iv, posFlag);
+            }
+
+            if (unit.hasText()) {
+                countTv.setVisibility(VISIBLE);
+                countTv.setText(unit.getText());
+                if (unit.hasTextColor()) {
+                    countTv.setTextColor(ColorFormatter.toHexColor(unit.getTextColor().getRgb()));
+                }
             }
 
             if (unit.hasLinkUrl()) {
-                // TODO
-//                RxView.clicks(imgTop)
-//                        .throttleFirst(500, TimeUnit.MILLISECONDS)
-//                        .subscribe(aVoid -> {
-//                            if (unit.getUrlNeedParam()) {
-//                                EventBus.getDefault().post(new EventClass.UserActionEvent(EventClass.UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT, unit.getLinkUrl(), true, unit.getOpenType(), currentZuid));
-//                            } else {
-//                                EventBus.getDefault().post(new EventClass.UserActionEvent(EventClass.UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT, unit.getLinkUrl(), false, unit.getOpenType(), currentZuid));
-//                            }
-//                            sendClick(info.getWidgetID(), "iconClick");
-//                        });
-            }
-
-            // 文案
-            if (unit.hasText()) {
-                txtCounter.setVisibility(VISIBLE);
-                txtCounter.setText(unit.getText());
-                if (unit.hasTextColor()) {
-                    txtCounter.setTextColor(ColorFormatter.toHexColor(unit.getTextColor().getRgb()));
-                }
-
-                if (!unit.hasIcon() && unit.hasLinkUrl()) {
-                    // TODO
-//                    RxView.clicks(txtCounter)
-//                            .throttleFirst(500, TimeUnit.MILLISECONDS)
-//                            .subscribe(aVoid -> {
-//                                if (unit.getUrlNeedParam()) {
-//                                    EventBus.getDefault().post(new EventClass.UserActionEvent(EventClass.UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT, unit.getLinkUrl(), true, unit.getOpenType(), currentZuid));
-//                                } else {
-//                                    EventBus.getDefault().post(new EventClass.UserActionEvent(EventClass.UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT, unit.getLinkUrl(), false, unit.getOpenType(), currentZuid));
-//                                }
-//                                sendClick(info.getWidgetID(), "iconClick");
-//                            });
+                if (unit.hasIcon() || unit.hasText()) {
+                    RxView.clicks(unit.hasIcon() ? iv : countTv)
+                            .throttleFirst(500, TimeUnit.MILLISECONDS)
+                            .subscribe(new Action1<Void>() {
+                                @Override
+                                public void call(Void aVoid) {
+                                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT, unit.getLinkUrl(), unit.getUrlNeedParam(), unit.getOpenType(), mPresenter.getUid());
+                                    sendClick(info.getWidgetID(), "iconClick");
+                                }
+                            });
                 }
             }
         }
@@ -268,22 +266,22 @@ public class WidgetView extends RelativeLayout
         // 计数文字
         LiveCommonProto.CounterItem item = info.getCounterItem();
         if (item != null && item.hasCounterText()) {
-            txtCounter.setVisibility(VISIBLE);
+            countTv.setVisibility(VISIBLE);
 
             if (item.hasIsBold() && item.getIsBold()) {
-                TextPaint tp = txtCounter.getPaint();
+                TextPaint tp = countTv.getPaint();
                 tp.setFakeBoldText(true);
             }
-            txtCounter.setText(item.getCounterText());
+            countTv.setText(item.getCounterText());
 
             if (item.hasTextColor()) {
-                txtCounter.setTextColor(ColorFormatter.toHexColor(item.getTextColor().getRgb()));
+                countTv.setTextColor(ColorFormatter.toHexColor(item.getTextColor().getRgb()));
             } else {
-                txtCounter.setTextColor(getContext().getResources().getColor(R.color.color_ffd171));
+                countTv.setTextColor(getContext().getResources().getColor(R.color.color_ffd171));
             }
 
             if (item.hasTextEdgeColor()) {
-                txtCounter.setShadowLayer(2f, 2.5f, 2.5f, ColorFormatter.toHexColor(item.getTextColor().getRgb()));
+                countTv.setShadowLayer(2f, 2.5f, 2.5f, ColorFormatter.toHexColor(item.getTextColor().getRgb()));
             }
 
             try {
@@ -300,8 +298,8 @@ public class WidgetView extends RelativeLayout
                         ThreadPool.runOnUi(new Runnable() {
                             @Override
                             public void run() {
-                                if (txtCounter != null) {
-                                    txtCounter.setBackground(new BitmapDrawable(bitmap));
+                                if (countTv != null) {
+                                    countTv.setBackground(new BitmapDrawable(bitmap));
                                 }
                             }
                         });
@@ -321,7 +319,7 @@ public class WidgetView extends RelativeLayout
         if (click != null) {
             if (click.getClickType() == 1) {
                 if (click.hasClickImageUrl()) {
-                    loadImgFromNet(click.getClickImageUrl(), imgDown, widgetDirection);
+                    loadImgFromNet(click.getClickImageUrl(), iv2, posFlag);
                 }
                 // TODO 选中礼物
 //                RxView.clicks(imgDown)
@@ -340,7 +338,7 @@ public class WidgetView extends RelativeLayout
      * @param icon
      * @param imageView
      */
-    public void loadImgFromNet(final String icon, final BaseImageView imageView, final String type) {
+    public void loadImgFromNet(final String icon, final BaseImageView imageView, final int posFlag) {
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -384,11 +382,8 @@ public class WidgetView extends RelativeLayout
                             int height = Integer.parseInt(params[1]) * screenHeight / 1920;
 
                             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
-                            switch (type) {
-                                case "right":
-                                case "rightBottom":
-                                    lp.gravity = Gravity.RIGHT;
-                                    break;
+                            if ((posFlag & 0x1) == 1) {
+                                lp.gravity = Gravity.RIGHT;
                             }
                             imageView.setLayoutParams(lp);
                             AvatarUtils.loadCoverByUrl(imageView, icon, false, 0, width, height);
@@ -430,6 +425,17 @@ public class WidgetView extends RelativeLayout
         mRightBottomWv.setVisibility(GONE);
     }
 
+    /**
+     * 运营位打点
+     */
+    private void sendClick(int widgetID, String type) {
+        String key = String.format(StatisticsKey.KEY_WIDGET_CLICK, String.valueOf(widgetID), type, mPresenter.getUid());
+        if (TextUtils.isEmpty(key)) {
+            return;
+        }
+        StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
+    }
+
     @Override
     public IView getViewProxy() {
         /**
@@ -456,6 +462,7 @@ public class WidgetView extends RelativeLayout
     }
 
     public interface IPresenter {
+        long getUid();
     }
 
     public interface IView extends IViewProxy {

@@ -7,7 +7,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -17,23 +20,16 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
-import com.wali.live.base.BaseEvent;
-import com.base.image.fresco.BaseImageView;
-import com.base.log.MyLog;
 import com.wali.live.common.gift.utils.DataformatUtils;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
-import com.base.utils.display.DisplayUtils;
 
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import org.greenrobot.eventbus.EventBus;
 import rx.Observer;
 
 /**
- * @
- * Created by chengsimin on 16/3/10.
+ * @ Created by chengsimin on 16/3/10.
  */
 public class GiftMoveAnimationView extends RelativeLayout {
     public static final String TAG = "GiftMoveAnimationView";
@@ -86,7 +82,7 @@ public class GiftMoveAnimationView extends RelativeLayout {
                             return;
                         }
                         if (mUserId != 0) {
-                            EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mUserId, null));
+                            UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mUserId, null);
                         }
                     }
                 });
@@ -106,7 +102,7 @@ public class GiftMoveAnimationView extends RelativeLayout {
         mGiftForegroundAnimationPlayerView.getLayoutParams().height = height;
         Uri uri = new Uri.Builder().scheme("file").appendPath(webpPath).build();
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
-                .setResizeOptions(new ResizeOptions(width,height))
+                .setResizeOptions(new ResizeOptions(width, height))
                 .build();
 
         DraweeController controller = Fresco.newDraweeControllerBuilder()

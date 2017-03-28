@@ -31,8 +31,8 @@ import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.common.listener.OnItemClickListener;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
@@ -140,8 +140,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomBaseDataModel.getUid(), null));
-
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomBaseDataModel.getUid(), null);
                     }
                 });
 
@@ -155,14 +154,13 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         mAvatarAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
                 if (CommonUtils.isFastDoubleClick(1000)) {
                     return;
                 }
                 ViewerModel viewer = mAvatarAdapter.getViewer(position);
                 MyLog.d(TAG, "viewer:" + viewer);
                 if (viewer != null) {
-                    EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, viewer.getUid(), null));
+                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, viewer.getUid(), null);
                 }
             }
         });
@@ -179,7 +177,7 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                     int lastCompleteVisibleItem = mAvatarLayoutManager.findLastCompletelyVisibleItemPosition();
                     if (lastCompleteVisibleItem == mAvatarAdapter.getItemCount() - 1 && mMyRoomBaseDataModel.getViewerCnt() > mAvatarAdapter.getItemCount()) {
                         mIsLoadViewer = true;
-                        EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER, mMyRoomBaseDataModel, null));
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER, mMyRoomBaseDataModel, null);
                     }
                     //gradientItems();
                 }
@@ -205,9 +203,8 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-
-                        EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET
-                                , mMyRoomBaseDataModel.getUid(), mMyRoomBaseDataModel.getTicket(), mMyRoomBaseDataModel.getRoomId()));
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET,
+                                mMyRoomBaseDataModel.getUid(), mMyRoomBaseDataModel.getTicket(), mMyRoomBaseDataModel.getRoomId());
                     }
                 });
 

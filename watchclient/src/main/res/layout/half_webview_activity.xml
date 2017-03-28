@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent">
+
+    <!--外层点击view-->
+    <View
+        android:id="@+id/out_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"/>
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:visibility="gone"
+        app:is_profile_mode="false"/>
+
+    <RelativeLayout
+        android:id="@+id/web_view_container"
+        android:layout_width="280dp"
+        android:layout_height="340dp"
+        android:layout_below="@id/title_bar"
+        android:layout_centerInParent="true">
+
+
+        <ImageView
+            android:id="@+id/imgLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/live_loading"/>
+
+        <ProgressBar
+            android:id="@+id/web_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/text_size_6"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:max="100"
+            android:progressDrawable="@drawable/play_progress"
+            android:visibility="gone"/>
+
+        <ScrollView
+            android:id="@+id/errorPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingLeft="54dip"
+                android:paddingRight="54dip"
+                android:paddingTop="60dip">
+
+                <ImageView
+                    android:id="@+id/error_icon"
+                    android:layout_width="66.67dip"
+                    android:layout_height="66.67dip"
+                    android:src="@drawable/all_web_icon_link_error"/>
+
+                <com.base.view.MLTextView
+                    android:id="@+id/error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/open_link_failed"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.33dip"
+                    android:layout_marginTop="50dip"
+                    android:background="@color/list_item_line"/>
+
+                <com.base.view.MLTextView
+                    android:id="@+id/error_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dip"
+                    android:layout_marginTop="15dip"
+                    android:text="@string/open_link_failed"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.33dip"
+                    android:background="@color/list_item_line"/>
+
+                <com.base.view.BottomButton
+                    android:id="@+id/open_insystem"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="15dip"
+                    android:layout_marginTop="20dip"
+                    android:gravity="center"
+                    android:text="@string/open_in_system_browser"/>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/videoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+    </RelativeLayout>
+
+</RelativeLayout>

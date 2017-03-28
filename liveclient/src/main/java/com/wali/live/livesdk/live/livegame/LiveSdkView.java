@@ -131,7 +131,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
                 R.id.gift_room_effect_view,
-                R.id.operating_view
+                R.id.widget_view
         }, mHorizontalMoveSet);
 
         // 滑动

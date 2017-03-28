@@ -9,11 +9,9 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.wali.live.base.BaseEvent;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.watchsdk.watchtop.view.WatchTopInfoBaseView;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lan on 17/2/14.
@@ -103,7 +101,7 @@ public class LiveTopInfoSingleView extends WatchTopInfoBaseView {
         mManagerAreaView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER, null, null));
+                UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER, null, null);
             }
         });
     }

@@ -22,4 +22,11 @@
 
     <string name="token_live_error_toast_room_not_exist">房间不存在</string>
     <string name="live_finish">直播已经结束</string>
+
+    <string name="message_open_system_browser">是否使用系统浏览器打开下载链接</string>
+    <string name="open_link_forbidden_tips">访问失败:\n%s\n\n. 请尝试系统浏览器打开</string>
+    <string name="open_in_system_browser">浏览器打开</string>
+    <string name="open_link_failed">链接存在风险</string>
+    <string name="invalid_url">抱歉，链接页面已不存在，无法使用系统浏览器打开了</string>
+    <string name="copied_to_clipboard">已复制到剪贴板</string>
 </resources>

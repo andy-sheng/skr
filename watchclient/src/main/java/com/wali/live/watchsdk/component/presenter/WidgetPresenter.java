@@ -60,10 +60,14 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         mView.hideWidgetView();
     }
 
-    @Nullable
     @Override
     protected IAction createAction() {
         return new Action();
+    }
+
+    @Override
+    public long getUid() {
+        return mMyRoomData != null ? mMyRoomData.getUid() : 0;
     }
 
     public class Action implements IAction {
