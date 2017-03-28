@@ -1,5 +1,3 @@
-package com.wali.live.proto;
-
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "PayProto";
 
