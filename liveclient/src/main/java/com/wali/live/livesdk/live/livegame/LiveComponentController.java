@@ -78,7 +78,7 @@ public class LiveComponentController extends BaseLiveController {
             int requestCode,
             FragmentDataListener listener) {
         MyLog.w(TAG, "prepareShowLive");
-        PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener);
+        PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener, mMyRoomData);
         mRoomChatMsgManager.setIsGameLiveMode(true);
     }
 

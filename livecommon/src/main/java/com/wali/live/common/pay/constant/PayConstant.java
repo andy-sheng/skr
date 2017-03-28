@@ -8,9 +8,9 @@ public interface PayConstant {
     /** 充值相关配置持久化 */
     String SP_FILENAME_RECHARGE_CONFIG = "recharge.config";
     /** 用户上次选择的payWay */
-    String SP_KEY_LAST_PAY_WAY = "last.pay.way";
+    String SP_KEY_LAST_PAY_WAY = "last.pay.way.";
     /** 用户是否是首次充值，充值成功一次才算 */
-    String SP_KEY_IS_FIRST_RECHARGE = "is.first.recharge";
+    String SP_KEY_IS_FIRST_RECHARGE = "is.first.recharge.";
 
     interface GooglePlay {
         int IN_APP_BILLING_VERSION = 3;
@@ -44,6 +44,7 @@ public interface PayConstant {
     int RECHARGE_LIST_TYPE_NATIVE = 1;// 微信、支付宝、小米钱包共用一套充值代码
     int RECHARGE_LIST_TYPE_GOOGLE_WALLET = 2;
     int RECHARGE_LIST_TYPE_PAYPAL = 3;
+    int RECHARGE_LIST_TYPE_MIBI = 4;//米币充值代码，因为米币只能充整数（元）
 
     // 当用户首次充值时，区分界面
     int RECHARGE_STEP_FIRST = 1;

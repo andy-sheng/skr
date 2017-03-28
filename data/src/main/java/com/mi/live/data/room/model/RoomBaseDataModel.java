@@ -28,7 +28,7 @@ public class RoomBaseDataModel implements Serializable {
     private CopyOnWriteArrayList<ViewerModel> mManagers = new CopyOnWriteArrayList();
 
     private User mOwner = new User();
-    private String mLocation;
+    private String mCity;
     private int mViewCnt = 0;
     private int mInitTicket = -1;
 
@@ -247,15 +247,15 @@ public class RoomBaseDataModel implements Serializable {
         return mOwner.getViewUrl();
     }
 
-    public void setLocation(String location) {
-        this.mLocation = location;
+    public void setCity(String city) {
+        this.mCity = city;
     }
 
-    public String getLocation() {
-        if (TextUtils.isEmpty(mLocation) || mLocation.equals("null")) {
-            mLocation = "";
+    public String getCity() {
+        if (TextUtils.isEmpty(mCity) || mCity.equals("null")) {
+            mCity = "";
         }
-        return mLocation;
+        return mCity;
     }
 
     public String getCoverUrl() {
@@ -402,7 +402,7 @@ public class RoomBaseDataModel implements Serializable {
     public String toString() {
         return "RoomBaseDataModel{" +
                 "mOwner=" + mOwner +
-                ", mLocation='" + mLocation + '\'' +
+                ", mCity='" + mCity + '\'' +
                 ", mViewCnt=" + mViewCnt +
                 ", mInitTicket=" + mInitTicket +
                 '}';

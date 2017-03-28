@@ -112,6 +112,7 @@
     <string name="weixin">WeChat</string>
     <string name="zhifubao">Alipay</string>
     <string name="miwallet">Mi Wallet</string>
+    <string name="mibi">米币支付</string>
     <string name="payway_google_wallet">Google Wallet</string>
     <string name="payway_paypal">PayPal</string>
     <string name="recharge_single_big_amount_tip">Large amount top-up</string>

@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.callback;
 
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.common.pay.constant.RechargeConfig;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**

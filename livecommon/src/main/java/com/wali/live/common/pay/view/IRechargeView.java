@@ -44,4 +44,7 @@ public interface IRechargeView extends LoadDataView, PayManager.PullRechargeList
 
     void showPopupWindow();
 
+    void setMibiRechargeLoginStatus(boolean logging);
+
+
 }

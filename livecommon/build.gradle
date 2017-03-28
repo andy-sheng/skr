@@ -64,20 +64,9 @@ dependencies {
     }
 
     /**
-     *       以下都是支付相关，可以优化，sdk去掉一点
+     * 以下都是支付相关，可以优化，sdk去掉一点
      */
-//    compile files('libs/SDK_TY_4.6.11.jar')
-    //compile 'com.paypal.sdk:paypal-android-sdk:2.14.3'
-    compile files('libs/HyAlipay_release_20161202.jar')
-    compile files('libs/HyUcashierpay_release_20161202.jar')
-    compile files('libs/HyWxWappay_release_20170307.jar')
-    compile files('libs/zxingcore-3.1.0.jar')
-//    compile files('libs/MiStats_SDK_Client_1_4_0.jar')
-    compile files('libs/reporter.jar')
     compile files('libs/migamepluginstat_2.jar')
-    compile files('libs/libammsdk.jar')
-    compile files('libs/volley-1.0.19.jar')
-    compile files('libs/alipaySingle-20160825.jar')
-//    compile 'com.alibaba.alipay:alipaySingle:20160825@jar'//支付
     compile files('libs/ks3-android-sdk-v-1.4.6.jar')
+    compile files('libs/SDK_TY_4.6.11.jar')
 }

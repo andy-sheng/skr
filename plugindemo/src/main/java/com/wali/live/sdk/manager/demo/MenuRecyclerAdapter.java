@@ -88,7 +88,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("开启秀场直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openNormalLive(mActivity, Location.Builder.newInstance(123, 124).setCountry("China").setCity("北京").build(), new IMiLiveSdk.IAssistantCallback() {
+                MiLiveSdkController.getInstance().openNormalLive(mActivity, Location.Builder.newInstance(123, 124).setCountry("China").setProvince("北京").setCity("北京").build(), new IMiLiveSdk.IAssistantCallback() {
                     @Override
                     public void notifyVersionLow() {
                         ToastUtils.showToast("notifyVersionLow");
@@ -104,7 +104,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("开启游戏直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setCity("New York").build(), new IMiLiveSdk.IAssistantCallback() {
+                MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setProvince("New York").setCity("New York").build(), new IMiLiveSdk.IAssistantCallback() {
                     @Override
                     public void notifyVersionLow() {
                         ToastUtils.showToast("notifyVersionLow");

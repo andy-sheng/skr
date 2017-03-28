@@ -19,7 +19,6 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.common.pay.constant.RechargeConfig;
 import com.wali.live.common.pay.model.Diamond;
-import com.wali.live.common.pay.model.SkuDetail;
 import com.wali.live.common.pay.presenter.RechargePresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.PayProto;
@@ -27,10 +26,8 @@ import com.wali.live.proto.PayProto;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import rx.Observable;
@@ -73,8 +70,7 @@ public class PayManager {
 
         if (!NetworkUtils.hasNetwork(GlobalData.app())) {
             if (rechargePresenter != null && rechargePresenter.get() != null
-                    && !rechargePresenter.get().isNotPullRechargeList()
-                    && rechargePresenter.get().canShowErrorToast()) {
+                    && !rechargePresenter.get().isNotPullRechargeList()) {
                 ToastUtils.showToast(R.string.network_unavailable);
                 // 空列表
                 replace(getDiamondListCache());
@@ -258,67 +254,15 @@ public class PayManager {
             }
         }
 
-        if (RechargeConfig.isServerDiamondInfoCanDirectlyUse(RechargeConfig.getRechargeListType(getCurrentPayWay()))) {
+        if (RechargeConfig.isServerDiamondInfoCanDirectlyUse(RechargeConfig.getRechargeListType(getCurrentPayWay()))
+                || RechargeConfig.isMibiPayway(RechargeConfig.getRechargeListType(getCurrentPayWay()))) {
             for (PayProto.GemGoods goods : response.getGemGoodsListList()) {
-                result.add(toDiamond(goods));
-            }
-        }
-//        else if (getCurrentPayWay() == PayWay.PAYPAL) {
-//            processPayPalRechargeList(response, result);
-//        } else if (getCurrentPayWay() == PayWay.GOOGLEWALLET) {
-//            processGoogleWalletRechargeList(response, result);
-//        }
-        replace(result);
-    }
-
-    private static void processPayPalRechargeList(PayProto.GetGemPriceResponse response, List<Diamond> result) {
-        for (PayProto.GemGoods goods : response.getGemGoodsListList()) {
-            Diamond diamond = toDiamond(goods);
-            SkuDetail skuDetail = new SkuDetail();
-            skuDetail.setProductId(String.valueOf(diamond.getId()));
-            skuDetail.setPriceCurrencyCode("USD");
-            skuDetail.setPriceAmountMicros(10000L * diamond.getPrice());// price是分
-            skuDetail.setPrice(GlobalData.app().getResources().getString(R.string.recharge_paypal_price_format,
-                    new BigDecimal(skuDetail.getPriceAmountMicros()).divide(SkuDetail.DIVISOR).toString(), skuDetail.getPriceCurrencyCode()));
-            skuDetail.setTitle(getPayPalProductTitle(diamond));// 商品标题
-            diamond.setSkuDetail(skuDetail);
-            result.add(diamond);
-        }
-    }
-
-    private static void processGoogleWalletRechargeList(PayProto.GetGemPriceResponse response, List<Diamond> result) {
-        ArrayList<String> productIdList = new ArrayList<>();
-        for (PayProto.GemGoods goods : response.getGemGoodsListList()) {
-            productIdList.add(String.valueOf(goods.getGoodsId()));// TODO 目前服务器上的充值代码和GooglePlay上的productId保持一致
-        }
-        Map<String, SkuDetail> idSkuDetailMap = null;
-        if (rechargePresenter != null && rechargePresenter.get() != null) {
-            idSkuDetailMap = rechargePresenter.get().querySkuInfo(productIdList, true);
-        }
-        if (idSkuDetailMap != null) {
-            for (PayProto.GemGoods goods : response.getGemGoodsListList()) {
-                SkuDetail skuDetail = null;
-                if ((skuDetail = idSkuDetailMap.get(String.valueOf(goods.getGoodsId()))) != null) {
-                    Diamond diamond = toDiamond(goods);
-                    diamond.setSkuDetail(skuDetail);
-                    result.add(diamond);
+                if (goods.getPrice() % 100 == 0 || RechargeConfig.isServerDiamondInfoCanDirectlyUse(RechargeConfig.getRechargeListType(getCurrentPayWay()))) {
+                    result.add(toDiamond(goods));
                 }
             }
         }
-    }
-
-    /**
-     * 返回形如“1200 Diamonds Package + 60 （Given）”的字符串
-     *
-     * @param diamond
-     * @return
-     */
-    private static String getPayPalProductTitle(Diamond diamond) {
-        String main = GlobalData.app().getResources().getQuantityString(R.plurals.gold_diamond, diamond.getCount(), diamond.getCount());
-        if (diamond.getExtraGive() > 0) {
-            main += " " + GlobalData.app().getString(R.string.given_diamond, diamond.getExtraGive());
-        }
-        return main;
+        replace(result);
     }
 
     private static Diamond toDiamond(PayProto.GemGoods goods) {
