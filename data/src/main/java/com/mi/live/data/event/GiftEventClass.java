@@ -6,23 +6,15 @@ import com.wali.live.dao.Gift;
  * Created by zjn on 16-11-30.
  */
 public class GiftEventClass {
-
     public static class GiftMallEvent {
         public int eventType;
 
         public static final int EVENT_TYPE_GIFT_CACHE_CHANGE = 2;
-
         public static final int EVENT_TYPE_GIFT_SHOW_MALL_LIST = 3;
-
         public static final int EVENT_TYPE_GIFT_HIDE_MALL_LIST = 5;
-
-
         public static final int EVENT_TYPE_GIFT_PLAY_COMPLETE = 7;
-
         public static final int EVENT_TYPE_GIFT_GO_RECHARGE = 8;
-
         public static final int EVENT_TYPE_GIFT_PLAY_BREAK = 9;
-
         public static final int EVENT_TYPE_CLICK_SELECT_GIFT = 10;
 
         public GiftMallEvent(int type) {
@@ -71,6 +63,7 @@ public class GiftEventClass {
                 this.obj1 = obj1;
             }
         }
+
         public static class FlyBarrage {
             public Object obj1;
 
@@ -93,7 +86,8 @@ public class GiftEventClass {
      */
     public static class GiftDownloadSuc {
         Gift mGift;
-        public GiftDownloadSuc(Gift gift){
+
+        public GiftDownloadSuc(Gift gift) {
             mGift = gift;
         }
 

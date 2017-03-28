@@ -60,6 +60,11 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         mView.hideWidgetView();
     }
 
+    public void destroy() {
+        super.destroy();
+        mView.destroyView();
+    }
+
     @Override
     protected IAction createAction() {
         return new Action();

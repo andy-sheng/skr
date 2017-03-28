@@ -12,8 +12,6 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
-import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
@@ -24,14 +22,14 @@ import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
-import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
+import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
-import com.wali.live.watchsdk.component.view.WidgetView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
+import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -48,14 +46,9 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
     @NonNull
     protected final Action mAction = new Action();
 
-    private final List<View> mHorizontalMoveSet = new ArrayList<>();
-    private final List<View> mVerticalMoveSet = new ArrayList<>(0);
-    private final List<View> mGameHideSet = new ArrayList<>(0);
-
-    @NonNull
-    protected RoomBaseDataModel mMyRoomData;
-    @NonNull
-    protected LiveRoomChatMsgManager mRoomChatMsgManager;
+    private final List<View> mHorizontalMoveSet = new ArrayList();
+    private final List<View> mVerticalMoveSet = new ArrayList(0);
+    private final List<View> mGameHideSet = new ArrayList(0);
 
     @Nullable
     protected View mTopInfoView;
@@ -69,12 +62,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
     public WatchSdkView(
             @NonNull Activity activity,
-            @NonNull WatchComponentController componentController,
-            @NonNull RoomBaseDataModel myRoomData,
-            @NonNull LiveRoomChatMsgManager roomChatMsgManager) {
+            @NonNull WatchComponentController componentController,) {
         super(activity, componentController);
-        mMyRoomData = myRoomData;
-        mRoomChatMsgManager = roomChatMsgManager;
     }
 
     @Override
@@ -91,9 +80,9 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 GameInputView view = new GameInputView(mActivity);
                 view.setId(R.id.game_input_view);
                 view.setVisibility(View.GONE);
-                GameInputPresenter presenter = new GameInputPresenter(mComponentController, mMyRoomData);
+                GameInputPresenter presenter = new GameInputPresenter(mComponentController, mComponentController.mMyRoomData);
                 addComponentView(view, presenter);
-                // add view to activity
+
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -108,7 +97,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 view.setVisibility(View.GONE);
                 GameBarragePresenter presenter = new GameBarragePresenter(mComponentController);
                 addComponentView(view, presenter);
-                // add view to activity
+
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, DisplayUtils.dip2px(96.77f));
                 layoutParams.bottomMargin = DisplayUtils.dip2px(56f);
@@ -134,7 +123,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
             LiveCommentPresenter presenter = new LiveCommentPresenter(mComponentController);
             addComponentView(view, presenter);
-            view.setToken(mRoomChatMsgManager.toString());
+            view.setToken(mComponentController.mRoomChatMsgManager.toString());
 
             mLiveCommentView = view;
         }
@@ -145,7 +134,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             if (view == null) {
                 return;
             }
-            InputAreaPresenter presenter = new InputAreaPresenter(mComponentController, mMyRoomData);
+            InputAreaPresenter presenter = new InputAreaPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
         }
 
@@ -165,13 +154,13 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
         // 运营位
         {
-            WidgetView view = new WidgetView(mActivity);
-            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mMyRoomData);
+            WidgetView view = $(R.id.widget_view);
+            if (view == null) {
+                MyLog.e(TAG, "missing R.id.widget_view");
+                return;
+            }
+            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            addViewUnderAnchor(view, layoutParams, $(R.id.bottom_button_view));
         }
 
         mVerticalMoveSet.add($(R.id.close_btn));

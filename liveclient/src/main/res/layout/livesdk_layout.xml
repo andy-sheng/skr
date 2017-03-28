@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/main_act_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/color_black"
-                android:soundEffectsEnabled="false">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_black"
+    android:soundEffectsEnabled="false">
 
     <com.base.image.fresco.BaseImageView
         android:id="@+id/blur_iv"
@@ -22,7 +23,8 @@
     <com.wali.live.watchsdk.component.view.WidgetView
         android:id="@+id/widget_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/live_top_info_view"/>
 
     <ViewStub
         android:id="@+id/game_live_home_tv"

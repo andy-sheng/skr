@@ -281,8 +281,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     }
                 });
 
-        mComponentController = new WatchComponentController();
-        mSdkView = new WatchSdkView(this, mComponentController, mMyRoomData, mRoomChatMsgManager);
+        mComponentController = new WatchComponentController(mMyRoomData, mRoomChatMsgManager);
+        mSdkView = new WatchSdkView(this, mComponentController);
         mSdkView.setupSdkView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);

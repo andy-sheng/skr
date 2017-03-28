@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.RxActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
@@ -31,6 +32,8 @@ import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.jakewharton.rxbinding.view.RxView;
+import com.mi.live.data.event.GiftEventClass;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.event.UserActionEvent;
@@ -39,6 +42,8 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -50,6 +55,7 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -93,6 +99,13 @@ public class WidgetView extends RelativeLayout
     private TextView mRightTopTv;
     private TextView mLeftBottomTv;
     private TextView mRightBottomTv;
+
+    private Subscription mImgSubscription;
+    private Subscription mTxtSubscription;
+    private Subscription mShowSubscription;
+
+    private int mImgCounter;
+    private int mTxtCounter;
 
     public WidgetView(Context context) {
         this(context, null, 0);
@@ -209,19 +222,21 @@ public class WidgetView extends RelativeLayout
     /**
      * 初始化运营位信息
      *
-     * @param type      运营位类型 0：常驻 1：一次性展示 2：轮播展示
-     * @param info      运营位信息
-     * @param iv        图片控件
-     * @param countTv   计数控件
-     * @param iv2       点赞图片控件
-     * @param llytClick 根布局点击
-     * @param posFlag   位置标识
+     * @param type    运营位类型 0：常驻 1：一次性展示 2：轮播展示
+     * @param info    运营位信息
+     * @param iv      图片控件
+     * @param tv      计数控件
+     * @param iv2     点赞图片控件
+     * @param layout  根布局点击
+     * @param posFlag 位置标识
      */
-    private void initWidget(int type, final LiveCommonProto.NewWidgetItem info, BaseImageView iv, final TextView countTv, BaseImageView iv2, LinearLayout llytClick, int posFlag) {
+    private void initWidget(int type, final LiveCommonProto.NewWidgetItem info,
+                            final BaseImageView iv, final TextView tv, BaseImageView iv2, final LinearLayout layout,
+                            final int posFlag) {
         MyLog.i(TAG, "initWidget position = " + info.getPosition() + ",widget id:" + info.getWidgetID());
 
         iv.setVisibility(GONE);
-        countTv.setVisibility(GONE);
+        tv.setVisibility(GONE);
         iv2.setVisibility(GONE);
 
         iv.setImageBitmap(null);
@@ -230,7 +245,7 @@ public class WidgetView extends RelativeLayout
         iv2.setImageBitmap(null);
         iv2.setBackground(null);
 
-        List<LiveCommonProto.NewWidgetUnit> data = info.getWidgetUintList();
+        final List<LiveCommonProto.NewWidgetUnit> data = info.getWidgetUintList();
 
         // 第一张图片
         if (data != null && data.size() > 0) {
@@ -241,16 +256,16 @@ public class WidgetView extends RelativeLayout
             }
 
             if (unit.hasText()) {
-                countTv.setVisibility(VISIBLE);
-                countTv.setText(unit.getText());
+                tv.setVisibility(VISIBLE);
+                tv.setText(unit.getText());
                 if (unit.hasTextColor()) {
-                    countTv.setTextColor(ColorFormatter.toHexColor(unit.getTextColor().getRgb()));
+                    tv.setTextColor(ColorFormatter.toHexColor(unit.getTextColor().getRgb()));
                 }
             }
 
             if (unit.hasLinkUrl()) {
                 if (unit.hasIcon() || unit.hasText()) {
-                    RxView.clicks(unit.hasIcon() ? iv : countTv)
+                    RxView.clicks(unit.hasIcon() ? iv : tv)
                             .throttleFirst(500, TimeUnit.MILLISECONDS)
                             .subscribe(new Action1<Void>() {
                                 @Override
@@ -263,25 +278,112 @@ public class WidgetView extends RelativeLayout
             }
         }
 
+        if (type == 2) {
+            // 轮循
+            if (data != null && data.size() > 1) {
+                // 图片
+                mImgSubscription = Observable.interval(info.getDisplayTime(), info.getDisplayTime(), TimeUnit.SECONDS).compose(((RxActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+                                if (mImgCounter >= 0 && mImgCounter < data.size() - 1) {
+                                    mImgCounter++;
+                                } else {
+                                    mImgCounter = 0;
+                                }
+
+                                // 活动链接
+                                if (data.get(mImgCounter).hasLinkUrl()) {
+                                    RxView.clicks(iv)
+                                            .throttleFirst(500, TimeUnit.MILLISECONDS)
+                                            .subscribe(new Action1<Void>() {
+                                                @Override
+                                                public void call(Void aVoid) {
+                                                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
+                                                            data.get(mImgCounter).getLinkUrl(), data.get(mImgCounter).getUrlNeedParam(), data.get(mImgCounter).getOpenType(),
+                                                            mPresenter.getUid());
+                                                    sendClick(info.getWidgetID(), "iconClick");
+                                                }
+                                            });
+                                }
+
+                                if (data.get(mImgCounter).hasIcon()) {
+                                    loadImgFromNet(data.get(mImgCounter).getIcon(), iv, posFlag);
+                                }
+                            }
+                        });
+
+                // 文案
+                mTxtSubscription = Observable
+                        .interval(info.getDisplayTime(), info.getDisplayTime(), TimeUnit.SECONDS)
+                        .compose(((RxActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+                                if (mTxtCounter >= 0 && mTxtCounter < data.size() - 1) {
+                                    mTxtCounter++;
+                                } else {
+                                    mTxtCounter = 0;
+                                }
+
+                                if (data.get(mTxtCounter).hasText()) {
+                                    tv.setText(data.get(mTxtCounter).getText());
+                                    if (data.get(mTxtCounter).hasTextColor()) {
+                                        tv.setTextColor(ColorFormatter.toHexColor(data.get(mTxtCounter).getTextColor().getRgb()));
+                                    }
+                                }
+                            }
+                        });
+            } else {
+                mShowSubscription = Observable
+                        .interval(info.getDisplayTime(), TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                        .compose(((RxActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+                                if (layout.getVisibility() == VISIBLE) {
+                                    layout.setVisibility(INVISIBLE);
+                                } else {
+                                    layout.setVisibility(VISIBLE);
+                                }
+                            }
+                        });
+            }
+        } else if (type == 1) {
+            // 一次展示
+            Observable.timer(info.getDisplayTime(), TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                    .compose(((RxActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Object>() {
+                        @Override
+                        public void call(Object o) {
+                            layout.setVisibility(INVISIBLE);
+                        }
+                    });
+        }
+
         // 计数文字
         LiveCommonProto.CounterItem item = info.getCounterItem();
         if (item != null && item.hasCounterText()) {
-            countTv.setVisibility(VISIBLE);
+            tv.setVisibility(VISIBLE);
 
             if (item.hasIsBold() && item.getIsBold()) {
-                TextPaint tp = countTv.getPaint();
+                TextPaint tp = tv.getPaint();
                 tp.setFakeBoldText(true);
             }
-            countTv.setText(item.getCounterText());
+            tv.setText(item.getCounterText());
 
             if (item.hasTextColor()) {
-                countTv.setTextColor(ColorFormatter.toHexColor(item.getTextColor().getRgb()));
+                tv.setTextColor(ColorFormatter.toHexColor(item.getTextColor().getRgb()));
             } else {
-                countTv.setTextColor(getContext().getResources().getColor(R.color.color_ffd171));
+                tv.setTextColor(getContext().getResources().getColor(R.color.color_ffd171));
             }
 
             if (item.hasTextEdgeColor()) {
-                countTv.setShadowLayer(2f, 2.5f, 2.5f, ColorFormatter.toHexColor(item.getTextColor().getRgb()));
+                tv.setShadowLayer(2f, 2.5f, 2.5f, ColorFormatter.toHexColor(item.getTextColor().getRgb()));
             }
 
             try {
@@ -298,8 +400,8 @@ public class WidgetView extends RelativeLayout
                         ThreadPool.runOnUi(new Runnable() {
                             @Override
                             public void run() {
-                                if (countTv != null) {
-                                    countTv.setBackground(new BitmapDrawable(bitmap));
+                                if (tv != null) {
+                                    tv.setBackground(new BitmapDrawable(bitmap));
                                 }
                             }
                         });
@@ -314,29 +416,29 @@ public class WidgetView extends RelativeLayout
             }
         }
 
-        //支持图片
-        LiveCommonProto.ClickItem click = info.getClickItem();
+        // 支持图片
+        final LiveCommonProto.ClickItem click = info.getClickItem();
         if (click != null) {
             if (click.getClickType() == 1) {
                 if (click.hasClickImageUrl()) {
                     loadImgFromNet(click.getClickImageUrl(), iv2, posFlag);
                 }
-                // TODO 选中礼物
-//                RxView.clicks(imgDown)
-//                        .throttleFirst(500, TimeUnit.MILLISECONDS)
-//                        .subscribe(aVoid -> {
-//                            EventBus.getDefault().post(new EventClass.GiftEvent(EventClass.GiftEvent.EVENT_TYPE_CLICK_SELECT_GIFT, click.getGiftId(), null));
-//                            sendClick(info.getWidgetID(), "buttonClick");
-//                        });
+                RxView.clicks(iv2)
+                        .throttleFirst(500, TimeUnit.MILLISECONDS)
+                        .subscribe(new Action1<Void>() {
+                            @Override
+                            public void call(Void aVoid) {
+                                EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(
+                                        GiftEventClass.GiftMallEvent.EVENT_TYPE_CLICK_SELECT_GIFT, click.getGiftId(), null));
+                                sendClick(info.getWidgetID(), "buttonClick");
+                            }
+                        });
             }
         }
     }
 
     /**
      * 加载网络图片
-     *
-     * @param icon
-     * @param imageView
      */
     public void loadImgFromNet(final String icon, final BaseImageView imageView, final int posFlag) {
         Observable.create(new Observable.OnSubscribe<String>() {
@@ -394,14 +496,11 @@ public class WidgetView extends RelativeLayout
 
     /**
      * 运营位显示图片时先去网络获取图片的宽高信息
-     *
-     * @param url 图片地址
-     * @return 宽，高
      */
-    private String loadImageFromNetwork(String url) {
+    private String loadImageFromNetwork(String urlStr) {
         try {
-            URL m_url = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) m_url.openConnection();
+            URL url = new URL(urlStr);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             InputStream in = con.getInputStream();
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
@@ -423,6 +522,18 @@ public class WidgetView extends RelativeLayout
         mRightTopWv.setVisibility(GONE);
         mLeftBottomWv.setVisibility(GONE);
         mRightBottomWv.setVisibility(GONE);
+    }
+
+    public void destroyView() {
+        if (mImgSubscription != null && !mImgSubscription.isUnsubscribed()) {
+            mImgSubscription.unsubscribe();
+        }
+        if (mTxtSubscription != null && !mTxtSubscription.isUnsubscribed()) {
+            mTxtSubscription.unsubscribe();
+        }
+        if (mShowSubscription != null && !mShowSubscription.isUnsubscribed()) {
+            mShowSubscription.unsubscribe();
+        }
     }
 
     /**
@@ -457,6 +568,11 @@ public class WidgetView extends RelativeLayout
             public void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list) {
                 WidgetView.this.showWidgetView(list);
             }
+
+            @Override
+            public void destroyView() {
+                destroyView();
+            }
         }
         return new ComponentView();
     }
@@ -469,5 +585,7 @@ public class WidgetView extends RelativeLayout
         void hideWidgetView();
 
         void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list);
+
+        void destroyView();
     }
 }
