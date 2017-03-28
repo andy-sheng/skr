@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
@@ -27,6 +26,7 @@ import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
@@ -272,9 +272,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     public static void openFragment(
             BaseComponentSdkActivity activity,
             int requestCode,
-            FragmentDataListener listener) {
-        BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
+            FragmentDataListener listener, RoomBaseDataModel roomBaseDataModel) {
+        PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
+        fragment.setMyRoomData(roomBaseDataModel);
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }
