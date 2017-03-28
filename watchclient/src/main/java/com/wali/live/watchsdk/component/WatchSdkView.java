@@ -62,7 +62,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
     public WatchSdkView(
             @NonNull Activity activity,
-            @NonNull WatchComponentController componentController,) {
+            @NonNull WatchComponentController componentController) {
         super(activity, componentController);
     }
 
