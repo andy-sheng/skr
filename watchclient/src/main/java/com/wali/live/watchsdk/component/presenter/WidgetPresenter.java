@@ -1,12 +1,20 @@
 package com.wali.live.watchsdk.component.presenter;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
+import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.push.IPushMsgProcessor;
+import com.mi.live.data.push.model.BarrageMsg;
+import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.proto.LiveCommonProto;
+import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.util.ArrayList;
@@ -20,22 +28,31 @@ import java.util.List;
  * @module 运营位操作类
  */
 public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
-        implements WidgetView.IPresenter {
+        implements WidgetView.IPresenter, IPushMsgProcessor {
+
+    private static final int FROM_ALL = 0;
+    private static final int FROM_WATCH = 1;
+    private static final int FROM_LIVE = 2;
+
     private static final String TAG = "WidgetPresenter";
 
     protected RoomBaseDataModel mMyRoomData;
+    private Handler mUIHandler;
+
     // TODO 改成不是proto的数据格式
     private List<LiveCommonProto.NewWidgetItem> mWidgetList = new ArrayList();
 
     public WidgetPresenter(@NonNull IComponentController componentController,
-                           RoomBaseDataModel myRoomData) {
+                           @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
         mMyRoomData = myRoomData;
+        mUIHandler = new Handler(Looper.getMainLooper());
     }
 
     /**
      * 设置运营位数据
      */
+    @MainThread
     public void setWidgetList(List<LiveCommonProto.NewWidgetItem> list) {
         if (list.size() <= 0) {
             return;
@@ -63,6 +80,8 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
     public void destroy() {
         super.destroy();
         mView.destroyView();
+        mUIHandler.removeCallbacksAndMessages(null);
+        mUIHandler = null;
     }
 
     @Override
@@ -72,7 +91,38 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
 
     @Override
     public long getUid() {
-        return mMyRoomData != null ? mMyRoomData.getUid() : 0;
+        return mMyRoomData.getUid();
+    }
+
+    // TODO chenyong1 增加水位
+    @Override
+    public void process(BarrageMsg msg, RoomBaseDataModel roomBaseDataModel) {
+        if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ATTACHMENT) {
+            final BarrageMsg.attachMessageExt msgExt = (BarrageMsg.attachMessageExt) msg.getMsgExt();
+            final List<LiveCommonProto.NewWidgetItem> widgetList = new ArrayList<>();
+            for (LiveMessageProto.NewWidgetMessageItem newWidgetMessageItem : msgExt.newWidgetList) {
+                if (!newWidgetMessageItem.getIsDelete()) {
+                    boolean isAnchor = mMyRoomData.getUid() == UserAccountManager.getInstance().getUuidAsLong();
+                    int showType = newWidgetMessageItem.getShowType();
+                    if (showType == FROM_ALL || (isAnchor && showType == FROM_LIVE) || (!isAnchor && showType == FROM_WATCH)) {
+                        widgetList.add(newWidgetMessageItem.getNewWidgetItem());
+                    }
+                }
+            }
+            mUIHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    setWidgetList(widgetList);
+                }
+            });
+        }
+    }
+
+    @Override
+    public int[] getAcceptMsgType() {
+        return new int[]{
+                BarrageMsgType.B_MSG_TYPE_ATTACHMENT
+        };
     }
 
     public class Action implements IAction {

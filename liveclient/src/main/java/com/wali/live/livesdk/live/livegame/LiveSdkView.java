@@ -18,6 +18,7 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
+import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
@@ -122,6 +123,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             }
             WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
 
         addViewToSet(new int[]{

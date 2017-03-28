@@ -17,6 +17,7 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
@@ -161,6 +162,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
             WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
 
         mVerticalMoveSet.add($(R.id.close_btn));
