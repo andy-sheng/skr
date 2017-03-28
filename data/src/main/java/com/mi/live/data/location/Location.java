@@ -58,9 +58,9 @@ public class Location implements Parcelable {
         CommonProto.Location protoLocation = CommonProto.Location.newBuilder()
                 .setLon(lon)
                 .setLat(lat)
-                .setCountry(country)
-                .setProvince(province)
-                .setCity(city)
+                .setCountry(!TextUtils.isEmpty(country) ? country : "")
+                .setProvince(!TextUtils.isEmpty(province) ? province : "")
+                .setCity(!TextUtils.isEmpty(city) ? city : "")
                 .build();
         return protoLocation;
     }

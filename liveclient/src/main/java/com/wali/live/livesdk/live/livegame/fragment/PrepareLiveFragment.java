@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,6 +108,12 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     protected int getLayoutResId() {
         return R.layout.prepare_game_live_layout;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -264,7 +271,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LiveEventClass.HidePrepareGameLiveEvent event) {
         if (event != null) {
-            MyLog.d(TAG, "HidePrepareGameLiveEvent");
+            MyLog.w(TAG, "HidePrepareGameLiveEvent");
             super.onBeginBtnClick();
         }
     }
@@ -286,6 +293,12 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         super.onBackPressed();
         getActivity().finish();
         return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

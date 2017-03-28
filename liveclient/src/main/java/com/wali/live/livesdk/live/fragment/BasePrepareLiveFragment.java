@@ -24,9 +24,9 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
+import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -46,7 +46,7 @@ import java.util.List;
  * Created by zyh on 2017/2/8.
  */
 
-public abstract class BasePrepareLiveFragment extends BaseEventBusFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
+public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
