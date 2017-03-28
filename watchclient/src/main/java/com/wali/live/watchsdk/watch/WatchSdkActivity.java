@@ -385,13 +385,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Override
     protected void onResume() {
         super.onResume();
-        mGiftMallPresenter.onActivityResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mGiftMallPresenter.onActivityPause();
     }
 
     @Override

@@ -261,6 +261,7 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
             if (mProgressDialog == null) {
                 //创建ProgressDialog对象
                 mProgressDialog = MyProgressDialogEx.createProgressDialog(getActivity());
+                mProgressDialog.setMessage(getString(R.string.default_loading_hint));
             }
             mProgressDialog.show(most);
         }

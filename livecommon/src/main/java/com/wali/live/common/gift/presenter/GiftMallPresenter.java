@@ -939,21 +939,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
         }
     }
 
-    /**
-     * 是否可能去微信充值了
-     */
-    private boolean mMayRechargeFromOutSide = false;
-
-    public void onActivityResume() {
-        if (mMayRechargeFromOutSide) {
-//            syncBalance();
-        }
-    }
-
-    public void onActivityPause() {
-        mMayRechargeFromOutSide = true;
-    }
-
     @Override
     public void onActivityCreate() {
         if (!EventBus.getDefault().isRegistered(this)) {
