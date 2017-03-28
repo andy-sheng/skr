@@ -946,7 +946,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
 
     public void onActivityResume() {
         if (mMayRechargeFromOutSide) {
-            syncBalance();
+//            syncBalance();
         }
     }
 

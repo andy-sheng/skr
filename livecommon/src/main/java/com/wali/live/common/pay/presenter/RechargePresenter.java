@@ -368,6 +368,8 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
 
     private void payByMibi(final String orderId, final int price, final String userInfo) {
 
+        mRechargeView.setMibiRechargeLoginStatus(true);
+
         MiAppInfo appInfo = new MiAppInfo();
         appInfo.setAppId(String.valueOf(XiaoMiOAuth.APP_ID_PAY));
         appInfo.setAppKey(XiaoMiOAuth.APP_KEY_PAY);
@@ -376,6 +378,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
         MiCommplatform.getInstance().miLogin(mActivity, new OnLoginProcessListener() {
             @Override
             public void finishLoginProcess(int code, MiAccountInfo miAccountInfo) {
+                MyLog.w(TAG,"MiCommplatform.milogin retCode:"+code);
                 mRechargeView.hideProcessDialog(1000);
                 switch (code) {
                     case MiErrorCode.MI_XIAOMI_PAYMENT_SUCCESS:
@@ -387,9 +390,12 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                         miBuyInfo.setCpOrderId(orderId);//订单号唯一（不为空）
                         miBuyInfo.setCpUserInfo(userInfo); //此参数在用户支付成功后会透传给CP的服务器
                         miBuyInfo.setAmount(price / 100);
+
                         MiCommplatform.getInstance().miUniPay(mActivity, miBuyInfo, new OnPayProcessListener() {
                             @Override
                             public void finishPayProcess(int code) {
+                                MyLog.w(TAG,"MiCommplatform.miUniPay retCode:"+code);
+                                mRechargeView.setMibiRechargeLoginStatus(false);
                                 switch (code) {
                                     case MiErrorCode.MI_XIAOMI_PAYMENT_SUCCESS:
                                         //购买成功
@@ -422,6 +428,7 @@ public class RechargePresenter extends RxLifeCyclePresenter implements PayManage
                     case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_CANCEL:
                     case MiErrorCode.MI_XIAOMI_PAYMENT_ERROR_ACTION_EXECUTED:
                     default:
+                        mRechargeView.setMibiRechargeLoginStatus(false);
                         //购买失败
 //                        showToast(getErrorMsgByErrorCode(code));
                         StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,

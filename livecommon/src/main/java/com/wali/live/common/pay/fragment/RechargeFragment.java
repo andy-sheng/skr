@@ -193,12 +193,14 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
      */
     private boolean mMayRechargeFromOutSide = false;
 
+    private boolean mMibiLoggingIn = false;
+
     @Override
     public void onResume() {
         MyLog.d(TAG, "onResume");
         super.onResume();
         KeyboardUtils.hideKeyboard(getActivity());
-        if (mMayRechargeFromOutSide) {
+        if (mMayRechargeFromOutSide && !mMibiLoggingIn) {
             mRechargePresenter.syncBalance();
         }
     }
@@ -325,5 +327,10 @@ public class RechargeFragment extends MyRxFragment implements IRechargeView {
             }
         }
         return false;
+    }
+
+    @Override
+    public void setMibiRechargeLoginStatus(boolean logging) {
+        mMibiLoggingIn = logging;
     }
 }

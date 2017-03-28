@@ -18,7 +18,6 @@ public abstract class SecureLoginCallback implements ISecureCallBack {
         if (channelId == HostChannelManager.getInstance().getChannelId() || !BaseComponentSdkActivity.isActive()) {
             UserAccountManager.getInstance().logoffWithoutClearAccount(HostChannelManager.getInstance().getChannelId());
             HostChannelManager.getInstance().setChannelData(channelId, packageName);
-            RechargeConfig.initNativePayWays();
             postSuccess();
         } else {
             postActive();

@@ -257,7 +257,9 @@ public class PayManager {
         if (RechargeConfig.isServerDiamondInfoCanDirectlyUse(RechargeConfig.getRechargeListType(getCurrentPayWay()))
                 || RechargeConfig.isMibiPayway(RechargeConfig.getRechargeListType(getCurrentPayWay()))) {
             for (PayProto.GemGoods goods : response.getGemGoodsListList()) {
-                result.add(toDiamond(goods));
+                if (goods.getPrice() % 100 == 0 || RechargeConfig.isServerDiamondInfoCanDirectlyUse(RechargeConfig.getRechargeListType(getCurrentPayWay()))) {
+                    result.add(toDiamond(goods));
+                }
             }
         }
         replace(result);
