@@ -90,6 +90,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
@@ -817,6 +818,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
         startRecord();
         syncSystemMessage();
+        if (mComponentController != null) {
+            mComponentController.onEvent(BaseLiveController.MSG_ON_LIVE_SUCCESS);
+        }
     }
 
     private void syncSystemMessage() {

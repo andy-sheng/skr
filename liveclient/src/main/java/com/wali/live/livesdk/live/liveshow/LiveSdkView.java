@@ -182,7 +182,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 MyLog.e(TAG, "missing R.id.widget_view");
                 return;
             }
-            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
+            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData, true);
             addComponentView(view, presenter);
             ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }

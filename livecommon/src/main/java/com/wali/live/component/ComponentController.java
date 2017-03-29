@@ -35,6 +35,7 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_OPEN_MIC_FAILED = MSG_STREAM_FIRST + 3;      // 打开麦克风失败
     public static final int MSG_ON_STREAM_SUCCESS = MSG_STREAM_FIRST + 4; // 推/拉流成功
     public static final int MSG_ON_STREAM_RECONNECT = MSG_STREAM_FIRST + 5; // 开始重连
+    public static final int MSG_ON_LIVE_SUCCESS = MSG_STREAM_FIRST + 6; // 开房间/进房间成功
 
     // UI消息
     // 复合消息(多个View同时响应的消息)

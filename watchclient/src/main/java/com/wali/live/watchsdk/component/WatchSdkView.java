@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.component.BaseSdkView;
@@ -108,16 +109,18 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 addViewAboveAnchor(view, layoutParams, R.id.comment_rv);
             }
         } else {
-            // 运营位
-            {
-                WidgetView view = $(R.id.widget_view);
-                if (view == null) {
-                    MyLog.e(TAG, "missing R.id.widget_view");
-                    return;
+            if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
+                // 运营位
+                {
+                    WidgetView view = $(R.id.widget_view);
+                    if (view == null) {
+                        MyLog.e(TAG, "missing R.id.widget_view");
+                        return;
+                    }
+                    WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData, false);
+                    addComponentView(view, presenter);
+                    ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
                 }
-                WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
-                addComponentView(view, presenter);
-                ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
             }
         }
         setupSdkView();
