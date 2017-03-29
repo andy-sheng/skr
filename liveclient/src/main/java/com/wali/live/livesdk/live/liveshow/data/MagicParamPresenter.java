@@ -227,7 +227,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
          * 查找level的索引
          */
         public int findBeautyPos(int level) {
-            int index = Arrays.asList(beauty).indexOf(level);
+            int index = Arrays.binarySearch(beauty, level);
             return index >= 0 ? index : (beauty.length - 1);
         }
 

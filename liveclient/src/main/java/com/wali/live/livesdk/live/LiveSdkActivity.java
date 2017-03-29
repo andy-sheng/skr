@@ -145,6 +145,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private int mLastTicket;
     private Intent mScreenRecordIntent;
     private String mLiveTitle;
+    private String mLiveCoverUrl;
     private RoomTag mRoomTag;
 
     private boolean mIsGameLive;
@@ -207,7 +208,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         initData();
         initRoomData();
-        
+
         setupRequiredComponent();
 
         if (!mIsGameLive) {
@@ -506,6 +507,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void initPrepareData(Bundle bundle) {
         mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
         mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
+        mLiveCoverUrl = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL, "");
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
@@ -805,8 +807,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         startCountDown();
         Location location = !TextUtils.isEmpty(mMyRoomData.getCity()) ? mLocation : null;
-        mLiveRoomPresenter.beginLiveByAppInfo(location, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
-                "", mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
+        mLiveRoomPresenter.beginLiveByAppInfo(location, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
+                mLiveCoverUrl, mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
     }
 
     private void processStartRecord(String liveId, long createTime, String shareUrl,
