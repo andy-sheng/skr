@@ -64,11 +64,13 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                            @NonNull RoomBaseDataModel myRoomData,
                            boolean isAnchor) {
         super(componentController);
+        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
+
         mMyRoomData = myRoomData;
         mUIHandler = new Handler(Looper.getMainLooper());
         mIsAnchor = isAnchor;
-
-        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
     }
 
     /**
@@ -279,6 +281,12 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                 return false;
             }
             switch (source) {
+                case ComponentController.MSG_ON_ORIENT_PORTRAIT:
+                    mView.onOrientation(false);
+                    return true;
+                case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                    mView.onOrientation(true);
+                    return true;
                 case ComponentController.MSG_ON_LIVE_SUCCESS:
                     if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                         int liveType = mMyRoomData.getLiveType();

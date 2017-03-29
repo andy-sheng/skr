@@ -20,12 +20,6 @@
         android:layout_alignParentTop="true"
         android:visibility="gone"/>
 
-    <com.wali.live.watchsdk.component.view.WidgetView
-        android:id="@+id/widget_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/live_top_info_view"/>
-
     <ViewStub
         android:id="@+id/game_live_home_tv"
         android:layout_width="wrap_content"
@@ -55,6 +49,13 @@
         android:paddingLeft="6dip"
         android:paddingRight="6.67dip"
         android:requiresFadingEdge="none"/>
+
+    <com.wali.live.watchsdk.component.view.WidgetView
+        android:id="@+id/widget_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/live_comment_view"
+        android:layout_below="@id/live_top_info_view"/>
 
     <TextView
         android:id="@+id/tips_tv"

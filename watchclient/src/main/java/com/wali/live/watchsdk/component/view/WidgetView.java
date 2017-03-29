@@ -77,6 +77,7 @@ public class WidgetView extends RelativeLayout
     private static final int POS_RIGHT_BOTTOM = 3;
 
     private static final int PADDING = DisplayUtils.dip2px(10f);
+    private static final int PADDING_LANDSCAPE_RIGHT = DisplayUtils.dip2px(46.67f);
 
     @Nullable
     protected IPresenter mPresenter;
@@ -529,7 +530,7 @@ public class WidgetView extends RelativeLayout
         mRightBottomWv.setVisibility(GONE);
     }
 
-    public void destroyView() {
+    private void destroyView() {
         if (mImgSubscription != null && !mImgSubscription.isUnsubscribed()) {
             mImgSubscription.unsubscribe();
         }
@@ -538,6 +539,14 @@ public class WidgetView extends RelativeLayout
         }
         if (mShowSubscription != null && !mShowSubscription.isUnsubscribed()) {
             mShowSubscription.unsubscribe();
+        }
+    }
+
+    private void onOrientation(boolean isLandscape) {
+        if (isLandscape) {
+            setPadding(PADDING, 0, PADDING_LANDSCAPE_RIGHT, 0);
+        } else {
+            setPadding(PADDING, 0, PADDING, 0);
         }
     }
 
@@ -565,6 +574,11 @@ public class WidgetView extends RelativeLayout
             }
 
             @Override
+            public void onOrientation(boolean isLandscape) {
+                WidgetView.this.onOrientation(isLandscape);
+            }
+
+            @Override
             public void hideWidgetView() {
                 WidgetView.this.hideWidgetView();
             }
@@ -578,6 +592,7 @@ public class WidgetView extends RelativeLayout
             public void destroyView() {
                 WidgetView.this.destroyView();
             }
+
         }
         return new ComponentView();
     }
@@ -587,6 +602,8 @@ public class WidgetView extends RelativeLayout
     }
 
     public interface IView extends IViewProxy {
+        void onOrientation(boolean isLandscape);
+
         void hideWidgetView();
 
         void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list);
