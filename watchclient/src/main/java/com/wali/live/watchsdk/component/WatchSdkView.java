@@ -107,6 +107,18 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
                 addViewAboveAnchor(view, layoutParams, R.id.comment_rv);
             }
+        } else {
+            // 运营位
+            {
+                WidgetView view = $(R.id.widget_view);
+                if (view == null) {
+                    MyLog.e(TAG, "missing R.id.widget_view");
+                    return;
+                }
+                WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
+                addComponentView(view, presenter);
+                ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
+            }
         }
         setupSdkView();
     }
@@ -153,18 +165,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             addComponentView(view, presenter);
         }
 
-        // 运营位
-        {
-            WidgetView view = $(R.id.widget_view);
-            if (view == null) {
-                MyLog.e(TAG, "missing R.id.widget_view");
-                return;
-            }
-            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
-            addComponentView(view, presenter);
-            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
-        }
-
         mVerticalMoveSet.add($(R.id.close_btn));
         addViewToSet(new int[]{
                 R.id.watch_top_info_view,
@@ -183,6 +183,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     R.id.game_input_view,
                     R.id.close_btn
             }, mGameHideSet);
+        } else {
+            addViewToSet(new int[]{
+                    R.id.widget_view
+            }, mHorizontalMoveSet, mVerticalMoveSet);
         }
 
         // 滑动

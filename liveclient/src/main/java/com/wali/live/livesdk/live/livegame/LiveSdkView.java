@@ -114,26 +114,13 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             addComponentView(view, presenter);
         }
 
-        // 运营位
-        {
-            WidgetView view = $(R.id.widget_view);
-            if (view == null) {
-                MyLog.e(TAG, "missing R.id.widget_view");
-                return;
-            }
-            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData);
-            addComponentView(view, presenter);
-            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
-        }
-
         addViewToSet(new int[]{
                 R.id.live_top_info_view,
                 R.id.bottom_button_view,
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
-                R.id.gift_room_effect_view,
-                R.id.widget_view
+                R.id.gift_room_effect_view
         }, mHorizontalMoveSet);
 
         // 滑动

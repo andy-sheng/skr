@@ -8,17 +8,25 @@ import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.milink.MiLinkClientAdapter;
+import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.LiveMessageProto;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by chenyong on 2017/03/24.
@@ -116,6 +124,42 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                 }
             });
         }
+    }
+
+    /**
+     * 拉取该房间运营位信息
+     */
+    public static Observable<LiveProto.GetRoomWidgetRsp> getRoomWidget(final String roomId, final long zuid, final int roomType) {
+        return Observable.create(
+                new Observable.OnSubscribe<LiveProto.GetRoomWidgetRsp>() {
+                    @Override
+                    public void call(Subscriber<? super LiveProto.GetRoomWidgetRsp> subscriber) {
+                        LiveProto.GetRoomWidgetReq req = LiveProto.GetRoomWidgetReq
+                                .newBuilder()
+                                .setLiveid(roomId)
+                                .setZuid(zuid)
+                                .setRoomType(roomType)
+                                .build();
+                        PacketData data = new PacketData();
+                        data.setCommand(MiLinkCommand.COMMAND_ROOM_WIDGET);
+                        data.setData(req.toByteArray());
+                        data.setNeedCached(true);
+                        MyLog.w(TAG, "getRoomWidget request:" + req.toString());
+                        try {
+                            PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
+                            LiveProto.GetRoomWidgetRsp rsp = LiveProto.GetRoomWidgetRsp.parseFrom(response.getData());
+                            MyLog.w(TAG, "getRoomWidget response:" + rsp);
+                            if (rsp != null && rsp.getRetCode() == 0) {
+                                subscriber.onNext(rsp);
+                                subscriber.onCompleted();
+                            } else {
+                                subscriber.onError(new Throwable("getRoomWidget retCode != 0"));
+                            }
+                        } catch (Exception e) {
+                            subscriber.onError(e);
+                        }
+                    }
+                }).subscribeOn(Schedulers.io());
     }
 
     @Override
