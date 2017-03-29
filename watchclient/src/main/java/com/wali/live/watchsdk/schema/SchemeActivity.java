@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.schema;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,11 +23,6 @@ import com.wali.live.watchsdk.schema.processor.WaliliveProcessor;
  */
 public class SchemeActivity extends RxActivity {
     public final static String TAG = SchemeActivity.class.getSimpleName();
-    /*从forcetouch跳转*/
-    public static final String HOST_FROM_FORCE_TOUCH_TO_BEGIN_LIVE = "from_force_touch_to_begin_live";
-    public static final String HOST_FROM_FORCE_TOUCH_TO_SEARCH = "from_force_touch_to_search";
-    public static final String HOST_FROM_FORCE_TOUCH_TO_FOLLOW = "from_force_touch_to_follow";
-
     public final static String HOST_WAKE_UP = "wakeup";             // 用户唤醒的schema
     public final static String PARAMETER_WEAK_UP_URL = "url";       // 用户唤醒之后需要跳转的schema
 
@@ -37,14 +33,12 @@ public class SchemeActivity extends RxActivity {
 
     private ChannelParam mChannelParam;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheme_launcher);
 
-        MyLog.w(TAG, " yaotest onCreate intent.getAction() =　" + getIntent().getAction());
-
+        MyLog.w(TAG, "onCreate intent action()=" + getIntent().getAction());
         processIntent();
     }
 
@@ -81,7 +75,7 @@ public class SchemeActivity extends RxActivity {
             return;
         }
 
-        if (scheme.equals(SchemeConstants.SCHEME_WALILIVESDK)) {
+        if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
             String host = uri.getHost();
             MyLog.v(TAG, "process host=" + host);
             if (TextUtils.isEmpty(host)) {
@@ -101,4 +95,9 @@ public class SchemeActivity extends RxActivity {
         }
     }
 
+    public static void openActivity(Activity activity, Uri uri) {
+        Intent intent = new Intent(activity, SchemeActivity.class);
+        intent.setData(uri);
+        activity.startActivity(intent);
+    }
 }

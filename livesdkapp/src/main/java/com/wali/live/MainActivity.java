@@ -151,7 +151,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                         RoomInfo roomInfo = RoomInfo.Builder.newInstance(liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl())
                                 .setAvatar(liveShow.getAvatar())
                                 .setCoverUrl(liveShow.getCoverUrl())
-                                .setLiveType(6)
+                                .setLiveType(0)
                                 .build();
                         WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
                         return null;

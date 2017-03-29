@@ -10,6 +10,7 @@ public class SchemeConstants {
 
     /**
      * @notice SCHEME : WALILIVESDK
+     * @deprecated
      */
     public static final String SCHEME_WALILIVESDK = "walilivesdk";
 

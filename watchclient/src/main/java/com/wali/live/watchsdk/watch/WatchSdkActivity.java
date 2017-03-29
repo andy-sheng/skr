@@ -67,6 +67,7 @@ import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.schema.SchemeActivity;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
@@ -92,7 +93,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -548,7 +548,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(UserActionEvent event) {
-        MyLog.e(TAG, "BaseEvent.UserActionEvent event type=" + event.type);
+        MyLog.e(TAG, "UserActionEvent event type=" + event.type);
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
         if (event.type == UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
@@ -642,7 +642,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 boolean isNeedParams = (Boolean) event.obj2;
 
                 MyLog.d(TAG, "scheme=" + scheme + ", isNeedParams=" + isNeedParams);
-                if (!TextUtils.isEmpty(scheme)) {
+                if (TextUtils.isEmpty(scheme)) {
                     break;
                 }
 
@@ -654,12 +654,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
                         MyLog.d(TAG, "type=" + type + ", showType=" + showType);
                         if (type == null || showType == null) {
-                            try {
-                                Intent intent = Intent.parseUri(scheme, Intent.URI_INTENT_SCHEME);
-                                startActivity(intent);
-                            } catch (URISyntaxException e) {
-                                e.printStackTrace();
-                            }
+                            SchemeActivity.openActivity(this, uri);
                         }
                     }
                 } else {
@@ -715,12 +710,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             }
         }
     };
-
-    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
-        Intent intent = new Intent(activity, WatchSdkActivity.class);
-        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
-        activity.startActivity(intent);
-    }
 
     @Override
     public void onClickHomepage(User user) {
@@ -1001,5 +990,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 roomData.notifyViewersChange("processViewerTop");
                 break;
         }
+    }
+
+    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
+        Intent intent = new Intent(activity, WatchSdkActivity.class);
+        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
+        activity.startActivity(intent);
     }
 }

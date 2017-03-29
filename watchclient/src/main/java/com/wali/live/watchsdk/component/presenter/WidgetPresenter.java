@@ -64,10 +64,11 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                            @NonNull RoomBaseDataModel myRoomData,
                            boolean isAnchor) {
         super(componentController);
-        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
         mMyRoomData = myRoomData;
         mUIHandler = new Handler(Looper.getMainLooper());
         mIsAnchor = isAnchor;
+
+        registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
     }
 
     /**
@@ -281,6 +282,7 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                 case ComponentController.MSG_ON_LIVE_SUCCESS:
                     if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                         int liveType = mMyRoomData.getLiveType();
+                        MyLog.d(TAG, "live type=" + liveType);
                         if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
                             getRoomAttachment();
                         }

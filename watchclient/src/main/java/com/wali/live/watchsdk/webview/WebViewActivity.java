@@ -20,7 +20,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -40,7 +39,6 @@ import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 
@@ -54,7 +52,6 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     public static final String EXTRA_UID = "extra_uid";
     public static final String EXTRA_ZUID = "extra_zuid";
     public static final String EXTRA_AVATAR = "extra_avatar";
-    public static final String EXTRA_DISPLAY_MENU = "extra_display_menu";
     public static final String EXTRA_DISPLAY_TYPE = "extra_display_type";
     public static final String EXTRA_WIDGET_ID = "extra_widget_id";
     public static final String EXTRA_RESULT_OK = "extra_result_ok";
@@ -68,13 +65,9 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     private boolean mResultOk = false;
 
     private int mWidgetId;
-    private long zuid;
+    private long mZuid;
     private String mUrl;
     private String mTitle = "";
-    private String mShareTitle = "";
-    private String mShareDescription = "";
-    private String mShareImgUrl = "";
-    protected String mimeType;
     protected String encoding;
     protected String data;
 
@@ -92,15 +85,10 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     private ViewGroup mWebViewContainer;
     private ViewGroup videoLayout;
 
-    private PopupWindow mPopupWindow;
-
     public long mOwnerId;
     public long mAvatarTs;
-    private String mLauncherPicPath;
 
     private View mOutView;
-
-    private LoginPresenter mLoginPresenter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,7 +244,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         mOwnerId = intent.getLongExtra(EXTRA_UID, 0);
         mAvatarTs = intent.getLongExtra(EXTRA_AVATAR, 0);
         mWidgetId = intent.getIntExtra(EXTRA_WIDGET_ID, 0);
-        zuid = intent.getLongExtra(EXTRA_ZUID, 0);
+        mZuid = intent.getLongExtra(EXTRA_ZUID, 0);
         isHalf = intent.getBooleanExtra(EXTRA_DISPLAY_TYPE, false);
         mResultOk = intent.getBooleanExtra(EXTRA_RESULT_OK, false);
         if (!TextUtils.isEmpty(mUrl) && mWebView != null) {
@@ -312,7 +300,6 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             MyLog.w(TAG, "onPageFinished url =" + url);
             mProgressBar.setVisibility(View.GONE);
             mIsPageError = false;
-            mPopupWindow = null;
         }
 
         @Override
@@ -500,7 +487,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         @JavascriptInterface
         public void close() {
             finish();
-            String key = String.format(StatisticsKey.KEY_WIDGET_CLICK, String.valueOf(mWidgetId), "webViewClick", String.valueOf(zuid));
+            String key = String.format(StatisticsKey.KEY_WIDGET_CLICK, String.valueOf(mWidgetId), "webViewClick", String.valueOf(mZuid));
             if (TextUtils.isEmpty(key)) {
                 return;
             }

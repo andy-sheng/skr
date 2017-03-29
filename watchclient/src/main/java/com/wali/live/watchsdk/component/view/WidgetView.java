@@ -76,6 +76,8 @@ public class WidgetView extends RelativeLayout
     private static final int POS_LEFT_BOTTOM = 2;
     private static final int POS_RIGHT_BOTTOM = 3;
 
+    private static final int PADDING = DisplayUtils.dip2px(10f);
+
     @Nullable
     protected IPresenter mPresenter;
 
@@ -122,6 +124,8 @@ public class WidgetView extends RelativeLayout
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.widget_view, this);
+
+        setPadding(PADDING, 0, PADDING, 0);
 
         mLeftTopWv = $(R.id.left_top_wv);
         mRightTopWv = $(R.id.right_top_wv);

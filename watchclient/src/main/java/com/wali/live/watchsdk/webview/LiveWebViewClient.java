@@ -15,6 +15,8 @@ import android.webkit.WebViewClient;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.config.GetConfigManager;
+import com.wali.live.watchsdk.schema.SchemeActivity;
+import com.wali.live.watchsdk.schema.SchemeConstants;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -31,7 +33,7 @@ public class LiveWebViewClient extends WebViewClient {
     protected WebViewListener mWebViewListener;
     protected int mWebViewCount = -1;
 
-    protected WeakReference<Activity> baseActivity;
+    protected WeakReference<Activity> mBaseActivity;
 
     private NewH5CachePackage mNewCachePkg;
 
@@ -49,7 +51,7 @@ public class LiveWebViewClient extends WebViewClient {
 
     public LiveWebViewClient(WebViewListener mWebViewListener, Activity activity) {
         this.mWebViewListener = mWebViewListener;
-        this.baseActivity = new WeakReference(activity);
+        this.mBaseActivity = new WeakReference(activity);
     }
 
     @Override
@@ -79,12 +81,17 @@ public class LiveWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        MyLog.d(TAG, " yaotest shouldOverrideUrlLoading url:" + url);
+        MyLog.d(TAG, "shouldOverrideUrlLoading url:" + url);
         if (TextUtils.isEmpty(url)) {
             return false;
         }
-        view.loadUrl(url);
-        mWebViewCount++;
+        if (url.startsWith(SchemeConstants.SCHEME_WALILIVE) || url.startsWith(SchemeConstants.SCHEME_GAME) || url.startsWith(SchemeConstants.SCHEME_TAMLL) || GetConfigManager.getInstance().isValidHost(url)) {
+            Uri uri = Uri.parse(url);
+            SchemeActivity.openActivity(mBaseActivity.get(), uri);
+        } else {
+            view.loadUrl(url);
+            mWebViewCount++;
+        }
         return true;
     }
 
