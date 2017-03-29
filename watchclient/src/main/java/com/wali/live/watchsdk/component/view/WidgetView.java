@@ -572,7 +572,7 @@ public class WidgetView extends RelativeLayout
 
             @Override
             public void destroyView() {
-                destroyView();
+                WidgetView.this.destroyView();
             }
         }
         return new ComponentView();

@@ -88,8 +88,10 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
     public void destroy() {
         super.destroy();
         mView.destroyView();
-        mUIHandler.removeCallbacksAndMessages(null);
-        mUIHandler = null;
+        if (mUIHandler != null) {
+            mUIHandler.removeCallbacksAndMessages(null);
+            mUIHandler = null;
+        }
     }
 
     @Override
