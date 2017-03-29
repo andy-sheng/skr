@@ -187,6 +187,7 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                     @Override
                     public void call(Object o) {
                         LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
+                        setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
                         if (rsp.getNewWidgetInfo().hasPullInterval()) {
                             getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
                         }
@@ -242,6 +243,7 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                                 if (rsp.getNewWidgetInfo().hasPullInterval() && rsp.getNewWidgetInfo().getPullInterval() > 0) {
                                     if (mAttachmentStamp < rsp.getTimestamp()) {
                                         mAttachmentStamp = rsp.getTimestamp();
+                                        setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
                                         getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
                                     }
                                 }
