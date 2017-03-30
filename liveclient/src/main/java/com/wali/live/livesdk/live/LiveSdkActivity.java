@@ -886,7 +886,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             public void run() {
                 LiveProto.HeartBeatReq.Builder builder = LiveProto.HeartBeatReq.newBuilder()
                         .setLiveId(mMyRoomData.getRoomId())
-                        .setStatus((mIsGameLive ^ mIsForeground) && !mIsPaused ? 0 : 1);
+                        .setStatus((mIsGameLive || mIsForeground) && !mIsPaused ? 0 : 1);
                 builder.setMicuidStatus(0);
                 PacketData data = new PacketData();
                 data.setCommand(MiLinkCommand.COMMAND_LIVE_HB);
