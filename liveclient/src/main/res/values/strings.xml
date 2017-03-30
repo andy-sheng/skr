@@ -142,4 +142,6 @@
     <string name="empty_tips">Empty</string>
 
     <string name="camera_occupy">Camera is busy</string>
+    <string name="change_room_setting_success">Set successfully</string>
+    <string name="change_room_setting_fail">Couldn\'t set</string>
 </resources>

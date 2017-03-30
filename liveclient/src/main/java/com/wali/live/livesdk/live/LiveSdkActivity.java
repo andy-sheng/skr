@@ -66,6 +66,7 @@ import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.event.EventClass;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
@@ -1035,6 +1036,24 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 接收（更新房间内发言频率、是否重复）设置成功事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LiveEventClass.UpdateMsgRuleEvent event) {
+        if (event != null && mMyRoomData.getRoomId().equals(event.getRoomId())) {
+            if (event.isUpdated()) {
+                mMyRoomData.setmMsgRule(event.getMsgRule());
+                ToastUtils.showToast(GlobalData.app().getApplicationContext(), getString(R.string.change_room_setting_success));
+            } else {
+                ToastUtils.showToast(GlobalData.app().getApplicationContext(), getString(R.string.change_room_setting_fail));
+            }
+            MyLog.w(TAG, "recevie UpdateMsgRuleEvent:" + event.toString());
         }
     }
 
