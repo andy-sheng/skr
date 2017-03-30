@@ -18,4 +18,5 @@
     <string name="me">我</string>
     <string name="sixin_conversation_photo">图片</string>
     <string name="sixin_conversation_vedio">视频</string>
+    <string name="i_sent">我送了</string>
 </resources>

@@ -3,6 +3,7 @@
     <string name="default_location_hint">开普勒452B星球</string>
     <string name="game_default_name">选择标签</string>
     <string name="game_quality_title">游戏画质</string>
+    <string name="game_quality_title_en">Video quality:</string>
     <string name="live_start">开始直播</string>
 
     <string name="prepare_live_edittext_hint">好的标题能吸引更多用户</string>
@@ -145,4 +146,5 @@
 
 
     <string name="camera_occupy">摄像头被占用</string>
+    <string name="game_living">游戏直播中</string>
 </resources>
