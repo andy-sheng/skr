@@ -12,6 +12,7 @@ import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.Live2Proto;
 import com.wali.live.proto.Live2Proto.GetRoomTagRsp;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,11 +92,14 @@ public class RoomTagPresenter {
     }
 
     public void start(final int type) {
+        if (!AccountAuthManager.triggerActionNeedAccount(mRxActivity)) {
+            return;
+        }
         if (mRoomTags != null && mRoomTags.size() != 0) {
             mView.showTagList(mRoomTags, type);
             return;
         }
-        //网络判断
+        // 网络判断
         if (!Network.hasNetwork((GlobalData.app()))) {
             ToastUtils.showToast(GlobalData.app(), R.string.network_unavailable);
             return;

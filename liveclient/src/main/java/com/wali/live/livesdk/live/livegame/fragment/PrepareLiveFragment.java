@@ -157,8 +157,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         } else {
             mQualityCnCotainer.setVisibility(View.VISIBLE);
             mQualityEnConatainer.setVisibility(View.GONE);
+
             mGameClarityContainer = $(R.id.game_clarity_container);
             mGameClarityContainer.setOnClickListener(this);
+
             mGameClarityTv = $(R.id.game_clarity_tv);
             mGameClarityTv.setText(mQualityArray[mQualityIndex]);
             mGameClarityTv.setSelected(true);
