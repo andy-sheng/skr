@@ -147,4 +147,6 @@
 
     <string name="camera_occupy">摄像头被占用</string>
     <string name="game_living">游戏直播中</string>
+    <string name="change_room_setting_success">设定生效</string>
+    <string name="change_room_setting_fail">设定失败</string>
 </resources>

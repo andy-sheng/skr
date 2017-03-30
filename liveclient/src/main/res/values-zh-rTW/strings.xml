@@ -140,4 +140,6 @@
 
     <string name="camera_occupy">相機使用中</string>
     <string name="game_living">遊戲直播中</string>
+    <string name="change_room_setting_success">設定生效</string>
+    <string name="change_room_setting_fail">設定失敗</string>
 </resources>

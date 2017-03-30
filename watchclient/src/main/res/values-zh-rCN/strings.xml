@@ -22,4 +22,17 @@
 
     <string name="token_live_error_toast_room_not_exist">房间不存在</string>
     <string name="live_finish">直播已经结束</string>
+    <string name="barrage_frequency_control">控制发言频率</string>
+    <string name="barrage_not_control">不限制</string>
+    <string name="barrage_control_in_second">%ds内一次</string>
+    <string name="barrage_control_in_min">%dmin内一次</string>
+    <string name="barrage_frequency_control_tips">主播限制了观众发言频率</string>
+    <string name="barrage_not_repeat">主播限制了观众发表重复内容</string>
+    <string name="barrage_frequency_control_remove_tips">主播解除了观众发言频率的限制</string>
+    <string name="barrage_not_repeat_remove">主播解除了观众不能发表重复内容的限制</string>
+    <string name="ok">确定</string>
+    <string name="have_been_kicked">您已被踢出该直播间，将无法再进入本场直播</string>
+    <string name="i_know">我知道了</string>
+    <string name="send_barrage_interval">%d秒后可再次发言</string>
+    <string name="send_barrage_repeated">主播设定了不能重复发言</string>
 </resources>
