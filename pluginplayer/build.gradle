@@ -23,9 +23,7 @@ apply from: 'fat-aar.gradle'
 dependencies {
     provided presentationDependencies.androidAppCompat
 
-//    debugCompile project(path: ':enginebase', configuration: "playerpluginDebug")
-//    releaseCompile project(path: ':enginebase', configuration: "playerpluginRelease")
-
-    embedded project(path: ':enginebase', configuration: "playerpluginRelease")
+//    compile project(':enginebase')
+    embedded project(':enginebase')
     embedded project(':playerbase')
 }

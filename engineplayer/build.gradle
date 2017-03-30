@@ -27,6 +27,5 @@ dependencies {
     def dataDependencies = rootProject.ext.dataDependencies
     def testDependencies = rootProject.ext.dataTestDependencies
     compile presentationDependencies.androidAppCompat
-    debugCompile project(path: ':enginebase', configuration: "playerDebug")
-    releaseCompile project(path: ':enginebase', configuration: "playerRelease")
+    compile project(':enginebase')
 }

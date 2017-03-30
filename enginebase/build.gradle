@@ -20,16 +20,6 @@ android {
     lintOptions {
         abortOnError false
     }
-    productFlavors {
-        live {
-        }
-
-        player {
-        }
-
-        playerplugin {
-        }
-    }
 }
 
 dependencies {
@@ -42,24 +32,11 @@ dependencies {
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
 
-
     gradle.startParameter.getTaskNames().each { task ->
         if (task.contains("pluginplayer")) {
             compile project(':playerbase')
         } else {
-            if (flavorType == "live") {
-                compile files('libs/conferencemanager.jar')
-            }
             provided project(':common')
         }
     }
-}
-
-configurations {
-    liveDebug
-    liveRelease
-    playerDebug
-    playerRelease
-    playerpluginDebug
-    playerpluginRelease
 }
