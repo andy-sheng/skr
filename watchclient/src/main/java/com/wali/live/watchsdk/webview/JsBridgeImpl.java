@@ -19,7 +19,9 @@ import com.base.utils.display.DisplayUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.user.User;
+import com.wali.live.event.EventClass;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -165,8 +167,7 @@ public class JsBridgeImpl {
             return;
         }
         setSuccessCallback();
-        // TODO
-//        EventBus.getDefault().post(new EventClass.LoadingEndEvent());
+        EventBus.getDefault().post(new EventClass.LoadingEndEvent());
     }
 
     /**
@@ -177,8 +178,7 @@ public class JsBridgeImpl {
         if (webView == null) {
             return;
         }
-        // TODO
-//        EventBus.getDefault().post(new EventClass.CloseWebEvent());
+        EventBus.getDefault().post(new EventClass.CloseWebEvent());
     }
 
     /**

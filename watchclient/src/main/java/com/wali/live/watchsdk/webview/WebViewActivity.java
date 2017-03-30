@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +60,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
     private boolean mShouldClearHistory = false;
     private boolean mIsPageError = true;
 
-    private boolean isHalf = false;
+    private boolean mIsHalf = false;
     private boolean mResultOk = false;
 
     private int mWidgetId;
@@ -98,7 +97,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             finish();
         }
 
-        if (isHalf) {
+        if (mIsHalf) {
             setContentView(R.layout.half_webview_activity);
             mOutView = findViewById(R.id.out_view);
             if (mOutView != null) {
@@ -125,7 +124,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             mUrl = LiveWebViewClient.getCheckedUrl(mUrl);
         }
         mWebView.loadUrl(mUrl);
-        if (isHalf) {
+        if (mIsHalf) {
             mWebView.setBackgroundColor(0);
         }
         mWebView.addJavascriptInterface(new JavaScriptInterface(this), "JavaScriptInterface");
@@ -159,7 +158,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         mTitleBar.getBackBtn().setOnClickListener(this);
         mErrorOpenInSystemBtn.setOnClickListener(this);
 
-        if (isHalf) {
+        if (mIsHalf) {
             mProgressBar.setVisibility(View.GONE);
         }
     }
@@ -221,7 +220,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
             }
         });
 
-        if (isHalf) {
+        if (mIsHalf) {
             mWebView.addJavascriptInterface(new JavaScriptInterface(this), "MiLive");
         }
     }
@@ -245,7 +244,7 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         mAvatarTs = intent.getLongExtra(EXTRA_AVATAR, 0);
         mWidgetId = intent.getIntExtra(EXTRA_WIDGET_ID, 0);
         mZuid = intent.getLongExtra(EXTRA_ZUID, 0);
-        isHalf = intent.getBooleanExtra(EXTRA_DISPLAY_TYPE, false);
+        mIsHalf = intent.getBooleanExtra(EXTRA_DISPLAY_TYPE, false);
         mResultOk = intent.getBooleanExtra(EXTRA_RESULT_OK, false);
         if (!TextUtils.isEmpty(mUrl) && mWebView != null) {
             mWebView.loadUrl(mUrl);
@@ -499,11 +498,5 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
         Intent intent = new Intent(activity, WebViewActivity.class);
         intent.putExtra(WebViewActivity.EXTRA_URL, url);
         activity.startActivity(intent);
-    }
-
-    public static void open(@NonNull Fragment fragment, @NonNull String url) {
-        Intent intent = new Intent(fragment.getActivity(), WebViewActivity.class);
-        intent.putExtra(WebViewActivity.EXTRA_URL, url);
-        fragment.startActivity(intent);
     }
 }

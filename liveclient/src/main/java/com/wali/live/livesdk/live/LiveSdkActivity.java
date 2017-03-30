@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -90,12 +91,15 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.schema.SchemeActivity;
+import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
+import com.wali.live.watchsdk.webview.HalfWebViewActivity;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -208,7 +212,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         initData();
         initRoomData();
-        
+
         setupRequiredComponent();
 
         if (!mIsGameLive) {
@@ -1033,6 +1037,48 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, mMyRoomData.getMsgRule() == null ? new MessageRule() : mMyRoomData.getMsgRule());
                 bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, mMyRoomData == null ? 0 : mMyRoomData.getUid());
                 FragmentNaviUtils.addFragment(LiveSdkActivity.this, R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
+            }
+            break;
+            case UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT: {
+                String scheme = (String) event.obj1;
+                boolean isNeedParams = (Boolean) event.obj2;
+
+                MyLog.d(TAG, "scheme=" + scheme + ", isNeedParams=" + isNeedParams);
+                if (TextUtils.isEmpty(scheme)) {
+                    break;
+                }
+
+                if (scheme.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
+                    Uri uri = Uri.parse(scheme);
+                    if (uri.getScheme().equals(SchemeConstants.SCHEME_WALILIVE)) {
+                        String type = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_TYPE);
+                        String showType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_SHOW_TYPE);
+
+                        MyLog.d(TAG, "type=" + type + ", showType=" + showType);
+                        if (type == null || showType == null) {
+                            SchemeActivity.openActivity(this, uri);
+                        }
+                    }
+                } else {
+                    if (isNeedParams) {
+                        if (scheme.indexOf("?") != -1) {
+                            scheme = scheme + "&zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
+                        } else {
+                            scheme = scheme + "?zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
+                        }
+                    }
+                    Intent intent;
+                    if ((int) event.obj3 == 1) {
+                        intent = new Intent(LiveSdkActivity.this, HalfWebViewActivity.class);
+                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, true);
+                    } else {
+                        intent = new Intent(LiveSdkActivity.this, WebViewActivity.class);
+                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, false);
+                    }
+                    intent.putExtra(WebViewActivity.EXTRA_URL, scheme);
+                    intent.putExtra(WebViewActivity.EXTRA_ZUID, (Long) event.obj4);
+                    startActivity(intent);
+                }
             }
             break;
             default:

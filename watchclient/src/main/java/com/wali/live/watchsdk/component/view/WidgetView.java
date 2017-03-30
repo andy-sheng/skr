@@ -42,6 +42,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.schema.SchemeConstants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -256,20 +257,19 @@ public class WidgetView extends RelativeLayout
         // 第一张图片
         if (data != null && data.size() > 0) {
             final LiveCommonProto.NewWidgetUnit unit = data.get(0);
-            if (unit.hasIcon()) {
-                iv.setVisibility(VISIBLE);
-                loadImgFromNet(unit.getIcon(), iv, posFlag);
-            }
-
-            if (unit.hasText()) {
-                tv.setVisibility(VISIBLE);
-                tv.setText(unit.getText());
-                if (unit.hasTextColor()) {
-                    tv.setTextColor(ColorFormatter.toHexColor(unit.getTextColor().getRgb()));
-                }
-            }
 
             if (unit.hasLinkUrl()) {
+                // 如果有
+                Uri uri = Uri.parse(unit.getLinkUrl());
+                String shopType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_TYPE);
+                String shopShowType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_SHOW_TYPE);
+
+                MyLog.d(TAG, "shop type=" + shopType + ", shop show type=" + shopShowType);
+                if (shopType != null && shopShowType != null) {
+                    MyLog.d(TAG, "initWidget block position=" + posFlag);
+                    return;
+                }
+
                 if (unit.hasIcon() || unit.hasText()) {
                     RxView.clicks(unit.hasIcon() ? iv : tv)
                             .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -280,6 +280,19 @@ public class WidgetView extends RelativeLayout
                                     sendClick(info.getWidgetID(), "iconClick");
                                 }
                             });
+                }
+            }
+
+            if (unit.hasIcon()) {
+                iv.setVisibility(VISIBLE);
+                loadImgFromNet(unit.getIcon(), iv, posFlag);
+            }
+
+            if (unit.hasText()) {
+                tv.setVisibility(VISIBLE);
+                tv.setText(unit.getText());
+                if (unit.hasTextColor()) {
+                    tv.setTextColor(ColorFormatter.toHexColor(unit.getTextColor().getRgb()));
                 }
             }
         }

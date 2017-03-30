@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,12 +38,15 @@ import com.base.utils.version.VersionManager;
 import com.base.view.BackTitleBar;
 import com.base.view.BottomButton;
 import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.event.EventClass;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by zhangzhiyuan on 2016/2/23.
@@ -85,7 +87,7 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
     public long mAvatarTs;
     private String mLauncherPicPath;
     private View mOutView;
-    private ImageView imgLoading;
+    private ImageView mImgLoading;
     private Animation anim;
     private boolean isFromH5Share = false;
 
@@ -111,7 +113,7 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
 
         anim = AnimationUtils.loadAnimation(this, R.anim.ml_loading_animation);
         bindViews();
-        imgLoading.startAnimation(anim);
+        mImgLoading.startAnimation(anim);
         mWebView.setVisibility(View.GONE);
         initializeViews();
         setCookies();
@@ -135,7 +137,7 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
     }
 
     protected void bindViews() {
-        imgLoading = (ImageView) findViewById(R.id.imgLoading);
+        mImgLoading = (ImageView) findViewById(R.id.imgLoading);
         mWebViewContainer = (ViewGroup) findViewById(R.id.web_view_container);
         mWebView = new WebView(GlobalData.app());
         mWebView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -254,8 +256,8 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
         @Override
         public void onProgressChanged(int newProgress) {
             if (newProgress >= 100) {
-                imgLoading.clearAnimation();
-                imgLoading.setVisibility(View.GONE);
+                mImgLoading.clearAnimation();
+                mImgLoading.setVisibility(View.GONE);
             }
 
         }
@@ -268,8 +270,8 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
 
         @Override
         public void onReceivedError(String description, String failingUrl) {
-            imgLoading.clearAnimation();
-            imgLoading.setVisibility(View.GONE);
+            mImgLoading.clearAnimation();
+            mImgLoading.setVisibility(View.GONE);
             showErrorView(description, failingUrl);
         }
 
@@ -438,6 +440,24 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
         CookieSyncManager.getInstance().sync();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.CloseWebEvent event) {
+        finish();
+        String key = String.format(StatisticsKey.KEY_WIDGET_CLICK, String.valueOf(mWidgetId), "webViewClick", String.valueOf(zuid));
+        if (TextUtils.isEmpty(key)) {
+            return;
+        }
+        StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.LoadingEndEvent event) {
+        mImgLoading.clearAnimation();
+        mImgLoading.setVisibility(View.GONE);
+        mWebView.setVisibility(View.VISIBLE);
+    }
+
     /**
      * JSBridge
      */
@@ -471,11 +491,5 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
         Intent intent = new Intent(activity, HalfWebViewActivity.class);
         intent.putExtra(EXTRA_URL, url);
         activity.startActivity(intent);
-    }
-
-    public static void open(@NonNull Fragment fragment, @NonNull String url) {
-        Intent intent = new Intent(fragment.getActivity(), HalfWebViewActivity.class);
-        intent.putExtra(EXTRA_URL, url);
-        fragment.startActivity(intent);
     }
 }
