@@ -17,6 +17,7 @@ import com.mi.live.engine.streamer.IStreamer;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.manager.ScreenRecordManager;
+import com.wali.live.livesdk.live.service.GameLiveService;
 import com.wali.live.livesdk.live.utils.ImageUtils;
 import com.wali.live.livesdk.live.window.GameFloatWindow;
 
@@ -44,6 +45,7 @@ public class GameLivePresenter implements Presenter {
     private boolean mIsMuteMic;
 
     private final GameFloatWindow mGameFloatWindow;
+    private Intent mGameLiveServiceIntent;
 
     public GameLivePresenter(
             @Nullable IStreamer streamer,
@@ -59,6 +61,7 @@ public class GameLivePresenter implements Presenter {
         mScreenRecordManager = new ScreenRecordManager(streamer, width, height, intent);
         mGameFloatWindow = new GameFloatWindow(GlobalData.app(), this);
         mToken = token;
+        mGameLiveServiceIntent = new Intent(GlobalData.app(), GameLiveService.class);
     }
 
     public void startGameLive() {
@@ -201,6 +204,7 @@ public class GameLivePresenter implements Presenter {
         mIsForeground = true;
         if (mIsStarted) {
             startAddExtra();
+            GlobalData.app().stopService(mGameLiveServiceIntent);
         }
     }
 
@@ -216,6 +220,7 @@ public class GameLivePresenter implements Presenter {
             onOrientation(GlobalData.app().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
             stopAddExtra();
             mGameFloatWindow.showWindow(mToken, mMyRoomData.getViewerCnt());
+            GlobalData.app().startService(mGameLiveServiceIntent);
         }
     }
 
@@ -223,6 +228,7 @@ public class GameLivePresenter implements Presenter {
     public void destroy() {
         mGameFloatWindow.destroyWindow();
         mScreenRecordManager.destroy();
+        GlobalData.app().stopService(mGameLiveServiceIntent);
     }
 
     public void onOrientation(boolean isLandscape) {
