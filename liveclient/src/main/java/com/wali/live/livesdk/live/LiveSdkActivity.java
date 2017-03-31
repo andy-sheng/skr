@@ -66,8 +66,8 @@ import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
-import com.wali.live.event.EventClass;
 import com.wali.live.livesdk.R;
+import com.wali.live.watchsdk.active.KeepActiveProcessor;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
 import com.wali.live.livesdk.live.component.BaseLiveController;
@@ -107,7 +107,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -369,6 +372,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mComponentController != null) {
             mComponentController.release();
             mComponentController = null;
+        }
+        if (mIsGameLive) {
+            stopActive();
         }
         if (mSdkView != null) {
             mSdkView.releaseSdkView();
@@ -806,7 +812,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void beginLiveToServer() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
         startCountDown();
+
+        if (mIsGameLive) {
+            keepActive();
+        }
+
         Location location = !TextUtils.isEmpty(mMyRoomData.getCity()) ? mLocation : null;
         mLiveRoomPresenter.beginLiveByAppInfo(location, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
                 mLiveCoverUrl, mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
@@ -993,6 +1005,19 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         stopRecord("endLiveUnexpected");
     }
 
+    private void keepActive() {
+        Observable.just(0)
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer) {
+                        KeepActiveProcessor.keepActive();
+                        return 0;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
     @Override
     public ForbidManagePresenter provideForbidManagePresenter() {
         if (mForbidManagePresenter == null) {
@@ -1146,7 +1171,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return false;
         }
     }
-
 
     /**
      * 秀场直播

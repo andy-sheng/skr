@@ -20,6 +20,7 @@ import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
 import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.active.KeepActiveProcessor;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -31,6 +32,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import rx.Observable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by linjinbin on 16/5/1.
@@ -117,6 +122,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         // 通知别的观看的activity关闭
         EventBus.getDefault().post(new WatchOrReplayActivityCreated());
         activeNum.incrementAndGet();
+        stopActive();
         super.onCreate(savedInstanceState);
     }
 
@@ -257,5 +263,18 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(0, R.anim.zoom_out);
+    }
+
+    protected void stopActive() {
+        Observable.just(0)
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer) {
+                        KeepActiveProcessor.stopActive();
+                        return 0;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 }
