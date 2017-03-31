@@ -132,12 +132,12 @@ public class GameLivePresenter implements Presenter {
             @Override
             public void call(Boolean b) {
                 if (callback != null) {
-                    MyLog.d(TAG, "postScreenshot callback saveToFile isSuccess=" + b);
+                    MyLog.w(TAG, "postScreenshot callback saveToFile isSuccess=" + b + " screenshotPath=" + screenshotPath);
                     if (b) {
                         callback.process(screenshotPath);
                     }
                 } else {
-                    MyLog.d(TAG, "postScreenshot toast saveToFile isSuccess=" + b);
+                    MyLog.w(TAG, "postScreenshot toast saveToFile isSuccess=" + b + " screenshotPath=" + screenshotPath);
                     if (b) {
                         ToastUtils.showToast(GlobalData.app().getString(R.string.game_save_picture_success, screenshotPath));
                     } else {
@@ -148,7 +148,7 @@ public class GameLivePresenter implements Presenter {
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                MyLog.e(TAG, throwable);
             }
         });
     }
