@@ -369,9 +369,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mComponentController.release();
             mComponentController = null;
         }
-        if (mIsGameLive) {
-            stopActive();
-        }
         if (mSdkView != null) {
             mSdkView.releaseSdkView();
             mSdkView = null;
