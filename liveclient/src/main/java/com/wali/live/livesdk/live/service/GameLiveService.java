@@ -27,7 +27,7 @@ public class GameLiveService extends Service {
         MyLog.w(TAG, "onCreate");
         super.onCreate();
         Notification.Builder nb = new Notification.Builder(this);
-        nb.setContentTitle("游戏直播中");
+        nb.setContentTitle(getString(R.string.game_living));
         nb.setSmallIcon(R.drawable.ic_launcher);
         nb.setAutoCancel(true);
         nb.setDefaults(Notification.DEFAULT_LIGHTS);
