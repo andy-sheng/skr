@@ -89,7 +89,6 @@ import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.watchsdk.active.KeepActiveProcessor;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
@@ -107,10 +106,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -815,10 +811,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         startCountDown();
 
-        if (mIsGameLive) {
-            keepActive();
-        }
-
         Location location = !TextUtils.isEmpty(mMyRoomData.getCity()) ? mLocation : null;
         mLiveRoomPresenter.beginLiveByAppInfo(location, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
                 mLiveCoverUrl, mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
@@ -1003,28 +995,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void endLiveUnexpected(int resId) {
         ToastUtils.showToast(GlobalData.app(), resId);
         stopRecord("endLiveUnexpected");
-    }
-
-    private void keepActive() {
-        Observable.just(0)
-                .map(new Func1<Integer, Integer>() {
-                    @Override
-                    public Integer call(Integer integer) {
-                        KeepActiveProcessor.keepActive();
-                        return 0;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer integer) {
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        MyLog.e(TAG, throwable);
-                    }
-                });
     }
 
     @Override

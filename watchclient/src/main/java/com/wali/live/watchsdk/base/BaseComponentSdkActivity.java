@@ -33,11 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-
 /**
  * Created by linjinbin on 16/5/1.
  *
@@ -123,7 +118,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         // 通知别的观看的activity关闭
         EventBus.getDefault().post(new WatchOrReplayActivityCreated());
         activeNum.incrementAndGet();
-        stopActive();
+        KeepActiveProcessor.stopActive();
         super.onCreate(savedInstanceState);
     }
 
@@ -264,27 +259,5 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(0, R.anim.zoom_out);
-    }
-
-    protected void stopActive() {
-        Observable.just(0)
-                .map(new Func1<Integer, Integer>() {
-                    @Override
-                    public Integer call(Integer integer) {
-                        KeepActiveProcessor.stopActive();
-                        return 0;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer integer) {
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        MyLog.e(TAG, throwable);
-                    }
-                });
     }
 }

@@ -20,6 +20,7 @@ import com.wali.live.livesdk.live.manager.ScreenRecordManager;
 import com.wali.live.livesdk.live.service.GameLiveService;
 import com.wali.live.livesdk.live.utils.ImageUtils;
 import com.wali.live.livesdk.live.window.GameFloatWindow;
+import com.wali.live.watchsdk.active.KeepActiveProcessor;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -66,6 +67,7 @@ public class GameLivePresenter implements Presenter {
 
     public void startGameLive() {
         if (!mIsStarted) {
+            KeepActiveProcessor.keepActive();
             mScreenRecordManager.startScreenRecord();
             startAddExtra();
             mIsStarted = true;
@@ -76,6 +78,7 @@ public class GameLivePresenter implements Presenter {
         if (mIsStarted) {
             stopAddExtra();
             mScreenRecordManager.stopScreenRecord();
+            KeepActiveProcessor.stopActive();
             mIsStarted = false;
             if (mGameFloatWindow.isWindowShow()) {
                 ToastUtils.showToast(R.string.game_live_unexpected_end_toast);
@@ -229,6 +232,7 @@ public class GameLivePresenter implements Presenter {
         mGameFloatWindow.destroyWindow();
         mScreenRecordManager.destroy();
         GlobalData.app().stopService(mGameLiveServiceIntent);
+        KeepActiveProcessor.stopActive();
     }
 
     public void onOrientation(boolean isLandscape) {
