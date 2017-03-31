@@ -22,6 +22,8 @@ import com.wali.live.livesdk.live.utils.ImageUtils;
 import com.wali.live.livesdk.live.window.GameFloatWindow;
 import com.wali.live.watchsdk.active.KeepActiveProcessor;
 
+import java.io.File;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -110,11 +112,16 @@ public class GameLivePresenter implements Presenter {
 
     public void screenshot(final ICommonCallBack callback) {
         if (mScreenRecordManager != null) {
-            final String screenshotPath = Environment.getExternalStorageDirectory().getPath() + "/Xiaomi/WALI_LIVE/image/screenshot_" + System.currentTimeMillis() + ".jpg";
+            String screenshotPath = Environment.getExternalStorageDirectory().getPath() + "/Xiaomi/WALI_LIVE/image";
+            File filePath = new File(screenshotPath);
+            if (!filePath.exists()) {
+                filePath.mkdir();
+            }
+            final String fileName = screenshotPath + "/screenshot_" + System.currentTimeMillis() + ".jpg";
             mScreenRecordManager.getScreenshot(new ScreenRecordManager.OnScreenshotReadyListener() {
                 @Override
                 public void onScreenshotReady(Bitmap bitmap) {
-                    postScreenshot(bitmap, screenshotPath, callback);
+                    postScreenshot(bitmap, fileName, callback);
                 }
             });
         }
