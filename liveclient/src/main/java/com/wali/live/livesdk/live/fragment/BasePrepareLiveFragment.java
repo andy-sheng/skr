@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -66,7 +65,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected boolean mIsAddHistory = true;
     protected TitleTextWatcher mTitleTextWatcher;
 
-    protected TextView mLocationTv;
     protected TextView mBeginBtn;
     protected TextView mTagNameTv;
     protected ViewGroup mTagNameContainer;
@@ -76,11 +74,9 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected RoomTag mRoomTag;
     protected RoomTagPresenter mRoomTagPresenter;
     protected int mTagIndex = -1;
-    protected String mCity;
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
-        mCity = myRoomData.getCity();
     }
 
     @CallSuper
@@ -95,8 +91,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             onBeginBtnClick();
         } else if (i == R.id.close_btn) {
             onCloseBtnClick();
-        } else if (i == R.id.location_tv) {
-            onLocationBtnClick();
         } else if (i == R.id.tag_name_container) {
             onTagNameBtnClick();
         }
@@ -112,22 +106,12 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected void onBeginBtnClick() {
-//        EventBus.getDefault().post(new EventClass.RejoinHideEvent());
         openLive();
     }
 
     private void onCloseBtnClick() {
         KeyboardUtils.hideKeyboard(getActivity());
         getActivity().finish();
-    }
-
-    private void onLocationBtnClick() {
-        if (!TextUtils.isEmpty(mCity)) {
-            mCity = "";
-        } else {
-            mCity = mMyRoomData.getCity();
-        }
-        updateLocationView();
     }
 
     private void onTagNameBtnClick() {
@@ -163,9 +147,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             }
         });
 
-        mLocationTv = $(R.id.location_tv);
-        mLocationTv.setOnClickListener(this);
-
         mBeginBtn = $(R.id.begin_btn);
         mBeginBtn.setOnClickListener(this);
 
@@ -195,17 +176,8 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         MyLog.w(TAG, "bindView");
         initContentView();
         initTitleView();
-        setLocationTvState();
         initPresenters();
         initTagName();
-    }
-
-    protected void setLocationTvState() {
-        if (TextUtils.isEmpty(mCity)) {
-            mLocationTv.setVisibility(View.GONE);
-        } else {
-            updateLocationView();
-        }
     }
 
     @Override
@@ -228,15 +200,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected void finish() {
         MyLog.w(TAG, "finish");
         FragmentNaviUtils.popFragmentFromStack(getActivity());
-    }
-
-    private void updateLocationView() {
-        if (!TextUtils.isEmpty(mCity)) {
-            mLocationTv.setText(mCity);
-        } else {
-            mLocationTv.setText(getString(R.string.default_location_hint));
-        }
-
     }
 
     protected abstract void openLive();
@@ -263,7 +226,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         if (mRoomTag != null) {
             bundle.putSerializable(EXTRA_LIVE_TAG_INFO, mRoomTag);
         }
-        mMyRoomData.setCity(mCity);
     }
 
     private void initPresenters() {

@@ -1,26 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/color_black_trans_40">
-
-    <!--定位-->
-    <TextView
-        android:id="@+id/location_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="18dp"
-        android:layout_marginTop="31dp"
-        android:drawableLeft="@drawable/bg_img_huati_location"
-        android:drawablePadding="3.67dp"
-        android:gravity="center"
-        android:shadowColor="@color/color_black_trans_50"
-        android:shadowRadius="2"
-        android:text="@string/default_location_hint"
-        android:textColor="@color/common_list_item_normal_bg"
-        android:textSize="@dimen/text_size_36" />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/color_black_trans_40">
 
     <!--封面/直播标题等-->
     <RelativeLayout
@@ -58,7 +40,7 @@
                 android:textColorHint="@color/color_white_trans_70"
                 android:textCursorDrawable="@drawable/edit_text_input_cursor"
                 android:textIsSelectable="false"
-                android:textSize="@dimen/text_size_44" />
+                android:textSize="@dimen/text_size_44"/>
         </RelativeLayout>
 
         <View
@@ -66,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_below="@+id/title_container"
-            android:background="@color/color_white_trans_20" />
+            android:background="@color/color_white_trans_20"/>
 
         <RelativeLayout
             android:id="@+id/quality_cn_container"
@@ -80,7 +62,7 @@
                 android:layout_height="28.67dp"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="14.33dp"
-                android:background="@color/color_white_trans_20" />
+                android:background="@color/color_white_trans_20"/>
 
             <RelativeLayout
                 android:id="@+id/tag_name_container"
@@ -101,7 +83,7 @@
                     android:shadowRadius="1"
                     android:text="@string/game_default_name"
                     android:textColor="@color/color_white_pressed_white60_selected_fed533"
-                    android:textSize="@dimen/text_size_36" />
+                    android:textSize="@dimen/text_size_36"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -124,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="6dp"
-                        android:background="@drawable/bg_gameplay_clarity" />
+                        android:background="@drawable/bg_gameplay_clarity"/>
 
                     <TextView
                         android:id="@+id/game_clarity_tv"
@@ -136,7 +118,7 @@
                         android:shadowRadius="1"
                         android:text="@string/game_quality_title"
                         android:textColor="@color/color_white_pressed_white60_selected_fed533"
-                        android:textSize="@dimen/text_size_36" />
+                        android:textSize="@dimen/text_size_36"/>
 
                 </LinearLayout>
 
@@ -162,7 +144,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/game_quality_title_en"
                 android:textColor="@color/prepare_game_btn_txt_color"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <TextView
                 android:id="@+id/standard_definition"
@@ -173,7 +155,7 @@
                 android:gravity="center"
                 android:text="standard"
                 android:textColor="@color/prepare_game_btn_txt_color"
-                android:textSize="@dimen/text_size_34" />
+                android:textSize="@dimen/text_size_34"/>
 
             <TextView
                 android:id="@+id/high_definition"
@@ -184,7 +166,7 @@
                 android:gravity="center"
                 android:text="high"
                 android:textColor="@color/prepare_game_btn_txt_color"
-                android:textSize="@dimen/text_size_34" />
+                android:textSize="@dimen/text_size_34"/>
 
             <TextView
                 android:id="@+id/super_definition"
@@ -194,7 +176,7 @@
                 android:gravity="center"
                 android:text="super"
                 android:textColor="@color/prepare_game_btn_txt_color"
-                android:textSize="@dimen/text_size_34" />
+                android:textSize="@dimen/text_size_34"/>
         </LinearLayout>
 
     </RelativeLayout>
@@ -220,7 +202,7 @@
         android:gravity="center"
         android:text="@string/live_start"
         android:textColor="@color/color_black_trans_80"
-        android:textSize="@dimen/text_size_44" />
+        android:textSize="@dimen/text_size_44"/>
 
     <!--关闭按钮-->
     <ImageView
@@ -233,6 +215,6 @@
         android:layout_marginTop="42dp"
         android:padding="10dp"
         android:scaleType="centerInside"
-        android:src="@drawable/video_close_white_bg" />
+        android:src="@drawable/video_close_white_bg"/>
 
 </RelativeLayout>
