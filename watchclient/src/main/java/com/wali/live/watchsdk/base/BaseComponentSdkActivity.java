@@ -20,6 +20,7 @@ import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
 import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.active.KeepActiveProcessor;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -117,6 +118,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         // 通知别的观看的activity关闭
         EventBus.getDefault().post(new WatchOrReplayActivityCreated());
         activeNum.incrementAndGet();
+        KeepActiveProcessor.stopActive();
         super.onCreate(savedInstanceState);
     }
 

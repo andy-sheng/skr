@@ -113,7 +113,7 @@ public class RoomDataMapper {
         mMyRoomData.setShop(enterRoomInfo.isShop());
         mMyRoomData.setHideGift(enterRoomInfo.isHideGift());
         if (enterRoomInfo.getLocation() != null) {
-            mMyRoomData.setLocation(enterRoomInfo.getLocation().getCity());
+            mMyRoomData.setCity(enterRoomInfo.getLocation().getCity());
         }
     }
 }

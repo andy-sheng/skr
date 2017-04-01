@@ -9,13 +9,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.base.dialog.MyAlertDialog;
-import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
@@ -27,6 +27,7 @@ import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
@@ -110,6 +111,12 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void bindView() {
         super.bindView();
         initOtherViews();
@@ -150,8 +157,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         } else {
             mQualityCnCotainer.setVisibility(View.VISIBLE);
             mQualityEnConatainer.setVisibility(View.GONE);
+
             mGameClarityContainer = $(R.id.game_clarity_container);
             mGameClarityContainer.setOnClickListener(this);
+
             mGameClarityTv = $(R.id.game_clarity_tv);
             mGameClarityTv.setText(mQualityArray[mQualityIndex]);
             mGameClarityTv.setSelected(true);
@@ -264,7 +273,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LiveEventClass.HidePrepareGameLiveEvent event) {
         if (event != null) {
-            MyLog.d(TAG, "HidePrepareGameLiveEvent");
+            MyLog.w(TAG, "HidePrepareGameLiveEvent");
             super.onBeginBtnClick();
         }
     }
@@ -272,9 +281,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     public static void openFragment(
             BaseComponentSdkActivity activity,
             int requestCode,
-            FragmentDataListener listener) {
-        BaseFragment fragment = FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
+            FragmentDataListener listener, RoomBaseDataModel roomBaseDataModel) {
+        PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
                 PrepareLiveFragment.class, null, true, false, true);
+        fragment.setMyRoomData(roomBaseDataModel);
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }
@@ -285,6 +295,12 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         super.onBackPressed();
         getActivity().finish();
         return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

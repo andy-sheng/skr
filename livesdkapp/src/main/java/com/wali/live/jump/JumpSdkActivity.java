@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
+import com.mi.live.data.location.Location;
 import com.wali.live.TestSdkActivity;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
@@ -19,9 +20,6 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
 
-    /*test action below*/
-    private static final String ACTION_RANDOM_LIVE = "test_random_live";
-
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
     private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
@@ -30,6 +28,8 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_LIVE_ID = "extra_live_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
+
+    private static final String EXTRA_LOCATION = "extra_location";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,27 +72,29 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 break;
             }
             case ACTION_OPEN_NORMAL_LIVE: {
+                final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
                 MiLiveSdkBinder.getInstance().openNormalLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                LiveSdkActivity.openActivity(JumpSdkActivity.this, false);
+                                LiveSdkActivity.openActivity(JumpSdkActivity.this, location, false);
                             }
                         });
                 break;
             }
             case ACTION_OPEN_GAME_LIVE: {
+                final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
                 MiLiveSdkBinder.getInstance().openGameLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                LiveSdkActivity.openActivity(JumpSdkActivity.this, true);
+                                LiveSdkActivity.openActivity(JumpSdkActivity.this, location, true);
                             }
                         });
                 break;
             }
-            case ACTION_RANDOM_LIVE: {
-                openRandomLive();
+            default: {
+                finish();
                 break;
             }
         }

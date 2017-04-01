@@ -21,17 +21,17 @@
 
     <string name="token_live_error_toast_room_not_exist">The room doesn\'t exist</string>
     <string name="live_finish">Live stream session ended</string>
-    <string name="barrage_frequency_control">控制发言频率</string>
-    <string name="barrage_not_control">不限制</string>
-    <string name="barrage_control_in_second">%ds内一次</string>
-    <string name="barrage_control_in_min">%dmin内一次</string>
-    <string name="barrage_frequency_control_tips">主播限制了观众发言频率</string>
-    <string name="barrage_not_repeat">主播限制了观众发表重复内容</string>
-    <string name="barrage_frequency_control_remove_tips">主播解除了观众发言频率的限制</string>
-    <string name="barrage_not_repeat_remove">主播解除了观众不能发表重复内容的限制</string>
-    <string name="ok">确定</string>
-    <string name="have_been_kicked">您已被踢出该直播间，将无法再进入本场直播</string>
-    <string name="i_know">我知道了</string>
-    <string name="send_barrage_interval">距离再次发送内容有%d秒</string>
-    <string name="send_barrage_repeated">主播设定了不能重复发言</string>
+    <string name="barrage_frequency_control">Send the next comment later</string>
+    <string name="barrage_not_control">Allow</string>
+    <string name="barrage_control_in_second">Once within %d s</string>
+    <string name="barrage_control_in_min">Once within %d min</string>
+    <string name="barrage_frequency_control_tips">The host set a frequency limit of sending comments</string>
+    <string name="barrage_not_repeat">You\'re forbidden to send duplicated comments</string>
+    <string name="barrage_frequency_control_remove_tips">The host lifted the frequency limit of sending comments</string>
+    <string name="barrage_not_repeat_remove">You\'re allowed to send duplicated comments</string>
+    <string name="ok">OK</string>
+    <string name="have_been_kicked">You can\'t enter the room after being kicked out</string>
+    <string name="i_know">Got it</string>
+    <string name="send_barrage_interval">Send comments in %ds</string>
+    <string name="send_barrage_repeated">You\'re forbidden to send duplicated comments</string>
 </resources>

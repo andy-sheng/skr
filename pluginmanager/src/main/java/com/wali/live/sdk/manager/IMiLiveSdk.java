@@ -5,6 +5,8 @@ import android.app.Application;
 import android.support.annotation.IntRange;
 import android.support.annotation.Keep;
 
+import com.mi.live.data.location.Location;
+
 /**
  * Created by lan on 17/2/20.
  *
@@ -70,16 +72,16 @@ public interface IMiLiveSdk {
     /**
      * 打开普通直播页面
      *
-     * @version 204015
+     * @version 205001
      */
-    void openNormalLive(Activity activity, IAssistantCallback callback);
+    void openNormalLive(Activity activity, Location location, IAssistantCallback callback);
 
     /**
      * 打开游戏直播页面
      *
-     * @version 204015
+     * @version 205001
      */
-    void openGameLive(Activity activity, IAssistantCallback callback);
+    void openGameLive(Activity activity, Location location, IAssistantCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手

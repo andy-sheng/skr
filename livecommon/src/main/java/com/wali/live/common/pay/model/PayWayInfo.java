@@ -15,10 +15,12 @@ public class PayWayInfo {
     public final PayWay mPayWay;
     public final int mIconId;
     public final int mNameId;
+    public final int mRechargeType;
 
-    public PayWayInfo(@NonNull PayWay payWay, @DrawableRes int iconId, @StringRes int nameId) {
+    public PayWayInfo(@NonNull PayWay payWay, @DrawableRes int iconId, @StringRes int nameId, int rechargeType) {
         mPayWay = payWay;
         mIconId = iconId;
         mNameId = nameId;
+        mRechargeType = rechargeType;
     }
 }

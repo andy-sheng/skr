@@ -1,9 +1,10 @@
 package com.wali.live.event;
 
-import com.wali.live.common.model.CommentModel;
-import com.wali.live.receiver.NetworkReceiver;
+import android.support.annotation.Nullable;
 
-import org.json.JSONObject;
+import com.wali.live.common.model.CommentModel;
+import com.wali.live.proto.PayProto;
+import com.wali.live.receiver.NetworkReceiver;
 
 import java.util.List;
 
@@ -76,14 +77,6 @@ public abstract class EventClass {
     public static class ShowRechargeRedPoint {
     }
 
-    public static class GooglePlayConsumeEvent {
-        public JSONObject receipt;
-
-        public GooglePlayConsumeEvent(JSONObject receipt) {
-            this.receipt = receipt;
-        }
-    }
-
     public static class RefreshGameLiveCommentEvent {
         public List<CommentModel> barrageMsgs;
         public CommentModel barrageMsg;
@@ -150,4 +143,14 @@ public abstract class EventClass {
             return unrepeatable;
         }
     }
+
+    public static class PayPush {
+        @Nullable
+        public PayProto.PayPush payPush;
+
+        public PayPush(@Nullable PayProto.PayPush payPush) {
+            this.payPush = payPush;
+        }
+    }
+
 }

@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.GET_TASKS"  />
+    <uses-permission android:name="com.xiaomi.sdk.permission.PAYMENT" />
 
     <application
         android:allowBackup="true"
@@ -35,16 +37,16 @@
         </receiver>
 
         <activity
-            android:name="com.xiaomi.gamecenter.wxpay.HyWxWappayActivity"
+            android:name="com.xiaomi.gamecenter.wxwap.HyWxWappayActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <activity
             android:name="com.mi.livesdk.wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@android:style/Theme.Translucent"/>
 
     </application>
 

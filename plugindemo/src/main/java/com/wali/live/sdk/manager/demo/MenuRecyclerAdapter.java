@@ -8,7 +8,6 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mi.live.data.location.Location;
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
@@ -88,7 +88,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("开启秀场直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openNormalLive(mActivity, new IMiLiveSdk.IAssistantCallback() {
+                MiLiveSdkController.getInstance().openNormalLive(mActivity, Location.Builder.newInstance(123, 124).setCountry("China").setProvince("北京").setCity("北京").build(), new IMiLiveSdk.IAssistantCallback() {
                     @Override
                     public void notifyVersionLow() {
                         ToastUtils.showToast("notifyVersionLow");
@@ -104,7 +104,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("开启游戏直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openGameLive(mActivity, new IMiLiveSdk.IAssistantCallback() {
+                MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setProvince("New York").setCity("New York").build(), new IMiLiveSdk.IAssistantCallback() {
                     @Override
                     public void notifyVersionLow() {
                         ToastUtils.showToast("notifyVersionLow");
@@ -149,23 +149,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         });
                     }
                 }).start();
-            }
-        }));
-
-        mDataList.add(new Bean("跳转到随机直播(Intent，测试之后会删除)", new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 * 只为测试使用，正常不需要
-                 */
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setClassName("com.mi.liveassistant", "com.wali.live.jump.JumpSdkActivity");
-                    intent.setAction("test_random_live");
-
-                    mActivity.startActivity(intent);
-                } catch (Exception e) {
-                }
             }
         }));
 

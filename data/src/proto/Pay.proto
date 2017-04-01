@@ -1,0 +1,508 @@
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "PayProto";
+
+//平台类型
+enum Platform {
+    IOS = 1;
+    ANDROID = 2;
+}
+
+//充值渠道
+enum RChannel {
+    IOS_CH = 1; //ios渠道
+    AND_CH = 2; //安卓渠道
+    WEB_CH = 3; //微信公众号
+    PAYU_CH = 4; //pay U渠道
+    PAYPAL_CH = 5; // paypal
+    GO_PLAY_CH = 6; // google play
+    TEST_CH = 7; //测试渠道
+    PAYTM_CH = 8; //paytm渠道
+    CODA_IDR_DCB_CH = 9; //coda印尼短信渠道
+    CODA_IDR_ATM_CH = 10; //coda印尼atm渠道
+}
+
+//充值类型
+enum PayType {
+    IAP = 1;
+    WEIXIN = 2;
+    ALIPAY = 3;
+    MIPAY = 4;
+    SYSTEM = 5; //系统赠送，没有支付RMB
+    OPERATE = 6; //运营认为补帐
+    DIRECT = 7; //直充
+    PAYU = 8;
+    PAYPAU = 9;
+    GO_PLAY = 10; //google play
+    PAYPAL = 11; //PAYPAL
+    MIWALLET = 12; //MIWALLET
+    PAYTM = 13; //PAYTM
+    CODA_IDR_DCB = 14; //CODAcoda印尼短信渠道
+    CODA_IDR_ATM = 15; //CODA印尼atm
+}
+
+//充值类型
+enum WithdrawType {
+    ALIPAY_WITHDRAW = 1;
+    WEIXIN_WITHDRAW = 2;
+    PAYPAL_WITHDRAW = 3;
+}
+enum ActType {
+    NEWMAN_FIRST_RECHARGE = 1; //新人首冲
+    RECHARGE_CNT_LIMIT = 2; //次数限购
+    RECHARGE_PERIOD_LIMIT = 3; //时间限购
+    NORMAL = 4; //正常
+}
+
+enum AppType {
+    ZHIBO = 0;
+    ZHIBO_ZHUSHOU = 1;
+}
+
+//消息提示类型
+enum NotifyType {
+    TOAST = 1;
+    ALERT = 2;
+}
+
+//查讯用户的账户数据
+//cmd:10001
+message QueryAccountRequest {
+    required uint64 uuid = 1; //用户ID
+    required Platform platform = 2;
+}
+message QueryAccountResponse {
+    required uint32 ret_code = 1; //返回码
+    optional uint32 usable_gem_cnt = 2; //钻石余额
+    optional uint32 consum_gem_cnt = 3; //送出的钻石数
+    optional uint32 usable_ticket_cnt = 4; //未兑换、未提现的票数
+    optional uint32 total_ticket_cnt = 5; //收到的总票数
+    repeated uint64 rank_top_three_list = 6; //排行榜前三用户ID
+}
+
+//礼物消费
+//cmd : 10002
+message ConsumGemRequest {
+    required uint64 uuid = 1;
+    required string out_order_id = 2;
+    required uint32 gift_id = 3;
+    required uint32 consum_gem_cnt = 4; //消费的钻石数
+    required uint64 receiver_id = 5; //接受者ID
+    required uint32 give_ticket_cnt = 6; //赠送给接受者的票数
+    required Platform platform = 7;
+}
+message ConsumGemResponse {
+    required uint32 ret_code = 1;
+    optional uint32 usable_gem_cnt = 2;
+    optional uint64 timestamp = 3;
+}
+
+//查讯钻石购买价格列表
+//cmd : zhibo.bank.getGemPriceList
+message GetGemPriceRequest {
+    required uint64 uuid = 1;
+    required Platform platform = 2;
+    optional RChannel channel = 3;
+}
+message GemGoods {
+    required uint32 goods_id = 1;
+    required uint32 gem_cnt = 2;
+    required uint32 price = 3; //单位分
+    optional uint32 give_gem_cnt = 4;
+    optional uint32 max_buy_times = 5; //最多购买次数
+    optional uint64 begin_time = 6; //限时商品，开始时间
+    optional uint64 end_time = 7; //限时商品，结束时间
+    optional string subtitle = 8; // 副标题
+    optional string icon = 9;
+    optional ActType act_type = 10; //活动类型
+}
+message GetGemPriceResponse {
+    required uint32 ret_code = 1; //返回码
+    optional uint32 usable_gem_cnt = 2; //可用钻石数
+    repeated GemGoods gem_goods_list = 3; //充值列表
+    optional NotifyType notifyType = 4;
+    optional string msg = 5;
+    optional uint32 exchangeable_gem_cnt = 6; //可兑换钻石数目
+    optional uint32 expire_virtual_gem_cnt = 7; //即将过期的虚拟钻数量
+    optional uint32 expire_gift_card_cnt = 8; //即将过期的礼物卡数量
+    optional uint32 usable_virtual_gem_cnt = 9; //可用虚拟钻数量
+    optional RechargeDayAmount amount = 10; //各支付渠道当日成功充值总额
+}
+
+//支付渠道当日成功充值总额
+message RechargeDayAmount {
+    optional uint32 wxpay_amount = 1; //微信支付当日成功充值总额，单位分
+    optional uint32 miwallet_amount = 2; //小米钱包当日成功充值总额，单位分
+}
+
+//支付充值，创建订单
+//cmd : zhibo.bank.createOrder
+message CreateOrderRequest {
+    required uint64 uuid = 1; //用户ID
+    required Platform platform = 2;
+    required uint32 goods_id = 3; //购买的钻石商品ID
+    optional uint32 gem_cnt = 4; //购买商品的钻石数量
+    optional uint32 price = 5; //购买商品价格单位分
+    required PayType pay_type = 6;
+    optional RChannel channel = 7; //充值渠道，默认和平台相同
+    optional uint32 give_gem_cnt = 8; //购买商品的赠送钻石数量
+    optional string app_channel = 9; // 直播小助手接入的应用app_channel
+    optional AppType app_type = 10 [default = ZHIBO];
+}
+message CreateOrderResponse {
+    required uint32 ret_code = 1; //返回码
+    optional string order_id = 2; //订单号
+    optional string user_info = 3;
+    optional NotifyType notifyType = 4;
+    optional string msg = 5;
+}
+//支付充值，检查订单
+//ios cmd: zhibo.bank.checkIap
+//android cmd : zhibo.bank.checkOrder
+message CheckOrderRequest {
+    required uint64 uuid = 1;
+    required Platform platform = 2;
+    optional string order_id = 3; //服务端产生的订单号
+    optional string puid = 4; //支付产生的临时账号
+    optional string receipt = 5; //苹果产生的票据
+    optional string transaction_id = 6;
+}
+message CheckOrderResponse {
+    required uint32 ret_code = 1;
+    optional uint32 usable_gem_cnt = 2;
+}
+
+//查询用户收益
+//cmd :zhibo.bank.queryProfit
+message QueryProfitRequest {
+    required uint64 uuid = 1; //用户ID
+    required Platform platform = 2;
+}
+
+message AliPay {
+    optional string account = 1;
+    optional string real_name = 2;
+    optional uint32 max_cash_cnt_onetime = 3;
+}
+
+message WeixinPay {
+    optional string user_name = 1;
+    optional string headimgurl = 2;
+    optional uint32 vertification = 3; // 0=非实名，1=实名未验证，2=实名未通过，3=实名已通过
+    optional string unionid = 4;
+}
+
+message PaypalPay {
+    optional string account = 1;
+    optional string firstname = 2;
+    optional string lastname = 3;
+    optional uint32 vertification = 4; //2=实名未通过，3=实名已通过
+}
+
+message QueryProfitResponse {
+    required uint32 ret_code = 1; //返回码
+    optional uint32 usable_ticket_cnt = 2; //未兑换、未提现的票数
+    optional uint32 exchange_cash_cnt = 3; //可兑换现金数，单位分
+    optional uint32 exchange_cash_today_cnt = 4; //今日可兑换现金数剩余额度
+    optional AliPay alipay = 5;
+    optional uint32 account_status = 6; //0-正常， 1-账户结算中不可提现和兑换
+    optional uint32 max_cash_cnt_times = 7;
+    optional WeixinPay wxpay = 8;
+    optional NotifyType notifyType = 9;
+    optional string msg = 10;
+    optional PaypalPay paypal = 11;
+    optional uint32 exchange_usd_cash_cnt = 12; //可兑换现金数，单位美分
+    optional uint32 exchange_usd_cash_today_cnt = 13; //今日可兑换现金数剩余额度(美分)
+    optional uint32 exchange_min_cash_cnt_onetime = 14; //每次最小提现金额
+    optional uint32 exchange_min_usd_cash_cnt_onetime = 15; //每次最小提现金额(美分)
+    optional uint32 exchange_max_cash_cnt_onetime = 16; //每次最大提现金额
+    optional uint32 exchange_max_usd_cash_cnt_onetime = 17; //每次最大提现金额(美分)
+    optional uint32 sign_status = 18; //0,普通用户,1,签约用户
+    optional string redirect_url = 19; //下发的url
+    optional uint32 frozen_usable_ticket_cnt = 20; //签约主播冻结的可用星票数
+    optional uint32 usable_mibi_ticket_cnt = 21; //（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+    optional uint32 clear_mibi_ticket_cnt = 22; //签约前未兑换的米币星票数
+}
+
+//查讯票换钻价格列表
+//cmd : zhibo.bank.getExchangeList
+message GetExchangeRequest {
+    required uint64 uuid = 1;
+    required Platform platform = 2;
+}
+message GemExchange {
+    required uint32 exchange_id = 1;
+    required uint32 gem_cnt = 2;
+    required uint32 ticket_cnt = 3;
+    optional uint32 give_gem_cnt = 4;
+}
+message GetExchangeResponse {
+    required uint32 ret_code = 1;
+    optional uint32 usable_gem_cnt = 2;
+    repeated GemExchange gem_exchange_list = 3;
+    optional uint32 uasble_ticket_cnt = 4;
+    optional NotifyType notifyType = 5;
+    optional string msg = 6;
+}
+
+//票换钻
+//cmd : zhibo.bank.exchange
+message ExchangeGemRequest {
+    required uint64 uuid = 1;
+    required uint64 client_id = 2; //客户端产生的唯一ID，标示同一个请求
+    required uint32 exchange_id = 3;
+    required uint32 gem_cnt = 4;
+    required uint32 tichket_cnt = 5;
+    optional uint32 give_gem_cnt = 6;
+    optional Platform platform = 7;
+}
+message ExchangeGemResponse {
+    required uint32 ret_code = 1;
+    optional uint32 usable_gem_cnt = 2;
+    optional uint32 usable_ticket_cnt = 3; //可用普通星票数
+}
+
+//提现
+//cmd : zhibo.bank.withdraw
+message WithdrawRequest {
+    required uint64 uuid = 1;
+    required uint64 client_id = 2; //客户端产生的唯一ID，标示同一个请求
+    optional uint32 withdraw_amount = 3; //提现金额，单位分
+    optional uint32 consum_ticket_cnt = 4;
+    required WithdrawType withdraw_type = 5; //提现类型，需要提现到那个账户
+    optional Platform platform = 6;
+    optional uint32 channel_id = 7; // 提现渠道，默认0=APP，1=微信公共号
+    optional string unionid = 8; // 微信公共号提现时，带上此字段用于校验
+    optional bool need_real_resule = 9; // 提现需要等待实际结果
+}
+message WithdrawResponse {
+    required uint32 ret_code = 1; //返回码
+    optional uint32 usable_ticket_cnt = 2; //未兑换、未提现的票数
+    optional uint32 exchange_cash_cnt = 3; //可兑换现金数，单位分
+    optional uint32 today_exchange_cash_cnt = 4; //今日可兑换现金数
+    optional NotifyType notifyType = 5;
+    optional string msg = 6;
+}
+
+//查看提现记录
+// cmd : zhibo.bank.withdrawList
+//查看提现记录
+//cmd : zhibo.bank.withdrawList
+message WithdrawRecordRequest {
+    required uint64 uuid = 1;
+    optional string item_id = 2;
+    optional uint32 limit = 3;
+}
+
+//提现状态 1-处理中，2-已经到账，3-转账失败、4-失败收款账号不存在、5-失败收款账号与真实姓名不一致、6、失败收款方未实名
+//提现状态 7-收款账号存在多个账户，无法确认唯一 8-失败超出单笔限额 9-收款方认证受限
+message WithdrawRecord {
+    optional string item_id = 1;
+    optional uint32 amount = 3; //兑换了多少钱
+    optional uint64 timestamp = 4; //时间，单位ms
+    optional uint32 status = 5; //提现状态
+    optional string item_key = 6; //订单号
+    optional string status_msg = 7; //提现状态描述
+    optional uint32 orther_currency_amount = 8; //兑换了多少钱(美金)
+    optional WithdrawType withdraw_type = 9; //提现类型，当withdraw_type==paypal时，展示提现金额使用orther_currency_amount
+}
+
+message WithdrawRecordResponse {
+    required uint32 ret_code = 1;
+    repeated WithdrawRecord withdrawRecords = 2;
+}
+
+//绑定提现账户
+//zhibo.bank.authentication
+//cmd : zhibo.bank.bind
+message BindRequest {
+    required uint64 uuid = 1;
+    optional string real_name = 2; //真是姓名
+    optional string account = 3; //绑定的支付宝账户
+    optional string card_id = 4; //身份证号
+    optional string oauth_code = 5;
+    optional WithdrawType type = 6;
+
+    optional string paypal_account = 7; //paypal账号[type==paypal]
+    optional string paypal_firstname = 8; //paypal firstname[type==paypal]
+    optional string paypal_lastname = 9; //paypal lastname[type==paypal]
+
+}
+
+message BindResponse {
+    required uint32 ret_code = 1;
+    optional string openid = 2;
+    optional AliPay alipay = 3;
+    optional WeixinPay wxpay = 4;
+    optional PaypalPay paypal = 5;
+}
+
+// 验证并提现
+// zhibo.bank.authAndWithdraw
+message AuthAndWithdrawRequest {
+    required uint64 uuid = 1;
+    optional string real_name = 2; //真是姓名
+    optional string account = 3; //绑定的支付宝账户
+    optional string card_id = 4; //身份证号
+    optional string oauth_code = 5;
+    optional WithdrawType type = 6;
+    optional Platform platform = 7;
+}
+message AuthAndWithdrawResponse {
+    required uint32 ret_code = 1;
+    optional string openid = 2;
+    optional AliPay alipay = 3;
+    optional WeixinPay wxpay = 4;
+}
+
+//////////////////////////查看影票排行榜/////////////////////////////
+//cmd : zhibo.bank.ranklist
+message GetRankListRequest {
+}
+message GetRankListResponse {
+}
+
+
+message RedPointConfig {
+    required uint64 startTime = 1; //开始时间
+    required uint64 endTime = 2; //结束时间
+    optional string uniq = 3; //唯一标识
+}
+
+message GetRedPointConfigRequest {
+    required string type = 1; //类型 recharge|充值
+    optional string uniq = 2;
+}
+
+message GetRedPointConfigResponse {
+    required uint32 ret_code = 1; //返回码
+    optional RedPointConfig config = 2;
+}
+
+
+message GiftCard {
+    optional uint32 gift_id = 1; //礼品卡可兑换的礼物Id
+    optional uint32 gift_card_cnt = 2; //礼品卡数量
+    optional uint64 begin_time = 3; //礼品卡有效期开始时间,单位s
+    optional uint64 end_time = 4; //礼品卡有效期结束时间,单位s
+    optional uint32 active_id = 5; //指定活动id,只有参加这个活动的主播才可以使用
+}
+
+// zhibo.bank.payNotify
+// 支付成功完成加钻以后下发
+message PayPush {
+    required uint32 ret_code = 1;
+    required string order_id = 2;
+    optional uint32 usable_gem_cnt = 3;
+}
+
+// zhibo.bank.giftCardNotify
+// 发放礼物卡、虚拟钻后下发
+message GiftCardPush {
+    required uint32 ret_code = 1;
+    repeated GiftCard gift_cards = 2;
+    optional uint32 ios_usable_gem_cnt = 3;
+    optional uint32 and_usable_gem_cnt = 4;
+    optional uint64 user_asset_timestamp = 5;
+    optional uint32 usable_virtual_gem_cnt = 6; //即将过期的虚拟钻数量
+}
+
+//cmd:zhibo.bank.getBalanceDetail
+message QueryBalanceDetailRequest {
+    optional uint64 uuid = 1;
+    optional Platform platform = 2;
+}
+
+message QueryBalanceDetailResponse {
+    optional uint32 ret_code = 1;
+    optional uint32 real_gem_cnt = 2; //真实钻数量
+    repeated VirtualGem virtual_gem_list = 3; //虚拟钻
+    repeated GiftCard gift_card_list = 4; //礼物卡
+    optional uint32 usable_virtual_gem_cnt = 5; //可用虚拟钻数量
+    optional ExpireOrderHistoryRecord history = 6; //已过期历史数据
+}
+
+message VirtualGem {
+    optional uint32 virtual_gem_cnt = 1; //虚拟钻石数
+    optional uint64 begin_time = 2; //虚拟钻石有效期开始时间,单位s
+    optional uint64 end_time = 3; //虚拟钻石数有效期结束时间,单位s
+}
+
+message ExpireOrderHistoryRecord {
+    repeated ExpireOrderRecord cards = 1;
+    repeated ExpireOrderRecord gems = 2;
+}
+
+
+message ExpireOrderRecord {
+    optional string order_id = 1;
+    optional uint32 uuid = 2;
+    optional uint32 gift_id = 3; //礼物id
+    optional uint32 gift_cnt = 4; //过期的礼物数量
+    optional uint32 worth_gem = 5; //过期的虚拟钻数量
+    optional uint64 begin_time = 6; //有效期开始时间，单位秒
+    optional uint64 end_time = 7; //有效期结束时间,单位秒
+    optional uint32 expire_type = 8;
+    optional uint64 create_time = 9; //订单创建时间
+    optional uint32 status = 10; //0-待清理，1-清理成功
+    optional GrantType type = 11 [default = CARD]; //
+}
+
+// 发卡类型
+enum GrantType {
+    CARD = 1; // 礼物卡
+    GEM = 2; // 钻石
+}
+
+//以下是一直播相关
+message YzbGemExchange {
+    required uint32 exchange_id = 1;
+    required uint32 gem_cnt = 2;
+    required uint32 yzb_ticket = 3;
+}
+message YzbExchageListRequest {
+    required uint64 userId = 1; // 用户id，uuid
+    optional Platform platform = 2; //客户端平台类型，IOS或者ANDROID
+}
+message YzbExchageListResponse {
+    required uint32 retCode = 1; // 返回码，0代表成功，非0值失败
+    repeated YzbGemExchange gem_exchanges = 2;
+}
+
+//一直播兑换请求
+//cmd : zhibo.mall.yzbExchange
+message YzbExchangeRequest {
+    required string yzb_order_id = 1;
+    required uint64 userId = 2; // 用户id，uuid
+    required uint32 exchange_id = 3; // 礼物商品id
+    required uint64 timestamp = 4; // 客户端时间戳
+    optional uint32 count = 5 [default = 1]; // 兑换次数
+    optional Platform platform = 6; //客户端平台类型，IOS或者ANDROID
+    required string package_name = 7; //客户端包名
+}
+message YzbExchangeResponse {
+    required uint32 retCode = 1; // 返回码，0代表成功，非0值失败
+    optional string retMsg = 2; // 返回描述
+    optional uint32 usable_gem_cnt = 3; // 购买者当前可用资产
+    optional uint64 user_asset_timestamp = 4; // 购买者当前可用资产时间戳
+    optional uint32 yzb_ticket = 5; // 一直播账号虚拟货币数
+}
+//查看充值记录
+//cmd : zhibo.bank.rechargeList
+message RechargeRecordRequest {
+    required uint64 uuid = 1;
+    optional Platform platform = 4; //充值平台
+}
+message RechargeRecord {
+    optional string item_id = 1;
+    optional uint32 gem_cnt = 2; //获得多少钻
+    optional uint32 amount = 3; //充了多少钱，单位分。注意，paypal渠道的单位是美分
+    optional uint64 timestamp = 4; //时间,单位ms
+    optional uint32 status = 5; //1-等待支付，2-成功充值
+    optional string order_id = 6; //充值订单
+    optional PayType payType = 7; //充值渠道
+    optional Platform platform = 8; //充值平台
+}
+message RechargeRecordResponse {
+    required uint32 ret_code = 1;
+    repeated RechargeRecord rechargeRecords = 2;
+}

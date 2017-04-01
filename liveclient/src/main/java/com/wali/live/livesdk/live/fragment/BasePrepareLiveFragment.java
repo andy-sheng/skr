@@ -80,7 +80,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
-        mCity = myRoomData.getLocation();
+        mCity = myRoomData.getCity();
     }
 
     @CallSuper
@@ -125,7 +125,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         if (!TextUtils.isEmpty(mCity)) {
             mCity = "";
         } else {
-            mCity = mMyRoomData.getLocation();
+            mCity = mMyRoomData.getCity();
         }
         updateLocationView();
     }
@@ -263,6 +263,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         if (mRoomTag != null) {
             bundle.putSerializable(EXTRA_LIVE_TAG_INFO, mRoomTag);
         }
+        mMyRoomData.setCity(mCity);
     }
 
     private void initPresenters() {

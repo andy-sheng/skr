@@ -118,7 +118,8 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
 public class LiveSdkActivity extends BaseComponentSdkActivity implements FragmentDataListener, IActionCallBack,
         FloatPersonInfoFragment.FloatPersonInfoClickListener, ForbidManagePresenter.IForbidManageProvider {
 
-    public static final String EXTRA_GAME_LIVE = "extra_game_live";
+    private static final String EXTRA_IS_GAME_LIVE = "extra_is_game_live";
+    private static final String EXTRA_LOCATION = "extra_location";
 
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
     public static final int REQUEST_PREPARE_LIVE = 1000;
@@ -139,14 +140,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private static final int MSG_ROOM_NOT_EXIT = 205;               // 房间不存在
 
     public static boolean sRecording = false; //将其变为静态并暴露给外面，用于各种跳转判定
+
     private boolean mIsLiveEnd;
     private int mLastTicket;
-    private Location mLocation = null;
     private Intent mScreenRecordIntent;
     private String mLiveTitle;
+    private String mLiveCoverUrl;
     private RoomTag mRoomTag;
 
-    protected boolean mIsGameLive;
+    private boolean mIsGameLive;
+    private Location mLocation;
 
     private final MyUIHandler mUIHandler = new MyUIHandler(this);
 
@@ -204,16 +207,16 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         overridePendingTransition(R.anim.slide_in_from_bottom, 0);
 
         initData();
+        initRoomData();
+
         setupRequiredComponent();
 
         if (!mIsGameLive) {
             mComponentController.createStreamer($(R.id.galileo_surface_view), 0, null);
         }
         mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
-
         openOrientation();
-        mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
-        mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
+
         // 封面模糊图
         mBlurIv = $(R.id.blur_iv);
         AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
@@ -223,7 +226,18 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void initData() {
         Intent data = getIntent();
         if (data != null) {
-            mIsGameLive = data.getBooleanExtra(EXTRA_GAME_LIVE, false);
+            mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
+            mLocation = data.getParcelableExtra(EXTRA_LOCATION);
+        }
+    }
+
+    private void initRoomData() {
+        if (mLocation != null) {
+            mMyRoomData.setCity(mLocation.getCity());
+        }
+        if (UserAccountManager.getInstance().hasAccount()) {
+            mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+            mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
         }
     }
 
@@ -261,6 +275,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     public void trySendDataWithServerOnce() {
+        if (mMyRoomData.getUid() == 0) {
+            mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+            mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
+        }
     }
 
     @Override
@@ -421,9 +439,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (uid <= 0) {
             return;
         }
-//        TODO 打开注释
-//        clearTop();
-        //打点
         StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_USERINFO_CARD_OPEN, 1);
         FloatPersonInfoFragment.openFragment(this, uid, mMyRoomData.getUid(),
                 mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this);
@@ -492,6 +507,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void initPrepareData(Bundle bundle) {
         mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
         mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
+        mLiveCoverUrl = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL, "");
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
@@ -681,7 +697,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             default:
                 ToastUtils.showToast(GlobalData.app(), R.string.live_failure);
                 EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                        mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getLocation(), mMyRoomData.getUser(), null, null);
+                        mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getCity(), mMyRoomData.getUser(), null, null);
                 break;
         }
     }
@@ -760,7 +776,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 // 这个标记是指直播是否结束
                 try {
                     EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                            mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getLocation(), mMyRoomData.getUser(), null, null);
+                            mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getCity(), mMyRoomData.getUser(), null, null);
                 } catch (Exception e) {
                     MyLog.e(TAG + "process room info" + e);
                 }
@@ -789,9 +805,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void beginLiveToServer() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
         startCountDown();
-        mLiveRoomPresenter.beginLiveByAppInfo(mLocation, LiveManager.TYPE_LIVE_GAME, null, true, mLiveTitle,
-                "", mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
+
+        Location location = !TextUtils.isEmpty(mMyRoomData.getCity()) ? mLocation : null;
+        mLiveRoomPresenter.beginLiveByAppInfo(location, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
+                mLiveCoverUrl, mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
     }
 
     private void processStartRecord(String liveId, long createTime, String shareUrl,
@@ -868,7 +887,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             public void run() {
                 LiveProto.HeartBeatReq.Builder builder = LiveProto.HeartBeatReq.newBuilder()
                         .setLiveId(mMyRoomData.getRoomId())
-                        .setStatus((mIsGameLive ^ mIsForeground) && !mIsPaused ? 0 : 1);
+                        .setStatus((mIsGameLive || mIsForeground) && !mIsPaused ? 0 : 1);
                 builder.setMicuidStatus(0);
                 PacketData data = new PacketData();
                 data.setCommand(MiLinkCommand.COMMAND_LIVE_HB);
@@ -1021,6 +1040,24 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
+    /**
+     * 接收（更新房间内发言频率、是否重复）设置成功事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LiveEventClass.UpdateMsgRuleEvent event) {
+        if (event != null && mMyRoomData.getRoomId().equals(event.getRoomId())) {
+            if (event.isUpdated()) {
+                mMyRoomData.setmMsgRule(event.getMsgRule());
+                ToastUtils.showToast(GlobalData.app().getApplicationContext(), getString(R.string.change_room_setting_success));
+            } else {
+                ToastUtils.showToast(GlobalData.app().getApplicationContext(), getString(R.string.change_room_setting_fail));
+            }
+            MyLog.w(TAG, "recevie UpdateMsgRuleEvent:" + event.toString());
+        }
+    }
+
     private static class MyUIHandler extends Handler {
         private final WeakReference<LiveSdkActivity> mActivity;
         private String TAG = "LiveSdkActivity";
@@ -1079,22 +1116,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
-    /**
-     * 秀场直播
-     */
-    public static void openActivity(BaseSdkActivity activity) {
-        openActivity(activity, false);
-    }
-
-    /**
-     * 区分是否是游戏直播还是秀场直播
-     */
-    public static void openActivity(BaseSdkActivity activity, boolean isGameLive) {
-        Intent intent = new Intent(activity, LiveSdkActivity.class);
-        intent.putExtra(EXTRA_GAME_LIVE, isGameLive);
-        activity.startActivity(intent);
-    }
-
     private class Action implements ComponentPresenter.IAction {
         @Override
         public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
@@ -1125,5 +1146,24 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             }
             return false;
         }
+    }
+
+    /**
+     * 秀场直播
+     */
+    public static void openActivity(BaseSdkActivity activity, Location location) {
+        openActivity(activity, location, false);
+    }
+
+    /**
+     * 区分是否是游戏直播还是秀场直播
+     */
+    public static void openActivity(BaseSdkActivity activity, Location location, boolean isGameLive) {
+        Intent intent = new Intent(activity, LiveSdkActivity.class);
+        if (location != null) {
+            intent.putExtra(EXTRA_LOCATION, location);
+        }
+        intent.putExtra(EXTRA_IS_GAME_LIVE, isGameLive);
+        activity.startActivity(intent);
     }
 }

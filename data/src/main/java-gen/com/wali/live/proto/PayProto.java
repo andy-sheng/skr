@@ -159,6 +159,30 @@ public final class PayProto {
      * </pre>
      */
     TEST_CH(6, 7),
+    /**
+     * <code>PAYTM_CH = 8;</code>
+     *
+     * <pre>
+     *paytm渠道
+     * </pre>
+     */
+    PAYTM_CH(7, 8),
+    /**
+     * <code>CODA_IDR_DCB_CH = 9;</code>
+     *
+     * <pre>
+     *coda印尼短信渠道
+     * </pre>
+     */
+    CODA_IDR_DCB_CH(8, 9),
+    /**
+     * <code>CODA_IDR_ATM_CH = 10;</code>
+     *
+     * <pre>
+     *coda印尼atm渠道
+     * </pre>
+     */
+    CODA_IDR_ATM_CH(9, 10),
     ;
 
     /**
@@ -217,6 +241,30 @@ public final class PayProto {
      * </pre>
      */
     public static final int TEST_CH_VALUE = 7;
+    /**
+     * <code>PAYTM_CH = 8;</code>
+     *
+     * <pre>
+     *paytm渠道
+     * </pre>
+     */
+    public static final int PAYTM_CH_VALUE = 8;
+    /**
+     * <code>CODA_IDR_DCB_CH = 9;</code>
+     *
+     * <pre>
+     *coda印尼短信渠道
+     * </pre>
+     */
+    public static final int CODA_IDR_DCB_CH_VALUE = 9;
+    /**
+     * <code>CODA_IDR_ATM_CH = 10;</code>
+     *
+     * <pre>
+     *coda印尼atm渠道
+     * </pre>
+     */
+    public static final int CODA_IDR_ATM_CH_VALUE = 10;
 
 
     public final int getNumber() { return value; }
@@ -230,6 +278,9 @@ public final class PayProto {
         case 5: return PAYPAL_CH;
         case 6: return GO_PLAY_CH;
         case 7: return TEST_CH;
+        case 8: return PAYTM_CH;
+        case 9: return CODA_IDR_DCB_CH;
+        case 10: return CODA_IDR_ATM_CH;
         default: return null;
       }
     }
@@ -362,6 +413,30 @@ public final class PayProto {
      * </pre>
      */
     MIWALLET(11, 12),
+    /**
+     * <code>PAYTM = 13;</code>
+     *
+     * <pre>
+     *PAYTM
+     * </pre>
+     */
+    PAYTM(12, 13),
+    /**
+     * <code>CODA_IDR_DCB = 14;</code>
+     *
+     * <pre>
+     *CODAcoda印尼短信渠道
+     * </pre>
+     */
+    CODA_IDR_DCB(13, 14),
+    /**
+     * <code>CODA_IDR_ATM = 15;</code>
+     *
+     * <pre>
+     *CODA印尼atm
+     * </pre>
+     */
+    CODA_IDR_ATM(14, 15),
     ;
 
     /**
@@ -436,6 +511,30 @@ public final class PayProto {
      * </pre>
      */
     public static final int MIWALLET_VALUE = 12;
+    /**
+     * <code>PAYTM = 13;</code>
+     *
+     * <pre>
+     *PAYTM
+     * </pre>
+     */
+    public static final int PAYTM_VALUE = 13;
+    /**
+     * <code>CODA_IDR_DCB = 14;</code>
+     *
+     * <pre>
+     *CODAcoda印尼短信渠道
+     * </pre>
+     */
+    public static final int CODA_IDR_DCB_VALUE = 14;
+    /**
+     * <code>CODA_IDR_ATM = 15;</code>
+     *
+     * <pre>
+     *CODA印尼atm
+     * </pre>
+     */
+    public static final int CODA_IDR_ATM_VALUE = 15;
 
 
     public final int getNumber() { return value; }
@@ -454,6 +553,9 @@ public final class PayProto {
         case 10: return GO_PLAY;
         case 11: return PAYPAL;
         case 12: return MIWALLET;
+        case 13: return PAYTM;
+        case 14: return CODA_IDR_DCB;
+        case 15: return CODA_IDR_ATM;
         default: return null;
       }
     }
@@ -733,6 +835,88 @@ public final class PayProto {
   }
 
   /**
+   * Protobuf enum {@code AppType}
+   */
+  public enum AppType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>ZHIBO = 0;</code>
+     */
+    ZHIBO(0, 0),
+    /**
+     * <code>ZHIBO_ZHUSHOU = 1;</code>
+     */
+    ZHIBO_ZHUSHOU(1, 1),
+    ;
+
+    /**
+     * <code>ZHIBO = 0;</code>
+     */
+    public static final int ZHIBO_VALUE = 0;
+    /**
+     * <code>ZHIBO_ZHUSHOU = 1;</code>
+     */
+    public static final int ZHIBO_ZHUSHOU_VALUE = 1;
+
+
+    public final int getNumber() { return value; }
+
+    public static AppType valueOf(int value) {
+      switch (value) {
+        case 0: return ZHIBO;
+        case 1: return ZHIBO_ZHUSHOU;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<AppType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<AppType>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<AppType>() {
+            public AppType findValueByNumber(int number) {
+              return AppType.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.wali.live.proto.PayProto.getDescriptor().getEnumTypes().get(5);
+    }
+
+    private static final AppType[] VALUES = values();
+
+    public static AppType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private AppType(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:AppType)
+  }
+
+  /**
    * Protobuf enum {@code NotifyType}
    *
    * <pre>
@@ -793,7 +977,7 @@ public final class PayProto {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.wali.live.proto.PayProto.getDescriptor().getEnumTypes().get(5);
+      return com.wali.live.proto.PayProto.getDescriptor().getEnumTypes().get(6);
     }
 
     private static final NotifyType[] VALUES = values();
@@ -895,7 +1079,7 @@ public final class PayProto {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.wali.live.proto.PayProto.getDescriptor().getEnumTypes().get(6);
+      return com.wali.live.proto.PayProto.getDescriptor().getEnumTypes().get(7);
     }
 
     private static final GrantType[] VALUES = values();
@@ -8951,6 +9135,41 @@ public final class PayProto {
      * </pre>
      */
     int getGiveGemCnt();
+
+    /**
+     * <code>optional string app_channel = 9;</code>
+     *
+     * <pre>
+     * 直播小助手接入的应用app_channel
+     * </pre>
+     */
+    boolean hasAppChannel();
+    /**
+     * <code>optional string app_channel = 9;</code>
+     *
+     * <pre>
+     * 直播小助手接入的应用app_channel
+     * </pre>
+     */
+    java.lang.String getAppChannel();
+    /**
+     * <code>optional string app_channel = 9;</code>
+     *
+     * <pre>
+     * 直播小助手接入的应用app_channel
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getAppChannelBytes();
+
+    /**
+     * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+     */
+    boolean hasAppType();
+    /**
+     * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+     */
+    com.wali.live.proto.PayProto.AppType getAppType();
   }
   /**
    * Protobuf type {@code CreateOrderRequest}
@@ -9065,6 +9284,23 @@ public final class PayProto {
             case 64: {
               bitField0_ |= 0x00000080;
               giveGemCnt_ = input.readUInt32();
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
+              appChannel_ = bs;
+              break;
+            }
+            case 80: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.PayProto.AppType value = com.wali.live.proto.PayProto.AppType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(10, rawValue);
+              } else {
+                bitField0_ |= 0x00000200;
+                appType_ = value;
+              }
               break;
             }
           }
@@ -9275,6 +9511,75 @@ public final class PayProto {
       return giveGemCnt_;
     }
 
+    public static final int APP_CHANNEL_FIELD_NUMBER = 9;
+    private java.lang.Object appChannel_;
+    /**
+     * <code>optional string app_channel = 9;</code>
+     *
+     * <pre>
+     * 直播小助手接入的应用app_channel
+     * </pre>
+     */
+    public boolean hasAppChannel() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional string app_channel = 9;</code>
+     *
+     * <pre>
+     * 直播小助手接入的应用app_channel
+     * </pre>
+     */
+    public java.lang.String getAppChannel() {
+      java.lang.Object ref = appChannel_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          appChannel_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string app_channel = 9;</code>
+     *
+     * <pre>
+     * 直播小助手接入的应用app_channel
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getAppChannelBytes() {
+      java.lang.Object ref = appChannel_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        appChannel_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int APP_TYPE_FIELD_NUMBER = 10;
+    private com.wali.live.proto.PayProto.AppType appType_;
+    /**
+     * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+     */
+    public boolean hasAppType() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+     */
+    public com.wali.live.proto.PayProto.AppType getAppType() {
+      return appType_;
+    }
+
     private void initFields() {
       uuid_ = 0L;
       platform_ = com.wali.live.proto.PayProto.Platform.IOS;
@@ -9284,6 +9589,8 @@ public final class PayProto {
       payType_ = com.wali.live.proto.PayProto.PayType.IAP;
       channel_ = com.wali.live.proto.PayProto.RChannel.IOS_CH;
       giveGemCnt_ = 0;
+      appChannel_ = "";
+      appType_ = com.wali.live.proto.PayProto.AppType.ZHIBO;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9338,6 +9645,12 @@ public final class PayProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeUInt32(8, giveGemCnt_);
       }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBytes(9, getAppChannelBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeEnum(10, appType_.getNumber());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9378,6 +9691,14 @@ public final class PayProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(8, giveGemCnt_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getAppChannelBytes());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(10, appType_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9517,6 +9838,10 @@ public final class PayProto {
         bitField0_ = (bitField0_ & ~0x00000040);
         giveGemCnt_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
+        appChannel_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
+        appType_ = com.wali.live.proto.PayProto.AppType.ZHIBO;
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -9577,6 +9902,14 @@ public final class PayProto {
           to_bitField0_ |= 0x00000080;
         }
         result.giveGemCnt_ = giveGemCnt_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.appChannel_ = appChannel_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.appType_ = appType_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9616,6 +9949,14 @@ public final class PayProto {
         }
         if (other.hasGiveGemCnt()) {
           setGiveGemCnt(other.getGiveGemCnt());
+        }
+        if (other.hasAppChannel()) {
+          bitField0_ |= 0x00000100;
+          appChannel_ = other.appChannel_;
+          onChanged();
+        }
+        if (other.hasAppType()) {
+          setAppType(other.getAppType());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -10017,6 +10358,141 @@ public final class PayProto {
       public Builder clearGiveGemCnt() {
         bitField0_ = (bitField0_ & ~0x00000080);
         giveGemCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object appChannel_ = "";
+      /**
+       * <code>optional string app_channel = 9;</code>
+       *
+       * <pre>
+       * 直播小助手接入的应用app_channel
+       * </pre>
+       */
+      public boolean hasAppChannel() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string app_channel = 9;</code>
+       *
+       * <pre>
+       * 直播小助手接入的应用app_channel
+       * </pre>
+       */
+      public java.lang.String getAppChannel() {
+        java.lang.Object ref = appChannel_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            appChannel_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string app_channel = 9;</code>
+       *
+       * <pre>
+       * 直播小助手接入的应用app_channel
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getAppChannelBytes() {
+        java.lang.Object ref = appChannel_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          appChannel_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string app_channel = 9;</code>
+       *
+       * <pre>
+       * 直播小助手接入的应用app_channel
+       * </pre>
+       */
+      public Builder setAppChannel(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        appChannel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string app_channel = 9;</code>
+       *
+       * <pre>
+       * 直播小助手接入的应用app_channel
+       * </pre>
+       */
+      public Builder clearAppChannel() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        appChannel_ = getDefaultInstance().getAppChannel();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string app_channel = 9;</code>
+       *
+       * <pre>
+       * 直播小助手接入的应用app_channel
+       * </pre>
+       */
+      public Builder setAppChannelBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        appChannel_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.PayProto.AppType appType_ = com.wali.live.proto.PayProto.AppType.ZHIBO;
+      /**
+       * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+       */
+      public boolean hasAppType() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+       */
+      public com.wali.live.proto.PayProto.AppType getAppType() {
+        return appType_;
+      }
+      /**
+       * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+       */
+      public Builder setAppType(com.wali.live.proto.PayProto.AppType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000200;
+        appType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .AppType app_type = 10 [default = ZHIBO];</code>
+       */
+      public Builder clearAppType() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        appType_ = com.wali.live.proto.PayProto.AppType.ZHIBO;
         onChanged();
         return this;
       }
@@ -16216,6 +16692,40 @@ public final class PayProto {
      * </pre>
      */
     int getFrozenUsableTicketCnt();
+
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+     *
+     * <pre>
+     *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+     * </pre>
+     */
+    boolean hasUsableMibiTicketCnt();
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+     *
+     * <pre>
+     *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+     * </pre>
+     */
+    int getUsableMibiTicketCnt();
+
+    /**
+     * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+     *
+     * <pre>
+     *签约前未兑换的米币星票数
+     * </pre>
+     */
+    boolean hasClearMibiTicketCnt();
+    /**
+     * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+     *
+     * <pre>
+     *签约前未兑换的米币星票数
+     * </pre>
+     */
+    int getClearMibiTicketCnt();
   }
   /**
    * Protobuf type {@code QueryProfitResponse}
@@ -16399,6 +16909,16 @@ public final class PayProto {
             case 160: {
               bitField0_ |= 0x00080000;
               frozenUsableTicketCnt_ = input.readUInt32();
+              break;
+            }
+            case 168: {
+              bitField0_ |= 0x00100000;
+              usableMibiTicketCnt_ = input.readUInt32();
+              break;
+            }
+            case 176: {
+              bitField0_ |= 0x00200000;
+              clearMibiTicketCnt_ = input.readUInt32();
               break;
             }
           }
@@ -16929,6 +17449,52 @@ public final class PayProto {
       return frozenUsableTicketCnt_;
     }
 
+    public static final int USABLE_MIBI_TICKET_CNT_FIELD_NUMBER = 21;
+    private int usableMibiTicketCnt_;
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+     *
+     * <pre>
+     *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+     * </pre>
+     */
+    public boolean hasUsableMibiTicketCnt() {
+      return ((bitField0_ & 0x00100000) == 0x00100000);
+    }
+    /**
+     * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+     *
+     * <pre>
+     *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+     * </pre>
+     */
+    public int getUsableMibiTicketCnt() {
+      return usableMibiTicketCnt_;
+    }
+
+    public static final int CLEAR_MIBI_TICKET_CNT_FIELD_NUMBER = 22;
+    private int clearMibiTicketCnt_;
+    /**
+     * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+     *
+     * <pre>
+     *签约前未兑换的米币星票数
+     * </pre>
+     */
+    public boolean hasClearMibiTicketCnt() {
+      return ((bitField0_ & 0x00200000) == 0x00200000);
+    }
+    /**
+     * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+     *
+     * <pre>
+     *签约前未兑换的米币星票数
+     * </pre>
+     */
+    public int getClearMibiTicketCnt() {
+      return clearMibiTicketCnt_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       usableTicketCnt_ = 0;
@@ -16950,6 +17516,8 @@ public final class PayProto {
       signStatus_ = 0;
       redirectUrl_ = "";
       frozenUsableTicketCnt_ = 0;
+      usableMibiTicketCnt_ = 0;
+      clearMibiTicketCnt_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -17027,6 +17595,12 @@ public final class PayProto {
       }
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         output.writeUInt32(20, frozenUsableTicketCnt_);
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        output.writeUInt32(21, usableMibiTicketCnt_);
+      }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        output.writeUInt32(22, clearMibiTicketCnt_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -17116,6 +17690,14 @@ public final class PayProto {
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(20, frozenUsableTicketCnt_);
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(21, usableMibiTicketCnt_);
+      }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(22, clearMibiTicketCnt_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -17289,6 +17871,10 @@ public final class PayProto {
         bitField0_ = (bitField0_ & ~0x00040000);
         frozenUsableTicketCnt_ = 0;
         bitField0_ = (bitField0_ & ~0x00080000);
+        usableMibiTicketCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00100000);
+        clearMibiTicketCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00200000);
         return this;
       }
 
@@ -17409,6 +17995,14 @@ public final class PayProto {
           to_bitField0_ |= 0x00080000;
         }
         result.frozenUsableTicketCnt_ = frozenUsableTicketCnt_;
+        if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
+          to_bitField0_ |= 0x00100000;
+        }
+        result.usableMibiTicketCnt_ = usableMibiTicketCnt_;
+        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
+          to_bitField0_ |= 0x00200000;
+        }
+        result.clearMibiTicketCnt_ = clearMibiTicketCnt_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -17488,6 +18082,12 @@ public final class PayProto {
         }
         if (other.hasFrozenUsableTicketCnt()) {
           setFrozenUsableTicketCnt(other.getFrozenUsableTicketCnt());
+        }
+        if (other.hasUsableMibiTicketCnt()) {
+          setUsableMibiTicketCnt(other.getUsableMibiTicketCnt());
+        }
+        if (other.hasClearMibiTicketCnt()) {
+          setClearMibiTicketCnt(other.getClearMibiTicketCnt());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -18735,6 +19335,102 @@ public final class PayProto {
         return this;
       }
 
+      private int usableMibiTicketCnt_ ;
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+       *
+       * <pre>
+       *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+       * </pre>
+       */
+      public boolean hasUsableMibiTicketCnt() {
+        return ((bitField0_ & 0x00100000) == 0x00100000);
+      }
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+       *
+       * <pre>
+       *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+       * </pre>
+       */
+      public int getUsableMibiTicketCnt() {
+        return usableMibiTicketCnt_;
+      }
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+       *
+       * <pre>
+       *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+       * </pre>
+       */
+      public Builder setUsableMibiTicketCnt(int value) {
+        bitField0_ |= 0x00100000;
+        usableMibiTicketCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 usable_mibi_ticket_cnt = 21;</code>
+       *
+       * <pre>
+       *（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+       * </pre>
+       */
+      public Builder clearUsableMibiTicketCnt() {
+        bitField0_ = (bitField0_ & ~0x00100000);
+        usableMibiTicketCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int clearMibiTicketCnt_ ;
+      /**
+       * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+       *
+       * <pre>
+       *签约前未兑换的米币星票数
+       * </pre>
+       */
+      public boolean hasClearMibiTicketCnt() {
+        return ((bitField0_ & 0x00200000) == 0x00200000);
+      }
+      /**
+       * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+       *
+       * <pre>
+       *签约前未兑换的米币星票数
+       * </pre>
+       */
+      public int getClearMibiTicketCnt() {
+        return clearMibiTicketCnt_;
+      }
+      /**
+       * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+       *
+       * <pre>
+       *签约前未兑换的米币星票数
+       * </pre>
+       */
+      public Builder setClearMibiTicketCnt(int value) {
+        bitField0_ |= 0x00200000;
+        clearMibiTicketCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 clear_mibi_ticket_cnt = 22;</code>
+       *
+       * <pre>
+       *签约前未兑换的米币星票数
+       * </pre>
+       */
+      public Builder clearClearMibiTicketCnt() {
+        bitField0_ = (bitField0_ & ~0x00200000);
+        clearMibiTicketCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:QueryProfitResponse)
     }
 
@@ -19956,6 +20652,38 @@ public final class PayProto {
      */
     com.wali.live.proto.PayProto.GemExchangeOrBuilder getGemExchangeListOrBuilder(
         int index);
+
+    /**
+     * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+     */
+    boolean hasUasbleTicketCnt();
+    /**
+     * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+     */
+    int getUasbleTicketCnt();
+
+    /**
+     * <code>optional .NotifyType notifyType = 5;</code>
+     */
+    boolean hasNotifyType();
+    /**
+     * <code>optional .NotifyType notifyType = 5;</code>
+     */
+    com.wali.live.proto.PayProto.NotifyType getNotifyType();
+
+    /**
+     * <code>optional string msg = 6;</code>
+     */
+    boolean hasMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>optional string msg = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
   }
   /**
    * Protobuf type {@code GetExchangeResponse}
@@ -20025,6 +20753,28 @@ public final class PayProto {
                 mutable_bitField0_ |= 0x00000004;
               }
               gemExchangeList_.add(input.readMessage(com.wali.live.proto.PayProto.GemExchange.PARSER, extensionRegistry));
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000004;
+              uasbleTicketCnt_ = input.readUInt32();
+              break;
+            }
+            case 40: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.PayProto.NotifyType value = com.wali.live.proto.PayProto.NotifyType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(5, rawValue);
+              } else {
+                bitField0_ |= 0x00000008;
+                notifyType_ = value;
+              }
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              msg_ = bs;
               break;
             }
           }
@@ -20135,10 +20885,85 @@ public final class PayProto {
       return gemExchangeList_.get(index);
     }
 
+    public static final int UASBLE_TICKET_CNT_FIELD_NUMBER = 4;
+    private int uasbleTicketCnt_;
+    /**
+     * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+     */
+    public boolean hasUasbleTicketCnt() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+     */
+    public int getUasbleTicketCnt() {
+      return uasbleTicketCnt_;
+    }
+
+    public static final int NOTIFYTYPE_FIELD_NUMBER = 5;
+    private com.wali.live.proto.PayProto.NotifyType notifyType_;
+    /**
+     * <code>optional .NotifyType notifyType = 5;</code>
+     */
+    public boolean hasNotifyType() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .NotifyType notifyType = 5;</code>
+     */
+    public com.wali.live.proto.PayProto.NotifyType getNotifyType() {
+      return notifyType_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 6;
+    private java.lang.Object msg_;
+    /**
+     * <code>optional string msg = 6;</code>
+     */
+    public boolean hasMsg() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     */
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          msg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string msg = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       retCode_ = 0;
       usableGemCnt_ = 0;
       gemExchangeList_ = java.util.Collections.emptyList();
+      uasbleTicketCnt_ = 0;
+      notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
+      msg_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -20172,6 +20997,15 @@ public final class PayProto {
       for (int i = 0; i < gemExchangeList_.size(); i++) {
         output.writeMessage(3, gemExchangeList_.get(i));
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(4, uasbleTicketCnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeEnum(5, notifyType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(6, getMsgBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -20192,6 +21026,18 @@ public final class PayProto {
       for (int i = 0; i < gemExchangeList_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, gemExchangeList_.get(i));
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, uasbleTicketCnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(5, notifyType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getMsgBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -20321,6 +21167,12 @@ public final class PayProto {
         } else {
           gemExchangeListBuilder_.clear();
         }
+        uasbleTicketCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        msg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -20366,6 +21218,18 @@ public final class PayProto {
         } else {
           result.gemExchangeList_ = gemExchangeListBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.uasbleTicketCnt_ = uasbleTicketCnt_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.notifyType_ = notifyType_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.msg_ = msg_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -20413,6 +21277,17 @@ public final class PayProto {
               gemExchangeListBuilder_.addAllMessages(other.gemExchangeList_);
             }
           }
+        }
+        if (other.hasUasbleTicketCnt()) {
+          setUasbleTicketCnt(other.getUasbleTicketCnt());
+        }
+        if (other.hasNotifyType()) {
+          setNotifyType(other.getNotifyType());
+        }
+        if (other.hasMsg()) {
+          bitField0_ |= 0x00000020;
+          msg_ = other.msg_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -20753,6 +21628,149 @@ public final class PayProto {
           gemExchangeList_ = null;
         }
         return gemExchangeListBuilder_;
+      }
+
+      private int uasbleTicketCnt_ ;
+      /**
+       * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+       */
+      public boolean hasUasbleTicketCnt() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+       */
+      public int getUasbleTicketCnt() {
+        return uasbleTicketCnt_;
+      }
+      /**
+       * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+       */
+      public Builder setUasbleTicketCnt(int value) {
+        bitField0_ |= 0x00000008;
+        uasbleTicketCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 uasble_ticket_cnt = 4;</code>
+       */
+      public Builder clearUasbleTicketCnt() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        uasbleTicketCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.PayProto.NotifyType notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
+      /**
+       * <code>optional .NotifyType notifyType = 5;</code>
+       */
+      public boolean hasNotifyType() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .NotifyType notifyType = 5;</code>
+       */
+      public com.wali.live.proto.PayProto.NotifyType getNotifyType() {
+        return notifyType_;
+      }
+      /**
+       * <code>optional .NotifyType notifyType = 5;</code>
+       */
+      public Builder setNotifyType(com.wali.live.proto.PayProto.NotifyType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000010;
+        notifyType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .NotifyType notifyType = 5;</code>
+       */
+      public Builder clearNotifyType() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        notifyType_ = com.wali.live.proto.PayProto.NotifyType.TOAST;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>optional string msg = 6;</code>
+       */
+      public boolean hasMsg() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       */
+      public Builder clearMsg() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string msg = 6;</code>
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        msg_ = value;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:GetExchangeResponse)
@@ -21743,6 +22761,23 @@ public final class PayProto {
      * <code>optional uint32 usable_gem_cnt = 2;</code>
      */
     int getUsableGemCnt();
+
+    /**
+     * <code>optional uint32 usable_ticket_cnt = 3;</code>
+     *
+     * <pre>
+     *可用普通星票数
+     * </pre>
+     */
+    boolean hasUsableTicketCnt();
+    /**
+     * <code>optional uint32 usable_ticket_cnt = 3;</code>
+     *
+     * <pre>
+     *可用普通星票数
+     * </pre>
+     */
+    int getUsableTicketCnt();
   }
   /**
    * Protobuf type {@code ExchangeGemResponse}
@@ -21804,6 +22839,11 @@ public final class PayProto {
             case 16: {
               bitField0_ |= 0x00000002;
               usableGemCnt_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              usableTicketCnt_ = input.readUInt32();
               break;
             }
           }
@@ -21876,9 +22916,33 @@ public final class PayProto {
       return usableGemCnt_;
     }
 
+    public static final int USABLE_TICKET_CNT_FIELD_NUMBER = 3;
+    private int usableTicketCnt_;
+    /**
+     * <code>optional uint32 usable_ticket_cnt = 3;</code>
+     *
+     * <pre>
+     *可用普通星票数
+     * </pre>
+     */
+    public boolean hasUsableTicketCnt() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 usable_ticket_cnt = 3;</code>
+     *
+     * <pre>
+     *可用普通星票数
+     * </pre>
+     */
+    public int getUsableTicketCnt() {
+      return usableTicketCnt_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       usableGemCnt_ = 0;
+      usableTicketCnt_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -21903,6 +22967,9 @@ public final class PayProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeUInt32(2, usableGemCnt_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, usableTicketCnt_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -21919,6 +22986,10 @@ public final class PayProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(2, usableGemCnt_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, usableTicketCnt_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -22041,6 +23112,8 @@ public final class PayProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         usableGemCnt_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        usableTicketCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -22077,6 +23150,10 @@ public final class PayProto {
           to_bitField0_ |= 0x00000002;
         }
         result.usableGemCnt_ = usableGemCnt_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.usableTicketCnt_ = usableTicketCnt_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -22098,6 +23175,9 @@ public final class PayProto {
         }
         if (other.hasUsableGemCnt()) {
           setUsableGemCnt(other.getUsableGemCnt());
+        }
+        if (other.hasUsableTicketCnt()) {
+          setUsableTicketCnt(other.getUsableTicketCnt());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -22190,6 +23270,54 @@ public final class PayProto {
       public Builder clearUsableGemCnt() {
         bitField0_ = (bitField0_ & ~0x00000002);
         usableGemCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int usableTicketCnt_ ;
+      /**
+       * <code>optional uint32 usable_ticket_cnt = 3;</code>
+       *
+       * <pre>
+       *可用普通星票数
+       * </pre>
+       */
+      public boolean hasUsableTicketCnt() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 usable_ticket_cnt = 3;</code>
+       *
+       * <pre>
+       *可用普通星票数
+       * </pre>
+       */
+      public int getUsableTicketCnt() {
+        return usableTicketCnt_;
+      }
+      /**
+       * <code>optional uint32 usable_ticket_cnt = 3;</code>
+       *
+       * <pre>
+       *可用普通星票数
+       * </pre>
+       */
+      public Builder setUsableTicketCnt(int value) {
+        bitField0_ |= 0x00000004;
+        usableTicketCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 usable_ticket_cnt = 3;</code>
+       *
+       * <pre>
+       *可用普通星票数
+       * </pre>
+       */
+      public Builder clearUsableTicketCnt() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        usableTicketCnt_ = 0;
         onChanged();
         return this;
       }
@@ -36363,6 +37491,664 @@ public final class PayProto {
     // @@protoc_insertion_point(class_scope:GiftCard)
   }
 
+  public interface PayPushOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:PayPush)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>required string order_id = 2;</code>
+     */
+    boolean hasOrderId();
+    /**
+     * <code>required string order_id = 2;</code>
+     */
+    java.lang.String getOrderId();
+    /**
+     * <code>required string order_id = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getOrderIdBytes();
+
+    /**
+     * <code>optional uint32 usable_gem_cnt = 3;</code>
+     */
+    boolean hasUsableGemCnt();
+    /**
+     * <code>optional uint32 usable_gem_cnt = 3;</code>
+     */
+    int getUsableGemCnt();
+  }
+  /**
+   * Protobuf type {@code PayPush}
+   *
+   * <pre>
+   * zhibo.bank.payNotify
+   * 支付成功完成加钻以后下发
+   * </pre>
+   */
+  public static final class PayPush extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:PayPush)
+      PayPushOrBuilder {
+    // Use PayPush.newBuilder() to construct.
+    private PayPush(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private PayPush(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final PayPush defaultInstance;
+    public static PayPush getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public PayPush getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private PayPush(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              orderId_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              usableGemCnt_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.PayProto.internal_static_PayPush_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.PayProto.internal_static_PayPush_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.PayProto.PayPush.class, com.wali.live.proto.PayProto.PayPush.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<PayPush> PARSER =
+        new com.google.protobuf.AbstractParser<PayPush>() {
+      public PayPush parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new PayPush(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PayPush> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_CODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int ORDER_ID_FIELD_NUMBER = 2;
+    private java.lang.Object orderId_;
+    /**
+     * <code>required string order_id = 2;</code>
+     */
+    public boolean hasOrderId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string order_id = 2;</code>
+     */
+    public java.lang.String getOrderId() {
+      java.lang.Object ref = orderId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          orderId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string order_id = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOrderIdBytes() {
+      java.lang.Object ref = orderId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        orderId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USABLE_GEM_CNT_FIELD_NUMBER = 3;
+    private int usableGemCnt_;
+    /**
+     * <code>optional uint32 usable_gem_cnt = 3;</code>
+     */
+    public boolean hasUsableGemCnt() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 usable_gem_cnt = 3;</code>
+     */
+    public int getUsableGemCnt() {
+      return usableGemCnt_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      orderId_ = "";
+      usableGemCnt_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasOrderId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getOrderIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, usableGemCnt_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getOrderIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, usableGemCnt_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.PayProto.PayPush parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.PayProto.PayPush prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code PayPush}
+     *
+     * <pre>
+     * zhibo.bank.payNotify
+     * 支付成功完成加钻以后下发
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:PayPush)
+        com.wali.live.proto.PayProto.PayPushOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.PayProto.internal_static_PayPush_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.PayProto.internal_static_PayPush_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.PayProto.PayPush.class, com.wali.live.proto.PayProto.PayPush.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.PayProto.PayPush.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        orderId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        usableGemCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.PayProto.internal_static_PayPush_descriptor;
+      }
+
+      public com.wali.live.proto.PayProto.PayPush getDefaultInstanceForType() {
+        return com.wali.live.proto.PayProto.PayPush.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.PayProto.PayPush build() {
+        com.wali.live.proto.PayProto.PayPush result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.PayProto.PayPush buildPartial() {
+        com.wali.live.proto.PayProto.PayPush result = new com.wali.live.proto.PayProto.PayPush(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.orderId_ = orderId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.usableGemCnt_ = usableGemCnt_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.PayProto.PayPush) {
+          return mergeFrom((com.wali.live.proto.PayProto.PayPush)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.PayProto.PayPush other) {
+        if (other == com.wali.live.proto.PayProto.PayPush.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasOrderId()) {
+          bitField0_ |= 0x00000002;
+          orderId_ = other.orderId_;
+          onChanged();
+        }
+        if (other.hasUsableGemCnt()) {
+          setUsableGemCnt(other.getUsableGemCnt());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        if (!hasOrderId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.PayProto.PayPush parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.PayProto.PayPush) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object orderId_ = "";
+      /**
+       * <code>required string order_id = 2;</code>
+       */
+      public boolean hasOrderId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string order_id = 2;</code>
+       */
+      public java.lang.String getOrderId() {
+        java.lang.Object ref = orderId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            orderId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string order_id = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOrderIdBytes() {
+        java.lang.Object ref = orderId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          orderId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string order_id = 2;</code>
+       */
+      public Builder setOrderId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        orderId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string order_id = 2;</code>
+       */
+      public Builder clearOrderId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        orderId_ = getDefaultInstance().getOrderId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string order_id = 2;</code>
+       */
+      public Builder setOrderIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        orderId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int usableGemCnt_ ;
+      /**
+       * <code>optional uint32 usable_gem_cnt = 3;</code>
+       */
+      public boolean hasUsableGemCnt() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 usable_gem_cnt = 3;</code>
+       */
+      public int getUsableGemCnt() {
+        return usableGemCnt_;
+      }
+      /**
+       * <code>optional uint32 usable_gem_cnt = 3;</code>
+       */
+      public Builder setUsableGemCnt(int value) {
+        bitField0_ |= 0x00000004;
+        usableGemCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 usable_gem_cnt = 3;</code>
+       */
+      public Builder clearUsableGemCnt() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        usableGemCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:PayPush)
+    }
+
+    static {
+      defaultInstance = new PayPush(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:PayPush)
+  }
+
   public interface GiftCardPushOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GiftCardPush)
       com.google.protobuf.MessageOrBuilder {
@@ -36446,6 +38232,11 @@ public final class PayProto {
   }
   /**
    * Protobuf type {@code GiftCardPush}
+   *
+   * <pre>
+   * zhibo.bank.giftCardNotify
+   * 发放礼物卡、虚拟钻后下发
+   * </pre>
    */
   public static final class GiftCardPush extends
       com.google.protobuf.GeneratedMessage implements
@@ -36846,6 +38637,11 @@ public final class PayProto {
     }
     /**
      * Protobuf type {@code GiftCardPush}
+     *
+     * <pre>
+     * zhibo.bank.giftCardNotify
+     * 发放礼物卡、虚拟钻后下发
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
@@ -50028,6 +51824,11 @@ public final class PayProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GiftCard_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_PayPush_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_PayPush_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GiftCardPush_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -50135,157 +51936,168 @@ public final class PayProto {
       "\001(\r\022\036\n\026usable_virtual_gem_cnt\030\t \001(\r\022\"\n\006a" +
       "mount\030\n \001(\0132\022.RechargeDayAmount\"B\n\021Recha" +
       "rgeDayAmount\022\024\n\014wxpay_amount\030\001 \001(\r\022\027\n\017mi" +
-      "wallet_amount\030\002 \001(\r\"\277\001\n\022CreateOrderReque",
+      "wallet_amount\030\002 \001(\r\"\367\001\n\022CreateOrderReque",
       "st\022\014\n\004uuid\030\001 \002(\004\022\033\n\010platform\030\002 \002(\0162\t.Pla" +
       "tform\022\020\n\010goods_id\030\003 \002(\r\022\017\n\007gem_cnt\030\004 \001(\r" +
       "\022\r\n\005price\030\005 \001(\r\022\032\n\010pay_type\030\006 \002(\0162\010.PayT" +
       "ype\022\032\n\007channel\030\007 \001(\0162\t.RChannel\022\024\n\014give_" +
-      "gem_cnt\030\010 \001(\r\"z\n\023CreateOrderResponse\022\020\n\010" +
-      "ret_code\030\001 \002(\r\022\020\n\010order_id\030\002 \001(\t\022\021\n\tuser" +
-      "_info\030\003 \001(\t\022\037\n\nnotifyType\030\004 \001(\0162\013.Notify" +
-      "Type\022\013\n\003msg\030\005 \001(\t\"\207\001\n\021CheckOrderRequest\022" +
-      "\014\n\004uuid\030\001 \002(\004\022\033\n\010platform\030\002 \002(\0162\t.Platfo" +
-      "rm\022\020\n\010order_id\030\003 \001(\t\022\014\n\004puid\030\004 \001(\t\022\017\n\007re",
-      "ceipt\030\005 \001(\t\022\026\n\016transaction_id\030\006 \001(\t\">\n\022C" +
-      "heckOrderResponse\022\020\n\010ret_code\030\001 \002(\r\022\026\n\016u" +
-      "sable_gem_cnt\030\002 \001(\r\"?\n\022QueryProfitReques" +
-      "t\022\014\n\004uuid\030\001 \002(\004\022\033\n\010platform\030\002 \002(\0162\t.Plat" +
-      "form\"J\n\006AliPay\022\017\n\007account\030\001 \001(\t\022\021\n\treal_" +
-      "name\030\002 \001(\t\022\034\n\024max_cash_cnt_onetime\030\003 \001(\r" +
-      "\"Z\n\tWeixinPay\022\021\n\tuser_name\030\001 \001(\t\022\022\n\nhead" +
-      "imgurl\030\002 \001(\t\022\025\n\rvertification\030\003 \001(\r\022\017\n\007u" +
-      "nionid\030\004 \001(\t\"X\n\tPaypalPay\022\017\n\007account\030\001 \001" +
-      "(\t\022\021\n\tfirstname\030\002 \001(\t\022\020\n\010lastname\030\003 \001(\t\022",
-      "\025\n\rvertification\030\004 \001(\r\"\345\004\n\023QueryProfitRe" +
-      "sponse\022\020\n\010ret_code\030\001 \002(\r\022\031\n\021usable_ticke" +
-      "t_cnt\030\002 \001(\r\022\031\n\021exchange_cash_cnt\030\003 \001(\r\022\037" +
-      "\n\027exchange_cash_today_cnt\030\004 \001(\r\022\027\n\006alipa" +
-      "y\030\005 \001(\0132\007.AliPay\022\026\n\016account_status\030\006 \001(\r" +
-      "\022\032\n\022max_cash_cnt_times\030\007 \001(\r\022\031\n\005wxpay\030\010 " +
-      "\001(\0132\n.WeixinPay\022\037\n\nnotifyType\030\t \001(\0162\013.No" +
-      "tifyType\022\013\n\003msg\030\n \001(\t\022\032\n\006paypal\030\013 \001(\0132\n." +
-      "PaypalPay\022\035\n\025exchange_usd_cash_cnt\030\014 \001(\r" +
-      "\022#\n\033exchange_usd_cash_today_cnt\030\r \001(\r\022%\n",
-      "\035exchange_min_cash_cnt_onetime\030\016 \001(\r\022)\n!" +
-      "exchange_min_usd_cash_cnt_onetime\030\017 \001(\r\022" +
-      "%\n\035exchange_max_cash_cnt_onetime\030\020 \001(\r\022)" +
-      "\n!exchange_max_usd_cash_cnt_onetime\030\021 \001(" +
-      "\r\022\023\n\013sign_status\030\022 \001(\r\022\024\n\014redirect_url\030\023" +
-      " \001(\t\022 \n\030frozen_usable_ticket_cnt\030\024 \001(\r\"?" +
-      "\n\022GetExchangeRequest\022\014\n\004uuid\030\001 \002(\004\022\033\n\010pl" +
-      "atform\030\002 \002(\0162\t.Platform\"]\n\013GemExchange\022\023" +
-      "\n\013exchange_id\030\001 \002(\r\022\017\n\007gem_cnt\030\002 \002(\r\022\022\n\n" +
-      "ticket_cnt\030\003 \002(\r\022\024\n\014give_gem_cnt\030\004 \001(\r\"h",
+      "gem_cnt\030\010 \001(\r\022\023\n\013app_channel\030\t \001(\t\022!\n\010ap" +
+      "p_type\030\n \001(\0162\010.AppType:\005ZHIBO\"z\n\023CreateO" +
+      "rderResponse\022\020\n\010ret_code\030\001 \002(\r\022\020\n\010order_" +
+      "id\030\002 \001(\t\022\021\n\tuser_info\030\003 \001(\t\022\037\n\nnotifyTyp" +
+      "e\030\004 \001(\0162\013.NotifyType\022\013\n\003msg\030\005 \001(\t\"\207\001\n\021Ch" +
+      "eckOrderRequest\022\014\n\004uuid\030\001 \002(\004\022\033\n\010platfor",
+      "m\030\002 \002(\0162\t.Platform\022\020\n\010order_id\030\003 \001(\t\022\014\n\004" +
+      "puid\030\004 \001(\t\022\017\n\007receipt\030\005 \001(\t\022\026\n\016transacti" +
+      "on_id\030\006 \001(\t\">\n\022CheckOrderResponse\022\020\n\010ret" +
+      "_code\030\001 \002(\r\022\026\n\016usable_gem_cnt\030\002 \001(\r\"?\n\022Q" +
+      "ueryProfitRequest\022\014\n\004uuid\030\001 \002(\004\022\033\n\010platf" +
+      "orm\030\002 \002(\0162\t.Platform\"J\n\006AliPay\022\017\n\007accoun" +
+      "t\030\001 \001(\t\022\021\n\treal_name\030\002 \001(\t\022\034\n\024max_cash_c" +
+      "nt_onetime\030\003 \001(\r\"Z\n\tWeixinPay\022\021\n\tuser_na" +
+      "me\030\001 \001(\t\022\022\n\nheadimgurl\030\002 \001(\t\022\025\n\rvertific" +
+      "ation\030\003 \001(\r\022\017\n\007unionid\030\004 \001(\t\"X\n\tPaypalPa",
+      "y\022\017\n\007account\030\001 \001(\t\022\021\n\tfirstname\030\002 \001(\t\022\020\n" +
+      "\010lastname\030\003 \001(\t\022\025\n\rvertification\030\004 \001(\r\"\244" +
+      "\005\n\023QueryProfitResponse\022\020\n\010ret_code\030\001 \002(\r" +
+      "\022\031\n\021usable_ticket_cnt\030\002 \001(\r\022\031\n\021exchange_" +
+      "cash_cnt\030\003 \001(\r\022\037\n\027exchange_cash_today_cn" +
+      "t\030\004 \001(\r\022\027\n\006alipay\030\005 \001(\0132\007.AliPay\022\026\n\016acco" +
+      "unt_status\030\006 \001(\r\022\032\n\022max_cash_cnt_times\030\007" +
+      " \001(\r\022\031\n\005wxpay\030\010 \001(\0132\n.WeixinPay\022\037\n\nnotif" +
+      "yType\030\t \001(\0162\013.NotifyType\022\013\n\003msg\030\n \001(\t\022\032\n" +
+      "\006paypal\030\013 \001(\0132\n.PaypalPay\022\035\n\025exchange_us",
+      "d_cash_cnt\030\014 \001(\r\022#\n\033exchange_usd_cash_to" +
+      "day_cnt\030\r \001(\r\022%\n\035exchange_min_cash_cnt_o" +
+      "netime\030\016 \001(\r\022)\n!exchange_min_usd_cash_cn" +
+      "t_onetime\030\017 \001(\r\022%\n\035exchange_max_cash_cnt" +
+      "_onetime\030\020 \001(\r\022)\n!exchange_max_usd_cash_" +
+      "cnt_onetime\030\021 \001(\r\022\023\n\013sign_status\030\022 \001(\r\022\024" +
+      "\n\014redirect_url\030\023 \001(\t\022 \n\030frozen_usable_ti" +
+      "cket_cnt\030\024 \001(\r\022\036\n\026usable_mibi_ticket_cnt" +
+      "\030\025 \001(\r\022\035\n\025clear_mibi_ticket_cnt\030\026 \001(\r\"?\n" +
+      "\022GetExchangeRequest\022\014\n\004uuid\030\001 \002(\004\022\033\n\010pla",
+      "tform\030\002 \002(\0162\t.Platform\"]\n\013GemExchange\022\023\n" +
+      "\013exchange_id\030\001 \002(\r\022\017\n\007gem_cnt\030\002 \002(\r\022\022\n\nt" +
+      "icket_cnt\030\003 \002(\r\022\024\n\014give_gem_cnt\030\004 \001(\r\"\261\001" +
       "\n\023GetExchangeResponse\022\020\n\010ret_code\030\001 \002(\r\022" +
       "\026\n\016usable_gem_cnt\030\002 \001(\r\022\'\n\021gem_exchange_" +
-      "list\030\003 \003(\0132\014.GemExchange\"\243\001\n\022ExchangeGem" +
-      "Request\022\014\n\004uuid\030\001 \002(\004\022\021\n\tclient_id\030\002 \002(\004" +
-      "\022\023\n\013exchange_id\030\003 \002(\r\022\017\n\007gem_cnt\030\004 \002(\r\022\023" +
-      "\n\013tichket_cnt\030\005 \002(\r\022\024\n\014give_gem_cnt\030\006 \001(" +
-      "\r\022\033\n\010platform\030\007 \001(\0162\t.Platform\"?\n\023Exchan" +
-      "geGemResponse\022\020\n\010ret_code\030\001 \002(\r\022\026\n\016usabl" +
-      "e_gem_cnt\030\002 \001(\r\"\350\001\n\017WithdrawRequest\022\014\n\004u" +
-      "uid\030\001 \002(\004\022\021\n\tclient_id\030\002 \002(\004\022\027\n\017withdraw",
-      "_amount\030\003 \001(\r\022\031\n\021consum_ticket_cnt\030\004 \001(\r" +
-      "\022$\n\rwithdraw_type\030\005 \002(\0162\r.WithdrawType\022\033" +
-      "\n\010platform\030\006 \001(\0162\t.Platform\022\022\n\nchannel_i" +
-      "d\030\007 \001(\r\022\017\n\007unionid\030\010 \001(\t\022\030\n\020need_real_re" +
-      "sule\030\t \001(\010\"\251\001\n\020WithdrawResponse\022\020\n\010ret_c" +
-      "ode\030\001 \002(\r\022\031\n\021usable_ticket_cnt\030\002 \001(\r\022\031\n\021" +
-      "exchange_cash_cnt\030\003 \001(\r\022\037\n\027today_exchang" +
-      "e_cash_cnt\030\004 \001(\r\022\037\n\nnotifyType\030\005 \001(\0162\013.N" +
-      "otifyType\022\013\n\003msg\030\006 \001(\t\"E\n\025WithdrawRecord" +
-      "Request\022\014\n\004uuid\030\001 \002(\004\022\017\n\007item_id\030\002 \001(\t\022\r",
-      "\n\005limit\030\003 \001(\r\"\300\001\n\016WithdrawRecord\022\017\n\007item" +
-      "_id\030\001 \001(\t\022\016\n\006amount\030\003 \001(\r\022\021\n\ttimestamp\030\004" +
-      " \001(\004\022\016\n\006status\030\005 \001(\r\022\020\n\010item_key\030\006 \001(\t\022\022" +
-      "\n\nstatus_msg\030\007 \001(\t\022\036\n\026orther_currency_am" +
-      "ount\030\010 \001(\r\022$\n\rwithdraw_type\030\t \001(\0162\r.With" +
-      "drawType\"T\n\026WithdrawRecordResponse\022\020\n\010re" +
-      "t_code\030\001 \002(\r\022(\n\017withdrawRecords\030\002 \003(\0132\017." +
-      "WithdrawRecord\"\314\001\n\013BindRequest\022\014\n\004uuid\030\001" +
-      " \002(\004\022\021\n\treal_name\030\002 \001(\t\022\017\n\007account\030\003 \001(\t" +
-      "\022\017\n\007card_id\030\004 \001(\t\022\022\n\noauth_code\030\005 \001(\t\022\033\n",
-      "\004type\030\006 \001(\0162\r.WithdrawType\022\026\n\016paypal_acc" +
-      "ount\030\007 \001(\t\022\030\n\020paypal_firstname\030\010 \001(\t\022\027\n\017" +
-      "paypal_lastname\030\t \001(\t\"\200\001\n\014BindResponse\022\020" +
-      "\n\010ret_code\030\001 \002(\r\022\016\n\006openid\030\002 \001(\t\022\027\n\006alip" +
-      "ay\030\003 \001(\0132\007.AliPay\022\031\n\005wxpay\030\004 \001(\0132\n.Weixi" +
-      "nPay\022\032\n\006paypal\030\005 \001(\0132\n.PaypalPay\"\251\001\n\026Aut" +
-      "hAndWithdrawRequest\022\014\n\004uuid\030\001 \002(\004\022\021\n\trea" +
-      "l_name\030\002 \001(\t\022\017\n\007account\030\003 \001(\t\022\017\n\007card_id" +
-      "\030\004 \001(\t\022\022\n\noauth_code\030\005 \001(\t\022\033\n\004type\030\006 \001(\016" +
-      "2\r.WithdrawType\022\033\n\010platform\030\007 \001(\0162\t.Plat",
-      "form\"o\n\027AuthAndWithdrawResponse\022\020\n\010ret_c" +
-      "ode\030\001 \002(\r\022\016\n\006openid\030\002 \001(\t\022\027\n\006alipay\030\003 \001(" +
-      "\0132\007.AliPay\022\031\n\005wxpay\030\004 \001(\0132\n.WeixinPay\"\024\n" +
-      "\022GetRankListRequest\"\025\n\023GetRankListRespon" +
-      "se\"B\n\016RedPointConfig\022\021\n\tstartTime\030\001 \002(\004\022" +
-      "\017\n\007endTime\030\002 \002(\004\022\014\n\004uniq\030\003 \001(\t\"6\n\030GetRed" +
-      "PointConfigRequest\022\014\n\004type\030\001 \002(\t\022\014\n\004uniq" +
-      "\030\002 \001(\t\"N\n\031GetRedPointConfigResponse\022\020\n\010r" +
-      "et_code\030\001 \002(\r\022\037\n\006config\030\002 \001(\0132\017.RedPoint" +
-      "Config\"k\n\010GiftCard\022\017\n\007gift_id\030\001 \001(\r\022\025\n\rg",
-      "ift_card_cnt\030\002 \001(\r\022\022\n\nbegin_time\030\003 \001(\004\022\020" +
-      "\n\010end_time\030\004 \001(\004\022\021\n\tactive_id\030\005 \001(\r\"\265\001\n\014" +
-      "GiftCardPush\022\020\n\010ret_code\030\001 \002(\r\022\035\n\ngift_c" +
-      "ards\030\002 \003(\0132\t.GiftCard\022\032\n\022ios_usable_gem_" +
-      "cnt\030\003 \001(\r\022\032\n\022and_usable_gem_cnt\030\004 \001(\r\022\034\n" +
-      "\024user_asset_timestamp\030\005 \001(\004\022\036\n\026usable_vi" +
-      "rtual_gem_cnt\030\006 \001(\r\"F\n\031QueryBalanceDetai" +
-      "lRequest\022\014\n\004uuid\030\001 \001(\004\022\033\n\010platform\030\002 \001(\016" +
-      "2\t.Platform\"\332\001\n\032QueryBalanceDetailRespon" +
-      "se\022\020\n\010ret_code\030\001 \001(\r\022\024\n\014real_gem_cnt\030\002 \001",
-      "(\r\022%\n\020virtual_gem_list\030\003 \003(\0132\013.VirtualGe" +
-      "m\022!\n\016gift_card_list\030\004 \003(\0132\t.GiftCard\022\036\n\026" +
-      "usable_virtual_gem_cnt\030\005 \001(\r\022*\n\007history\030" +
-      "\006 \001(\0132\031.ExpireOrderHistoryRecord\"K\n\nVirt" +
-      "ualGem\022\027\n\017virtual_gem_cnt\030\001 \001(\r\022\022\n\nbegin" +
-      "_time\030\002 \001(\004\022\020\n\010end_time\030\003 \001(\004\"_\n\030ExpireO" +
-      "rderHistoryRecord\022!\n\005cards\030\001 \003(\0132\022.Expir" +
-      "eOrderRecord\022 \n\004gems\030\002 \003(\0132\022.ExpireOrder" +
-      "Record\"\351\001\n\021ExpireOrderRecord\022\020\n\010order_id" +
-      "\030\001 \001(\t\022\014\n\004uuid\030\002 \001(\r\022\017\n\007gift_id\030\003 \001(\r\022\020\n",
-      "\010gift_cnt\030\004 \001(\r\022\021\n\tworth_gem\030\005 \001(\r\022\022\n\nbe" +
-      "gin_time\030\006 \001(\004\022\020\n\010end_time\030\007 \001(\004\022\023\n\013expi" +
-      "re_type\030\010 \001(\r\022\023\n\013create_time\030\t \001(\004\022\016\n\006st" +
-      "atus\030\n \001(\r\022\036\n\004type\030\013 \001(\0162\n.GrantType:\004CA" +
-      "RD\"J\n\016YzbGemExchange\022\023\n\013exchange_id\030\001 \002(" +
-      "\r\022\017\n\007gem_cnt\030\002 \002(\r\022\022\n\nyzb_ticket\030\003 \002(\r\"D" +
-      "\n\025YzbExchageListRequest\022\016\n\006userId\030\001 \002(\004\022" +
-      "\033\n\010platform\030\002 \001(\0162\t.Platform\"Q\n\026YzbExcha" +
-      "geListResponse\022\017\n\007retCode\030\001 \002(\r\022&\n\rgem_e" +
-      "xchanges\030\002 \003(\0132\017.YzbGemExchange\"\247\001\n\022YzbE",
-      "xchangeRequest\022\024\n\014yzb_order_id\030\001 \002(\t\022\016\n\006" +
-      "userId\030\002 \002(\004\022\023\n\013exchange_id\030\003 \002(\r\022\021\n\ttim" +
-      "estamp\030\004 \002(\004\022\020\n\005count\030\005 \001(\r:\0011\022\033\n\010platfo" +
-      "rm\030\006 \001(\0162\t.Platform\022\024\n\014package_name\030\007 \002(" +
-      "\t\"\200\001\n\023YzbExchangeResponse\022\017\n\007retCode\030\001 \002" +
-      "(\r\022\016\n\006retMsg\030\002 \001(\t\022\026\n\016usable_gem_cnt\030\003 \001" +
-      "(\r\022\034\n\024user_asset_timestamp\030\004 \001(\004\022\022\n\nyzb_" +
-      "ticket\030\005 \001(\r\"B\n\025RechargeRecordRequest\022\014\n" +
-      "\004uuid\030\001 \002(\004\022\033\n\010platform\030\004 \001(\0162\t.Platform" +
-      "\"\257\001\n\016RechargeRecord\022\017\n\007item_id\030\001 \001(\t\022\017\n\007",
-      "gem_cnt\030\002 \001(\r\022\016\n\006amount\030\003 \001(\r\022\021\n\ttimesta" +
-      "mp\030\004 \001(\004\022\016\n\006status\030\005 \001(\r\022\020\n\010order_id\030\006 \001" +
-      "(\t\022\031\n\007payType\030\007 \001(\0162\010.PayType\022\033\n\010platfor" +
-      "m\030\010 \001(\0162\t.Platform\"T\n\026RechargeRecordResp" +
-      "onse\022\020\n\010ret_code\030\001 \002(\r\022(\n\017rechargeRecord" +
-      "s\030\002 \003(\0132\017.RechargeRecord* \n\010Platform\022\007\n\003" +
-      "IOS\020\001\022\013\n\007ANDROID\020\002*g\n\010RChannel\022\n\n\006IOS_CH" +
-      "\020\001\022\n\n\006AND_CH\020\002\022\n\n\006WEB_CH\020\003\022\013\n\007PAYU_CH\020\004\022" +
-      "\r\n\tPAYPAL_CH\020\005\022\016\n\nGO_PLAY_CH\020\006\022\013\n\007TEST_C" +
-      "H\020\007*\227\001\n\007PayType\022\007\n\003IAP\020\001\022\n\n\006WEIXIN\020\002\022\n\n\006",
-      "ALIPAY\020\003\022\t\n\005MIPAY\020\004\022\n\n\006SYSTEM\020\005\022\013\n\007OPERA" +
-      "TE\020\006\022\n\n\006DIRECT\020\007\022\010\n\004PAYU\020\010\022\n\n\006PAYPAU\020\t\022\013" +
-      "\n\007GO_PLAY\020\n\022\n\n\006PAYPAL\020\013\022\014\n\010MIWALLET\020\014*M\n" +
-      "\014WithdrawType\022\023\n\017ALIPAY_WITHDRAW\020\001\022\023\n\017WE" +
-      "IXIN_WITHDRAW\020\002\022\023\n\017PAYPAL_WITHDRAW\020\003*c\n\007" +
-      "ActType\022\031\n\025NEWMAN_FIRST_RECHARGE\020\001\022\026\n\022RE" +
-      "CHARGE_CNT_LIMIT\020\002\022\031\n\025RECHARGE_PERIOD_LI" +
-      "MIT\020\003\022\n\n\006NORMAL\020\004*\"\n\nNotifyType\022\t\n\005TOAST" +
-      "\020\001\022\t\n\005ALERT\020\002*\036\n\tGrantType\022\010\n\004CARD\020\001\022\007\n\003" +
-      "GEM\020\002B\037\n\023com.wali.live.protoB\010PayProto"
+      "list\030\003 \003(\0132\014.GemExchange\022\031\n\021uasble_ticke" +
+      "t_cnt\030\004 \001(\r\022\037\n\nnotifyType\030\005 \001(\0162\013.Notify" +
+      "Type\022\013\n\003msg\030\006 \001(\t\"\243\001\n\022ExchangeGemRequest" +
+      "\022\014\n\004uuid\030\001 \002(\004\022\021\n\tclient_id\030\002 \002(\004\022\023\n\013exc" +
+      "hange_id\030\003 \002(\r\022\017\n\007gem_cnt\030\004 \002(\r\022\023\n\013tichk",
+      "et_cnt\030\005 \002(\r\022\024\n\014give_gem_cnt\030\006 \001(\r\022\033\n\010pl" +
+      "atform\030\007 \001(\0162\t.Platform\"Z\n\023ExchangeGemRe" +
+      "sponse\022\020\n\010ret_code\030\001 \002(\r\022\026\n\016usable_gem_c" +
+      "nt\030\002 \001(\r\022\031\n\021usable_ticket_cnt\030\003 \001(\r\"\350\001\n\017" +
+      "WithdrawRequest\022\014\n\004uuid\030\001 \002(\004\022\021\n\tclient_" +
+      "id\030\002 \002(\004\022\027\n\017withdraw_amount\030\003 \001(\r\022\031\n\021con" +
+      "sum_ticket_cnt\030\004 \001(\r\022$\n\rwithdraw_type\030\005 " +
+      "\002(\0162\r.WithdrawType\022\033\n\010platform\030\006 \001(\0162\t.P" +
+      "latform\022\022\n\nchannel_id\030\007 \001(\r\022\017\n\007unionid\030\010" +
+      " \001(\t\022\030\n\020need_real_resule\030\t \001(\010\"\251\001\n\020Withd",
+      "rawResponse\022\020\n\010ret_code\030\001 \002(\r\022\031\n\021usable_" +
+      "ticket_cnt\030\002 \001(\r\022\031\n\021exchange_cash_cnt\030\003 " +
+      "\001(\r\022\037\n\027today_exchange_cash_cnt\030\004 \001(\r\022\037\n\n" +
+      "notifyType\030\005 \001(\0162\013.NotifyType\022\013\n\003msg\030\006 \001" +
+      "(\t\"E\n\025WithdrawRecordRequest\022\014\n\004uuid\030\001 \002(" +
+      "\004\022\017\n\007item_id\030\002 \001(\t\022\r\n\005limit\030\003 \001(\r\"\300\001\n\016Wi" +
+      "thdrawRecord\022\017\n\007item_id\030\001 \001(\t\022\016\n\006amount\030" +
+      "\003 \001(\r\022\021\n\ttimestamp\030\004 \001(\004\022\016\n\006status\030\005 \001(\r" +
+      "\022\020\n\010item_key\030\006 \001(\t\022\022\n\nstatus_msg\030\007 \001(\t\022\036" +
+      "\n\026orther_currency_amount\030\010 \001(\r\022$\n\rwithdr",
+      "aw_type\030\t \001(\0162\r.WithdrawType\"T\n\026Withdraw" +
+      "RecordResponse\022\020\n\010ret_code\030\001 \002(\r\022(\n\017with" +
+      "drawRecords\030\002 \003(\0132\017.WithdrawRecord\"\314\001\n\013B" +
+      "indRequest\022\014\n\004uuid\030\001 \002(\004\022\021\n\treal_name\030\002 " +
+      "\001(\t\022\017\n\007account\030\003 \001(\t\022\017\n\007card_id\030\004 \001(\t\022\022\n" +
+      "\noauth_code\030\005 \001(\t\022\033\n\004type\030\006 \001(\0162\r.Withdr" +
+      "awType\022\026\n\016paypal_account\030\007 \001(\t\022\030\n\020paypal" +
+      "_firstname\030\010 \001(\t\022\027\n\017paypal_lastname\030\t \001(" +
+      "\t\"\200\001\n\014BindResponse\022\020\n\010ret_code\030\001 \002(\r\022\016\n\006" +
+      "openid\030\002 \001(\t\022\027\n\006alipay\030\003 \001(\0132\007.AliPay\022\031\n",
+      "\005wxpay\030\004 \001(\0132\n.WeixinPay\022\032\n\006paypal\030\005 \001(\013" +
+      "2\n.PaypalPay\"\251\001\n\026AuthAndWithdrawRequest\022" +
+      "\014\n\004uuid\030\001 \002(\004\022\021\n\treal_name\030\002 \001(\t\022\017\n\007acco" +
+      "unt\030\003 \001(\t\022\017\n\007card_id\030\004 \001(\t\022\022\n\noauth_code" +
+      "\030\005 \001(\t\022\033\n\004type\030\006 \001(\0162\r.WithdrawType\022\033\n\010p" +
+      "latform\030\007 \001(\0162\t.Platform\"o\n\027AuthAndWithd" +
+      "rawResponse\022\020\n\010ret_code\030\001 \002(\r\022\016\n\006openid\030" +
+      "\002 \001(\t\022\027\n\006alipay\030\003 \001(\0132\007.AliPay\022\031\n\005wxpay\030" +
+      "\004 \001(\0132\n.WeixinPay\"\024\n\022GetRankListRequest\"" +
+      "\025\n\023GetRankListResponse\"B\n\016RedPointConfig",
+      "\022\021\n\tstartTime\030\001 \002(\004\022\017\n\007endTime\030\002 \002(\004\022\014\n\004" +
+      "uniq\030\003 \001(\t\"6\n\030GetRedPointConfigRequest\022\014" +
+      "\n\004type\030\001 \002(\t\022\014\n\004uniq\030\002 \001(\t\"N\n\031GetRedPoin" +
+      "tConfigResponse\022\020\n\010ret_code\030\001 \002(\r\022\037\n\006con" +
+      "fig\030\002 \001(\0132\017.RedPointConfig\"k\n\010GiftCard\022\017" +
+      "\n\007gift_id\030\001 \001(\r\022\025\n\rgift_card_cnt\030\002 \001(\r\022\022" +
+      "\n\nbegin_time\030\003 \001(\004\022\020\n\010end_time\030\004 \001(\004\022\021\n\t" +
+      "active_id\030\005 \001(\r\"E\n\007PayPush\022\020\n\010ret_code\030\001" +
+      " \002(\r\022\020\n\010order_id\030\002 \002(\t\022\026\n\016usable_gem_cnt" +
+      "\030\003 \001(\r\"\265\001\n\014GiftCardPush\022\020\n\010ret_code\030\001 \002(",
+      "\r\022\035\n\ngift_cards\030\002 \003(\0132\t.GiftCard\022\032\n\022ios_" +
+      "usable_gem_cnt\030\003 \001(\r\022\032\n\022and_usable_gem_c" +
+      "nt\030\004 \001(\r\022\034\n\024user_asset_timestamp\030\005 \001(\004\022\036" +
+      "\n\026usable_virtual_gem_cnt\030\006 \001(\r\"F\n\031QueryB" +
+      "alanceDetailRequest\022\014\n\004uuid\030\001 \001(\004\022\033\n\010pla" +
+      "tform\030\002 \001(\0162\t.Platform\"\332\001\n\032QueryBalanceD" +
+      "etailResponse\022\020\n\010ret_code\030\001 \001(\r\022\024\n\014real_" +
+      "gem_cnt\030\002 \001(\r\022%\n\020virtual_gem_list\030\003 \003(\0132" +
+      "\013.VirtualGem\022!\n\016gift_card_list\030\004 \003(\0132\t.G" +
+      "iftCard\022\036\n\026usable_virtual_gem_cnt\030\005 \001(\r\022",
+      "*\n\007history\030\006 \001(\0132\031.ExpireOrderHistoryRec" +
+      "ord\"K\n\nVirtualGem\022\027\n\017virtual_gem_cnt\030\001 \001" +
+      "(\r\022\022\n\nbegin_time\030\002 \001(\004\022\020\n\010end_time\030\003 \001(\004" +
+      "\"_\n\030ExpireOrderHistoryRecord\022!\n\005cards\030\001 " +
+      "\003(\0132\022.ExpireOrderRecord\022 \n\004gems\030\002 \003(\0132\022." +
+      "ExpireOrderRecord\"\351\001\n\021ExpireOrderRecord\022" +
+      "\020\n\010order_id\030\001 \001(\t\022\014\n\004uuid\030\002 \001(\r\022\017\n\007gift_" +
+      "id\030\003 \001(\r\022\020\n\010gift_cnt\030\004 \001(\r\022\021\n\tworth_gem\030" +
+      "\005 \001(\r\022\022\n\nbegin_time\030\006 \001(\004\022\020\n\010end_time\030\007 " +
+      "\001(\004\022\023\n\013expire_type\030\010 \001(\r\022\023\n\013create_time\030",
+      "\t \001(\004\022\016\n\006status\030\n \001(\r\022\036\n\004type\030\013 \001(\0162\n.Gr" +
+      "antType:\004CARD\"J\n\016YzbGemExchange\022\023\n\013excha" +
+      "nge_id\030\001 \002(\r\022\017\n\007gem_cnt\030\002 \002(\r\022\022\n\nyzb_tic" +
+      "ket\030\003 \002(\r\"D\n\025YzbExchageListRequest\022\016\n\006us" +
+      "erId\030\001 \002(\004\022\033\n\010platform\030\002 \001(\0162\t.Platform\"" +
+      "Q\n\026YzbExchageListResponse\022\017\n\007retCode\030\001 \002" +
+      "(\r\022&\n\rgem_exchanges\030\002 \003(\0132\017.YzbGemExchan" +
+      "ge\"\247\001\n\022YzbExchangeRequest\022\024\n\014yzb_order_i" +
+      "d\030\001 \002(\t\022\016\n\006userId\030\002 \002(\004\022\023\n\013exchange_id\030\003" +
+      " \002(\r\022\021\n\ttimestamp\030\004 \002(\004\022\020\n\005count\030\005 \001(\r:\001",
+      "1\022\033\n\010platform\030\006 \001(\0162\t.Platform\022\024\n\014packag" +
+      "e_name\030\007 \002(\t\"\200\001\n\023YzbExchangeResponse\022\017\n\007" +
+      "retCode\030\001 \002(\r\022\016\n\006retMsg\030\002 \001(\t\022\026\n\016usable_" +
+      "gem_cnt\030\003 \001(\r\022\034\n\024user_asset_timestamp\030\004 " +
+      "\001(\004\022\022\n\nyzb_ticket\030\005 \001(\r\"B\n\025RechargeRecor" +
+      "dRequest\022\014\n\004uuid\030\001 \002(\004\022\033\n\010platform\030\004 \001(\016" +
+      "2\t.Platform\"\257\001\n\016RechargeRecord\022\017\n\007item_i" +
+      "d\030\001 \001(\t\022\017\n\007gem_cnt\030\002 \001(\r\022\016\n\006amount\030\003 \001(\r" +
+      "\022\021\n\ttimestamp\030\004 \001(\004\022\016\n\006status\030\005 \001(\r\022\020\n\010o" +
+      "rder_id\030\006 \001(\t\022\031\n\007payType\030\007 \001(\0162\010.PayType",
+      "\022\033\n\010platform\030\010 \001(\0162\t.Platform\"T\n\026Recharg" +
+      "eRecordResponse\022\020\n\010ret_code\030\001 \002(\r\022(\n\017rec" +
+      "hargeRecords\030\002 \003(\0132\017.RechargeRecord* \n\010P" +
+      "latform\022\007\n\003IOS\020\001\022\013\n\007ANDROID\020\002*\237\001\n\010RChann" +
+      "el\022\n\n\006IOS_CH\020\001\022\n\n\006AND_CH\020\002\022\n\n\006WEB_CH\020\003\022\013" +
+      "\n\007PAYU_CH\020\004\022\r\n\tPAYPAL_CH\020\005\022\016\n\nGO_PLAY_CH" +
+      "\020\006\022\013\n\007TEST_CH\020\007\022\014\n\010PAYTM_CH\020\010\022\023\n\017CODA_ID" +
+      "R_DCB_CH\020\t\022\023\n\017CODA_IDR_ATM_CH\020\n*\306\001\n\007PayT" +
+      "ype\022\007\n\003IAP\020\001\022\n\n\006WEIXIN\020\002\022\n\n\006ALIPAY\020\003\022\t\n\005" +
+      "MIPAY\020\004\022\n\n\006SYSTEM\020\005\022\013\n\007OPERATE\020\006\022\n\n\006DIRE",
+      "CT\020\007\022\010\n\004PAYU\020\010\022\n\n\006PAYPAU\020\t\022\013\n\007GO_PLAY\020\n\022" +
+      "\n\n\006PAYPAL\020\013\022\014\n\010MIWALLET\020\014\022\t\n\005PAYTM\020\r\022\020\n\014" +
+      "CODA_IDR_DCB\020\016\022\020\n\014CODA_IDR_ATM\020\017*M\n\014With" +
+      "drawType\022\023\n\017ALIPAY_WITHDRAW\020\001\022\023\n\017WEIXIN_" +
+      "WITHDRAW\020\002\022\023\n\017PAYPAL_WITHDRAW\020\003*c\n\007ActTy" +
+      "pe\022\031\n\025NEWMAN_FIRST_RECHARGE\020\001\022\026\n\022RECHARG" +
+      "E_CNT_LIMIT\020\002\022\031\n\025RECHARGE_PERIOD_LIMIT\020\003" +
+      "\022\n\n\006NORMAL\020\004*\'\n\007AppType\022\t\n\005ZHIBO\020\000\022\021\n\rZH" +
+      "IBO_ZHUSHOU\020\001*\"\n\nNotifyType\022\t\n\005TOAST\020\001\022\t" +
+      "\n\005ALERT\020\002*\036\n\tGrantType\022\010\n\004CARD\020\001\022\007\n\003GEM\020",
+      "\002B\037\n\023com.wali.live.protoB\010PayProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -50352,7 +52164,7 @@ public final class PayProto {
     internal_static_CreateOrderRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_CreateOrderRequest_descriptor,
-        new java.lang.String[] { "Uuid", "Platform", "GoodsId", "GemCnt", "Price", "PayType", "Channel", "GiveGemCnt", });
+        new java.lang.String[] { "Uuid", "Platform", "GoodsId", "GemCnt", "Price", "PayType", "Channel", "GiveGemCnt", "AppChannel", "AppType", });
     internal_static_CreateOrderResponse_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_CreateOrderResponse_fieldAccessorTable = new
@@ -50400,7 +52212,7 @@ public final class PayProto {
     internal_static_QueryProfitResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_QueryProfitResponse_descriptor,
-        new java.lang.String[] { "RetCode", "UsableTicketCnt", "ExchangeCashCnt", "ExchangeCashTodayCnt", "Alipay", "AccountStatus", "MaxCashCntTimes", "Wxpay", "NotifyType", "Msg", "Paypal", "ExchangeUsdCashCnt", "ExchangeUsdCashTodayCnt", "ExchangeMinCashCntOnetime", "ExchangeMinUsdCashCntOnetime", "ExchangeMaxCashCntOnetime", "ExchangeMaxUsdCashCntOnetime", "SignStatus", "RedirectUrl", "FrozenUsableTicketCnt", });
+        new java.lang.String[] { "RetCode", "UsableTicketCnt", "ExchangeCashCnt", "ExchangeCashTodayCnt", "Alipay", "AccountStatus", "MaxCashCntTimes", "Wxpay", "NotifyType", "Msg", "Paypal", "ExchangeUsdCashCnt", "ExchangeUsdCashTodayCnt", "ExchangeMinCashCntOnetime", "ExchangeMinUsdCashCntOnetime", "ExchangeMaxCashCntOnetime", "ExchangeMaxUsdCashCntOnetime", "SignStatus", "RedirectUrl", "FrozenUsableTicketCnt", "UsableMibiTicketCnt", "ClearMibiTicketCnt", });
     internal_static_GetExchangeRequest_descriptor =
       getDescriptor().getMessageTypes().get(17);
     internal_static_GetExchangeRequest_fieldAccessorTable = new
@@ -50418,7 +52230,7 @@ public final class PayProto {
     internal_static_GetExchangeResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GetExchangeResponse_descriptor,
-        new java.lang.String[] { "RetCode", "UsableGemCnt", "GemExchangeList", });
+        new java.lang.String[] { "RetCode", "UsableGemCnt", "GemExchangeList", "UasbleTicketCnt", "NotifyType", "Msg", });
     internal_static_ExchangeGemRequest_descriptor =
       getDescriptor().getMessageTypes().get(20);
     internal_static_ExchangeGemRequest_fieldAccessorTable = new
@@ -50430,7 +52242,7 @@ public final class PayProto {
     internal_static_ExchangeGemResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ExchangeGemResponse_descriptor,
-        new java.lang.String[] { "RetCode", "UsableGemCnt", });
+        new java.lang.String[] { "RetCode", "UsableGemCnt", "UsableTicketCnt", });
     internal_static_WithdrawRequest_descriptor =
       getDescriptor().getMessageTypes().get(22);
     internal_static_WithdrawRequest_fieldAccessorTable = new
@@ -50521,86 +52333,92 @@ public final class PayProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GiftCard_descriptor,
         new java.lang.String[] { "GiftId", "GiftCardCnt", "BeginTime", "EndTime", "ActiveId", });
-    internal_static_GiftCardPush_descriptor =
+    internal_static_PayPush_descriptor =
       getDescriptor().getMessageTypes().get(37);
+    internal_static_PayPush_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_PayPush_descriptor,
+        new java.lang.String[] { "RetCode", "OrderId", "UsableGemCnt", });
+    internal_static_GiftCardPush_descriptor =
+      getDescriptor().getMessageTypes().get(38);
     internal_static_GiftCardPush_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GiftCardPush_descriptor,
         new java.lang.String[] { "RetCode", "GiftCards", "IosUsableGemCnt", "AndUsableGemCnt", "UserAssetTimestamp", "UsableVirtualGemCnt", });
     internal_static_QueryBalanceDetailRequest_descriptor =
-      getDescriptor().getMessageTypes().get(38);
+      getDescriptor().getMessageTypes().get(39);
     internal_static_QueryBalanceDetailRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_QueryBalanceDetailRequest_descriptor,
         new java.lang.String[] { "Uuid", "Platform", });
     internal_static_QueryBalanceDetailResponse_descriptor =
-      getDescriptor().getMessageTypes().get(39);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_QueryBalanceDetailResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_QueryBalanceDetailResponse_descriptor,
         new java.lang.String[] { "RetCode", "RealGemCnt", "VirtualGemList", "GiftCardList", "UsableVirtualGemCnt", "History", });
     internal_static_VirtualGem_descriptor =
-      getDescriptor().getMessageTypes().get(40);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_VirtualGem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_VirtualGem_descriptor,
         new java.lang.String[] { "VirtualGemCnt", "BeginTime", "EndTime", });
     internal_static_ExpireOrderHistoryRecord_descriptor =
-      getDescriptor().getMessageTypes().get(41);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_ExpireOrderHistoryRecord_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ExpireOrderHistoryRecord_descriptor,
         new java.lang.String[] { "Cards", "Gems", });
     internal_static_ExpireOrderRecord_descriptor =
-      getDescriptor().getMessageTypes().get(42);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_ExpireOrderRecord_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ExpireOrderRecord_descriptor,
         new java.lang.String[] { "OrderId", "Uuid", "GiftId", "GiftCnt", "WorthGem", "BeginTime", "EndTime", "ExpireType", "CreateTime", "Status", "Type", });
     internal_static_YzbGemExchange_descriptor =
-      getDescriptor().getMessageTypes().get(43);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_YzbGemExchange_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_YzbGemExchange_descriptor,
         new java.lang.String[] { "ExchangeId", "GemCnt", "YzbTicket", });
     internal_static_YzbExchageListRequest_descriptor =
-      getDescriptor().getMessageTypes().get(44);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_YzbExchageListRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_YzbExchageListRequest_descriptor,
         new java.lang.String[] { "UserId", "Platform", });
     internal_static_YzbExchageListResponse_descriptor =
-      getDescriptor().getMessageTypes().get(45);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_YzbExchageListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_YzbExchageListResponse_descriptor,
         new java.lang.String[] { "RetCode", "GemExchanges", });
     internal_static_YzbExchangeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(46);
+      getDescriptor().getMessageTypes().get(47);
     internal_static_YzbExchangeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_YzbExchangeRequest_descriptor,
         new java.lang.String[] { "YzbOrderId", "UserId", "ExchangeId", "Timestamp", "Count", "Platform", "PackageName", });
     internal_static_YzbExchangeResponse_descriptor =
-      getDescriptor().getMessageTypes().get(47);
+      getDescriptor().getMessageTypes().get(48);
     internal_static_YzbExchangeResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_YzbExchangeResponse_descriptor,
         new java.lang.String[] { "RetCode", "RetMsg", "UsableGemCnt", "UserAssetTimestamp", "YzbTicket", });
     internal_static_RechargeRecordRequest_descriptor =
-      getDescriptor().getMessageTypes().get(48);
+      getDescriptor().getMessageTypes().get(49);
     internal_static_RechargeRecordRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RechargeRecordRequest_descriptor,
         new java.lang.String[] { "Uuid", "Platform", });
     internal_static_RechargeRecord_descriptor =
-      getDescriptor().getMessageTypes().get(49);
+      getDescriptor().getMessageTypes().get(50);
     internal_static_RechargeRecord_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RechargeRecord_descriptor,
         new java.lang.String[] { "ItemId", "GemCnt", "Amount", "Timestamp", "Status", "OrderId", "PayType", "Platform", });
     internal_static_RechargeRecordResponse_descriptor =
-      getDescriptor().getMessageTypes().get(50);
+      getDescriptor().getMessageTypes().get(51);
     internal_static_RechargeRecordResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RechargeRecordResponse_descriptor,
