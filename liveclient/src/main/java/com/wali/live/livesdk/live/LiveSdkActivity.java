@@ -212,7 +212,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         setupRequiredComponent();
 
         if (!mIsGameLive) {
-            mComponentController.createStreamer($(R.id.galileo_surface_view), 0, null);
+            mComponentController.createStreamer(this, $(R.id.galileo_surface_view), 0, null);
         }
         mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
         openOrientation();
@@ -516,7 +516,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPresent(mGiftPresenter);
         if (mIsGameLive) {
-            mComponentController.createStreamer(null, bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY), mScreenRecordIntent);
+            mComponentController.createStreamer(this, null, bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY), mScreenRecordIntent);
         }
     }
 
