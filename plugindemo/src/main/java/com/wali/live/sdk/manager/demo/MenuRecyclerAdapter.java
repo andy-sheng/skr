@@ -88,7 +88,8 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("开启秀场直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openNormalLive(mActivity, Location.Builder.newInstance(123, 124).setCountry("China").setProvince("北京").setCity("北京").build(), new IMiLiveSdk.IAssistantCallback() {
+//                Location.Builder.newInstance(123, 124).setCountry("China").setProvince("北京").setCity("北京").build()
+                MiLiveSdkController.getInstance().openNormalLive(mActivity, null, new IMiLiveSdk.IAssistantCallback() {
                     @Override
                     public void notifyVersionLow() {
                         ToastUtils.showToast("notifyVersionLow");

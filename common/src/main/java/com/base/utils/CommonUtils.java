@@ -32,6 +32,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -1628,14 +1629,71 @@ public abstract class CommonUtils {
      * 参数：maxWidth 最大宽度
      * 参数：content  指TextView中要显示的内容
      */
-    public static void setMaxEcplise(final TextView mTextView,int maxWidth, final String content) {
+    public static void setMaxEcplise(final TextView mTextView, int maxWidth, final String content) {
         TextPaint textPaint = mTextView.getPaint();
         float textPaintWidth = textPaint.measureText(content);
 
-        if(textPaintWidth > maxWidth && content.length() > 6){
-            setMaxEcplise(mTextView,maxWidth,content.substring(0,content.length()-6) + "...");
-        }else{
+        if (textPaintWidth > maxWidth && content.length() > 6) {
+            setMaxEcplise(mTextView, maxWidth, content.substring(0, content.length() - 6) + "...");
+        } else {
             mTextView.setText(content);
         }
+    }
+
+    /**
+     * 检查查询前台应用权限
+     */
+    private static boolean checkQueryUsageStats(@NonNull Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            long ts = System.currentTimeMillis();
+            UsageStatsManager usageStatsManager =
+                    (UsageStatsManager) activity.getSystemService(Context.USAGE_STATS_SERVICE);
+            List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(
+                    UsageStatsManager.INTERVAL_BEST, 0, ts);
+            return queryUsageStats != null && !queryUsageStats.isEmpty();
+        }
+        return true;
+    }
+
+    private static void openSettingPanel(@NonNull Activity activity) {
+        PackageManager packageManager = activity.getPackageManager();
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        List<ResolveInfo> retList =
+                packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        if (retList.isEmpty()) {
+            // 若无法跳转到ACTION_USAGE_ACCESS_SETTINGS，则跳转到ACTION_SETTINGS
+            intent = new Intent(Settings.ACTION_SETTINGS);
+        }
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 获取前台应用的包名
+     */
+    public static String getForegroundPackageName(@NonNull Activity activity) {
+        if (!checkQueryUsageStats(activity)) {
+            openSettingPanel(activity);
+            return "no perm";
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            MyLog.d(TAG, "getForegroundPackageName after LOLLIPOP");
+            UsageStatsManager usageStatsManager =
+                    (UsageStatsManager) activity.getSystemService(Context.USAGE_STATS_SERVICE);
+            long time = System.currentTimeMillis();
+            List<UsageStats> statsList =
+                    usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, 0, time);
+            if (statsList != null && !statsList.isEmpty()) {
+                UsageStats usageStats = statsList.get(0);
+                for (UsageStats elem : statsList) {
+                    if (usageStats.getLastTimeUsed() < elem.getLastTimeUsed()) {
+                        usageStats = elem;
+                    }
+                }
+                return usageStats.getPackageName();
+            }
+        } else {
+            MyLog.d(TAG, "getForegroundPackageName before LOLLIPOP");
+        }
+        return null;
     }
 }

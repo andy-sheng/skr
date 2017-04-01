@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -83,7 +84,7 @@ public class LiveComponentController extends BaseLiveController {
     }
 
     @Override
-    public void createStreamer(View surfaceView, int clarity, @NonNull Intent intent) {
+    public void createStreamer(BaseSdkActivity activity, View surfaceView, int clarity, @NonNull Intent intent) {
         MyLog.w(TAG, "create streamer");
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
         int width, height;
@@ -121,7 +122,7 @@ public class LiveComponentController extends BaseLiveController {
         mStreamerPresenter.setStreamer(streamer);
         mGameLivePresenter = new GameLivePresenter(streamer, mRoomChatMsgManager, mMyRoomData,
                 width, height, intent, mRoomChatMsgManager.toString());
-        mRoomInfoPresenter = new RoomInfoPresenter(mGameLivePresenter);
+        mRoomInfoPresenter = new RoomInfoPresenter(activity, mGameLivePresenter);
         MyLog.w(TAG, "create streamer over");
     }
 

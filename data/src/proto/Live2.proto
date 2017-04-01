@@ -1,0 +1,93 @@
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "Live2Proto";
+
+// wiki地址：http://wiki.n.miui.com/pages/viewpage.action?pageId=18996762
+
+//创建直播准备工作,查创建门票直播权限
+//新增 zhibo.live.begininit
+message BeginLiveInitReq {
+    required uint64 uuid = 1; //操作人id
+}
+
+message BeginLiveInitRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional bool ticketLive = 2; //是否有门票直播权限
+}
+
+message TicketLiveInfo {
+    optional uint32 ticketId = 1; //门票id（礼物id），开播时客户端需要传
+    optional bool isEnableTrailer = 2; //是否支持试看 true：支持
+}
+
+message TicketLiveStatus {
+    optional uint32 ticketId         = 1; //门票id（礼物id）
+    optional bool isAlreadyBuyTicket = 2; //用户是否已买票
+    optional bool isEnableTrailer    = 3; //主播是否允许试看
+    optional uint32 BuyTicketCnt     = 4; //购买门票人数(结束页用到)
+}
+
+//历史房间信息查询、认证
+//zhibo.live.historyroominfo
+message HistoryRoomInfoReq {
+    required uint64 zuid = 1; //主播id
+    required string liveId = 2; //房间id
+    optional string password = 3; //用户输入的密码
+}
+
+message HistoryRoomInfoRsp {
+    required uint32 retCode                 = 1; //0:表示成功
+    optional HisLive hisLive                = 2; //回放信息
+}
+
+//一条回放记录详情
+message HisLive {
+    required string liveId = 1; //房间id
+    optional uint32 viewerCnt = 2; //观众数
+    optional string url = 3; //回放地址
+    optional uint64 startTime = 4; //直播开始时间
+    optional uint64 endTime = 5; //直播结束时间
+    optional string liveTitle = 6; //直播标题
+    optional string shareUrl = 7; //分享的url
+    optional LiveCover liveCover = 8; //房间的封面信息
+    optional uint32 type = 9; //类型，0公开，1私密，2:口令，3门票
+    optional string password = 10; //密码直播，主播才会返回这个字段
+    optional TicketLiveStatus ticketStatus  = 11; //用户观看门票直播状态信息
+}
+
+message LiveCover {
+    optional string coverUrl = 1; //房间的封面图片地址
+}
+
+//房间信息更新
+//zhibo.live.roominfochange
+message ChangeRoomInfoReq {
+    required uint64 zuid            = 1; //主播id
+    required string liveId          = 2; //房间号
+    optional LiveCover liveCover    = 3; //房间的封面信息
+    optional string gamePackName    = 4; //游戏包名
+}
+
+message ChangeRoomInfoRsp {
+    required uint32 retCode                 = 1; //0：表示成功
+    optional uint32 modCoverStatus          = 2; //0：设置成功 1：不允许修改
+    optional uint32 modGamePackNameStatus   = 3; //0：设置成功
+}
+
+//拉房间标签列表
+//zhibo.live.getroomtag
+message GetRoomTagReq {
+    required uint32 type            = 1; //1-游戏 2-真人秀
+    optional uint64 uuid            = 2 ;
+}
+
+message GetRoomTagRsp {
+    required uint32 retCode         = 1;
+    repeated TagInfo tagInfos       = 2;
+}
+
+message TagInfo {
+    optional uint32 tagId           = 1; //标签ID
+    optional string tagName         = 2; //名称
+    optional string iconUrl         = 3; //icon url
+    optional uint32 tagStatus       = 4; //0:不可用 1:可用
+}
