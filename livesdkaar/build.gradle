@@ -29,7 +29,7 @@ dependencies {
     embedded project(':livecommon')
     embedded project(':data')
     embedded project(':enginelive')
-    embedded project(path: ':enginebase', configuration: "liveRelease")
+    embedded project(':enginebase')
     embedded project(':common')
 //
 //    embedded("com.facebook.fresco:animated-base:0.14.1")
