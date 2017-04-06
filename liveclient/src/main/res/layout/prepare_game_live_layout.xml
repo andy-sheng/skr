@@ -34,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:singleLine="true"
-            android:text="@string/screen_live"
+            android:text="@string/game_live"
             android:textColor="@color/color_white"
             android:textSize="@dimen/text_size_42"/>
 
