@@ -26,6 +26,7 @@ import java.util.List;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -126,6 +127,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void processFailure() {
                 MyLog.w(TAG, "loginByMiAccountSso failure callback");
+                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
             }
         });
     }
@@ -178,6 +180,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             @Override
             public void processFailure() {
                 MyLog.d(TAG, "loginByMiAccountOAuth failure callback");
+                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
             }
         });
     }
@@ -522,5 +525,58 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         }
         MyLog.d(TAG, "onEventOtherApp aidl success=" + aidlSuccess);
+    }
+
+    @Override
+    public void thirdPartLogin(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
+        MyLog.w(TAG, "thirdPartLogin channelId=" + loginData.getChannelId());
+
+        final int channelId = loginData.getChannelId();
+        secureOperate(loginData.getChannelId(), packageName, channelSecret, new SecureLoginCallback() {
+            @Override
+            public void postSuccess() {
+                AccountCaller.login(loginData.getChannelId(), loginData.getXuid(), loginData.getSex(), loginData.getNickname(), loginData.getHeadUrl(), loginData.getSign())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<AccountProto.ThirdPartSignLoginRsp>() {
+                            @Override
+                            public void onCompleted() {
+                                MyLog.w(TAG, "thirdPartLogin on completed");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.e(TAG, "thirdPartLogin error", e);
+                                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                            }
+
+                            @Override
+                            public void onNext(AccountProto.ThirdPartSignLoginRsp rsp) {
+                                MyLog.w(TAG, "thirdPartLogin onNext,retCode:" + rsp.getRetCode());
+                                if (rsp.getRetCode() == MiLiveSdkEvent.SUCCESS) {
+                                    UploadService.toUpload(new UploadService.UploadInfo(rsp, loginData));
+                                }
+                                if (rsp != null) {
+                                    onEventLogin(channelId, rsp.getRetCode());
+                                } else {
+                                    onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+                                }
+
+                            }
+                        });
+            }
+
+            @Override
+            public void postActive() {
+                MyLog.w(TAG, "loginByMiAccountOAuth postActive callback");
+                onEventOtherAppActive(channelId);
+            }
+
+            @Override
+            public void processFailure() {
+                MyLog.d(TAG, "loginByMiAccountOAuth failure callback");
+                onEventLogin(channelId, MiLiveSdkEvent.FAILED);
+            }
+        });
     }
 }

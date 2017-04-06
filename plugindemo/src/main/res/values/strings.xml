@@ -17,4 +17,15 @@
     <string name="milive_upgrade_progress">已下载%d%%</string>
     <string name="download_update_succeed">下载完成，安装升级文件</string>
     <string name="update_file_illegal">更新的安装包验证出错,请重试</string>
+    <string name="third_part_login_title">第三方登录</string>
+    <string name="uid">uid：</string>
+    <string name="name">name：</string>
+    <string name="sex">sex：</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="submit">提交</string>
+    <string name="uid_is_empty">uid不能为空</string>
+    <string name="name_is_empty">姓名不能为空</string>
+    <string name="version_low">版本过低</string>
+    <string name="not_install">未安装</string>
 </resources>

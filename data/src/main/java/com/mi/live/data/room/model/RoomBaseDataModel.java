@@ -23,8 +23,10 @@ public class RoomBaseDataModel implements Serializable {
     public static int NO = 0;
     public static final int SINGLE_MODEL = 0;
     public static final int PK_MODEL = 1;
-    private CopyOnWriteArrayList<ViewerModel> mViewers = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<ViewerModel> mManagers = new CopyOnWriteArrayList<>();
+
+    private List<ViewerModel> mViewers = new CopyOnWriteArrayList();
+    private List<ViewerModel> mManagers = new CopyOnWriteArrayList();
+
     private User mOwner = new User();
     private String mCity;
     private int mViewCnt = 0;

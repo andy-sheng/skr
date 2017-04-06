@@ -41,8 +41,9 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private static final String TAG = "PrepareShowLiveFragment";
 
-    public static final int REQUEST_RECIPIENT_SELECT = 1000;
-    final int mTopicLenMax = 28;
+    private static final int REQUEST_RECIPIENT_SELECT = 1000;
+    private final int mTopicLenMax = 28;
+
     private StreamerPresenter mStreamerPresenter;
 
     private MyAlertDialog.Builder builder;
@@ -109,18 +110,16 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mAddTopicContainer = $(R.id.add_topic_container);
         mBeautyView = $(R.id.beauty_view);
         mBeautyView.setStreamerPresenter(mStreamerPresenter);
-        mBeautyView.setBeautyCallBack(new BeautyView.BeautyCallBack() {
+        mBeautyView.setBeautyCallBack(new BeautyView.IBeautyCallBack() {
             @Override
             public void showMultiBeautyAnim() {
-                //隐藏相机和地理位置
-                mLocationTv.setVisibility(View.INVISIBLE);
+                //隐藏相机
                 mTurnOverIv.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void hideMultiBeautyAnim() {
-                //显示相机和地理位置
-                mLocationTv.setVisibility(View.VISIBLE);
+                //显示相机
                 mTurnOverIv.setVisibility(View.VISIBLE);
             }
         });
@@ -248,6 +247,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         super.onDestroyView();
         if (mCoverView != null) {
             mCoverView.onDestroy();
+        }
+        if (mBeautyView != null) {
+            mBeautyView.destroy();
         }
     }
 

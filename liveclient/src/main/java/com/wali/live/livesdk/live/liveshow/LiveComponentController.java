@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -23,7 +24,6 @@ import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.livesdk.live.component.BaseLiveController;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.fragment.PrepareLiveFragment;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
@@ -46,9 +46,6 @@ public class LiveComponentController extends BaseLiveController {
     @NonNull
     protected StreamerPresenter mStreamerPresenter; // 推流器
 
-    @NonNull
-    protected MagicParamPresenter mMagicParamPresenter; // 美妆参数拉取
-
     @Nullable
     @Override
     protected String getTAG() {
@@ -62,15 +59,11 @@ public class LiveComponentController extends BaseLiveController {
         mMyRoomData = myRoomData;
         mRoomChatMsgManager = roomChatMsgManager;
         mStreamerPresenter = streamerPresenter;
-
-        mMagicParamPresenter = new MagicParamPresenter(this, GlobalData.app());
-        mMagicParamPresenter.syncMagicParams();
     }
 
     @Override
     public void release() {
         super.release();
-        mMagicParamPresenter.destroy();
     }
 
     @Override
@@ -84,7 +77,7 @@ public class LiveComponentController extends BaseLiveController {
     }
 
     @Override
-    public void createStreamer(@NonNull View surfaceView, int clarity, Intent intent) {
+    public void createStreamer(BaseSdkActivity activity, @NonNull View surfaceView, int clarity, Intent intent) {
         MyLog.w(TAG, "create streamer");
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
         String videoRate = PreferenceUtils.getSettingString(

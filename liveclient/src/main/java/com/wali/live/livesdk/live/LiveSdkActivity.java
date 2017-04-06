@@ -212,7 +212,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         setupRequiredComponent();
 
         if (!mIsGameLive) {
-            mComponentController.createStreamer($(R.id.galileo_surface_view), 0, null);
+            mComponentController.createStreamer(this, $(R.id.galileo_surface_view), 0, null);
         }
         mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
         openOrientation();
@@ -508,6 +508,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
         mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
         mLiveCoverUrl = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL, "");
+
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
@@ -515,8 +516,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         addPresent(mRoomTextMsgPresenter);
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
         addPresent(mGiftPresenter);
+
         if (mIsGameLive) {
-            mComponentController.createStreamer(null, bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY), mScreenRecordIntent);
+            int quality = bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY);
+            mComponentController.createStreamer(this, null, quality, mScreenRecordIntent);
         }
     }
 
@@ -808,8 +811,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         startCountDown();
 
-        Location location = !TextUtils.isEmpty(mMyRoomData.getCity()) ? mLocation : null;
-        mLiveRoomPresenter.beginLiveByAppInfo(location, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
+        mLiveRoomPresenter.beginLiveByAppInfo(mLocation, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
                 mLiveCoverUrl, mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
     }
 

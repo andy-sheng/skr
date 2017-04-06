@@ -27,6 +27,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     private long mMiId;
     private String mServiceToken;
     private String mAuthCode;
+    private ThirdPartLoginData mThirdPartLoginData;
 
     private boolean mClearAccountFlag = false;
 
@@ -132,6 +133,9 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
                 mClearAccountFlag = false;
+            } else if (mThirdPartLoginData != null) {
+                mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), mThirdPartLoginData);
+                mThirdPartLoginData = null;
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -188,6 +192,22 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             } catch (RemoteException e) {
                 mMiId = miid;
                 mServiceToken = serviceToken;
+                resolveException(e, IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
+            }
+        }
+    }
+
+    public void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign){
+        Logger.w(TAG,"thirdPartLogin channelId="+channelId+", xuid="+xuid);
+        ThirdPartLoginData data = new ThirdPartLoginData(channelId,xuid,sex,nickname,headUrl,sign);
+        if (mRemoteService == null) {
+            mThirdPartLoginData = data;
+            resolveNullService(IMiLiveSdk.ICallback.THIRD_PART_LOGIN);
+        }else{
+            try {
+                mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(),MiLiveSdkController.getInstance().getChannelSecret(),data);
+            } catch (RemoteException e) {
+                mThirdPartLoginData = data;
                 resolveException(e, IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
             }
         }

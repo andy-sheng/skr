@@ -69,7 +69,7 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI
-
+    
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
 
     @Nullable

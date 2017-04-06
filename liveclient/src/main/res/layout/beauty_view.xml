@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="10.67dp"
-            android:src="@drawable/start_live_icon_beauty"/>
+            android:src="@drawable/start_live_icon_beauty"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/beauty_level_container"

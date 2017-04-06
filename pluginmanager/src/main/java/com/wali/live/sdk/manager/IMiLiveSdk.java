@@ -94,6 +94,19 @@ public interface IMiLiveSdk {
     void setChannelId(int channelId);
 
     /**
+     * 第三方登录
+     *
+     * @param channelId 渠道ID
+     * @param xuid  第三方Uid
+     * @param sex   第三方用户性别,1:男 2:女 0:未知
+     * @param nickname  第三方用户昵称
+     * @param headUrl   第三方用户头像
+     * @param sign  签名,请参考接入文档，签名算法一栏
+     * @param callback
+     */
+    void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback);
+
+    /**
      * sdk 上层应用回调
      */
     @Keep
@@ -107,6 +120,8 @@ public interface IMiLiveSdk {
 
         int CLEAR_ACCOUNT_AIDL = 1003;
 
+        int THIRD_PART_LOGIN = 1004;
+
         /**
          * 登录相关接口的返回码
          */
@@ -115,22 +130,22 @@ public interface IMiLiveSdk {
         /**
          * 通知上层应用，aidl service为空
          */
-        void notifyServiceNull(int aidlFlag);
+        void notifyServiceNull(int errCode);
 
         /**
          * 通知上层应用aidl失败
          */
-        void notifyAidlFailure(int aidlFlag);
+        void notifyAidlFailure(int errCode);
 
         /**
-         * 通知登录成功
+         * 通知登录
          */
-        void notifyLogin(int code);
+        void notifyLogin(int errCode);
 
         /**
-         * 通知登录失败
+         * 通知注销
          */
-        void notifyLogoff(int code);
+        void notifyLogoff(int errCode);
 
         /**
          * 通知上层需要登录
@@ -140,7 +155,7 @@ public interface IMiLiveSdk {
         /**
          * 通知上层权限验证失败
          */
-        void notifyVerifyFailure(int code);
+        void notifyVerifyFailure(int errCode);
 
         /**
          * 通知上层有其它的app在活跃状态
@@ -214,19 +229,19 @@ public interface IMiLiveSdk {
     @Keep
     class CallbackWrapper implements ICallback {
         @Override
-        public void notifyServiceNull(int aidlFlag) {
+        public void notifyServiceNull(int errCode) {
         }
 
         @Override
-        public void notifyAidlFailure(int aidlFlag) {
+        public void notifyAidlFailure(int errCode) {
         }
 
         @Override
-        public void notifyLogin(int code) {
+        public void notifyLogin(int errCode) {
         }
 
         @Override
-        public void notifyLogoff(int code) {
+        public void notifyLogoff(int errCode) {
         }
 
         @Override
@@ -234,7 +249,7 @@ public interface IMiLiveSdk {
         }
 
         @Override
-        public void notifyVerifyFailure(int code) {
+        public void notifyVerifyFailure(int errCode) {
         }
 
         @Override
