@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">livesdk</string>
     <string name="game_default_name">Select a tag</string>
     <string name="default_location_hint">Kepler-452b</string>
     <string name="game_quality_title">Video quality:</string>

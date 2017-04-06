@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MiLiveSdkManager</string>
+    <string name="app_name">MiLiveAARDemo</string>
     <string name="third_part_login_title">第三方登录</string>
     <string name="uid">uid：</string>
     <string name="name">name：</string>
