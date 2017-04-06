@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -84,7 +85,7 @@ public class LiveComponentController extends BaseLiveController {
     }
 
     @Override
-    public void createStreamer(@NonNull View surfaceView, int clarity, Intent intent) {
+    public void createStreamer(BaseSdkActivity activity, @NonNull View surfaceView, int clarity, boolean isMute, Intent intent) {
         MyLog.w(TAG, "create streamer");
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
         String videoRate = PreferenceUtils.getSettingString(

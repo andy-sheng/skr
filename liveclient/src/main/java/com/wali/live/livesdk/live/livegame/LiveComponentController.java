@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.FragmentDataListener;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -78,13 +79,13 @@ public class LiveComponentController extends BaseLiveController {
             int requestCode,
             FragmentDataListener listener) {
         MyLog.w(TAG, "prepareShowLive");
-        PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener, mMyRoomData);
+        PrepareLiveFragment.openFragment(fragmentActivity, requestCode, listener, mMyRoomData, mRoomChatMsgManager);
         mRoomChatMsgManager.setIsGameLiveMode(true);
     }
 
     @Override
-    public void createStreamer(View surfaceView, int clarity, @NonNull Intent intent) {
-        MyLog.w(TAG, "create streamer");
+    public void createStreamer(BaseSdkActivity activity, View surfaceView, int clarity, boolean isMute, Intent intent) {
+        MyLog.w(TAG, "create streamer, clarity=" + clarity + ", isMute=" + isMute);
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
         int width, height;
         switch (clarity) {
@@ -121,7 +122,8 @@ public class LiveComponentController extends BaseLiveController {
         mStreamerPresenter.setStreamer(streamer);
         mGameLivePresenter = new GameLivePresenter(streamer, mRoomChatMsgManager, mMyRoomData,
                 width, height, intent, mRoomChatMsgManager.toString());
-        mRoomInfoPresenter = new RoomInfoPresenter(mGameLivePresenter);
+        mGameLivePresenter.muteMic(isMute);
+        mRoomInfoPresenter = new RoomInfoPresenter(activity, mGameLivePresenter);
         MyLog.w(TAG, "create streamer over");
     }
 

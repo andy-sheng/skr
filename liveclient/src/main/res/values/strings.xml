@@ -142,4 +142,20 @@
     <string name="empty_tips">Empty</string>
 
     <string name="camera_occupy">Camera is busy</string>
+    <string name="change_room_setting_success">Set successfully</string>
+    <string name="change_room_setting_fail">Couldn\'t set</string>
+    <string name="game_living">Game live</string>
+    <string name="definition_high">HD</string>
+    <string name="screen_live">Record screen</string>
+    <string name="begin_live_title">Title:</string>
+    <string name="live_title_change">Switch</string>
+    <string name="live_title_clear">Clear</string>
+    <string name="block_message">Block messages</string>
+    <string name="mute_yes_or_no">Mute or not</string>
+    <string name="mute_no">No</string>
+    <string name="mute_yes">Yes</string>
+    <string name="add_manager">Add manager</string>
+    <string name="has_add_manager_count">Added %d</string>
+    <string name="has_add_manager_count_zero">Haven\'t added managers</string>
+    <string name="live_title_hint">Good titles give you more chances to get followers</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.wali.live.livesdk.live.presenter;
 
+import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
+import com.base.utils.CommonUtils;
 import com.base.utils.FileIOUtils;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.api.ErrorCode;
@@ -26,7 +28,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by lan on 16/12/16.
  *
- * @description 更新房间信息，目前只是使用在游戏直播的更新封面上
+ * @description 更新房间信息，目前只是使用在游戏直播的更新封面上，也包括传递前台包名
  */
 public class RoomInfoPresenter extends RxLifeCyclePresenter {
     private static final String TAG = RoomInfoPresenter.class.getSimpleName();
@@ -34,15 +36,20 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
     private Subscription mTimerSubscription;
     private Subscription mSubscription;
 
+    private RxActivity mRxActivity;
     private GameLivePresenter mGameLivePresenter;
 
     private long mPlayerId;
     private String mLiveId;
     private String mUrl;
+    private String mPackageName;
+
+    private boolean mAllowChangeCover = true;
 
     private boolean mIsAlive = false;
 
-    public RoomInfoPresenter(GameLivePresenter presenter) {
+    public RoomInfoPresenter(RxActivity rxActivity, GameLivePresenter presenter) {
+        mRxActivity = rxActivity;
         mGameLivePresenter = presenter;
     }
 
@@ -50,7 +57,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
      * 开始上传封面
      */
     public void startLiveCover(long zuid, String liveId) {
-        MyLog.d(TAG, "start zuid" + zuid + ";liveId" + liveId);
+        MyLog.d(TAG, "start zuid=" + zuid + ", liveId=" + liveId);
         mPlayerId = zuid;
         mLiveId = liveId;
 
@@ -66,18 +73,22 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        MyLog.w(TAG, "mTimerSubscription start");
-                        GameLivePresenter gameLivePresenter = mGameLivePresenter;
-                        if (gameLivePresenter == null) {
-                            MyLog.e(TAG, "mGameLivePresenter is null");
-                            return;
-                        }
-                        gameLivePresenter.screenshot(new ICommonCallBack() {
-                            @Override
-                            public void process(Object object) {
-                                uploadFile((String) object);
+                        MyLog.w(TAG, "mTimerSubscription start mAllowChangeCover=" + mAllowChangeCover);
+                        if (mAllowChangeCover) {
+                            GameLivePresenter gameLivePresenter = mGameLivePresenter;
+                            if (gameLivePresenter == null) {
+                                MyLog.e(TAG, "mGameLivePresenter is null");
+                                return;
                             }
-                        });
+                            gameLivePresenter.screenshot(new ICommonCallBack() {
+                                @Override
+                                public void process(Object object) {
+                                    uploadFile((String) object);
+                                }
+                            });
+                        } else {
+                            roomInfoToServer();
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -138,7 +149,14 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
                 .create(new Observable.OnSubscribe<ChangeRoomInfoRsp>() {
                     @Override
                     public void call(Subscriber<? super ChangeRoomInfoRsp> subscriber) {
-                        ChangeRoomInfoRsp rsp = new RoomInfoChangeRequest(mPlayerId, mLiveId, mUrl).syncRsp();
+                        try {
+                            mPackageName = CommonUtils.getForegroundPackageName(mRxActivity);
+                        } catch (Exception e) {
+                            mPackageName = null;
+                            MyLog.e(TAG, e);
+                        }
+
+                        ChangeRoomInfoRsp rsp = new RoomInfoChangeRequest(mPlayerId, mLiveId, mUrl, mPackageName).syncRsp();
                         if (rsp == null) {
                             subscriber.onError(new Exception("ChangeRoomInfoRsp is null"));
                         } else if (rsp.getRetCode() != ErrorCode.CODE_SUCCESS) {
@@ -153,6 +171,12 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
                     @Override
                     public Boolean call(ChangeRoomInfoRsp changeRoomInfoRsp) {
                         if (changeRoomInfoRsp != null) {
+                            // 是否允许上传封面
+                            mAllowChangeCover = changeRoomInfoRsp.getModGamePackNameStatus() != 1;
+                            if (!mAllowChangeCover) {
+                                mUrl = null;
+                            }
+
                             int retCode = changeRoomInfoRsp.getRetCode();
                             MyLog.d(TAG, "ChangeRoomInfoRsp errCode=" + retCode);
                             return retCode == ErrorCode.CODE_SUCCESS;

@@ -58,12 +58,12 @@ public class RoomStatusPresenter implements IPushMsgProcessor {
             EventBus.getDefault().post(new LiveEndEvent());
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TOP_GET) {
             //TODO 于锐
-//            LiveRoomCharactorManager.getInstance().setTopRank(roomBaseDataModel.getUid(), UserAccountManager.getInstance().getUuidAsLong());
+//            LiveRoomCharacterManager.getInstance().setTopRank(roomBaseDataModel.getUid(), UserAccountManager.getInstance().getUuidAsLong());
             MyLog.w(TAG + " B_MSG_TYPE_TOP_GET");
             mRoomChatMsgManager.addChatMsg(msg, true);
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TOP_LOSE) {
             //TODO 于锐
-//            LiveRoomCharactorManager.getInstance().removeTopRank(roomBaseDataModel.getUid(), UserAccountManager.getInstance().getUuidAsLong());
+//            LiveRoomCharacterManager.getInstance().removeTopRank(roomBaseDataModel.getUid(), UserAccountManager.getInstance().getUuidAsLong());
             MyLog.w(TAG + " B_MSG_TYPE_TOP_LOSE");
             mRoomChatMsgManager.addChatMsg(msg, true);
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ANCHOR_LEAVE) {

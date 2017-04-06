@@ -52,6 +52,7 @@ import com.wali.live.common.pay.utils.PayStatisticUtils;
 import com.wali.live.common.pay.view.PayWaySwitchDialogHolder;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.common.view.ErrorView;
+import com.wali.live.statistics.StatisticsKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -355,7 +356,7 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             return;
         }
 
-        mBalanceViewHolder.mExchangeContainer.setVisibility(View.VISIBLE);
+//        mBalanceViewHolder.mExchangeContainer.setVisibility(View.VISIBLE);
         if (exchangeableDiamondCnt <= 0) {
             mBalanceViewHolder.mExchangeableDiamondTv.setText(R.string.insufficient_ticket_tip);
             mBalanceViewHolder.mExchangeBtn.setText(R.string.recharge_exchange_gem_btn_tip_detail);
@@ -422,31 +423,33 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
         PayWay payWay = isFirstStep() ? mPayWayList.get(position - 2) : getCurrentPayWay();
         applySelectedPayWay(false, payWay, payWayViewHolder);
-        RxView.clicks(payWayViewHolder.itemView)
-                .throttleFirst(PayConstant.RECHARGE_CLICK_INTERVAL, TimeUnit.SECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        if (isFirstStep()) {
-                            mStep++;
-                            setCurrentPayWay(mPayWayList.get(position - 2));
-                            mPopupWindowPosition = 0;
-                            mLastRechargeListType = RechargeConfig.getRechargeListType(getCurrentPayWay());
-                            MyLog.d(TAG, "current pay way:" + getCurrentPayWay() + ", position:" + position);
-                            mRechargePresenter.pullPriceListAsync();
-                            //各支付列表，有钻石选择的页面，展示一次打一次
-                            StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, PayStatisticUtils.getRechargeTemplate(PRICE_LIST, getCurrentPayWay()), TIMES, "1");
-                        } else {
-                            //显示选择支付方式的对话框
-                            if (!RechargeConfig.isOnlyOnePayway()) {
-                                if (mPayWaySwitchDialogHolder == null) {
-                                    mPayWaySwitchDialogHolder = new PayWaySwitchDialogHolder(mContext, mPayWayList, RechargeRecyclerViewAdapter.this);
+        if(!RechargeConfig.isOnlyOnePayway() || mStep == 1) {
+            RxView.clicks(payWayViewHolder.itemView)
+                    .throttleFirst(PayConstant.RECHARGE_CLICK_INTERVAL, TimeUnit.SECONDS)
+                    .subscribe(new Action1<Void>() {
+                        @Override
+                        public void call(Void aVoid) {
+                            if (isFirstStep()) {
+                                mStep++;
+                                setCurrentPayWay(mPayWayList.get(position - 2));
+                                mPopupWindowPosition = 0;
+                                mLastRechargeListType = RechargeConfig.getRechargeListType(getCurrentPayWay());
+                                MyLog.d(TAG, "current pay way:" + getCurrentPayWay() + ", position:" + position);
+                                mRechargePresenter.pullPriceListAsync();
+                                //各支付列表，有钻石选择的页面，展示一次打一次
+                                StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, PayStatisticUtils.getRechargeTemplate(PRICE_LIST, getCurrentPayWay()), TIMES, "1");
+                            } else {
+                                //显示选择支付方式的对话框
+                                if (!RechargeConfig.isOnlyOnePayway()) {
+                                    if (mPayWaySwitchDialogHolder == null) {
+                                        mPayWaySwitchDialogHolder = new PayWaySwitchDialogHolder(mContext, mPayWayList, RechargeRecyclerViewAdapter.this);
+                                    }
+                                    mPayWaySwitchDialogHolder.getSelectPayWayDialog(getCurrentPayWay()).show();
                                 }
-                                mPayWaySwitchDialogHolder.getSelectPayWayDialog(getCurrentPayWay()).show();
                             }
                         }
-                    }
-                });
+                    });
+        }
         // 非首次充值，进来就显示上次选择的支付方式
         if (!mIsFirstRecharge) {
             //各支付列表，有钻石选择的页面，展示一次打一次

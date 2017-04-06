@@ -10,7 +10,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -164,7 +164,7 @@ public class RoomManagerPresenter implements IPushMsgProcessor {
                 .subscribe(new Action1<User>() {
                     @Override
                     public void call(User user) {
-                        LiveRoomCharactorManager.getInstance().banSpeaker(user, true);
+                        LiveRoomCharacterManager.getInstance().banSpeaker(user, true);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -178,7 +178,7 @@ public class RoomManagerPresenter implements IPushMsgProcessor {
     private void processCancelForbiddenForLiveRoom(long forbiddenUserId) {
         User user = new User();
         user.setUid(forbiddenUserId);
-        LiveRoomCharactorManager.getInstance().banSpeaker(user, false);
+        LiveRoomCharacterManager.getInstance().banSpeaker(user, false);
     }
 
     @Override

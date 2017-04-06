@@ -97,12 +97,13 @@
                         android:text="@string/valid_forever_tip"
                         android:textColor="@color/color_black_trans_50"
                         android:textSize="@dimen/text_size_36"/>
-                    <!--箭头-->
+                    <!--箭头-
                     <ImageView
                         android:layout_width="@dimen/view_dimen_16"
                         android:layout_height="match_parent"
                         android:scaleType="center"
                         android:src="@drawable/pay_activity_diamond_more"/>
+                        -->
 
                 </LinearLayout>
 
@@ -158,12 +159,13 @@
                         android:text="@string/will_expire_tip"
                         android:textColor="@color/color_black_trans_50"
                         android:textSize="@dimen/text_size_36"/>
-                    <!--箭头-->
+                    <!--箭头
                     <ImageView
                         android:layout_width="@dimen/view_dimen_16"
                         android:layout_height="match_parent"
                         android:scaleType="center"
                         android:src="@drawable/pay_activity_diamond_more"/>
+                        -->
                 </LinearLayout>
 
             </RelativeLayout>
@@ -183,7 +185,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_140"
         android:background="@color/color_fafafa"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="wrap_content"

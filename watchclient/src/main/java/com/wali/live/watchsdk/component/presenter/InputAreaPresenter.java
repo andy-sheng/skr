@@ -103,8 +103,9 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
         registerAction(ComponentController.MSG_ON_BACK_PRESSED);
         registerAction(ComponentController.MSG_SHOW_INPUT_VIEW);
         registerAction(ComponentController.MSG_HIDE_INPUT_VIEW);
-        registerAction(ComponentController.MSG_SHOW_BARRAGE_SWITCH);
-        registerAction(ComponentController.MSG_HIDE_BARRAGE_SWITCH);
+        // TODO 后续完善飘屏弹幕逻辑之后，再开启飘屏弹幕功能 YangLi
+//        registerAction(ComponentController.MSG_SHOW_BARRAGE_SWITCH);
+//        registerAction(ComponentController.MSG_HIDE_BARRAGE_SWITCH);
         mCanInput = true;
         mUIHandler = new MyUIHandler(this);
         EventBus.getDefault().register(this);

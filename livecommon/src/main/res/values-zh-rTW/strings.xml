@@ -237,4 +237,9 @@
     <string name="recharge">儲值</string>
     <string name="send">發送</string>
     <string name="empty_edittext_hint">跟大家說點什麼</string>
+    <string name="mibi">米幣</string>
+    <string name="file_upload_failed_file_error">檔案上傳失敗，原因：檔案不存在或長度為0或不是一個檔案！</string>
+    <string name="file_upload_failed_path_error">檔案上傳失敗,原因：本地路徑有誤！</string>
+    <string name="follow">關注</string>
+    <string name="network_offline_warning">目前網路連接不可用，請檢查網路設定</string>
 </resources>

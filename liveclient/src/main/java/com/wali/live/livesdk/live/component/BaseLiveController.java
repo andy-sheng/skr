@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.fragment.FragmentDataListener;
-import com.mi.live.engine.streamer.IStreamer;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
-import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 /**
@@ -29,7 +28,7 @@ public abstract class BaseLiveController extends ComponentController {
     /**
      * 创建Streamer
      */
-    public abstract void createStreamer(View surfaceView, int clarity, Intent intent);
+    public abstract void createStreamer(BaseSdkActivity activity, View surfaceView, int clarity, boolean isMute, Intent intent);
 
     /**
      * 创建SdkView

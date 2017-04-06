@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -34,19 +33,23 @@ import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
+import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by zyh on 2017/2/8.
  */
 
-public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener {
+public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener, IRoomPrepareView {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
@@ -66,21 +69,25 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected boolean mIsAddHistory = true;
     protected TitleTextWatcher mTitleTextWatcher;
 
-    protected TextView mLocationTv;
     protected TextView mBeginBtn;
     protected TextView mTagNameTv;
     protected ViewGroup mTagNameContainer;
-    protected EditText mLiveTitleEt;
     protected ImageView mCloseBtn;
+
+    protected EditText mLiveTitleEt;
 
     protected RoomTag mRoomTag;
     protected RoomTagPresenter mRoomTagPresenter;
     protected int mTagIndex = -1;
-    protected String mCity;
+
+    protected LiveRoomChatMsgManager mRoomChatMsgManager;
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
-        mCity = myRoomData.getCity();
+    }
+
+    public void setRoomChatMsgManager(@NonNull LiveRoomChatMsgManager roomChatMsgManager) {
+        mRoomChatMsgManager = roomChatMsgManager;
     }
 
     @CallSuper
@@ -95,8 +102,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             onBeginBtnClick();
         } else if (i == R.id.close_btn) {
             onCloseBtnClick();
-        } else if (i == R.id.location_tv) {
-            onLocationBtnClick();
         } else if (i == R.id.tag_name_container) {
             onTagNameBtnClick();
         }
@@ -112,22 +117,12 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected void onBeginBtnClick() {
-//        EventBus.getDefault().post(new EventClass.RejoinHideEvent());
         openLive();
     }
 
     private void onCloseBtnClick() {
         KeyboardUtils.hideKeyboard(getActivity());
         getActivity().finish();
-    }
-
-    private void onLocationBtnClick() {
-        if (!TextUtils.isEmpty(mCity)) {
-            mCity = "";
-        } else {
-            mCity = mMyRoomData.getCity();
-        }
-        updateLocationView();
     }
 
     private void onTagNameBtnClick() {
@@ -150,7 +145,9 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mRoomTagPresenter.stop();
+        if (mTagNameContainer != null) {
+            mRoomTagPresenter.stop();
+        }
     }
 
     protected void initContentView() {
@@ -163,14 +160,13 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             }
         });
 
-        mLocationTv = $(R.id.location_tv);
-        mLocationTv.setOnClickListener(this);
-
         mBeginBtn = $(R.id.begin_btn);
         mBeginBtn.setOnClickListener(this);
 
         mTagNameContainer = $(R.id.tag_name_container);
-        mTagNameContainer.setOnClickListener(this);
+        if (mTagNameContainer != null) {
+            mTagNameContainer.setOnClickListener(this);
+        }
 
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
@@ -195,16 +191,9 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         MyLog.w(TAG, "bindView");
         initContentView();
         initTitleView();
-        setLocationTvState();
         initPresenters();
-        initTagName();
-    }
-
-    protected void setLocationTvState() {
-        if (TextUtils.isEmpty(mCity)) {
-            mLocationTv.setVisibility(View.GONE);
-        } else {
-            updateLocationView();
+        if (mTagNameContainer != null) {
+            initTagName();
         }
     }
 
@@ -228,15 +217,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected void finish() {
         MyLog.w(TAG, "finish");
         FragmentNaviUtils.popFragmentFromStack(getActivity());
-    }
-
-    private void updateLocationView() {
-        if (!TextUtils.isEmpty(mCity)) {
-            mLocationTv.setText(mCity);
-        } else {
-            mLocationTv.setText(getString(R.string.default_location_hint));
-        }
-
     }
 
     protected abstract void openLive();
@@ -263,11 +243,12 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         if (mRoomTag != null) {
             bundle.putSerializable(EXTRA_LIVE_TAG_INFO, mRoomTag);
         }
-        mMyRoomData.setCity(mCity);
     }
 
-    private void initPresenters() {
-        mRoomTagPresenter = new RoomTagPresenter((RxActivity) getActivity(), this);
+    protected void initPresenters() {
+        if (mTagNameContainer != null) {
+            mRoomTagPresenter = new RoomTagPresenter((RxActivity) getActivity(), this);
+        }
     }
 
     @Override
@@ -314,6 +295,23 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected abstract void updateTagName();
+
+    @Override
+    public void setManagerCount(int count) {
+    }
+
+    @Override
+    public void fillTitle(String title) {
+    }
+
+    @Override
+    public void updateControlTitleArea(boolean isShow) {
+    }
+
+    @Override
+    public <T> Observable.Transformer<T, T> bindLifecycle() {
+        return bindUntilEvent();
+    }
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {

@@ -3,6 +3,7 @@
     <string name="default_location_hint">開普勒452B星球</string>
     <string name="game_default_name">選擇標籤</string>
     <string name="game_quality_title">遊戲畫質</string>
+    <string name="game_quality_title_en">Video quality:</string>
     <string name="live_start">開始直播</string>
 
     <string name="prepare_live_edittext_hint">好的標題能吸引更多用戶</string>
@@ -138,4 +139,20 @@
     <string name="add_photo_pick_title">選擇圖片</string>
 
     <string name="camera_occupy">相機使用中</string>
+    <string name="game_living">遊戲直播中</string>
+    <string name="change_room_setting_success">設定生效</string>
+    <string name="change_room_setting_fail">設定失敗</string>
+    <string name="definition_high">高解析度</string>
+    <string name="screen_live">錄螢直播</string>
+    <string name="begin_live_title">標題:&#160;</string>
+    <string name="live_title_change">換一換</string>
+    <string name="live_title_clear">清空</string>
+    <string name="block_message">隱藏消息</string>
+    <string name="mute_yes_or_no">是否靜音</string>
+    <string name="mute_no">否</string>
+    <string name="mute_yes">是</string>
+    <string name="add_manager">增加管理員</string>
+    <string name="has_add_manager_count">已增加%d個</string>
+    <string name="has_add_manager_count_zero">未添加管理员</string>
+    <string name="live_title_hint">好的標題更能吸引觀眾</string>
 </resources>

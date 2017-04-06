@@ -15,7 +15,7 @@ public abstract class BaseLiveRequest extends BaseRequest {
         return TAG;
     }
 
-    public BaseLiveRequest(String command,String action,String channelId){
-        super(command,action,channelId);
+    public BaseLiveRequest(String command, String action, String channelId) {
+        super(command, action, channelId);
     }
 }

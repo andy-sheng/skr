@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.base.log.MyLog;
+
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -50,6 +52,7 @@ public class ImageUtils {
                 return true;
             }
         } catch (Exception e) {
+            MyLog.e("ImageUtils", "saveToFile e=" + e);
         }
         return false;
     }

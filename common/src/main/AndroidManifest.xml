@@ -1,8 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.base.common">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.base.common">
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions"/>
 
     <application
         android:allowBackup="true"
@@ -16,6 +21,6 @@
             android:noHistory="true"
             android:relinquishTaskIdentity="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PopupMessage" />
+            android:theme="@style/Theme.PopupMessage"/>
     </application>
 </manifest>

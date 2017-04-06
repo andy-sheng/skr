@@ -246,4 +246,8 @@
     <string name="send">发送</string>
     <string name="empty_edittext_hint">跟大家说点什么</string>
     <string name="follow">关注</string>
+    <string name="mibi">米币</string>
+    <string name="file_upload_failed_file_error">文件上传失败，原因：文件不存在或长度为0或不是一个文件！</string>
+    <string name="file_upload_failed_path_error">文件上传失败,原因：本地路径有误！</string>
+    <string name="network_offline_warning">当前网络连接不可用，请检查网络设置</string>
 </resources>

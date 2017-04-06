@@ -143,7 +143,7 @@ public class UserAccountManager {
     }
 
     public boolean hasAccount() {
-        MyLog.d(TAG, "null != mAccount" + (null != mAccount));
+        MyLog.d(TAG, "null != mAccount : " + (null != mAccount));
         return null != mAccount && ((mAccount.getIsLogOff() == null) || !mAccount.getIsLogOff().booleanValue());
     }
 
@@ -284,6 +284,7 @@ public class UserAccountManager {
                 String uuid = userAccountManager.getUuid();
                 String passToken = userAccountManager.getPassToken();
                 if (!TextUtils.isEmpty(uuid) && !TextUtils.isEmpty(passToken)) {
+                    UserAccountManager.getInstance().logoffWithoutClearAccount(HostChannelManager.getInstance().getChannelId());
                     AccountCaller.getServiceToken(passToken, uuid)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
