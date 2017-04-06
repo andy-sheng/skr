@@ -27,8 +27,8 @@ public class XiaoMiOAuth {
     public static final String APP_KEY_PAY;
 
     static {
-            APP_ID_PAY = 2882303761517438806L;
-            APP_KEY_PAY = "5431743870806";
+        APP_ID_PAY = 2882303761517438806L;
+        APP_KEY_PAY = "5431743870806";
     }
 
     static final boolean sKeepCookies = true;

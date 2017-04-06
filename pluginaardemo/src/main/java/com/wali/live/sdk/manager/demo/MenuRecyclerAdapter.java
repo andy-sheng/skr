@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,9 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mi.live.data.location.Location;
-import com.wali.live.sdk.manager.IMiLiveSdk;
-import com.wali.live.sdk.manager.MiLiveSdkController;
-import com.wali.live.sdk.manager.SdkUpdateHelper;
+import com.wali.live.livesdk.live.MiLiveSdkController;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
@@ -46,77 +43,35 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<Bean> mDataList = new ArrayList();
 
     private Activity mActivity;
-    private SdkUpdateHelper mSdkUpdateHelper;
 
-    public MenuRecyclerAdapter(final Context context, @Nullable SdkUpdateHelper sdkUpdateHelper) {
+    public MenuRecyclerAdapter(final Context context) {
         mActivity = (Activity) context;
-        mSdkUpdateHelper = sdkUpdateHelper;
 
         mDataList.add(new Bean("跳转到直播(Intent)", new Runnable() {
             @Override
             public void run() {
                 MiLiveSdkController.getInstance().openWatch(
-                        mActivity, 21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0", 6, new IMiLiveSdk.IAssistantCallback() {
-                            @Override
-                            public void notifyVersionLow() {
-                                ToastUtils.showToast("notifyVersionLow");
-                            }
-
-                            @Override
-                            public void notifyNotInstall() {
-                                ToastUtils.showToast("notifyNotInstall");
-                            }
-                        });
+                        mActivity, 21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0", 0);
             }
         }));
         mDataList.add(new Bean("跳转到回放(Intent)", new Runnable() {
             @Override
             public void run() {
                 MiLiveSdkController.getInstance().openReplay(
-                        mActivity, 22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1", 6, new IMiLiveSdk.IAssistantCallback() {
-                            @Override
-                            public void notifyVersionLow() {
-                                ToastUtils.showToast("notifyVersionLow");
-                            }
-
-                            @Override
-                            public void notifyNotInstall() {
-                                ToastUtils.showToast("notifyNotInstall");
-                            }
-                        });
+                        mActivity, 22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1", 0);
             }
         }));
         mDataList.add(new Bean("开启秀场直播(Intent)", new Runnable() {
             @Override
             public void run() {
 //                Location.Builder.newInstance(123, 124).setCountry("China").setProvince("北京").setCity("北京").build()
-                MiLiveSdkController.getInstance().openNormalLive(mActivity, null, new IMiLiveSdk.IAssistantCallback() {
-                    @Override
-                    public void notifyVersionLow() {
-                        ToastUtils.showToast("notifyVersionLow");
-                    }
-
-                    @Override
-                    public void notifyNotInstall() {
-                        ToastUtils.showToast("notifyNotInstall");
-                    }
-                });
+                MiLiveSdkController.getInstance().openNormalLive(mActivity, null);
             }
         }));
         mDataList.add(new Bean("开启游戏直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setProvince("New York").setCity("New York").build(), new IMiLiveSdk.IAssistantCallback() {
-                    @Override
-                    public void notifyVersionLow() {
-                        ToastUtils.showToast("notifyVersionLow");
-                    }
-
-                    @Override
-                    public void notifyNotInstall() {
-                        ToastUtils.showToast("notifyNotInstall");
-                    }
-                });
+                MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setProvince("New York").setCity("New York").build());
             }
         }));
         mDataList.add(new Bean("宿主传OAuth登录账号(AIDL)", new Runnable() {
@@ -144,37 +99,9 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void run() {
                         //  小米授权登录的
-                        MiLiveSdkController.getInstance().clearAccount(new IMiLiveSdk.IAssistantCallback() {
-                            @Override
-                            public void notifyVersionLow() {
-                                ToastUtils.showToast("notifyVersionLow");
-                            }
-
-                            @Override
-                            public void notifyNotInstall() {
-                                ToastUtils.showToast("notifyNotInstall");
-                            }
-                        });
+                        MiLiveSdkController.getInstance().clearAccount();
                     }
                 }).start();
-            }
-        }));
-
-        mDataList.add(new Bean("检查更新", new Runnable() {
-            @Override
-            public void run() {
-                if (mSdkUpdateHelper != null) {
-                    mSdkUpdateHelper.checkUpdate();
-                }
-            }
-        }));
-
-        mDataList.add(new Bean("切换宿主id,模拟切换了宿主", new Runnable() {
-            @Override
-            public void run() {
-                if (channleClickListener != null) {
-                    channleClickListener.onClick(null);
-                }
             }
         }));
     }
@@ -185,17 +112,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void run() {
                 //  小米授权登录的
                 String code = XiaoMiOAuth.getOAuthCode(mActivity);
-                MiLiveSdkController.getInstance().loginByMiAccountOAuth(code, new IMiLiveSdk.IAssistantCallback() {
-                    @Override
-                    public void notifyVersionLow() {
-                        ToastUtils.showToast("notifyVersionLow");
-                    }
-
-                    @Override
-                    public void notifyNotInstall() {
-                        ToastUtils.showToast("notifyNotInstall");
-                    }
-                });
+                MiLiveSdkController.getInstance().loginByMiAccountOAuth(code);
             }
         }).start();
     }
@@ -218,25 +135,15 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                      * 这里获取ssotoken有两种方式
                      */
                     String ssoToken = getServiceTokenNew(GlobalData.app());
-                    MiLiveSdkController.getInstance().loginByMiAccountSso(miid, ssoToken, new IMiLiveSdk.IAssistantCallback() {
-                        @Override
-                        public void notifyVersionLow() {
-                            ToastUtils.showToast("notifyVersionLow");
-                        }
-
-                        @Override
-                        public void notifyNotInstall() {
-                            ToastUtils.showToast("notifyNotInstall");
-                        }
-                    });
+                    MiLiveSdkController.getInstance().loginByMiAccountSso(miid, ssoToken);
                 }
             }
         }).start();
     }
 
-    public void thirdPartLogin(){
-        Intent intent = new Intent(mActivity,ThirdPartLoginActivity.class);
-        intent.putExtra(ThirdPartLoginActivity.KEY_CHANNELID,((MainActivity)mActivity).getCurrentChannelId());
+    public void thirdPartLogin() {
+        Intent intent = new Intent(mActivity, ThirdPartLoginActivity.class);
+        intent.putExtra(ThirdPartLoginActivity.KEY_CHANNELID, ((MainActivity) mActivity).getCurrentChannelId());
         mActivity.startActivity(intent);
     }
 
@@ -280,12 +187,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Log.e(TAG, "get auth token error", e);
         }
         return null;
-    }
-
-    View.OnClickListener channleClickListener;
-
-    public void setChannleClickListener(View.OnClickListener listener) {
-        channleClickListener = listener;
     }
 
     @Override

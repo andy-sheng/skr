@@ -2,6 +2,7 @@ package com.mi.live.data.location;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 import android.text.TextUtils;
 
 import com.wali.live.proto.CommonProto;
@@ -25,6 +26,11 @@ public class Location implements Parcelable {
 
     public Location(CommonProto.Location protoLocation) {
         parse(protoLocation);
+    }
+
+    private Location(double lon, double lat) {
+        this.lon = lon;
+        this.lat = lat;
     }
 
     public void parse(CommonProto.Location protoLocation) {
@@ -151,4 +157,41 @@ public class Location implements Parcelable {
             return new Location[size];
         }
     };
+
+    @Keep
+    public static class Builder {
+        private Location location;
+
+        private Builder(Location location) {
+            this.location = location;
+        }
+
+        public Builder setCountry(String country) {
+            location.setCountry(country);
+            return this;
+        }
+
+        public Builder setProvince(String province) {
+            location.setProvince(province);
+            return this;
+        }
+
+        public Builder setCity(String city) {
+            location.setCity(city);
+            return this;
+        }
+
+        public Builder setType(int type) {
+            location.setType(type);
+            return this;
+        }
+
+        public Location build() {
+            return location;
+        }
+
+        public static Builder newInstance(double lon, double lat) {
+            return new Builder(new Location(lon, lat));
+        }
+    }
 }

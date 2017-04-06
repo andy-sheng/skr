@@ -86,6 +86,11 @@ public interface IMiLiveSdk {
     interface ICallback {
 
         /**
+         * 登录相关接口的返回码
+         */
+        int CODE_SUCCESS = 0;
+
+        /**
          * 通知登录
          */
         void notifyLogin(int errCode);
