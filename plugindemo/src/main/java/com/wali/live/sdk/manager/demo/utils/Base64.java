@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.aardemo.utils;
+package com.wali.live.sdk.manager.demo.utils;
 
 /**
  * Created by wuxiaoshan on 17-4-5.

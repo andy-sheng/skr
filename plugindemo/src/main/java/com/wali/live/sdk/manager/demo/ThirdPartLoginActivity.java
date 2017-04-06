@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.aardemo;
+package com.wali.live.sdk.manager.demo;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +12,10 @@ import android.widget.RadioGroup;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
-import com.wali.live.sdk.manager.aardemo.global.GlobalData;
-import com.wali.live.sdk.manager.aardemo.utils.RSASignature;
-import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
+import com.wali.live.sdk.manager.aardemo.R;
+import com.wali.live.sdk.manager.demo.global.GlobalData;
+import com.wali.live.sdk.manager.demo.utils.RSASignature;
+import com.wali.live.sdk.manager.demo.utils.ToastUtils;
 
 public class ThirdPartLoginActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 

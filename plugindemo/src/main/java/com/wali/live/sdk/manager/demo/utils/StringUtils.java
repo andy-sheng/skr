@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.aardemo.utils;
+package com.wali.live.sdk.manager.demo.utils;
 
 import android.graphics.Color;
 import android.text.Spannable;
@@ -6,7 +6,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 
-import com.wali.live.sdk.manager.aardemo.global.GlobalData;
+import com.wali.live.sdk.manager.demo.global.GlobalData;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;

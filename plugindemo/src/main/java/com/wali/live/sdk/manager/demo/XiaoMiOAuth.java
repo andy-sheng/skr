@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.aardemo;
+package com.wali.live.sdk.manager.demo;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;

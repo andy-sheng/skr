@@ -1,5 +1,5 @@
 
-package com.wali.live.sdk.manager.aardemo.utils;
+package com.wali.live.sdk.manager.demo.utils;
 
 import android.content.Context;
 import android.os.Handler;
@@ -7,7 +7,7 @@ import android.os.Looper;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.wali.live.sdk.manager.aardemo.global.GlobalData;
+import com.wali.live.sdk.manager.demo.global.GlobalData;
 
 /**
  * @author linjinbin

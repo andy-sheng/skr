@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.aardemo.notification;
+package com.wali.live.sdk.manager.demo.notification;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.wali.live.sdk.manager.aardemo.R;
-import com.wali.live.sdk.manager.aardemo.global.GlobalData;
+import com.wali.live.sdk.manager.demo.global.GlobalData;
 
 /**
  * Created by milive on 16/12/6.
