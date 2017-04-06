@@ -267,7 +267,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
     //默认500毫秒
     public boolean isFastDoubleClick() {
         long now = System.currentTimeMillis();
-        if (now - sLastClickTime > 0 && now - sLastClickTime < FAST_DOUBLE_CLICK_INTERVAL) {
+        if (((now - sLastClickTime) > 0) && ((now - sLastClickTime) < FAST_DOUBLE_CLICK_INTERVAL)) {
             //加个大于0的判断是为了防止用户手动把系统时间调小,就会导致这里永远返回true
             return true;
         }

@@ -28,7 +28,7 @@ public abstract class BaseLiveController extends ComponentController {
     /**
      * 创建Streamer
      */
-    public abstract void createStreamer(BaseSdkActivity activity, View surfaceView, int clarity, Intent intent);
+    public abstract void createStreamer(BaseSdkActivity activity, View surfaceView, int clarity, boolean isMute, Intent intent);
 
     /**
      * 创建SdkView

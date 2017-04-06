@@ -7,9 +7,9 @@ import com.base.log.MyLog;
 import com.base.presenter.Presenter;
 import com.mi.live.data.api.BanSpeakerUtils;
 import com.mi.live.data.api.relation.RelationApi;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.wali.live.manager.WatchRoomCharactorManager;
 
 import java.lang.ref.WeakReference;
@@ -64,7 +64,7 @@ public class ForbidManagePresenter implements Presenter {
                     public void call(Boolean result) {
                         if (result) {
                             if (anchorId == userId) {
-                                LiveRoomCharactorManager.getInstance().banSpeaker(user, true);
+                                LiveRoomCharacterManager.getInstance().banSpeaker(user, true);
                             } else {
                                 WatchRoomCharactorManager.getInstance().banSpeaker(user.getUid(), true);
                             }
@@ -107,7 +107,7 @@ public class ForbidManagePresenter implements Presenter {
                             if (anchorId == userId) {
                                 User user = new User();
                                 user.setUid(targetId);
-                                LiveRoomCharactorManager.getInstance().banSpeaker(user, false);
+                                LiveRoomCharacterManager.getInstance().banSpeaker(user, false);
                             } else {
                                 WatchRoomCharactorManager.getInstance().banSpeaker(targetId, false);
                             }

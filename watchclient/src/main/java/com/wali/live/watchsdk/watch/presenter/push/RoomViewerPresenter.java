@@ -6,7 +6,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.push.IPushMsgProcessor;
 import com.mi.live.data.push.model.BarrageMsg;
@@ -47,10 +47,10 @@ public class RoomViewerPresenter implements IPushMsgProcessor {
                 roomBaseDataModel.setViewerCnt(ext.viewerCount);
                 updateAvatarView(roomBaseDataModel, ext.viewerList, 0);
             }
-            if (LiveRoomCharactorManager.getInstance().isManager(msg.getSender())) {
+            if (LiveRoomCharacterManager.getInstance().isManager(msg.getSender())) {
                 MyLog.v(TAG + " manager online:" + msg.getSender());
                 //管理员在线的push
-                LiveRoomCharactorManager.getInstance().setManagerOnline(msg.getSender(), true);
+                LiveRoomCharacterManager.getInstance().setManagerOnline(msg.getSender(), true);
                 roomBaseDataModel.notifyManagersChange();
             }
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_LEAVE) {
@@ -60,10 +60,10 @@ public class RoomViewerPresenter implements IPushMsgProcessor {
                 roomBaseDataModel.setViewerCnt(ext.viewerCount);
                 updateAvatarView(roomBaseDataModel, ext.viewerList, msg.getSender());
             }
-            if (LiveRoomCharactorManager.getInstance().isManager(msg.getSender())) {
+            if (LiveRoomCharacterManager.getInstance().isManager(msg.getSender())) {
                 MyLog.v(TAG + " manager offline:" + msg.getSender());
                 //管理员离开房间下线的push
-                LiveRoomCharactorManager.getInstance().setManagerOnline(msg.getSender(), false);
+                LiveRoomCharacterManager.getInstance().setManagerOnline(msg.getSender(), false);
                 roomBaseDataModel.notifyManagersChange();
             }
         } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_VIEWER_CHANGE) {

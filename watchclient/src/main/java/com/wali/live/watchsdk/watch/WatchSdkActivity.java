@@ -37,7 +37,7 @@ import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.query.model.EnterRoomInfo;
@@ -868,7 +868,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                             if (!WatchRoomCharactorManager.getInstance().isInspector()) {
                                 if (Top10RankList != null && Top10RankList.size() > 0) {
                                     MyLog.w(TAG + " fetchThreeRankUser " + mMyRoomData.getUid() + " " + Top10RankList.get(0));
-                                    LiveRoomCharactorManager.getInstance().setTopRank(mMyRoomData.getUid(), Top10RankList.get(0));
+                                    LiveRoomCharacterManager.getInstance().setTopRank(mMyRoomData.getUid(), Top10RankList.get(0));
                                     //top进入房间会有提示
                                     if ((Top10RankList.get(0) == UserAccountManager.getInstance().getUuidAsLong())) {//TODO  && !mIsPrivate 私密判断
                                         //榜一获取禁言列表

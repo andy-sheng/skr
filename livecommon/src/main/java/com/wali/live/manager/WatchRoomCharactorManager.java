@@ -5,7 +5,7 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.Constants;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.BanSpeakerUtils;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
 
@@ -161,7 +161,7 @@ public class WatchRoomCharactorManager {
      * @return
      */
     public boolean hasManagerPower(long anchorId) {
-        return isInspector() || LiveRoomCharactorManager.getInstance().isTopRank(anchorId, MyUserInfoManager.getInstance().getUser().getUid()) || isManager(MyUserInfoManager.getInstance().getUser().getUid());
+        return isInspector() || LiveRoomCharacterManager.getInstance().isTopRank(anchorId, MyUserInfoManager.getInstance().getUser().getUid()) || isManager(MyUserInfoManager.getInstance().getUser().getUid());
     }
 
     /**
@@ -171,7 +171,7 @@ public class WatchRoomCharactorManager {
      * @return
      */
     public boolean isTop1(long anchorId,long uuid) {
-        return LiveRoomCharactorManager.getInstance().isTopRank(anchorId, uuid);
+        return LiveRoomCharacterManager.getInstance().isTopRank(anchorId, uuid);
     }
 
     /**
