@@ -46,6 +46,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     private static final String ACTION_LOGIN_OAUTH = "login_oauth";
     private static final String ACTION_LOGIN_SSO = "login_sso";
+    private static final String ACTION_THIRD_PART_LOGIN = "third_part_login";
     private static final String ACTION_CLEAR_ACCOUNT = "clear_account";
 
     private static final String ACTION_OPEN_WATCH = "open_watch";
@@ -84,6 +85,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_OPEN_NORMAL_LIVE, 205001);
         mMinVersionMap.put(ACTION_OPEN_GAME_LIVE, 205001);
+
+        mMinVersionMap.put(ACTION_THIRD_PART_LOGIN, 205005);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -271,6 +274,15 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().loginByMiAccountSso(miid, serviceToken);
+    }
+
+    @Override
+    public void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_THIRD_PART_LOGIN, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().thirdPartLogin(channelId, xuid, sex, nickname, headUrl, sign);
     }
 
     @Override

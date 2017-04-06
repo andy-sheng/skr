@@ -4,6 +4,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.AccountLoginManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.command.MiLinkCommand;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.wali.live.dao.UserAccount;
 import com.wali.live.proto.AccountProto;
 
@@ -101,6 +102,44 @@ public class AccountCaller {
                     userAccount.setServiceToken(rsp.getServiceToken());
                     userAccount.setSSecurity(rsp.getSecurityKey());
                     userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
+
+                    UserAccountManager.getInstance().login(userAccount);
+                }
+                subscriber.onNext(rsp);
+                subscriber.onCompleted();
+            }
+        });
+    }
+
+    /**
+     * 第三方登录
+     *
+     * @param channelId
+     * @param xuid
+     * @param sex
+     * @param nickName
+     * @param headUrl
+     * @param sign
+     * @return
+     */
+    public static Observable<AccountProto.ThirdPartSignLoginRsp> login(final int channelId, final String xuid, final int sex, final String nickName, final String headUrl, final String sign) {
+        return Observable.create(new Observable.OnSubscribe<AccountProto.ThirdPartSignLoginRsp>() {
+            @Override
+            public void call(Subscriber<? super AccountProto.ThirdPartSignLoginRsp> subscriber) {
+                AccountProto.ThirdPartSignLoginRsp rsp = AccountLoginManager.thridPartLogin(channelId,xuid,sex,nickName,headUrl,sign);
+                if (rsp == null) {
+                    subscriber.onError(new Exception("rsp is null"));
+                    return;
+                }
+                if ((rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
+
+                    UserAccount userAccount = new UserAccount();
+                    userAccount.setChannelid(channelId);
+                    userAccount.setUuid(String.valueOf(rsp.getUuid()));
+                    userAccount.setPassToken(rsp.getPassToken());
+                    userAccount.setServiceToken(rsp.getServiceToken());
+                    userAccount.setSSecurity(rsp.getSecurityKey());
+                    userAccount.setNeedEditUserInfo(false);
 
                     UserAccountManager.getInstance().login(userAccount);
                 }
