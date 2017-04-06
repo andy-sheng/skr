@@ -31,7 +31,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     public void init(Application app, int channelId, String channelSecret, ICallback callback) {
-        GlobalData.setApplication(app, null);
+        GlobalData.setApplication(app);
         MyLog.d(TAG, "init channelId=" + channelId);
         mChannelId = channelId;
         mChannelSecret = channelSecret;

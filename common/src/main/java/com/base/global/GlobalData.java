@@ -51,6 +51,12 @@ public class GlobalData {
         initialize();
     }
 
+    public static void setApplication(Application app) {
+        sApplication = app;
+        recordScreenParam(app);
+        initialize();
+    }
+
     public static int getRequestCode() {
         synchronized (sRequestCodeLock) {
             return REQUEST_CODE_FIRST++;

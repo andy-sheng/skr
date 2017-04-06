@@ -1,1 +1,1 @@
-include ':greendaogenerator', ':data', ':common', ':livecommon', ':watchclient', ':livesdkapp', ':engineplayer', ':liveclient', ':enginelive', ':enginebase', ':pluginmanager', ':plugindemo', ':playerbase', ':pluginplayer', ':pluginplayerdemo', ':livesdkaar', ':livesdkaarapp'
+include ':greendaogenerator', ':data', ':common', ':livecommon', ':watchclient', ':livesdkapp', ':engineplayer', ':liveclient', ':enginelive', ':enginebase', ':pluginmanager', ':plugindemo', ':playerbase', ':pluginplayer', ':pluginplayerdemo', ':livesdkaar', ':pluginaardemo'
