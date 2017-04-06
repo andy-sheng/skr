@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Log.w(TAG, "onNewVersionAvail");
-                        showUpgradeDialog(MainActivity.this, true, true);
+                        showUpgradeDialog(MainActivity.this, true);
                     }
                 });
             }
@@ -155,14 +155,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void notifyOtherAppActive(){
+            public void notifyOtherAppActive() {
                 ToastUtils.showToast("有其他APP在活跃");
             }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
     }
 
-    public void showUpgradeDialog(final @NonNull Activity activity, final boolean isManualCheck, final boolean canCancel) {
+    public void showUpgradeDialog(final @NonNull Activity activity, final boolean canCancel) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         View updateView = LayoutInflater.from(GlobalData.app()).inflate(R.layout.upgrage_dialog_layout, null);
         final TextView version = (TextView) updateView.findViewById(R.id.version);
@@ -179,14 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     mSdkUpdateHelper.downUpdate();
                 }
             });
-            builder.setNegativeButton(R.string.cancel_update, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (!isManualCheck) {
-                        mSdkUpdateHelper.setCheckTime();
-                    }
-                }
-            });
+            builder.setNegativeButton(R.string.cancel_update, null);
         } else {
             builder.setPositiveButton(R.string.update_rightnow, new DialogInterface.OnClickListener() {
                 @Override
