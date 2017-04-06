@@ -7,10 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.wali.live.livesdk.live.IMiLiveSdk;
 import com.wali.live.livesdk.live.MiLiveSdkController;
 import com.wali.live.sdk.manager.aardemo.global.GlobalData;
 import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
+import com.wali.live.watchsdk.IMiLiveSdk;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";

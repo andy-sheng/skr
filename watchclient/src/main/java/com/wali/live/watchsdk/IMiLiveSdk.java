@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live;
+package com.wali.live.watchsdk;
 
 import android.app.Activity;
 import android.app.Application;

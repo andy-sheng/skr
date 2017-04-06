@@ -2,14 +2,13 @@ package com.wali.live.livesdk.live;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
-import com.wali.live.watchsdk.ipc.service.IMiLiveSdkEventCallback;
+import com.wali.live.watchsdk.IMiLiveSdk;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.ipc.service.ThirdPartLoginData;
 
@@ -35,53 +34,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         MyLog.d(TAG, "init channelId=" + channelId);
         mChannelId = channelId;
         mChannelSecret = channelSecret;
-        mCallback = callback;
         mPackageName = app.getPackageName();
-        try {
-            MiLiveSdkBinder.getInstance().setEventCallBack(channelId, new IMiLiveSdkEventCallback() {
-                @Override
-                public void onEventLogin(int code) throws RemoteException {
-                    if (mCallback != null) {
-                        mCallback.notifyLogin(code);
-                    }
-                }
-
-                @Override
-                public void onEventLogoff(int code) throws RemoteException {
-                    if (mCallback != null) {
-                        mCallback.notifyLogoff(code);
-                    }
-                }
-
-                @Override
-                public void onEventWantLogin() throws RemoteException {
-                    if (mCallback != null) {
-                        mCallback.notifyWantLogin();
-                    }
-                }
-
-                @Override
-                public void onEventVerifyFailure(int code) throws RemoteException {
-                    if (mCallback != null) {
-                        mCallback.notifyVerifyFailure(code);
-                    }
-                }
-
-                @Override
-                public void onEventOtherAppActive() throws RemoteException {
-                    if (mCallback != null) {
-                        mCallback.notifyOtherAppActive();
-                    }
-                }
-
-                @Override
-                public IBinder asBinder() {
-                    return null;
-                }
-            });
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        MiLiveSdkBinder.getInstance().setCallback(callback);
     }
 
     private void checkHasInit() {

@@ -12,6 +12,7 @@ import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.SecurityProto;
+import com.wali.live.watchsdk.IMiLiveSdk;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
@@ -26,7 +27,6 @@ import java.util.List;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -39,6 +39,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     private final HashMap<Integer, String> mAuthMap;
     private final HashMap<Integer, RemoteCallbackList<IMiLiveSdkEventCallback>> mEventCallBackListMap;
+    private IMiLiveSdk.ICallback mAARCallback;
 
     private MiLiveSdkBinder() {
         mAuthMap = new HashMap();
@@ -60,6 +61,10 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             mEventCallBackListMap.put(channelId, list);
         }
         list.register(callback);
+    }
+
+    public void setCallback(IMiLiveSdk.ICallback callback) {
+        mAARCallback = callback;
     }
 
     @Override
@@ -401,8 +406,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
      * 登出的结果
      */
     private void onEventLogoff(int channelId, int code) {
+        if (mAARCallback != null) {
+            mAARCallback.notifyLogoff(code);
+            return;
+        }
         MyLog.d(TAG, "onEventLogoff channelId=" + channelId);
-
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
@@ -433,8 +441,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
      * 登录的结果
      */
     public void onEventLogin(int channelId, int code) {
+        if (mAARCallback != null) {
+            mAARCallback.notifyLogin(code);
+            return;
+        }
         MyLog.d(TAG, "onEventLogin channelId=" + channelId);
-
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
@@ -465,14 +476,16 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
      * 用户请求登录，要考虑宿主死亡的情况，看需要不需要通过广播通知
      */
     public void onEventWantLogin(int channelId) {
+        if (mAARCallback != null) {
+            mAARCallback.notifyWantLogin();
+            return;
+        }
         MyLog.d(TAG, "onEventWantLogin channelId=" + channelId);
-
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
         if (callbackList != null) {
             MyLog.w(TAG, "callbackList != null");
-
             int n = callbackList.beginBroadcast();
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
@@ -494,14 +507,16 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void onEventVerifyFailure(int channelId, int code) {
+        if (mAARCallback != null) {
+            mAARCallback.notifyVerifyFailure(code);
+            return;
+        }
         MyLog.d(TAG, "onEventVerifyFailure channelId=" + channelId);
-
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
         if (callbackList != null) {
             MyLog.w(TAG, "callbackList != null");
-
             int n = callbackList.beginBroadcast();
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
@@ -523,14 +538,16 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void onEventOtherAppActive(int channelId) {
+        if (mAARCallback != null) {
+            mAARCallback.notifyOtherAppActive();
+            return;
+        }
         MyLog.d(TAG, "onEventOtherApp channelId=" + channelId);
-
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
         if (callbackList != null) {
             MyLog.w(TAG, "callbackList != null");
-
             int n = callbackList.beginBroadcast();
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
@@ -554,7 +571,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     @Override
     public void thirdPartLogin(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
         MyLog.w(TAG, "thirdPartLogin channelId=" + loginData.getChannelId());
-
         final int channelId = loginData.getChannelId();
         secureOperate(loginData.getChannelId(), packageName, channelSecret, new SecureLoginCallback() {
             @Override

@@ -32,7 +32,6 @@ repositories {
 dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile files('libs/EventBus-2.4.0.jar')
     compile(name: 'livesdk', ext: 'aar')
 
     compile(presentationDependencies.fresco) {
@@ -45,4 +44,5 @@ dependencies {
     compile presentationDependencies.frescoGif
     compile 'com.trello:rxlifecycle:0.4.0'
     compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }
