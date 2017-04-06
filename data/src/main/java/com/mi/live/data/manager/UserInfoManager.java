@@ -515,7 +515,7 @@ public class UserInfoManager {
                         manager.avatar = data.getAvatar();
                         manager.certificationType = data.getCertificationType();
                         manager.isInRoom = false;
-                        LiveRoomCharactorManager.getInstance().setManager(manager, true);
+                        LiveRoomCharacterManager.getInstance().setManager(manager, true);
                         list.add(new LiveRoomManagerModel(data));
                     }
                 }

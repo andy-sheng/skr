@@ -23,7 +23,7 @@ import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.user.User;
 import com.wali.live.livesdk.R;
@@ -41,8 +41,14 @@ import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
  * Created by wuxiaoshan on 16-6-13.
  */
 public class RoomAdminFragment extends MyRxFragment implements FragmentDataListener, ForbidManagePresenter.IForbidManageView {
-
     public static final String TAG = RoomAdminFragment.class.getSimpleName();
+
+    public static final String KEY_ROOM_SEND_MSG_CONFIG = "key_room_send_msg_config";
+    public static final String KEY_ROOM_ANCHOR_ID = "key_room_anchor_id";
+    public static final String KEY_ROOM_IS_PRIVATE_LIVE = "key_room_is_private_live";
+    //房间id
+    public static final String INTENT_LIVE_ROOM_ID = "INTENT_LIVE_ROOM_ID";
+
     /**
      * 批量拉取的数量
      */
@@ -77,11 +83,6 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
     private RoomSettingView mRoomSettingView;
     private ForbidManagePresenter mForbidManagePresenter;
     RoomAdminItemRecyclerAdapter.OnRoomStatusObserver mOnRoomStatusObserver;
-    public static final String KEY_ROOM_SEND_MSG_CONFIG = "key_room_send_msg_config";
-    public static final String KEY_ROOM_ANCHOR_ID = "key_room_anchor_id";
-    public static final String KEY_ROOM_IS_PRIVATE_LIVE = "key_room_is_private_live";
-    //房间id
-    public static final String INTENT_LIVE_ROOM_ID = "INTENT_LIVE_ROOM_ID";
 
     @Override
     public int getRequestCode() {
@@ -105,7 +106,8 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
         mRoomId = bundle.getString(INTENT_LIVE_ROOM_ID);
         mMsgRule = (MessageRule) bundle.getSerializable(KEY_ROOM_SEND_MSG_CONFIG);
         mAnchorId = bundle.getLong(KEY_ROOM_ANCHOR_ID, 0);
-        mIsPrivateLive = bundle.getBoolean(KEY_ROOM_IS_PRIVATE_LIVE);
+        mIsPrivateLive = bundle.getBoolean(KEY_ROOM_IS_PRIVATE_LIVE, false);
+
         mTitleBar = (BackTitleBar) mRootView.findViewById(R.id.title_bar);
         mTitleBar.getBackBtn().setText(getResources().getString(R.string.room_admin));
         mTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
@@ -115,6 +117,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
                 FragmentNaviUtils.popFragmentFromStack(getActivity());
             }
         });
+
         mBanspeakRv = new RecyclerView(getActivity());
         mBanspeakRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBanspeakRecyclerAdapter = new RoomAdminItemRecyclerAdapter(RoomAdminItemRecyclerAdapter.DATA_TYPE_BANSPEAKER, getActivity());
@@ -239,10 +242,10 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
             return;
         }
         if (mBanspeakRecyclerAdapter.getDataList() == null) {
-            mBanspeakRecyclerAdapter.addData(LiveRoomCharactorManager.getInstance().getSpeakerBanList());
-        } else if (mBanspeakRecyclerAdapter.getDataList().size() != LiveRoomCharactorManager.getInstance().getSpeakerBanList().size()) {
+            mBanspeakRecyclerAdapter.addData(LiveRoomCharacterManager.getInstance().getSpeakerBanList());
+        } else if (mBanspeakRecyclerAdapter.getDataList().size() != LiveRoomCharacterManager.getInstance().getSpeakerBanList().size()) {
             mBanspeakRecyclerAdapter.clearData();
-            mBanspeakRecyclerAdapter.addData(LiveRoomCharactorManager.getInstance().getSpeakerBanList());
+            mBanspeakRecyclerAdapter.addData(LiveRoomCharacterManager.getInstance().getSpeakerBanList());
         }
     }
 
@@ -294,7 +297,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
                 if (errCode == ForbidManagePresenter.ERR_CODE_SUCCESS) {
                     User user = new User();
                     user.setUid(targetId);
-                    LiveRoomCharactorManager.getInstance().banSpeaker(user, false);
+                    LiveRoomCharacterManager.getInstance().banSpeaker(user, false);
                     mBanspeakRecyclerAdapter.removeData(targetId);
                 } else {
                     ToastUtils.showToast(R.string.cancel_banspeaker_fail);
@@ -313,15 +316,15 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
         MyLog.w(TAG, "onBlockViewer targetId=" + targetId + ", errCode=" + errCode);
         if (errCode == ForbidManagePresenter.ERR_CODE_SUCCESS) {
             int index = -1;
-            for (int i = 0; i < LiveRoomCharactorManager.getInstance().getSpeakerBanList().size(); i++) {
-                User banSpeaker = LiveRoomCharactorManager.getInstance().getSpeakerBanList().get(i);
+            for (int i = 0; i < LiveRoomCharacterManager.getInstance().getSpeakerBanList().size(); i++) {
+                User banSpeaker = LiveRoomCharacterManager.getInstance().getSpeakerBanList().get(i);
                 if (banSpeaker.getUid() == targetId) {
                     index = i;
                     break;
                 }
             }
             if (index != -1) {
-                LiveRoomCharactorManager.getInstance().getSpeakerBanList().get(index).setIsBlock(true);
+                LiveRoomCharacterManager.getInstance().getSpeakerBanList().get(index).setIsBlock(true);
             }
             if (mCurrentTabId == TAB_ID_BANSPEAKER) {
                 User user = mBanspeakRecyclerAdapter.getDataByUserId(targetId);

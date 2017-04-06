@@ -211,7 +211,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         setupRequiredComponent();
 
         if (!mIsGameLive) {
-            mComponentController.createStreamer(this, $(R.id.galileo_surface_view), 0, null);
+            mComponentController.createStreamer(this, $(R.id.galileo_surface_view), 0, false, null);
         }
         mComponentController.enterPreparePage(this, REQUEST_PREPARE_LIVE, this);
         openOrientation();
@@ -518,7 +518,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
         if (mIsGameLive) {
             int quality = bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY);
-            mComponentController.createStreamer(this, null, quality, mScreenRecordIntent);
+            boolean isMute = bundle.getBoolean(PrepareLiveFragment.EXTRA_GAME_LIVE_MUTE, false);
+            mComponentController.createStreamer(this, null, quality, isMute, mScreenRecordIntent);
         }
     }
 

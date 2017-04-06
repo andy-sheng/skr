@@ -39,7 +39,7 @@ import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GetUserInfoAndUnpdateConversationEvent;
 import com.mi.live.data.event.LiveRoomManagerEvent;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.user.User;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
@@ -486,9 +486,9 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                 //判断是否有禁言权限和踢人权限
                 if (mOwnerUuidFromBundle == UserAccountManager.getInstance().getUuidAsLong()) {
                     //判断禁言按钮的状态
-                    changeForbidSpeakBtnStatus(LiveRoomCharactorManager.getInstance().isBanSpeaker(mUserUuidFromBundle));
+                    changeForbidSpeakBtnStatus(LiveRoomCharacterManager.getInstance().isBanSpeaker(mUserUuidFromBundle));
                     mForbidSpeak.setVisibility(View.VISIBLE);
-                    if (LiveRoomCharactorManager.getInstance().haveKickPermission()) {
+                    if (LiveRoomCharacterManager.getInstance().haveKickPermission()) {
                         mKickViewerBtn.setVisibility(View.VISIBLE);
                     }
                 } else if (mUserUuidFromBundle != mOwnerUuidFromBundle) {
@@ -683,7 +683,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         if (mOwnerUuidFromBundle == UserAccountManager.getInstance().getUuidAsLong()) {//主播端
 //            String forbiddenText;
 //            boolean setForbidden;
-//            if (LiveRoomCharactorManager.getInstance().isBanSpeaker(mUserUuidFromBundle)) {   //已经禁言
+//            if (LiveRoomCharacterManager.getInstance().isBanSpeaker(mUserUuidFromBundle)) {   //已经禁言
 //                forbiddenText = getResources().getString(R.string.unforbid_speak);
 //                setForbidden = false;
 //            } else {
@@ -692,7 +692,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
 //            }
             String managerText;
             final boolean setManager;
-            if (LiveRoomCharactorManager.getInstance().isManager(mUserUuidFromBundle)) {//查看的用户是管理员
+            if (LiveRoomCharacterManager.getInstance().isManager(mUserUuidFromBundle)) {//查看的用户是管理员
                 managerText = getResources().getString(R.string.cancel_manager);
                 setManager = false;
             } else {
@@ -848,17 +848,17 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
 
             if (!mSetManagerTaskRunning) {
                 mSetManagerTaskRunning = true;
-                if (LiveRoomCharactorManager.getInstance().getManagerCount() < LiveRoomCharactorManager.MANAGER_CNT) {
-                    LiveRoomCharactorManager.getInstance().setManagerRxTask((RxActivity) getActivity(), mUser, getLiveID(), getOwnerID(), true);
+                if (LiveRoomCharacterManager.getInstance().getManagerCount() < LiveRoomCharacterManager.MANAGER_CNT) {
+                    LiveRoomCharacterManager.getInstance().setManagerRxTask((RxActivity) getActivity(), mUser, getLiveID(), getOwnerID(), true);
                 } else {
-                    ToastUtils.showToast(getActivity(), getString(R.string.manager_max_err, LiveRoomCharactorManager.MANAGER_CNT));
+                    ToastUtils.showToast(getActivity(), getString(R.string.manager_max_err, LiveRoomCharacterManager.MANAGER_CNT));
                     mSetManagerTaskRunning = false;
                 }
             }
         } else {//取消管理员
             if (!mSetManagerTaskRunning) {
                 mSetManagerTaskRunning = true;
-                LiveRoomCharactorManager.getInstance().setManagerRxTask((RxActivity) getActivity(), mUser, getLiveID(), getOwnerID(), false);
+                LiveRoomCharacterManager.getInstance().setManagerRxTask((RxActivity) getActivity(), mUser, getLiveID(), getOwnerID(), false);
             }
         }
     }

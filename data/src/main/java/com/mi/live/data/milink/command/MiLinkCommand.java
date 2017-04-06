@@ -467,4 +467,6 @@ public class MiLinkCommand {
     public static final String COMMAND_GET_NEW_CHANNELID = "zhibo.roomtv.getnewchannelid";
     //Feed列表为空时，推荐关注人
     public static final String COMMAND_FEED_RECOMUSERS = "zhibo.feed.recomUsers";
+
+    public static final String COMMAND_LIVE_GET_TITLE_LIST = "zhibo.live.gettitlelist";
 }

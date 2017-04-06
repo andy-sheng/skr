@@ -91,3 +91,20 @@ message TagInfo {
     optional string iconUrl         = 3; //icon url
     optional uint32 tagStatus       = 4; //0:不可用 1:可用
 }
+
+//获取直播标题列表
+//zhibo.live.gettitlelist
+message GetTitleListReq {
+    optional uint64 uuid    = 1;
+    repeated uint32 source  = 2; //0：摄像头 1：录屏 2：外设
+}
+
+message GetTitleListRsp {
+    required uint32 retCode         = 1;
+    repeated TitleInfo title_info   = 2;
+}
+
+message TitleInfo {
+    optional uint32 source          = 1;
+    repeated string title_list      = 2;
+}
