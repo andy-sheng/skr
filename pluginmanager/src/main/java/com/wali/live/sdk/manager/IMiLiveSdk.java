@@ -94,6 +94,19 @@ public interface IMiLiveSdk {
     void setChannelId(int channelId);
 
     /**
+     * 第三方登录
+     *
+     * @param channelId 渠道ID
+     * @param xuid  第三方Uid
+     * @param sex   第三方用户性别,1:男 2:女 0:未知
+     * @param nickname  第三方用户昵称
+     * @param headUrl   第三方用户头像
+     * @param sign  签名,请参考接入文档，签名算法一栏
+     * @param callback
+     */
+    void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback);
+
+    /**
      * sdk 上层应用回调
      */
     @Keep
@@ -106,6 +119,8 @@ public interface IMiLiveSdk {
         int LOGIN_OAUTH_AIDL = 1002;
 
         int CLEAR_ACCOUNT_AIDL = 1003;
+
+        int THIRD_PART_LOGIN = 1004;
 
         /**
          * 登录相关接口的返回码

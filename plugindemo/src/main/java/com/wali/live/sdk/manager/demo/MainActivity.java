@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
             public void notifyLogin(int var1) {
                 if (var1 == IMiLiveSdk.ICallback.CODE_SUCCESS) {
                     ToastUtils.showToast("登录成功");
+                }else{
+                    ToastUtils.showToast("登录错误，错误码："+var1);
                 }
             }
 
@@ -197,5 +199,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+    }
+
+    public int getCurrentChannelId() {
+        return currentChannelId;
     }
 }

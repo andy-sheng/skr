@@ -18,6 +18,7 @@ import com.wali.live.proto.AccountProto;
 import com.wali.live.task.TaskCallBackWrapper;
 import com.wali.live.upload.UploadTask;
 import com.wali.live.utils.AttachmentUtils;
+import com.wali.live.watchsdk.ipc.service.ThirdPartLoginData;
 import com.wali.live.watchsdk.request.UploadUserInfoRequest;
 import com.wali.live.watchsdk.task.UploadRunnable;
 
@@ -85,6 +86,20 @@ public class UploadService {
             avatarNeedDowload = true;
             needEditUserInfo = loginRsp.getIsSetGuide();
             this.channelId = channelId;
+        }
+
+        public UploadInfo(AccountProto.ThirdPartSignLoginRsp rsp, ThirdPartLoginData loginData){
+            loginStatus = rsp.getLoginStatus();
+            hasInnerAvatar = !isFirstLogin();
+            hasInnerNickName = !isFirstLogin();
+            hasInnerSex = !isFirstLogin();
+            avatar = loginData.getHeadUrl();
+            nickName = loginData.getNickname();
+            gender = loginData.getSex();
+            uuid = rsp.getUuid();
+            needEditUserInfo = false;
+            avatarNeedDowload = true;
+            this.channelId = loginData.getChannelId();
         }
 
         public boolean isFirstLogin() {

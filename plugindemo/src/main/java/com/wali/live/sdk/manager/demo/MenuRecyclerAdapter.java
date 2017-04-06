@@ -8,6 +8,7 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -130,6 +131,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ssoLogin();
             }
         }));
+        mDataList.add(new Bean("第三方登录(AIDL)", new Runnable() {
+            @Override
+            public void run() {
+                thirdPartLogin();
+            }
+        }));
         mDataList.add(new Bean("登出当前宿主账号(AIDL)", new Runnable() {
             @Override
             public void run() {
@@ -225,6 +232,12 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
         }).start();
+    }
+
+    public void thirdPartLogin(){
+        Intent intent = new Intent(mActivity,ThirdPartLoginActivity.class);
+        intent.putExtra(ThirdPartLoginActivity.KEY_CHANNELID,((MainActivity)mActivity).getCurrentChannelId());
+        mActivity.startActivity(intent);
     }
 
     private String getServiceTokenNew(Context context) {

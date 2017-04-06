@@ -139,4 +139,47 @@ public class AccountLoginManager {
         }
         return null;
     }
+
+    /**
+     * 对接第三方账号签名登陆，比如对接真真海淘，直播客户端用户进入直播房间要打通用户对输入参数进行签名
+     *
+     * @param channelId
+     * @param xuid
+     * @param sex
+     * @param nickName
+     * @param headUrl
+     * @param sign
+     * @return
+     */
+    public static AccountProto.ThirdPartSignLoginRsp thridPartLogin(int channelId,String xuid, int sex, String nickName, String headUrl, String sign){
+        AccountProto.ThirdPartSignLoginReq.Builder builder = AccountProto.ThirdPartSignLoginReq.newBuilder();
+        builder.setNickname(nickName);
+        builder.setChannelId(String.valueOf(channelId));
+        builder.setXuid(xuid);
+        builder.setHeadUrl(headUrl);
+        builder.setSex(sex);
+        builder.setSign(sign);
+
+        AccountProto.ThirdPartSignLoginReq req = builder.build();
+        MyLog.w(TAG, "thridPartLogin request : \n" + req.toString());
+        PacketData data = new PacketData();
+        data.setCommand(MiLinkCommand.COMMAND_ACCOUNT_3PARTSIGNLOGIN);
+        data.setData(builder.build().toByteArray());
+        data.setChannelId(String.valueOf(channelId));
+
+        long start = System.currentTimeMillis();
+        PacketData rspData = MiLinkClientAdapter.getsInstance().sendDataByChannel(data, MiLinkConstant.TIME_OUT);
+        MyLog.w(TAG, "start=" + start + "end=" + System.currentTimeMillis() + "serverTime = end - start =" + (System.currentTimeMillis() - start));
+        MyLog.w(TAG, "thridPartLogin rspData =" + rspData);
+        if (rspData != null) {
+            try {
+                AccountProto.ThirdPartSignLoginRsp rsp = AccountProto.ThirdPartSignLoginRsp.parseFrom(rspData.getData());
+                MyLog.w(TAG, "thridPartLogin response : \n" + rsp.toString());
+                return rsp;
+            } catch (InvalidProtocolBufferException e) {
+                MyLog.e(e);
+            }
+        }
+        return null;
+    }
 }
