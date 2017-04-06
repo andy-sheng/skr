@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.demo.global;
+package com.wali.live.sdk.manager.aardemo.global;
 
 import android.app.Application;
 

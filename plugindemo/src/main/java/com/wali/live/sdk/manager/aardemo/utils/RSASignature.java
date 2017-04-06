@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.demo.utils;
+package com.wali.live.sdk.manager.aardemo.utils;
 
 import java.security.KeyFactory;
 import java.security.PrivateKey;

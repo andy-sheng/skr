@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.demo;
+package com.wali.live.sdk.manager.aardemo;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -18,10 +18,10 @@ import android.widget.TextView;
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
-import com.wali.live.sdk.manager.demo.global.GlobalData;
-import com.wali.live.sdk.manager.demo.notification.NotificationManger;
-import com.wali.live.sdk.manager.demo.utils.StringUtils;
-import com.wali.live.sdk.manager.demo.utils.ToastUtils;
+import com.wali.live.sdk.manager.aardemo.global.GlobalData;
+import com.wali.live.sdk.manager.aardemo.notification.NotificationManger;
+import com.wali.live.sdk.manager.aardemo.utils.StringUtils;
+import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";

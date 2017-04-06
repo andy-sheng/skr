@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.demo;
+package com.wali.live.sdk.manager.aardemo;
 
 import android.Manifest;
 import android.accounts.Account;
@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import com.mi.live.data.location.Location;
 import com.wali.live.livesdk.live.MiLiveSdkController;
-import com.wali.live.sdk.manager.demo.global.GlobalData;
-import com.wali.live.sdk.manager.demo.utils.ToastUtils;
+import com.wali.live.sdk.manager.aardemo.global.GlobalData;
+import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;

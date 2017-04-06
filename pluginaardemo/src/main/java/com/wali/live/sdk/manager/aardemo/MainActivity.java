@@ -1,4 +1,4 @@
-package com.wali.live.sdk.manager.demo;
+package com.wali.live.sdk.manager.aardemo;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.wali.live.livesdk.live.IMiLiveSdk;
 import com.wali.live.livesdk.live.MiLiveSdkController;
-import com.wali.live.sdk.manager.demo.global.GlobalData;
-import com.wali.live.sdk.manager.demo.utils.ToastUtils;
+import com.wali.live.sdk.manager.aardemo.global.GlobalData;
+import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
