@@ -144,6 +144,7 @@
     <string name="change_room_setting_fail">設定失敗</string>
     <string name="definition_high">高解析度</string>
     <string name="screen_live">錄螢直播</string>
+    <string name="game_live">遊戲直播</string>
     <string name="begin_live_title">標題:&#160;</string>
     <string name="live_title_change">換一換</string>
     <string name="live_title_clear">清空</string>

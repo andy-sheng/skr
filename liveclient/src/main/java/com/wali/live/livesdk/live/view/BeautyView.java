@@ -27,18 +27,25 @@ public class BeautyView extends RelativeLayout {
     private ImageView mBeautyIv;
     private ViewGroup mMultiBeautyContainer;
 
-    private BeautyCallBack mBeautyCallBack;
+    private IBeautyCallBack mBeautyCallBack;
+    private MagicParamPresenter mMagicParamPresenter;
     private MagicParamPresenter.MagicParams mMagicParams;
     private StreamerPresenter mStreamerPresenter;
     private SingleChooser mSingleChooser;
+    private boolean mMultiSelectInit = false;
 
-    public void setBeautyCallBack(BeautyCallBack beautyCallBack) {
+    public void setBeautyCallBack(IBeautyCallBack beautyCallBack) {
         mBeautyCallBack = beautyCallBack;
     }
 
     public void setStreamerPresenter(StreamerPresenter presenter) {
         mStreamerPresenter = presenter;
-        if (mStreamerPresenter != null && mSingleChooser != null) {
+        initMultiSelected();
+    }
+
+    private void initMultiSelected() {
+        if (mStreamerPresenter != null && mSingleChooser != null && !mMultiSelectInit) {
+            mMultiSelectInit = true;
             int index = mMagicParams.findBeautyPos(mStreamerPresenter.getBeautyLevel());
             switch (index) {
                 case 3:
@@ -74,8 +81,18 @@ public class BeautyView extends RelativeLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.beauty_view, this);
-        initData();
-        initView();
+        getDataFromServer(context);
+    }
+
+    private void getDataFromServer(Context context) {
+        mMagicParamPresenter = new MagicParamPresenter(null, context);
+        mMagicParamPresenter.syncMagicParams(new IMagicParamsCallBack() {
+            @Override
+            public void onComplete() {
+                initData();
+                initView();
+            }
+        });
     }
 
     private void initData() {
@@ -90,6 +107,7 @@ public class BeautyView extends RelativeLayout {
         if (!mMagicParams.isBeauty()) {
             mBeautyIv.setVisibility(View.INVISIBLE);
         } else if (mMagicParams.isMultiBeauty()) {
+            mBeautyIv.setVisibility(View.VISIBLE);
             mBeautyIv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -120,7 +138,9 @@ public class BeautyView extends RelativeLayout {
                         }
                     });
             mSingleChooser.setup(mMultiBeautyContainer, 0);
+            initMultiSelected();
         } else {
+            mBeautyIv.setVisibility(View.VISIBLE);
             mBeautyIv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -207,9 +227,17 @@ public class BeautyView extends RelativeLayout {
         }
     }
 
-    public interface BeautyCallBack {
+    public void destroy() {
+        mMagicParamPresenter.destroy();
+    }
+
+    public interface IBeautyCallBack {
         void showMultiBeautyAnim();
 
         void hideMultiBeautyAnim();
+    }
+
+    public interface IMagicParamsCallBack {
+        void onComplete();
     }
 }

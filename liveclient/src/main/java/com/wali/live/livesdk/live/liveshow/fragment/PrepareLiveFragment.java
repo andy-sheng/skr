@@ -110,7 +110,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mAddTopicContainer = $(R.id.add_topic_container);
         mBeautyView = $(R.id.beauty_view);
         mBeautyView.setStreamerPresenter(mStreamerPresenter);
-        mBeautyView.setBeautyCallBack(new BeautyView.BeautyCallBack() {
+        mBeautyView.setBeautyCallBack(new BeautyView.IBeautyCallBack() {
             @Override
             public void showMultiBeautyAnim() {
                 //隐藏相机
@@ -247,6 +247,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         super.onDestroyView();
         if (mCoverView != null) {
             mCoverView.onDestroy();
+        }
+        if (mBeautyView != null) {
+            mBeautyView.destroy();
         }
     }
 

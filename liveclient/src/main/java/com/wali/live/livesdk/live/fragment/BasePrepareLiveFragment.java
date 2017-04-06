@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -416,6 +417,11 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
                     }
                 }
                 defaultWay = TOPIC_FROM_CUSTOM;
+            }
+            if (TextUtils.isEmpty(editText.getText())) {
+                editText.setHint(GlobalData.app().getString(R.string.live_title_hint));
+            } else {
+                editText.setHint("");
             }
         }
 

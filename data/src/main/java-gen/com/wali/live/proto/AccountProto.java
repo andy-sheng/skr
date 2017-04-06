@@ -8,10 +8,10 @@ public final class AccountProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface LoginReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LoginReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface LoginReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 accountType = 1;
     /**
      * <code>required uint32 accountType = 1;</code>
      *
@@ -29,6 +29,7 @@ public final class AccountProto {
      */
     int getAccountType();
 
+    // optional string code = 2;
     /**
      * <code>optional string code = 2;</code>
      *
@@ -55,6 +56,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getCodeBytes();
 
+    // optional string openid = 3;
     /**
      * <code>optional string openid = 3;</code>
      *
@@ -81,6 +83,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
+    // optional string accessToken = 4;
     /**
      * <code>optional string accessToken = 4;</code>
      *
@@ -107,6 +110,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getAccessTokenBytes();
 
+    // optional uint32 expires_in = 5;
     /**
      * <code>optional uint32 expires_in = 5;</code>
      *
@@ -124,6 +128,7 @@ public final class AccountProto {
      */
     int getExpiresIn();
 
+    // optional string refreshToken = 6;
     /**
      * <code>optional string refreshToken = 6;</code>
      *
@@ -151,7 +156,7 @@ public final class AccountProto {
         getRefreshTokenBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LoginReq}
+   * Protobuf type {@code LoginReq}
    *
    * <pre>
    *第三方授权登录
@@ -159,9 +164,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class LoginReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LoginReq)
-      LoginReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements LoginReqOrBuilder {
     // Use LoginReq.newBuilder() to construct.
     private LoginReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -213,21 +217,18 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              code_ = bs;
+              code_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              openid_ = bs;
+              openid_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              accessToken_ = bs;
+              accessToken_ = input.readBytes();
               break;
             }
             case 40: {
@@ -236,9 +237,8 @@ public final class AccountProto {
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              refreshToken_ = bs;
+              refreshToken_ = input.readBytes();
               break;
             }
           }
@@ -255,12 +255,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_LoginReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_LoginReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.LoginReq.class, com.wali.live.proto.AccountProto.LoginReq.Builder.class);
     }
@@ -281,6 +281,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 accountType = 1;
     public static final int ACCOUNTTYPE_FIELD_NUMBER = 1;
     private int accountType_;
     /**
@@ -304,6 +305,7 @@ public final class AccountProto {
       return accountType_;
     }
 
+    // optional string code = 2;
     public static final int CODE_FIELD_NUMBER = 2;
     private java.lang.Object code_;
     /**
@@ -358,6 +360,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string openid = 3;
     public static final int OPENID_FIELD_NUMBER = 3;
     private java.lang.Object openid_;
     /**
@@ -412,6 +415,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string accessToken = 4;
     public static final int ACCESSTOKEN_FIELD_NUMBER = 4;
     private java.lang.Object accessToken_;
     /**
@@ -466,6 +470,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 expires_in = 5;
     public static final int EXPIRES_IN_FIELD_NUMBER = 5;
     private int expiresIn_;
     /**
@@ -489,6 +494,7 @@ public final class AccountProto {
       return expiresIn_;
     }
 
+    // optional string refreshToken = 6;
     public static final int REFRESHTOKEN_FIELD_NUMBER = 6;
     private java.lang.Object refreshToken_;
     /**
@@ -554,8 +560,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAccountType()) {
         memoizedIsInitialized = 0;
@@ -698,7 +703,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LoginReq}
+     * Protobuf type {@code LoginReq}
      *
      * <pre>
      *第三方授权登录
@@ -706,17 +711,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LoginReq)
-        com.wali.live.proto.AccountProto.LoginReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.LoginReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_LoginReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.LoginReq.class, com.wali.live.proto.AccountProto.LoginReq.Builder.class);
       }
@@ -762,7 +766,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.LoginReq getDefaultInstanceForType() {
@@ -878,6 +882,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 accountType = 1;
       private int accountType_ ;
       /**
        * <code>required uint32 accountType = 1;</code>
@@ -926,6 +931,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string code = 2;
       private java.lang.Object code_ = "";
       /**
        * <code>optional string code = 2;</code>
@@ -947,12 +953,9 @@ public final class AccountProto {
       public java.lang.String getCode() {
         java.lang.Object ref = code_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            code_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          code_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1026,6 +1029,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string openid = 3;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 3;</code>
@@ -1047,12 +1051,9 @@ public final class AccountProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            openid_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          openid_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1126,6 +1127,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string accessToken = 4;
       private java.lang.Object accessToken_ = "";
       /**
        * <code>optional string accessToken = 4;</code>
@@ -1147,12 +1149,9 @@ public final class AccountProto {
       public java.lang.String getAccessToken() {
         java.lang.Object ref = accessToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            accessToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          accessToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1226,6 +1225,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 expires_in = 5;
       private int expiresIn_ ;
       /**
        * <code>optional uint32 expires_in = 5;</code>
@@ -1274,6 +1274,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string refreshToken = 6;
       private java.lang.Object refreshToken_ = "";
       /**
        * <code>optional string refreshToken = 6;</code>
@@ -1295,12 +1296,9 @@ public final class AccountProto {
       public java.lang.String getRefreshToken() {
         java.lang.Object ref = refreshToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            refreshToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          refreshToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1374,7 +1372,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LoginReq)
+      // @@protoc_insertion_point(builder_scope:LoginReq)
     }
 
     static {
@@ -1382,13 +1380,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LoginReq)
+    // @@protoc_insertion_point(class_scope:LoginReq)
   }
 
-  public interface LoginRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LoginRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface LoginRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -1406,6 +1404,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -1423,6 +1422,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -1449,6 +1449,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -1475,6 +1476,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -1501,6 +1503,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -1527,6 +1530,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
+    // optional string headimgurl = 7;
     /**
      * <code>optional string headimgurl = 7;</code>
      *
@@ -1553,6 +1557,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadimgurlBytes();
 
+    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -1570,6 +1575,7 @@ public final class AccountProto {
      */
     int getSex();
 
+    // optional uint32 loginStatus = 9;
     /**
      * <code>optional uint32 loginStatus = 9;</code>
      *
@@ -1587,6 +1593,7 @@ public final class AccountProto {
      */
     int getLoginStatus();
 
+    // optional bool hasInnerAvatar = 10;
     /**
      * <code>optional bool hasInnerAvatar = 10;</code>
      *
@@ -1604,6 +1611,7 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
+    // optional bool hasInnerNickname = 11;
     /**
      * <code>optional bool hasInnerNickname = 11;</code>
      *
@@ -1621,6 +1629,7 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
+    // optional bool hasInnerSex = 12;
     /**
      * <code>optional bool hasInnerSex = 12;</code>
      *
@@ -1638,6 +1647,7 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
+    // optional bool isSetGuide = 13 [default = false];
     /**
      * <code>optional bool isSetGuide = 13 [default = false];</code>
      *
@@ -1656,12 +1666,11 @@ public final class AccountProto {
     boolean getIsSetGuide();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LoginRsp}
+   * Protobuf type {@code LoginRsp}
    */
   public static final class LoginRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LoginRsp)
-      LoginRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements LoginRspOrBuilder {
     // Use LoginRsp.newBuilder() to construct.
     private LoginRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1718,33 +1727,28 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = bs;
+              nickname_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headimgurl_ = bs;
+              headimgurl_ = input.readBytes();
               break;
             }
             case 64: {
@@ -1791,12 +1795,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_LoginRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_LoginRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.LoginRsp.class, com.wali.live.proto.AccountProto.LoginRsp.Builder.class);
     }
@@ -1817,6 +1821,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -1840,6 +1845,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -1863,6 +1869,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -1917,6 +1924,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -1971,6 +1979,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -2025,6 +2034,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -2079,6 +2089,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string headimgurl = 7;
     public static final int HEADIMGURL_FIELD_NUMBER = 7;
     private java.lang.Object headimgurl_;
     /**
@@ -2133,6 +2144,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -2156,6 +2168,7 @@ public final class AccountProto {
       return sex_;
     }
 
+    // optional uint32 loginStatus = 9;
     public static final int LOGINSTATUS_FIELD_NUMBER = 9;
     private int loginStatus_;
     /**
@@ -2179,6 +2192,7 @@ public final class AccountProto {
       return loginStatus_;
     }
 
+    // optional bool hasInnerAvatar = 10;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 10;
     private boolean hasInnerAvatar_;
     /**
@@ -2202,6 +2216,7 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
+    // optional bool hasInnerNickname = 11;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 11;
     private boolean hasInnerNickname_;
     /**
@@ -2225,6 +2240,7 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
+    // optional bool hasInnerSex = 12;
     public static final int HASINNERSEX_FIELD_NUMBER = 12;
     private boolean hasInnerSex_;
     /**
@@ -2248,6 +2264,7 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
+    // optional bool isSetGuide = 13 [default = false];
     public static final int ISSETGUIDE_FIELD_NUMBER = 13;
     private boolean isSetGuide_;
     /**
@@ -2289,8 +2306,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -2482,20 +2498,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LoginRsp}
+     * Protobuf type {@code LoginRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LoginRsp)
-        com.wali.live.proto.AccountProto.LoginRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.LoginRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_LoginRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.LoginRsp.class, com.wali.live.proto.AccountProto.LoginRsp.Builder.class);
       }
@@ -2555,7 +2570,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.LoginRsp getDefaultInstanceForType() {
@@ -2722,6 +2737,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -2770,6 +2786,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -2818,6 +2835,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -2839,12 +2857,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2918,6 +2933,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -2939,12 +2955,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3018,6 +3031,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -3039,12 +3053,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3118,6 +3129,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -3139,12 +3151,9 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nickname_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3218,6 +3227,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string headimgurl = 7;
       private java.lang.Object headimgurl_ = "";
       /**
        * <code>optional string headimgurl = 7;</code>
@@ -3239,12 +3249,9 @@ public final class AccountProto {
       public java.lang.String getHeadimgurl() {
         java.lang.Object ref = headimgurl_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            headimgurl_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headimgurl_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3318,6 +3325,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -3366,6 +3374,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 loginStatus = 9;
       private int loginStatus_ ;
       /**
        * <code>optional uint32 loginStatus = 9;</code>
@@ -3414,6 +3423,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerAvatar = 10;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 10;</code>
@@ -3462,6 +3472,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerNickname = 11;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 11;</code>
@@ -3510,6 +3521,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerSex = 12;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 12;</code>
@@ -3558,6 +3570,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool isSetGuide = 13 [default = false];
       private boolean isSetGuide_ ;
       /**
        * <code>optional bool isSetGuide = 13 [default = false];</code>
@@ -3606,7 +3619,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LoginRsp)
+      // @@protoc_insertion_point(builder_scope:LoginRsp)
     }
 
     static {
@@ -3614,13 +3627,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LoginRsp)
+    // @@protoc_insertion_point(class_scope:LoginRsp)
   }
 
-  public interface GetServiceTokenReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetServiceTokenReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetServiceTokenReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string passToken = 1;
     /**
      * <code>required string passToken = 1;</code>
      *
@@ -3647,6 +3660,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // required uint64 uuid = 2;
     /**
      * <code>required uint64 uuid = 2;</code>
      *
@@ -3665,7 +3679,7 @@ public final class AccountProto {
     long getUuid();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetServiceTokenReq}
+   * Protobuf type {@code GetServiceTokenReq}
    *
    * <pre>
    *passtoken换servicetoken
@@ -3673,9 +3687,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetServiceTokenReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetServiceTokenReq)
-      GetServiceTokenReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetServiceTokenReqOrBuilder {
     // Use GetServiceTokenReq.newBuilder() to construct.
     private GetServiceTokenReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3722,9 +3735,8 @@ public final class AccountProto {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 16: {
@@ -3746,12 +3758,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetServiceTokenReq.class, com.wali.live.proto.AccountProto.GetServiceTokenReq.Builder.class);
     }
@@ -3772,6 +3784,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required string passToken = 1;
     public static final int PASSTOKEN_FIELD_NUMBER = 1;
     private java.lang.Object passToken_;
     /**
@@ -3826,6 +3839,7 @@ public final class AccountProto {
       }
     }
 
+    // required uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -3856,8 +3870,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasPassToken()) {
         memoizedIsInitialized = 0;
@@ -3976,7 +3989,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetServiceTokenReq}
+     * Protobuf type {@code GetServiceTokenReq}
      *
      * <pre>
      *passtoken换servicetoken
@@ -3984,17 +3997,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetServiceTokenReq)
-        com.wali.live.proto.AccountProto.GetServiceTokenReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetServiceTokenReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetServiceTokenReq.class, com.wali.live.proto.AccountProto.GetServiceTokenReq.Builder.class);
       }
@@ -4032,7 +4044,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetServiceTokenReq getDefaultInstanceForType() {
@@ -4118,6 +4130,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required string passToken = 1;
       private java.lang.Object passToken_ = "";
       /**
        * <code>required string passToken = 1;</code>
@@ -4139,12 +4152,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4218,6 +4228,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 2;</code>
@@ -4266,7 +4277,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetServiceTokenReq)
+      // @@protoc_insertion_point(builder_scope:GetServiceTokenReq)
     }
 
     static {
@@ -4274,13 +4285,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetServiceTokenReq)
+    // @@protoc_insertion_point(class_scope:GetServiceTokenReq)
   }
 
-  public interface GetServiceTokenRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetServiceTokenRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetServiceTokenRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -4298,6 +4309,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional string passToken = 2;
     /**
      * <code>optional string passToken = 2;</code>
      *
@@ -4324,6 +4336,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -4350,6 +4363,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -4377,12 +4391,11 @@ public final class AccountProto {
         getSecurityKeyBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetServiceTokenRsp}
+   * Protobuf type {@code GetServiceTokenRsp}
    */
   public static final class GetServiceTokenRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetServiceTokenRsp)
-      GetServiceTokenRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetServiceTokenRspOrBuilder {
     // Use GetServiceTokenRsp.newBuilder() to construct.
     private GetServiceTokenRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -4434,21 +4447,18 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
           }
@@ -4465,12 +4475,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetServiceTokenRsp.class, com.wali.live.proto.AccountProto.GetServiceTokenRsp.Builder.class);
     }
@@ -4491,6 +4501,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -4514,6 +4525,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional string passToken = 2;
     public static final int PASSTOKEN_FIELD_NUMBER = 2;
     private java.lang.Object passToken_;
     /**
@@ -4568,6 +4580,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -4622,6 +4635,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -4685,8 +4699,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -4815,20 +4828,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetServiceTokenRsp}
+     * Protobuf type {@code GetServiceTokenRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetServiceTokenRsp)
-        com.wali.live.proto.AccountProto.GetServiceTokenRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetServiceTokenRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetServiceTokenRsp.class, com.wali.live.proto.AccountProto.GetServiceTokenRsp.Builder.class);
       }
@@ -4870,7 +4882,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetServiceTokenRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetServiceTokenRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetServiceTokenRsp getDefaultInstanceForType() {
@@ -4970,6 +4982,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -5018,6 +5031,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 2;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 2;</code>
@@ -5039,12 +5053,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5118,6 +5129,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -5139,12 +5151,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5218,6 +5227,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -5239,12 +5249,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5318,7 +5325,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetServiceTokenRsp)
+      // @@protoc_insertion_point(builder_scope:GetServiceTokenRsp)
     }
 
     static {
@@ -5326,13 +5333,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetServiceTokenRsp)
+    // @@protoc_insertion_point(class_scope:GetServiceTokenRsp)
   }
 
-  public interface CertificateReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CertificateReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface CertificateReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -5350,6 +5357,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string openid = 2;
     /**
      * <code>optional string openid = 2;</code>
      *
@@ -5376,6 +5384,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
+    // optional string accessToken = 3;
     /**
      * <code>optional string accessToken = 3;</code>
      *
@@ -5403,16 +5412,15 @@ public final class AccountProto {
         getAccessTokenBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.CertificateReq}
+   * Protobuf type {@code CertificateReq}
    *
    * <pre>
    *微博认证
    * </pre>
    */
   public static final class CertificateReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CertificateReq)
-      CertificateReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements CertificateReqOrBuilder {
     // Use CertificateReq.newBuilder() to construct.
     private CertificateReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5464,15 +5472,13 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              openid_ = bs;
+              openid_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              accessToken_ = bs;
+              accessToken_ = input.readBytes();
               break;
             }
           }
@@ -5489,12 +5495,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_CertificateReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_CertificateReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.CertificateReq.class, com.wali.live.proto.AccountProto.CertificateReq.Builder.class);
     }
@@ -5515,6 +5521,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -5538,6 +5545,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string openid = 2;
     public static final int OPENID_FIELD_NUMBER = 2;
     private java.lang.Object openid_;
     /**
@@ -5592,6 +5600,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string accessToken = 3;
     public static final int ACCESSTOKEN_FIELD_NUMBER = 3;
     private java.lang.Object accessToken_;
     /**
@@ -5654,8 +5663,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -5777,24 +5785,23 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.CertificateReq}
+     * Protobuf type {@code CertificateReq}
      *
      * <pre>
      *微博认证
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CertificateReq)
-        com.wali.live.proto.AccountProto.CertificateReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.CertificateReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_CertificateReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_CertificateReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.CertificateReq.class, com.wali.live.proto.AccountProto.CertificateReq.Builder.class);
       }
@@ -5834,7 +5841,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_CertificateReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.CertificateReq getDefaultInstanceForType() {
@@ -5925,6 +5932,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -5973,6 +5981,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string openid = 2;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 2;</code>
@@ -5994,12 +6003,9 @@ public final class AccountProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            openid_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          openid_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6073,6 +6079,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string accessToken = 3;
       private java.lang.Object accessToken_ = "";
       /**
        * <code>optional string accessToken = 3;</code>
@@ -6094,12 +6101,9 @@ public final class AccountProto {
       public java.lang.String getAccessToken() {
         java.lang.Object ref = accessToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            accessToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          accessToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6173,7 +6177,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.CertificateReq)
+      // @@protoc_insertion_point(builder_scope:CertificateReq)
     }
 
     static {
@@ -6181,13 +6185,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.CertificateReq)
+    // @@protoc_insertion_point(class_scope:CertificateReq)
   }
 
-  public interface CertificateRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CertificateRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface CertificateRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -6205,6 +6209,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint32 certificationType = 2;
     /**
      * <code>optional uint32 certificationType = 2;</code>
      *
@@ -6222,6 +6227,7 @@ public final class AccountProto {
      */
     int getCertificationType();
 
+    // optional string certification = 3;
     /**
      * <code>optional string certification = 3;</code>
      *
@@ -6249,12 +6255,11 @@ public final class AccountProto {
         getCertificationBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.CertificateRsp}
+   * Protobuf type {@code CertificateRsp}
    */
   public static final class CertificateRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CertificateRsp)
-      CertificateRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements CertificateRspOrBuilder {
     // Use CertificateRsp.newBuilder() to construct.
     private CertificateRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -6311,9 +6316,8 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              certification_ = bs;
+              certification_ = input.readBytes();
               break;
             }
           }
@@ -6330,12 +6334,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_CertificateRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_CertificateRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.CertificateRsp.class, com.wali.live.proto.AccountProto.CertificateRsp.Builder.class);
     }
@@ -6356,6 +6360,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -6379,6 +6384,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint32 certificationType = 2;
     public static final int CERTIFICATIONTYPE_FIELD_NUMBER = 2;
     private int certificationType_;
     /**
@@ -6402,6 +6408,7 @@ public final class AccountProto {
       return certificationType_;
     }
 
+    // optional string certification = 3;
     public static final int CERTIFICATION_FIELD_NUMBER = 3;
     private java.lang.Object certification_;
     /**
@@ -6464,8 +6471,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -6587,20 +6593,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.CertificateRsp}
+     * Protobuf type {@code CertificateRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CertificateRsp)
-        com.wali.live.proto.AccountProto.CertificateRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.CertificateRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_CertificateRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_CertificateRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.CertificateRsp.class, com.wali.live.proto.AccountProto.CertificateRsp.Builder.class);
       }
@@ -6640,7 +6645,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_CertificateRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_CertificateRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.CertificateRsp getDefaultInstanceForType() {
@@ -6729,6 +6734,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -6777,6 +6783,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 certificationType = 2;
       private int certificationType_ ;
       /**
        * <code>optional uint32 certificationType = 2;</code>
@@ -6825,6 +6832,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string certification = 3;
       private java.lang.Object certification_ = "";
       /**
        * <code>optional string certification = 3;</code>
@@ -6846,12 +6854,9 @@ public final class AccountProto {
       public java.lang.String getCertification() {
         java.lang.Object ref = certification_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            certification_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          certification_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6925,7 +6930,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.CertificateRsp)
+      // @@protoc_insertion_point(builder_scope:CertificateRsp)
     }
 
     static {
@@ -6933,13 +6938,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.CertificateRsp)
+    // @@protoc_insertion_point(class_scope:CertificateRsp)
   }
 
-  public interface GetCaptchaReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetCaptchaReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetCaptchaReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -6966,6 +6971,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
+    // required uint32 type = 2;
     /**
      * <code>required uint32 type = 2;</code>
      *
@@ -6983,6 +6989,7 @@ public final class AccountProto {
      */
     int getType();
 
+    // optional string lang = 3;
     /**
      * <code>optional string lang = 3;</code>
      *
@@ -7010,7 +7017,7 @@ public final class AccountProto {
         getLangBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetCaptchaReq}
+   * Protobuf type {@code GetCaptchaReq}
    *
    * <pre>
    *获取验证码
@@ -7018,9 +7025,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetCaptchaReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetCaptchaReq)
-      GetCaptchaReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetCaptchaReqOrBuilder {
     // Use GetCaptchaReq.newBuilder() to construct.
     private GetCaptchaReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7067,9 +7073,8 @@ public final class AccountProto {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = bs;
+              phoneNum_ = input.readBytes();
               break;
             }
             case 16: {
@@ -7078,9 +7083,8 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              lang_ = bs;
+              lang_ = input.readBytes();
               break;
             }
           }
@@ -7097,12 +7101,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetCaptchaReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetCaptchaReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetCaptchaReq.class, com.wali.live.proto.AccountProto.GetCaptchaReq.Builder.class);
     }
@@ -7123,6 +7127,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -7177,6 +7182,7 @@ public final class AccountProto {
       }
     }
 
+    // required uint32 type = 2;
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -7200,6 +7206,7 @@ public final class AccountProto {
       return type_;
     }
 
+    // optional string lang = 3;
     public static final int LANG_FIELD_NUMBER = 3;
     private java.lang.Object lang_;
     /**
@@ -7262,8 +7269,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -7389,7 +7395,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetCaptchaReq}
+     * Protobuf type {@code GetCaptchaReq}
      *
      * <pre>
      *获取验证码
@@ -7397,17 +7403,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetCaptchaReq)
-        com.wali.live.proto.AccountProto.GetCaptchaReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetCaptchaReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetCaptchaReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetCaptchaReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetCaptchaReq.class, com.wali.live.proto.AccountProto.GetCaptchaReq.Builder.class);
       }
@@ -7447,7 +7452,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetCaptchaReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetCaptchaReq getDefaultInstanceForType() {
@@ -7542,6 +7547,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -7563,12 +7569,9 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            phoneNum_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          phoneNum_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7642,6 +7645,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required uint32 type = 2;
       private int type_ ;
       /**
        * <code>required uint32 type = 2;</code>
@@ -7690,6 +7694,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string lang = 3;
       private java.lang.Object lang_ = "";
       /**
        * <code>optional string lang = 3;</code>
@@ -7711,12 +7716,9 @@ public final class AccountProto {
       public java.lang.String getLang() {
         java.lang.Object ref = lang_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            lang_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          lang_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7790,7 +7792,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetCaptchaReq)
+      // @@protoc_insertion_point(builder_scope:GetCaptchaReq)
     }
 
     static {
@@ -7798,13 +7800,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetCaptchaReq)
+    // @@protoc_insertion_point(class_scope:GetCaptchaReq)
   }
 
-  public interface GetCaptchaRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetCaptchaRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetCaptchaRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -7823,12 +7825,11 @@ public final class AccountProto {
     int getRetCode();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetCaptchaRsp}
+   * Protobuf type {@code GetCaptchaRsp}
    */
   public static final class GetCaptchaRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetCaptchaRsp)
-      GetCaptchaRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetCaptchaRspOrBuilder {
     // Use GetCaptchaRsp.newBuilder() to construct.
     private GetCaptchaRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7893,12 +7894,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetCaptchaRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetCaptchaRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetCaptchaRsp.class, com.wali.live.proto.AccountProto.GetCaptchaRsp.Builder.class);
     }
@@ -7919,6 +7920,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -7948,8 +7950,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -8057,20 +8058,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetCaptchaRsp}
+     * Protobuf type {@code GetCaptchaRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetCaptchaRsp)
-        com.wali.live.proto.AccountProto.GetCaptchaRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetCaptchaRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetCaptchaRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetCaptchaRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetCaptchaRsp.class, com.wali.live.proto.AccountProto.GetCaptchaRsp.Builder.class);
       }
@@ -8106,7 +8106,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetCaptchaRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetCaptchaRsp getDefaultInstanceForType() {
@@ -8179,6 +8179,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -8227,7 +8228,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetCaptchaRsp)
+      // @@protoc_insertion_point(builder_scope:GetCaptchaRsp)
     }
 
     static {
@@ -8235,13 +8236,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetCaptchaRsp)
+    // @@protoc_insertion_point(class_scope:GetCaptchaRsp)
   }
 
-  public interface RegisterByPhoneReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RegisterByPhoneReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RegisterByPhoneReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -8268,6 +8269,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
+    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -8294,6 +8296,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPwdBytes();
 
+    // required string captcha = 3;
     /**
      * <code>required string captcha = 3;</code>
      *
@@ -8321,7 +8324,7 @@ public final class AccountProto {
         getCaptchaBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.RegisterByPhoneReq}
+   * Protobuf type {@code RegisterByPhoneReq}
    *
    * <pre>
    *手机号注册
@@ -8329,9 +8332,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class RegisterByPhoneReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RegisterByPhoneReq)
-      RegisterByPhoneReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RegisterByPhoneReqOrBuilder {
     // Use RegisterByPhoneReq.newBuilder() to construct.
     private RegisterByPhoneReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -8378,21 +8380,18 @@ public final class AccountProto {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = bs;
+              phoneNum_ = input.readBytes();
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              captcha_ = bs;
+              captcha_ = input.readBytes();
               break;
             }
           }
@@ -8409,12 +8408,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.RegisterByPhoneReq.class, com.wali.live.proto.AccountProto.RegisterByPhoneReq.Builder.class);
     }
@@ -8435,6 +8434,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -8489,6 +8489,7 @@ public final class AccountProto {
       }
     }
 
+    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -8543,6 +8544,7 @@ public final class AccountProto {
       }
     }
 
+    // required string captcha = 3;
     public static final int CAPTCHA_FIELD_NUMBER = 3;
     private java.lang.Object captcha_;
     /**
@@ -8605,8 +8607,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -8736,7 +8737,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.RegisterByPhoneReq}
+     * Protobuf type {@code RegisterByPhoneReq}
      *
      * <pre>
      *手机号注册
@@ -8744,17 +8745,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RegisterByPhoneReq)
-        com.wali.live.proto.AccountProto.RegisterByPhoneReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.RegisterByPhoneReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.RegisterByPhoneReq.class, com.wali.live.proto.AccountProto.RegisterByPhoneReq.Builder.class);
       }
@@ -8794,7 +8794,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.RegisterByPhoneReq getDefaultInstanceForType() {
@@ -8895,6 +8895,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -8916,12 +8917,9 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            phoneNum_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          phoneNum_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8995,6 +8993,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -9016,12 +9015,9 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9095,6 +9091,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string captcha = 3;
       private java.lang.Object captcha_ = "";
       /**
        * <code>required string captcha = 3;</code>
@@ -9116,12 +9113,9 @@ public final class AccountProto {
       public java.lang.String getCaptcha() {
         java.lang.Object ref = captcha_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            captcha_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          captcha_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9195,7 +9189,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RegisterByPhoneReq)
+      // @@protoc_insertion_point(builder_scope:RegisterByPhoneReq)
     }
 
     static {
@@ -9203,13 +9197,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.RegisterByPhoneReq)
+    // @@protoc_insertion_point(class_scope:RegisterByPhoneReq)
   }
 
-  public interface RegisterByPhoneRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RegisterByPhoneRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RegisterByPhoneRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -9227,6 +9221,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -9244,6 +9239,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -9270,6 +9266,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -9296,6 +9293,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -9323,12 +9321,11 @@ public final class AccountProto {
         getPassTokenBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.RegisterByPhoneRsp}
+   * Protobuf type {@code RegisterByPhoneRsp}
    */
   public static final class RegisterByPhoneRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RegisterByPhoneRsp)
-      RegisterByPhoneRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RegisterByPhoneRspOrBuilder {
     // Use RegisterByPhoneRsp.newBuilder() to construct.
     private RegisterByPhoneRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9385,21 +9382,18 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
           }
@@ -9416,12 +9410,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.RegisterByPhoneRsp.class, com.wali.live.proto.AccountProto.RegisterByPhoneRsp.Builder.class);
     }
@@ -9442,6 +9436,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -9465,6 +9460,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -9488,6 +9484,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -9542,6 +9539,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -9596,6 +9594,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -9660,8 +9659,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -9797,20 +9795,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.RegisterByPhoneRsp}
+     * Protobuf type {@code RegisterByPhoneRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RegisterByPhoneRsp)
-        com.wali.live.proto.AccountProto.RegisterByPhoneRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.RegisterByPhoneRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.RegisterByPhoneRsp.class, com.wali.live.proto.AccountProto.RegisterByPhoneRsp.Builder.class);
       }
@@ -9854,7 +9851,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_RegisterByPhoneRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_RegisterByPhoneRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.RegisterByPhoneRsp getDefaultInstanceForType() {
@@ -9961,6 +9958,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -10009,6 +10007,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -10057,6 +10056,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -10078,12 +10078,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10157,6 +10154,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -10178,12 +10176,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10257,6 +10252,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -10278,12 +10274,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10357,7 +10350,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RegisterByPhoneRsp)
+      // @@protoc_insertion_point(builder_scope:RegisterByPhoneRsp)
     }
 
     static {
@@ -10365,13 +10358,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.RegisterByPhoneRsp)
+    // @@protoc_insertion_point(class_scope:RegisterByPhoneRsp)
   }
 
-  public interface LoginByPhoneReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LoginByPhoneReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface LoginByPhoneReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -10398,6 +10391,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
+    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -10425,7 +10419,7 @@ public final class AccountProto {
         getPwdBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LoginByPhoneReq}
+   * Protobuf type {@code LoginByPhoneReq}
    *
    * <pre>
    *手机号登录
@@ -10433,9 +10427,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class LoginByPhoneReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LoginByPhoneReq)
-      LoginByPhoneReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements LoginByPhoneReqOrBuilder {
     // Use LoginByPhoneReq.newBuilder() to construct.
     private LoginByPhoneReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -10482,15 +10475,13 @@ public final class AccountProto {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = bs;
+              phoneNum_ = input.readBytes();
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
           }
@@ -10507,12 +10498,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.LoginByPhoneReq.class, com.wali.live.proto.AccountProto.LoginByPhoneReq.Builder.class);
     }
@@ -10533,6 +10524,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -10587,6 +10579,7 @@ public final class AccountProto {
       }
     }
 
+    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -10648,8 +10641,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -10768,7 +10760,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LoginByPhoneReq}
+     * Protobuf type {@code LoginByPhoneReq}
      *
      * <pre>
      *手机号登录
@@ -10776,17 +10768,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LoginByPhoneReq)
-        com.wali.live.proto.AccountProto.LoginByPhoneReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.LoginByPhoneReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.LoginByPhoneReq.class, com.wali.live.proto.AccountProto.LoginByPhoneReq.Builder.class);
       }
@@ -10824,7 +10815,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.LoginByPhoneReq getDefaultInstanceForType() {
@@ -10912,6 +10903,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -10933,12 +10925,9 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            phoneNum_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          phoneNum_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11012,6 +11001,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -11033,12 +11023,9 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11112,7 +11099,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LoginByPhoneReq)
+      // @@protoc_insertion_point(builder_scope:LoginByPhoneReq)
     }
 
     static {
@@ -11120,13 +11107,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LoginByPhoneReq)
+    // @@protoc_insertion_point(class_scope:LoginByPhoneReq)
   }
 
-  public interface LoginByPhoneRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LoginByPhoneRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface LoginByPhoneRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -11144,6 +11131,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -11161,6 +11149,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -11187,6 +11176,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -11213,6 +11203,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -11239,6 +11230,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -11265,6 +11257,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
+    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -11291,6 +11284,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
+    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -11308,6 +11302,7 @@ public final class AccountProto {
      */
     int getSex();
 
+    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -11325,6 +11320,7 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
+    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -11342,6 +11338,7 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
+    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -11360,12 +11357,11 @@ public final class AccountProto {
     boolean getHasInnerSex();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LoginByPhoneRsp}
+   * Protobuf type {@code LoginByPhoneRsp}
    */
   public static final class LoginByPhoneRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LoginByPhoneRsp)
-      LoginByPhoneRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements LoginByPhoneRspOrBuilder {
     // Use LoginByPhoneRsp.newBuilder() to construct.
     private LoginByPhoneRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11422,33 +11418,28 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = bs;
+              nickname_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = bs;
+              headinfo_ = input.readBytes();
               break;
             }
             case 64: {
@@ -11485,12 +11476,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.LoginByPhoneRsp.class, com.wali.live.proto.AccountProto.LoginByPhoneRsp.Builder.class);
     }
@@ -11511,6 +11502,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -11534,6 +11526,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -11557,6 +11550,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -11611,6 +11605,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -11665,6 +11660,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -11719,6 +11715,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -11773,6 +11770,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -11827,6 +11825,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -11850,6 +11849,7 @@ public final class AccountProto {
       return sex_;
     }
 
+    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -11873,6 +11873,7 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
+    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -11896,6 +11897,7 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
+    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -11935,8 +11937,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -12114,20 +12115,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LoginByPhoneRsp}
+     * Protobuf type {@code LoginByPhoneRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LoginByPhoneRsp)
-        com.wali.live.proto.AccountProto.LoginByPhoneRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.LoginByPhoneRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.LoginByPhoneRsp.class, com.wali.live.proto.AccountProto.LoginByPhoneRsp.Builder.class);
       }
@@ -12183,7 +12183,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByPhoneRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByPhoneRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.LoginByPhoneRsp getDefaultInstanceForType() {
@@ -12336,6 +12336,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -12384,6 +12385,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -12432,6 +12434,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -12453,12 +12456,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12532,6 +12532,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -12553,12 +12554,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12632,6 +12630,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -12653,12 +12652,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12732,6 +12728,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -12753,12 +12750,9 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nickname_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12832,6 +12826,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -12853,12 +12848,9 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            headinfo_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headinfo_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12932,6 +12924,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -12980,6 +12973,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -13028,6 +13022,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -13076,6 +13071,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -13124,7 +13120,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LoginByPhoneRsp)
+      // @@protoc_insertion_point(builder_scope:LoginByPhoneRsp)
     }
 
     static {
@@ -13132,13 +13128,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LoginByPhoneRsp)
+    // @@protoc_insertion_point(class_scope:LoginByPhoneRsp)
   }
 
-  public interface NewPwdReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NewPwdReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface NewPwdReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -13165,6 +13161,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
+    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -13191,6 +13188,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPwdBytes();
 
+    // required string captcha = 3;
     /**
      * <code>required string captcha = 3;</code>
      *
@@ -13218,7 +13216,7 @@ public final class AccountProto {
         getCaptchaBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.NewPwdReq}
+   * Protobuf type {@code NewPwdReq}
    *
    * <pre>
    *更改密码
@@ -13226,9 +13224,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class NewPwdReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NewPwdReq)
-      NewPwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements NewPwdReqOrBuilder {
     // Use NewPwdReq.newBuilder() to construct.
     private NewPwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13275,21 +13272,18 @@ public final class AccountProto {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = bs;
+              phoneNum_ = input.readBytes();
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              captcha_ = bs;
+              captcha_ = input.readBytes();
               break;
             }
           }
@@ -13306,12 +13300,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_NewPwdReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_NewPwdReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.NewPwdReq.class, com.wali.live.proto.AccountProto.NewPwdReq.Builder.class);
     }
@@ -13332,6 +13326,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -13386,6 +13381,7 @@ public final class AccountProto {
       }
     }
 
+    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -13440,6 +13436,7 @@ public final class AccountProto {
       }
     }
 
+    // required string captcha = 3;
     public static final int CAPTCHA_FIELD_NUMBER = 3;
     private java.lang.Object captcha_;
     /**
@@ -13502,8 +13499,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -13633,7 +13629,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.NewPwdReq}
+     * Protobuf type {@code NewPwdReq}
      *
      * <pre>
      *更改密码
@@ -13641,17 +13637,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NewPwdReq)
-        com.wali.live.proto.AccountProto.NewPwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.NewPwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_NewPwdReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_NewPwdReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.NewPwdReq.class, com.wali.live.proto.AccountProto.NewPwdReq.Builder.class);
       }
@@ -13691,7 +13686,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_NewPwdReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.NewPwdReq getDefaultInstanceForType() {
@@ -13792,6 +13787,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -13813,12 +13809,9 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            phoneNum_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          phoneNum_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13892,6 +13885,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -13913,12 +13907,9 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13992,6 +13983,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string captcha = 3;
       private java.lang.Object captcha_ = "";
       /**
        * <code>required string captcha = 3;</code>
@@ -14013,12 +14005,9 @@ public final class AccountProto {
       public java.lang.String getCaptcha() {
         java.lang.Object ref = captcha_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            captcha_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          captcha_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14092,7 +14081,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NewPwdReq)
+      // @@protoc_insertion_point(builder_scope:NewPwdReq)
     }
 
     static {
@@ -14100,13 +14089,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NewPwdReq)
+    // @@protoc_insertion_point(class_scope:NewPwdReq)
   }
 
-  public interface NewPwdRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NewPwdRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface NewPwdRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -14125,12 +14114,11 @@ public final class AccountProto {
     int getRetCode();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.NewPwdRsp}
+   * Protobuf type {@code NewPwdRsp}
    */
   public static final class NewPwdRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NewPwdRsp)
-      NewPwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements NewPwdRspOrBuilder {
     // Use NewPwdRsp.newBuilder() to construct.
     private NewPwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -14195,12 +14183,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_NewPwdRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_NewPwdRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.NewPwdRsp.class, com.wali.live.proto.AccountProto.NewPwdRsp.Builder.class);
     }
@@ -14221,6 +14209,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -14250,8 +14239,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -14359,20 +14347,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.NewPwdRsp}
+     * Protobuf type {@code NewPwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NewPwdRsp)
-        com.wali.live.proto.AccountProto.NewPwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.NewPwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_NewPwdRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_NewPwdRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.NewPwdRsp.class, com.wali.live.proto.AccountProto.NewPwdRsp.Builder.class);
       }
@@ -14408,7 +14395,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_NewPwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_NewPwdRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.NewPwdRsp getDefaultInstanceForType() {
@@ -14481,6 +14468,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -14529,7 +14517,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NewPwdRsp)
+      // @@protoc_insertion_point(builder_scope:NewPwdRsp)
     }
 
     static {
@@ -14537,13 +14525,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NewPwdRsp)
+    // @@protoc_insertion_point(class_scope:NewPwdRsp)
   }
 
-  public interface ForgetPwdReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ForgetPwdReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -14570,6 +14558,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
+    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -14596,6 +14585,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPwdBytes();
 
+    // required string captcha = 3;
     /**
      * <code>required string captcha = 3;</code>
      *
@@ -14623,7 +14613,7 @@ public final class AccountProto {
         getCaptchaBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ForgetPwdReq}
+   * Protobuf type {@code ForgetPwdReq}
    *
    * <pre>
    *忘记密码
@@ -14631,9 +14621,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class ForgetPwdReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ForgetPwdReq)
-      ForgetPwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ForgetPwdReqOrBuilder {
     // Use ForgetPwdReq.newBuilder() to construct.
     private ForgetPwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -14680,21 +14669,18 @@ public final class AccountProto {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = bs;
+              phoneNum_ = input.readBytes();
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              captcha_ = bs;
+              captcha_ = input.readBytes();
               break;
             }
           }
@@ -14711,12 +14697,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ForgetPwdReq.class, com.wali.live.proto.AccountProto.ForgetPwdReq.Builder.class);
     }
@@ -14737,6 +14723,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -14791,6 +14778,7 @@ public final class AccountProto {
       }
     }
 
+    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -14845,6 +14833,7 @@ public final class AccountProto {
       }
     }
 
+    // required string captcha = 3;
     public static final int CAPTCHA_FIELD_NUMBER = 3;
     private java.lang.Object captcha_;
     /**
@@ -14907,8 +14896,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -15038,7 +15026,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ForgetPwdReq}
+     * Protobuf type {@code ForgetPwdReq}
      *
      * <pre>
      *忘记密码
@@ -15046,17 +15034,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ForgetPwdReq)
-        com.wali.live.proto.AccountProto.ForgetPwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ForgetPwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ForgetPwdReq.class, com.wali.live.proto.AccountProto.ForgetPwdReq.Builder.class);
       }
@@ -15096,7 +15083,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ForgetPwdReq getDefaultInstanceForType() {
@@ -15197,6 +15184,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -15218,12 +15206,9 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            phoneNum_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          phoneNum_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15297,6 +15282,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -15318,12 +15304,9 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15397,6 +15380,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string captcha = 3;
       private java.lang.Object captcha_ = "";
       /**
        * <code>required string captcha = 3;</code>
@@ -15418,12 +15402,9 @@ public final class AccountProto {
       public java.lang.String getCaptcha() {
         java.lang.Object ref = captcha_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            captcha_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          captcha_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15497,7 +15478,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ForgetPwdReq)
+      // @@protoc_insertion_point(builder_scope:ForgetPwdReq)
     }
 
     static {
@@ -15505,13 +15486,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ForgetPwdReq)
+    // @@protoc_insertion_point(class_scope:ForgetPwdReq)
   }
 
-  public interface ForgetPwdRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ForgetPwdRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -15529,6 +15510,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -15546,6 +15528,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -15572,6 +15555,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -15598,6 +15582,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -15624,6 +15609,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -15650,6 +15636,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
+    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -15676,6 +15663,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
+    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -15693,6 +15681,7 @@ public final class AccountProto {
      */
     int getSex();
 
+    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -15710,6 +15699,7 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
+    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -15727,6 +15717,7 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
+    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -15745,12 +15736,11 @@ public final class AccountProto {
     boolean getHasInnerSex();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ForgetPwdRsp}
+   * Protobuf type {@code ForgetPwdRsp}
    */
   public static final class ForgetPwdRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ForgetPwdRsp)
-      ForgetPwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ForgetPwdRspOrBuilder {
     // Use ForgetPwdRsp.newBuilder() to construct.
     private ForgetPwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -15807,33 +15797,28 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = bs;
+              nickname_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = bs;
+              headinfo_ = input.readBytes();
               break;
             }
             case 64: {
@@ -15870,12 +15855,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ForgetPwdRsp.class, com.wali.live.proto.AccountProto.ForgetPwdRsp.Builder.class);
     }
@@ -15896,6 +15881,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -15919,6 +15905,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -15942,6 +15929,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -15996,6 +15984,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -16050,6 +16039,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -16104,6 +16094,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -16158,6 +16149,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -16212,6 +16204,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -16235,6 +16228,7 @@ public final class AccountProto {
       return sex_;
     }
 
+    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -16258,6 +16252,7 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
+    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -16281,6 +16276,7 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
+    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -16320,8 +16316,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -16499,20 +16494,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ForgetPwdRsp}
+     * Protobuf type {@code ForgetPwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ForgetPwdRsp)
-        com.wali.live.proto.AccountProto.ForgetPwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ForgetPwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ForgetPwdRsp.class, com.wali.live.proto.AccountProto.ForgetPwdRsp.Builder.class);
       }
@@ -16568,7 +16562,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ForgetPwdRsp getDefaultInstanceForType() {
@@ -16721,6 +16715,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -16769,6 +16764,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -16817,6 +16813,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -16838,12 +16835,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16917,6 +16911,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -16938,12 +16933,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17017,6 +17009,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -17038,12 +17031,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17117,6 +17107,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -17138,12 +17129,9 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nickname_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17217,6 +17205,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -17238,12 +17227,9 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            headinfo_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headinfo_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17317,6 +17303,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -17365,6 +17352,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -17413,6 +17401,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -17461,6 +17450,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -17509,7 +17499,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ForgetPwdRsp)
+      // @@protoc_insertion_point(builder_scope:ForgetPwdRsp)
     }
 
     static {
@@ -17517,13 +17507,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ForgetPwdRsp)
+    // @@protoc_insertion_point(class_scope:ForgetPwdRsp)
   }
 
-  public interface LoginByUuidReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LoginByUuidReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface LoginByUuidReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -17541,6 +17531,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -17568,16 +17559,15 @@ public final class AccountProto {
         getPwdBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LoginByUuidReq}
+   * Protobuf type {@code LoginByUuidReq}
    *
    * <pre>
    *cmd:zhibo.account.loginbyuuid
    * </pre>
    */
   public static final class LoginByUuidReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LoginByUuidReq)
-      LoginByUuidReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements LoginByUuidReqOrBuilder {
     // Use LoginByUuidReq.newBuilder() to construct.
     private LoginByUuidReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -17629,9 +17619,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
           }
@@ -17648,12 +17637,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_LoginByUuidReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_LoginByUuidReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.LoginByUuidReq.class, com.wali.live.proto.AccountProto.LoginByUuidReq.Builder.class);
     }
@@ -17674,6 +17663,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -17697,6 +17687,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -17758,8 +17749,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -17878,24 +17868,23 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LoginByUuidReq}
+     * Protobuf type {@code LoginByUuidReq}
      *
      * <pre>
      *cmd:zhibo.account.loginbyuuid
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LoginByUuidReq)
-        com.wali.live.proto.AccountProto.LoginByUuidReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.LoginByUuidReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByUuidReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_LoginByUuidReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.LoginByUuidReq.class, com.wali.live.proto.AccountProto.LoginByUuidReq.Builder.class);
       }
@@ -17933,7 +17922,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByUuidReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.LoginByUuidReq getDefaultInstanceForType() {
@@ -18019,6 +18008,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -18067,6 +18057,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -18088,12 +18079,9 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -18167,7 +18155,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LoginByUuidReq)
+      // @@protoc_insertion_point(builder_scope:LoginByUuidReq)
     }
 
     static {
@@ -18175,13 +18163,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LoginByUuidReq)
+    // @@protoc_insertion_point(class_scope:LoginByUuidReq)
   }
 
-  public interface LoginByUuidRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LoginByUuidRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface LoginByUuidRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -18199,6 +18187,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -18216,6 +18205,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -18242,6 +18232,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -18268,6 +18259,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -18294,6 +18286,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -18320,6 +18313,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
+    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -18346,6 +18340,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
+    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -18363,6 +18358,7 @@ public final class AccountProto {
      */
     int getSex();
 
+    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -18380,6 +18376,7 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
+    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -18397,6 +18394,7 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
+    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -18414,6 +18412,7 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
+    // optional string errMsg = 12;
     /**
      * <code>optional string errMsg = 12;</code>
      */
@@ -18429,12 +18428,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.LoginByUuidRsp}
+   * Protobuf type {@code LoginByUuidRsp}
    */
   public static final class LoginByUuidRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LoginByUuidRsp)
-      LoginByUuidRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements LoginByUuidRspOrBuilder {
     // Use LoginByUuidRsp.newBuilder() to construct.
     private LoginByUuidRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -18491,33 +18489,28 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = bs;
+              nickname_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = bs;
+              headinfo_ = input.readBytes();
               break;
             }
             case 64: {
@@ -18541,9 +18534,8 @@ public final class AccountProto {
               break;
             }
             case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -18560,12 +18552,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_LoginByUuidRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_LoginByUuidRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.LoginByUuidRsp.class, com.wali.live.proto.AccountProto.LoginByUuidRsp.Builder.class);
     }
@@ -18586,6 +18578,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -18609,6 +18602,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -18632,6 +18626,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -18686,6 +18681,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -18740,6 +18736,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -18794,6 +18791,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -18848,6 +18846,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -18902,6 +18901,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -18925,6 +18925,7 @@ public final class AccountProto {
       return sex_;
     }
 
+    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -18948,6 +18949,7 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
+    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -18971,6 +18973,7 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
+    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -18994,6 +18997,7 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
+    // optional string errMsg = 12;
     public static final int ERRMSG_FIELD_NUMBER = 12;
     private java.lang.Object errMsg_;
     /**
@@ -19053,8 +19057,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -19239,20 +19242,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.LoginByUuidRsp}
+     * Protobuf type {@code LoginByUuidRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LoginByUuidRsp)
-        com.wali.live.proto.AccountProto.LoginByUuidRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.LoginByUuidRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByUuidRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_LoginByUuidRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.LoginByUuidRsp.class, com.wali.live.proto.AccountProto.LoginByUuidRsp.Builder.class);
       }
@@ -19310,7 +19312,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_LoginByUuidRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_LoginByUuidRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.LoginByUuidRsp getDefaultInstanceForType() {
@@ -19472,6 +19474,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -19520,6 +19523,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -19568,6 +19572,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -19589,12 +19594,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19668,6 +19670,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -19689,12 +19692,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19768,6 +19768,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -19789,12 +19790,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19868,6 +19866,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -19889,12 +19888,9 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nickname_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19968,6 +19964,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -19989,12 +19986,9 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            headinfo_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headinfo_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20068,6 +20062,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -20116,6 +20111,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -20164,6 +20160,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -20212,6 +20209,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -20260,6 +20258,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 12;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 12;</code>
@@ -20273,12 +20272,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20336,7 +20332,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LoginByUuidRsp)
+      // @@protoc_insertion_point(builder_scope:LoginByUuidRsp)
     }
 
     static {
@@ -20344,13 +20340,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LoginByUuidRsp)
+    // @@protoc_insertion_point(class_scope:LoginByUuidRsp)
   }
 
-  public interface SetPwdReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.SetPwdReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface SetPwdReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -20368,6 +20364,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -20395,7 +20392,7 @@ public final class AccountProto {
         getPwdBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.SetPwdReq}
+   * Protobuf type {@code SetPwdReq}
    *
    * <pre>
    *设置密码
@@ -20403,9 +20400,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class SetPwdReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.SetPwdReq)
-      SetPwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements SetPwdReqOrBuilder {
     // Use SetPwdReq.newBuilder() to construct.
     private SetPwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -20457,9 +20453,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
           }
@@ -20476,12 +20471,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_SetPwdReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_SetPwdReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.SetPwdReq.class, com.wali.live.proto.AccountProto.SetPwdReq.Builder.class);
     }
@@ -20502,6 +20497,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -20525,6 +20521,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -20586,8 +20583,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -20706,7 +20702,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.SetPwdReq}
+     * Protobuf type {@code SetPwdReq}
      *
      * <pre>
      *设置密码
@@ -20714,17 +20710,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.SetPwdReq)
-        com.wali.live.proto.AccountProto.SetPwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.SetPwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_SetPwdReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_SetPwdReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.SetPwdReq.class, com.wali.live.proto.AccountProto.SetPwdReq.Builder.class);
       }
@@ -20762,7 +20757,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_SetPwdReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.SetPwdReq getDefaultInstanceForType() {
@@ -20848,6 +20843,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -20896,6 +20892,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -20917,12 +20914,9 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20996,7 +20990,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.SetPwdReq)
+      // @@protoc_insertion_point(builder_scope:SetPwdReq)
     }
 
     static {
@@ -21004,13 +20998,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.SetPwdReq)
+    // @@protoc_insertion_point(class_scope:SetPwdReq)
   }
 
-  public interface SetPwdRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.SetPwdRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface SetPwdRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -21028,6 +21022,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -21043,12 +21038,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.SetPwdRsp}
+   * Protobuf type {@code SetPwdRsp}
    */
   public static final class SetPwdRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.SetPwdRsp)
-      SetPwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements SetPwdRspOrBuilder {
     // Use SetPwdRsp.newBuilder() to construct.
     private SetPwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -21100,9 +21094,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -21119,12 +21112,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_SetPwdRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_SetPwdRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.SetPwdRsp.class, com.wali.live.proto.AccountProto.SetPwdRsp.Builder.class);
     }
@@ -21145,6 +21138,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -21168,6 +21162,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -21217,8 +21212,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -21333,20 +21327,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.SetPwdRsp}
+     * Protobuf type {@code SetPwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.SetPwdRsp)
-        com.wali.live.proto.AccountProto.SetPwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.SetPwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_SetPwdRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_SetPwdRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.SetPwdRsp.class, com.wali.live.proto.AccountProto.SetPwdRsp.Builder.class);
       }
@@ -21384,7 +21377,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_SetPwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_SetPwdRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.SetPwdRsp getDefaultInstanceForType() {
@@ -21466,6 +21459,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -21514,6 +21508,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -21527,12 +21522,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21590,7 +21582,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.SetPwdRsp)
+      // @@protoc_insertion_point(builder_scope:SetPwdRsp)
     }
 
     static {
@@ -21598,13 +21590,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.SetPwdRsp)
+    // @@protoc_insertion_point(class_scope:SetPwdRsp)
   }
 
-  public interface UpdatePwdReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UpdatePwdReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface UpdatePwdReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -21622,6 +21614,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // required string oldpwd = 2;
     /**
      * <code>required string oldpwd = 2;</code>
      *
@@ -21648,6 +21641,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOldpwdBytes();
 
+    // required string newpwd = 3;
     /**
      * <code>required string newpwd = 3;</code>
      *
@@ -21675,7 +21669,7 @@ public final class AccountProto {
         getNewpwdBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UpdatePwdReq}
+   * Protobuf type {@code UpdatePwdReq}
    *
    * <pre>
    *更改密码
@@ -21683,9 +21677,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class UpdatePwdReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UpdatePwdReq)
-      UpdatePwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements UpdatePwdReqOrBuilder {
     // Use UpdatePwdReq.newBuilder() to construct.
     private UpdatePwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -21737,15 +21730,13 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              oldpwd_ = bs;
+              oldpwd_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              newpwd_ = bs;
+              newpwd_ = input.readBytes();
               break;
             }
           }
@@ -21762,12 +21753,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_UpdatePwdReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_UpdatePwdReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.UpdatePwdReq.class, com.wali.live.proto.AccountProto.UpdatePwdReq.Builder.class);
     }
@@ -21788,6 +21779,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -21811,6 +21803,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // required string oldpwd = 2;
     public static final int OLDPWD_FIELD_NUMBER = 2;
     private java.lang.Object oldpwd_;
     /**
@@ -21865,6 +21858,7 @@ public final class AccountProto {
       }
     }
 
+    // required string newpwd = 3;
     public static final int NEWPWD_FIELD_NUMBER = 3;
     private java.lang.Object newpwd_;
     /**
@@ -21927,8 +21921,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -22058,7 +22051,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UpdatePwdReq}
+     * Protobuf type {@code UpdatePwdReq}
      *
      * <pre>
      *更改密码
@@ -22066,17 +22059,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UpdatePwdReq)
-        com.wali.live.proto.AccountProto.UpdatePwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.UpdatePwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_UpdatePwdReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_UpdatePwdReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.UpdatePwdReq.class, com.wali.live.proto.AccountProto.UpdatePwdReq.Builder.class);
       }
@@ -22116,7 +22108,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_UpdatePwdReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.UpdatePwdReq getDefaultInstanceForType() {
@@ -22215,6 +22207,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -22263,6 +22256,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string oldpwd = 2;
       private java.lang.Object oldpwd_ = "";
       /**
        * <code>required string oldpwd = 2;</code>
@@ -22284,12 +22278,9 @@ public final class AccountProto {
       public java.lang.String getOldpwd() {
         java.lang.Object ref = oldpwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            oldpwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          oldpwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22363,6 +22354,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string newpwd = 3;
       private java.lang.Object newpwd_ = "";
       /**
        * <code>required string newpwd = 3;</code>
@@ -22384,12 +22376,9 @@ public final class AccountProto {
       public java.lang.String getNewpwd() {
         java.lang.Object ref = newpwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            newpwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          newpwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22463,7 +22452,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UpdatePwdReq)
+      // @@protoc_insertion_point(builder_scope:UpdatePwdReq)
     }
 
     static {
@@ -22471,13 +22460,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UpdatePwdReq)
+    // @@protoc_insertion_point(class_scope:UpdatePwdReq)
   }
 
-  public interface UpdatePwdRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UpdatePwdRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface UpdatePwdRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -22495,6 +22484,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -22510,12 +22500,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UpdatePwdRsp}
+   * Protobuf type {@code UpdatePwdRsp}
    */
   public static final class UpdatePwdRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UpdatePwdRsp)
-      UpdatePwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements UpdatePwdRspOrBuilder {
     // Use UpdatePwdRsp.newBuilder() to construct.
     private UpdatePwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -22567,9 +22556,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -22586,12 +22574,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_UpdatePwdRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_UpdatePwdRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.UpdatePwdRsp.class, com.wali.live.proto.AccountProto.UpdatePwdRsp.Builder.class);
     }
@@ -22612,6 +22600,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -22635,6 +22624,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -22684,8 +22674,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -22800,20 +22789,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UpdatePwdRsp}
+     * Protobuf type {@code UpdatePwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UpdatePwdRsp)
-        com.wali.live.proto.AccountProto.UpdatePwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.UpdatePwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_UpdatePwdRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_UpdatePwdRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.UpdatePwdRsp.class, com.wali.live.proto.AccountProto.UpdatePwdRsp.Builder.class);
       }
@@ -22851,7 +22839,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UpdatePwdRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_UpdatePwdRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.UpdatePwdRsp getDefaultInstanceForType() {
@@ -22933,6 +22921,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -22981,6 +22970,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -22994,12 +22984,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -23057,7 +23044,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UpdatePwdRsp)
+      // @@protoc_insertion_point(builder_scope:UpdatePwdRsp)
     }
 
     static {
@@ -23065,13 +23052,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UpdatePwdRsp)
+    // @@protoc_insertion_point(class_scope:UpdatePwdRsp)
   }
 
-  public interface GetAccountPwdInfoReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetAccountPwdInfoReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetAccountPwdInfoReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -23090,7 +23077,7 @@ public final class AccountProto {
     long getUuid();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetAccountPwdInfoReq}
+   * Protobuf type {@code GetAccountPwdInfoReq}
    *
    * <pre>
    *查询账户密码信息
@@ -23098,9 +23085,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetAccountPwdInfoReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetAccountPwdInfoReq)
-      GetAccountPwdInfoReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetAccountPwdInfoReqOrBuilder {
     // Use GetAccountPwdInfoReq.newBuilder() to construct.
     private GetAccountPwdInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23165,12 +23151,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetAccountPwdInfoReq.class, com.wali.live.proto.AccountProto.GetAccountPwdInfoReq.Builder.class);
     }
@@ -23191,6 +23177,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -23220,8 +23207,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -23329,7 +23315,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetAccountPwdInfoReq}
+     * Protobuf type {@code GetAccountPwdInfoReq}
      *
      * <pre>
      *查询账户密码信息
@@ -23337,17 +23323,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetAccountPwdInfoReq)
-        com.wali.live.proto.AccountProto.GetAccountPwdInfoReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetAccountPwdInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetAccountPwdInfoReq.class, com.wali.live.proto.AccountProto.GetAccountPwdInfoReq.Builder.class);
       }
@@ -23383,7 +23368,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetAccountPwdInfoReq getDefaultInstanceForType() {
@@ -23456,6 +23441,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -23504,7 +23490,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetAccountPwdInfoReq)
+      // @@protoc_insertion_point(builder_scope:GetAccountPwdInfoReq)
     }
 
     static {
@@ -23512,13 +23498,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetAccountPwdInfoReq)
+    // @@protoc_insertion_point(class_scope:GetAccountPwdInfoReq)
   }
 
-  public interface GetAccountPwdInfoRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetAccountPwdInfoRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetAccountPwdInfoRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -23528,6 +23514,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint32 create_account_type = 2;
     /**
      * <code>optional uint32 create_account_type = 2;</code>
      *
@@ -23545,6 +23532,7 @@ public final class AccountProto {
      */
     int getCreateAccountType();
 
+    // optional bool haspwd = 3;
     /**
      * <code>optional bool haspwd = 3;</code>
      *
@@ -23562,6 +23550,7 @@ public final class AccountProto {
      */
     boolean getHaspwd();
 
+    // optional string errMsg = 4;
     /**
      * <code>optional string errMsg = 4;</code>
      */
@@ -23577,12 +23566,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetAccountPwdInfoRsp}
+   * Protobuf type {@code GetAccountPwdInfoRsp}
    */
   public static final class GetAccountPwdInfoRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetAccountPwdInfoRsp)
-      GetAccountPwdInfoRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetAccountPwdInfoRspOrBuilder {
     // Use GetAccountPwdInfoRsp.newBuilder() to construct.
     private GetAccountPwdInfoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23644,9 +23632,8 @@ public final class AccountProto {
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -23663,12 +23650,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetAccountPwdInfoRsp.class, com.wali.live.proto.AccountProto.GetAccountPwdInfoRsp.Builder.class);
     }
@@ -23689,6 +23676,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -23704,6 +23692,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint32 create_account_type = 2;
     public static final int CREATE_ACCOUNT_TYPE_FIELD_NUMBER = 2;
     private int createAccountType_;
     /**
@@ -23727,6 +23716,7 @@ public final class AccountProto {
       return createAccountType_;
     }
 
+    // optional bool haspwd = 3;
     public static final int HASPWD_FIELD_NUMBER = 3;
     private boolean haspwd_;
     /**
@@ -23750,6 +23740,7 @@ public final class AccountProto {
       return haspwd_;
     }
 
+    // optional string errMsg = 4;
     public static final int ERRMSG_FIELD_NUMBER = 4;
     private java.lang.Object errMsg_;
     /**
@@ -23801,8 +23792,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -23931,20 +23921,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetAccountPwdInfoRsp}
+     * Protobuf type {@code GetAccountPwdInfoRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetAccountPwdInfoRsp)
-        com.wali.live.proto.AccountProto.GetAccountPwdInfoRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetAccountPwdInfoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetAccountPwdInfoRsp.class, com.wali.live.proto.AccountProto.GetAccountPwdInfoRsp.Builder.class);
       }
@@ -23986,7 +23975,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccountPwdInfoRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetAccountPwdInfoRsp getDefaultInstanceForType() {
@@ -24082,6 +24071,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -24114,6 +24104,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 create_account_type = 2;
       private int createAccountType_ ;
       /**
        * <code>optional uint32 create_account_type = 2;</code>
@@ -24162,6 +24153,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool haspwd = 3;
       private boolean haspwd_ ;
       /**
        * <code>optional bool haspwd = 3;</code>
@@ -24210,6 +24202,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 4;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 4;</code>
@@ -24223,12 +24216,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24286,7 +24276,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetAccountPwdInfoRsp)
+      // @@protoc_insertion_point(builder_scope:GetAccountPwdInfoRsp)
     }
 
     static {
@@ -24294,13 +24284,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetAccountPwdInfoRsp)
+    // @@protoc_insertion_point(class_scope:GetAccountPwdInfoRsp)
   }
 
-  public interface ForgetPwdUuidReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ForgetPwdUuidReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdUuidReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 accountType = 1;
     /**
      * <code>required uint32 accountType = 1;</code>
      *
@@ -24318,6 +24308,7 @@ public final class AccountProto {
      */
     int getAccountType();
 
+    // optional string code = 2;
     /**
      * <code>optional string code = 2;</code>
      *
@@ -24344,6 +24335,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getCodeBytes();
 
+    // optional string openid = 3;
     /**
      * <code>optional string openid = 3;</code>
      *
@@ -24370,6 +24362,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
+    // optional string accessToken = 4;
     /**
      * <code>optional string accessToken = 4;</code>
      *
@@ -24396,6 +24389,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getAccessTokenBytes();
 
+    // optional uint32 expires_in = 5;
     /**
      * <code>optional uint32 expires_in = 5;</code>
      *
@@ -24413,6 +24407,7 @@ public final class AccountProto {
      */
     int getExpiresIn();
 
+    // optional string refreshToken = 6;
     /**
      * <code>optional string refreshToken = 6;</code>
      *
@@ -24439,6 +24434,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getRefreshTokenBytes();
 
+    // optional uint64 uuid = 7;
     /**
      * <code>optional uint64 uuid = 7;</code>
      *
@@ -24456,6 +24452,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string pwd = 8;
     /**
      * <code>optional string pwd = 8;</code>
      *
@@ -24483,16 +24480,15 @@ public final class AccountProto {
         getPwdBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ForgetPwdUuidReq}
+   * Protobuf type {@code ForgetPwdUuidReq}
    *
    * <pre>
    *cmd:zhibo.account.forgetpwd4uuid
    * </pre>
    */
   public static final class ForgetPwdUuidReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ForgetPwdUuidReq)
-      ForgetPwdUuidReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ForgetPwdUuidReqOrBuilder {
     // Use ForgetPwdUuidReq.newBuilder() to construct.
     private ForgetPwdUuidReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -24544,21 +24540,18 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              code_ = bs;
+              code_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              openid_ = bs;
+              openid_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              accessToken_ = bs;
+              accessToken_ = input.readBytes();
               break;
             }
             case 40: {
@@ -24567,9 +24560,8 @@ public final class AccountProto {
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              refreshToken_ = bs;
+              refreshToken_ = input.readBytes();
               break;
             }
             case 56: {
@@ -24578,9 +24570,8 @@ public final class AccountProto {
               break;
             }
             case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
           }
@@ -24597,12 +24588,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ForgetPwdUuidReq.class, com.wali.live.proto.AccountProto.ForgetPwdUuidReq.Builder.class);
     }
@@ -24623,6 +24614,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 accountType = 1;
     public static final int ACCOUNTTYPE_FIELD_NUMBER = 1;
     private int accountType_;
     /**
@@ -24646,6 +24638,7 @@ public final class AccountProto {
       return accountType_;
     }
 
+    // optional string code = 2;
     public static final int CODE_FIELD_NUMBER = 2;
     private java.lang.Object code_;
     /**
@@ -24700,6 +24693,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string openid = 3;
     public static final int OPENID_FIELD_NUMBER = 3;
     private java.lang.Object openid_;
     /**
@@ -24754,6 +24748,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string accessToken = 4;
     public static final int ACCESSTOKEN_FIELD_NUMBER = 4;
     private java.lang.Object accessToken_;
     /**
@@ -24808,6 +24803,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 expires_in = 5;
     public static final int EXPIRES_IN_FIELD_NUMBER = 5;
     private int expiresIn_;
     /**
@@ -24831,6 +24827,7 @@ public final class AccountProto {
       return expiresIn_;
     }
 
+    // optional string refreshToken = 6;
     public static final int REFRESHTOKEN_FIELD_NUMBER = 6;
     private java.lang.Object refreshToken_;
     /**
@@ -24885,6 +24882,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint64 uuid = 7;
     public static final int UUID_FIELD_NUMBER = 7;
     private long uuid_;
     /**
@@ -24908,6 +24906,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string pwd = 8;
     public static final int PWD_FIELD_NUMBER = 8;
     private java.lang.Object pwd_;
     /**
@@ -24975,8 +24974,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAccountType()) {
         memoizedIsInitialized = 0;
@@ -25133,24 +25131,23 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ForgetPwdUuidReq}
+     * Protobuf type {@code ForgetPwdUuidReq}
      *
      * <pre>
      *cmd:zhibo.account.forgetpwd4uuid
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ForgetPwdUuidReq)
-        com.wali.live.proto.AccountProto.ForgetPwdUuidReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ForgetPwdUuidReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ForgetPwdUuidReq.class, com.wali.live.proto.AccountProto.ForgetPwdUuidReq.Builder.class);
       }
@@ -25200,7 +25197,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ForgetPwdUuidReq getDefaultInstanceForType() {
@@ -25332,6 +25329,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 accountType = 1;
       private int accountType_ ;
       /**
        * <code>required uint32 accountType = 1;</code>
@@ -25380,6 +25378,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string code = 2;
       private java.lang.Object code_ = "";
       /**
        * <code>optional string code = 2;</code>
@@ -25401,12 +25400,9 @@ public final class AccountProto {
       public java.lang.String getCode() {
         java.lang.Object ref = code_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            code_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          code_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25480,6 +25476,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string openid = 3;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 3;</code>
@@ -25501,12 +25498,9 @@ public final class AccountProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            openid_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          openid_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25580,6 +25574,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string accessToken = 4;
       private java.lang.Object accessToken_ = "";
       /**
        * <code>optional string accessToken = 4;</code>
@@ -25601,12 +25596,9 @@ public final class AccountProto {
       public java.lang.String getAccessToken() {
         java.lang.Object ref = accessToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            accessToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          accessToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25680,6 +25672,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 expires_in = 5;
       private int expiresIn_ ;
       /**
        * <code>optional uint32 expires_in = 5;</code>
@@ -25728,6 +25721,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string refreshToken = 6;
       private java.lang.Object refreshToken_ = "";
       /**
        * <code>optional string refreshToken = 6;</code>
@@ -25749,12 +25743,9 @@ public final class AccountProto {
       public java.lang.String getRefreshToken() {
         java.lang.Object ref = refreshToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            refreshToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          refreshToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25828,6 +25819,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 7;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 7;</code>
@@ -25876,6 +25868,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string pwd = 8;
       private java.lang.Object pwd_ = "";
       /**
        * <code>optional string pwd = 8;</code>
@@ -25897,12 +25890,9 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25976,7 +25966,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ForgetPwdUuidReq)
+      // @@protoc_insertion_point(builder_scope:ForgetPwdUuidReq)
     }
 
     static {
@@ -25984,13 +25974,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ForgetPwdUuidReq)
+    // @@protoc_insertion_point(class_scope:ForgetPwdUuidReq)
   }
 
-  public interface ForgetPwdUuidRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ForgetPwdUuidRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdUuidRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -26008,6 +25998,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -26025,6 +26016,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -26051,6 +26043,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -26077,6 +26070,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -26103,6 +26097,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -26129,6 +26124,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
+    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -26155,6 +26151,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
+    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -26172,6 +26169,7 @@ public final class AccountProto {
      */
     int getSex();
 
+    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -26189,6 +26187,7 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
+    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -26206,6 +26205,7 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
+    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -26223,6 +26223,7 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
+    // optional string errMsg = 12;
     /**
      * <code>optional string errMsg = 12;</code>
      */
@@ -26238,12 +26239,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ForgetPwdUuidRsp}
+   * Protobuf type {@code ForgetPwdUuidRsp}
    */
   public static final class ForgetPwdUuidRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ForgetPwdUuidRsp)
-      ForgetPwdUuidRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ForgetPwdUuidRspOrBuilder {
     // Use ForgetPwdUuidRsp.newBuilder() to construct.
     private ForgetPwdUuidRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -26300,33 +26300,28 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = bs;
+              nickname_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = bs;
+              headinfo_ = input.readBytes();
               break;
             }
             case 64: {
@@ -26350,9 +26345,8 @@ public final class AccountProto {
               break;
             }
             case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -26369,12 +26363,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ForgetPwdUuidRsp.class, com.wali.live.proto.AccountProto.ForgetPwdUuidRsp.Builder.class);
     }
@@ -26395,6 +26389,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -26418,6 +26413,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -26441,6 +26437,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -26495,6 +26492,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -26549,6 +26547,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -26603,6 +26602,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -26657,6 +26657,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -26711,6 +26712,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -26734,6 +26736,7 @@ public final class AccountProto {
       return sex_;
     }
 
+    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -26757,6 +26760,7 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
+    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -26780,6 +26784,7 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
+    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -26803,6 +26808,7 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
+    // optional string errMsg = 12;
     public static final int ERRMSG_FIELD_NUMBER = 12;
     private java.lang.Object errMsg_;
     /**
@@ -26862,8 +26868,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -27048,20 +27053,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ForgetPwdUuidRsp}
+     * Protobuf type {@code ForgetPwdUuidRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ForgetPwdUuidRsp)
-        com.wali.live.proto.AccountProto.ForgetPwdUuidRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ForgetPwdUuidRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ForgetPwdUuidRsp.class, com.wali.live.proto.AccountProto.ForgetPwdUuidRsp.Builder.class);
       }
@@ -27119,7 +27123,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ForgetPwdUuidRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ForgetPwdUuidRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ForgetPwdUuidRsp getDefaultInstanceForType() {
@@ -27281,6 +27285,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -27329,6 +27334,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -27377,6 +27383,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -27398,12 +27405,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27477,6 +27481,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -27498,12 +27503,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27577,6 +27579,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -27598,12 +27601,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27677,6 +27677,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -27698,12 +27699,9 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nickname_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27777,6 +27775,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -27798,12 +27797,9 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            headinfo_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headinfo_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27877,6 +27873,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -27925,6 +27922,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -27973,6 +27971,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -28021,6 +28020,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -28069,6 +28069,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 12;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 12;</code>
@@ -28082,12 +28083,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -28145,7 +28143,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ForgetPwdUuidRsp)
+      // @@protoc_insertion_point(builder_scope:ForgetPwdUuidRsp)
     }
 
     static {
@@ -28153,13 +28151,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ForgetPwdUuidRsp)
+    // @@protoc_insertion_point(class_scope:ForgetPwdUuidRsp)
   }
 
-  public interface ScanQrCodeReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ScanQrCodeReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ScanQrCodeReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -28169,6 +28167,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // required string qr_code = 2;
     /**
      * <code>required string qr_code = 2;</code>
      */
@@ -28184,16 +28183,15 @@ public final class AccountProto {
         getQrCodeBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ScanQrCodeReq}
+   * Protobuf type {@code ScanQrCodeReq}
    *
    * <pre>
    *cmd: zhibo.account.scanqrcode
    * </pre>
    */
   public static final class ScanQrCodeReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ScanQrCodeReq)
-      ScanQrCodeReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ScanQrCodeReqOrBuilder {
     // Use ScanQrCodeReq.newBuilder() to construct.
     private ScanQrCodeReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -28245,9 +28243,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              qrCode_ = bs;
+              qrCode_ = input.readBytes();
               break;
             }
           }
@@ -28264,12 +28261,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ScanQrCodeReq.class, com.wali.live.proto.AccountProto.ScanQrCodeReq.Builder.class);
     }
@@ -28290,6 +28287,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -28305,6 +28303,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // required string qr_code = 2;
     public static final int QR_CODE_FIELD_NUMBER = 2;
     private java.lang.Object qrCode_;
     /**
@@ -28354,8 +28353,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -28474,24 +28472,23 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ScanQrCodeReq}
+     * Protobuf type {@code ScanQrCodeReq}
      *
      * <pre>
      *cmd: zhibo.account.scanqrcode
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ScanQrCodeReq)
-        com.wali.live.proto.AccountProto.ScanQrCodeReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ScanQrCodeReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ScanQrCodeReq.class, com.wali.live.proto.AccountProto.ScanQrCodeReq.Builder.class);
       }
@@ -28529,7 +28526,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ScanQrCodeReq getDefaultInstanceForType() {
@@ -28615,6 +28612,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -28647,6 +28645,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string qr_code = 2;
       private java.lang.Object qrCode_ = "";
       /**
        * <code>required string qr_code = 2;</code>
@@ -28660,12 +28659,9 @@ public final class AccountProto {
       public java.lang.String getQrCode() {
         java.lang.Object ref = qrCode_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            qrCode_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          qrCode_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -28723,7 +28719,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ScanQrCodeReq)
+      // @@protoc_insertion_point(builder_scope:ScanQrCodeReq)
     }
 
     static {
@@ -28731,13 +28727,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ScanQrCodeReq)
+    // @@protoc_insertion_point(class_scope:ScanQrCodeReq)
   }
 
-  public interface ScanQrCodeRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ScanQrCodeRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ScanQrCodeRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -28747,6 +28743,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -28762,12 +28759,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ScanQrCodeRsp}
+   * Protobuf type {@code ScanQrCodeRsp}
    */
   public static final class ScanQrCodeRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ScanQrCodeRsp)
-      ScanQrCodeRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ScanQrCodeRspOrBuilder {
     // Use ScanQrCodeRsp.newBuilder() to construct.
     private ScanQrCodeRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -28819,9 +28815,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -28838,12 +28833,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ScanQrCodeRsp.class, com.wali.live.proto.AccountProto.ScanQrCodeRsp.Builder.class);
     }
@@ -28864,6 +28859,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -28879,6 +28875,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -28928,8 +28925,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -29044,20 +29040,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ScanQrCodeRsp}
+     * Protobuf type {@code ScanQrCodeRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ScanQrCodeRsp)
-        com.wali.live.proto.AccountProto.ScanQrCodeRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ScanQrCodeRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ScanQrCodeRsp.class, com.wali.live.proto.AccountProto.ScanQrCodeRsp.Builder.class);
       }
@@ -29095,7 +29090,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ScanQrCodeRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ScanQrCodeRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ScanQrCodeRsp getDefaultInstanceForType() {
@@ -29177,6 +29172,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -29209,6 +29205,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -29222,12 +29219,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29285,7 +29279,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ScanQrCodeRsp)
+      // @@protoc_insertion_point(builder_scope:ScanQrCodeRsp)
     }
 
     static {
@@ -29293,13 +29287,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ScanQrCodeRsp)
+    // @@protoc_insertion_point(class_scope:ScanQrCodeRsp)
   }
 
-  public interface ConfirmLoginByQrCodeReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ConfirmLoginByQrCodeReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ConfirmLoginByQrCodeReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -29309,6 +29303,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // required string qr_code = 2;
     /**
      * <code>required string qr_code = 2;</code>
      */
@@ -29324,16 +29319,15 @@ public final class AccountProto {
         getQrCodeBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ConfirmLoginByQrCodeReq}
+   * Protobuf type {@code ConfirmLoginByQrCodeReq}
    *
    * <pre>
    *cmd: zhibo.account.confirmloginbyqrcode
    * </pre>
    */
   public static final class ConfirmLoginByQrCodeReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ConfirmLoginByQrCodeReq)
-      ConfirmLoginByQrCodeReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ConfirmLoginByQrCodeReqOrBuilder {
     // Use ConfirmLoginByQrCodeReq.newBuilder() to construct.
     private ConfirmLoginByQrCodeReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -29385,9 +29379,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              qrCode_ = bs;
+              qrCode_ = input.readBytes();
               break;
             }
           }
@@ -29404,12 +29397,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeReq.class, com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeReq.Builder.class);
     }
@@ -29430,6 +29423,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -29445,6 +29439,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // required string qr_code = 2;
     public static final int QR_CODE_FIELD_NUMBER = 2;
     private java.lang.Object qrCode_;
     /**
@@ -29494,8 +29489,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -29614,24 +29608,23 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ConfirmLoginByQrCodeReq}
+     * Protobuf type {@code ConfirmLoginByQrCodeReq}
      *
      * <pre>
      *cmd: zhibo.account.confirmloginbyqrcode
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ConfirmLoginByQrCodeReq)
-        com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeReq.class, com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeReq.Builder.class);
       }
@@ -29669,7 +29662,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeReq getDefaultInstanceForType() {
@@ -29755,6 +29748,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -29787,6 +29781,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string qr_code = 2;
       private java.lang.Object qrCode_ = "";
       /**
        * <code>required string qr_code = 2;</code>
@@ -29800,12 +29795,9 @@ public final class AccountProto {
       public java.lang.String getQrCode() {
         java.lang.Object ref = qrCode_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            qrCode_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          qrCode_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29863,7 +29855,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ConfirmLoginByQrCodeReq)
+      // @@protoc_insertion_point(builder_scope:ConfirmLoginByQrCodeReq)
     }
 
     static {
@@ -29871,13 +29863,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ConfirmLoginByQrCodeReq)
+    // @@protoc_insertion_point(class_scope:ConfirmLoginByQrCodeReq)
   }
 
-  public interface ConfirmLoginByQrCodeRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ConfirmLoginByQrCodeRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ConfirmLoginByQrCodeRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -29887,6 +29879,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -29902,12 +29895,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.ConfirmLoginByQrCodeRsp}
+   * Protobuf type {@code ConfirmLoginByQrCodeRsp}
    */
   public static final class ConfirmLoginByQrCodeRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ConfirmLoginByQrCodeRsp)
-      ConfirmLoginByQrCodeRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ConfirmLoginByQrCodeRspOrBuilder {
     // Use ConfirmLoginByQrCodeRsp.newBuilder() to construct.
     private ConfirmLoginByQrCodeRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -29959,9 +29951,8 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -29978,12 +29969,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeRsp.class, com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeRsp.Builder.class);
     }
@@ -30004,6 +29995,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -30019,6 +30011,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -30068,8 +30061,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -30184,20 +30176,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.ConfirmLoginByQrCodeRsp}
+     * Protobuf type {@code ConfirmLoginByQrCodeRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ConfirmLoginByQrCodeRsp)
-        com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeRsp.class, com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeRsp.Builder.class);
       }
@@ -30235,7 +30226,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_ConfirmLoginByQrCodeRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.ConfirmLoginByQrCodeRsp getDefaultInstanceForType() {
@@ -30317,6 +30308,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -30349,6 +30341,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -30362,12 +30355,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -30425,7 +30415,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ConfirmLoginByQrCodeRsp)
+      // @@protoc_insertion_point(builder_scope:ConfirmLoginByQrCodeRsp)
     }
 
     static {
@@ -30433,13 +30423,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ConfirmLoginByQrCodeRsp)
+    // @@protoc_insertion_point(class_scope:ConfirmLoginByQrCodeRsp)
   }
 
-  public interface MiSsoLoginReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MiSsoLoginReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface MiSsoLoginReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 accountType = 1 [default = 4];
     /**
      * <code>required uint32 accountType = 1 [default = 4];</code>
      *
@@ -30457,6 +30447,7 @@ public final class AccountProto {
      */
     int getAccountType();
 
+    // required uint64 mid = 2;
     /**
      * <code>required uint64 mid = 2;</code>
      *
@@ -30474,6 +30465,7 @@ public final class AccountProto {
      */
     long getMid();
 
+    // required string miservicetoken = 3;
     /**
      * <code>required string miservicetoken = 3;</code>
      *
@@ -30501,16 +30493,15 @@ public final class AccountProto {
         getMiservicetokenBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.MiSsoLoginReq}
+   * Protobuf type {@code MiSsoLoginReq}
    *
    * <pre>
    *cmd:zhibo.account.missologin
    * </pre>
    */
   public static final class MiSsoLoginReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MiSsoLoginReq)
-      MiSsoLoginReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements MiSsoLoginReqOrBuilder {
     // Use MiSsoLoginReq.newBuilder() to construct.
     private MiSsoLoginReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -30567,9 +30558,8 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              miservicetoken_ = bs;
+              miservicetoken_ = input.readBytes();
               break;
             }
           }
@@ -30586,12 +30576,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.MiSsoLoginReq.class, com.wali.live.proto.AccountProto.MiSsoLoginReq.Builder.class);
     }
@@ -30612,6 +30602,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 accountType = 1 [default = 4];
     public static final int ACCOUNTTYPE_FIELD_NUMBER = 1;
     private int accountType_;
     /**
@@ -30635,6 +30626,7 @@ public final class AccountProto {
       return accountType_;
     }
 
+    // required uint64 mid = 2;
     public static final int MID_FIELD_NUMBER = 2;
     private long mid_;
     /**
@@ -30658,6 +30650,7 @@ public final class AccountProto {
       return mid_;
     }
 
+    // required string miservicetoken = 3;
     public static final int MISERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object miservicetoken_;
     /**
@@ -30720,8 +30713,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAccountType()) {
         memoizedIsInitialized = 0;
@@ -30851,24 +30843,23 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.MiSsoLoginReq}
+     * Protobuf type {@code MiSsoLoginReq}
      *
      * <pre>
      *cmd:zhibo.account.missologin
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MiSsoLoginReq)
-        com.wali.live.proto.AccountProto.MiSsoLoginReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.MiSsoLoginReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.MiSsoLoginReq.class, com.wali.live.proto.AccountProto.MiSsoLoginReq.Builder.class);
       }
@@ -30908,7 +30899,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.MiSsoLoginReq getDefaultInstanceForType() {
@@ -31005,6 +30996,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 accountType = 1 [default = 4];
       private int accountType_ = 4;
       /**
        * <code>required uint32 accountType = 1 [default = 4];</code>
@@ -31053,6 +31045,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required uint64 mid = 2;
       private long mid_ ;
       /**
        * <code>required uint64 mid = 2;</code>
@@ -31101,6 +31094,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required string miservicetoken = 3;
       private java.lang.Object miservicetoken_ = "";
       /**
        * <code>required string miservicetoken = 3;</code>
@@ -31122,12 +31116,9 @@ public final class AccountProto {
       public java.lang.String getMiservicetoken() {
         java.lang.Object ref = miservicetoken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            miservicetoken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          miservicetoken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -31201,7 +31192,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MiSsoLoginReq)
+      // @@protoc_insertion_point(builder_scope:MiSsoLoginReq)
     }
 
     static {
@@ -31209,13 +31200,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MiSsoLoginReq)
+    // @@protoc_insertion_point(class_scope:MiSsoLoginReq)
   }
 
-  public interface MiSsoLoginRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MiSsoLoginRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface MiSsoLoginRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -31233,6 +31224,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -31250,6 +31242,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -31276,6 +31269,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -31302,6 +31296,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -31328,6 +31323,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
+    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -31354,6 +31350,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
+    // optional string headimgurl = 7;
     /**
      * <code>optional string headimgurl = 7;</code>
      *
@@ -31380,6 +31377,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadimgurlBytes();
 
+    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -31397,6 +31395,7 @@ public final class AccountProto {
      */
     int getSex();
 
+    // optional uint32 loginStatus = 9;
     /**
      * <code>optional uint32 loginStatus = 9;</code>
      *
@@ -31414,6 +31413,7 @@ public final class AccountProto {
      */
     int getLoginStatus();
 
+    // optional bool hasInnerAvatar = 10;
     /**
      * <code>optional bool hasInnerAvatar = 10;</code>
      *
@@ -31431,6 +31431,7 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
+    // optional bool hasInnerNickname = 11;
     /**
      * <code>optional bool hasInnerNickname = 11;</code>
      *
@@ -31448,6 +31449,7 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
+    // optional bool hasInnerSex = 12;
     /**
      * <code>optional bool hasInnerSex = 12;</code>
      *
@@ -31465,6 +31467,7 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
+    // optional bool isSetGuide = 13 [default = false];
     /**
      * <code>optional bool isSetGuide = 13 [default = false];</code>
      *
@@ -31482,6 +31485,7 @@ public final class AccountProto {
      */
     boolean getIsSetGuide();
 
+    // optional string errMsg = 14;
     /**
      * <code>optional string errMsg = 14;</code>
      *
@@ -31509,12 +31513,11 @@ public final class AccountProto {
         getErrMsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.MiSsoLoginRsp}
+   * Protobuf type {@code MiSsoLoginRsp}
    */
   public static final class MiSsoLoginRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MiSsoLoginRsp)
-      MiSsoLoginRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements MiSsoLoginRspOrBuilder {
     // Use MiSsoLoginRsp.newBuilder() to construct.
     private MiSsoLoginRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -31571,33 +31574,28 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = bs;
+              passToken_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = bs;
+              nickname_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headimgurl_ = bs;
+              headimgurl_ = input.readBytes();
               break;
             }
             case 64: {
@@ -31631,9 +31629,8 @@ public final class AccountProto {
               break;
             }
             case 114: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00002000;
-              errMsg_ = bs;
+              errMsg_ = input.readBytes();
               break;
             }
           }
@@ -31650,12 +31647,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.MiSsoLoginRsp.class, com.wali.live.proto.AccountProto.MiSsoLoginRsp.Builder.class);
     }
@@ -31676,6 +31673,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -31699,6 +31697,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -31722,6 +31721,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -31776,6 +31776,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -31830,6 +31831,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -31884,6 +31886,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -31938,6 +31941,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string headimgurl = 7;
     public static final int HEADIMGURL_FIELD_NUMBER = 7;
     private java.lang.Object headimgurl_;
     /**
@@ -31992,6 +31996,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -32015,6 +32020,7 @@ public final class AccountProto {
       return sex_;
     }
 
+    // optional uint32 loginStatus = 9;
     public static final int LOGINSTATUS_FIELD_NUMBER = 9;
     private int loginStatus_;
     /**
@@ -32038,6 +32044,7 @@ public final class AccountProto {
       return loginStatus_;
     }
 
+    // optional bool hasInnerAvatar = 10;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 10;
     private boolean hasInnerAvatar_;
     /**
@@ -32061,6 +32068,7 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
+    // optional bool hasInnerNickname = 11;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 11;
     private boolean hasInnerNickname_;
     /**
@@ -32084,6 +32092,7 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
+    // optional bool hasInnerSex = 12;
     public static final int HASINNERSEX_FIELD_NUMBER = 12;
     private boolean hasInnerSex_;
     /**
@@ -32107,6 +32116,7 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
+    // optional bool isSetGuide = 13 [default = false];
     public static final int ISSETGUIDE_FIELD_NUMBER = 13;
     private boolean isSetGuide_;
     /**
@@ -32130,6 +32140,7 @@ public final class AccountProto {
       return isSetGuide_;
     }
 
+    // optional string errMsg = 14;
     public static final int ERRMSG_FIELD_NUMBER = 14;
     private java.lang.Object errMsg_;
     /**
@@ -32203,8 +32214,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -32403,20 +32413,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.MiSsoLoginRsp}
+     * Protobuf type {@code MiSsoLoginRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MiSsoLoginRsp)
-        com.wali.live.proto.AccountProto.MiSsoLoginRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.MiSsoLoginRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.MiSsoLoginRsp.class, com.wali.live.proto.AccountProto.MiSsoLoginRsp.Builder.class);
       }
@@ -32478,7 +32487,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_MiSsoLoginRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_MiSsoLoginRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.MiSsoLoginRsp getDefaultInstanceForType() {
@@ -32654,6 +32663,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -32702,6 +32712,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -32750,6 +32761,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -32771,12 +32783,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32850,6 +32859,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -32871,12 +32881,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32950,6 +32957,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -32971,12 +32979,9 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            passToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33050,6 +33055,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -33071,12 +33077,9 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nickname_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33150,6 +33153,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string headimgurl = 7;
       private java.lang.Object headimgurl_ = "";
       /**
        * <code>optional string headimgurl = 7;</code>
@@ -33171,12 +33175,9 @@ public final class AccountProto {
       public java.lang.String getHeadimgurl() {
         java.lang.Object ref = headimgurl_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            headimgurl_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headimgurl_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33250,6 +33251,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -33298,6 +33300,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 loginStatus = 9;
       private int loginStatus_ ;
       /**
        * <code>optional uint32 loginStatus = 9;</code>
@@ -33346,6 +33349,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerAvatar = 10;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 10;</code>
@@ -33394,6 +33398,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerNickname = 11;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 11;</code>
@@ -33442,6 +33447,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool hasInnerSex = 12;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 12;</code>
@@ -33490,6 +33496,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional bool isSetGuide = 13 [default = false];
       private boolean isSetGuide_ ;
       /**
        * <code>optional bool isSetGuide = 13 [default = false];</code>
@@ -33538,6 +33545,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errMsg = 14;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 14;</code>
@@ -33559,12 +33567,9 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errMsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33638,7 +33643,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.MiSsoLoginRsp)
+      // @@protoc_insertion_point(builder_scope:MiSsoLoginRsp)
     }
 
     static {
@@ -33646,13 +33651,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.MiSsoLoginRsp)
+    // @@protoc_insertion_point(class_scope:MiSsoLoginRsp)
   }
 
-  public interface AppInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.AppInfo)
-      com.google.protobuf.MessageOrBuilder {
+  public interface AppInfoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // optional string appId = 1;
     /**
      * <code>optional string appId = 1;</code>
      */
@@ -33667,6 +33672,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getAppIdBytes();
 
+    // optional string appKey = 2;
     /**
      * <code>optional string appKey = 2;</code>
      */
@@ -33682,16 +33688,15 @@ public final class AccountProto {
         getAppKeyBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.AppInfo}
+   * Protobuf type {@code AppInfo}
    *
    * <pre>
    *第三放appInfo
    * </pre>
    */
   public static final class AppInfo extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.AppInfo)
-      AppInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements AppInfoOrBuilder {
     // Use AppInfo.newBuilder() to construct.
     private AppInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -33738,15 +33743,13 @@ public final class AccountProto {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              appId_ = bs;
+              appId_ = input.readBytes();
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              appKey_ = bs;
+              appKey_ = input.readBytes();
               break;
             }
           }
@@ -33763,12 +33766,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_AppInfo_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_AppInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_AppInfo_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_AppInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.AppInfo.class, com.wali.live.proto.AccountProto.AppInfo.Builder.class);
     }
@@ -33789,6 +33792,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // optional string appId = 1;
     public static final int APPID_FIELD_NUMBER = 1;
     private java.lang.Object appId_;
     /**
@@ -33831,6 +33835,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string appKey = 2;
     public static final int APPKEY_FIELD_NUMBER = 2;
     private java.lang.Object appKey_;
     /**
@@ -33880,8 +33885,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       memoizedIsInitialized = 1;
       return true;
@@ -33992,24 +33996,23 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.AppInfo}
+     * Protobuf type {@code AppInfo}
      *
      * <pre>
      *第三放appInfo
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.AppInfo)
-        com.wali.live.proto.AccountProto.AppInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.AppInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_AppInfo_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_AppInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_AppInfo_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_AppInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.AppInfo.class, com.wali.live.proto.AccountProto.AppInfo.Builder.class);
       }
@@ -34047,7 +34050,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_AppInfo_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_AppInfo_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.AppInfo getDefaultInstanceForType() {
@@ -34127,6 +34130,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // optional string appId = 1;
       private java.lang.Object appId_ = "";
       /**
        * <code>optional string appId = 1;</code>
@@ -34140,12 +34144,9 @@ public final class AccountProto {
       public java.lang.String getAppId() {
         java.lang.Object ref = appId_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appId_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34203,6 +34204,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string appKey = 2;
       private java.lang.Object appKey_ = "";
       /**
        * <code>optional string appKey = 2;</code>
@@ -34216,12 +34218,9 @@ public final class AccountProto {
       public java.lang.String getAppKey() {
         java.lang.Object ref = appKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34279,7 +34278,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.AppInfo)
+      // @@protoc_insertion_point(builder_scope:AppInfo)
     }
 
     static {
@@ -34287,13 +34286,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.AppInfo)
+    // @@protoc_insertion_point(class_scope:AppInfo)
   }
 
-  public interface UserInfoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UserInfo)
-      com.google.protobuf.MessageOrBuilder {
+  public interface UserInfoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -34303,6 +34302,7 @@ public final class AccountProto {
      */
     long getUuid();
 
+    // optional uint64 avatar = 2;
     /**
      * <code>optional uint64 avatar = 2;</code>
      *
@@ -34320,6 +34320,7 @@ public final class AccountProto {
      */
     long getAvatar();
 
+    // optional string nickname = 3;
     /**
      * <code>optional string nickname = 3;</code>
      *
@@ -34346,6 +34347,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
+    // optional string sign = 4;
     /**
      * <code>optional string sign = 4;</code>
      *
@@ -34372,6 +34374,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSignBytes();
 
+    // optional uint32 gender = 5;
     /**
      * <code>optional uint32 gender = 5;</code>
      *
@@ -34389,6 +34392,7 @@ public final class AccountProto {
      */
     int getGender();
 
+    // optional uint32 level = 6;
     /**
      * <code>optional uint32 level = 6;</code>
      *
@@ -34406,6 +34410,7 @@ public final class AccountProto {
      */
     int getLevel();
 
+    // optional uint32 badge = 7;
     /**
      * <code>optional uint32 badge = 7;</code>
      *
@@ -34423,6 +34428,7 @@ public final class AccountProto {
      */
     int getBadge();
 
+    // optional uint64 updateTime = 8;
     /**
      * <code>optional uint64 updateTime = 8;</code>
      *
@@ -34441,12 +34447,11 @@ public final class AccountProto {
     long getUpdateTime();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.UserInfo}
+   * Protobuf type {@code UserInfo}
    */
   public static final class UserInfo extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UserInfo)
-      UserInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements UserInfoOrBuilder {
     // Use UserInfo.newBuilder() to construct.
     private UserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -34503,15 +34508,13 @@ public final class AccountProto {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              nickname_ = bs;
+              nickname_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              sign_ = bs;
+              sign_ = input.readBytes();
               break;
             }
             case 40: {
@@ -34548,12 +34551,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UserInfo_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_UserInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_UserInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.UserInfo.class, com.wali.live.proto.AccountProto.UserInfo.Builder.class);
     }
@@ -34574,6 +34577,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -34589,6 +34593,7 @@ public final class AccountProto {
       return uuid_;
     }
 
+    // optional uint64 avatar = 2;
     public static final int AVATAR_FIELD_NUMBER = 2;
     private long avatar_;
     /**
@@ -34612,6 +34617,7 @@ public final class AccountProto {
       return avatar_;
     }
 
+    // optional string nickname = 3;
     public static final int NICKNAME_FIELD_NUMBER = 3;
     private java.lang.Object nickname_;
     /**
@@ -34666,6 +34672,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string sign = 4;
     public static final int SIGN_FIELD_NUMBER = 4;
     private java.lang.Object sign_;
     /**
@@ -34720,6 +34727,7 @@ public final class AccountProto {
       }
     }
 
+    // optional uint32 gender = 5;
     public static final int GENDER_FIELD_NUMBER = 5;
     private int gender_;
     /**
@@ -34743,6 +34751,7 @@ public final class AccountProto {
       return gender_;
     }
 
+    // optional uint32 level = 6;
     public static final int LEVEL_FIELD_NUMBER = 6;
     private int level_;
     /**
@@ -34766,6 +34775,7 @@ public final class AccountProto {
       return level_;
     }
 
+    // optional uint32 badge = 7;
     public static final int BADGE_FIELD_NUMBER = 7;
     private int badge_;
     /**
@@ -34789,6 +34799,7 @@ public final class AccountProto {
       return badge_;
     }
 
+    // optional uint64 updateTime = 8;
     public static final int UPDATETIME_FIELD_NUMBER = 8;
     private long updateTime_;
     /**
@@ -34825,8 +34836,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -34983,20 +34993,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.UserInfo}
+     * Protobuf type {@code UserInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UserInfo)
-        com.wali.live.proto.AccountProto.UserInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.UserInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UserInfo_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_UserInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_UserInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.UserInfo.class, com.wali.live.proto.AccountProto.UserInfo.Builder.class);
       }
@@ -35046,7 +35055,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_UserInfo_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_UserInfo_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.UserInfo getDefaultInstanceForType() {
@@ -35172,6 +35181,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -35204,6 +35214,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 avatar = 2;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 2;</code>
@@ -35252,6 +35263,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string nickname = 3;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 3;</code>
@@ -35273,12 +35285,9 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nickname_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35352,6 +35361,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string sign = 4;
       private java.lang.Object sign_ = "";
       /**
        * <code>optional string sign = 4;</code>
@@ -35373,12 +35383,9 @@ public final class AccountProto {
       public java.lang.String getSign() {
         java.lang.Object ref = sign_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sign_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          sign_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35452,6 +35459,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 gender = 5;
       private int gender_ ;
       /**
        * <code>optional uint32 gender = 5;</code>
@@ -35500,6 +35508,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 level = 6;
       private int level_ ;
       /**
        * <code>optional uint32 level = 6;</code>
@@ -35548,6 +35557,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint32 badge = 7;
       private int badge_ ;
       /**
        * <code>optional uint32 badge = 7;</code>
@@ -35596,6 +35606,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional uint64 updateTime = 8;
       private long updateTime_ ;
       /**
        * <code>optional uint64 updateTime = 8;</code>
@@ -35644,7 +35655,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UserInfo)
+      // @@protoc_insertion_point(builder_scope:UserInfo)
     }
 
     static {
@@ -35652,13 +35663,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UserInfo)
+    // @@protoc_insertion_point(class_scope:UserInfo)
   }
 
-  public interface GetAccessTokenReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetAccessTokenReq)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetAccessTokenReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 appid = 1;
     /**
      * <code>required uint32 appid = 1;</code>
      *
@@ -35676,6 +35687,7 @@ public final class AccountProto {
      */
     int getAppid();
 
+    // required uint64 uuid = 2;
     /**
      * <code>required uint64 uuid = 2;</code>
      *
@@ -35694,7 +35706,7 @@ public final class AccountProto {
     long getUuid();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetAccessTokenReq}
+   * Protobuf type {@code GetAccessTokenReq}
    *
    * <pre>
    *用于第三方（如小米游戏）接入小米直播
@@ -35702,9 +35714,8 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetAccessTokenReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetAccessTokenReq)
-      GetAccessTokenReqOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetAccessTokenReqOrBuilder {
     // Use GetAccessTokenReq.newBuilder() to construct.
     private GetAccessTokenReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -35774,12 +35785,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenReq_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenReq_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetAccessTokenReq.class, com.wali.live.proto.AccountProto.GetAccessTokenReq.Builder.class);
     }
@@ -35800,6 +35811,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 appid = 1;
     public static final int APPID_FIELD_NUMBER = 1;
     private int appid_;
     /**
@@ -35823,6 +35835,7 @@ public final class AccountProto {
       return appid_;
     }
 
+    // required uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -35853,8 +35866,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppid()) {
         memoizedIsInitialized = 0;
@@ -35973,7 +35985,7 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetAccessTokenReq}
+     * Protobuf type {@code GetAccessTokenReq}
      *
      * <pre>
      *用于第三方（如小米游戏）接入小米直播
@@ -35981,17 +35993,16 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetAccessTokenReq)
-        com.wali.live.proto.AccountProto.GetAccessTokenReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetAccessTokenReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenReq_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetAccessTokenReq.class, com.wali.live.proto.AccountProto.GetAccessTokenReq.Builder.class);
       }
@@ -36029,7 +36040,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenReq_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenReq_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetAccessTokenReq getDefaultInstanceForType() {
@@ -36113,6 +36124,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 appid = 1;
       private int appid_ ;
       /**
        * <code>required uint32 appid = 1;</code>
@@ -36161,6 +36173,7 @@ public final class AccountProto {
         return this;
       }
 
+      // required uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 2;</code>
@@ -36209,7 +36222,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetAccessTokenReq)
+      // @@protoc_insertion_point(builder_scope:GetAccessTokenReq)
     }
 
     static {
@@ -36217,13 +36230,13 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetAccessTokenReq)
+    // @@protoc_insertion_point(class_scope:GetAccessTokenReq)
   }
 
-  public interface GetAccessTokenRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetAccessTokenRsp)
-      com.google.protobuf.MessageOrBuilder {
+  public interface GetAccessTokenRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -36241,6 +36254,7 @@ public final class AccountProto {
      */
     int getRetCode();
 
+    // optional string serviceToken = 2;
     /**
      * <code>optional string serviceToken = 2;</code>
      *
@@ -36267,6 +36281,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
+    // optional string securityKey = 3;
     /**
      * <code>optional string securityKey = 3;</code>
      *
@@ -36293,6 +36308,7 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
+    // optional string errmsg = 4;
     /**
      * <code>optional string errmsg = 4;</code>
      */
@@ -36308,12 +36324,11 @@ public final class AccountProto {
         getErrmsgBytes();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetAccessTokenRsp}
+   * Protobuf type {@code GetAccessTokenRsp}
    */
   public static final class GetAccessTokenRsp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetAccessTokenRsp)
-      GetAccessTokenRspOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements GetAccessTokenRspOrBuilder {
     // Use GetAccessTokenRsp.newBuilder() to construct.
     private GetAccessTokenRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -36365,21 +36380,18 @@ public final class AccountProto {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              serviceToken_ = bs;
+              serviceToken_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              securityKey_ = bs;
+              securityKey_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              errmsg_ = bs;
+              errmsg_ = input.readBytes();
               break;
             }
           }
@@ -36396,12 +36408,12 @@ public final class AccountProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenRsp_descriptor;
+      return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenRsp_fieldAccessorTable
+      return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.AccountProto.GetAccessTokenRsp.class, com.wali.live.proto.AccountProto.GetAccessTokenRsp.Builder.class);
     }
@@ -36422,6 +36434,7 @@ public final class AccountProto {
     }
 
     private int bitField0_;
+    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -36445,6 +36458,7 @@ public final class AccountProto {
       return retCode_;
     }
 
+    // optional string serviceToken = 2;
     public static final int SERVICETOKEN_FIELD_NUMBER = 2;
     private java.lang.Object serviceToken_;
     /**
@@ -36499,6 +36513,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string securityKey = 3;
     public static final int SECURITYKEY_FIELD_NUMBER = 3;
     private java.lang.Object securityKey_;
     /**
@@ -36553,6 +36568,7 @@ public final class AccountProto {
       }
     }
 
+    // optional string errmsg = 4;
     public static final int ERRMSG_FIELD_NUMBER = 4;
     private java.lang.Object errmsg_;
     /**
@@ -36604,8 +36620,7 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -36734,20 +36749,19 @@ public final class AccountProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetAccessTokenRsp}
+     * Protobuf type {@code GetAccessTokenRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetAccessTokenRsp)
-        com.wali.live.proto.AccountProto.GetAccessTokenRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetAccessTokenRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenRsp_fieldAccessorTable
+        return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.AccountProto.GetAccessTokenRsp.class, com.wali.live.proto.AccountProto.GetAccessTokenRsp.Builder.class);
       }
@@ -36789,7 +36803,7 @@ public final class AccountProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.AccountProto.internal_static_com_wali_live_proto_GetAccessTokenRsp_descriptor;
+        return com.wali.live.proto.AccountProto.internal_static_GetAccessTokenRsp_descriptor;
       }
 
       public com.wali.live.proto.AccountProto.GetAccessTokenRsp getDefaultInstanceForType() {
@@ -36889,6 +36903,7 @@ public final class AccountProto {
       }
       private int bitField0_;
 
+      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -36937,6 +36952,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string serviceToken = 2;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 2;</code>
@@ -36958,12 +36974,9 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            serviceToken_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37037,6 +37050,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string securityKey = 3;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 3;</code>
@@ -37058,12 +37072,9 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            securityKey_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37137,6 +37148,7 @@ public final class AccountProto {
         return this;
       }
 
+      // optional string errmsg = 4;
       private java.lang.Object errmsg_ = "";
       /**
        * <code>optional string errmsg = 4;</code>
@@ -37150,12 +37162,9 @@ public final class AccountProto {
       public java.lang.String getErrmsg() {
         java.lang.Object ref = errmsg_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            errmsg_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errmsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37213,7 +37222,7 @@ public final class AccountProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetAccessTokenRsp)
+      // @@protoc_insertion_point(builder_scope:GetAccessTokenRsp)
     }
 
     static {
@@ -37221,189 +37230,5846 @@ public final class AccountProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetAccessTokenRsp)
+    // @@protoc_insertion_point(class_scope:GetAccessTokenRsp)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LoginReq_descriptor;
+  public interface GetGuideFlagReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required uint64 uuid = 1;
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    long getUuid();
+  }
+  /**
+   * Protobuf type {@code GetGuideFlagReq}
+   *
+   * <pre>
+   *用于查询uid是否需要微信老用户引导  cmd：zhibo.account.getguideflag
+   * </pre>
+   */
+  public static final class GetGuideFlagReq extends
+      com.google.protobuf.GeneratedMessage
+      implements GetGuideFlagReqOrBuilder {
+    // Use GetGuideFlagReq.newBuilder() to construct.
+    private GetGuideFlagReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetGuideFlagReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetGuideFlagReq defaultInstance;
+    public static GetGuideFlagReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetGuideFlagReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetGuideFlagReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.AccountProto.GetGuideFlagReq.class, com.wali.live.proto.AccountProto.GetGuideFlagReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetGuideFlagReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetGuideFlagReq>() {
+      public GetGuideFlagReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetGuideFlagReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetGuideFlagReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required uint64 uuid = 1;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasUuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.AccountProto.GetGuideFlagReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code GetGuideFlagReq}
+     *
+     * <pre>
+     *用于查询uid是否需要微信老用户引导  cmd：zhibo.account.getguideflag
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetGuideFlagReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.AccountProto.GetGuideFlagReq.class, com.wali.live.proto.AccountProto.GetGuideFlagReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.AccountProto.GetGuideFlagReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagReq_descriptor;
+      }
+
+      public com.wali.live.proto.AccountProto.GetGuideFlagReq getDefaultInstanceForType() {
+        return com.wali.live.proto.AccountProto.GetGuideFlagReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.AccountProto.GetGuideFlagReq build() {
+        com.wali.live.proto.AccountProto.GetGuideFlagReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.AccountProto.GetGuideFlagReq buildPartial() {
+        com.wali.live.proto.AccountProto.GetGuideFlagReq result = new com.wali.live.proto.AccountProto.GetGuideFlagReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.AccountProto.GetGuideFlagReq) {
+          return mergeFrom((com.wali.live.proto.AccountProto.GetGuideFlagReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.AccountProto.GetGuideFlagReq other) {
+        if (other == com.wali.live.proto.AccountProto.GetGuideFlagReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUuid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.AccountProto.GetGuideFlagReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.AccountProto.GetGuideFlagReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required uint64 uuid = 1;
+      private long uuid_ ;
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:GetGuideFlagReq)
+    }
+
+    static {
+      defaultInstance = new GetGuideFlagReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:GetGuideFlagReq)
+  }
+
+  public interface GetGuideFlagRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required uint32 retCode = 1;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    // optional bool isGuide = 2;
+    /**
+     * <code>optional bool isGuide = 2;</code>
+     *
+     * <pre>
+     *true表示该微信老用户需要引导，false表示本次不需要引导
+     * </pre>
+     */
+    boolean hasIsGuide();
+    /**
+     * <code>optional bool isGuide = 2;</code>
+     *
+     * <pre>
+     *true表示该微信老用户需要引导，false表示本次不需要引导
+     * </pre>
+     */
+    boolean getIsGuide();
+
+    // optional string reminderMsg = 3;
+    /**
+     * <code>optional string reminderMsg = 3;</code>
+     *
+     * <pre>
+     *引导语正文，不需要引导时，该字段为空
+     * </pre>
+     */
+    boolean hasReminderMsg();
+    /**
+     * <code>optional string reminderMsg = 3;</code>
+     *
+     * <pre>
+     *引导语正文，不需要引导时，该字段为空
+     * </pre>
+     */
+    java.lang.String getReminderMsg();
+    /**
+     * <code>optional string reminderMsg = 3;</code>
+     *
+     * <pre>
+     *引导语正文，不需要引导时，该字段为空
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getReminderMsgBytes();
+
+    // optional uint32 diamondsCnt = 4;
+    /**
+     * <code>optional uint32 diamondsCnt = 4;</code>
+     *
+     * <pre>
+     *钻石数量
+     * </pre>
+     */
+    boolean hasDiamondsCnt();
+    /**
+     * <code>optional uint32 diamondsCnt = 4;</code>
+     *
+     * <pre>
+     *钻石数量
+     * </pre>
+     */
+    int getDiamondsCnt();
+
+    // optional bool isGuideNoMore = 5;
+    /**
+     * <code>optional bool isGuideNoMore = 5;</code>
+     *
+     * <pre>
+     *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+     * </pre>
+     */
+    boolean hasIsGuideNoMore();
+    /**
+     * <code>optional bool isGuideNoMore = 5;</code>
+     *
+     * <pre>
+     *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+     * </pre>
+     */
+    boolean getIsGuideNoMore();
+
+    // optional string errMsg = 6;
+    /**
+     * <code>optional string errMsg = 6;</code>
+     */
+    boolean hasErrMsg();
+    /**
+     * <code>optional string errMsg = 6;</code>
+     */
+    java.lang.String getErrMsg();
+    /**
+     * <code>optional string errMsg = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrMsgBytes();
+  }
+  /**
+   * Protobuf type {@code GetGuideFlagRsp}
+   */
+  public static final class GetGuideFlagRsp extends
+      com.google.protobuf.GeneratedMessage
+      implements GetGuideFlagRspOrBuilder {
+    // Use GetGuideFlagRsp.newBuilder() to construct.
+    private GetGuideFlagRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetGuideFlagRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetGuideFlagRsp defaultInstance;
+    public static GetGuideFlagRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetGuideFlagRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetGuideFlagRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              isGuide_ = input.readBool();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              reminderMsg_ = input.readBytes();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              diamondsCnt_ = input.readUInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              isGuideNoMore_ = input.readBool();
+              break;
+            }
+            case 50: {
+              bitField0_ |= 0x00000020;
+              errMsg_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.AccountProto.GetGuideFlagRsp.class, com.wali.live.proto.AccountProto.GetGuideFlagRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetGuideFlagRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetGuideFlagRsp>() {
+      public GetGuideFlagRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetGuideFlagRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetGuideFlagRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required uint32 retCode = 1;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    // optional bool isGuide = 2;
+    public static final int ISGUIDE_FIELD_NUMBER = 2;
+    private boolean isGuide_;
+    /**
+     * <code>optional bool isGuide = 2;</code>
+     *
+     * <pre>
+     *true表示该微信老用户需要引导，false表示本次不需要引导
+     * </pre>
+     */
+    public boolean hasIsGuide() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional bool isGuide = 2;</code>
+     *
+     * <pre>
+     *true表示该微信老用户需要引导，false表示本次不需要引导
+     * </pre>
+     */
+    public boolean getIsGuide() {
+      return isGuide_;
+    }
+
+    // optional string reminderMsg = 3;
+    public static final int REMINDERMSG_FIELD_NUMBER = 3;
+    private java.lang.Object reminderMsg_;
+    /**
+     * <code>optional string reminderMsg = 3;</code>
+     *
+     * <pre>
+     *引导语正文，不需要引导时，该字段为空
+     * </pre>
+     */
+    public boolean hasReminderMsg() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string reminderMsg = 3;</code>
+     *
+     * <pre>
+     *引导语正文，不需要引导时，该字段为空
+     * </pre>
+     */
+    public java.lang.String getReminderMsg() {
+      java.lang.Object ref = reminderMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          reminderMsg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string reminderMsg = 3;</code>
+     *
+     * <pre>
+     *引导语正文，不需要引导时，该字段为空
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getReminderMsgBytes() {
+      java.lang.Object ref = reminderMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        reminderMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional uint32 diamondsCnt = 4;
+    public static final int DIAMONDSCNT_FIELD_NUMBER = 4;
+    private int diamondsCnt_;
+    /**
+     * <code>optional uint32 diamondsCnt = 4;</code>
+     *
+     * <pre>
+     *钻石数量
+     * </pre>
+     */
+    public boolean hasDiamondsCnt() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 diamondsCnt = 4;</code>
+     *
+     * <pre>
+     *钻石数量
+     * </pre>
+     */
+    public int getDiamondsCnt() {
+      return diamondsCnt_;
+    }
+
+    // optional bool isGuideNoMore = 5;
+    public static final int ISGUIDENOMORE_FIELD_NUMBER = 5;
+    private boolean isGuideNoMore_;
+    /**
+     * <code>optional bool isGuideNoMore = 5;</code>
+     *
+     * <pre>
+     *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+     * </pre>
+     */
+    public boolean hasIsGuideNoMore() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional bool isGuideNoMore = 5;</code>
+     *
+     * <pre>
+     *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+     * </pre>
+     */
+    public boolean getIsGuideNoMore() {
+      return isGuideNoMore_;
+    }
+
+    // optional string errMsg = 6;
+    public static final int ERRMSG_FIELD_NUMBER = 6;
+    private java.lang.Object errMsg_;
+    /**
+     * <code>optional string errMsg = 6;</code>
+     */
+    public boolean hasErrMsg() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string errMsg = 6;</code>
+     */
+    public java.lang.String getErrMsg() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          errMsg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string errMsg = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrMsgBytes() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      isGuide_ = false;
+      reminderMsg_ = "";
+      diamondsCnt_ = 0;
+      isGuideNoMore_ = false;
+      errMsg_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBool(2, isGuide_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getReminderMsgBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, diamondsCnt_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBool(5, isGuideNoMore_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getErrMsgBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, isGuide_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getReminderMsgBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, diamondsCnt_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, isGuideNoMore_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getErrMsgBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.GetGuideFlagRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.AccountProto.GetGuideFlagRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code GetGuideFlagRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.GetGuideFlagRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.AccountProto.GetGuideFlagRsp.class, com.wali.live.proto.AccountProto.GetGuideFlagRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.AccountProto.GetGuideFlagRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        isGuide_ = false;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        reminderMsg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        diamondsCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        isGuideNoMore_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        errMsg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.AccountProto.internal_static_GetGuideFlagRsp_descriptor;
+      }
+
+      public com.wali.live.proto.AccountProto.GetGuideFlagRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.AccountProto.GetGuideFlagRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.AccountProto.GetGuideFlagRsp build() {
+        com.wali.live.proto.AccountProto.GetGuideFlagRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.AccountProto.GetGuideFlagRsp buildPartial() {
+        com.wali.live.proto.AccountProto.GetGuideFlagRsp result = new com.wali.live.proto.AccountProto.GetGuideFlagRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.isGuide_ = isGuide_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.reminderMsg_ = reminderMsg_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.diamondsCnt_ = diamondsCnt_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.isGuideNoMore_ = isGuideNoMore_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.errMsg_ = errMsg_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.AccountProto.GetGuideFlagRsp) {
+          return mergeFrom((com.wali.live.proto.AccountProto.GetGuideFlagRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.AccountProto.GetGuideFlagRsp other) {
+        if (other == com.wali.live.proto.AccountProto.GetGuideFlagRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasIsGuide()) {
+          setIsGuide(other.getIsGuide());
+        }
+        if (other.hasReminderMsg()) {
+          bitField0_ |= 0x00000004;
+          reminderMsg_ = other.reminderMsg_;
+          onChanged();
+        }
+        if (other.hasDiamondsCnt()) {
+          setDiamondsCnt(other.getDiamondsCnt());
+        }
+        if (other.hasIsGuideNoMore()) {
+          setIsGuideNoMore(other.getIsGuideNoMore());
+        }
+        if (other.hasErrMsg()) {
+          bitField0_ |= 0x00000020;
+          errMsg_ = other.errMsg_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.AccountProto.GetGuideFlagRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.AccountProto.GetGuideFlagRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required uint32 retCode = 1;
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional bool isGuide = 2;
+      private boolean isGuide_ ;
+      /**
+       * <code>optional bool isGuide = 2;</code>
+       *
+       * <pre>
+       *true表示该微信老用户需要引导，false表示本次不需要引导
+       * </pre>
+       */
+      public boolean hasIsGuide() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional bool isGuide = 2;</code>
+       *
+       * <pre>
+       *true表示该微信老用户需要引导，false表示本次不需要引导
+       * </pre>
+       */
+      public boolean getIsGuide() {
+        return isGuide_;
+      }
+      /**
+       * <code>optional bool isGuide = 2;</code>
+       *
+       * <pre>
+       *true表示该微信老用户需要引导，false表示本次不需要引导
+       * </pre>
+       */
+      public Builder setIsGuide(boolean value) {
+        bitField0_ |= 0x00000002;
+        isGuide_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isGuide = 2;</code>
+       *
+       * <pre>
+       *true表示该微信老用户需要引导，false表示本次不需要引导
+       * </pre>
+       */
+      public Builder clearIsGuide() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        isGuide_ = false;
+        onChanged();
+        return this;
+      }
+
+      // optional string reminderMsg = 3;
+      private java.lang.Object reminderMsg_ = "";
+      /**
+       * <code>optional string reminderMsg = 3;</code>
+       *
+       * <pre>
+       *引导语正文，不需要引导时，该字段为空
+       * </pre>
+       */
+      public boolean hasReminderMsg() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string reminderMsg = 3;</code>
+       *
+       * <pre>
+       *引导语正文，不需要引导时，该字段为空
+       * </pre>
+       */
+      public java.lang.String getReminderMsg() {
+        java.lang.Object ref = reminderMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          reminderMsg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string reminderMsg = 3;</code>
+       *
+       * <pre>
+       *引导语正文，不需要引导时，该字段为空
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getReminderMsgBytes() {
+        java.lang.Object ref = reminderMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          reminderMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string reminderMsg = 3;</code>
+       *
+       * <pre>
+       *引导语正文，不需要引导时，该字段为空
+       * </pre>
+       */
+      public Builder setReminderMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        reminderMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string reminderMsg = 3;</code>
+       *
+       * <pre>
+       *引导语正文，不需要引导时，该字段为空
+       * </pre>
+       */
+      public Builder clearReminderMsg() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        reminderMsg_ = getDefaultInstance().getReminderMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string reminderMsg = 3;</code>
+       *
+       * <pre>
+       *引导语正文，不需要引导时，该字段为空
+       * </pre>
+       */
+      public Builder setReminderMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        reminderMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional uint32 diamondsCnt = 4;
+      private int diamondsCnt_ ;
+      /**
+       * <code>optional uint32 diamondsCnt = 4;</code>
+       *
+       * <pre>
+       *钻石数量
+       * </pre>
+       */
+      public boolean hasDiamondsCnt() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 diamondsCnt = 4;</code>
+       *
+       * <pre>
+       *钻石数量
+       * </pre>
+       */
+      public int getDiamondsCnt() {
+        return diamondsCnt_;
+      }
+      /**
+       * <code>optional uint32 diamondsCnt = 4;</code>
+       *
+       * <pre>
+       *钻石数量
+       * </pre>
+       */
+      public Builder setDiamondsCnt(int value) {
+        bitField0_ |= 0x00000008;
+        diamondsCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 diamondsCnt = 4;</code>
+       *
+       * <pre>
+       *钻石数量
+       * </pre>
+       */
+      public Builder clearDiamondsCnt() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        diamondsCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional bool isGuideNoMore = 5;
+      private boolean isGuideNoMore_ ;
+      /**
+       * <code>optional bool isGuideNoMore = 5;</code>
+       *
+       * <pre>
+       *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+       * </pre>
+       */
+      public boolean hasIsGuideNoMore() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool isGuideNoMore = 5;</code>
+       *
+       * <pre>
+       *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+       * </pre>
+       */
+      public boolean getIsGuideNoMore() {
+        return isGuideNoMore_;
+      }
+      /**
+       * <code>optional bool isGuideNoMore = 5;</code>
+       *
+       * <pre>
+       *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+       * </pre>
+       */
+      public Builder setIsGuideNoMore(boolean value) {
+        bitField0_ |= 0x00000010;
+        isGuideNoMore_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isGuideNoMore = 5;</code>
+       *
+       * <pre>
+       *是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+       * </pre>
+       */
+      public Builder clearIsGuideNoMore() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        isGuideNoMore_ = false;
+        onChanged();
+        return this;
+      }
+
+      // optional string errMsg = 6;
+      private java.lang.Object errMsg_ = "";
+      /**
+       * <code>optional string errMsg = 6;</code>
+       */
+      public boolean hasErrMsg() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string errMsg = 6;</code>
+       */
+      public java.lang.String getErrMsg() {
+        java.lang.Object ref = errMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string errMsg = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrMsgBytes() {
+        java.lang.Object ref = errMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          errMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string errMsg = 6;</code>
+       */
+      public Builder setErrMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string errMsg = 6;</code>
+       */
+      public Builder clearErrMsg() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        errMsg_ = getDefaultInstance().getErrMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string errMsg = 6;</code>
+       */
+      public Builder setErrMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:GetGuideFlagRsp)
+    }
+
+    static {
+      defaultInstance = new GetGuideFlagRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:GetGuideFlagRsp)
+  }
+
+  public interface FillUnionidReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required uint64 uuid = 1;
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    // optional string code = 2;
+    /**
+     * <code>optional string code = 2;</code>
+     */
+    boolean hasCode();
+    /**
+     * <code>optional string code = 2;</code>
+     */
+    java.lang.String getCode();
+    /**
+     * <code>optional string code = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getCodeBytes();
+  }
+  /**
+   * Protobuf type {@code FillUnionidReq}
+   *
+   * <pre>
+   *用户客户端上传code，补充微信用户的unionid  cmd：zhibo.account.fillunionid
+   * </pre>
+   */
+  public static final class FillUnionidReq extends
+      com.google.protobuf.GeneratedMessage
+      implements FillUnionidReqOrBuilder {
+    // Use FillUnionidReq.newBuilder() to construct.
+    private FillUnionidReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private FillUnionidReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final FillUnionidReq defaultInstance;
+    public static FillUnionidReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public FillUnionidReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FillUnionidReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              code_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.AccountProto.internal_static_FillUnionidReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.AccountProto.internal_static_FillUnionidReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.AccountProto.FillUnionidReq.class, com.wali.live.proto.AccountProto.FillUnionidReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<FillUnionidReq> PARSER =
+        new com.google.protobuf.AbstractParser<FillUnionidReq>() {
+      public FillUnionidReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FillUnionidReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FillUnionidReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required uint64 uuid = 1;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    // optional string code = 2;
+    public static final int CODE_FIELD_NUMBER = 2;
+    private java.lang.Object code_;
+    /**
+     * <code>optional string code = 2;</code>
+     */
+    public boolean hasCode() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string code = 2;</code>
+     */
+    public java.lang.String getCode() {
+      java.lang.Object ref = code_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          code_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string code = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCodeBytes() {
+      java.lang.Object ref = code_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        code_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      code_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasUuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getCodeBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getCodeBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.AccountProto.FillUnionidReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code FillUnionidReq}
+     *
+     * <pre>
+     *用户客户端上传code，补充微信用户的unionid  cmd：zhibo.account.fillunionid
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.FillUnionidReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.AccountProto.internal_static_FillUnionidReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.AccountProto.internal_static_FillUnionidReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.AccountProto.FillUnionidReq.class, com.wali.live.proto.AccountProto.FillUnionidReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.AccountProto.FillUnionidReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        code_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.AccountProto.internal_static_FillUnionidReq_descriptor;
+      }
+
+      public com.wali.live.proto.AccountProto.FillUnionidReq getDefaultInstanceForType() {
+        return com.wali.live.proto.AccountProto.FillUnionidReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.AccountProto.FillUnionidReq build() {
+        com.wali.live.proto.AccountProto.FillUnionidReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.AccountProto.FillUnionidReq buildPartial() {
+        com.wali.live.proto.AccountProto.FillUnionidReq result = new com.wali.live.proto.AccountProto.FillUnionidReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.code_ = code_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.AccountProto.FillUnionidReq) {
+          return mergeFrom((com.wali.live.proto.AccountProto.FillUnionidReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.AccountProto.FillUnionidReq other) {
+        if (other == com.wali.live.proto.AccountProto.FillUnionidReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasCode()) {
+          bitField0_ |= 0x00000002;
+          code_ = other.code_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUuid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.AccountProto.FillUnionidReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.AccountProto.FillUnionidReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required uint64 uuid = 1;
+      private long uuid_ ;
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional string code = 2;
+      private java.lang.Object code_ = "";
+      /**
+       * <code>optional string code = 2;</code>
+       */
+      public boolean hasCode() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       */
+      public java.lang.String getCode() {
+        java.lang.Object ref = code_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          code_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCodeBytes() {
+        java.lang.Object ref = code_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          code_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       */
+      public Builder setCode(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        code_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       */
+      public Builder clearCode() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        code_ = getDefaultInstance().getCode();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string code = 2;</code>
+       */
+      public Builder setCodeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        code_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:FillUnionidReq)
+    }
+
+    static {
+      defaultInstance = new FillUnionidReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:FillUnionidReq)
+  }
+
+  public interface FillUnionidRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required uint32 retCode = 1;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    // optional string errMsg = 2;
+    /**
+     * <code>optional string errMsg = 2;</code>
+     */
+    boolean hasErrMsg();
+    /**
+     * <code>optional string errMsg = 2;</code>
+     */
+    java.lang.String getErrMsg();
+    /**
+     * <code>optional string errMsg = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrMsgBytes();
+  }
+  /**
+   * Protobuf type {@code FillUnionidRsp}
+   */
+  public static final class FillUnionidRsp extends
+      com.google.protobuf.GeneratedMessage
+      implements FillUnionidRspOrBuilder {
+    // Use FillUnionidRsp.newBuilder() to construct.
+    private FillUnionidRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private FillUnionidRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final FillUnionidRsp defaultInstance;
+    public static FillUnionidRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public FillUnionidRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FillUnionidRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              errMsg_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.AccountProto.internal_static_FillUnionidRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.AccountProto.internal_static_FillUnionidRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.AccountProto.FillUnionidRsp.class, com.wali.live.proto.AccountProto.FillUnionidRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<FillUnionidRsp> PARSER =
+        new com.google.protobuf.AbstractParser<FillUnionidRsp>() {
+      public FillUnionidRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FillUnionidRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FillUnionidRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required uint32 retCode = 1;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    // optional string errMsg = 2;
+    public static final int ERRMSG_FIELD_NUMBER = 2;
+    private java.lang.Object errMsg_;
+    /**
+     * <code>optional string errMsg = 2;</code>
+     */
+    public boolean hasErrMsg() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string errMsg = 2;</code>
+     */
+    public java.lang.String getErrMsg() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          errMsg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string errMsg = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrMsgBytes() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      errMsg_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getErrMsgBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getErrMsgBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.FillUnionidRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.AccountProto.FillUnionidRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code FillUnionidRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.FillUnionidRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.AccountProto.internal_static_FillUnionidRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.AccountProto.internal_static_FillUnionidRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.AccountProto.FillUnionidRsp.class, com.wali.live.proto.AccountProto.FillUnionidRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.AccountProto.FillUnionidRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        errMsg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.AccountProto.internal_static_FillUnionidRsp_descriptor;
+      }
+
+      public com.wali.live.proto.AccountProto.FillUnionidRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.AccountProto.FillUnionidRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.AccountProto.FillUnionidRsp build() {
+        com.wali.live.proto.AccountProto.FillUnionidRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.AccountProto.FillUnionidRsp buildPartial() {
+        com.wali.live.proto.AccountProto.FillUnionidRsp result = new com.wali.live.proto.AccountProto.FillUnionidRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.errMsg_ = errMsg_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.AccountProto.FillUnionidRsp) {
+          return mergeFrom((com.wali.live.proto.AccountProto.FillUnionidRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.AccountProto.FillUnionidRsp other) {
+        if (other == com.wali.live.proto.AccountProto.FillUnionidRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasErrMsg()) {
+          bitField0_ |= 0x00000002;
+          errMsg_ = other.errMsg_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.AccountProto.FillUnionidRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.AccountProto.FillUnionidRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required uint32 retCode = 1;
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional string errMsg = 2;
+      private java.lang.Object errMsg_ = "";
+      /**
+       * <code>optional string errMsg = 2;</code>
+       */
+      public boolean hasErrMsg() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string errMsg = 2;</code>
+       */
+      public java.lang.String getErrMsg() {
+        java.lang.Object ref = errMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string errMsg = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrMsgBytes() {
+        java.lang.Object ref = errMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          errMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string errMsg = 2;</code>
+       */
+      public Builder setErrMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string errMsg = 2;</code>
+       */
+      public Builder clearErrMsg() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        errMsg_ = getDefaultInstance().getErrMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string errMsg = 2;</code>
+       */
+      public Builder setErrMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:FillUnionidRsp)
+    }
+
+    static {
+      defaultInstance = new FillUnionidRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:FillUnionidRsp)
+  }
+
+  public interface ThirdPartSignLoginReqOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required string channelId = 1;
+    /**
+     * <code>required string channelId = 1;</code>
+     *
+     * <pre>
+     *给第三方分配的channelId
+     * </pre>
+     */
+    boolean hasChannelId();
+    /**
+     * <code>required string channelId = 1;</code>
+     *
+     * <pre>
+     *给第三方分配的channelId
+     * </pre>
+     */
+    java.lang.String getChannelId();
+    /**
+     * <code>required string channelId = 1;</code>
+     *
+     * <pre>
+     *给第三方分配的channelId
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getChannelIdBytes();
+
+    // required string xuid = 2;
+    /**
+     * <code>required string xuid = 2;</code>
+     *
+     * <pre>
+     *第三方用户id
+     * </pre>
+     */
+    boolean hasXuid();
+    /**
+     * <code>required string xuid = 2;</code>
+     *
+     * <pre>
+     *第三方用户id
+     * </pre>
+     */
+    java.lang.String getXuid();
+    /**
+     * <code>required string xuid = 2;</code>
+     *
+     * <pre>
+     *第三方用户id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getXuidBytes();
+
+    // required uint32 sex = 3;
+    /**
+     * <code>required uint32 sex = 3;</code>
+     *
+     * <pre>
+     *第三方用户性别1男2女0未知
+     * </pre>
+     */
+    boolean hasSex();
+    /**
+     * <code>required uint32 sex = 3;</code>
+     *
+     * <pre>
+     *第三方用户性别1男2女0未知
+     * </pre>
+     */
+    int getSex();
+
+    // required string nickname = 4;
+    /**
+     * <code>required string nickname = 4;</code>
+     *
+     * <pre>
+     *第三方用户昵称
+     * </pre>
+     */
+    boolean hasNickname();
+    /**
+     * <code>required string nickname = 4;</code>
+     *
+     * <pre>
+     *第三方用户昵称
+     * </pre>
+     */
+    java.lang.String getNickname();
+    /**
+     * <code>required string nickname = 4;</code>
+     *
+     * <pre>
+     *第三方用户昵称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNicknameBytes();
+
+    // required string headUrl = 5;
+    /**
+     * <code>required string headUrl = 5;</code>
+     *
+     * <pre>
+     *第三方用户头像
+     * </pre>
+     */
+    boolean hasHeadUrl();
+    /**
+     * <code>required string headUrl = 5;</code>
+     *
+     * <pre>
+     *第三方用户头像
+     * </pre>
+     */
+    java.lang.String getHeadUrl();
+    /**
+     * <code>required string headUrl = 5;</code>
+     *
+     * <pre>
+     *第三方用户头像
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHeadUrlBytes();
+
+    // required string sign = 6;
+    /**
+     * <code>required string sign = 6;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    boolean hasSign();
+    /**
+     * <code>required string sign = 6;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    java.lang.String getSign();
+    /**
+     * <code>required string sign = 6;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getSignBytes();
+  }
+  /**
+   * Protobuf type {@code ThirdPartSignLoginReq}
+   *
+   * <pre>
+   *对接第三方账号签名登陆，比如对接真真海淘，直播客户端用户进入直播房间要打通用户对输入参数进行签名
+   *cmd:zhibo.account.3partsignlogin
+   * </pre>
+   */
+  public static final class ThirdPartSignLoginReq extends
+      com.google.protobuf.GeneratedMessage
+      implements ThirdPartSignLoginReqOrBuilder {
+    // Use ThirdPartSignLoginReq.newBuilder() to construct.
+    private ThirdPartSignLoginReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ThirdPartSignLoginReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ThirdPartSignLoginReq defaultInstance;
+    public static ThirdPartSignLoginReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ThirdPartSignLoginReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ThirdPartSignLoginReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              bitField0_ |= 0x00000001;
+              channelId_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              xuid_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              sex_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              nickname_ = input.readBytes();
+              break;
+            }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              headUrl_ = input.readBytes();
+              break;
+            }
+            case 50: {
+              bitField0_ |= 0x00000020;
+              sign_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.AccountProto.ThirdPartSignLoginReq.class, com.wali.live.proto.AccountProto.ThirdPartSignLoginReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ThirdPartSignLoginReq> PARSER =
+        new com.google.protobuf.AbstractParser<ThirdPartSignLoginReq>() {
+      public ThirdPartSignLoginReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ThirdPartSignLoginReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ThirdPartSignLoginReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required string channelId = 1;
+    public static final int CHANNELID_FIELD_NUMBER = 1;
+    private java.lang.Object channelId_;
+    /**
+     * <code>required string channelId = 1;</code>
+     *
+     * <pre>
+     *给第三方分配的channelId
+     * </pre>
+     */
+    public boolean hasChannelId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string channelId = 1;</code>
+     *
+     * <pre>
+     *给第三方分配的channelId
+     * </pre>
+     */
+    public java.lang.String getChannelId() {
+      java.lang.Object ref = channelId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          channelId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string channelId = 1;</code>
+     *
+     * <pre>
+     *给第三方分配的channelId
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getChannelIdBytes() {
+      java.lang.Object ref = channelId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        channelId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required string xuid = 2;
+    public static final int XUID_FIELD_NUMBER = 2;
+    private java.lang.Object xuid_;
+    /**
+     * <code>required string xuid = 2;</code>
+     *
+     * <pre>
+     *第三方用户id
+     * </pre>
+     */
+    public boolean hasXuid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string xuid = 2;</code>
+     *
+     * <pre>
+     *第三方用户id
+     * </pre>
+     */
+    public java.lang.String getXuid() {
+      java.lang.Object ref = xuid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          xuid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string xuid = 2;</code>
+     *
+     * <pre>
+     *第三方用户id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getXuidBytes() {
+      java.lang.Object ref = xuid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        xuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required uint32 sex = 3;
+    public static final int SEX_FIELD_NUMBER = 3;
+    private int sex_;
+    /**
+     * <code>required uint32 sex = 3;</code>
+     *
+     * <pre>
+     *第三方用户性别1男2女0未知
+     * </pre>
+     */
+    public boolean hasSex() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint32 sex = 3;</code>
+     *
+     * <pre>
+     *第三方用户性别1男2女0未知
+     * </pre>
+     */
+    public int getSex() {
+      return sex_;
+    }
+
+    // required string nickname = 4;
+    public static final int NICKNAME_FIELD_NUMBER = 4;
+    private java.lang.Object nickname_;
+    /**
+     * <code>required string nickname = 4;</code>
+     *
+     * <pre>
+     *第三方用户昵称
+     * </pre>
+     */
+    public boolean hasNickname() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required string nickname = 4;</code>
+     *
+     * <pre>
+     *第三方用户昵称
+     * </pre>
+     */
+    public java.lang.String getNickname() {
+      java.lang.Object ref = nickname_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          nickname_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string nickname = 4;</code>
+     *
+     * <pre>
+     *第三方用户昵称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNicknameBytes() {
+      java.lang.Object ref = nickname_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nickname_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required string headUrl = 5;
+    public static final int HEADURL_FIELD_NUMBER = 5;
+    private java.lang.Object headUrl_;
+    /**
+     * <code>required string headUrl = 5;</code>
+     *
+     * <pre>
+     *第三方用户头像
+     * </pre>
+     */
+    public boolean hasHeadUrl() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>required string headUrl = 5;</code>
+     *
+     * <pre>
+     *第三方用户头像
+     * </pre>
+     */
+    public java.lang.String getHeadUrl() {
+      java.lang.Object ref = headUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          headUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string headUrl = 5;</code>
+     *
+     * <pre>
+     *第三方用户头像
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHeadUrlBytes() {
+      java.lang.Object ref = headUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        headUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required string sign = 6;
+    public static final int SIGN_FIELD_NUMBER = 6;
+    private java.lang.Object sign_;
+    /**
+     * <code>required string sign = 6;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    public boolean hasSign() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>required string sign = 6;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    public java.lang.String getSign() {
+      java.lang.Object ref = sign_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sign_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string sign = 6;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getSignBytes() {
+      java.lang.Object ref = sign_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sign_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      channelId_ = "";
+      xuid_ = "";
+      sex_ = 0;
+      nickname_ = "";
+      headUrl_ = "";
+      sign_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasChannelId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasXuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSex()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasNickname()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasHeadUrl()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSign()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getChannelIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getXuidBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, sex_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getHeadUrlBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getSignBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getChannelIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getXuidBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, sex_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getHeadUrlBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getSignBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.AccountProto.ThirdPartSignLoginReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ThirdPartSignLoginReq}
+     *
+     * <pre>
+     *对接第三方账号签名登陆，比如对接真真海淘，直播客户端用户进入直播房间要打通用户对输入参数进行签名
+     *cmd:zhibo.account.3partsignlogin
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ThirdPartSignLoginReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.AccountProto.ThirdPartSignLoginReq.class, com.wali.live.proto.AccountProto.ThirdPartSignLoginReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.AccountProto.ThirdPartSignLoginReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        channelId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        xuid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        sex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        nickname_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        headUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        sign_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginReq_descriptor;
+      }
+
+      public com.wali.live.proto.AccountProto.ThirdPartSignLoginReq getDefaultInstanceForType() {
+        return com.wali.live.proto.AccountProto.ThirdPartSignLoginReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.AccountProto.ThirdPartSignLoginReq build() {
+        com.wali.live.proto.AccountProto.ThirdPartSignLoginReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.AccountProto.ThirdPartSignLoginReq buildPartial() {
+        com.wali.live.proto.AccountProto.ThirdPartSignLoginReq result = new com.wali.live.proto.AccountProto.ThirdPartSignLoginReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.channelId_ = channelId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.xuid_ = xuid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.sex_ = sex_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.nickname_ = nickname_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.headUrl_ = headUrl_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.sign_ = sign_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.AccountProto.ThirdPartSignLoginReq) {
+          return mergeFrom((com.wali.live.proto.AccountProto.ThirdPartSignLoginReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.AccountProto.ThirdPartSignLoginReq other) {
+        if (other == com.wali.live.proto.AccountProto.ThirdPartSignLoginReq.getDefaultInstance()) return this;
+        if (other.hasChannelId()) {
+          bitField0_ |= 0x00000001;
+          channelId_ = other.channelId_;
+          onChanged();
+        }
+        if (other.hasXuid()) {
+          bitField0_ |= 0x00000002;
+          xuid_ = other.xuid_;
+          onChanged();
+        }
+        if (other.hasSex()) {
+          setSex(other.getSex());
+        }
+        if (other.hasNickname()) {
+          bitField0_ |= 0x00000008;
+          nickname_ = other.nickname_;
+          onChanged();
+        }
+        if (other.hasHeadUrl()) {
+          bitField0_ |= 0x00000010;
+          headUrl_ = other.headUrl_;
+          onChanged();
+        }
+        if (other.hasSign()) {
+          bitField0_ |= 0x00000020;
+          sign_ = other.sign_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasChannelId()) {
+          
+          return false;
+        }
+        if (!hasXuid()) {
+          
+          return false;
+        }
+        if (!hasSex()) {
+          
+          return false;
+        }
+        if (!hasNickname()) {
+          
+          return false;
+        }
+        if (!hasHeadUrl()) {
+          
+          return false;
+        }
+        if (!hasSign()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.AccountProto.ThirdPartSignLoginReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.AccountProto.ThirdPartSignLoginReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required string channelId = 1;
+      private java.lang.Object channelId_ = "";
+      /**
+       * <code>required string channelId = 1;</code>
+       *
+       * <pre>
+       *给第三方分配的channelId
+       * </pre>
+       */
+      public boolean hasChannelId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string channelId = 1;</code>
+       *
+       * <pre>
+       *给第三方分配的channelId
+       * </pre>
+       */
+      public java.lang.String getChannelId() {
+        java.lang.Object ref = channelId_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          channelId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string channelId = 1;</code>
+       *
+       * <pre>
+       *给第三方分配的channelId
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getChannelIdBytes() {
+        java.lang.Object ref = channelId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          channelId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string channelId = 1;</code>
+       *
+       * <pre>
+       *给第三方分配的channelId
+       * </pre>
+       */
+      public Builder setChannelId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        channelId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string channelId = 1;</code>
+       *
+       * <pre>
+       *给第三方分配的channelId
+       * </pre>
+       */
+      public Builder clearChannelId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        channelId_ = getDefaultInstance().getChannelId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string channelId = 1;</code>
+       *
+       * <pre>
+       *给第三方分配的channelId
+       * </pre>
+       */
+      public Builder setChannelIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        channelId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required string xuid = 2;
+      private java.lang.Object xuid_ = "";
+      /**
+       * <code>required string xuid = 2;</code>
+       *
+       * <pre>
+       *第三方用户id
+       * </pre>
+       */
+      public boolean hasXuid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string xuid = 2;</code>
+       *
+       * <pre>
+       *第三方用户id
+       * </pre>
+       */
+      public java.lang.String getXuid() {
+        java.lang.Object ref = xuid_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          xuid_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string xuid = 2;</code>
+       *
+       * <pre>
+       *第三方用户id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getXuidBytes() {
+        java.lang.Object ref = xuid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          xuid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string xuid = 2;</code>
+       *
+       * <pre>
+       *第三方用户id
+       * </pre>
+       */
+      public Builder setXuid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        xuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string xuid = 2;</code>
+       *
+       * <pre>
+       *第三方用户id
+       * </pre>
+       */
+      public Builder clearXuid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        xuid_ = getDefaultInstance().getXuid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string xuid = 2;</code>
+       *
+       * <pre>
+       *第三方用户id
+       * </pre>
+       */
+      public Builder setXuidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        xuid_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required uint32 sex = 3;
+      private int sex_ ;
+      /**
+       * <code>required uint32 sex = 3;</code>
+       *
+       * <pre>
+       *第三方用户性别1男2女0未知
+       * </pre>
+       */
+      public boolean hasSex() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint32 sex = 3;</code>
+       *
+       * <pre>
+       *第三方用户性别1男2女0未知
+       * </pre>
+       */
+      public int getSex() {
+        return sex_;
+      }
+      /**
+       * <code>required uint32 sex = 3;</code>
+       *
+       * <pre>
+       *第三方用户性别1男2女0未知
+       * </pre>
+       */
+      public Builder setSex(int value) {
+        bitField0_ |= 0x00000004;
+        sex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 sex = 3;</code>
+       *
+       * <pre>
+       *第三方用户性别1男2女0未知
+       * </pre>
+       */
+      public Builder clearSex() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        sex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // required string nickname = 4;
+      private java.lang.Object nickname_ = "";
+      /**
+       * <code>required string nickname = 4;</code>
+       *
+       * <pre>
+       *第三方用户昵称
+       * </pre>
+       */
+      public boolean hasNickname() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required string nickname = 4;</code>
+       *
+       * <pre>
+       *第三方用户昵称
+       * </pre>
+       */
+      public java.lang.String getNickname() {
+        java.lang.Object ref = nickname_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nickname_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string nickname = 4;</code>
+       *
+       * <pre>
+       *第三方用户昵称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNicknameBytes() {
+        java.lang.Object ref = nickname_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nickname_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string nickname = 4;</code>
+       *
+       * <pre>
+       *第三方用户昵称
+       * </pre>
+       */
+      public Builder setNickname(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        nickname_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string nickname = 4;</code>
+       *
+       * <pre>
+       *第三方用户昵称
+       * </pre>
+       */
+      public Builder clearNickname() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        nickname_ = getDefaultInstance().getNickname();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string nickname = 4;</code>
+       *
+       * <pre>
+       *第三方用户昵称
+       * </pre>
+       */
+      public Builder setNicknameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        nickname_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required string headUrl = 5;
+      private java.lang.Object headUrl_ = "";
+      /**
+       * <code>required string headUrl = 5;</code>
+       *
+       * <pre>
+       *第三方用户头像
+       * </pre>
+       */
+      public boolean hasHeadUrl() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required string headUrl = 5;</code>
+       *
+       * <pre>
+       *第三方用户头像
+       * </pre>
+       */
+      public java.lang.String getHeadUrl() {
+        java.lang.Object ref = headUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headUrl_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string headUrl = 5;</code>
+       *
+       * <pre>
+       *第三方用户头像
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHeadUrlBytes() {
+        java.lang.Object ref = headUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          headUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string headUrl = 5;</code>
+       *
+       * <pre>
+       *第三方用户头像
+       * </pre>
+       */
+      public Builder setHeadUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        headUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string headUrl = 5;</code>
+       *
+       * <pre>
+       *第三方用户头像
+       * </pre>
+       */
+      public Builder clearHeadUrl() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        headUrl_ = getDefaultInstance().getHeadUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string headUrl = 5;</code>
+       *
+       * <pre>
+       *第三方用户头像
+       * </pre>
+       */
+      public Builder setHeadUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        headUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required string sign = 6;
+      private java.lang.Object sign_ = "";
+      /**
+       * <code>required string sign = 6;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public boolean hasSign() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>required string sign = 6;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public java.lang.String getSign() {
+        java.lang.Object ref = sign_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          sign_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string sign = 6;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getSignBytes() {
+        java.lang.Object ref = sign_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sign_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string sign = 6;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public Builder setSign(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        sign_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string sign = 6;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public Builder clearSign() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        sign_ = getDefaultInstance().getSign();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string sign = 6;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public Builder setSignBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        sign_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ThirdPartSignLoginReq)
+    }
+
+    static {
+      defaultInstance = new ThirdPartSignLoginReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ThirdPartSignLoginReq)
+  }
+
+  public interface ThirdPartSignLoginRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required uint32 retCode = 1;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    int getRetCode();
+
+    // optional uint64 uuid = 2;
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *小米直播颁发给第三方的用户id
+     * </pre>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *小米直播颁发给第三方的用户id
+     * </pre>
+     */
+    long getUuid();
+
+    // optional string serviceToken = 3;
+    /**
+     * <code>optional string serviceToken = 3;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的service_token
+     * </pre>
+     */
+    boolean hasServiceToken();
+    /**
+     * <code>optional string serviceToken = 3;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的service_token
+     * </pre>
+     */
+    java.lang.String getServiceToken();
+    /**
+     * <code>optional string serviceToken = 3;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的service_token
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getServiceTokenBytes();
+
+    // optional string passToken = 4;
+    /**
+     * <code>optional string passToken = 4;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的pass_token
+     * </pre>
+     */
+    boolean hasPassToken();
+    /**
+     * <code>optional string passToken = 4;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的pass_token
+     * </pre>
+     */
+    java.lang.String getPassToken();
+    /**
+     * <code>optional string passToken = 4;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的pass_token
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getPassTokenBytes();
+
+    // optional string securityKey = 5;
+    /**
+     * <code>optional string securityKey = 5;</code>
+     *
+     * <pre>
+     *用户milink数据加密
+     * </pre>
+     */
+    boolean hasSecurityKey();
+    /**
+     * <code>optional string securityKey = 5;</code>
+     *
+     * <pre>
+     *用户milink数据加密
+     * </pre>
+     */
+    java.lang.String getSecurityKey();
+    /**
+     * <code>optional string securityKey = 5;</code>
+     *
+     * <pre>
+     *用户milink数据加密
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getSecurityKeyBytes();
+
+    // optional uint32 loginStatus = 6;
+    /**
+     * <code>optional uint32 loginStatus = 6;</code>
+     *
+     * <pre>
+     *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+     * </pre>
+     */
+    boolean hasLoginStatus();
+    /**
+     * <code>optional uint32 loginStatus = 6;</code>
+     *
+     * <pre>
+     *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+     * </pre>
+     */
+    int getLoginStatus();
+
+    // optional string errMsg = 7;
+    /**
+     * <code>optional string errMsg = 7;</code>
+     *
+     * <pre>
+     *错误信息
+     * </pre>
+     */
+    boolean hasErrMsg();
+    /**
+     * <code>optional string errMsg = 7;</code>
+     *
+     * <pre>
+     *错误信息
+     * </pre>
+     */
+    java.lang.String getErrMsg();
+    /**
+     * <code>optional string errMsg = 7;</code>
+     *
+     * <pre>
+     *错误信息
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getErrMsgBytes();
+  }
+  /**
+   * Protobuf type {@code ThirdPartSignLoginRsp}
+   */
+  public static final class ThirdPartSignLoginRsp extends
+      com.google.protobuf.GeneratedMessage
+      implements ThirdPartSignLoginRspOrBuilder {
+    // Use ThirdPartSignLoginRsp.newBuilder() to construct.
+    private ThirdPartSignLoginRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ThirdPartSignLoginRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ThirdPartSignLoginRsp defaultInstance;
+    public static ThirdPartSignLoginRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ThirdPartSignLoginRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ThirdPartSignLoginRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              serviceToken_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              passToken_ = input.readBytes();
+              break;
+            }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              securityKey_ = input.readBytes();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              loginStatus_ = input.readUInt32();
+              break;
+            }
+            case 58: {
+              bitField0_ |= 0x00000040;
+              errMsg_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp.class, com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ThirdPartSignLoginRsp> PARSER =
+        new com.google.protobuf.AbstractParser<ThirdPartSignLoginRsp>() {
+      public ThirdPartSignLoginRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ThirdPartSignLoginRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ThirdPartSignLoginRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required uint32 retCode = 1;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    // optional uint64 uuid = 2;
+    public static final int UUID_FIELD_NUMBER = 2;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *小米直播颁发给第三方的用户id
+     * </pre>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 uuid = 2;</code>
+     *
+     * <pre>
+     *小米直播颁发给第三方的用户id
+     * </pre>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    // optional string serviceToken = 3;
+    public static final int SERVICETOKEN_FIELD_NUMBER = 3;
+    private java.lang.Object serviceToken_;
+    /**
+     * <code>optional string serviceToken = 3;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的service_token
+     * </pre>
+     */
+    public boolean hasServiceToken() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string serviceToken = 3;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的service_token
+     * </pre>
+     */
+    public java.lang.String getServiceToken() {
+      java.lang.Object ref = serviceToken_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          serviceToken_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string serviceToken = 3;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的service_token
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getServiceTokenBytes() {
+      java.lang.Object ref = serviceToken_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        serviceToken_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string passToken = 4;
+    public static final int PASSTOKEN_FIELD_NUMBER = 4;
+    private java.lang.Object passToken_;
+    /**
+     * <code>optional string passToken = 4;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的pass_token
+     * </pre>
+     */
+    public boolean hasPassToken() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string passToken = 4;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的pass_token
+     * </pre>
+     */
+    public java.lang.String getPassToken() {
+      java.lang.Object ref = passToken_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          passToken_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string passToken = 4;</code>
+     *
+     * <pre>
+     *小米直播颁发给用户的pass_token
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getPassTokenBytes() {
+      java.lang.Object ref = passToken_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        passToken_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string securityKey = 5;
+    public static final int SECURITYKEY_FIELD_NUMBER = 5;
+    private java.lang.Object securityKey_;
+    /**
+     * <code>optional string securityKey = 5;</code>
+     *
+     * <pre>
+     *用户milink数据加密
+     * </pre>
+     */
+    public boolean hasSecurityKey() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string securityKey = 5;</code>
+     *
+     * <pre>
+     *用户milink数据加密
+     * </pre>
+     */
+    public java.lang.String getSecurityKey() {
+      java.lang.Object ref = securityKey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          securityKey_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string securityKey = 5;</code>
+     *
+     * <pre>
+     *用户milink数据加密
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getSecurityKeyBytes() {
+      java.lang.Object ref = securityKey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        securityKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional uint32 loginStatus = 6;
+    public static final int LOGINSTATUS_FIELD_NUMBER = 6;
+    private int loginStatus_;
+    /**
+     * <code>optional uint32 loginStatus = 6;</code>
+     *
+     * <pre>
+     *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+     * </pre>
+     */
+    public boolean hasLoginStatus() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint32 loginStatus = 6;</code>
+     *
+     * <pre>
+     *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+     * </pre>
+     */
+    public int getLoginStatus() {
+      return loginStatus_;
+    }
+
+    // optional string errMsg = 7;
+    public static final int ERRMSG_FIELD_NUMBER = 7;
+    private java.lang.Object errMsg_;
+    /**
+     * <code>optional string errMsg = 7;</code>
+     *
+     * <pre>
+     *错误信息
+     * </pre>
+     */
+    public boolean hasErrMsg() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string errMsg = 7;</code>
+     *
+     * <pre>
+     *错误信息
+     * </pre>
+     */
+    public java.lang.String getErrMsg() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          errMsg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string errMsg = 7;</code>
+     *
+     * <pre>
+     *错误信息
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getErrMsgBytes() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      uuid_ = 0L;
+      serviceToken_ = "";
+      passToken_ = "";
+      securityKey_ = "";
+      loginStatus_ = 0;
+      errMsg_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, uuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getServiceTokenBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getPassTokenBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getSecurityKeyBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt32(6, loginStatus_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getErrMsgBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, uuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getServiceTokenBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getPassTokenBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getSecurityKeyBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, loginStatus_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getErrMsgBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ThirdPartSignLoginRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.wali.live.proto.AccountProto.ThirdPartSignLoginRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp.class, com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        serviceToken_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        passToken_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        securityKey_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        loginStatus_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        errMsg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.AccountProto.internal_static_ThirdPartSignLoginRsp_descriptor;
+      }
+
+      public com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp build() {
+        com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp buildPartial() {
+        com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp result = new com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.serviceToken_ = serviceToken_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.passToken_ = passToken_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.securityKey_ = securityKey_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.loginStatus_ = loginStatus_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.errMsg_ = errMsg_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp) {
+          return mergeFrom((com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp other) {
+        if (other == com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasServiceToken()) {
+          bitField0_ |= 0x00000004;
+          serviceToken_ = other.serviceToken_;
+          onChanged();
+        }
+        if (other.hasPassToken()) {
+          bitField0_ |= 0x00000008;
+          passToken_ = other.passToken_;
+          onChanged();
+        }
+        if (other.hasSecurityKey()) {
+          bitField0_ |= 0x00000010;
+          securityKey_ = other.securityKey_;
+          onChanged();
+        }
+        if (other.hasLoginStatus()) {
+          setLoginStatus(other.getLoginStatus());
+        }
+        if (other.hasErrMsg()) {
+          bitField0_ |= 0x00000040;
+          errMsg_ = other.errMsg_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.AccountProto.ThirdPartSignLoginRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required uint32 retCode = 1;
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional uint64 uuid = 2;
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *小米直播颁发给第三方的用户id
+       * </pre>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *小米直播颁发给第三方的用户id
+       * </pre>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *小米直播颁发给第三方的用户id
+       * </pre>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000002;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 2;</code>
+       *
+       * <pre>
+       *小米直播颁发给第三方的用户id
+       * </pre>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional string serviceToken = 3;
+      private java.lang.Object serviceToken_ = "";
+      /**
+       * <code>optional string serviceToken = 3;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的service_token
+       * </pre>
+       */
+      public boolean hasServiceToken() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string serviceToken = 3;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的service_token
+       * </pre>
+       */
+      public java.lang.String getServiceToken() {
+        java.lang.Object ref = serviceToken_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          serviceToken_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string serviceToken = 3;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的service_token
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getServiceTokenBytes() {
+        java.lang.Object ref = serviceToken_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          serviceToken_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string serviceToken = 3;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的service_token
+       * </pre>
+       */
+      public Builder setServiceToken(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        serviceToken_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string serviceToken = 3;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的service_token
+       * </pre>
+       */
+      public Builder clearServiceToken() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        serviceToken_ = getDefaultInstance().getServiceToken();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string serviceToken = 3;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的service_token
+       * </pre>
+       */
+      public Builder setServiceTokenBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        serviceToken_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional string passToken = 4;
+      private java.lang.Object passToken_ = "";
+      /**
+       * <code>optional string passToken = 4;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的pass_token
+       * </pre>
+       */
+      public boolean hasPassToken() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string passToken = 4;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的pass_token
+       * </pre>
+       */
+      public java.lang.String getPassToken() {
+        java.lang.Object ref = passToken_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          passToken_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string passToken = 4;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的pass_token
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getPassTokenBytes() {
+        java.lang.Object ref = passToken_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          passToken_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string passToken = 4;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的pass_token
+       * </pre>
+       */
+      public Builder setPassToken(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        passToken_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string passToken = 4;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的pass_token
+       * </pre>
+       */
+      public Builder clearPassToken() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        passToken_ = getDefaultInstance().getPassToken();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string passToken = 4;</code>
+       *
+       * <pre>
+       *小米直播颁发给用户的pass_token
+       * </pre>
+       */
+      public Builder setPassTokenBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        passToken_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional string securityKey = 5;
+      private java.lang.Object securityKey_ = "";
+      /**
+       * <code>optional string securityKey = 5;</code>
+       *
+       * <pre>
+       *用户milink数据加密
+       * </pre>
+       */
+      public boolean hasSecurityKey() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string securityKey = 5;</code>
+       *
+       * <pre>
+       *用户milink数据加密
+       * </pre>
+       */
+      public java.lang.String getSecurityKey() {
+        java.lang.Object ref = securityKey_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          securityKey_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string securityKey = 5;</code>
+       *
+       * <pre>
+       *用户milink数据加密
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getSecurityKeyBytes() {
+        java.lang.Object ref = securityKey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          securityKey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string securityKey = 5;</code>
+       *
+       * <pre>
+       *用户milink数据加密
+       * </pre>
+       */
+      public Builder setSecurityKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        securityKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string securityKey = 5;</code>
+       *
+       * <pre>
+       *用户milink数据加密
+       * </pre>
+       */
+      public Builder clearSecurityKey() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        securityKey_ = getDefaultInstance().getSecurityKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string securityKey = 5;</code>
+       *
+       * <pre>
+       *用户milink数据加密
+       * </pre>
+       */
+      public Builder setSecurityKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        securityKey_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional uint32 loginStatus = 6;
+      private int loginStatus_ ;
+      /**
+       * <code>optional uint32 loginStatus = 6;</code>
+       *
+       * <pre>
+       *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+       * </pre>
+       */
+      public boolean hasLoginStatus() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint32 loginStatus = 6;</code>
+       *
+       * <pre>
+       *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+       * </pre>
+       */
+      public int getLoginStatus() {
+        return loginStatus_;
+      }
+      /**
+       * <code>optional uint32 loginStatus = 6;</code>
+       *
+       * <pre>
+       *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+       * </pre>
+       */
+      public Builder setLoginStatus(int value) {
+        bitField0_ |= 0x00000020;
+        loginStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 loginStatus = 6;</code>
+       *
+       * <pre>
+       *取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+       * </pre>
+       */
+      public Builder clearLoginStatus() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        loginStatus_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional string errMsg = 7;
+      private java.lang.Object errMsg_ = "";
+      /**
+       * <code>optional string errMsg = 7;</code>
+       *
+       * <pre>
+       *错误信息
+       * </pre>
+       */
+      public boolean hasErrMsg() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string errMsg = 7;</code>
+       *
+       * <pre>
+       *错误信息
+       * </pre>
+       */
+      public java.lang.String getErrMsg() {
+        java.lang.Object ref = errMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          errMsg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string errMsg = 7;</code>
+       *
+       * <pre>
+       *错误信息
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getErrMsgBytes() {
+        java.lang.Object ref = errMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          errMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string errMsg = 7;</code>
+       *
+       * <pre>
+       *错误信息
+       * </pre>
+       */
+      public Builder setErrMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string errMsg = 7;</code>
+       *
+       * <pre>
+       *错误信息
+       * </pre>
+       */
+      public Builder clearErrMsg() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        errMsg_ = getDefaultInstance().getErrMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string errMsg = 7;</code>
+       *
+       * <pre>
+       *错误信息
+       * </pre>
+       */
+      public Builder setErrMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ThirdPartSignLoginRsp)
+    }
+
+    static {
+      defaultInstance = new ThirdPartSignLoginRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ThirdPartSignLoginRsp)
+  }
+
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_LoginReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LoginReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LoginRsp_descriptor;
+      internal_static_LoginReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_LoginRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LoginRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetServiceTokenReq_descriptor;
+      internal_static_LoginRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetServiceTokenReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetServiceTokenReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetServiceTokenRsp_descriptor;
+      internal_static_GetServiceTokenReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetServiceTokenRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetServiceTokenRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_CertificateReq_descriptor;
+      internal_static_GetServiceTokenRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_CertificateReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_CertificateReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_CertificateRsp_descriptor;
+      internal_static_CertificateReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_CertificateRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_CertificateRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetCaptchaReq_descriptor;
+      internal_static_CertificateRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetCaptchaReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetCaptchaReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor;
+      internal_static_GetCaptchaReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetCaptchaRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetCaptchaRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_RegisterByPhoneReq_descriptor;
+      internal_static_GetCaptchaRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RegisterByPhoneReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_RegisterByPhoneReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_RegisterByPhoneRsp_descriptor;
+      internal_static_RegisterByPhoneReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RegisterByPhoneRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_RegisterByPhoneRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LoginByPhoneReq_descriptor;
+      internal_static_RegisterByPhoneRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_LoginByPhoneReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LoginByPhoneReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LoginByPhoneRsp_descriptor;
+      internal_static_LoginByPhoneReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_LoginByPhoneRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LoginByPhoneRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_NewPwdReq_descriptor;
+      internal_static_LoginByPhoneRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_NewPwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_NewPwdReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_NewPwdRsp_descriptor;
+      internal_static_NewPwdReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_NewPwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_NewPwdRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ForgetPwdReq_descriptor;
+      internal_static_NewPwdRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ForgetPwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ForgetPwdReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ForgetPwdRsp_descriptor;
+      internal_static_ForgetPwdReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ForgetPwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ForgetPwdRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LoginByUuidReq_descriptor;
+      internal_static_ForgetPwdRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_LoginByUuidReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LoginByUuidReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_LoginByUuidRsp_descriptor;
+      internal_static_LoginByUuidReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_LoginByUuidRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_LoginByUuidRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_SetPwdReq_descriptor;
+      internal_static_LoginByUuidRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_SetPwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_SetPwdReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_SetPwdRsp_descriptor;
+      internal_static_SetPwdReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_SetPwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_SetPwdRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UpdatePwdReq_descriptor;
+      internal_static_SetPwdRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_UpdatePwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UpdatePwdReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UpdatePwdRsp_descriptor;
+      internal_static_UpdatePwdReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_UpdatePwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UpdatePwdRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetAccountPwdInfoReq_descriptor;
+      internal_static_UpdatePwdRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetAccountPwdInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetAccountPwdInfoReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_descriptor;
+      internal_static_GetAccountPwdInfoReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetAccountPwdInfoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ForgetPwdUuidReq_descriptor;
+      internal_static_GetAccountPwdInfoRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ForgetPwdUuidReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ForgetPwdUuidReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ForgetPwdUuidRsp_descriptor;
+      internal_static_ForgetPwdUuidReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ForgetPwdUuidRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ForgetPwdUuidRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ScanQrCodeReq_descriptor;
+      internal_static_ForgetPwdUuidRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ScanQrCodeReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ScanQrCodeReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ScanQrCodeRsp_descriptor;
+      internal_static_ScanQrCodeReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ScanQrCodeRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ScanQrCodeRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_descriptor;
+      internal_static_ScanQrCodeRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ConfirmLoginByQrCodeReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_descriptor;
+      internal_static_ConfirmLoginByQrCodeReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ConfirmLoginByQrCodeRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_MiSsoLoginReq_descriptor;
+      internal_static_ConfirmLoginByQrCodeRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_MiSsoLoginReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_MiSsoLoginReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_MiSsoLoginRsp_descriptor;
+      internal_static_MiSsoLoginReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_MiSsoLoginRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_MiSsoLoginRsp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_AppInfo_descriptor;
+      internal_static_MiSsoLoginRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_AppInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_AppInfo_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_UserInfo_descriptor;
+      internal_static_AppInfo_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_UserInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetAccessTokenReq_descriptor;
+      internal_static_UserInfo_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetAccessTokenReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetAccessTokenReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetAccessTokenRsp_descriptor;
+      internal_static_GetAccessTokenReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetAccessTokenRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetAccessTokenRsp_fieldAccessorTable;
+      internal_static_GetAccessTokenRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetGuideFlagReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_GetGuideFlagReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetGuideFlagRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_GetGuideFlagRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_FillUnionidReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_FillUnionidReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_FillUnionidRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_FillUnionidRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ThirdPartSignLoginReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ThirdPartSignLoginReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ThirdPartSignLoginRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ThirdPartSignLoginRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -37413,328 +43079,377 @@ public final class AccountProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rAccount.proto\022\023com.wali.live.proto\"|\n\010" +
-      "LoginReq\022\023\n\013accountType\030\001 \002(\r\022\014\n\004code\030\002 " +
-      "\001(\t\022\016\n\006openid\030\003 \001(\t\022\023\n\013accessToken\030\004 \001(\t" +
+      "\n\rAccount.proto\"|\n\010LoginReq\022\023\n\013accountTy" +
+      "pe\030\001 \002(\r\022\014\n\004code\030\002 \001(\t\022\016\n\006openid\030\003 \001(\t\022\023" +
+      "\n\013accessToken\030\004 \001(\t\022\022\n\nexpires_in\030\005 \001(\r\022" +
+      "\024\n\014refreshToken\030\006 \001(\t\"\221\002\n\010LoginRsp\022\017\n\007re" +
+      "tCode\030\001 \002(\r\022\014\n\004uuid\030\002 \001(\004\022\024\n\014serviceToke" +
+      "n\030\003 \001(\t\022\023\n\013securityKey\030\004 \001(\t\022\021\n\tpassToke" +
+      "n\030\005 \001(\t\022\020\n\010nickname\030\006 \001(\t\022\022\n\nheadimgurl\030" +
+      "\007 \001(\t\022\013\n\003sex\030\010 \001(\r\022\023\n\013loginStatus\030\t \001(\r\022" +
+      "\026\n\016hasInnerAvatar\030\n \001(\010\022\030\n\020hasInnerNickn" +
+      "ame\030\013 \001(\010\022\023\n\013hasInnerSex\030\014 \001(\010\022\031\n\nisSetG",
+      "uide\030\r \001(\010:\005false\"5\n\022GetServiceTokenReq\022" +
+      "\021\n\tpassToken\030\001 \002(\t\022\014\n\004uuid\030\002 \002(\004\"c\n\022GetS" +
+      "erviceTokenRsp\022\017\n\007retCode\030\001 \002(\r\022\021\n\tpassT" +
+      "oken\030\002 \001(\t\022\024\n\014serviceToken\030\003 \001(\t\022\023\n\013secu" +
+      "rityKey\030\004 \001(\t\"C\n\016CertificateReq\022\014\n\004uuid\030" +
+      "\001 \002(\004\022\016\n\006openid\030\002 \001(\t\022\023\n\013accessToken\030\003 \001" +
+      "(\t\"S\n\016CertificateRsp\022\017\n\007retCode\030\001 \002(\r\022\031\n" +
+      "\021certificationType\030\002 \001(\r\022\025\n\rcertificatio" +
+      "n\030\003 \001(\t\"=\n\rGetCaptchaReq\022\020\n\010phoneNum\030\001 \002" +
+      "(\t\022\014\n\004type\030\002 \002(\r\022\014\n\004lang\030\003 \001(\t\" \n\rGetCap",
+      "tchaRsp\022\017\n\007retCode\030\001 \002(\r\"D\n\022RegisterByPh" +
+      "oneReq\022\020\n\010phoneNum\030\001 \002(\t\022\013\n\003pwd\030\002 \002(\t\022\017\n" +
+      "\007captcha\030\003 \002(\t\"q\n\022RegisterByPhoneRsp\022\017\n\007" +
+      "retCode\030\001 \002(\r\022\014\n\004uuid\030\002 \001(\004\022\024\n\014serviceTo" +
+      "ken\030\003 \001(\t\022\023\n\013securityKey\030\004 \001(\t\022\021\n\tpassTo" +
+      "ken\030\005 \001(\t\"0\n\017LoginByPhoneReq\022\020\n\010phoneNum" +
+      "\030\001 \002(\t\022\013\n\003pwd\030\002 \002(\t\"\346\001\n\017LoginByPhoneRsp\022" +
+      "\017\n\007retCode\030\001 \002(\r\022\014\n\004uuid\030\002 \001(\004\022\024\n\014servic" +
+      "eToken\030\003 \001(\t\022\023\n\013securityKey\030\004 \001(\t\022\021\n\tpas" +
+      "sToken\030\005 \001(\t\022\020\n\010nickname\030\006 \001(\t\022\020\n\010headin",
+      "fo\030\007 \001(\t\022\013\n\003sex\030\010 \001(\r\022\026\n\016hasInnerAvatar\030" +
+      "\t \001(\010\022\030\n\020hasInnerNickname\030\n \001(\010\022\023\n\013hasIn" +
+      "nerSex\030\013 \001(\010\";\n\tNewPwdReq\022\020\n\010phoneNum\030\001 " +
+      "\002(\t\022\013\n\003pwd\030\002 \002(\t\022\017\n\007captcha\030\003 \002(\t\"\034\n\tNew" +
+      "PwdRsp\022\017\n\007retCode\030\001 \002(\r\">\n\014ForgetPwdReq\022" +
+      "\020\n\010phoneNum\030\001 \002(\t\022\013\n\003pwd\030\002 \002(\t\022\017\n\007captch" +
+      "a\030\003 \002(\t\"\343\001\n\014ForgetPwdRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\022\014\n\004uuid\030\002 \001(\004\022\024\n\014serviceToken\030\003 \001(\t\022\023\n" +
+      "\013securityKey\030\004 \001(\t\022\021\n\tpassToken\030\005 \001(\t\022\020\n" +
+      "\010nickname\030\006 \001(\t\022\020\n\010headinfo\030\007 \001(\t\022\013\n\003sex",
+      "\030\010 \001(\r\022\026\n\016hasInnerAvatar\030\t \001(\010\022\030\n\020hasInn" +
+      "erNickname\030\n \001(\010\022\023\n\013hasInnerSex\030\013 \001(\010\"+\n" +
+      "\016LoginByUuidReq\022\014\n\004uuid\030\001 \002(\004\022\013\n\003pwd\030\002 \002" +
+      "(\t\"\365\001\n\016LoginByUuidRsp\022\017\n\007retCode\030\001 \002(\r\022\014" +
+      "\n\004uuid\030\002 \001(\004\022\024\n\014serviceToken\030\003 \001(\t\022\023\n\013se" +
+      "curityKey\030\004 \001(\t\022\021\n\tpassToken\030\005 \001(\t\022\020\n\010ni" +
+      "ckname\030\006 \001(\t\022\020\n\010headinfo\030\007 \001(\t\022\013\n\003sex\030\010 " +
+      "\001(\r\022\026\n\016hasInnerAvatar\030\t \001(\010\022\030\n\020hasInnerN" +
+      "ickname\030\n \001(\010\022\023\n\013hasInnerSex\030\013 \001(\010\022\016\n\006er" +
+      "rMsg\030\014 \001(\t\"&\n\tSetPwdReq\022\014\n\004uuid\030\001 \002(\004\022\013\n",
+      "\003pwd\030\002 \002(\t\",\n\tSetPwdRsp\022\017\n\007retCode\030\001 \002(\r" +
+      "\022\016\n\006errMsg\030\002 \001(\t\"<\n\014UpdatePwdReq\022\014\n\004uuid" +
+      "\030\001 \002(\004\022\016\n\006oldpwd\030\002 \002(\t\022\016\n\006newpwd\030\003 \002(\t\"/" +
+      "\n\014UpdatePwdRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006errMs" +
+      "g\030\002 \001(\t\"$\n\024GetAccountPwdInfoReq\022\014\n\004uuid\030" +
+      "\001 \002(\004\"d\n\024GetAccountPwdInfoRsp\022\017\n\007retCode" +
+      "\030\001 \002(\r\022\033\n\023create_account_type\030\002 \001(\r\022\016\n\006h" +
+      "aspwd\030\003 \001(\010\022\016\n\006errMsg\030\004 \001(\t\"\237\001\n\020ForgetPw" +
+      "dUuidReq\022\023\n\013accountType\030\001 \002(\r\022\014\n\004code\030\002 " +
+      "\001(\t\022\016\n\006openid\030\003 \001(\t\022\023\n\013accessToken\030\004 \001(\t",
       "\022\022\n\nexpires_in\030\005 \001(\r\022\024\n\014refreshToken\030\006 \001" +
-      "(\t\"\221\002\n\010LoginRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004uuid" +
-      "\030\002 \001(\004\022\024\n\014serviceToken\030\003 \001(\t\022\023\n\013security" +
-      "Key\030\004 \001(\t\022\021\n\tpassToken\030\005 \001(\t\022\020\n\010nickname" +
-      "\030\006 \001(\t\022\022\n\nheadimgurl\030\007 \001(\t\022\013\n\003sex\030\010 \001(\r\022" +
-      "\023\n\013loginStatus\030\t \001(\r\022\026\n\016hasInnerAvatar\030\n" +
-      " \001(\010\022\030\n\020hasInnerNickname\030\013 \001(\010\022\023\n\013hasInn",
-      "erSex\030\014 \001(\010\022\031\n\nisSetGuide\030\r \001(\010:\005false\"5" +
-      "\n\022GetServiceTokenReq\022\021\n\tpassToken\030\001 \002(\t\022" +
-      "\014\n\004uuid\030\002 \002(\004\"c\n\022GetServiceTokenRsp\022\017\n\007r" +
-      "etCode\030\001 \002(\r\022\021\n\tpassToken\030\002 \001(\t\022\024\n\014servi" +
-      "ceToken\030\003 \001(\t\022\023\n\013securityKey\030\004 \001(\t\"C\n\016Ce" +
-      "rtificateReq\022\014\n\004uuid\030\001 \002(\004\022\016\n\006openid\030\002 \001" +
-      "(\t\022\023\n\013accessToken\030\003 \001(\t\"S\n\016CertificateRs" +
-      "p\022\017\n\007retCode\030\001 \002(\r\022\031\n\021certificationType\030" +
-      "\002 \001(\r\022\025\n\rcertification\030\003 \001(\t\"=\n\rGetCaptc" +
-      "haReq\022\020\n\010phoneNum\030\001 \002(\t\022\014\n\004type\030\002 \002(\r\022\014\n",
-      "\004lang\030\003 \001(\t\" \n\rGetCaptchaRsp\022\017\n\007retCode\030" +
-      "\001 \002(\r\"D\n\022RegisterByPhoneReq\022\020\n\010phoneNum\030" +
-      "\001 \002(\t\022\013\n\003pwd\030\002 \002(\t\022\017\n\007captcha\030\003 \002(\t\"q\n\022R" +
-      "egisterByPhoneRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004uu" +
-      "id\030\002 \001(\004\022\024\n\014serviceToken\030\003 \001(\t\022\023\n\013securi" +
-      "tyKey\030\004 \001(\t\022\021\n\tpassToken\030\005 \001(\t\"0\n\017LoginB" +
-      "yPhoneReq\022\020\n\010phoneNum\030\001 \002(\t\022\013\n\003pwd\030\002 \002(\t" +
-      "\"\346\001\n\017LoginByPhoneRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n" +
-      "\004uuid\030\002 \001(\004\022\024\n\014serviceToken\030\003 \001(\t\022\023\n\013sec" +
-      "urityKey\030\004 \001(\t\022\021\n\tpassToken\030\005 \001(\t\022\020\n\010nic",
-      "kname\030\006 \001(\t\022\020\n\010headinfo\030\007 \001(\t\022\013\n\003sex\030\010 \001" +
-      "(\r\022\026\n\016hasInnerAvatar\030\t \001(\010\022\030\n\020hasInnerNi" +
-      "ckname\030\n \001(\010\022\023\n\013hasInnerSex\030\013 \001(\010\";\n\tNew" +
-      "PwdReq\022\020\n\010phoneNum\030\001 \002(\t\022\013\n\003pwd\030\002 \002(\t\022\017\n" +
-      "\007captcha\030\003 \002(\t\"\034\n\tNewPwdRsp\022\017\n\007retCode\030\001" +
-      " \002(\r\">\n\014ForgetPwdReq\022\020\n\010phoneNum\030\001 \002(\t\022\013" +
-      "\n\003pwd\030\002 \002(\t\022\017\n\007captcha\030\003 \002(\t\"\343\001\n\014ForgetP" +
-      "wdRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004uuid\030\002 \001(\004\022\024\n\014" +
-      "serviceToken\030\003 \001(\t\022\023\n\013securityKey\030\004 \001(\t\022" +
-      "\021\n\tpassToken\030\005 \001(\t\022\020\n\010nickname\030\006 \001(\t\022\020\n\010",
-      "headinfo\030\007 \001(\t\022\013\n\003sex\030\010 \001(\r\022\026\n\016hasInnerA" +
-      "vatar\030\t \001(\010\022\030\n\020hasInnerNickname\030\n \001(\010\022\023\n" +
-      "\013hasInnerSex\030\013 \001(\010\"+\n\016LoginByUuidReq\022\014\n\004" +
-      "uuid\030\001 \002(\004\022\013\n\003pwd\030\002 \002(\t\"\365\001\n\016LoginByUuidR" +
-      "sp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004uuid\030\002 \001(\004\022\024\n\014ser" +
-      "viceToken\030\003 \001(\t\022\023\n\013securityKey\030\004 \001(\t\022\021\n\t" +
-      "passToken\030\005 \001(\t\022\020\n\010nickname\030\006 \001(\t\022\020\n\010hea" +
-      "dinfo\030\007 \001(\t\022\013\n\003sex\030\010 \001(\r\022\026\n\016hasInnerAvat" +
-      "ar\030\t \001(\010\022\030\n\020hasInnerNickname\030\n \001(\010\022\023\n\013ha" +
-      "sInnerSex\030\013 \001(\010\022\016\n\006errMsg\030\014 \001(\t\"&\n\tSetPw",
-      "dReq\022\014\n\004uuid\030\001 \002(\004\022\013\n\003pwd\030\002 \002(\t\",\n\tSetPw" +
-      "dRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006errMsg\030\002 \001(\t\"<\n" +
-      "\014UpdatePwdReq\022\014\n\004uuid\030\001 \002(\004\022\016\n\006oldpwd\030\002 " +
-      "\002(\t\022\016\n\006newpwd\030\003 \002(\t\"/\n\014UpdatePwdRsp\022\017\n\007r" +
-      "etCode\030\001 \002(\r\022\016\n\006errMsg\030\002 \001(\t\"$\n\024GetAccou" +
-      "ntPwdInfoReq\022\014\n\004uuid\030\001 \002(\004\"d\n\024GetAccount" +
-      "PwdInfoRsp\022\017\n\007retCode\030\001 \002(\r\022\033\n\023create_ac" +
-      "count_type\030\002 \001(\r\022\016\n\006haspwd\030\003 \001(\010\022\016\n\006errM" +
-      "sg\030\004 \001(\t\"\237\001\n\020ForgetPwdUuidReq\022\023\n\013account" +
-      "Type\030\001 \002(\r\022\014\n\004code\030\002 \001(\t\022\016\n\006openid\030\003 \001(\t",
-      "\022\023\n\013accessToken\030\004 \001(\t\022\022\n\nexpires_in\030\005 \001(" +
-      "\r\022\024\n\014refreshToken\030\006 \001(\t\022\014\n\004uuid\030\007 \001(\004\022\013\n" +
-      "\003pwd\030\010 \001(\t\"\367\001\n\020ForgetPwdUuidRsp\022\017\n\007retCo" +
+      "(\t\022\014\n\004uuid\030\007 \001(\004\022\013\n\003pwd\030\010 \001(\t\"\367\001\n\020Forget" +
+      "PwdUuidRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004uuid\030\002 \001(" +
+      "\004\022\024\n\014serviceToken\030\003 \001(\t\022\023\n\013securityKey\030\004" +
+      " \001(\t\022\021\n\tpassToken\030\005 \001(\t\022\020\n\010nickname\030\006 \001(" +
+      "\t\022\020\n\010headinfo\030\007 \001(\t\022\013\n\003sex\030\010 \001(\r\022\026\n\016hasI" +
+      "nnerAvatar\030\t \001(\010\022\030\n\020hasInnerNickname\030\n \001" +
+      "(\010\022\023\n\013hasInnerSex\030\013 \001(\010\022\016\n\006errMsg\030\014 \001(\t\"" +
+      ".\n\rScanQrCodeReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007qr_cod" +
+      "e\030\002 \002(\t\"0\n\rScanQrCodeRsp\022\017\n\007retCode\030\001 \002(",
+      "\r\022\016\n\006errMsg\030\002 \001(\t\"8\n\027ConfirmLoginByQrCod" +
+      "eReq\022\014\n\004uuid\030\001 \002(\004\022\017\n\007qr_code\030\002 \002(\t\":\n\027C" +
+      "onfirmLoginByQrCodeRsp\022\017\n\007retCode\030\001 \002(\r\022" +
+      "\016\n\006errMsg\030\002 \001(\t\"L\n\rMiSsoLoginReq\022\026\n\013acco" +
+      "untType\030\001 \002(\r:\0014\022\013\n\003mid\030\002 \002(\004\022\026\n\016miservi" +
+      "cetoken\030\003 \002(\t\"\246\002\n\rMiSsoLoginRsp\022\017\n\007retCo" +
       "de\030\001 \002(\r\022\014\n\004uuid\030\002 \001(\004\022\024\n\014serviceToken\030\003" +
       " \001(\t\022\023\n\013securityKey\030\004 \001(\t\022\021\n\tpassToken\030\005" +
-      " \001(\t\022\020\n\010nickname\030\006 \001(\t\022\020\n\010headinfo\030\007 \001(\t" +
-      "\022\013\n\003sex\030\010 \001(\r\022\026\n\016hasInnerAvatar\030\t \001(\010\022\030\n" +
-      "\020hasInnerNickname\030\n \001(\010\022\023\n\013hasInnerSex\030\013" +
-      " \001(\010\022\016\n\006errMsg\030\014 \001(\t\".\n\rScanQrCodeReq\022\014\n" +
-      "\004uuid\030\001 \002(\004\022\017\n\007qr_code\030\002 \002(\t\"0\n\rScanQrCo",
-      "deRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006errMsg\030\002 \001(\t\"8" +
-      "\n\027ConfirmLoginByQrCodeReq\022\014\n\004uuid\030\001 \002(\004\022" +
-      "\017\n\007qr_code\030\002 \002(\t\":\n\027ConfirmLoginByQrCode" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006errMsg\030\002 \001(\t\"L\n\r" +
-      "MiSsoLoginReq\022\026\n\013accountType\030\001 \002(\r:\0014\022\013\n" +
-      "\003mid\030\002 \002(\004\022\026\n\016miservicetoken\030\003 \002(\t\"\246\002\n\rM" +
-      "iSsoLoginRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004uuid\030\002 " +
-      "\001(\004\022\024\n\014serviceToken\030\003 \001(\t\022\023\n\013securityKey" +
-      "\030\004 \001(\t\022\021\n\tpassToken\030\005 \001(\t\022\020\n\010nickname\030\006 " +
-      "\001(\t\022\022\n\nheadimgurl\030\007 \001(\t\022\013\n\003sex\030\010 \001(\r\022\023\n\013",
-      "loginStatus\030\t \001(\r\022\026\n\016hasInnerAvatar\030\n \001(" +
-      "\010\022\030\n\020hasInnerNickname\030\013 \001(\010\022\023\n\013hasInnerS" +
-      "ex\030\014 \001(\010\022\031\n\nisSetGuide\030\r \001(\010:\005false\022\016\n\006e" +
-      "rrMsg\030\016 \001(\t\"(\n\007AppInfo\022\r\n\005appId\030\001 \001(\t\022\016\n" +
-      "\006appKey\030\002 \001(\t\"\212\001\n\010UserInfo\022\014\n\004uuid\030\001 \002(\004" +
-      "\022\016\n\006avatar\030\002 \001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004si" +
-      "gn\030\004 \001(\t\022\016\n\006gender\030\005 \001(\r\022\r\n\005level\030\006 \001(\r\022" +
-      "\r\n\005badge\030\007 \001(\r\022\022\n\nupdateTime\030\010 \001(\004\"0\n\021Ge" +
-      "tAccessTokenReq\022\r\n\005appid\030\001 \002(\r\022\014\n\004uuid\030\002" +
-      " \002(\004\"_\n\021GetAccessTokenRsp\022\017\n\007retCode\030\001 \002",
-      "(\r\022\024\n\014serviceToken\030\002 \001(\t\022\023\n\013securityKey\030" +
-      "\003 \001(\t\022\016\n\006errmsg\030\004 \001(\tB#\n\023com.wali.live.p" +
+      " \001(\t\022\020\n\010nickname\030\006 \001(\t\022\022\n\nheadimgurl\030\007 \001" +
+      "(\t\022\013\n\003sex\030\010 \001(\r\022\023\n\013loginStatus\030\t \001(\r\022\026\n\016",
+      "hasInnerAvatar\030\n \001(\010\022\030\n\020hasInnerNickname" +
+      "\030\013 \001(\010\022\023\n\013hasInnerSex\030\014 \001(\010\022\031\n\nisSetGuid" +
+      "e\030\r \001(\010:\005false\022\016\n\006errMsg\030\016 \001(\t\"(\n\007AppInf" +
+      "o\022\r\n\005appId\030\001 \001(\t\022\016\n\006appKey\030\002 \001(\t\"\212\001\n\010Use" +
+      "rInfo\022\014\n\004uuid\030\001 \002(\004\022\016\n\006avatar\030\002 \001(\004\022\020\n\010n" +
+      "ickname\030\003 \001(\t\022\014\n\004sign\030\004 \001(\t\022\016\n\006gender\030\005 " +
+      "\001(\r\022\r\n\005level\030\006 \001(\r\022\r\n\005badge\030\007 \001(\r\022\022\n\nupd" +
+      "ateTime\030\010 \001(\004\"0\n\021GetAccessTokenReq\022\r\n\005ap" +
+      "pid\030\001 \002(\r\022\014\n\004uuid\030\002 \002(\004\"_\n\021GetAccessToke" +
+      "nRsp\022\017\n\007retCode\030\001 \002(\r\022\024\n\014serviceToken\030\002 ",
+      "\001(\t\022\023\n\013securityKey\030\003 \001(\t\022\016\n\006errmsg\030\004 \001(\t" +
+      "\"\037\n\017GetGuideFlagReq\022\014\n\004uuid\030\001 \002(\004\"\204\001\n\017Ge" +
+      "tGuideFlagRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007isGuid" +
+      "e\030\002 \001(\010\022\023\n\013reminderMsg\030\003 \001(\t\022\023\n\013diamonds" +
+      "Cnt\030\004 \001(\r\022\025\n\risGuideNoMore\030\005 \001(\010\022\016\n\006errM" +
+      "sg\030\006 \001(\t\",\n\016FillUnionidReq\022\014\n\004uuid\030\001 \002(\004" +
+      "\022\014\n\004code\030\002 \001(\t\"1\n\016FillUnionidRsp\022\017\n\007retC" +
+      "ode\030\001 \002(\r\022\016\n\006errMsg\030\002 \001(\t\"v\n\025ThirdPartSi" +
+      "gnLoginReq\022\021\n\tchannelId\030\001 \002(\t\022\014\n\004xuid\030\002 " +
+      "\002(\t\022\013\n\003sex\030\003 \002(\r\022\020\n\010nickname\030\004 \002(\t\022\017\n\007he",
+      "adUrl\030\005 \002(\t\022\014\n\004sign\030\006 \002(\t\"\231\001\n\025ThirdPartS" +
+      "ignLoginRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004uuid\030\002 \001" +
+      "(\004\022\024\n\014serviceToken\030\003 \001(\t\022\021\n\tpassToken\030\004 " +
+      "\001(\t\022\023\n\013securityKey\030\005 \001(\t\022\023\n\013loginStatus\030" +
+      "\006 \001(\r\022\016\n\006errMsg\030\007 \001(\tB#\n\023com.wali.live.p" +
       "rotoB\014AccountProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_LoginReq_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_LoginReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_LoginReq_descriptor,
+              new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", });
+          internal_static_LoginRsp_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_LoginRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_LoginRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", });
+          internal_static_GetServiceTokenReq_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_GetServiceTokenReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetServiceTokenReq_descriptor,
+              new java.lang.String[] { "PassToken", "Uuid", });
+          internal_static_GetServiceTokenRsp_descriptor =
+            getDescriptor().getMessageTypes().get(3);
+          internal_static_GetServiceTokenRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetServiceTokenRsp_descriptor,
+              new java.lang.String[] { "RetCode", "PassToken", "ServiceToken", "SecurityKey", });
+          internal_static_CertificateReq_descriptor =
+            getDescriptor().getMessageTypes().get(4);
+          internal_static_CertificateReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_CertificateReq_descriptor,
+              new java.lang.String[] { "Uuid", "Openid", "AccessToken", });
+          internal_static_CertificateRsp_descriptor =
+            getDescriptor().getMessageTypes().get(5);
+          internal_static_CertificateRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_CertificateRsp_descriptor,
+              new java.lang.String[] { "RetCode", "CertificationType", "Certification", });
+          internal_static_GetCaptchaReq_descriptor =
+            getDescriptor().getMessageTypes().get(6);
+          internal_static_GetCaptchaReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetCaptchaReq_descriptor,
+              new java.lang.String[] { "PhoneNum", "Type", "Lang", });
+          internal_static_GetCaptchaRsp_descriptor =
+            getDescriptor().getMessageTypes().get(7);
+          internal_static_GetCaptchaRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetCaptchaRsp_descriptor,
+              new java.lang.String[] { "RetCode", });
+          internal_static_RegisterByPhoneReq_descriptor =
+            getDescriptor().getMessageTypes().get(8);
+          internal_static_RegisterByPhoneReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RegisterByPhoneReq_descriptor,
+              new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
+          internal_static_RegisterByPhoneRsp_descriptor =
+            getDescriptor().getMessageTypes().get(9);
+          internal_static_RegisterByPhoneRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RegisterByPhoneRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", });
+          internal_static_LoginByPhoneReq_descriptor =
+            getDescriptor().getMessageTypes().get(10);
+          internal_static_LoginByPhoneReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_LoginByPhoneReq_descriptor,
+              new java.lang.String[] { "PhoneNum", "Pwd", });
+          internal_static_LoginByPhoneRsp_descriptor =
+            getDescriptor().getMessageTypes().get(11);
+          internal_static_LoginByPhoneRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_LoginByPhoneRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
+          internal_static_NewPwdReq_descriptor =
+            getDescriptor().getMessageTypes().get(12);
+          internal_static_NewPwdReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_NewPwdReq_descriptor,
+              new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
+          internal_static_NewPwdRsp_descriptor =
+            getDescriptor().getMessageTypes().get(13);
+          internal_static_NewPwdRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_NewPwdRsp_descriptor,
+              new java.lang.String[] { "RetCode", });
+          internal_static_ForgetPwdReq_descriptor =
+            getDescriptor().getMessageTypes().get(14);
+          internal_static_ForgetPwdReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ForgetPwdReq_descriptor,
+              new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
+          internal_static_ForgetPwdRsp_descriptor =
+            getDescriptor().getMessageTypes().get(15);
+          internal_static_ForgetPwdRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ForgetPwdRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
+          internal_static_LoginByUuidReq_descriptor =
+            getDescriptor().getMessageTypes().get(16);
+          internal_static_LoginByUuidReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_LoginByUuidReq_descriptor,
+              new java.lang.String[] { "Uuid", "Pwd", });
+          internal_static_LoginByUuidRsp_descriptor =
+            getDescriptor().getMessageTypes().get(17);
+          internal_static_LoginByUuidRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_LoginByUuidRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
+          internal_static_SetPwdReq_descriptor =
+            getDescriptor().getMessageTypes().get(18);
+          internal_static_SetPwdReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_SetPwdReq_descriptor,
+              new java.lang.String[] { "Uuid", "Pwd", });
+          internal_static_SetPwdRsp_descriptor =
+            getDescriptor().getMessageTypes().get(19);
+          internal_static_SetPwdRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_SetPwdRsp_descriptor,
+              new java.lang.String[] { "RetCode", "ErrMsg", });
+          internal_static_UpdatePwdReq_descriptor =
+            getDescriptor().getMessageTypes().get(20);
+          internal_static_UpdatePwdReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_UpdatePwdReq_descriptor,
+              new java.lang.String[] { "Uuid", "Oldpwd", "Newpwd", });
+          internal_static_UpdatePwdRsp_descriptor =
+            getDescriptor().getMessageTypes().get(21);
+          internal_static_UpdatePwdRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_UpdatePwdRsp_descriptor,
+              new java.lang.String[] { "RetCode", "ErrMsg", });
+          internal_static_GetAccountPwdInfoReq_descriptor =
+            getDescriptor().getMessageTypes().get(22);
+          internal_static_GetAccountPwdInfoReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetAccountPwdInfoReq_descriptor,
+              new java.lang.String[] { "Uuid", });
+          internal_static_GetAccountPwdInfoRsp_descriptor =
+            getDescriptor().getMessageTypes().get(23);
+          internal_static_GetAccountPwdInfoRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetAccountPwdInfoRsp_descriptor,
+              new java.lang.String[] { "RetCode", "CreateAccountType", "Haspwd", "ErrMsg", });
+          internal_static_ForgetPwdUuidReq_descriptor =
+            getDescriptor().getMessageTypes().get(24);
+          internal_static_ForgetPwdUuidReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ForgetPwdUuidReq_descriptor,
+              new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", "Uuid", "Pwd", });
+          internal_static_ForgetPwdUuidRsp_descriptor =
+            getDescriptor().getMessageTypes().get(25);
+          internal_static_ForgetPwdUuidRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ForgetPwdUuidRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
+          internal_static_ScanQrCodeReq_descriptor =
+            getDescriptor().getMessageTypes().get(26);
+          internal_static_ScanQrCodeReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ScanQrCodeReq_descriptor,
+              new java.lang.String[] { "Uuid", "QrCode", });
+          internal_static_ScanQrCodeRsp_descriptor =
+            getDescriptor().getMessageTypes().get(27);
+          internal_static_ScanQrCodeRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ScanQrCodeRsp_descriptor,
+              new java.lang.String[] { "RetCode", "ErrMsg", });
+          internal_static_ConfirmLoginByQrCodeReq_descriptor =
+            getDescriptor().getMessageTypes().get(28);
+          internal_static_ConfirmLoginByQrCodeReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ConfirmLoginByQrCodeReq_descriptor,
+              new java.lang.String[] { "Uuid", "QrCode", });
+          internal_static_ConfirmLoginByQrCodeRsp_descriptor =
+            getDescriptor().getMessageTypes().get(29);
+          internal_static_ConfirmLoginByQrCodeRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ConfirmLoginByQrCodeRsp_descriptor,
+              new java.lang.String[] { "RetCode", "ErrMsg", });
+          internal_static_MiSsoLoginReq_descriptor =
+            getDescriptor().getMessageTypes().get(30);
+          internal_static_MiSsoLoginReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_MiSsoLoginReq_descriptor,
+              new java.lang.String[] { "AccountType", "Mid", "Miservicetoken", });
+          internal_static_MiSsoLoginRsp_descriptor =
+            getDescriptor().getMessageTypes().get(31);
+          internal_static_MiSsoLoginRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_MiSsoLoginRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", "ErrMsg", });
+          internal_static_AppInfo_descriptor =
+            getDescriptor().getMessageTypes().get(32);
+          internal_static_AppInfo_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_AppInfo_descriptor,
+              new java.lang.String[] { "AppId", "AppKey", });
+          internal_static_UserInfo_descriptor =
+            getDescriptor().getMessageTypes().get(33);
+          internal_static_UserInfo_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_UserInfo_descriptor,
+              new java.lang.String[] { "Uuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", });
+          internal_static_GetAccessTokenReq_descriptor =
+            getDescriptor().getMessageTypes().get(34);
+          internal_static_GetAccessTokenReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetAccessTokenReq_descriptor,
+              new java.lang.String[] { "Appid", "Uuid", });
+          internal_static_GetAccessTokenRsp_descriptor =
+            getDescriptor().getMessageTypes().get(35);
+          internal_static_GetAccessTokenRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetAccessTokenRsp_descriptor,
+              new java.lang.String[] { "RetCode", "ServiceToken", "SecurityKey", "Errmsg", });
+          internal_static_GetGuideFlagReq_descriptor =
+            getDescriptor().getMessageTypes().get(36);
+          internal_static_GetGuideFlagReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetGuideFlagReq_descriptor,
+              new java.lang.String[] { "Uuid", });
+          internal_static_GetGuideFlagRsp_descriptor =
+            getDescriptor().getMessageTypes().get(37);
+          internal_static_GetGuideFlagRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_GetGuideFlagRsp_descriptor,
+              new java.lang.String[] { "RetCode", "IsGuide", "ReminderMsg", "DiamondsCnt", "IsGuideNoMore", "ErrMsg", });
+          internal_static_FillUnionidReq_descriptor =
+            getDescriptor().getMessageTypes().get(38);
+          internal_static_FillUnionidReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_FillUnionidReq_descriptor,
+              new java.lang.String[] { "Uuid", "Code", });
+          internal_static_FillUnionidRsp_descriptor =
+            getDescriptor().getMessageTypes().get(39);
+          internal_static_FillUnionidRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_FillUnionidRsp_descriptor,
+              new java.lang.String[] { "RetCode", "ErrMsg", });
+          internal_static_ThirdPartSignLoginReq_descriptor =
+            getDescriptor().getMessageTypes().get(40);
+          internal_static_ThirdPartSignLoginReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ThirdPartSignLoginReq_descriptor,
+              new java.lang.String[] { "ChannelId", "Xuid", "Sex", "Nickname", "HeadUrl", "Sign", });
+          internal_static_ThirdPartSignLoginRsp_descriptor =
+            getDescriptor().getMessageTypes().get(41);
+          internal_static_ThirdPartSignLoginRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ThirdPartSignLoginRsp_descriptor,
+              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "PassToken", "SecurityKey", "LoginStatus", "ErrMsg", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_com_wali_live_proto_LoginReq_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_com_wali_live_proto_LoginReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LoginReq_descriptor,
-        new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", });
-    internal_static_com_wali_live_proto_LoginRsp_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_com_wali_live_proto_LoginRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LoginRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", });
-    internal_static_com_wali_live_proto_GetServiceTokenReq_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_com_wali_live_proto_GetServiceTokenReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetServiceTokenReq_descriptor,
-        new java.lang.String[] { "PassToken", "Uuid", });
-    internal_static_com_wali_live_proto_GetServiceTokenRsp_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_com_wali_live_proto_GetServiceTokenRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetServiceTokenRsp_descriptor,
-        new java.lang.String[] { "RetCode", "PassToken", "ServiceToken", "SecurityKey", });
-    internal_static_com_wali_live_proto_CertificateReq_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_com_wali_live_proto_CertificateReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_CertificateReq_descriptor,
-        new java.lang.String[] { "Uuid", "Openid", "AccessToken", });
-    internal_static_com_wali_live_proto_CertificateRsp_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_com_wali_live_proto_CertificateRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_CertificateRsp_descriptor,
-        new java.lang.String[] { "RetCode", "CertificationType", "Certification", });
-    internal_static_com_wali_live_proto_GetCaptchaReq_descriptor =
-      getDescriptor().getMessageTypes().get(6);
-    internal_static_com_wali_live_proto_GetCaptchaReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetCaptchaReq_descriptor,
-        new java.lang.String[] { "PhoneNum", "Type", "Lang", });
-    internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor =
-      getDescriptor().getMessageTypes().get(7);
-    internal_static_com_wali_live_proto_GetCaptchaRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor,
-        new java.lang.String[] { "RetCode", });
-    internal_static_com_wali_live_proto_RegisterByPhoneReq_descriptor =
-      getDescriptor().getMessageTypes().get(8);
-    internal_static_com_wali_live_proto_RegisterByPhoneReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_RegisterByPhoneReq_descriptor,
-        new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
-    internal_static_com_wali_live_proto_RegisterByPhoneRsp_descriptor =
-      getDescriptor().getMessageTypes().get(9);
-    internal_static_com_wali_live_proto_RegisterByPhoneRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_RegisterByPhoneRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", });
-    internal_static_com_wali_live_proto_LoginByPhoneReq_descriptor =
-      getDescriptor().getMessageTypes().get(10);
-    internal_static_com_wali_live_proto_LoginByPhoneReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LoginByPhoneReq_descriptor,
-        new java.lang.String[] { "PhoneNum", "Pwd", });
-    internal_static_com_wali_live_proto_LoginByPhoneRsp_descriptor =
-      getDescriptor().getMessageTypes().get(11);
-    internal_static_com_wali_live_proto_LoginByPhoneRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LoginByPhoneRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
-    internal_static_com_wali_live_proto_NewPwdReq_descriptor =
-      getDescriptor().getMessageTypes().get(12);
-    internal_static_com_wali_live_proto_NewPwdReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_NewPwdReq_descriptor,
-        new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
-    internal_static_com_wali_live_proto_NewPwdRsp_descriptor =
-      getDescriptor().getMessageTypes().get(13);
-    internal_static_com_wali_live_proto_NewPwdRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_NewPwdRsp_descriptor,
-        new java.lang.String[] { "RetCode", });
-    internal_static_com_wali_live_proto_ForgetPwdReq_descriptor =
-      getDescriptor().getMessageTypes().get(14);
-    internal_static_com_wali_live_proto_ForgetPwdReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ForgetPwdReq_descriptor,
-        new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
-    internal_static_com_wali_live_proto_ForgetPwdRsp_descriptor =
-      getDescriptor().getMessageTypes().get(15);
-    internal_static_com_wali_live_proto_ForgetPwdRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ForgetPwdRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
-    internal_static_com_wali_live_proto_LoginByUuidReq_descriptor =
-      getDescriptor().getMessageTypes().get(16);
-    internal_static_com_wali_live_proto_LoginByUuidReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LoginByUuidReq_descriptor,
-        new java.lang.String[] { "Uuid", "Pwd", });
-    internal_static_com_wali_live_proto_LoginByUuidRsp_descriptor =
-      getDescriptor().getMessageTypes().get(17);
-    internal_static_com_wali_live_proto_LoginByUuidRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_LoginByUuidRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
-    internal_static_com_wali_live_proto_SetPwdReq_descriptor =
-      getDescriptor().getMessageTypes().get(18);
-    internal_static_com_wali_live_proto_SetPwdReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_SetPwdReq_descriptor,
-        new java.lang.String[] { "Uuid", "Pwd", });
-    internal_static_com_wali_live_proto_SetPwdRsp_descriptor =
-      getDescriptor().getMessageTypes().get(19);
-    internal_static_com_wali_live_proto_SetPwdRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_SetPwdRsp_descriptor,
-        new java.lang.String[] { "RetCode", "ErrMsg", });
-    internal_static_com_wali_live_proto_UpdatePwdReq_descriptor =
-      getDescriptor().getMessageTypes().get(20);
-    internal_static_com_wali_live_proto_UpdatePwdReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UpdatePwdReq_descriptor,
-        new java.lang.String[] { "Uuid", "Oldpwd", "Newpwd", });
-    internal_static_com_wali_live_proto_UpdatePwdRsp_descriptor =
-      getDescriptor().getMessageTypes().get(21);
-    internal_static_com_wali_live_proto_UpdatePwdRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UpdatePwdRsp_descriptor,
-        new java.lang.String[] { "RetCode", "ErrMsg", });
-    internal_static_com_wali_live_proto_GetAccountPwdInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(22);
-    internal_static_com_wali_live_proto_GetAccountPwdInfoReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetAccountPwdInfoReq_descriptor,
-        new java.lang.String[] { "Uuid", });
-    internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(23);
-    internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetAccountPwdInfoRsp_descriptor,
-        new java.lang.String[] { "RetCode", "CreateAccountType", "Haspwd", "ErrMsg", });
-    internal_static_com_wali_live_proto_ForgetPwdUuidReq_descriptor =
-      getDescriptor().getMessageTypes().get(24);
-    internal_static_com_wali_live_proto_ForgetPwdUuidReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ForgetPwdUuidReq_descriptor,
-        new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", "Uuid", "Pwd", });
-    internal_static_com_wali_live_proto_ForgetPwdUuidRsp_descriptor =
-      getDescriptor().getMessageTypes().get(25);
-    internal_static_com_wali_live_proto_ForgetPwdUuidRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ForgetPwdUuidRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
-    internal_static_com_wali_live_proto_ScanQrCodeReq_descriptor =
-      getDescriptor().getMessageTypes().get(26);
-    internal_static_com_wali_live_proto_ScanQrCodeReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ScanQrCodeReq_descriptor,
-        new java.lang.String[] { "Uuid", "QrCode", });
-    internal_static_com_wali_live_proto_ScanQrCodeRsp_descriptor =
-      getDescriptor().getMessageTypes().get(27);
-    internal_static_com_wali_live_proto_ScanQrCodeRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ScanQrCodeRsp_descriptor,
-        new java.lang.String[] { "RetCode", "ErrMsg", });
-    internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_descriptor =
-      getDescriptor().getMessageTypes().get(28);
-    internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ConfirmLoginByQrCodeReq_descriptor,
-        new java.lang.String[] { "Uuid", "QrCode", });
-    internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_descriptor =
-      getDescriptor().getMessageTypes().get(29);
-    internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_ConfirmLoginByQrCodeRsp_descriptor,
-        new java.lang.String[] { "RetCode", "ErrMsg", });
-    internal_static_com_wali_live_proto_MiSsoLoginReq_descriptor =
-      getDescriptor().getMessageTypes().get(30);
-    internal_static_com_wali_live_proto_MiSsoLoginReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_MiSsoLoginReq_descriptor,
-        new java.lang.String[] { "AccountType", "Mid", "Miservicetoken", });
-    internal_static_com_wali_live_proto_MiSsoLoginRsp_descriptor =
-      getDescriptor().getMessageTypes().get(31);
-    internal_static_com_wali_live_proto_MiSsoLoginRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_MiSsoLoginRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", "ErrMsg", });
-    internal_static_com_wali_live_proto_AppInfo_descriptor =
-      getDescriptor().getMessageTypes().get(32);
-    internal_static_com_wali_live_proto_AppInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_AppInfo_descriptor,
-        new java.lang.String[] { "AppId", "AppKey", });
-    internal_static_com_wali_live_proto_UserInfo_descriptor =
-      getDescriptor().getMessageTypes().get(33);
-    internal_static_com_wali_live_proto_UserInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_UserInfo_descriptor,
-        new java.lang.String[] { "Uuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", });
-    internal_static_com_wali_live_proto_GetAccessTokenReq_descriptor =
-      getDescriptor().getMessageTypes().get(34);
-    internal_static_com_wali_live_proto_GetAccessTokenReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetAccessTokenReq_descriptor,
-        new java.lang.String[] { "Appid", "Uuid", });
-    internal_static_com_wali_live_proto_GetAccessTokenRsp_descriptor =
-      getDescriptor().getMessageTypes().get(35);
-    internal_static_com_wali_live_proto_GetAccessTokenRsp_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetAccessTokenRsp_descriptor,
-        new java.lang.String[] { "RetCode", "ServiceToken", "SecurityKey", "Errmsg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
