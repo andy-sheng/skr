@@ -10,10 +10,10 @@ import com.base.utils.Constants;
 import com.mi.live.data.api.BanSpeakerUtils;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.LiveRoomManagerEvent;
+import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.mi.live.data.manager.model.LiveRoomManagerModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,9 +35,8 @@ import rx.schedulers.Schedulers;
  * <p>
  * 只有房主才需要
  */
-public class LiveRoomCharactorManager {
-
-    private static LiveRoomCharactorManager sInstance;
+public class LiveRoomCharacterManager {
+    private static LiveRoomCharacterManager sInstance;
 
     public final static int MANAGER_CNT = 5;
 
@@ -51,10 +50,10 @@ public class LiveRoomCharactorManager {
 
     private Subscription mSpeakerBanSubscription;
 
-    public static LiveRoomCharactorManager getInstance() {
-        synchronized (LiveRoomCharactorManager.class) {
+    public static LiveRoomCharacterManager getInstance() {
+        synchronized (LiveRoomCharacterManager.class) {
             if (sInstance == null) {
-                sInstance = new LiveRoomCharactorManager();
+                sInstance = new LiveRoomCharacterManager();
             }
         }
         return sInstance;
@@ -165,7 +164,7 @@ public class LiveRoomCharactorManager {
     public void setManager(LiveRoomManagerModel manager, boolean isManager) {
 
         if (isManager) {
-            if (managerList.size() < LiveRoomCharactorManager.MANAGER_CNT && !isManager(manager.uuid)) {
+            if (managerList.size() < LiveRoomCharacterManager.MANAGER_CNT && !isManager(manager.uuid)) {
                 managerList.add(manager);
             }
         } else {
@@ -325,7 +324,7 @@ public class LiveRoomCharactorManager {
 
                             manager.isInRoom = result == ONLINE;
 
-                            LiveRoomCharactorManager.getInstance().setManager(manager, managerEnable);
+                            LiveRoomCharacterManager.getInstance().setManager(manager, managerEnable);
                             List<LiveRoomManagerModel> list = new ArrayList<>();
                             list.add(manager);
                             EventBus.getDefault().post(new LiveRoomManagerEvent(list, true, managerEnable));
@@ -375,7 +374,7 @@ public class LiveRoomCharactorManager {
     public static boolean cancelManager(final long uuid, final String liveId) {
         boolean result = UserInfoManager.setManager(uuid, false, liveId);
         if (result) {
-            LiveRoomCharactorManager.getInstance().removeManager(uuid);
+            LiveRoomCharacterManager.getInstance().removeManager(uuid);
             LiveRoomManagerModel manager = new LiveRoomManagerModel(uuid);
             List<LiveRoomManagerModel> list = new ArrayList<>();
             list.add(manager);

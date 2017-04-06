@@ -10695,6 +10695,1965 @@ public final class Live2Proto {
     // @@protoc_insertion_point(class_scope:TagInfo)
   }
 
+  public interface GetTitleListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetTitleListReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    long getUuid();
+
+    /**
+     * <code>repeated uint32 source = 2;</code>
+     *
+     * <pre>
+     *0：摄像头 1：录屏 2：外设
+     * </pre>
+     */
+    java.util.List<java.lang.Integer> getSourceList();
+    /**
+     * <code>repeated uint32 source = 2;</code>
+     *
+     * <pre>
+     *0：摄像头 1：录屏 2：外设
+     * </pre>
+     */
+    int getSourceCount();
+    /**
+     * <code>repeated uint32 source = 2;</code>
+     *
+     * <pre>
+     *0：摄像头 1：录屏 2：外设
+     * </pre>
+     */
+    int getSource(int index);
+  }
+  /**
+   * Protobuf type {@code GetTitleListReq}
+   *
+   * <pre>
+   *获取直播标题列表
+   *zhibo.live.gettitlelist
+   * </pre>
+   */
+  public static final class GetTitleListReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetTitleListReq)
+      GetTitleListReqOrBuilder {
+    // Use GetTitleListReq.newBuilder() to construct.
+    private GetTitleListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetTitleListReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetTitleListReq defaultInstance;
+    public static GetTitleListReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetTitleListReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetTitleListReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                source_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              source_.add(input.readUInt32());
+              break;
+            }
+            case 18: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+                source_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                source_.add(input.readUInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          source_ = java.util.Collections.unmodifiableList(source_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.Live2Proto.internal_static_GetTitleListReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.Live2Proto.internal_static_GetTitleListReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.Live2Proto.GetTitleListReq.class, com.wali.live.proto.Live2Proto.GetTitleListReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetTitleListReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetTitleListReq>() {
+      public GetTitleListReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetTitleListReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetTitleListReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 uuid = 1;</code>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int SOURCE_FIELD_NUMBER = 2;
+    private java.util.List<java.lang.Integer> source_;
+    /**
+     * <code>repeated uint32 source = 2;</code>
+     *
+     * <pre>
+     *0：摄像头 1：录屏 2：外设
+     * </pre>
+     */
+    public java.util.List<java.lang.Integer>
+        getSourceList() {
+      return source_;
+    }
+    /**
+     * <code>repeated uint32 source = 2;</code>
+     *
+     * <pre>
+     *0：摄像头 1：录屏 2：外设
+     * </pre>
+     */
+    public int getSourceCount() {
+      return source_.size();
+    }
+    /**
+     * <code>repeated uint32 source = 2;</code>
+     *
+     * <pre>
+     *0：摄像头 1：录屏 2：外设
+     * </pre>
+     */
+    public int getSource(int index) {
+      return source_.get(index);
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      source_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      for (int i = 0; i < source_.size(); i++) {
+        output.writeUInt32(2, source_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < source_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeUInt32SizeNoTag(source_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getSourceList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.Live2Proto.GetTitleListReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code GetTitleListReq}
+     *
+     * <pre>
+     *获取直播标题列表
+     *zhibo.live.gettitlelist
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetTitleListReq)
+        com.wali.live.proto.Live2Proto.GetTitleListReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.Live2Proto.internal_static_GetTitleListReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.Live2Proto.internal_static_GetTitleListReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.Live2Proto.GetTitleListReq.class, com.wali.live.proto.Live2Proto.GetTitleListReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.Live2Proto.GetTitleListReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        source_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.Live2Proto.internal_static_GetTitleListReq_descriptor;
+      }
+
+      public com.wali.live.proto.Live2Proto.GetTitleListReq getDefaultInstanceForType() {
+        return com.wali.live.proto.Live2Proto.GetTitleListReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.Live2Proto.GetTitleListReq build() {
+        com.wali.live.proto.Live2Proto.GetTitleListReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.Live2Proto.GetTitleListReq buildPartial() {
+        com.wali.live.proto.Live2Proto.GetTitleListReq result = new com.wali.live.proto.Live2Proto.GetTitleListReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          source_ = java.util.Collections.unmodifiableList(source_);
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.source_ = source_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.Live2Proto.GetTitleListReq) {
+          return mergeFrom((com.wali.live.proto.Live2Proto.GetTitleListReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.Live2Proto.GetTitleListReq other) {
+        if (other == com.wali.live.proto.Live2Proto.GetTitleListReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (!other.source_.isEmpty()) {
+          if (source_.isEmpty()) {
+            source_ = other.source_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureSourceIsMutable();
+            source_.addAll(other.source_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.Live2Proto.GetTitleListReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.Live2Proto.GetTitleListReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 uuid = 1;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> source_ = java.util.Collections.emptyList();
+      private void ensureSourceIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          source_ = new java.util.ArrayList<java.lang.Integer>(source_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated uint32 source = 2;</code>
+       *
+       * <pre>
+       *0：摄像头 1：录屏 2：外设
+       * </pre>
+       */
+      public java.util.List<java.lang.Integer>
+          getSourceList() {
+        return java.util.Collections.unmodifiableList(source_);
+      }
+      /**
+       * <code>repeated uint32 source = 2;</code>
+       *
+       * <pre>
+       *0：摄像头 1：录屏 2：外设
+       * </pre>
+       */
+      public int getSourceCount() {
+        return source_.size();
+      }
+      /**
+       * <code>repeated uint32 source = 2;</code>
+       *
+       * <pre>
+       *0：摄像头 1：录屏 2：外设
+       * </pre>
+       */
+      public int getSource(int index) {
+        return source_.get(index);
+      }
+      /**
+       * <code>repeated uint32 source = 2;</code>
+       *
+       * <pre>
+       *0：摄像头 1：录屏 2：外设
+       * </pre>
+       */
+      public Builder setSource(
+          int index, int value) {
+        ensureSourceIsMutable();
+        source_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 source = 2;</code>
+       *
+       * <pre>
+       *0：摄像头 1：录屏 2：外设
+       * </pre>
+       */
+      public Builder addSource(int value) {
+        ensureSourceIsMutable();
+        source_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 source = 2;</code>
+       *
+       * <pre>
+       *0：摄像头 1：录屏 2：外设
+       * </pre>
+       */
+      public Builder addAllSource(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureSourceIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, source_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 source = 2;</code>
+       *
+       * <pre>
+       *0：摄像头 1：录屏 2：外设
+       * </pre>
+       */
+      public Builder clearSource() {
+        source_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:GetTitleListReq)
+    }
+
+    static {
+      defaultInstance = new GetTitleListReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:GetTitleListReq)
+  }
+
+  public interface GetTitleListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetTitleListRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    java.util.List<com.wali.live.proto.Live2Proto.TitleInfo> 
+        getTitleInfoList();
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    com.wali.live.proto.Live2Proto.TitleInfo getTitleInfo(int index);
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    int getTitleInfoCount();
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.Live2Proto.TitleInfoOrBuilder> 
+        getTitleInfoOrBuilderList();
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    com.wali.live.proto.Live2Proto.TitleInfoOrBuilder getTitleInfoOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code GetTitleListRsp}
+   */
+  public static final class GetTitleListRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetTitleListRsp)
+      GetTitleListRspOrBuilder {
+    // Use GetTitleListRsp.newBuilder() to construct.
+    private GetTitleListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetTitleListRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetTitleListRsp defaultInstance;
+    public static GetTitleListRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetTitleListRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetTitleListRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                titleInfo_ = new java.util.ArrayList<com.wali.live.proto.Live2Proto.TitleInfo>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              titleInfo_.add(input.readMessage(com.wali.live.proto.Live2Proto.TitleInfo.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          titleInfo_ = java.util.Collections.unmodifiableList(titleInfo_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.Live2Proto.internal_static_GetTitleListRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.Live2Proto.internal_static_GetTitleListRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.Live2Proto.GetTitleListRsp.class, com.wali.live.proto.Live2Proto.GetTitleListRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetTitleListRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetTitleListRsp>() {
+      public GetTitleListRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetTitleListRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetTitleListRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int TITLE_INFO_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.Live2Proto.TitleInfo> titleInfo_;
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    public java.util.List<com.wali.live.proto.Live2Proto.TitleInfo> getTitleInfoList() {
+      return titleInfo_;
+    }
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.Live2Proto.TitleInfoOrBuilder> 
+        getTitleInfoOrBuilderList() {
+      return titleInfo_;
+    }
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    public int getTitleInfoCount() {
+      return titleInfo_.size();
+    }
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    public com.wali.live.proto.Live2Proto.TitleInfo getTitleInfo(int index) {
+      return titleInfo_.get(index);
+    }
+    /**
+     * <code>repeated .TitleInfo title_info = 2;</code>
+     */
+    public com.wali.live.proto.Live2Proto.TitleInfoOrBuilder getTitleInfoOrBuilder(
+        int index) {
+      return titleInfo_.get(index);
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      titleInfo_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      for (int i = 0; i < titleInfo_.size(); i++) {
+        output.writeMessage(2, titleInfo_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      for (int i = 0; i < titleInfo_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, titleInfo_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.GetTitleListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.Live2Proto.GetTitleListRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code GetTitleListRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetTitleListRsp)
+        com.wali.live.proto.Live2Proto.GetTitleListRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.Live2Proto.internal_static_GetTitleListRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.Live2Proto.internal_static_GetTitleListRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.Live2Proto.GetTitleListRsp.class, com.wali.live.proto.Live2Proto.GetTitleListRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.Live2Proto.GetTitleListRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getTitleInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (titleInfoBuilder_ == null) {
+          titleInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          titleInfoBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.Live2Proto.internal_static_GetTitleListRsp_descriptor;
+      }
+
+      public com.wali.live.proto.Live2Proto.GetTitleListRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.Live2Proto.GetTitleListRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.Live2Proto.GetTitleListRsp build() {
+        com.wali.live.proto.Live2Proto.GetTitleListRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.Live2Proto.GetTitleListRsp buildPartial() {
+        com.wali.live.proto.Live2Proto.GetTitleListRsp result = new com.wali.live.proto.Live2Proto.GetTitleListRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (titleInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            titleInfo_ = java.util.Collections.unmodifiableList(titleInfo_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.titleInfo_ = titleInfo_;
+        } else {
+          result.titleInfo_ = titleInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.Live2Proto.GetTitleListRsp) {
+          return mergeFrom((com.wali.live.proto.Live2Proto.GetTitleListRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.Live2Proto.GetTitleListRsp other) {
+        if (other == com.wali.live.proto.Live2Proto.GetTitleListRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (titleInfoBuilder_ == null) {
+          if (!other.titleInfo_.isEmpty()) {
+            if (titleInfo_.isEmpty()) {
+              titleInfo_ = other.titleInfo_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureTitleInfoIsMutable();
+              titleInfo_.addAll(other.titleInfo_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.titleInfo_.isEmpty()) {
+            if (titleInfoBuilder_.isEmpty()) {
+              titleInfoBuilder_.dispose();
+              titleInfoBuilder_ = null;
+              titleInfo_ = other.titleInfo_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              titleInfoBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getTitleInfoFieldBuilder() : null;
+            } else {
+              titleInfoBuilder_.addAllMessages(other.titleInfo_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.Live2Proto.GetTitleListRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.Live2Proto.GetTitleListRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.Live2Proto.TitleInfo> titleInfo_ =
+        java.util.Collections.emptyList();
+      private void ensureTitleInfoIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          titleInfo_ = new java.util.ArrayList<com.wali.live.proto.Live2Proto.TitleInfo>(titleInfo_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.Live2Proto.TitleInfo, com.wali.live.proto.Live2Proto.TitleInfo.Builder, com.wali.live.proto.Live2Proto.TitleInfoOrBuilder> titleInfoBuilder_;
+
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public java.util.List<com.wali.live.proto.Live2Proto.TitleInfo> getTitleInfoList() {
+        if (titleInfoBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(titleInfo_);
+        } else {
+          return titleInfoBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public int getTitleInfoCount() {
+        if (titleInfoBuilder_ == null) {
+          return titleInfo_.size();
+        } else {
+          return titleInfoBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public com.wali.live.proto.Live2Proto.TitleInfo getTitleInfo(int index) {
+        if (titleInfoBuilder_ == null) {
+          return titleInfo_.get(index);
+        } else {
+          return titleInfoBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder setTitleInfo(
+          int index, com.wali.live.proto.Live2Proto.TitleInfo value) {
+        if (titleInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTitleInfoIsMutable();
+          titleInfo_.set(index, value);
+          onChanged();
+        } else {
+          titleInfoBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder setTitleInfo(
+          int index, com.wali.live.proto.Live2Proto.TitleInfo.Builder builderForValue) {
+        if (titleInfoBuilder_ == null) {
+          ensureTitleInfoIsMutable();
+          titleInfo_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          titleInfoBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder addTitleInfo(com.wali.live.proto.Live2Proto.TitleInfo value) {
+        if (titleInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTitleInfoIsMutable();
+          titleInfo_.add(value);
+          onChanged();
+        } else {
+          titleInfoBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder addTitleInfo(
+          int index, com.wali.live.proto.Live2Proto.TitleInfo value) {
+        if (titleInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTitleInfoIsMutable();
+          titleInfo_.add(index, value);
+          onChanged();
+        } else {
+          titleInfoBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder addTitleInfo(
+          com.wali.live.proto.Live2Proto.TitleInfo.Builder builderForValue) {
+        if (titleInfoBuilder_ == null) {
+          ensureTitleInfoIsMutable();
+          titleInfo_.add(builderForValue.build());
+          onChanged();
+        } else {
+          titleInfoBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder addTitleInfo(
+          int index, com.wali.live.proto.Live2Proto.TitleInfo.Builder builderForValue) {
+        if (titleInfoBuilder_ == null) {
+          ensureTitleInfoIsMutable();
+          titleInfo_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          titleInfoBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder addAllTitleInfo(
+          java.lang.Iterable<? extends com.wali.live.proto.Live2Proto.TitleInfo> values) {
+        if (titleInfoBuilder_ == null) {
+          ensureTitleInfoIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, titleInfo_);
+          onChanged();
+        } else {
+          titleInfoBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder clearTitleInfo() {
+        if (titleInfoBuilder_ == null) {
+          titleInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          titleInfoBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public Builder removeTitleInfo(int index) {
+        if (titleInfoBuilder_ == null) {
+          ensureTitleInfoIsMutable();
+          titleInfo_.remove(index);
+          onChanged();
+        } else {
+          titleInfoBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public com.wali.live.proto.Live2Proto.TitleInfo.Builder getTitleInfoBuilder(
+          int index) {
+        return getTitleInfoFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public com.wali.live.proto.Live2Proto.TitleInfoOrBuilder getTitleInfoOrBuilder(
+          int index) {
+        if (titleInfoBuilder_ == null) {
+          return titleInfo_.get(index);  } else {
+          return titleInfoBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.Live2Proto.TitleInfoOrBuilder> 
+           getTitleInfoOrBuilderList() {
+        if (titleInfoBuilder_ != null) {
+          return titleInfoBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(titleInfo_);
+        }
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public com.wali.live.proto.Live2Proto.TitleInfo.Builder addTitleInfoBuilder() {
+        return getTitleInfoFieldBuilder().addBuilder(
+            com.wali.live.proto.Live2Proto.TitleInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public com.wali.live.proto.Live2Proto.TitleInfo.Builder addTitleInfoBuilder(
+          int index) {
+        return getTitleInfoFieldBuilder().addBuilder(
+            index, com.wali.live.proto.Live2Proto.TitleInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .TitleInfo title_info = 2;</code>
+       */
+      public java.util.List<com.wali.live.proto.Live2Proto.TitleInfo.Builder> 
+           getTitleInfoBuilderList() {
+        return getTitleInfoFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.Live2Proto.TitleInfo, com.wali.live.proto.Live2Proto.TitleInfo.Builder, com.wali.live.proto.Live2Proto.TitleInfoOrBuilder> 
+          getTitleInfoFieldBuilder() {
+        if (titleInfoBuilder_ == null) {
+          titleInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.Live2Proto.TitleInfo, com.wali.live.proto.Live2Proto.TitleInfo.Builder, com.wali.live.proto.Live2Proto.TitleInfoOrBuilder>(
+                  titleInfo_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          titleInfo_ = null;
+        }
+        return titleInfoBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:GetTitleListRsp)
+    }
+
+    static {
+      defaultInstance = new GetTitleListRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:GetTitleListRsp)
+  }
+
+  public interface TitleInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TitleInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 source = 1;</code>
+     */
+    boolean hasSource();
+    /**
+     * <code>optional uint32 source = 1;</code>
+     */
+    int getSource();
+
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getTitleListList();
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    int getTitleListCount();
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    java.lang.String getTitleList(int index);
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getTitleListBytes(int index);
+  }
+  /**
+   * Protobuf type {@code TitleInfo}
+   */
+  public static final class TitleInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:TitleInfo)
+      TitleInfoOrBuilder {
+    // Use TitleInfo.newBuilder() to construct.
+    private TitleInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private TitleInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final TitleInfo defaultInstance;
+    public static TitleInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public TitleInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TitleInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              source_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                titleList_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              titleList_.add(bs);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          titleList_ = titleList_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.Live2Proto.internal_static_TitleInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.Live2Proto.internal_static_TitleInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.Live2Proto.TitleInfo.class, com.wali.live.proto.Live2Proto.TitleInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<TitleInfo> PARSER =
+        new com.google.protobuf.AbstractParser<TitleInfo>() {
+      public TitleInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TitleInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TitleInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int SOURCE_FIELD_NUMBER = 1;
+    private int source_;
+    /**
+     * <code>optional uint32 source = 1;</code>
+     */
+    public boolean hasSource() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 source = 1;</code>
+     */
+    public int getSource() {
+      return source_;
+    }
+
+    public static final int TITLE_LIST_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList titleList_;
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getTitleListList() {
+      return titleList_;
+    }
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    public int getTitleListCount() {
+      return titleList_.size();
+    }
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    public java.lang.String getTitleList(int index) {
+      return titleList_.get(index);
+    }
+    /**
+     * <code>repeated string title_list = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTitleListBytes(int index) {
+      return titleList_.getByteString(index);
+    }
+
+    private void initFields() {
+      source_ = 0;
+      titleList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, source_);
+      }
+      for (int i = 0; i < titleList_.size(); i++) {
+        output.writeBytes(2, titleList_.getByteString(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, source_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < titleList_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(titleList_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getTitleListList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.Live2Proto.TitleInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.Live2Proto.TitleInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TitleInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TitleInfo)
+        com.wali.live.proto.Live2Proto.TitleInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.Live2Proto.internal_static_TitleInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.Live2Proto.internal_static_TitleInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.Live2Proto.TitleInfo.class, com.wali.live.proto.Live2Proto.TitleInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.Live2Proto.TitleInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        source_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        titleList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.Live2Proto.internal_static_TitleInfo_descriptor;
+      }
+
+      public com.wali.live.proto.Live2Proto.TitleInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.Live2Proto.TitleInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.Live2Proto.TitleInfo build() {
+        com.wali.live.proto.Live2Proto.TitleInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.Live2Proto.TitleInfo buildPartial() {
+        com.wali.live.proto.Live2Proto.TitleInfo result = new com.wali.live.proto.Live2Proto.TitleInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.source_ = source_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          titleList_ = titleList_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.titleList_ = titleList_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.Live2Proto.TitleInfo) {
+          return mergeFrom((com.wali.live.proto.Live2Proto.TitleInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.Live2Proto.TitleInfo other) {
+        if (other == com.wali.live.proto.Live2Proto.TitleInfo.getDefaultInstance()) return this;
+        if (other.hasSource()) {
+          setSource(other.getSource());
+        }
+        if (!other.titleList_.isEmpty()) {
+          if (titleList_.isEmpty()) {
+            titleList_ = other.titleList_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureTitleListIsMutable();
+            titleList_.addAll(other.titleList_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.Live2Proto.TitleInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.Live2Proto.TitleInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int source_ ;
+      /**
+       * <code>optional uint32 source = 1;</code>
+       */
+      public boolean hasSource() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 source = 1;</code>
+       */
+      public int getSource() {
+        return source_;
+      }
+      /**
+       * <code>optional uint32 source = 1;</code>
+       */
+      public Builder setSource(int value) {
+        bitField0_ |= 0x00000001;
+        source_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 source = 1;</code>
+       */
+      public Builder clearSource() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        source_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList titleList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureTitleListIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          titleList_ = new com.google.protobuf.LazyStringArrayList(titleList_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getTitleListList() {
+        return titleList_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public int getTitleListCount() {
+        return titleList_.size();
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public java.lang.String getTitleList(int index) {
+        return titleList_.get(index);
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTitleListBytes(int index) {
+        return titleList_.getByteString(index);
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public Builder setTitleList(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureTitleListIsMutable();
+        titleList_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public Builder addTitleList(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureTitleListIsMutable();
+        titleList_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public Builder addAllTitleList(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureTitleListIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, titleList_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public Builder clearTitleList() {
+        titleList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string title_list = 2;</code>
+       */
+      public Builder addTitleListBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureTitleListIsMutable();
+        titleList_.add(value);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:TitleInfo)
+    }
+
+    static {
+      defaultInstance = new TitleInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:TitleInfo)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BeginLiveInitReq_descriptor;
   private static
@@ -10760,6 +12719,21 @@ public final class Live2Proto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_TagInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetTitleListReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_GetTitleListReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetTitleListRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_GetTitleListRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TitleInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_TitleInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -10795,8 +12769,12 @@ public final class Live2Proto {
       " \001(\004\"<\n\rGetRoomTagRsp\022\017\n\007retCode\030\001 \002(\r\022\032" +
       "\n\010tagInfos\030\002 \003(\0132\010.TagInfo\"M\n\007TagInfo\022\r\n" +
       "\005tagId\030\001 \001(\r\022\017\n\007tagName\030\002 \001(\t\022\017\n\007iconUrl" +
-      "\030\003 \001(\t\022\021\n\ttagStatus\030\004 \001(\rB!\n\023com.wali.li" +
-      "ve.protoB\nLive2Proto"
+      "\030\003 \001(\t\022\021\n\ttagStatus\030\004 \001(\r\"/\n\017GetTitleLis" +
+      "tReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006source\030\002 \003(\r\"B\n\017Ge" +
+      "tTitleListRsp\022\017\n\007retCode\030\001 \002(\r\022\036\n\ntitle_" +
+      "info\030\002 \003(\0132\n.TitleInfo\"/\n\tTitleInfo\022\016\n\006s",
+      "ource\030\001 \001(\r\022\022\n\ntitle_list\030\002 \003(\tB!\n\023com.w" +
+      "ali.live.protoB\nLive2Proto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10888,6 +12866,24 @@ public final class Live2Proto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_TagInfo_descriptor,
         new java.lang.String[] { "TagId", "TagName", "IconUrl", "TagStatus", });
+    internal_static_GetTitleListReq_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_GetTitleListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetTitleListReq_descriptor,
+        new java.lang.String[] { "Uuid", "Source", });
+    internal_static_GetTitleListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_GetTitleListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetTitleListRsp_descriptor,
+        new java.lang.String[] { "RetCode", "TitleInfo", });
+    internal_static_TitleInfo_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_TitleInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_TitleInfo_descriptor,
+        new java.lang.String[] { "Source", "TitleList", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

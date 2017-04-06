@@ -85,7 +85,7 @@ public class LiveComponentController extends BaseLiveController {
     }
 
     @Override
-    public void createStreamer(BaseSdkActivity activity, @NonNull View surfaceView, int clarity, Intent intent) {
+    public void createStreamer(BaseSdkActivity activity, @NonNull View surfaceView, int clarity, boolean isMute, Intent intent) {
         MyLog.w(TAG, "create streamer");
         StreamerConfig.Builder builder = new StreamerConfig.Builder();
         String videoRate = PreferenceUtils.getSettingString(

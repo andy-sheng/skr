@@ -5,7 +5,7 @@ import os
 import shutil
 
 # 待拷贝资源的所在路径
-org_res_path = "/Users/yangli/Development/huyu/walilive/app/src/main/res"
+org_res_path = "/Users/xiaolan/Develop/XiaoMi/gerrit/walilive/app/src/main/res"
 # 资源拷贝的目标路径
 dst_res_path = "../src/main/res"
 

@@ -9,10 +9,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.dialog.MyAlertDialog;
@@ -23,16 +26,22 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
-import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
+import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
+import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
+import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
+import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -50,59 +59,38 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private static final String TAG = "PrepareGameLiveFragment";
 
     public static final String EXTRA_GAME_LIVE_QUALITY = "extra_game_live_quality";
+    public static final String EXTRA_GAME_LIVE_MUTE = "extra_game_live_mute";
 
     public static final int LOW_CLARITY = 0;
     public static final int MEDIUM_CLARITY = 1;
     public static final int HIGH_CLARITY = 2;
 
-    private ViewGroup mGameClarityContainer;
-    private TextView mGameClarityTv;
     private int mQualityIndex = MEDIUM_CLARITY;
     private CharSequence[] mQualityArray;
-    private ViewGroup mQualityCnCotainer;
-    private ViewGroup mQualityEnConatainer;
-    private TextView[] mQualityBtns;
-    private TextView mQualityTv;
+
+    private TextView mClarityTv;
+
+    private TextView mMuteTv;
+    private TextView mUnMuteTv;
+
+    private boolean mIsMute = false;
+
+    private ViewGroup mControlTitleArea;
+    private TextView mChangeTitleTv;
+    private TextView mClearTitleTv;
+
+    private ViewGroup mBlockArea;
+    private GameSettingPanel mGameSettingPanel;
+
+    private ViewGroup mTopContainer;
+    private ViewGroup mTitleContainer;
+    private ViewGroup mMiddleContainer;
+
+    private RoomPreparePresenter mRoomPreparePresenter;
 
     @Override
     protected String getTAG() {
         return getClass().getSimpleName() + "#" + this.hashCode();
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        int i = v.getId();
-        if (i == R.id.game_clarity_container) {
-            showQualityDialog();
-        } else if (i == R.id.standard_definition || i == R.id.high_definition || i == R.id.super_definition) {
-            selectQuality(v);
-        }
-    }
-
-    private void selectQuality(View v) {
-        int index = (int) v.getTag();
-        if (mQualityIndex != index) {
-            mQualityBtns[mQualityIndex].setSelected(false);
-            mQualityIndex = index;
-            mQualityBtns[mQualityIndex].setSelected(true);
-        }
-    }
-
-    private void showQualityDialog() {
-        KeyboardUtils.hideKeyboard(getActivity());
-        if (mQualityArray == null) {
-            mQualityArray = getResources().getTextArray(R.array.quality_arrays);
-        }
-        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getContext());
-        builder.setItems(mQualityArray, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mQualityIndex = which;
-                mGameClarityTv.setText(mQualityArray[mQualityIndex]);
-            }
-        });
-        builder.show();
     }
 
     @Override
@@ -120,63 +108,71 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     protected void bindView() {
         super.bindView();
         initOtherViews();
+
+        asyncProcess();
+    }
+
+    @Override
+    protected void initPresenters() {
+        super.initPresenters();
+        mRoomPreparePresenter = new RoomPreparePresenter(this, TitleViewModel.SOURCE_GAME);
+    }
+
+    private void asyncProcess() {
+        mRoomPreparePresenter.loadTitle();
     }
 
     private void initOtherViews() {
-        mQualityCnCotainer = $(R.id.quality_cn_container);
-        mQualityEnConatainer = $(R.id.quality_en_container);
         if (mQualityArray == null) {
             mQualityArray = getResources().getTextArray(R.array.quality_arrays);
         }
         mQualityIndex = PreferenceUtils.getSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, MEDIUM_CLARITY);
-        if (!CommonUtils.isLocalChina()) {
-            mQualityEnConatainer.setVisibility(View.VISIBLE);
-            mQualityCnCotainer.setVisibility(View.GONE);
-            // 游戏画质view
-            mQualityTv = $(R.id.quality_tv);
-            mQualityTv.setOnClickListener(null);
-            mQualityTv.setText(getString(R.string.game_quality_title_en));
 
-            mQualityBtns = new TextView[3];
-            mQualityBtns[0] = $(R.id.standard_definition);
-            mQualityBtns[0].setTag(LOW_CLARITY);
-            mQualityBtns[0].setText(mQualityArray[0]);
-            mQualityBtns[0].setOnClickListener(this);
+        mClarityTv = $(R.id.clarity_tv);
+        mClarityTv.setText(mQualityArray[mQualityIndex]);
+        mClarityTv.setOnClickListener(this);
 
-            mQualityBtns[1] = $(R.id.high_definition);
-            mQualityBtns[1].setTag(MEDIUM_CLARITY);
-            mQualityBtns[1].setText(mQualityArray[1]);
-            mQualityBtns[1].setOnClickListener(this);
+        mBlockArea = $(R.id.block_area);
+        mBlockArea.setOnClickListener(this);
 
-            mQualityBtns[2] = $(R.id.super_definition);
-            mQualityBtns[2].setTag(HIGH_CLARITY);
-            mQualityBtns[2].setText(mQualityArray[2]);
-            mQualityBtns[2].setOnClickListener(this);
+        mMuteTv = $(R.id.mute_yes_tv);
+        mMuteTv.setOnClickListener(this);
+        mUnMuteTv = $(R.id.mute_no_tv);
+        mUnMuteTv.setOnClickListener(this);
 
-            mQualityBtns[mQualityIndex].setSelected(true);
-        } else {
-            mQualityCnCotainer.setVisibility(View.VISIBLE);
-            mQualityEnConatainer.setVisibility(View.GONE);
+        mControlTitleArea = $(R.id.control_title_area);
 
-            mGameClarityContainer = $(R.id.game_clarity_container);
-            mGameClarityContainer.setOnClickListener(this);
+        mChangeTitleTv = $(R.id.change_title_tv);
+        mChangeTitleTv.setOnClickListener(this);
 
-            mGameClarityTv = $(R.id.game_clarity_tv);
-            mGameClarityTv.setText(mQualityArray[mQualityIndex]);
-            mGameClarityTv.setSelected(true);
+        mClearTitleTv = $(R.id.clear_title_tv);
+        mClearTitleTv.setOnClickListener(this);
+
+        mTopContainer = $(R.id.top_container);
+        mTitleContainer = $(R.id.title_container);
+        mMiddleContainer = $(R.id.middle_container);
+
+        tryInitSettingPanel();
+    }
+
+    public void setRoomChatMsgManager(@NonNull LiveRoomChatMsgManager roomChatMsgManager) {
+        super.setRoomChatMsgManager(roomChatMsgManager);
+        tryInitSettingPanel();
+    }
+
+    private void tryInitSettingPanel() {
+        if (mGameSettingPanel == null && mRootView != null && mRoomChatMsgManager != null) {
+            mGameSettingPanel = new GameSettingPanel((RelativeLayout) mRootView, mRoomChatMsgManager);
         }
     }
 
     @Override
     protected void onBeginBtnClick() {
         PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.READ_PHONE_STATE, new PermissionUtils.IPermissionCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void okProcess() {
                 if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
-                    return;
-                }
-                if (CommonUtils.isLocalChina() && mRoomTag == null) {
-                    ToastUtils.showToast(R.string.game_choose_tag_tip);
                     return;
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -225,9 +221,114 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     protected void openLive() {
         if (mRoomTag != null) {
             PreferenceUtils.setSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_TAG, mRoomTag.toJsonString());
-            PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, mQualityIndex);
         }
+        PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, mQualityIndex);
         openGameLive();
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        int id = v.getId();
+        if (id == R.id.clarity_tv) {
+            showQualityDialog();
+        } else if (id == R.id.block_area) {
+            showSettingPanel(true);
+        } else if (id == R.id.mute_no_tv) {
+            updateMuteStatus(false);
+        } else if (id == R.id.mute_yes_tv) {
+            updateMuteStatus(true);
+        } else if (id == R.id.admin_area) {
+            openAdminFragment();
+        } else if (id == R.id.change_title_tv) {
+            changeTitle();
+        } else if (id == R.id.clear_title_tv) {
+            clearTitle();
+        } else if (id == R.id.main_fragment_container) {
+            hideSettingPanel(true);
+        }
+    }
+
+    private void showQualityDialog() {
+        KeyboardUtils.hideKeyboard(getActivity());
+        if (mQualityArray == null) {
+            mQualityArray = getResources().getTextArray(R.array.quality_arrays);
+        }
+        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getContext());
+        builder.setItems(mQualityArray, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mQualityIndex = which;
+                mClarityTv.setText(mQualityArray[mQualityIndex]);
+            }
+        });
+        builder.show();
+    }
+
+    private void showSettingPanel(boolean useAnimation) {
+        mTopContainer.setVisibility(View.GONE);
+        mTitleContainer.setVisibility(View.GONE);
+        mMiddleContainer.setVisibility(View.GONE);
+        mBeginBtn.setVisibility(View.GONE);
+
+        mGameSettingPanel.showSelf(useAnimation, false);
+        mRootView.setOnClickListener(this);
+    }
+
+    private void hideSettingPanel(boolean useAnimation) {
+        mTopContainer.setVisibility(View.VISIBLE);
+        mTitleContainer.setVisibility(View.VISIBLE);
+        mMiddleContainer.setVisibility(View.VISIBLE);
+        mBeginBtn.setVisibility(View.VISIBLE);
+
+        mGameSettingPanel.hideSelf(useAnimation);
+        mRootView.setOnClickListener(null);
+    }
+
+    private void updateMuteStatus(boolean isMute) {
+        if (mIsMute != isMute) {
+            mIsMute = isMute;
+            if (mIsMute) {
+                mUnMuteTv.setTextColor(getResources().getColor(R.color.color_white_trans_40));
+                mMuteTv.setTextColor(getResources().getColor(R.color.color_white_trans_90));
+            } else {
+                mUnMuteTv.setTextColor(getResources().getColor(R.color.color_white_trans_90));
+                mMuteTv.setTextColor(getResources().getColor(R.color.color_white_trans_40));
+            }
+        }
+    }
+
+    private void openAdminFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, new MessageRule());
+        bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, UserAccountManager.getInstance().getUuidAsLong());
+        FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
+    }
+
+    @Override
+    public void fillTitle(String title) {
+        mLiveTitleEt.setText(title);
+    }
+
+    @Override
+    public void updateControlTitleArea(boolean isShow) {
+        if (isShow) {
+            if (mControlTitleArea.getVisibility() != View.VISIBLE) {
+                mControlTitleArea.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (mControlTitleArea.getVisibility() == View.VISIBLE) {
+                mControlTitleArea.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void changeTitle() {
+        mRoomPreparePresenter.changeTitle();
+    }
+
+    private void clearTitle() {
+        mLiveTitleEt.setText("");
     }
 
     protected void openGameLive() {
@@ -236,6 +337,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             putCommonData(bundle);
             bundle.putInt(EXTRA_GAME_LIVE_QUALITY, mQualityIndex);
             bundle.putInt(EXTRA_LIVE_TYPE, LiveManager.TYPE_LIVE_GAME);
+            bundle.putBoolean(EXTRA_GAME_LIVE_MUTE, mIsMute);
             mDataListener.onFragmentResult(mRequestCode, Activity.RESULT_OK, bundle);
         }
         finish();
@@ -243,10 +345,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     protected void adjustTitleEtPosByCover(boolean isTitleEtFocus, int coverState) {
-        if (!isTitleEtFocus) {
-            return;
-        }
-        mLiveTitleEt.setHint("");
     }
 
     @Override
@@ -278,21 +376,12 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
-    public static void openFragment(
-            BaseComponentSdkActivity activity,
-            int requestCode,
-            FragmentDataListener listener, RoomBaseDataModel roomBaseDataModel) {
-        PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
-                PrepareLiveFragment.class, null, true, false, true);
-        fragment.setMyRoomData(roomBaseDataModel);
-        if (listener != null) {
-            fragment.initDataResult(requestCode, listener);
-        }
-    }
-
     @Override
     public boolean onBackPressed() {
-        super.onBackPressed();
+        if (mGameSettingPanel.isShow()) {
+            hideSettingPanel(true);
+            return true;
+        }
         getActivity().finish();
         return true;
     }
@@ -306,5 +395,17 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public void hideTag() {
         // 游戏直播,不需要hideTag
+    }
+
+    public static void openFragment(
+            BaseComponentSdkActivity activity, int requestCode, FragmentDataListener listener,
+            RoomBaseDataModel roomBaseDataModel, LiveRoomChatMsgManager roomChatMsgManager) {
+        PrepareLiveFragment fragment = (PrepareLiveFragment) FragmentNaviUtils.addFragment(activity, R.id.main_act_container,
+                PrepareLiveFragment.class, null, true, false, true);
+        fragment.setMyRoomData(roomBaseDataModel);
+        fragment.setRoomChatMsgManager(roomChatMsgManager);
+        if (listener != null) {
+            fragment.initDataResult(requestCode, listener);
+        }
     }
 }

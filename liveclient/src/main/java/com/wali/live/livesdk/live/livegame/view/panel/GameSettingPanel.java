@@ -26,10 +26,6 @@ import static com.wali.live.statistics.StatisticsKey.TIMES;
  */
 public class GameSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
         implements View.OnClickListener {
-    public static final boolean DEFAULT_FORBID_GIFT = false;
-    public static final boolean DEFAULT_FORBID_SYS = false;
-    public static final boolean DEFAULT_FORBID_CHAT = false;
-
     @Nullable
     private LiveRoomChatMsgManager mLiveRoomChatMsgManager;
 

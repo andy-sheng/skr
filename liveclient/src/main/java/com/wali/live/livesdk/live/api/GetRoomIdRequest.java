@@ -21,7 +21,7 @@ public class GetRoomIdRequest extends BaseLiveRequest {
         LiveProto.GetRoomIdReq.Builder builder = LiveProto.GetRoomIdReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong());
         mRequest = builder.build();
-        MyLog.v("GetRoomIdRequest = " + mRequest.toString());
+        MyLog.v("TitleListRequest = " + mRequest.toString());
     }
 
     public GetRoomIdRequest(AccountProto.AppInfo appInfo) {
@@ -31,7 +31,7 @@ public class GetRoomIdRequest extends BaseLiveRequest {
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setAppType(MiLinkConstant.THIRD_APP_TYPE).setAppInfo(appInfo);
         mRequest = builder.build();
-        MyLog.v("GetRoomIdRequest = " + mRequest.toString());
+        MyLog.v("TitleListRequest = " + mRequest.toString());
     }
 
     protected LiveProto.GetRoomIdRsp parse(byte[] bytes) throws InvalidProtocolBufferException {

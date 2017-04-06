@@ -8,26 +8,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
-import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
-import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.jakewharton.rxbinding.view.RxView;
-import com.mi.live.data.manager.LiveRoomCharactorManager;
 import com.mi.live.data.query.model.ViewerModel;
 import com.wali.live.common.listener.OnItemClickListener;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import rx.functions.Action1;
 
 /**
