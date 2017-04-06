@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
-import com.base.activity.BaseSdkActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
@@ -1153,14 +1152,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     /**
      * 秀场直播
      */
-    public static void openActivity(BaseSdkActivity activity, Location location) {
+    public static void openActivity(Activity activity, Location location) {
         openActivity(activity, location, false);
     }
 
     /**
      * 区分是否是游戏直播还是秀场直播
      */
-    public static void openActivity(BaseSdkActivity activity, Location location, boolean isGameLive) {
+    public static void openActivity(Activity activity, Location location, boolean isGameLive) {
         Intent intent = new Intent(activity, LiveSdkActivity.class);
         if (location != null) {
             intent.putExtra(EXTRA_LOCATION, location);

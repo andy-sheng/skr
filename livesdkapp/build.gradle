@@ -100,13 +100,11 @@ dependencies {
     compile presentationDependencies.frescoWebpSupport
     compile presentationDependencies.frescoGif
 
-    compile(name: 'livesdk', ext: 'aar')
-
-//    if (flavorType == "live") {
-//        compile project(':liveclient')
-//    } else {
-//        compile project(':watchclient')
-//    }
+    if (flavorType == "live") {
+        compile project(':liveclient')
+    } else {
+        compile project(':watchclient')
+    }
 
     compile files('libs/crasheye_2.1.5.jar')
 

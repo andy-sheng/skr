@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/register_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="40.67dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/corners_bg_e5e5e5_30px"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/register"
+        android:textColor="@color/color_black_trans_80"
+        android:textSize="@dimen/text_size_32"/>
+
+    <TextView
+        android:id="@+id/test_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="40.67dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/corners_bg_e5e5e5_30px"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="直接跳watchsdkactivity"
+        android:textColor="@color/color_black_trans_80"
+        android:textSize="@dimen/text_size_32"/>
+
+
+    <TextView
+        android:id="@+id/test2_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="40.67dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/corners_bg_e5e5e5_30px"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="匿名跳主页"
+        android:textColor="@color/color_black_trans_80"
+        android:textSize="@dimen/text_size_32"/>
+</LinearLayout>

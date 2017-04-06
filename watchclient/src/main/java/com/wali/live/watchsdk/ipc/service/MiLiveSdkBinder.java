@@ -207,7 +207,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType) {
+                          final long playerId, final String liveId, final String videoUrl, final int liveType, final boolean needFinish) {
         MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -219,25 +219,31 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         .setLiveType(liveType)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void postError() {
                 MyLog.w(TAG, "openWatch by activity postError callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void processFailure() {
                 MyLog.w(TAG, "openWatch by activity failure callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
         });
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl, final int liveType) {
+                           final long playerId, final String liveId, final String videoUrl, final int liveType, final boolean needFinish) {
         MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -249,25 +255,31 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         .setLiveType(liveType)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void postError() {
                 MyLog.w(TAG, "openReplay by activity postError callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void processFailure() {
                 MyLog.w(TAG, "openReplay by activity failure callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
         });
     }
 
     public void openNormalLive(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                               final ICommonCallBack callback) {
+                               final ICommonCallBack callback, final boolean needFinish) {
         MyLog.w(TAG, "openNormalLive by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -278,25 +290,31 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 if (callback != null) {
                     callback.process(null);
                 }
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void postError() {
                 MyLog.w(TAG, "openNormalLive by activity postError callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void processFailure() {
                 MyLog.w(TAG, "openNormalLive by activity failure callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
         });
     }
 
     public void openGameLive(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                             final ICommonCallBack callback) {
+                             final ICommonCallBack callback, final boolean needFinish) {
         MyLog.w(TAG, "openGameLive by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -307,19 +325,25 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 if (callback != null) {
                     callback.process(null);
                 }
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void postError() {
                 MyLog.w(TAG, "openGameLive by activity postError callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
 
             @Override
             public void processFailure() {
                 MyLog.w(TAG, "openGameLive by activity failure callback");
-                activity.finish();
+                if (needFinish) {
+                    activity.finish();
+                }
             }
         });
     }

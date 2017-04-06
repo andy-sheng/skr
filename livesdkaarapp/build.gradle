@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+//    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.mi.liveassistant"
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        multiDexEnabled true
+    }
+
+    // chenyong1 后面去掉这个选项对lint进行优化
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        quiet true
+        ignoreWarnings true
+        disable 'InvalidPackage'  // Some libraries have issues with this
+    }
+
+    signingConfigs {
+        myConfig {
+            storeFile file("com.xiaomi.debug.keystore")
+            storePassword "XiaomiIs#1"
+            keyAlias "release_key"
+            keyPassword "XiaomiIs#1"
+        }
+    }
+    buildTypes {
+
+        debug {
+            debuggable true
+            signingConfig signingConfigs.myConfig
+        }
+        release {
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myConfig
+            shrinkResources true
+
+        }
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    compile presentationDependencies.rxAndroid
+    compile presentationDependencies.rxJava
+
+    // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
+    compile presentationDependencies.androidAppCompat
+    compile presentationDependencies.recyclerView
+
+    compile presentationDependencies.butterKnife
+
+    compile(presentationDependencies.fresco) {
+        exclude module: 'support-v4'
+        exclude module: 'print', group: 'android.support.v4'
+    }
+    compile presentationDependencies.frescoOkHttp
+    compile presentationDependencies.frescoWebp
+    compile presentationDependencies.frescoWebpSupport
+    compile presentationDependencies.frescoGif
+
+//    compile(name: 'livesdk', ext: 'aar')
+
+    if (flavorType == "live") {
+        compile project(':liveclient')
+    } else {
+        compile project(':watchclient')
+    }
+
+    compile files('libs/crasheye_2.1.5.jar')
+
+    compile 'com.google.code.gson:gson:2.6.2'
+
+    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+}

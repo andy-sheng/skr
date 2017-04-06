@@ -59,7 +59,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType);
+                        playerId, liveId, videoUrl, liveType, true);
                 break;
             }
             case ACTION_OPEN_REPLAY: {
@@ -68,7 +68,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType);
+                        playerId, liveId, videoUrl, liveType, true);
                 break;
             }
             case ACTION_OPEN_NORMAL_LIVE: {
@@ -79,7 +79,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                             public void process(Object objects) {
                                 LiveSdkActivity.openActivity(JumpSdkActivity.this, location, false);
                             }
-                        });
+                        }, true);
                 break;
             }
             case ACTION_OPEN_GAME_LIVE: {
@@ -90,7 +90,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                             public void process(Object objects) {
                                 LiveSdkActivity.openActivity(JumpSdkActivity.this, location, true);
                             }
-                        });
+                        }, true);
                 break;
             }
             default: {
