@@ -534,6 +534,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
         registerScreenStateReceiver();
 
+        if(mMyRoomData.getUser() == null ||mMyRoomData.getUser().getUid()<=0 || TextUtils.isEmpty(mMyRoomData.getUser().getNickname())){
+            mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+        }
         // 顶部view
         mTopInfoSingleView = $(R.id.live_top_info_view);
         addBindActivityLifeCycle(mTopInfoSingleView, true);

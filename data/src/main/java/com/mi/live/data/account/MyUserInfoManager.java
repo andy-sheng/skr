@@ -12,6 +12,7 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.OwnUserInfo;
+import com.wali.live.dao.UserAccount;
 import com.wali.live.proto.UserProto;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,16 +57,19 @@ public class MyUserInfoManager {
 
     public void init() {
 //        // 从数据库得到个人信息
-//        Observable.just(null)
-//                .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
-//                .subscribe(new Action1<Object>() {
-//                    @Override
-//                    public void call(Object o) {
-//                        User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
-//                        mMyInfo = userInfo;
-//                    }
-//                });
-        syncSelfDetailInfo();
+        Observable.just(null)
+                .observeOn(Schedulers.from(ThreadPool.getUserInfoExecutor()))
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                        User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
+                        if(userInfo != null && userInfo.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                            mMyInfo = userInfo;
+                        }else{
+                            syncSelfDetailInfo();
+                        }
+                    }
+                });
     }
 
     /**
@@ -184,8 +188,11 @@ public class MyUserInfoManager {
                     @Override
                     public void call(UserProto.GetOwnInfoRsp rsp) {
                         if (rsp == null || rsp.getErrorCode() != MiLinkConstant.ERROR_CODE_SUCCESS) {
-                            readFromDB(channelId);
                             MyLog.e(TAG, "rsp==null || rsp.getErrorCode()!=0");
+                            User user = readFromDB(channelId);
+                            if(user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()){
+                                mMyInfo = user;
+                            }
                             return;
                         }
                         MyLog.d(TAG,rsp.toString());
@@ -201,7 +208,7 @@ public class MyUserInfoManager {
                         }
                         mLastInfoTsMap.put(channelId, System.currentTimeMillis());
                         saveInfoIntoDB(user,channelId);
-                        if(channelId == HostChannelManager.getInstance().getChannelId()) {
+                        if(channelId == HostChannelManager.getInstance().getChannelId() && user!=null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                             mMyInfo = user;
                             EventBus.getDefault().post(new UserInfoEvent());
                         }
@@ -209,8 +216,11 @@ public class MyUserInfoManager {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        readFromDB(channelId);
                         MyLog.e(TAG, throwable);
+                        User user = readFromDB(channelId);
+                        if(user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()){
+                            mMyInfo = user;
+                        }
                     }
                 });
     }
@@ -219,6 +229,7 @@ public class MyUserInfoManager {
      * 得到User
      */
     public User getUser() {
+        MyLog.w(TAG,"getUser");
         if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
             return mMyInfo;
         }
@@ -230,7 +241,9 @@ public class MyUserInfoManager {
                         @Override
                         public void call(Object o) {
                             User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
-                            mMyInfo = userInfo;
+                            if(userInfo != null && userInfo.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                                mMyInfo = userInfo;
+                            }
                         }
                     });
         }
