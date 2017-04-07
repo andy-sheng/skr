@@ -130,7 +130,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 new ICommonCallBack() {
                     @Override
                     public void process(Object objects) {
-                        LiveSdkActivity.openActivity(activity, location, false);
+                        LiveSdkActivity.openActivity(activity, location, true);
                     }
                 }, false);
     }
