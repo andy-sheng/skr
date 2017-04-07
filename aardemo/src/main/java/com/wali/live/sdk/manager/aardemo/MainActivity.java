@@ -1,11 +1,9 @@
 package com.wali.live.sdk.manager.aardemo;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import com.wali.live.livesdk.live.MiLiveSdkController;
 import com.wali.live.sdk.manager.aardemo.global.GlobalData;
@@ -21,22 +19,17 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private MenuRecyclerAdapter mMenuRecyclerAdapter;
-    private TextView mChannelTv;
-
-    private Handler mUiHander = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mChannelTv = (TextView) findViewById(R.id.channel_tv);
         mRecyclerView = (RecyclerView) findViewById(R.id.menu_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mMenuRecyclerAdapter = new MenuRecyclerAdapter(this);
         mRecyclerView.setAdapter(mMenuRecyclerAdapter);
         GlobalData.setApplication(this.getApplication());
-        //建议在 application里初始化这个
-        MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, "TEST SECRET", new IMiLiveSdk.ICallback() {
+        MiLiveSdkController.getInstance().setCallback(new IMiLiveSdk.ICallback() {
 
             @Override
             public void notifyLogin(int var1) {

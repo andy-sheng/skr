@@ -29,18 +29,24 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return sSdkController;
     }
 
-    public void init(Application app, int channelId, String channelSecret, ICallback callback) {
+    public void init(Application app, int channelId, String channelSecret) {
         InitManager.init(app, null);
         MyLog.d(TAG, "init channelId=" + channelId);
         mChannelId = channelId;
         mChannelSecret = channelSecret;
         mPackageName = app.getPackageName();
-        MiLiveSdkBinder.getInstance().setCallback(callback);
+    }
+
+    public void setCallback(ICallback callback) {
+        mCallback = callback;
+        if (mCallback != null) {
+            MiLiveSdkBinder.getInstance().setCallback(mCallback);
+        }
     }
 
     private void checkHasInit() {
-        if (mChannelId == 0) {
-            throw new RuntimeException("channelId==0, make sure MiLiveSdkController.init(...) be called.");
+        if (mChannelId == 0 || mCallback == null) {
+            throw new RuntimeException("channelId==0 or callback is null");
         }
     }
 
@@ -83,6 +89,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     @Override
     public void clearAccount() {
+        checkHasInit();
         try {
             MiLiveSdkBinder.getInstance().clearAccount(mChannelId, mPackageName, mChannelSecret);
         } catch (RemoteException e) {

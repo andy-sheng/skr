@@ -14,56 +14,55 @@ import com.mi.live.data.location.Location;
 public interface IMiLiveSdk {
 
     /**
-     * 初始化操作，建议在Application.onCreate()初始化
+     * 初始化操作，要求在Application.onCreate()初始化
      */
-    void init(Application application, int channelId, String channelSecret, ICallback callback);
+    void init(Application application, int channelId, String channelSecret);
+
+    /**
+     * 设置操作的统一回调，需要设置回调功能才可正常使用
+     *
+     */
+    void setCallback(ICallback callback);
 
     /**
      * OAuth登录
      *
-     * @version 204000
      */
     void loginByMiAccountOAuth(String authCode);
 
     /**
      * sso登录
      *
-     * @version 204000
      */
     void loginByMiAccountSso(long miid, String serviceToken);
 
     /**
      * 退出账号
      *
-     * @version 204000
      */
     void clearAccount();
 
     /**
      * 打开直播观看页面
      *
-     * @version 204000
      */
     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
 
     /**
      * 打开直播回放页面
      *
-     * @version 204000
      */
     void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
 
     /**
      * 打开普通直播页面
      *
-     * @version 205001
      */
     void openNormalLive(Activity activity, Location location);
 
     /**
      * 打开游戏直播页面
      *
-     * @version 205001
      */
     void openGameLive(Activity activity, Location location);
 

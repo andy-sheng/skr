@@ -5,12 +5,21 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.base.log.MyLog;
+import com.wali.live.livesdk.live.MiLiveSdkController;
 
 /**
  * Created by chenyong on 2017/4/6.
  */
 
 public class AARDemoApplication extends Application {
+
+    public static final int CHANNEL_ID = 50000;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        MiLiveSdkController.getInstance().init(this, CHANNEL_ID, "TEST SECRET");
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
