@@ -225,3 +225,11 @@
 -dontwarn com.ta.**
 -keep class org.json.** {*;}
 -keep class com.ali.auth.** {*;}
+
+-keep class com.wali.live.watchsdk.IMiLiveSdk{
+    public *;
+}
+
+-keep class com.wali.live.livesdk.live.MiLiveSdkController{
+    public *;
+}

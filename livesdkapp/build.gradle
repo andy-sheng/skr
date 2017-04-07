@@ -29,6 +29,7 @@ android {
             keyPassword "XiaomiIs#1"
         }
     }
+
     buildTypes {
 
         debug {
@@ -43,7 +44,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.myConfig
             shrinkResources true
-
         }
     }
 
@@ -54,16 +54,6 @@ android {
             include 'armeabi-v7a'
             universalApk false
         }
-    }
-}
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
 

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.base.log.MyLog;
 import com.wali.live.livesdk.live.MiLiveSdkController;
 
 /**
@@ -27,7 +26,7 @@ public class AARDemoApplication extends Application {
         try {
             MultiDex.install(this);
         } catch (Exception e) {
-            MyLog.e(e);
+            e.printStackTrace();
         }
     }
 }
