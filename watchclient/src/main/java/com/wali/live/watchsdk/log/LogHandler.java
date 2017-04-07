@@ -1,4 +1,4 @@
-package com.wali.live.log;
+package com.wali.live.watchsdk.log;
 
 import android.os.Message;
 
@@ -9,7 +9,7 @@ import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.mi.milink.sdk.proto.DataExtraProto;
-import com.wali.live.init.InitManager;
+import com.wali.live.watchsdk.init.InitManager;
 
 /**
  * LogHandler是接到MnsCommand.COMMAND_VOIP_AUTO_UPLOAD_LOG命令之后，上传日志

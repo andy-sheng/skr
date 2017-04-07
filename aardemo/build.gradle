@@ -34,6 +34,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile(name: 'livesdk', ext: 'aar')
 
+    compile presentationDependencies.rxAndroid
+    compile presentationDependencies.rxJava
     compile(presentationDependencies.fresco) {
         exclude module: 'support-v4'
         exclude module: 'print', group: 'android.support.v4'

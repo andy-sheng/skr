@@ -1,4 +1,4 @@
-package com.wali.live.init;
+package com.wali.live.watchsdk.init;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -9,7 +9,6 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.Constants;
-import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.language.LocaleUtil;
 import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.version.VersionManager;
@@ -21,15 +20,14 @@ import com.mi.milink.sdk.base.Global;
 import com.mi.milink.sdk.base.debug.TraceLevel;
 import com.mi.milink.sdk.data.ClientAppInfo;
 import com.mi.milink.sdk.debug.MiLinkLog;
+import com.squareup.leakcanary.RefWatcher;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.pay.handler.PayPacketHandler;
 import com.wali.live.dns.PreDnsManager;
-import com.wali.live.log.LogHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
-import com.wali.live.watchsdk.init.EventBusDelegate;
+import com.wali.live.watchsdk.log.LogHandler;
 import com.wali.live.watchsdk.service.PacketProcessService;
-import com.xsj.crasheye.Crasheye;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,8 +43,8 @@ public class InitManager {
     private static String sRemoteProcessName;
     private static String LOGTAG = "WatchSdk";
 
-    public static void init(@NonNull Application application) {
-        GlobalData.setApplication(application, LiveSdkApplication.getRefWatcher());
+    public static void init(@NonNull Application application, RefWatcher refWatcher) {
+        GlobalData.setApplication(application, refWatcher);
 
         sPackageName = application.getPackageName();
         sRemoteProcessName = sPackageName + ":remote";
@@ -86,7 +84,6 @@ public class InitManager {
             initLibrary();
             initMiLinkPacketHandler();
             registerAllEventBus();
-            initCrasheye();
             ThreadPool.runOnWorker(new Runnable() {
                 @Override
                 public void run() {
@@ -103,7 +100,6 @@ public class InitManager {
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(ReplayBarrageMessageManager.getInstance());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new LogHandler());
         MiLinkClientAdapter.getsInstance().addPacketDataHandler(new PayPacketHandler());
-
     }
 
     public static void registerAllEventBus() {
@@ -128,7 +124,6 @@ public class InitManager {
                 .build();
     }
 
-
     public static void initLogger() {
         if (BuildConfig.DEBUG
                 || Constants.isTestBuild
@@ -138,12 +133,6 @@ public class InitManager {
         } else {
             setAppAndMilinkLogLevel(TraceLevel.ABOVE_INFO);
         }
-    }
-
-    private static void initCrasheye() {
-        Crasheye.init(GlobalData.app(), Constants.CRASHEYE_APPID);
-        Crasheye.setChannelID(ReleaseChannelUtils.getReleaseChannel());
-        Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
     }
 
     /**

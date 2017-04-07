@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.RemoteException;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
 import com.wali.live.watchsdk.IMiLiveSdk;
+import com.wali.live.watchsdk.init.InitManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.ipc.service.ThirdPartLoginData;
 
@@ -30,7 +30,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     public void init(Application app, int channelId, String channelSecret, ICallback callback) {
-        GlobalData.setApplication(app);
+        InitManager.init(app, null);
         MyLog.d(TAG, "init channelId=" + channelId);
         mChannelId = channelId;
         mChannelSecret = channelSecret;
