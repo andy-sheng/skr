@@ -23,38 +23,42 @@
         android:layout_width="fill_parent"
         android:layout_height="40.67dip"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/corners_bg_e5e5e5_30px"
         android:gravity="center"
         android:singleLine="true"
-        android:text="直接跳liveSdkActivity"
+        android:text="直接跳LiveSdkActivity"
         android:textColor="@color/color_black_trans_80"
-        android:textSize="@dimen/text_size_32"/>
+        android:textSize="@dimen/text_size_36"/>
 
-
-    <Button
+    <TextView
         android:id="@+id/watch_btn"
         android:layout_width="match_parent"
         android:layout_height="40.67dip"
-        android:layout_marginBottom="24dp"
-        android:text="輸入正在直播的主播id"
         android:layout_above="@+id/live_test_tv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/corners_bg_e5e5e5_30px"
+        android:gravity="center"
+        android:text="输入正在直播的主播id"
+        android:textColor="@color/color_black_trans_80"
+        android:textSize="@dimen/text_size_36"/>
 
     <EditText
         android:id="@+id/live_input_tv"
         android:layout_width="fill_parent"
         android:layout_height="40.67dip"
         android:layout_above="@+id/watch_btn"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/corners_bg_e5e5e5_30px"
         android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/color_black_trans_80"
-        android:textSize="@dimen/text_size_32"/>
+        android:textSize="@dimen/text_size_36"/>
 
 </RelativeLayout>
