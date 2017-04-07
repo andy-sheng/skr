@@ -3,16 +3,14 @@ package com.wali.live.sdk.manager.aardemo;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,17 +18,29 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.dialog.MyAlertDialog;
+import com.base.log.MyLog;
+import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.location.Location;
+import com.mi.live.data.manager.UserInfoManager;
 import com.wali.live.livesdk.live.MiLiveSdkController;
+import com.wali.live.proto.Live2Proto;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.sdk.manager.aardemo.global.GlobalData;
 import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by chengsimin on 2016/12/8.
@@ -44,33 +54,37 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Activity mActivity;
 
+    private String mPlayerId = "";
+    private String mRePlayerId = "";
+
     public MenuRecyclerAdapter(final Context context) {
         mActivity = (Activity) context;
 
         mDataList.add(new Bean("跳转到直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openWatch(
-                        mActivity, 21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0", 0);
+                // 测试使用，外部调用请使用MiLiveSdkController.openWatch跳转到直播
+                inputPlayerId(false);
             }
         }));
         mDataList.add(new Bean("跳转到回放(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openReplay(
-                        mActivity, 22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1", 0);
+                // 测试使用，外部调用请使用MiLiveSdkController.openRelay跳转到回放
+                inputPlayerId(true);
             }
         }));
         mDataList.add(new Bean("开启秀场直播(Intent)", new Runnable() {
             @Override
             public void run() {
-//                Location.Builder.newInstance(123, 124).setCountry("China").setProvince("北京").setCity("北京").build()
+                // Location根据需要传，不需要可以传空
                 MiLiveSdkController.getInstance().openNormalLive(mActivity, null);
             }
         }));
         mDataList.add(new Bean("开启游戏直播(Intent)", new Runnable() {
             @Override
             public void run() {
+                // Location根据需要传，不需要可以传空
                 MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setProvince("New York").setCity("New York").build());
             }
         }));
@@ -106,6 +120,96 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }));
     }
 
+    private void inputPlayerId(final boolean isReplay) {
+        final MyAlertDialog.Builder builder = new MyAlertDialog.Builder(mActivity);
+        builder.setTitle(isReplay ? "请输入回放的主播id" : "请输入对应的主播id");
+        builder.setInputView();
+        builder.getInputView().setText(isReplay ? mRePlayerId : mPlayerId);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String playerId = builder.getInputView().getText().toString();
+                if (TextUtils.isEmpty(playerId)) {
+                    ToastUtils.showToast("主播id不能为空");
+                    return;
+                }
+                if (isReplay) {
+                    mRePlayerId = playerId;
+                    enterReplay(playerId);
+                } else {
+                    mPlayerId = playerId;
+                    enterWatch(playerId);
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void enterReplay(final String playerId) {
+        Observable
+                .just(0)
+                .map(new Func1<Integer, Object>() {
+                    @Override
+                    public Object call(Integer integer) {
+                        /**
+                         * 内部接口，这里方便demo测试使用，外层应用请不要随意调用
+                         */
+                        LiveProto.HistoryLiveRsp rsp = LiveManager.historyRsp(Long.parseLong(playerId));
+                        if (rsp == null) {
+                            return null;
+                        }
+                        Live2Proto.HisLive hisLive = rsp.getHisLive(0);
+                        MiLiveSdkController.getInstance().openReplay(
+                                mActivity, Long.parseLong(playerId), hisLive.getLiveId(), hisLive.getUrl(), 0);
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
+    }
+
+    private void enterWatch(final String playerId) {
+        Observable
+                .just(0)
+                .map(new Func1<Integer, Object>() {
+                    @Override
+                    public Object call(Integer integer) {
+                        /**
+                         * 内部接口，这里方便demo测试使用，外层应用请不要随意调用
+                         */
+                        LiveShow liveShow = UserInfoManager.getLiveShowByUserId(Long.parseLong(playerId));
+                        if (liveShow == null) {
+                            return null;
+                        }
+                        MiLiveSdkController.getInstance().openWatch(
+                                mActivity, liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl(), 0);
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
+    }
+
     public void oauthLogin() {
         new Thread(new Runnable() {
             @Override
@@ -117,11 +221,11 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }).start();
     }
 
-    public void ssoLogin() {
+    private void ssoLogin() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //  小米授权登录的
+                // 小米授权登录的
                 AccountManager am = AccountManager.get(GlobalData.app().getApplicationContext());
                 if (ActivityCompat.checkSelfPermission(GlobalData.app(), Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
@@ -131,23 +235,20 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 Account[] accounts = am.getAccountsByType("com.xiaomi");
                 if (accounts != null && accounts.length > 0) {
                     long miid = Long.parseLong(accounts[0].name);
-                    /**
-                     * 这里获取ssotoken有两种方式
-                     */
-                    String ssoToken = getServiceTokenNew(GlobalData.app());
+                    String ssoToken = getServiceToken(GlobalData.app());
                     MiLiveSdkController.getInstance().loginByMiAccountSso(miid, ssoToken);
                 }
             }
         }).start();
     }
 
-    public void thirdPartLogin() {
+    private void thirdPartLogin() {
         Intent intent = new Intent(mActivity, ThirdPartLoginActivity.class);
         intent.putExtra(ThirdPartLoginActivity.KEY_CHANNELID, ((MainActivity) mActivity).getCurrentChannelId());
         mActivity.startActivity(intent);
     }
 
-    private String getServiceTokenNew(Context context) {
+    private String getServiceToken(Context context) {
         ServiceTokenFuture serviceTokenFuture = ServiceTokenUtilFacade.getInstance()
                 .buildMiuiServiceTokenUtil()
                 .getServiceToken(context, sidForMiLive);
@@ -165,34 +266,9 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return serviceTokenResult.serviceToken;
     }
 
-    private String getServiceTokenOld(Account account) {
-        try {
-            AccountManagerFuture<Bundle> future = null;
-            if (GlobalData.app() == null) {
-                future = AccountManager.get(GlobalData.app()).getAuthToken(account, sidForMiLive, null, true, null, null);
-            } else {
-                future = AccountManager.get(GlobalData.app()).getAuthToken(account, sidForMiLive, null, mActivity, null, null);
-            }
-            if (future != null) {
-                String authToken = future.getResult().getString(AccountManager.KEY_AUTHTOKEN);
-                return authToken;
-            }
-        } catch (OperationCanceledException e) {
-            Log.e(TAG, "get auth token error", e);
-        } catch (AuthenticatorException e) {
-            Log.e(TAG, "get auth token error", e);
-        } catch (IOException e) {
-            Log.e(TAG, "get auth token error", e);
-        } catch (Exception e) {
-            Log.e(TAG, "get auth token error", e);
-        }
-        return null;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView tv = new TextView(parent.getContext());
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tv.setGravity(Gravity.CENTER);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
         tv.setLayoutParams(lp);

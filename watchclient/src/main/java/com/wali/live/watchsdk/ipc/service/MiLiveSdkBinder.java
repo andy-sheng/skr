@@ -18,6 +18,7 @@ import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
+import com.wali.live.watchsdk.watch.ReplaySdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -259,7 +260,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
                         .build();
-                WatchSdkActivity.openActivity(activity, roomInfo);
+                ReplaySdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {
                     activity.finish();
                 }

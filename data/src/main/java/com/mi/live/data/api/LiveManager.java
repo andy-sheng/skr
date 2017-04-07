@@ -14,6 +14,8 @@ import com.wali.live.proto.LiveManagerProto;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.proto.LiveProto.HistoryDeleteReq;
 import com.wali.live.proto.LiveProto.HistoryDeleteRsp;
+import com.wali.live.proto.LiveProto.HistoryLiveReq;
+import com.wali.live.proto.LiveProto.HistoryLiveRsp;
 import com.wali.live.proto.LiveProto.RoomInfoReq;
 import com.wali.live.proto.LiveProto.RoomInfoRsp;
 import com.wali.live.proto.LiveProto.ViewerTopReq;
@@ -363,5 +365,37 @@ public class LiveManager {
             }
         }
         return false;
+    }
+
+    /**
+     * MiLinkCommand : zhibo.live.history
+     */
+    public static HistoryLiveRsp historyRsp(long playerId) {
+        HistoryLiveReq req = HistoryLiveReq.newBuilder()
+                .setUuid(UserAccountManager.getInstance().getUuidAsLong())
+                .setZuid(playerId)
+                .build();
+
+        return historyRspFromServer(req);
+    }
+
+    private static HistoryLiveRsp historyRspFromServer(HistoryLiveReq req) {
+        PacketData data = new PacketData();
+        data.setCommand(MiLinkCommand.COMMAND_LIST_HISTORY);
+        data.setData(req.toByteArray());
+        MyLog.v(TAG, "history request : \n" + req.toString());
+
+        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+        if (rspData != null) {
+            try {
+                HistoryLiveRsp rsp = HistoryLiveRsp.parseFrom(rspData.getData());
+                MyLog.v(TAG, "history response : \n" + rsp.toString());
+
+                return rsp;
+            } catch (InvalidProtocolBufferException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
