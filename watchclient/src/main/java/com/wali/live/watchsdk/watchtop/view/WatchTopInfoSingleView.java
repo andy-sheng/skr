@@ -38,8 +38,8 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.dao.RelationDaoAdapter;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -48,7 +48,6 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -57,9 +56,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -94,7 +91,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     private Date mPopupWindowShowTime;
 
-    private List<LiveCommonProto.NewWidgetItem> currentAttachmentList = new ArrayList<LiveCommonProto.NewWidgetItem>();
+    private List<LiveCommonProto.NewWidgetItem> currentAttachmentList = new ArrayList();
     private long currentZuid;
 
     private String currentRoomid;
@@ -117,11 +114,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
 
     @Override
     protected int getLayout(boolean mIsLandScape) {
-//        if (mIsLandscape) {
-//            return R.layout.watch_top_info_single_view_landscape;
-//        } else {
         return R.layout.watchsdk_top_info_single_view;
-//        }
     }
 
     @Override
@@ -150,7 +143,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomBaseDataModel.getUid(), null));
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomBaseDataModel.getUid(), null);
                     }
                 });
 
@@ -160,7 +153,7 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                     @Override
                     public void call(Void aVoid) {
                         if (mLinkUser != null) {
-                            EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mLinkUser.getUid(), null));
+                            UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mLinkUser.getUid(), null);
                         } else {
                             MyLog.w(TAG, "mLinkUser == null");
                         }
@@ -636,9 +629,6 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
             return null;
         }
     }
-
-    private Map<Integer, Integer> widgetIDs = new HashMap<>();
-
 
     private final static char[] HEX = "0123456789abcdef".toCharArray();
 

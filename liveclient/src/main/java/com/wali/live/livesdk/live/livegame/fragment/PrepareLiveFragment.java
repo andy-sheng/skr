@@ -318,7 +318,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             }
         } else {
             if (mControlTitleArea.getVisibility() == View.VISIBLE) {
-                mControlTitleArea.setVisibility(View.GONE);
+                mControlTitleArea.setVisibility(View.INVISIBLE);
             }
         }
     }

@@ -151,7 +151,7 @@ public class GameModePresenter implements IBindActivityLIfeCycle {
                         BarrageMsg.PkMessageExt pkExt = null;
 
                         //检查发送频率限制
-                        if (mRoomBaseDataModel.getmMsgRule() != null && mRoomBaseDataModel.getmMsgRule().getSpeakPeriod() == Integer.MAX_VALUE) {
+                        if (mRoomBaseDataModel.getMsgRule() != null && mRoomBaseDataModel.getMsgRule().getSpeakPeriod() == Integer.MAX_VALUE) {
                             return;
                         }
                         BarrageMsg barrageMsg = SendBarrageManager.createBarrage(BarrageMsgType.B_MSG_TYPE_TEXT, body, mRoomBaseDataModel.getRoomId(), mRoomBaseDataModel.getUid(), System.currentTimeMillis(), null);

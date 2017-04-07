@@ -34,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:singleLine="true"
-            android:text="@string/screen_live"
+            android:text="@string/game_live"
             android:textColor="@color/color_white"
             android:textSize="@dimen/text_size_42"/>
 
@@ -76,11 +76,10 @@
                 android:id="@+id/live_title_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/title_txt_name"
                 android:background="@null"
                 android:gravity="left"
-                android:hint="@string/live_title_hint"
                 android:maxLines="2"
+                android:text="123"
                 android:textColor="@color/color_white"
                 android:textColorHint="@color/color_white_trans_40"
                 android:textCursorDrawable="@drawable/live_edittext_color_cursor"

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/item_iv"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:scaleType="centerInside"/>
+
+    <TextView
+        android:id="@+id/item_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text=""
+        android:textColor="@color/color_e5aa1e"
+        android:textSize="@dimen/text_size_36"/>
+
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/item_iv2"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:scaleType="centerInside"/>
+</merge>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mi.liveassistant"
-    android:versionCode="205005"
-    android:versionName="2.5.5">
+          package="com.mi.liveassistant"
+          android:versionCode="205005"
+          android:versionName="2.5.5">
 
     <application
         android:name="com.wali.live.init.LiveSdkApplication"
@@ -12,14 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.wali.live.TestSdkActivity" />
-
         <activity
             android:name="com.wali.live.jump.JumpSdkActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
-            android:theme="@style/TransparentTheme" />
+            android:theme="@style/TransparentTheme"/>
 
         <activity
             android:name="com.wali.live.MainActivity"

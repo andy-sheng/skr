@@ -13,7 +13,6 @@ import com.facebook.drawee.drawable.ScalingUtils;
 import com.wali.live.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.channel.viewmodel.ChannelLiveViewModel.BaseItem;
 import com.wali.live.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
-import com.wali.live.watchsdk.watch.ReplaySdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -126,34 +125,25 @@ public abstract class RepeatHolder extends FixedHolder {
     }
 
     protected void bindBaseLiveItem(final BaseLiveItem item, final int i) {
-        mImageViews[i].setOnClickListener(new View.OnClickListener() {
-                                              @Override
-                                              public void onClick(View view) {
-                                                  // todo
-                                                  if (!TextUtils.isEmpty(item.getSchemeUri())) {
-                                                      Uri uri = Uri.parse(item.getSchemeUri());
+        mImageViews[i].setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!TextUtils.isEmpty(item.getSchemeUri())) {
+                            Uri uri = Uri.parse(item.getSchemeUri());
 
-                                                      long playerId = Long.parseLong(uri.getQueryParameter("playerid"));
-                                                      String liveId = uri.getQueryParameter("liveid");
-                                                      String videoUrl = uri.getQueryParameter("videourl");
+                            long playerId = Long.parseLong(uri.getQueryParameter("playerid"));
+                            String liveId = uri.getQueryParameter("liveid");
+                            String videoUrl = uri.getQueryParameter("videourl");
 
-                                                      if(i==0){
-                                                          ReplaySdkActivity.openActivity((Activity) itemView.getContext(),
-                                                                  RoomInfo.Builder.newInstance(22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1")
-                                                                          .setCoverUrl(videoUrl)
-                                                                          .setStartTime(1480938327374l)
-                                                                          .build());
-                                                          return;
-                                                      }
-
-                                                      WatchSdkActivity.openActivity((Activity) itemView.getContext(),
-                                                              RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                                                                      .setAvatar(item.getUser().getAvatar())
-                                                                      .setCoverUrl(item.getImageUrl())
-                                                                      .build());
-                                                  }
-                                              }
-                                          }
+                            WatchSdkActivity.openActivity((Activity) itemView.getContext(),
+                                    RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                            .setAvatar(item.getUser().getAvatar())
+                                            .setCoverUrl(item.getImageUrl())
+                                            .build());
+                        }
+                    }
+                }
         );
     }
 }

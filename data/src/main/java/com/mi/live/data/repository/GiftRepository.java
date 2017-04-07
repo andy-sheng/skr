@@ -255,42 +255,6 @@ public class GiftRepository {
     }
 
     /**
-     * 拉取该房间运营位信息
-     */
-    public static Observable<LiveProto.GetRoomWidgetRsp> getRoomWidget(final String roomid, final long zuid, final int roomType) {
-        return Observable.create(
-                new Observable.OnSubscribe<LiveProto.GetRoomWidgetRsp>() {
-                    @Override
-                    public void call(Subscriber<? super LiveProto.GetRoomWidgetRsp> subscriber) {
-                        LiveProto.GetRoomWidgetReq req = LiveProto.GetRoomWidgetReq
-                                .newBuilder()
-                                .setLiveid(roomid)
-                                .setZuid(zuid)
-                                .setRoomType(roomType)
-                                .build();
-                        PacketData data = new PacketData();
-                        data.setCommand(MiLinkCommand.COMMAND_ROOM_WIDGET);
-                        data.setData(req.toByteArray());
-                        data.setNeedCached(true);
-                        MyLog.w(TAG, "getRoomWidget request:" + req.toString());
-                        try {
-                            PacketData response = MiLinkClientAdapter.getsInstance().sendSync(data, 10 * 1000);
-                            LiveProto.GetRoomWidgetRsp rsp = LiveProto.GetRoomWidgetRsp.parseFrom(response.getData());
-                            MyLog.w(TAG, "getRoomWidget response:" + rsp);
-                            if (rsp != null && rsp.getRetCode() == 0) {
-                                subscriber.onNext(rsp);
-                                subscriber.onCompleted();
-                            } else {
-                                subscriber.onError(new Throwable("getRoomWidget retCode != 0"));
-                            }
-                        } catch (Exception e) {
-                            subscriber.onError(e);
-                        }
-                    }
-                }).subscribeOn(Schedulers.io());
-    }
-
-    /**
      * 点击运营位计数
      */
     public static Observable<String> clickCounter(final int attachementId, final long zuid, final String roomId) {

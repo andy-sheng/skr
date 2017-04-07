@@ -91,7 +91,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
      */
     protected RoomInfo mRoomInfo = null;
 
-    protected void addPushProcessor(IPushMsgProcessor processor) {
+    public void addPushProcessor(IPushMsgProcessor processor) {
         if (processor == null) {
             return;
         }

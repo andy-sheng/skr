@@ -20,7 +20,6 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
-import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 
@@ -190,10 +189,10 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
         try {
             LastBarrage lastBarrage = mLastBarrageMap.get(getBarrageCacheKey(mMyRoomData.getRoomId()));
             long now = System.currentTimeMillis();
-            if (mMyRoomData.getmMsgRule() != null && mMyRoomData.getmMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
-                if ((now - lastBarrage.getLastSendTime()) < mMyRoomData.getmMsgRule().getSpeakPeriod() * 1000) {
-                    int interval = (int) (mMyRoomData.getmMsgRule().getSpeakPeriod() - (now - lastBarrage.getLastSendTime()) / 1000);
-                    MyLog.w(TAG, "send barrage too frequent,interval:" + mMyRoomData.getmMsgRule().getSpeakPeriod() + "s now:" + now + " last send time:" + lastBarrage.getLastSendTime());
+            if (mMyRoomData.getMsgRule() != null && mMyRoomData.getMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
+                if ((now - lastBarrage.getLastSendTime()) < mMyRoomData.getMsgRule().getSpeakPeriod() * 1000) {
+                    int interval = (int) (mMyRoomData.getMsgRule().getSpeakPeriod() - (now - lastBarrage.getLastSendTime()) / 1000);
+                    MyLog.w(TAG, "send barrage too frequent,interval:" + mMyRoomData.getMsgRule().getSpeakPeriod() + "s now:" + now + " last send time:" + lastBarrage.getLastSendTime());
                     return interval;
                 }
             }
@@ -257,26 +256,26 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
 
         LastBarrage lastBarrage = mLastBarrageMap.get(getBarrageCacheKey(mMyRoomData.getRoomId()));
         long sendTime = System.currentTimeMillis();
-        if (mMyRoomData.getmMsgRule() != null && lastBarrage != null) {
-            if (mMyRoomData.getmMsgRule().isUnrepeatable() && lastBarrage.getLastSendContent() != null
+        if (mMyRoomData.getMsgRule() != null && lastBarrage != null) {
+            if (mMyRoomData.getMsgRule().isUnrepeatable() && lastBarrage.getLastSendContent() != null
                     && msg.trim().equals(lastBarrage.getLastSendContent())) {
                 MyLog.w(TAG, "send barrage repeated,last content:" + lastBarrage.getLastSendContent() + " body:" + msg.trim());
                 ToastUtils.showToast(GlobalData.app().getApplicationContext(), R.string.send_barrage_repeated);
                 return;
             }
-            if (mMyRoomData.getmMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
-                if ((sendTime - lastBarrage.getLastSendTime()) < mMyRoomData.getmMsgRule().getSpeakPeriod() * 1000) {
+            if (mMyRoomData.getMsgRule().getSpeakPeriod() != 0 && lastBarrage.getLastSendTime() > 0) {
+                if ((sendTime - lastBarrage.getLastSendTime()) < mMyRoomData.getMsgRule().getSpeakPeriod() * 1000) {
                     return;
                 }
             }
         }
 
         //把此次发送的弹幕存入缓存
-        if (mMyRoomData.getmMsgRule() != null) {
+        if (mMyRoomData.getMsgRule() != null) {
             lastBarrage = lastBarrage == null ? new LastBarrage(new Date()) : lastBarrage;
-            if (mMyRoomData.getmMsgRule().isUnrepeatable())
+            if (mMyRoomData.getMsgRule().isUnrepeatable())
                 lastBarrage.setLastSendContent(msg.trim());
-            if (mMyRoomData.getmMsgRule().getSpeakPeriod() > 0)
+            if (mMyRoomData.getMsgRule().getSpeakPeriod() > 0)
                 lastBarrage.setLastSendTime(sendTime);
             mLastBarrageMap.put(getBarrageCacheKey(mMyRoomData.getRoomId()), lastBarrage);
         }

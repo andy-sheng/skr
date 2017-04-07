@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -47,13 +48,13 @@ import com.mi.live.data.user.User;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.pay.fragment.RechargeFragment;
 import com.wali.live.event.EventClass;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
@@ -66,6 +67,8 @@ import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.schema.SchemeActivity;
+import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
@@ -82,6 +85,8 @@ import com.wali.live.watchsdk.watch.presenter.push.RoomSytemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
+import com.wali.live.watchsdk.webview.HalfWebViewActivity;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -109,7 +114,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     protected VideoPlayerTextureView mVideoView;
     // 播放器容器
     protected WatchTopInfoSingleView mWatchTopInfoSingleView;
-//    protected LiveCommentView mLiveCommentView; //弹幕区view
+    //    protected LiveCommentView mLiveCommentView; //弹幕区view
     protected ImageView mCloseBtn;// 关闭按钮
     protected ImageView mRotateBtn;// 关闭
 
@@ -214,9 +219,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
-
-        // TEST
-//        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
     }
 
 
@@ -279,8 +281,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     }
                 });
 
-        mComponentController = new WatchComponentController();
-        mSdkView = new WatchSdkView(this, mComponentController, mMyRoomData, mRoomChatMsgManager);
+        mComponentController = new WatchComponentController(mMyRoomData, mRoomChatMsgManager);
+        mSdkView = new WatchSdkView(this, mComponentController);
         mSdkView.setupSdkView(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
 
         mFlyBarrageViewGroup = $(R.id.fly_barrage_viewgroup);
@@ -545,10 +547,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(BaseEvent.UserActionEvent event) {
-        MyLog.e(TAG, "BaseEvent.UserActionEvent event type=" + event.type);
+    public void onEventMainThread(UserActionEvent event) {
+        MyLog.e(TAG, "UserActionEvent event type=" + event.type);
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
-        if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
+        if (event.type == UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
             return;
         }
@@ -589,7 +591,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //                }
 //            }
 //            break;
-            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
 //                clearTop();
                 viewerTopFromServer((RoomBaseDataModel) event.obj1);
             }
@@ -635,102 +637,48 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //            }
 //            break;
 //
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT: {
-//                String scheme = (String) event.obj1;
-//
-//                boolean isNeedParams = (Boolean) event.obj2;
-//
-//                if (scheme == null || scheme.equals("")) {
-//                    break;
-//                }
-//
-//                if (scheme.startsWith("walilive:")) {
-//
-//                    Uri uri = Uri.parse(scheme);
-//                    if (uri.getScheme().equals("walilive")) {
-//                        String type = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_TYPE);
-//                        String showType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_SHOW_TYPE);
-//                        String id = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_GOOD_ID);
-//                        String url = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_DETAIL_URL);
-//                        String pid = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_PID);
-//                        if (TextUtils.isEmpty(pid)) {
-//                            pid = mShopPresenter.getZuPid();
-//                        }
-//
-//                        if (null != type && null != showType) {
-//                            switch (type) {
-//                                case LiveMallConstant.JD:
-//                                    switch (showType) {
-//                                        case LiveMallConstant.SHOP_DETAIL:
-//                                            //TODO 京东店铺页面
-//                                            break;
-//                                        case LiveMallConstant.GOODS_DETAIL:
-//                                            //TODO 京东商品详情
-//                                            break;
-//                                        case LiveMallConstant.URL_DETAIL:
-//                                            LiveMallUtils.openJDH5ByUrl(url);
-//                                            break;
-//                                    }
-//                                    break;
-//                                case LiveMallConstant.MI:
-//                                    break;
-//                                case LiveMallConstant.TB:
-//                                    switch (showType) {
-//                                        case LiveMallConstant.SHOP_DETAIL:
-//                                            if (id != null) {
-//                                                LiveMallUtils.openTaoBaoShopH5(WatchActivity.this, Long.parseLong(id), mMyRoomData.getUid(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getRoomId(), pid);
-//                                            }
-//                                            break;
-//                                        case LiveMallConstant.GOODS_DETAIL:
-//                                            if (id != null) {
-//                                                LiveMallUtils.openTaoBaoDetailH5(WatchActivity.this, id, mMyRoomData.getUid(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getRoomId(), pid);
-//                                                LiveMallUtils.tapAdPush(UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), mMyRoomData.getRoomId(), Long.parseLong(id), 2);
-//                                            }
-//                                            break;
-//                                        case LiveMallConstant.URL_DETAIL:
-//                                            if (url != null) {
-//                                                try {
-//                                                    LiveMallUtils.openTBH5ByUrl(WatchActivity.this, URLDecoder.decode(url, "UTF-8"), mMyRoomData.getUid(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getRoomId(), pid);
-//                                                } catch (UnsupportedEncodingException e) {
-//                                                    e.printStackTrace();
-//                                                }
-//                                            }
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//
-//                        } else {
-//                            try {
-//                                Intent intent = Intent.parseUri(scheme, Intent.URI_INTENT_SCHEME);
-//                                startActivity(intent);
-//                            } catch (URISyntaxException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    if (isNeedParams) {
-//                        if (scheme.indexOf("?") != -1) {
-//                            scheme = scheme + "&zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
-//                        } else {
-//                            scheme = scheme + "?zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
-//                        }
-//                    }
-//                    Intent intent;
-//                    if ((int) event.obj3 == 1) {
-//                        intent = new Intent(WatchActivity.this, HalfWebViewActivity.class);
-//                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, true);
-//                    } else {
-//                        intent = new Intent(WatchActivity.this, WebViewActivity.class);
-//                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, false);
-//                    }
-//                    intent.putExtra(WebViewActivity.EXTRA_URL, scheme);
-//                    intent.putExtra(WebViewActivity.EXTRA_ZUID, (Long) event.obj4);
-//                    startActivity(intent);
-//                }
-//            }
-//            break;
+            case UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT: {
+                String scheme = (String) event.obj1;
+                boolean isNeedParams = (Boolean) event.obj2;
+
+                MyLog.d(TAG, "scheme=" + scheme + ", isNeedParams=" + isNeedParams);
+                if (TextUtils.isEmpty(scheme)) {
+                    break;
+                }
+
+                if (scheme.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
+                    Uri uri = Uri.parse(scheme);
+                    if (uri.getScheme().equals(SchemeConstants.SCHEME_WALILIVE)) {
+                        String type = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_TYPE);
+                        String showType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_SHOW_TYPE);
+
+                        MyLog.d(TAG, "type=" + type + ", showType=" + showType);
+                        if (type == null || showType == null) {
+                            SchemeActivity.openActivity(this, uri);
+                        }
+                    }
+                } else {
+                    if (isNeedParams) {
+                        if (scheme.indexOf("?") != -1) {
+                            scheme = scheme + "&zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
+                        } else {
+                            scheme = scheme + "?zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
+                        }
+                    }
+                    Intent intent;
+                    if ((int) event.obj3 == 1) {
+                        intent = new Intent(WatchSdkActivity.this, HalfWebViewActivity.class);
+                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, true);
+                    } else {
+                        intent = new Intent(WatchSdkActivity.this, WebViewActivity.class);
+                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, false);
+                    }
+                    intent.putExtra(WebViewActivity.EXTRA_URL, scheme);
+                    intent.putExtra(WebViewActivity.EXTRA_ZUID, (Long) event.obj4);
+                    startActivity(intent);
+                }
+            }
+            break;
 //            case BaseEvent.UserActionEvent.EVENT_TYPE_CLICK_PUSH_IMG:
 //                long productID = (long) event.obj1;
 //                clearTop();
@@ -757,14 +705,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         public void enterLive(EnterRoomInfo roomInfo) {
             WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
+            if (mComponentController != null) {
+                mComponentController.onEvent(WatchComponentController.MSG_ON_LIVE_SUCCESS);
+            }
         }
     };
-
-    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
-        Intent intent = new Intent(activity, WatchSdkActivity.class);
-        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
-        activity.startActivity(intent);
-    }
 
     @Override
     public void onClickHomepage(User user) {
@@ -1045,5 +990,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 roomData.notifyViewersChange("processViewerTop");
                 break;
         }
+    }
+
+    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
+        Intent intent = new Intent(activity, WatchSdkActivity.class);
+        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
+        activity.startActivity(intent);
     }
 }

@@ -150,6 +150,7 @@
     <string name="change_room_setting_fail">设定失败</string>
     <string name="definition_high">高清</string>
     <string name="screen_live">录屏直播</string>
+    <string name="game_live">游戏直播</string>
     <string name="begin_live_title">标题:&#160;</string>
     <string name="live_title_change">换一换</string>
     <string name="live_title_clear">清空</string>

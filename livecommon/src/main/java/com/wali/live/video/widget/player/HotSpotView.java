@@ -31,8 +31,8 @@ import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.live.module.common.R;
 import com.mi.live.data.repository.GiftRepository;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.dao.Gift;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.HotSpotProto;
 
 import org.greenrobot.eventbus.EventBus;
@@ -207,7 +207,7 @@ public class HotSpotView extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     hideHotSpot();
-                    EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_CLICK_HOTSPOT, hotSpotInfo.getHotTimeOffset(), null));
+                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_HOTSPOT, hotSpotInfo.getHotTimeOffset(), null);
                 }
             });
 

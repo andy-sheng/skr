@@ -49,7 +49,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SENDMESSAGE;
         } else if (id == R.id.gift_btn) {
             mPresenter.showGiftView();
-            // TODO 增加打点
         } else if (id == R.id.rotate_btn) {
             mPresenter.rotateScreen();
         }

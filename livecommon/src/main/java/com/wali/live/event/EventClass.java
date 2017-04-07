@@ -153,4 +153,9 @@ public abstract class EventClass {
         }
     }
 
+    public static class CloseWebEvent {
+    }
+
+    public static class LoadingEndEvent {
+    }
 }

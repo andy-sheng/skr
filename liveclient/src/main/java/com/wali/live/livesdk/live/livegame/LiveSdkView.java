@@ -18,10 +18,13 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
+import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
+import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

@@ -17,7 +17,6 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.event.CommentRefreshEvent;
 import com.wali.live.common.barrage.view.MyListView;
 import com.wali.live.common.barrage.view.adapter.LiveCommentRecyclerAdapter;
@@ -25,6 +24,7 @@ import com.wali.live.common.model.CommentModel;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -138,9 +138,7 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
-                        BaseEvent.UserActionEvent userActionEvent = new BaseEvent.UserActionEvent(
-                                BaseEvent.UserActionEvent.EVENT_TYPE_TOUCH_DOWN_COMMENT_RC, 0, 0);
-                        EventBus.getDefault().post(userActionEvent);
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_TOUCH_DOWN_COMMENT_RC, 0, 0);
                         break;
                     default:
                         break;
@@ -184,9 +182,8 @@ public class LiveCommentView extends RelativeLayout implements View.OnClickListe
                     if (CommonUtils.isFastDoubleClick(200)) {
                         return;
                     }
-                    BaseEvent.UserActionEvent userActionEvent = new BaseEvent.UserActionEvent(
-                            BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
-                    EventBus.getDefault().post(userActionEvent);
+
+                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, uid);
                 }
             }
         });

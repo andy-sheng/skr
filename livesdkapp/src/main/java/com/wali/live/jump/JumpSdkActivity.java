@@ -7,7 +7,6 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
-import com.wali.live.TestSdkActivity;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 
@@ -98,11 +97,5 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 break;
             }
         }
-    }
-
-    private void openRandomLive() {
-        Intent intent = new Intent(this, TestSdkActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.presenter.RxLifeCyclePresenter;
-import com.wali.live.component.view.IViewProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +102,6 @@ public abstract class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
          * 处理source事件，params为事件参数
          */
         boolean onAction(int source, @Nullable Params params);
-
     }
 
     public interface IComponentController {

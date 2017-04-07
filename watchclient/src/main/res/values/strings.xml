@@ -34,4 +34,11 @@
     <string name="i_know">Got it</string>
     <string name="send_barrage_interval">Send comments in %ds</string>
     <string name="send_barrage_repeated">You\'re forbidden to send duplicated comments</string>
+
+    <string name="message_open_system_browser">Open URL in browser?</string>
+    <string name="open_link_forbidden_tips">Couldn\'t open:\n%s\n\n. Try to open in Browser</string>
+    <string name="open_in_system_browser">Open in browser </string>
+    <string name="open_link_failed">This site may contain security risks</string>
+    <string name="invalid_url">This URL doesn\'t exist anymore</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 </resources>

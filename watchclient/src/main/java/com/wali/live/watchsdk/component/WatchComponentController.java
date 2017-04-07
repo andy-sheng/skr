@@ -1,8 +1,9 @@
 package com.wali.live.watchsdk.component;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.mi.live.data.push.collection.InsertSortLinkedList;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.component.ComponentController;
 
@@ -14,11 +15,21 @@ import com.wali.live.component.ComponentController;
 public class WatchComponentController extends ComponentController {
     private static final String TAG = "WatchComponentController";
 
+    @NonNull
+    RoomBaseDataModel mMyRoomData;
+
     /**
      * 房间弹幕管理
      */
-    LiveRoomChatMsgManager mRoomChatMsgManager =
-            new LiveRoomChatMsgManager(InsertSortLinkedList.DEFAULT_MAX_SIZE);
+    LiveRoomChatMsgManager mRoomChatMsgManager;
+
+    public WatchComponentController(
+            @NonNull RoomBaseDataModel myRoomData,
+            @NonNull LiveRoomChatMsgManager roomChatMsgManager) {
+        mMyRoomData = myRoomData;
+        mRoomChatMsgManager = roomChatMsgManager;
+    }
+
 
     @Nullable
     @Override

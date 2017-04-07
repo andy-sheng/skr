@@ -16,26 +16,27 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.utils.CommonUtils;
-import com.jakewharton.rxbinding.view.RxView;
+import com.base.activity.RxActivity;
+import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
+import com.base.utils.display.DisplayUtils;
+import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.gift.model.GiftType;
 import com.mi.live.data.gift.model.giftEntity.NormalEffectGift;
 import com.mi.live.data.repository.GiftRepository;
-import com.base.activity.RxActivity;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.common.gift.utils.DataformatUtils;
 import com.wali.live.dao.Gift;
-import com.base.image.fresco.BaseImageView;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
-import com.base.utils.display.DisplayUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
-import org.greenrobot.eventbus.EventBus;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -138,12 +139,10 @@ public class GiftContinueView extends RelativeLayout {
                 .subscribe(new Observer<Void>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
@@ -156,13 +155,14 @@ public class GiftContinueView extends RelativeLayout {
                         }
                         long id = mCur.getUserId();
                         if (id != 0) {
-                            EventBus.getDefault().post(new BaseEvent.UserActionEvent(BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, id, null));
+                            UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, id, null);
                         }
                     }
                 });
     }
 
     long mDisplayId = 0;
+
     //  初始化第一次填充
     private void prepare() {
         if (mCur != null) {
@@ -173,7 +173,7 @@ public class GiftContinueView extends RelativeLayout {
             mInfoTv.setText(mCur.getSendDescribe());
             long userId = mCur.getUserId();
             mDisplayId = userId;
-            MyLog.d(TAG,"userId:"+userId+"mCur.getAvatarTimestamp():"+mCur.getAvatarTimestamp());
+            MyLog.d(TAG, "userId:" + userId + "mCur.getAvatarTimestamp():" + mCur.getAvatarTimestamp());
             AvatarUtils.loadAvatarByUidTs(mOwnerIv, userId, mCur.getAvatarTimestamp(), true);
             // 加载图像
             if (mCur.getGifType() == GiftType.NORMAL_EFFECTS_GIFT ||
@@ -280,14 +280,14 @@ public class GiftContinueView extends RelativeLayout {
             return;
         }
         // 如果显示的送礼信息不对，尝试纠正一下。
-        if(mCur.getUserId() != mDisplayId){
+        if (mCur.getUserId() != mDisplayId) {
             prepare();
         }
         MyLog.d(TAG, "playTextScale mCurNumber=" + mCurNumber + ",getEndNumber=" + mCur.getEndNumber());
         // 检查一下是否需要变化图片
         if (mCur.getGifType() == GiftType.NORMAL_EFFECTS_GIFT) {
             mGiftPictureAnimationView.tryPlayIfNeed(mCurNumber);
-            for (NormalEffectGift.BigContinue f : ((NormalEffectGift)mCur.getGift()).getBigCons()) {
+            for (NormalEffectGift.BigContinue f : ((NormalEffectGift) mCur.getGift()).getBigCons()) {
                 if (mCurNumber < f.startCount) {
                     break;
                 }
@@ -428,7 +428,7 @@ public class GiftContinueView extends RelativeLayout {
 
     public synchronized boolean canMerge(GiftRecvModel model) {
         GiftRecvModel cur = mCur;
-        MyLog.d(TAG,"GiftBigPackOfGift：model="+model+",cur="+cur);
+        MyLog.d(TAG, "GiftBigPackOfGift：model=" + model + ",cur=" + cur);
         if (cur == null || model == null) {
             return false;
         }
@@ -531,7 +531,7 @@ public class GiftContinueView extends RelativeLayout {
             return;
         }
 
-        MyLog.d(TAG,"GiftBigPackOfGift：canMerge"+model.getGift().getGiftId()+"model:"+model.getEndNumber());
+        MyLog.d(TAG, "GiftBigPackOfGift：canMerge" + model.getGift().getGiftId() + "model:" + model.getEndNumber());
         mCur = model;
         Observable.create(new Observable.OnSubscribe<Object>() {
             @Override

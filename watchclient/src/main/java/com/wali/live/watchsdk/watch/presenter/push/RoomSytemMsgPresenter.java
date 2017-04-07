@@ -74,8 +74,8 @@ public class RoomSytemMsgPresenter implements IPushMsgProcessor {
                 if (messageExt != null) {
                     sendMsgRuleSysMsg(messageExt.getMessageRule(), roomBaseDataModel);
                     int oriSpeakPeriod = 0;
-                    if (roomBaseDataModel.getmMsgRule() != null && roomBaseDataModel.getmMsgRule().getSpeakPeriod() > 0) {
-                        oriSpeakPeriod = roomBaseDataModel.getmMsgRule().getSpeakPeriod();
+                    if (roomBaseDataModel.getMsgRule() != null && roomBaseDataModel.getMsgRule().getSpeakPeriod() > 0) {
+                        oriSpeakPeriod = roomBaseDataModel.getMsgRule().getSpeakPeriod();
                     }
                     EventClass.MsgRuleChangedEvent event = new EventClass.MsgRuleChangedEvent(roomBaseDataModel.getRoomId(), messageExt.getMessageRule().getSpeakPeriod(), oriSpeakPeriod, messageExt.getMessageRule().isUnrepeatable());
                     roomBaseDataModel.setmMsgRule(messageExt.getMessageRule());
@@ -122,15 +122,15 @@ public class RoomSytemMsgPresenter implements IPushMsgProcessor {
      */
     private void sendMsgRuleSysMsg(MessageRule msgRule, RoomBaseDataModel roomBaseDataModel) {
         try {
-            if (msgRule.getSpeakPeriod() != 0 && (roomBaseDataModel.getmMsgRule() == null || roomBaseDataModel.getmMsgRule().getSpeakPeriod() == 0)) {
+            if (msgRule.getSpeakPeriod() != 0 && (roomBaseDataModel.getMsgRule() == null || roomBaseDataModel.getMsgRule().getSpeakPeriod() == 0)) {
                 mRoomChatMsgManager.sendLocalSystemMsg(GlobalData.app().getString(R.string.sys_msg), GlobalData.app().getString(R.string.barrage_frequency_control_tips), roomBaseDataModel.getRoomId(), roomBaseDataModel.getUid());
-            } else if (msgRule.getSpeakPeriod() == 0 && (roomBaseDataModel.getmMsgRule() != null && roomBaseDataModel.getmMsgRule().getSpeakPeriod() > 0)) {
+            } else if (msgRule.getSpeakPeriod() == 0 && (roomBaseDataModel.getMsgRule() != null && roomBaseDataModel.getMsgRule().getSpeakPeriod() > 0)) {
                 mRoomChatMsgManager.sendLocalSystemMsg(GlobalData.app().getString(R.string.sys_msg), GlobalData.app().getString(R.string.barrage_frequency_control_remove_tips), roomBaseDataModel.getRoomId(), roomBaseDataModel.getUid());
             }
-            if (roomBaseDataModel.getmMsgRule() == null || msgRule.isUnrepeatable() != roomBaseDataModel.getmMsgRule().isUnrepeatable()) {
+            if (roomBaseDataModel.getMsgRule() == null || msgRule.isUnrepeatable() != roomBaseDataModel.getMsgRule().isUnrepeatable()) {
                 if (msgRule.isUnrepeatable()) {
                     mRoomChatMsgManager.sendLocalSystemMsg(GlobalData.app().getString(R.string.sys_msg), GlobalData.app().getString(R.string.barrage_not_repeat), roomBaseDataModel.getRoomId(), roomBaseDataModel.getUid());
-                } else if (roomBaseDataModel.getmMsgRule() != null) {
+                } else if (roomBaseDataModel.getMsgRule() != null) {
                     mRoomChatMsgManager.sendLocalSystemMsg(GlobalData.app().getString(R.string.sys_msg), GlobalData.app().getString(R.string.barrage_not_repeat_remove), roomBaseDataModel.getRoomId(), roomBaseDataModel.getUid());
                 }
             }

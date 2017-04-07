@@ -9,9 +9,15 @@ public class SchemeConstants {
     public static final String LOG_PREFIX = "SchemeLog#";
 
     /**
-     * @notice SCHEME : WALILIVE
+     * @notice SCHEME : WALILIVESDK
+     * @deprecated
      */
     public static final String SCHEME_WALILIVESDK = "walilivesdk";
+
+    /**
+     * @notice SCHEME : WALILIVE
+     */
+    public static final String SCHEME_WALILIVE = "walilive";
 
     /**
      * @notice SCHEME : WALILIVE

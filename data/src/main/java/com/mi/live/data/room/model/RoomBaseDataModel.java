@@ -459,7 +459,7 @@ public class RoomBaseDataModel implements Serializable {
         this.mIsForeground = mIsForeground;
     }
 
-    public MessageRule getmMsgRule() {
+    public MessageRule getMsgRule() {
         if (mMsgRule.size() == 0) {
             return null;
         } else {

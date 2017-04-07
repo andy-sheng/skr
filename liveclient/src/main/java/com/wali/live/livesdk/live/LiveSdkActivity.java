@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -56,7 +57,6 @@ import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.base.BaseEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.view.GiftAnimationView;
@@ -65,6 +65,7 @@ import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
 import com.wali.live.livesdk.live.api.ZuidSleepRequest;
@@ -91,9 +92,13 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.schema.SchemeActivity;
+import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
+import com.wali.live.watchsdk.webview.HalfWebViewActivity;
+import com.wali.live.watchsdk.webview.WebViewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -533,6 +538,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
         registerScreenStateReceiver();
 
+        if(mMyRoomData.getUser() == null ||mMyRoomData.getUser().getUid()<=0 || TextUtils.isEmpty(mMyRoomData.getUser().getNickname())){
+            mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+        }
         // 顶部view
         mTopInfoSingleView = $(R.id.live_top_info_view);
         addBindActivityLifeCycle(mTopInfoSingleView, true);
@@ -823,6 +831,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
         startRecord();
         syncSystemMessage();
+        if (mComponentController != null) {
+            mComponentController.onEvent(BaseLiveController.MSG_ON_LIVE_SUCCESS);
+        }
     }
 
     private void syncSystemMessage() {
@@ -1015,13 +1026,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(BaseEvent.UserActionEvent event) {
+    public void onEventMainThread(UserActionEvent event) {
         MyLog.e(TAG, "LiveEventClass.UserActionEvent");
         if (!mIsForeground) {
             return;
         }
         // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
-        if (event.type == BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
+        if (event.type == UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
             startShowFloatPersonInfo((Long) event.obj1);
             return;
         }
@@ -1029,12 +1040,54 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return;
         }
         switch (event.type) {
-            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER: {
+            case UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER: {
                 Bundle bundle = new Bundle();
                 bundle.putString(RoomAdminFragment.INTENT_LIVE_ROOM_ID, mMyRoomData.getRoomId());
-                bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, mMyRoomData.getmMsgRule() == null ? new MessageRule() : mMyRoomData.getmMsgRule());
+                bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, mMyRoomData.getMsgRule() == null ? new MessageRule() : mMyRoomData.getMsgRule());
                 bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, mMyRoomData == null ? 0 : mMyRoomData.getUid());
                 FragmentNaviUtils.addFragment(LiveSdkActivity.this, R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
+            }
+            break;
+            case UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT: {
+                String scheme = (String) event.obj1;
+                boolean isNeedParams = (Boolean) event.obj2;
+
+                MyLog.d(TAG, "scheme=" + scheme + ", isNeedParams=" + isNeedParams);
+                if (TextUtils.isEmpty(scheme)) {
+                    break;
+                }
+
+                if (scheme.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
+                    Uri uri = Uri.parse(scheme);
+                    if (uri.getScheme().equals(SchemeConstants.SCHEME_WALILIVE)) {
+                        String type = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_TYPE);
+                        String showType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_SHOW_TYPE);
+
+                        MyLog.d(TAG, "type=" + type + ", showType=" + showType);
+                        if (type == null || showType == null) {
+                            SchemeActivity.openActivity(this, uri);
+                        }
+                    }
+                } else {
+                    if (isNeedParams) {
+                        if (scheme.indexOf("?") != -1) {
+                            scheme = scheme + "&zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
+                        } else {
+                            scheme = scheme + "?zuid=" + mMyRoomData.getUid() + "&uuid=" + UserAccountManager.getInstance().getUuidAsLong() + "&lid=" + mMyRoomData.getRoomId();
+                        }
+                    }
+                    Intent intent;
+                    if ((int) event.obj3 == 1) {
+                        intent = new Intent(LiveSdkActivity.this, HalfWebViewActivity.class);
+                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, true);
+                    } else {
+                        intent = new Intent(LiveSdkActivity.this, WebViewActivity.class);
+                        intent.putExtra(WebViewActivity.EXTRA_DISPLAY_TYPE, false);
+                    }
+                    intent.putExtra(WebViewActivity.EXTRA_URL, scheme);
+                    intent.putExtra(WebViewActivity.EXTRA_ZUID, (Long) event.obj4);
+                    startActivity(intent);
+                }
             }
             break;
             default:

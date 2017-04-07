@@ -146,6 +146,7 @@
     <string name="game_living">Game live</string>
     <string name="definition_high">HD</string>
     <string name="screen_live">Record screen</string>
+    <string name="game_live">Game live</string>
     <string name="begin_live_title">Title:</string>
     <string name="live_title_change">Switch</string>
     <string name="live_title_clear">Clear</string>
