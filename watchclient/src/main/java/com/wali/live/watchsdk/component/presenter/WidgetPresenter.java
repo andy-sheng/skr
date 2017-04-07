@@ -44,12 +44,11 @@ import rx.schedulers.Schedulers;
  */
 public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         implements WidgetView.IPresenter, IPushMsgProcessor {
+    private static final String TAG = "WidgetPresenter";
 
     private static final int FROM_ALL = 0;
     private static final int FROM_WATCH = 1;
     private static final int FROM_LIVE = 2;
-
-    private static final String TAG = "WidgetPresenter";
 
     protected RoomBaseDataModel mMyRoomData;
     private Handler mUIHandler;
