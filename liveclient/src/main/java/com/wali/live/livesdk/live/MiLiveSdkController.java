@@ -6,11 +6,22 @@ import android.os.RemoteException;
 
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
+import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.location.Location;
+import com.mi.live.data.manager.UserInfoManager;
+import com.wali.live.proto.Live2Proto;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.watchsdk.IMiLiveSdk;
 import com.wali.live.watchsdk.init.InitManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.ipc.service.ThirdPartLoginData;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by chengsimin on 2016/12/8.
@@ -133,5 +144,72 @@ public class MiLiveSdkController implements IMiLiveSdk {
                         LiveSdkActivity.openActivity(activity, location, true);
                     }
                 }, false);
+    }
+
+    @Override
+    public void enterReplay(final Activity activity, final String playerId) {
+        Observable
+                .just(0)
+                .map(new Func1<Integer, Object>() {
+                    @Override
+                    public Object call(Integer integer) {
+                        /**
+                         * 内部接口，这里方便demo测试使用，外层应用请不要随意调用
+                         */
+                        LiveProto.HistoryLiveRsp rsp = LiveManager.historyRsp(Long.parseLong(playerId));
+                        if (rsp == null) {
+                            return null;
+                        }
+                        Live2Proto.HisLive hisLive = rsp.getHisLive(0);
+                        MiLiveSdkController.getInstance().openReplay(
+                                activity, Long.parseLong(playerId), hisLive.getLiveId(), hisLive.getUrl(), 0);
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
+    }
+
+    @Override
+    public void enterWatch(final Activity activity, final String playerId) {
+        Observable
+                .just(0)
+                .map(new Func1<Integer, Object>() {
+                    @Override
+                    public Object call(Integer integer) {
+                        /**
+                         * 内部接口，这里方便demo测试使用，外层应用请不要随意调用
+                         */
+                        LiveShow liveShow = UserInfoManager.getLiveShowByUserId(Long.parseLong(playerId));
+                        if (liveShow == null) {
+                            return null;
+                        }
+                        MiLiveSdkController.getInstance().openWatch(
+                                activity, liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl(), 0);
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, throwable);
+                    }
+                });
     }
 }

@@ -20,51 +20,53 @@ public interface IMiLiveSdk {
 
     /**
      * 设置操作的统一回调，需要设置回调功能才可正常使用
-     *
      */
     void setCallback(ICallback callback);
 
     /**
      * OAuth登录
-     *
      */
     void loginByMiAccountOAuth(String authCode);
 
     /**
      * sso登录
-     *
      */
     void loginByMiAccountSso(long miid, String serviceToken);
 
     /**
      * 退出账号
-     *
      */
     void clearAccount();
 
     /**
      * 打开直播观看页面
-     *
      */
     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
 
     /**
      * 打开直播回放页面
-     *
      */
     void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
 
     /**
      * 打开普通直播页面
-     *
      */
     void openNormalLive(Activity activity, Location location);
 
     /**
      * 打开游戏直播页面
-     *
      */
     void openGameLive(Activity activity, Location location);
+
+    /**
+     * 测试接口，上线后删除
+     */
+    void enterWatch(Activity activity, String playerId);
+
+    /**
+     * 测试接口，上线后删除
+     */
+    void enterReplay(Activity activity, String playerId);
 
     /**
      * 第三方登录

@@ -9,24 +9,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.dialog.MyAlertDialog;
-import com.base.log.MyLog;
-import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.location.Location;
-import com.mi.live.data.manager.UserInfoManager;
 import com.wali.live.livesdk.live.MiLiveSdkController;
-import com.wali.live.proto.Live2Proto;
-import com.wali.live.proto.LiveProto;
 import com.wali.live.sdk.manager.aardemo.global.GlobalData;
 import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
@@ -35,12 +30,6 @@ import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by chengsimin on 2016/12/8.
@@ -121,93 +110,29 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void inputPlayerId(final boolean isReplay) {
-        final MyAlertDialog.Builder builder = new MyAlertDialog.Builder(mActivity);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle(isReplay ? "请输入回放的主播id" : "请输入对应的主播id");
-        builder.setInputView();
-        builder.getInputView().setText(isReplay ? mRePlayerId : mPlayerId);
+        final EditText et = new EditText(mActivity);
+        builder.setView(et);
+        et.setText(isReplay ? mRePlayerId : mPlayerId);
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String playerId = builder.getInputView().getText().toString();
+                String playerId = et.getText().toString();
                 if (TextUtils.isEmpty(playerId)) {
                     ToastUtils.showToast("主播id不能为空");
                     return;
                 }
                 if (isReplay) {
                     mRePlayerId = playerId;
-                    enterReplay(playerId);
+                    MiLiveSdkController.getInstance().enterReplay(mActivity, playerId);
                 } else {
                     mPlayerId = playerId;
-                    enterWatch(playerId);
+                    MiLiveSdkController.getInstance().enterWatch(mActivity, playerId);
                 }
             }
         });
         builder.show();
-    }
-
-    private void enterReplay(final String playerId) {
-        Observable
-                .just(0)
-                .map(new Func1<Integer, Object>() {
-                    @Override
-                    public Object call(Integer integer) {
-                        /**
-                         * 内部接口，这里方便demo测试使用，外层应用请不要随意调用
-                         */
-                        LiveProto.HistoryLiveRsp rsp = LiveManager.historyRsp(Long.parseLong(playerId));
-                        if (rsp == null) {
-                            return null;
-                        }
-                        Live2Proto.HisLive hisLive = rsp.getHisLive(0);
-                        MiLiveSdkController.getInstance().openReplay(
-                                mActivity, Long.parseLong(playerId), hisLive.getLiveId(), hisLive.getUrl(), 0);
-                        return null;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        MyLog.e(TAG, throwable);
-                    }
-                });
-    }
-
-    private void enterWatch(final String playerId) {
-        Observable
-                .just(0)
-                .map(new Func1<Integer, Object>() {
-                    @Override
-                    public Object call(Integer integer) {
-                        /**
-                         * 内部接口，这里方便demo测试使用，外层应用请不要随意调用
-                         */
-                        LiveShow liveShow = UserInfoManager.getLiveShowByUserId(Long.parseLong(playerId));
-                        if (liveShow == null) {
-                            return null;
-                        }
-                        MiLiveSdkController.getInstance().openWatch(
-                                mActivity, liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl(), 0);
-                        return null;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        MyLog.e(TAG, throwable);
-                    }
-                });
     }
 
     public void oauthLogin() {
