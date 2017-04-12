@@ -5,7 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 
-import com.wali.live.sdk.manager.demo.R;
+import com.wali.live.sdk.manager.aardemo.R;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
 
 /**

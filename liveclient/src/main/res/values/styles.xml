@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppThemeLive" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
     <style name="Switch">
         <item name="appTrack">@drawable/switch_btn</item>
         <item name="appThumb">@drawable/all_switch_bg_button_light</item>

@@ -12,12 +12,10 @@ import android.widget.RadioGroup;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
+import com.wali.live.sdk.manager.aardemo.R;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.utils.RSASignature;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
-import com.xiaomi.accountsdk.utils.MiuiCUserIdUtil;
-
-import java.security.interfaces.RSAPrivateKey;
 
 public class ThirdPartLoginActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 

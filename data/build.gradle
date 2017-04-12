@@ -68,7 +68,7 @@ dependencies {
     compile dataDependencies.androidAnnotations
 
     compile files('libs/greendao-2.0.0.jar')
-    compile files('libs/xiaomiaccountsdk.jar')
+    compile files('libs/accountsdk.jar')
     compile files('libs/oauth.jar')
 
     compile project(':common')

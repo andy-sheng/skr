@@ -188,7 +188,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
                     } else {
                         if (VersionManager.getCurrentSdkVersion() >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getActivity())) {
                             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                    Uri.parse("package:" + "com.mi.liveassistant"));
+                                    Uri.parse("package:" + getActivity().getPackageName()));
                             startActivityForResult(intent, 10);
                         } else {
                             PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.SYSTEM_ALERT_WINDOW);

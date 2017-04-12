@@ -24,20 +24,21 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:supportsRtl="true">
 
         <activity
             android:name="com.wali.live.watchsdk.watch.WatchSdkActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
 
         <activity
             android:name="com.wali.live.watchsdk.watch.ReplaySdkActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLive"/>
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity"/>
 
@@ -49,6 +50,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
+        
         <activity
             android:name=".webview.HalfWebViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

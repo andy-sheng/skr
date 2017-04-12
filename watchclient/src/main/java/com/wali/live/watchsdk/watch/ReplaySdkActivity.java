@@ -540,12 +540,6 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         }
     }
 
-    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
-        Intent intent = new Intent(activity, ReplaySdkActivity.class);
-        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
-        activity.startActivity(intent);
-    }
-
     private void viewerTopFromServer(RoomBaseDataModel roomData) {
         mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
     }
@@ -594,7 +588,12 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                 roomData.getViewersList().addAll((List) objects[1]);
                 roomData.notifyViewersChange("processViewerTop");
                 break;
-
         }
+    }
+
+    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
+        Intent intent = new Intent(activity, ReplaySdkActivity.class);
+        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
+        activity.startActivity(intent);
     }
 }

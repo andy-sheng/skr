@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+    defaultConfig {
+        applicationId "com.wali.live.sdk.manager.demo"
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        myConfig {
+            storeFile file("com.xiaomi.debug.keystore")
+            storePassword "XiaomiIs#1"
+            keyAlias "release_key"
+            keyPassword "XiaomiIs#1"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myConfig
+            shrinkResources true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile(name: 'livesdk', ext: 'aar')
+
+    compile presentationDependencies.rxAndroid
+    compile presentationDependencies.rxJava
+    compile presentationDependencies.butterKnife
+    compile(presentationDependencies.fresco) {
+        exclude module: 'support-v4'
+        exclude module: 'print', group: 'android.support.v4'
+    }
+    compile presentationDependencies.frescoOkHttp
+    compile presentationDependencies.frescoWebp
+    compile presentationDependencies.frescoWebpSupport
+    compile presentationDependencies.frescoGif
+    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.google.code.gson:gson:2.6.2'
+}

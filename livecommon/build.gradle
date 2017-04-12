@@ -1,6 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
+    if(buildFlavorType == 'livesdkaar'){
+        defaultPublishConfig "livesdkaarRelease"
+    }else{
+        defaultPublishConfig "livesdkappRelease"
+    }
     compileSdkVersion rootProject.ext.androidCompileSdkVersion
     buildToolsVersion rootProject.ext.androidBuildToolsVersion
 //    useLibrary 'org.apache.http.legacy'
@@ -20,6 +25,27 @@ android {
         abortOnError false
     }
 
+    productFlavors{
+        livesdkapp
+        livesdkaar
+    }
+
+    sourceSets{
+        livesdkapp{
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java','src/livesdkapp/java']
+            resources.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+        }
+        livesdkaar{
+            manifest.srcFile 'src/livesdkaar/AndroidManifest1.xml'
+            java.srcDirs = ['src/main/java','src/livesdkaar/java']
+            resources.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+        }
+    }
 
     useLibrary 'org.apache.http.legacy'
 }
@@ -33,15 +59,13 @@ buildscript {
 
 // 放一些直播业务的基础公共类
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     def presentationDependencies = rootProject.ext.presentationDependencies
-    def dataDependencies = rootProject.ext.dataDependencies
-    def testDependencies = rootProject.ext.dataTestDependencies
     compile presentationDependencies.androidAppCompat
     compile presentationDependencies.rxAndroid
     compile presentationDependencies.rxJava
     compile presentationDependencies.butterKnife
+
     compile project(':data')
 
 //    /*
@@ -68,5 +92,15 @@ dependencies {
      */
     compile files('libs/migamepluginstat_2.jar')
     compile files('libs/ks3-android-sdk-v-1.4.6.jar')
-    compile files('libs/SDK_TY_4.6.11.jar')
+
+    livesdkappCompile files('libs/SDK_TY_4.6.11.jar')
+
+    livesdkaarCompile files('libs/alipaySingle-20160825.jar')
+    livesdkaarCompile files('libs/HyAlipay_release_20161202.jar')
+    livesdkaarCompile files('libs/HyUcashierpay_release_20161202.jar')
+    livesdkaarCompile files('libs/HyWxWappay_release_20170307.jar')
+    livesdkaarCompile files('libs/libammsdk.jar')
+    livesdkaarCompile files('libs/reporter.jar')
+    livesdkaarCompile files('libs/volley-1.0.19.jar')
+    livesdkaarCompile files('libs/zxingcore-3.1.0.jar')
 }

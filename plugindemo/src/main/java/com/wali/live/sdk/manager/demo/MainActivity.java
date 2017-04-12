@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
+import com.wali.live.sdk.manager.aardemo.R;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.notification.NotificationManger;
 import com.wali.live.sdk.manager.demo.utils.StringUtils;

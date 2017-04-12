@@ -10,9 +10,9 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.IFrescoCallBack;
 import com.base.image.fresco.image.ImageFactory;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
+import com.mi.liveassistant.R;
 import com.wali.live.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.channel.viewmodel.ChannelViewModel;
-import com.mi.liveassistant.R;
 
 /**
  * Created by lan on 16/6/28.

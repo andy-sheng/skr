@@ -93,4 +93,6 @@ ext {
     ]
 
     flavorType = "live"
+    //控制liveCommon flavor，不同的flavor有不同的支付方式，取值:livesdkapp,livesdkaar
+    buildFlavorType = 'livesdkaar'
 }

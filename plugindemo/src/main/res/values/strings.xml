@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MiLiveSdkManager</string>
+    <string name="app_name">MiLivePluginDemo</string>
     <string name="app_version">版本号:&#160;%s</string>
     <string name="apksize">安装包大小:&#160;%sM</string>
     <string name="upgrade_description">版本更新要点:&#160;%s</string>
