@@ -41,4 +41,8 @@
     <string name="open_link_failed">This site may contain security risks</string>
     <string name="invalid_url">This URL doesn\'t exist anymore</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="count_download">%d downloaded</string>
+    <string name="ten_thousand_download">%d0 thousand downloaded</string>
+    <string name="download">download</string>
+    <string name="downloading">start downloading</string>
 </resources>

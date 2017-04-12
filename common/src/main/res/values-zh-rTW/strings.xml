@@ -48,4 +48,5 @@
     <string name="yesterday_hour_minute">昨天 %1$d:%2$02d</string>
 
     <string name="in_process">正在處理中</string>
+    <string name="recommend">推薦</string>
 </resources>

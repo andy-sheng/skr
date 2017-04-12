@@ -90,7 +90,7 @@ afterEvaluate {
     dependencies.reverseEach {
         def aarPath = "${exploded_aar_dir}/${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}"
         if("${it.moduleName}" == 'enginebase') {
-            aarPath = "${exploded_aar_dir}/${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/playerpluginRelease"
+            aarPath = "${exploded_aar_dir}/${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/release"
         }
         it.moduleArtifacts.each {
             artifact ->

@@ -42,4 +42,8 @@
     <string name="open_link_failed">链接存在风险</string>
     <string name="invalid_url">抱歉，链接页面已不存在，无法使用系统浏览器打开了</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
+    <string name="count_download">%d次下载</string>
+    <string name="ten_thousand_download">%d万次下载</string>
+    <string name="download">下载</string>
+    <string name="downloading">开始下载</string>
 </resources>

@@ -19,6 +19,9 @@ public class RoomInfo implements Parcelable {
     // 以下是user内的非直播必须的信息，如果需要完整的信息，以后直接传User进来
     private long mAvatar;
 
+    // 游戏直播相关的，表明对应的游戏
+    private String mGameId;
+
     // 以下与ui相关的信息
     private String mCoverUrl;
 
@@ -36,6 +39,7 @@ public class RoomInfo implements Parcelable {
         mCoverUrl = in.readString();
         mStartTime = in.readLong();
         mLiveType = in.readInt();
+        mGameId = in.readString();
     }
 
     public static final Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {
@@ -49,6 +53,23 @@ public class RoomInfo implements Parcelable {
             return new RoomInfo[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 1;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(mPlayerId);
+        parcel.writeString(mLiveId);
+        parcel.writeString(mVideoUrl);
+        parcel.writeLong(mAvatar);
+        parcel.writeString(mCoverUrl);
+        parcel.writeLong(mStartTime);
+        parcel.writeInt(mLiveType);
+        parcel.writeString(mGameId);
+    }
 
     public long getStartTime() {
         return mStartTime;
@@ -98,28 +119,20 @@ public class RoomInfo implements Parcelable {
         mVideoUrl = videoUrl;
     }
 
-    @Override
-    public int describeContents() {
-        return 1;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(mPlayerId);
-        parcel.writeString(mLiveId);
-        parcel.writeString(mVideoUrl);
-        parcel.writeLong(mAvatar);
-        parcel.writeString(mCoverUrl);
-        parcel.writeLong(mStartTime);
-        parcel.writeInt(mLiveType);
-    }
-
     public void setLiveType(int liveType) {
         this.mLiveType = liveType;
     }
 
     public int getLiveType() {
         return mLiveType;
+    }
+
+    public String getGameId() {
+        return mGameId;
+    }
+
+    public void setGameId(String gameId) {
+        mGameId = gameId;
     }
 
     public static class Builder {
@@ -154,10 +167,13 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
+        public Builder setGameId(String gameId) {
+            mRoomInfo.setGameId(gameId);
+            return this;
+        }
+
         public RoomInfo build() {
             return mRoomInfo;
         }
     }
-
-
 }

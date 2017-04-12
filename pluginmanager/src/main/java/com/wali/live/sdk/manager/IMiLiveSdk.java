@@ -60,14 +60,14 @@ public interface IMiLiveSdk {
      *
      * @version 204000
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
 
     /**
      * 打开直播回放页面
      *
      * @version 204000
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
 
     /**
      * 打开普通直播页面
@@ -97,11 +97,11 @@ public interface IMiLiveSdk {
      * 第三方登录
      *
      * @param channelId 渠道ID
-     * @param xuid  第三方Uid
-     * @param sex   第三方用户性别,1:男 2:女 0:未知
+     * @param xuid      第三方Uid
+     * @param sex       第三方用户性别,1:男 2:女 0:未知
      * @param nickname  第三方用户昵称
      * @param headUrl   第三方用户头像
-     * @param sign  签名,请参考接入文档，签名算法一栏
+     * @param sign      签名,请参考接入文档，签名算法一栏
      * @param callback
      */
     void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback);

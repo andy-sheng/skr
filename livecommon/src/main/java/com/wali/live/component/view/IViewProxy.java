@@ -1,6 +1,5 @@
 package com.wali.live.component.view;
 
-import android.support.annotation.Nullable;
 import android.view.View;
 
 /**
@@ -12,6 +11,5 @@ public interface IViewProxy {
     /**
      * 返回代理的真实View对象
      */
-    @Nullable
     <T extends View> T getRealView();
 }

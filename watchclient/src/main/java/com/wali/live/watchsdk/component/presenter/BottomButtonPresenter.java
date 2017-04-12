@@ -29,6 +29,7 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
         registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(WatchComponentController.MSG_BOTTOM_POPUP_SHOWED);
         registerAction(WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN);
+        registerAction(WatchComponentController.MSG_SHOE_GAME_ICON);
     }
 
     @Override
@@ -50,7 +51,17 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
     public void rotateScreen() {
     }
 
-    @Nullable
+    @Override
+    public void showGameDownloadView() {
+        mComponentController.onEvent(WatchComponentController.MSG_SHOW_GAME_DOWNLOAD);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mView.destroyView();
+    }
+
     @Override
     protected IAction createAction() {
         return new Action();
@@ -75,6 +86,9 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
                     return true;
                 case WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN:
                     mView.getRealView().setVisibility(View.VISIBLE);
+                    return true;
+                case WatchComponentController.MSG_SHOE_GAME_ICON:
+                    mView.showGameIcon();
                     return true;
                 default:
                     break;

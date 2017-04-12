@@ -21,12 +21,14 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.GameBarragePresenter;
+import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
+import com.wali.live.watchsdk.component.view.GameDownloadPanel;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
@@ -89,7 +91,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addViewAboveAnchor(view, layoutParams, R.id.input_area_view);
+                addViewAboveAnchor(view, layoutParams, $(R.id.input_area_view));
             }
 
             // 游戏直播横屏弹幕
@@ -106,7 +108,13 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 layoutParams.rightMargin = DisplayUtils.dip2px(56f);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                addViewAboveAnchor(view, layoutParams, R.id.comment_rv);
+                addViewAboveAnchor(view, layoutParams, $(R.id.comment_rv));
+            }
+
+            {
+                GameDownloadPanel panel = new GameDownloadPanel((RelativeLayout) $(R.id.main_act_container));
+                GameDownloadPresenter presenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
+                addComponentView(panel, presenter);
             }
         } else {
             if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
@@ -128,8 +136,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
     @Override
     public void setupSdkView() {
-        mGiftContinueViewGroup = $(R.id.gift_continue_vg); // 礼物
-        mTopInfoView = $(R.id.watch_top_info_view); // 顶部view
+        mGiftContinueViewGroup = $(R.id.gift_continue_vg);  // 礼物
+        mTopInfoView = $(R.id.watch_top_info_view);         // 顶部view
 
         // 弹幕区
         {

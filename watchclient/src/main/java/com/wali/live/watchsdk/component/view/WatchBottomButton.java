@@ -1,11 +1,14 @@
 package com.wali.live.watchsdk.component.view;
 
+import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
+import com.base.log.MyLog;
 import com.mi.live.data.account.HostChannelManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.view.BaseBottomButton;
@@ -28,9 +31,12 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     protected View mCommentBtn;
     protected View mGiftBtn;
-//    protected View mRotateBtn;
+    //    protected View mRotateBtn;
+    protected View mGameBtn;
 
     private boolean mIsGameMode = false;
+
+    private ValueAnimator mShakeAnimator;
 
     @Override
     protected String getTAG() {
@@ -51,6 +57,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mPresenter.showGiftView();
         } else if (id == R.id.rotate_btn) {
             mPresenter.rotateScreen();
+        } else if (id == R.id.game_btn) {
+            mPresenter.showGameDownloadView();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -98,6 +106,62 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         }
     }
 
+    private void showGameIcon() {
+        mGameBtn = createImageView(R.drawable.live_icon_game_btn);
+        addCreatedView(mGameBtn, R.id.game_btn);
+
+        mRightBtnSetPort.add(mGameBtn);
+        mBottomBtnSetLand.add(1, mGameBtn);
+        orientChild();
+
+        mGameBtn.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startGameAnimator();
+            }
+        }, 200);
+    }
+
+    private void startGameAnimator() {
+        if (mShakeAnimator == null) {
+            mGameBtn.setPivotX(mGameBtn.getWidth() >> 1);
+            mGameBtn.setPivotY(mGameBtn.getHeight() >> 1);
+
+            mShakeAnimator = ValueAnimator.ofInt(0, 1100);
+            mShakeAnimator.setDuration(2200);
+            mShakeAnimator.setRepeatMode(ValueAnimator.RESTART);
+            mShakeAnimator.setInterpolator(new LinearInterpolator());
+            mShakeAnimator.setRepeatCount(ValueAnimator.INFINITE);
+            mShakeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int time = (int) animation.getAnimatedValue();
+                    MyLog.d(TAG, "time=" + time);
+                    if (time <= 50) {
+                        mGameBtn.setRotation(-1f * time / 5 * 2);
+                    } else if (time <= 100) {
+                        mGameBtn.setRotation(-20f + 1f * (time - 50) / 5 * 4);
+                    } else if (time <= 150) {
+                        mGameBtn.setRotation(20f - 1f * (time - 100) / 5 * 3);
+                    } else if (time <= 180) {
+                        mGameBtn.setRotation(-10f + 1f * (time - 150) / 3 * 2);
+                    } else if (time <= 200) {
+                        mGameBtn.setRotation(10f - 1f * (time - 180) / 2);
+                    } else {
+                        mGameBtn.setRotation(0);
+                    }
+                }
+            });
+        }
+        mShakeAnimator.start();
+    }
+
+    private void destroyView() {
+        if (mShakeAnimator != null) {
+            mShakeAnimator.cancel();
+        }
+    }
+
     @Override
     public IView getViewProxy() {
         /**
@@ -113,6 +177,16 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             @Override
             public <T extends View> T getRealView() {
                 return (T) mContentContainer;
+            }
+
+            @Override
+            public void showGameIcon() {
+                WatchBottomButton.this.showGameIcon();
+            }
+
+            @Override
+            public void destroyView() {
+                WatchBottomButton.this.destroyView();
             }
         }
         return new ComponentView();
@@ -133,8 +207,16 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 旋转UI
          */
         void rotateScreen();
+
+        /**
+         * 增加游戏下载
+         */
+        void showGameDownloadView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
+        void showGameIcon();
+
+        void destroyView();
     }
 }

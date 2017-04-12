@@ -43,4 +43,8 @@
     <string name="open_link_failed">連結存在風險</string>
     <string name="invalid_url">抱歉，連結頁面已不存在，無法使用系統瀏覽器打開了</string>
     <string name="copied_to_clipboard">已複製到剪貼簿</string>
+    <string name="count_download">%d次下載</string>
+    <string name="ten_thousand_download">%d萬次下載</string>
+    <string name="download">下載</string>
+    <string name="downloading">開始下載</string>
 </resources>
