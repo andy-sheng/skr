@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.component.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.base.log.MyLog;
 import com.base.log.logger.Logger;
@@ -34,7 +35,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
         implements GameDownloadPanel.IPresenter {
     private static final String TAG = "GameDownloadPresenter";
 
-    private static final String GAME_INFO_URL = "http://app.migc.xiaomi.com/contentapi/m/gameinfo?gameId=%d";
+    private static final String GAME_INFO_URL = "http://app.migc.xiaomi.com/contentapi/m/gameinfo?gameId=%s";
     private RoomBaseDataModel mMyRoomData;
 
     private GameViewModel mGameModel;
@@ -50,7 +51,7 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
 
     private void getGameInfo() {
         MyLog.d(TAG, "getGameInfo: gameId=" + mMyRoomData.getGameId());
-        if (mMyRoomData.getGameId() <= 0) {
+        if (TextUtils.isEmpty(mMyRoomData.getGameId())) {
             return;
         }
         // 启动2分钟后的定时任务

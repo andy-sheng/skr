@@ -122,7 +122,7 @@ public class RoomBaseDataModel implements Serializable {
     /**
      * 游戏id
      */
-    private int mGameId;
+    private String mGameId;
 
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
@@ -503,11 +503,11 @@ public class RoomBaseDataModel implements Serializable {
         this.mGlanceEnable = glanceEnable;
     }
 
-    public int getGameId() {
+    public String getGameId() {
         return mGameId;
     }
 
-    public void setGameId(int gameId) {
+    public void setGameId(String gameId) {
         mGameId = gameId;
     }
 }

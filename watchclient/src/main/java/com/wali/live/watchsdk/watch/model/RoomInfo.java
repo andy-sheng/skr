@@ -20,7 +20,7 @@ public class RoomInfo implements Parcelable {
     private long mAvatar;
 
     // 游戏直播相关的，表明对应的游戏
-    private int mGameId;
+    private String mGameId;
 
     // 以下与ui相关的信息
     private String mCoverUrl;
@@ -39,7 +39,7 @@ public class RoomInfo implements Parcelable {
         mCoverUrl = in.readString();
         mStartTime = in.readLong();
         mLiveType = in.readInt();
-        mGameId = in.readInt();
+        mGameId = in.readString();
     }
 
     public static final Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {
@@ -68,7 +68,7 @@ public class RoomInfo implements Parcelable {
         parcel.writeString(mCoverUrl);
         parcel.writeLong(mStartTime);
         parcel.writeInt(mLiveType);
-        parcel.writeInt(mGameId);
+        parcel.writeString(mGameId);
     }
 
     public long getStartTime() {
@@ -127,11 +127,11 @@ public class RoomInfo implements Parcelable {
         return mLiveType;
     }
 
-    public int getGameId() {
+    public String getGameId() {
         return mGameId;
     }
 
-    public void setGameId(int gameId) {
+    public void setGameId(String gameId) {
         mGameId = gameId;
     }
 
@@ -167,7 +167,7 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
-        public Builder setGameId(int gameId) {
+        public Builder setGameId(String gameId) {
             mRoomInfo.setGameId(gameId);
             return this;
         }

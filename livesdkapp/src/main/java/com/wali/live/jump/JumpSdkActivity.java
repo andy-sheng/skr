@@ -58,7 +58,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
-                int gameId = intent.getIntExtra(EXTRA_GAME_ID, 0);
+                String gameId = intent.getStringExtra(EXTRA_GAME_ID);
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
                         playerId, liveId, videoUrl, liveType, gameId);
                 break;
@@ -68,8 +68,9 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
+                String gameId = intent.getStringExtra(EXTRA_GAME_ID);
                 MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType);
+                        playerId, liveId, videoUrl, liveType, gameId);
                 break;
             }
             case ACTION_OPEN_NORMAL_LIVE: {
