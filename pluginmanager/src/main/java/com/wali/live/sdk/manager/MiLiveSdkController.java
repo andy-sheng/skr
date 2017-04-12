@@ -296,7 +296,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int gameId, IAssistantCallback callback) {
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
         }
@@ -307,12 +307,12 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
-        bundle.putInt(EXTRA_GAME_ID, gameId);
+        bundle.putString(EXTRA_GAME_ID, gameId);
         jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_REPLAY, callback)) {
             return;
         }
@@ -323,6 +323,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        bundle.putString(EXTRA_GAME_ID, gameId);
         jumpToSdk(activity, bundle, ACTION_OPEN_REPLAY, callback);
     }
 

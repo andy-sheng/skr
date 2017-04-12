@@ -60,14 +60,14 @@ public interface IMiLiveSdk {
      *
      * @version 204000
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int gameId, IAssistantCallback callback);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
 
     /**
      * 打开直播回放页面
      *
      * @version 204000
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
 
     /**
      * 打开普通直播页面
