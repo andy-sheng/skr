@@ -109,17 +109,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, false);
+                playerId, liveId, videoUrl, liveType, gameId, false);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, false);
+                playerId, liveId, videoUrl, liveType, gameId, false);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                         }
                         Live2Proto.HisLive hisLive = rsp.getHisLive(0);
                         MiLiveSdkController.getInstance().openReplay(
-                                activity, Long.parseLong(playerId), hisLive.getLiveId(), hisLive.getUrl(), 0);
+                                activity, Long.parseLong(playerId), hisLive.getLiveId(), hisLive.getUrl(), 0, null);
                         return null;
                     }
                 })
@@ -195,7 +195,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                             return null;
                         }
                         MiLiveSdkController.getInstance().openWatch(
-                                activity, liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl(), 0);
+                                activity, liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl(), 0, null);
                         return null;
                     }
                 })
