@@ -53,7 +53,8 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
         if (mMyRoomData.getGameId() <= 0) {
             return;
         }
-        Observable.timer(10, TimeUnit.SECONDS)
+        // 启动2分钟后的定时任务
+        Observable.timer(2 * 60, TimeUnit.SECONDS)
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Action1<Object>() {
                     @Override
