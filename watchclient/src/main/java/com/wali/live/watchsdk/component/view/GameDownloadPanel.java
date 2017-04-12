@@ -167,6 +167,11 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
             public void inflate() {
                 GameDownloadPanel.this.inflate();
             }
+
+            @Override
+            public boolean isShow() {
+                return GameDownloadPanel.this.isShow();
+            }
         }
         return new ComponentView();
     }
@@ -181,5 +186,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         void showGameDownloadView();
 
         void hideGameDownloadView();
+
+        boolean isShow();
     }
 }

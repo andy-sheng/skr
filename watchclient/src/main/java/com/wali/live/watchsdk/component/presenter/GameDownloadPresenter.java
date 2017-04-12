@@ -146,8 +146,12 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                     showGameDownloadView();
                     break;
                 case ComponentController.MSG_ON_BACK_PRESSED:
-                    hideGameDownloadView();
-                    return true;
+                    if (mView.isShow()) {
+                        hideGameDownloadView();
+                        return true;
+                    } else {
+                        return false;
+                    }
                 default:
                     break;
             }
