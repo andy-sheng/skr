@@ -29,21 +29,21 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
 
     // 推拉流相关消息
     private static final int MSG_STREAM_FIRST = 11000;
-    public static final int MSG_END_LIVE_UNEXPECTED = MSG_STREAM_FIRST;      // 异常结束直播/观看
-    public static final int MSG_END_LIVE_FOR_TIMEOUT = MSG_STREAM_FIRST + 1; // 长时间退到后台后结束直播
-    public static final int MSG_OPEN_CAMERA_FAILED = MSG_STREAM_FIRST + 2;   // 打开相机失败
-    public static final int MSG_OPEN_MIC_FAILED = MSG_STREAM_FIRST + 3;      // 打开麦克风失败
-    public static final int MSG_ON_STREAM_SUCCESS = MSG_STREAM_FIRST + 4; // 推/拉流成功
-    public static final int MSG_ON_STREAM_RECONNECT = MSG_STREAM_FIRST + 5; // 开始重连
-    public static final int MSG_ON_LIVE_SUCCESS = MSG_STREAM_FIRST + 6; // 开房间/进房间成功
+    public static final int MSG_END_LIVE_UNEXPECTED = MSG_STREAM_FIRST;         // 异常结束直播/观看
+    public static final int MSG_END_LIVE_FOR_TIMEOUT = MSG_STREAM_FIRST + 1;    // 长时间退到后台后结束直播
+    public static final int MSG_OPEN_CAMERA_FAILED = MSG_STREAM_FIRST + 2;      // 打开相机失败
+    public static final int MSG_OPEN_MIC_FAILED = MSG_STREAM_FIRST + 3;         // 打开麦克风失败
+    public static final int MSG_ON_STREAM_SUCCESS = MSG_STREAM_FIRST + 4;       // 推/拉流成功
+    public static final int MSG_ON_STREAM_RECONNECT = MSG_STREAM_FIRST + 5;     // 开始重连
+    public static final int MSG_ON_LIVE_SUCCESS = MSG_STREAM_FIRST + 6;         // 开房间/进房间成功
 
     // UI消息
     // 复合消息(多个View同时响应的消息)
     private static final int MSG_COMPOUND_FIRST = 20000;
-    public static final int MSG_INPUT_VIEW_SHOWED = MSG_COMPOUND_FIRST;     // 输入框 已显示
-    public static final int MSG_INPUT_VIEW_HIDDEN = MSG_COMPOUND_FIRST + 1; // 输入框 已隐藏
-    public static final int MSG_BOTTOM_POPUP_SHOWED = MSG_COMPOUND_FIRST + 2; // 底部按钮/礼物页面等显示时，通知 底部按钮和弹幕区 隐藏
-    public static final int MSG_BOTTOM_POPUP_HIDDEN = MSG_COMPOUND_FIRST + 3; // 底部按钮/礼物页面等隐藏时，通知 底部按钮和弹幕区 显示
+    public static final int MSG_INPUT_VIEW_SHOWED = MSG_COMPOUND_FIRST;             // 输入框 已显示
+    public static final int MSG_INPUT_VIEW_HIDDEN = MSG_COMPOUND_FIRST + 1;         // 输入框 已隐藏
+    public static final int MSG_BOTTOM_POPUP_SHOWED = MSG_COMPOUND_FIRST + 2;       // 底部按钮/礼物页面等显示时，通知 底部按钮和弹幕区 隐藏
+    public static final int MSG_BOTTOM_POPUP_HIDDEN = MSG_COMPOUND_FIRST + 3;       // 底部按钮/礼物页面等隐藏时，通知 底部按钮和弹幕区 显示
     // 触摸相关消息
     private static final int MSG_TOUCH_FIRST = 21000;
     public static final int MSG_ENABLE_MOVE_VIEW = MSG_TOUCH_FIRST;     // 开启滑动
@@ -61,16 +61,18 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_HIDE_GAME_BARRAGE = MSG_INPUT_FIRST + 7; // 隐藏 游戏弹幕
     // 弹出页面相关消息
     private static final int MSG_POPUP_FIRST = 31000;
-    public static final int MSG_SHOW_SETTING_PANEL = MSG_POPUP_FIRST;     // 显示 设置面板
-    public static final int MSG_SHOW_MAGIC_PANEL = MSG_POPUP_FIRST + 1; // 显示 美妆面板
-    public static final int MSG_SHOW_PLUS_PANEL = MSG_POPUP_FIRST + 2; // 显示 分享面板
-    public static final int MSG_SHOW_GIFT_PANEL = MSG_POPUP_FIRST + 3; // 显示 礼物面板
-    public static final int MSG_HIDE_BOTTOM_PANEL = MSG_POPUP_FIRST + 4; // 隐藏 底部面板
-    public static final int MSG_SHOW_ATMOSPHERE_VIEW = MSG_POPUP_FIRST + 5; // 显示 氛围面板
+    public static final int MSG_SHOW_SETTING_PANEL = MSG_POPUP_FIRST;           // 显示 设置面板
+    public static final int MSG_SHOW_MAGIC_PANEL = MSG_POPUP_FIRST + 1;         // 显示 美妆面板
+    public static final int MSG_SHOW_PLUS_PANEL = MSG_POPUP_FIRST + 2;          // 显示 分享面板
+    public static final int MSG_SHOW_GIFT_PANEL = MSG_POPUP_FIRST + 3;          // 显示 礼物面板
+    public static final int MSG_HIDE_BOTTOM_PANEL = MSG_POPUP_FIRST + 4;        // 隐藏 底部面板
+    public static final int MSG_SHOW_ATMOSPHERE_VIEW = MSG_POPUP_FIRST + 5;     // 显示 氛围面板
+    public static final int MSG_SHOE_GAME_ICON = MSG_POPUP_FIRST + 6;           // 展示游戏中心Icon
+    public static final int MSG_SHOW_GAME_DOWNLOAD = MSG_POPUP_FIRST + 7;       // 暂时游戏中心下载框
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI
-    
+
     private final Map<Integer, Set<ComponentPresenter.IAction>> mEventActionMap = new HashMap<>();
 
     @Nullable

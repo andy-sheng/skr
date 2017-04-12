@@ -27,6 +27,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_LIVE_ID = "extra_live_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
+    private static final String EXTRA_GAME_ID = "extra_game_id";
 
     private static final String EXTRA_LOCATION = "extra_location";
 
@@ -57,8 +58,9 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
+                int gameId = intent.getIntExtra(EXTRA_GAME_ID, 0);
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType);
+                        playerId, liveId, videoUrl, liveType, gameId);
                 break;
             }
             case ACTION_OPEN_REPLAY: {

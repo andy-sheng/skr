@@ -65,9 +65,8 @@ public abstract class BaseSdkView<T extends ComponentController> {
     protected final <T extends View> void addViewAboveAnchor(
             @NonNull T view,
             @NonNull ViewGroup.LayoutParams params,
-            @IdRes int anchorId) {
+            View anchorView) {
         ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
-        View anchorView = $(anchorId);
         int pos = anchorView != null ? rootView.indexOfChild(anchorView) : -1;
         if (pos >= 0) {
             rootView.addView(view, pos + 1, params);

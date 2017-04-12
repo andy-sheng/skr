@@ -41,6 +41,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_LIVE_ID = "extra_live_id";
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
+    private static final String EXTRA_GAME_ID = "extra_game_id";
 
     private static final String EXTRA_LOCATION = "extra_location";
 
@@ -295,7 +296,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int gameId, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
         }
@@ -306,6 +307,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        bundle.putInt(EXTRA_GAME_ID, gameId);
         jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
     }
 

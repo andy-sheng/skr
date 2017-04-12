@@ -32,21 +32,31 @@
 
     <declare-styleable name="RotatedSeekBar">
         <attr name="appShapeBkAlpha" format="float"/>
-        <attr name="appProgressDrawableFT" format="reference" />
-        <attr name="appProgressDrawableBK" format="reference" />
-        <attr name="appSeekBarLeftPadding" format="dimension" />
-        <attr name="appSeekBarRightPadding" format="dimension" />
-        <attr name="appThumbDrawable" format="reference" />
-        <attr name="appThumbSize" format="dimension" />
-        <attr name="appThumbDrawablePress" format="reference" />
-        <attr name="appThumbSizePress" format="dimension" />
-        <attr name="appRotatedAngle" format="float" />
-        <attr name="appPercente" format="float" />
-        <attr name="appPercenteMin" format="float" />
-        <attr name="appPercenteMax" format="float" />
+        <attr name="appProgressDrawableFT" format="reference"/>
+        <attr name="appProgressDrawableBK" format="reference"/>
+        <attr name="appSeekBarLeftPadding" format="dimension"/>
+        <attr name="appSeekBarRightPadding" format="dimension"/>
+        <attr name="appThumbDrawable" format="reference"/>
+        <attr name="appThumbSize" format="dimension"/>
+        <attr name="appThumbDrawablePress" format="reference"/>
+        <attr name="appThumbSizePress" format="dimension"/>
+        <attr name="appRotatedAngle" format="float"/>
+        <attr name="appPercente" format="float"/>
+        <attr name="appPercenteMin" format="float"/>
+        <attr name="appPercenteMax" format="float"/>
 
-        <attr name="appShapeSize" format="dimension" />
-        <attr name="appShapeColorFT" format="reference|color" />
-        <attr name="appShapeColorBK" format="reference|color" />
+        <attr name="appShapeSize" format="dimension"/>
+        <attr name="appShapeColorFT" format="reference|color"/>
+        <attr name="appShapeColorBK" format="reference|color"/>
+    </declare-styleable>
+    <declare-styleable name="MyRatingBar">
+        <attr name="numStars" format="integer"/>
+        <attr name="ratingStars" format="float"/>
+        <attr name="backgroundDrawable" format="reference"/>
+        <attr name="foregroundDrawable" format="reference"/>
+        <attr name="halfForegroundDrawable" format="reference"/>
+        <attr name="starPadding" format="dimension"/>
+        <attr name="useDrawableWidth" format="boolean"/>
+        <attr name="starWidth" format="dimension"/>
     </declare-styleable>
 </resources>

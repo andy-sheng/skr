@@ -207,7 +207,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType) {
+                          final long playerId, final String liveId, final String videoUrl, final int liveType, final int gameId) {
         MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -217,6 +217,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 // 直接跳转
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
+                        .setGameId(gameId)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 activity.finish();

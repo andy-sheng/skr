@@ -219,6 +219,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
+        mMyRoomData.setGameId(mRoomInfo.getGameId());
     }
 
 

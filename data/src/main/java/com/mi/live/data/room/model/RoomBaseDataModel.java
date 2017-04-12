@@ -119,6 +119,11 @@ public class RoomBaseDataModel implements Serializable {
      */
     private int getMessageMode = RoomMessagePresenter.PUSH_MODE;
 
+    /**
+     * 游戏id
+     */
+    private int mGameId;
+
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
     }
@@ -496,5 +501,13 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setGlanceEnable(boolean glanceEnable) {
         this.mGlanceEnable = glanceEnable;
+    }
+
+    public int getGameId() {
+        return mGameId;
+    }
+
+    public void setGameId(int gameId) {
+        mGameId = gameId;
     }
 }
