@@ -169,7 +169,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void thirdPartLogin() {
         Intent intent = new Intent(mActivity, ThirdPartLoginActivity.class);
-        intent.putExtra(ThirdPartLoginActivity.KEY_CHANNELID, ((MainActivity) mActivity).getCurrentChannelId());
+        intent.putExtra(ThirdPartLoginActivity.KEY_CHANNELID, AARDemoApplication.CHANNEL_ID);
         mActivity.startActivity(intent);
     }
 

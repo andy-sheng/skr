@@ -11,11 +11,8 @@ import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 import com.wali.live.watchsdk.IMiLiveSdk;
 
 public class MainActivity extends AppCompatActivity {
+
     private final static String TAG = "MainActivity";
-
-    public static final int CHANNEL_ID = 50000;
-
-    private int currentChannelId = CHANNEL_ID;
 
     private RecyclerView mRecyclerView;
     private MenuRecyclerAdapter mMenuRecyclerAdapter;
@@ -63,9 +60,5 @@ public class MainActivity extends AppCompatActivity {
                 ToastUtils.showToast("有其他APP在活跃");
             }
         });
-    }
-
-    public int getCurrentChannelId() {
-        return currentChannelId;
     }
 }

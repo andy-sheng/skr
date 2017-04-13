@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.androidCompileSdkVersion
-    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
     defaultConfig {
-        applicationId "com.wali.live.sdk.manager.demo"
-        minSdkVersion rootProject.ext.androidMinSdkVersion
-        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        applicationId "com.wali.live.sdk.manager.aardemo"
+        minSdkVersion 16
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -58,17 +58,18 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile(name: 'livesdk', ext: 'aar')
 
-    compile presentationDependencies.rxAndroid
-    compile presentationDependencies.rxJava
-    compile presentationDependencies.butterKnife
-    compile(presentationDependencies.fresco) {
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile('com.facebook.fresco:fresco:0.14.1') {
         exclude module: 'support-v4'
         exclude module: 'print', group: 'android.support.v4'
     }
-    compile presentationDependencies.frescoOkHttp
-    compile presentationDependencies.frescoWebp
-    compile presentationDependencies.frescoWebpSupport
-    compile presentationDependencies.frescoGif
+    compile 'com.facebook.fresco:imagepipeline-okhttp:0.14.1'
+    compile 'com.facebook.fresco:animated-webp:0.14.1'
+    compile 'com.facebook.fresco:webpsupport:0.14.1'
+    compile 'com.facebook.fresco:animated-gif:0.14.1'
+
     compile 'com.trello:rxlifecycle:0.4.0'
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.greenrobot:eventbus:3.0.0'

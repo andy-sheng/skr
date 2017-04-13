@@ -12,7 +12,7 @@ import com.wali.live.livesdk.live.MiLiveSdkController;
 
 public class AARDemoApplication extends Application {
 
-    public static final int CHANNEL_ID = 50000;
+    public static final int CHANNEL_ID = 50002;
 
     @Override
     public void onCreate() {
