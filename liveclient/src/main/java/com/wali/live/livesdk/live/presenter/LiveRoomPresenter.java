@@ -144,11 +144,13 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                         return rsp;
                     }
                 }).subscribeOn(Schedulers.io())
-                .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
+                        if(mCallback == null){
+                            return;
+                        }
                         LiveProto.EndLiveRsp rsp = (LiveProto.EndLiveRsp) o;
                         int errCode = ErrorCode.CODE_ERROR_NORMAL;
                         if (rsp == null) {
@@ -169,5 +171,11 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                     }
                 });
 
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mCallback = null;
     }
 }

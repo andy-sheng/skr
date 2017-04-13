@@ -377,6 +377,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mSdkView.releaseSdkView();
             mSdkView = null;
         }
+        MyUserInfoManager.getInstance().getUser().setRoomId("");
     }
 
     private void orientCloseBtn(boolean isLandscape) {
@@ -814,18 +815,19 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     //开始动画,并且开始推流
     private void beginLiveToServer() {
+        MyLog.w(TAG,"beginLiveToServer");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         startCountDown();
 
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
-                mLiveCoverUrl, mMyRoomData.getRoomId(), null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
+                mLiveCoverUrl, "", null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
     }
 
     private void processStartRecord(String liveId, long createTime, String shareUrl,
                                     List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
-        MyLog.w(TAG, "processStartRecord");
+        MyLog.w(TAG, "processStartRecord,liveId:"+liveId);
         mMyRoomData.setRoomId(liveId);
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
@@ -967,6 +969,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private void endLiveToServer() {
+        MyLog.w(TAG,"endLiveToServer");
         mLiveRoomPresenter.endLiveByAppInfo(mMyRoomData.getRoomId(), null);
     }
 
