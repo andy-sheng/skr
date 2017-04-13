@@ -24,6 +24,8 @@
 -keep class android.support.v8.renderscript.** {*;}
 -keep class android.support.** {*;}
 -keep class com.wali.live.watchsdk.ipc.service.ThirdPartLoginData {*;}
+-keep class com.wali.live.watchsdk.ipc.service.LiveInfo {*;}
+
 
 # Keep native methods
 -keepclassmembers class * {

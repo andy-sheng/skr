@@ -15,4 +15,6 @@ interface IMiLiveSdkService {
     void checkService();
 
     void thirdPartLogin(String packageName, String channelSecret, in ThirdPartLoginData loginData);
+
+    void getChannelLives(int channelid, String packageName, String channelSecret);
 }

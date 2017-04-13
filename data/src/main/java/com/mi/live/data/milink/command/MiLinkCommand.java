@@ -10,6 +10,9 @@ import java.util.Set;
  * Created by linjinbin on 15/11/2.
  */
 public class MiLinkCommand {
+    //服务器暂时没给命令字
+    public static final String COMMAND_RECOMMEND_CHANNELLIST = "zhibo.recommend.channellist";
+
     public static final String COMMAND_VOIP_AUTO_UPLOAD_LOG = "milink.push.uploadlog";
 
     /*金山云鉴权*/
@@ -454,7 +457,6 @@ public class MiLinkCommand {
     //主播排行榜相关
     public static final String COMMAND_RANK_LIST_CONFIG = "zhibo.ranklist.config";
     public static final String COMMAND_RANK_LIST_QUERY = "zhibo.ranklist.query";
-
     //电视台相关
 //    public static final String COMMAND_CURRENT_PROGRAM = "zhibo.currentprogram.get";
 //    public static final String COMMAND_DAY_PROGRAM_LIST = "zhibo.dayprogram.get";

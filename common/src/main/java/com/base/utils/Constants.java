@@ -107,6 +107,4 @@ public class Constants {
     public static final int SCHEMA_FEEDS_TYPE_PLAYBACK = 3; //feeds的回放类型
 
     public static final int SCHEMA_FEEDS_EXT_TYPE = 1;// feeds schema的日志类型
-
-
 }

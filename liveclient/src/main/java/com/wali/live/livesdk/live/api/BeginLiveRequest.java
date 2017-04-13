@@ -73,7 +73,6 @@ public class BeginLiveRequest extends BaseLiveRequest {
         mBuilder.setSupportMagicFace(supportMagicFaceFlag);
         mRequest = mBuilder.build();
         MyLog.w("BeginLiveRequest = " + mRequest.toString());
-
     }
 
     protected BeginLiveRsp parse(byte[] bytes) throws InvalidProtocolBufferException {

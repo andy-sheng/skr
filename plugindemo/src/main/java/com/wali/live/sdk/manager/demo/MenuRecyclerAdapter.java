@@ -179,6 +179,23 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
         }));
+
+        mDataList.add(new Bean("拉列表", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().getChannelLives(50001, new IMiLiveSdk.IAssistantCallback() {
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("notifyVersionLow");
+                    }
+
+                    @Override
+                    public void notifyNotInstall() {
+                        ToastUtils.showToast("notifyNotInstall");
+                    }
+                });
+            }
+        }));
     }
 
     public void oauthLogin() {
@@ -302,13 +319,14 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         NormalViewHolder normalViewHolder = (NormalViewHolder) holder;
         final Bean bean = mDataList.get(position);
         normalViewHolder.tv.setText(bean.content);
         normalViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.w(TAG, "position=" + position + " content=" + bean.content);
                 bean.runnable.run();
             }
         });
