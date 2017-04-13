@@ -171,15 +171,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }));
 
-        mDataList.add(new Bean("切换宿主id,模拟切换了宿主", new Runnable() {
-            @Override
-            public void run() {
-                if (channleClickListener != null) {
-                    channleClickListener.onClick(null);
-                }
-            }
-        }));
-
         mDataList.add(new Bean("拉列表", new Runnable() {
             @Override
             public void run() {
@@ -301,16 +292,9 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return null;
     }
 
-    View.OnClickListener channleClickListener;
-
-    public void setChannleClickListener(View.OnClickListener listener) {
-        channleClickListener = listener;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView tv = new TextView(parent.getContext());
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tv.setGravity(Gravity.CENTER);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
         tv.setLayoutParams(lp);

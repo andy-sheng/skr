@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private MenuRecyclerAdapter mMenuRecyclerAdapter;
-    private TextView mChannelTv;
 
     private SdkUpdateHelper mSdkUpdateHelper;
     private Handler mUiHander = new Handler();
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mChannelTv = (TextView) findViewById(R.id.channel_tv);
 
         mSdkUpdateHelper = new SdkUpdateHelper(new IMiLiveSdk.IUpdateListener() {
             @Override
@@ -110,14 +108,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mMenuRecyclerAdapter = new MenuRecyclerAdapter(this, mSdkUpdateHelper);
         mRecyclerView.setAdapter(mMenuRecyclerAdapter);
-        mMenuRecyclerAdapter.setChannleClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentChannelId = currentChannelId == 50000 ? 50001 : 50000;
-                MiLiveSdkController.getInstance().setChannelId(currentChannelId);
-                mChannelTv.setText("宿主id:" + currentChannelId);
-            }
-        });
         GlobalData.setApplication(this.getApplication());
         //建议在 application里初始化这个
         MiLiveSdkController.getInstance().init(this.getApplication(), CHANNEL_ID, "TEST SECRET", new IMiLiveSdk.CallbackWrapper() {
