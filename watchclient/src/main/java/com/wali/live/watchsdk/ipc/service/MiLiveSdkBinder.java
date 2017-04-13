@@ -6,16 +6,20 @@ import android.os.RemoteException;
 
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
+import com.google.protobuf.ByteString;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
+import com.wali.live.proto.ChannelLiveProto;
+import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.proto.SecurityProto;
 import com.wali.live.watchsdk.IMiLiveSdk;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
+import com.wali.live.watchsdk.channellive.presenter.ChannelLiveCaller;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.watch.ReplaySdkActivity;
@@ -74,10 +78,75 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
+    public void getChannelLives(final int channelId, String packageName, final String channelSecret) throws RemoteException {
+        MyLog.w(TAG, "getChannelLives");
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                ChannelLiveCaller.getChannelLive(channelId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<ChannelLiveProto.GetChannelLiveDetailRsp>() {
+                            @Override
+                            public void onCompleted() {
+                                MyLog.w(TAG, "getChannelLives onCompleted");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.e(e);
+                                onEventGetRecommendLives(channelId, ErrorCode.CODE_ERROR_NORMAL, null);
+                            }
+
+                            @Override
+                            public void onNext(ChannelLiveProto.GetChannelLiveDetailRsp getChannelLiveDetailRsp) {
+                                int errCode = ErrorCode.CODE_ERROR_NORMAL;
+                                if (getChannelLiveDetailRsp == null || (errCode = getChannelLiveDetailRsp.getRet()) != ErrorCode.CODE_SUCCESS) {
+                                    //拉列表失败
+                                    MyLog.e(TAG, "getChannelLive failed channelId=" + channelId);
+                                    onEventGetRecommendLives(channelId, errCode, null);
+                                    return;
+                                }
+                                List<LiveInfo> liveInfos = new ArrayList<LiveInfo>();
+                                List<ChannelLiveProto.Item> items = getChannelLiveDetailRsp.getItemList();
+                                for (ChannelLiveProto.Item item : items) {
+                                    if (item != null && item.getType() == ChannelLiveCaller.TYPE_LIVE) {
+                                        List<ByteString> list = item.getDataList();
+                                        if (list != null) {
+                                            for (ByteString bs : list) {
+                                                try {
+                                                    CommonChannelProto.LiveInfo liveInfoPb = CommonChannelProto.LiveInfo.parseFrom(bs.toByteArray());
+                                                    liveInfos.add(new LiveInfo(liveInfoPb));
+                                                } catch (Exception e) {
+                                                    MyLog.e(TAG, e);
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                                onEventGetRecommendLives(channelId, errCode, liveInfos);
+                            }
+                        });
+
+            }
+
+            @Override
+            public void postError() {
+
+            }
+
+            @Override
+            public void processFailure() {
+
+            }
+        });
+    }
+
+    @Override
     public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
         MyLog.w(TAG, "loginByMiAccountSso channelId=" + channelId);
-
         secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback() {
             @Override
             public void postSuccess() {
@@ -419,7 +488,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
         if (callbackList != null) {
             MyLog.w(TAG, "mEventCallBackList==null");
-
             int n = callbackList.beginBroadcast();
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
@@ -621,5 +689,32 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 onEventLogin(channelId, MiLiveSdkEvent.FAILED);
             }
         });
+    }
+
+    public void onEventGetRecommendLives(int channelId, int errCode, List<LiveInfo> liveInfos) {
+        MyLog.d(TAG, "onEventGetRecommendLives " + liveInfos.size());
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+        boolean aidlSuccess = false;
+        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+        if (callbackList != null) {
+            MyLog.w(TAG, "callbackList != null");
+            int n = callbackList.beginBroadcast();
+            for (int i = 0; i < n; i++) {
+                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                try {
+                    callback.onEventGetRecommendLives(errCode, liveInfos);
+                    aidlSuccess = true;
+                } catch (Exception e) {
+                    MyLog.v(TAG, "dead callback.");
+                    deadCallback.add(callback);
+                }
+            }
+            callbackList.finishBroadcast();
+            for (IMiLiveSdkEventCallback callback : deadCallback) {
+                MyLog.v(TAG, "unregister event callback.");
+                callbackList.unregister(callback);
+            }
+        }
+        MyLog.d(TAG, "onEventGetRecommendLives aidl success=" + aidlSuccess);
     }
 }

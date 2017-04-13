@@ -8,12 +8,15 @@ import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
+
+import java.util.List;
 
 /**
  * Created by chengsimin on 2016/12/27.
@@ -71,6 +74,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             Logger.d(TAG, "onEventOtherAppActive");
             if (mCallback != null) {
                 mCallback.notifyOtherAppActive();
+            }
+        }
+
+        @Override
+        public void onEventGetRecommendLives(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
+            Log.w(TAG, "onEventGetRecommendLives");
+            if (mCallback != null) {
+                mCallback.notifyGetChannelLives(errCode, liveInfos);
             }
         }
     };
@@ -197,18 +208,32 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign){
-        Logger.w(TAG,"thirdPartLogin channelId="+channelId+", xuid="+xuid);
-        ThirdPartLoginData data = new ThirdPartLoginData(channelId,xuid,sex,nickname,headUrl,sign);
+    public void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign) {
+        Logger.w(TAG, "thirdPartLogin channelId=" + channelId + ", xuid=" + xuid);
+        ThirdPartLoginData data = new ThirdPartLoginData(channelId, xuid, sex, nickname, headUrl, sign);
         if (mRemoteService == null) {
             mThirdPartLoginData = data;
             resolveNullService(IMiLiveSdk.ICallback.THIRD_PART_LOGIN);
-        }else{
+        } else {
             try {
-                mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(),MiLiveSdkController.getInstance().getChannelSecret(),data);
+                mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), data);
             } catch (RemoteException e) {
                 mThirdPartLoginData = data;
                 resolveException(e, IMiLiveSdk.ICallback.LOGIN_SSO_AIDL);
+            }
+        }
+    }
+
+    public void getChannelLives() {
+        Logger.w(TAG, "getChannelLives");
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_CHANNEL_LIVES);
+        } else {
+            try {
+                mRemoteService.getChannelLives(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_CHANNEL_LIVES);
             }
         }
     }
@@ -270,4 +295,6 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             mCallback.notifyAidlFailure(aidlFlag);
         }
     }
+
+
 }

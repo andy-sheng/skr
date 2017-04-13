@@ -1,0 +1,193 @@
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "CommonChannelProto";
+
+message ChannelBanner {
+    required string bg_url      =1;//banner背景图片url
+    required string link_url    =2;//banner跳转url
+    optional string desc        =3;//描述信息
+}
+
+//http://wiki.n.miui.com/pages/viewpage.action?pageId=25049393
+message ChannelItem{
+    required uint32 uiType      = 1;
+    required bytes uiData       = 2;
+    optional bool fullColumn    = 3;
+    optional uint32 sectionId   = 4;
+}
+
+//type = 1,2,4,16
+message UiTemplateOneTextOneImg{
+    //这种模版的元素必须都是一张图，一段文字
+    repeated OneTextOneImgItemData itemDatas    = 1;
+    optional string headerName                  = 2;//header的名字
+    optional string headerViewAllUri            = 3;//查看全部的uri，如果没有这个字段不展示查看全部
+}
+
+message OneTextOneImgItemData{
+    optional string text            = 1;//元素的文本内容
+    optional string imgUrl          = 2;//元素的图片url
+    optional string jumpSchemeUri   = 3;//跳转的schemeUri
+    optional UserInfo userInfo      = 4;//用户信息//16需要带userinfo
+}
+
+//type=3,5,9,24,29
+message UiTemplateUserInfo{
+    //这种模版的元素必须都是一张图，一段文字,并且会下发全量的用户资料信息
+    repeated UserInfoItemData itemDatas     = 1;
+    optional string headerName              = 2;//header的名字
+    optional string headerViewAllUri        = 3;//查看全部的uri，如果没有这个字段不展示查看全部
+    optional string subHeaderName = 4; //副标题
+}
+
+message UserInfoItemData {
+    optional UserInfo userInfo      = 1; //用户资料
+    optional string jumpSchemeUri   = 2; //跳转的schemeUri
+}
+
+message UserInfo{
+    required uint64 zuid                =1;
+    optional uint64 avatar              =2; //头像
+    optional string nickname            =3; //昵称
+    optional string sign                =4; //签名
+    optional uint32 gender              =5; //性别
+    optional uint32 level               =6; //等级
+    optional uint32 badge               =7; //徽章
+    optional uint64 updateTime          =8; //更新时间，水位
+    repeated uint64 adminUids           =9; //管理员
+    optional string certification       =10;//认证信息
+    optional uint32 certification_type  =11;//认证类型 ，1：新浪微博，2：官方账号，3：推荐认证，4：小米直播认证
+    optional uint32 fansCount           =12;//粉丝数
+}
+
+//type=6
+message BannerItemData {
+    required string picUrl              = 1;//图片地址
+    required string skipUrl             = 2 [default = ''];//图片跳转地址
+    required uint64 lastUpdateTs        = 3;//修改时间
+    optional uint32 bannerId            = 4;//banner id，客户端做打点统计
+    optional string shareIconUrl        = 5;//分享时用的图片URL
+    optional string shareTitle          = 6;//分享时用的标题
+    optional string shareDesc           = 7;//分享时用的摘要
+    optional uint32 channelId           = 8 [default = 1];//频道id，默认值为1为热门
+    optional uint32 lang                = 9 [default = 1];//语言版本: 1中文, 2 英文
+}
+
+message UiTemplateBanner{
+    repeated BannerItemData itemDatas   = 1;
+    optional uint32 type                = 2; //不写或者为1时，为推荐列表的小尺寸， 2为资讯频道大尺寸
+}
+
+//type=8.
+message UiTemplateTwoTextOneImg{
+    //这种模版的元素必须都是一张图，两段文字
+    repeated TwoTextOneImgItemData itemDatas    = 1;
+    optional string headerName                  = 2;//header的名字
+    optional string headerViewAllUri            = 3;//查看全部的uri，如果没有这个字段不展示查看全部
+}
+
+message TwoTextOneImgItemData{
+    optional string name            = 1;//元素的文本内容,比如名称
+    optional string desc            = 2;//元素的文本内容,比如描述信息
+    optional string imgUrl          = 3;//元素的图片url
+    optional string jumpSchemeUri   = 4;//跳转的schemeUri
+    optional UserInfo userInfo      = 5;//用户信息
+}
+
+//type=7,10,11 12,13,15,17,18,19,  21, 22,25,26,28,31,32
+message UiTemplateLiveOrReplayInfo {
+    repeated LiveOrReplayItemInfo items =1;
+    optional string headerName          =2;//header的名字
+    optional string headerViewAllUri    =3;//查看全部的uri，如果没有这个字段不展示查看全部
+    optional string subHeaderName       =4;//header副标题
+    optional uint32 headerUiType        =5;//header样式,默认0=老样式,1=头条有正副标题样式 2=header嵌在封面左上角
+}
+
+message LiveOrReplayItemInfo {
+    required uint32 type                    = 1; //1直播 2回放 3配置用户信息 4小视频 5电视台 6图文
+    required bytes items                    = 2; //1对应 liveItem， 2对应BackItem 3.对应 UserInfo
+    optional string jumpSchemeUri           = 3; //跳转的schemeUri
+    optional string upRightText             = 4; //右上角文案，直播，回放
+    optional string downText1               = 5; //下方第一行文案
+    optional string downText2               = 6; //下发第二行文案
+    optional string imgUrl                  = 7; //配置的元素的图片url
+    optional uint64 publishTime             = 8; //发布时间
+    optional string upLeftText              = 9; //左上角文案(游戏新样式增加)
+    optional string imgUrl2                 = 10;//配置的元素的图片url2(目前样式33用到)
+    optional ListWidgetInfo widget          = 11;//列表挂件信息
+    optional RichText topLeft               = 12;//封面左上角信息
+    optional MiddleInfo middle              = 13;//封面中间文本
+    repeated RichText label                 = 14;//标签[目前只有一个，考虑会扩展为多个，定义为repeated]
+}
+
+//富文本信息
+message RichText {
+    optional string text          = 1; //文案
+    optional string jumpSchemeUri = 2; //跳转地址
+    optional uint32 bgImageID     = 3; //客户端预留底图id[需考虑不识别底图情况]
+}
+
+//封面中间文案信息
+message MiddleInfo {
+    optional string text1 = 1; //主标题
+    optional string text2 = 2; //副标题
+}
+
+//列表挂件信息
+message ListWidgetInfo {
+optional string jumpSchemeUri = 1; //跳转地址
+optional string iconUrl = 2; //图标地址
+}
+
+//type=14
+message UiTemplateSeparator {
+    optional uint32 color           = 1; //分割线颜色,1:灰色 2:白色
+    optional uint32 height          = 2; //分割线高度,1:默认值,2:头条高度
+    optional string title  = 3;
+}
+
+//主播部分信息
+message UserBrief {
+    required uint64 uId         = 1; //用户id
+    optional string nickname    = 2; //昵称
+    optional uint64 avatar      = 3; //头像时间戳
+    optional uint32 level       = 4; //等级
+    optional uint32 certType    = 5; //认证类型
+}
+
+//购物直播信息
+message ShopBrief {
+    optional bool hideGoods     = 1; //是否隐藏商品
+    optional uint32 desiredCnt  = 2; //想要购买人数
+}
+
+//一条直播记录
+message LiveInfo {
+    required string liveId      = 1; //直播id
+    optional UserBrief user     = 2; //主播信息
+    optional string location    = 3; //地点
+    optional uint32 viewerCnt   = 4; //观众数
+    optional string url         = 5; //直播地址
+    optional string coverUrl    = 6; //房间的封面图片地址
+    optional string liTitle     = 7; //直播标题
+    optional uint64 startTime   = 8; //直播开始时间
+    optional string tag         = 9; //个性化标签(打点上报)
+    optional ShopBrief shop     = 10;//购物信息[has判断有该字段,说明是购物直播]
+    optional uint32 appType     = 11;//0=小米直播app, 1=无人机, 2=导播台, 3=游戏, 4=一直播
+    optional uint32 liveType    = 12;//直播类型[和房间接口一致]. 0=公开, 1=私密, 2=口令, 3=门票
+}
+
+//一条回放记录详情
+message BackInfo {
+    required string backId      = 1; //回放id
+    optional UserBrief user     = 2; //主播信息
+    optional uint32 viewerCnt   = 3; //观众数
+    optional string url         = 4; //回放地址
+    optional uint64 startTime   = 5; //直播开始时间
+    optional uint64 endTime     = 6; //直播结束时间
+    optional string backTitle   = 7; //回放标题
+    optional string coverUrl    = 8; //房间的封面图片地址
+    optional string shareUrl    = 9; //分享地址
+    optional string location    = 10;//地点
+}

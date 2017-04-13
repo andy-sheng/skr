@@ -6,6 +6,9 @@ import android.support.annotation.IntRange;
 import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
+import com.wali.live.watchsdk.ipc.service.LiveInfo;
+
+import java.util.List;
 
 /**
  * Created by lan on 17/2/20.
@@ -103,6 +106,13 @@ public interface IMiLiveSdk {
     void openGameLive(Activity activity, Location location, IAssistantCallback callback);
 
     /**
+     * 获取频道列表
+     *
+     * @param channelid
+     */
+    void getChannelLives(int channelid, IAssistantCallback callback);
+
+    /**
      * 判断该手机中是否安装的直播助手
      */
     boolean hasInstallLiveSdk();
@@ -140,6 +150,8 @@ public interface IMiLiveSdk {
         int CLEAR_ACCOUNT_AIDL = 1003;
 
         int THIRD_PART_LOGIN = 1004;
+
+        int GET_CHANNEL_LIVES = 1005;
 
         /**
          * 登录相关接口的返回码
@@ -180,6 +192,8 @@ public interface IMiLiveSdk {
          * 通知上层有其它的app在活跃状态
          */
         void notifyOtherAppActive();
+
+        void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos);
 
     }
 
@@ -273,6 +287,11 @@ public interface IMiLiveSdk {
 
         @Override
         public void notifyOtherAppActive() {
+
+        }
+
+        @Override
+        public void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos) {
 
         }
     }

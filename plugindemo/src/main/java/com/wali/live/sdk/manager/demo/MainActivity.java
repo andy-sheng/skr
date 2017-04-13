@@ -23,11 +23,14 @@ import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.notification.NotificationManger;
 import com.wali.live.sdk.manager.demo.utils.StringUtils;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
+import com.wali.live.watchsdk.ipc.service.LiveInfo;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
 
-    public static final int CHANNEL_ID = 50000;
+    public static final int CHANNEL_ID = 50001;
 
     private int currentChannelId = CHANNEL_ID;
 
@@ -158,6 +161,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void notifyOtherAppActive() {
                 ToastUtils.showToast("有其他APP在活跃");
+            }
+
+            @Override
+            public void notifyGetChannelLives(int errCode, List<LiveInfo> list) {
+                Log.w(TAG, "notifyGetChannelLives");
+                if (list != null) {
+                    for (LiveInfo liveInfo : list) {
+                        Log.w(TAG, " uuid=" + liveInfo.getLiveId() + " nickName=" + liveInfo.getNickname());
+                        ToastUtils.showToast(MainActivity.this, "uuid=" + liveInfo + " nickName=" + liveInfo.getNickname());
+                    }
+                }
             }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
