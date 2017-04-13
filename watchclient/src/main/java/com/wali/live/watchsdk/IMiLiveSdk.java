@@ -41,6 +41,16 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      */
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
+
+    /**
+     * 打开直播回放页面
+     */
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
+
+    /**
+     * 打开直播观看页面
+     */
     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId);
 
     /**
