@@ -29,7 +29,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by xiaolan on 2017/04/10.
+ * Created by lan on 2017/04/10.
  */
 public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.IView>
         implements GameDownloadPanel.IPresenter {

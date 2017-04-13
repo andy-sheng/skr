@@ -109,6 +109,20 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
+        checkHasInit();
+        MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
+                playerId, liveId, videoUrl, liveType, null, false);
+    }
+
+    @Override
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
+        checkHasInit();
+        MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
+                playerId, liveId, videoUrl, liveType, null, false);
+    }
+
+    @Override
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,

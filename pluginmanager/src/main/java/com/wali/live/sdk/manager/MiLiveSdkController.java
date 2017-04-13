@@ -296,6 +296,36 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        bundle.putLong(EXTRA_PLAYER_ID, playerId);
+        bundle.putString(EXTRA_LIVE_ID, liveId);
+        bundle.putString(EXTRA_VIDEO_URL, videoUrl);
+        bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
+    }
+
+    @Override
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_REPLAY, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        bundle.putLong(EXTRA_PLAYER_ID, playerId);
+        bundle.putString(EXTRA_LIVE_ID, liveId);
+        bundle.putString(EXTRA_VIDEO_URL, videoUrl);
+        bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        jumpToSdk(activity, bundle, ACTION_OPEN_REPLAY, callback);
+    }
+
+    @Override
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;

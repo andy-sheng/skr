@@ -58,6 +58,24 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      *
+     * @notice 不带gameId
+     * @version 204000
+     */
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+
+    /**
+     * 打开直播回放页面
+     *
+     * @notice 不带gameId
+     * @version 204000
+     */
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+
+
+    /**
+     * 打开直播观看页面
+     *
+     * @notice 带gameId
      * @version 204000
      */
     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
@@ -65,6 +83,7 @@ public interface IMiLiveSdk {
     /**
      * 打开直播回放页面
      *
+     * @notice 带gameId
      * @version 204000
      */
     void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
