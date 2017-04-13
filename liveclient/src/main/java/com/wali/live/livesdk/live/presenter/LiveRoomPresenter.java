@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -131,24 +132,27 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
 
     /*第三方app 结束直播*/
     public void endLiveByAppInfo(final String liveId, final AccountProto.AppInfo appInfo) {
-        Observable.just(0)
-                .map(new Func1<Integer, LiveProto.EndLiveRsp>() {
-                    @Override
-                    public LiveProto.EndLiveRsp call(Integer integer) {
-                        LiveProto.EndLiveRsp rsp = null;
-                        if (appInfo != null) {
-                            rsp = new EndLiveRequest(liveId, appInfo).syncRsp();
-                        } else {
-                            rsp = new EndLiveRequest(liveId).syncRsp();
-                        }
-                        return rsp;
-                    }
-                }).subscribeOn(Schedulers.io())
+        Observable.create(new Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                MyLog.w(TAG,"endLiveByAppInfo,liveId:"+liveId);
+                LiveProto.EndLiveRsp rsp = null;
+                if (appInfo != null) {
+                    rsp = new EndLiveRequest(liveId, appInfo).syncRsp();
+                } else {
+                    rsp = new EndLiveRequest(liveId).syncRsp();
+                }
+                subscriber.onNext(rsp);
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        if(mCallback == null){
+                        if (mCallback == null) {
                             return;
                         }
                         LiveProto.EndLiveRsp rsp = (LiveProto.EndLiveRsp) o;

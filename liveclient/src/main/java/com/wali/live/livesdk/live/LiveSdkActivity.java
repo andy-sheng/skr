@@ -360,15 +360,15 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     protected void onDestroy() {
+        if (sRecording) {
+            stopRecord("onDestroy");
+            sRecording = false;
+        }
         super.onDestroy();
         if (mScreenStateReceiver != null) {
             unregisterReceiver(mScreenStateReceiver);
         }
         PhoneStateReceiver.unregisterReceiver(this, mPhoneStateReceiver);
-        if (sRecording) {
-            stopRecord("onDestroy");
-            sRecording = false;
-        }
         if (mComponentController != null) {
             mComponentController.release();
             mComponentController = null;
