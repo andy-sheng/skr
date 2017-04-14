@@ -35,6 +35,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     private boolean mClearAccountFlag = false;
 
     private IMiLiveSdk.ICallback mCallback;
+    private IMiLiveSdk.IChannelAssistantCallback mChannelCallback;
 
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
@@ -80,8 +81,9 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         @Override
         public void onEventGetRecommendLives(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
             Log.w(TAG, "onEventGetRecommendLives");
-            if (mCallback != null) {
-                mCallback.notifyGetChannelLives(errCode, liveInfos);
+            if (mChannelCallback != null) {
+                mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
+                mChannelCallback = null;
             }
         }
     };
@@ -224,8 +226,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void getChannelLives() {
+    public void getChannelLives(IMiLiveSdk.IChannelAssistantCallback channelCallback) {
         Logger.w(TAG, "getChannelLives");
+        if (channelCallback == null) {
+            Logger.w(TAG, "getChannelLives callback is null");
+            return;
+        }
+        mChannelCallback = channelCallback;
         if (mRemoteService == null) {
             resolveNullService(IMiLiveSdk.ICallback.GET_CHANNEL_LIVES);
         } else {

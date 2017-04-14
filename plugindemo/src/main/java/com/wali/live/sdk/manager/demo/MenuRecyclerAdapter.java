@@ -27,6 +27,7 @@ import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
+import com.wali.live.watchsdk.ipc.service.LiveInfo;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -174,7 +175,18 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("拉列表", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().getChannelLives(50001, new IMiLiveSdk.IAssistantCallback() {
+                MiLiveSdkController.getInstance().getChannelLives(new IMiLiveSdk.IChannelAssistantCallback() {
+                    @Override
+                    public void notifyGetChannelLives(int i, List<LiveInfo> list) {
+                        Log.w(TAG, "notifyGetChannelLives");
+                        if (list != null) {
+                            for (LiveInfo liveInfo : list) {
+                                Log.w(TAG, " uuid=" + liveInfo.getLiveId() + " nickName=" + liveInfo.getNickname());
+                                ToastUtils.showToast("uuid=" + liveInfo + " nickName=" + liveInfo.getNickname());
+                            }
+                        }
+                    }
+
                     @Override
                     public void notifyVersionLow() {
                         ToastUtils.showToast("notifyVersionLow");
