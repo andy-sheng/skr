@@ -89,7 +89,6 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_OPEN_GAME_LIVE, 205001);
 
         mMinVersionMap.put(ACTION_THIRD_PART_LOGIN, 205005);
-
         mMinVersionMap.put(ACTION_GET_CHANNEL_LIVES, 205008);
     }
 
@@ -389,11 +388,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void getChannelLives(int channelid, IAssistantCallback callback) {
+    public void getChannelLives(IChannelAssistantCallback callback) {
         if (!checkVersion(ACTION_GET_CHANNEL_LIVES, callback)) {
             return;
         }
-        MiLiveSdkServiceProxy.getInstance().getChannelLives();
+        MiLiveSdkServiceProxy.getInstance().getChannelLives(callback);
     }
 
     @Override

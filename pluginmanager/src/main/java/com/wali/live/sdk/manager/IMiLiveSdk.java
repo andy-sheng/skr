@@ -106,11 +106,25 @@ public interface IMiLiveSdk {
     void openGameLive(Activity activity, Location location, IAssistantCallback callback);
 
     /**
+     * 第三方登录
+     *
+     * @param channelId 渠道ID
+     * @param xuid      第三方Uid
+     * @param sex       第三方用户性别,1:男 2:女 0:未知
+     * @param nickname  第三方用户昵称
+     * @param headUrl   第三方用户头像
+     * @param sign      签名,请参考接入文档，签名算法一栏
+     * @param callback
+     * @version 205005
+     */
+    void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback);
+
+    /**
      * 获取频道列表
      *
-     * @param channelid
+     * @version 205008
      */
-    void getChannelLives(int channelid, IAssistantCallback callback);
+    void getChannelLives(IChannelAssistantCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手
@@ -122,18 +136,6 @@ public interface IMiLiveSdk {
      */
     void setChannelId(int channelId);
 
-    /**
-     * 第三方登录
-     *
-     * @param channelId 渠道ID
-     * @param xuid      第三方Uid
-     * @param sex       第三方用户性别,1:男 2:女 0:未知
-     * @param nickname  第三方用户昵称
-     * @param headUrl   第三方用户头像
-     * @param sign      签名,请参考接入文档，签名算法一栏
-     * @param callback
-     */
-    void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback);
 
     /**
      * sdk 上层应用回调
@@ -192,9 +194,6 @@ public interface IMiLiveSdk {
          * 通知上层有其它的app在活跃状态
          */
         void notifyOtherAppActive();
-
-        void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos);
-
     }
 
     /**
@@ -211,6 +210,14 @@ public interface IMiLiveSdk {
          * 通知上层应用，直播助手未安装
          */
         void notifyNotInstall();
+    }
+
+    @Keep
+    interface IChannelAssistantCallback extends IAssistantCallback {
+        /**
+         * 通知上层直播列表的方法回调
+         */
+        void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos);
     }
 
     @Keep
@@ -287,12 +294,6 @@ public interface IMiLiveSdk {
 
         @Override
         public void notifyOtherAppActive() {
-
-        }
-
-        @Override
-        public void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos) {
-
         }
     }
 }

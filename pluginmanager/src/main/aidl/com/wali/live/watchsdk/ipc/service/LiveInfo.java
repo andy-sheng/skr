@@ -11,20 +11,20 @@ import android.os.Parcelable;
 public class LiveInfo implements Parcelable {
     private String mLiveId;  //直播id
     //主播信息
-    private long mUserId;  //用户id
-    private String mNickname;  //昵称
-    private long mAvatar;  //头像时间戳
-    private int mLevel;  //等级
-    private int mCertType;  //认证类型
+    private long mUserId;       //用户id
+    private String mNickname;   //昵称
+    private long mAvatar;       //头像时间戳
+    private int mLevel;         //等级
+    private int mCertType;      //认证类型
     //
-    private String mCity;  //地点
-    private int mViewerCnt;  //观众数
-    private String mUrl;  //直播地址
-    private String mCoverUrl;  //房间的封面图片地址
+    private String mCity;       //地点
+    private int mViewerCnt;     //观众数
+    private String mUrl;        //直播地址
+    private String mCoverUrl;   //房间的封面图片地址
     private String mLiveTitle;  //直播标题
-    private long mStartTime;  //直播开始时间
-    private String mTag;  //个性化标签(打点上报)
-    private int mAppType = 11; //0=小米直播app, 1=无人机, 2=导播台, 3=游戏, 4=一直播
+    private long mStartTime;    //直播开始时间
+    private String mTag;        //个性化标签(打点上报)
+    private int mAppType = 11;  //0=小米直播app, 1=无人机, 2=导播台, 3=游戏, 4=一直播
     private int mLiveType = 12; //直播类型[和房间接口一致]. 0=公开, 1=私密, 2=口令, 3=门票
 
     public LiveInfo(String liveId, long userId, String nickname, long avatar, int level, int certType, String city, int viewerCnt,
