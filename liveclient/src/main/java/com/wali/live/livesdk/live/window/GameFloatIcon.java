@@ -139,6 +139,7 @@ public class GameFloatIcon extends RelativeLayout {
         }
         mIsWindowShow = true;
         mWindowManager.addView(this, mFloatLayoutParams);
+        onOrientation(false);
     }
 
     public void removeWindow() {

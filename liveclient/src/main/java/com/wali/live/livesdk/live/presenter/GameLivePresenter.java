@@ -1,7 +1,6 @@
 package com.wali.live.livesdk.live.presenter;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -227,7 +226,6 @@ public class GameLivePresenter implements Presenter {
     public void stop() {
         mIsForeground = false;
         if (mIsStarted) {
-            onOrientation(GlobalData.app().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
             stopAddExtra();
             mGameFloatWindow.showWindow(mToken, mMyRoomData.getViewerCnt());
             GlobalData.app().startService(mGameLiveServiceIntent);
