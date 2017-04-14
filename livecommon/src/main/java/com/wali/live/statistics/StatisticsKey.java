@@ -825,4 +825,9 @@ public class StatisticsKey {
     public static final int KEY_LIVESDK_FREEZE_FIXED = 0;
     public static final int KEY_LIVESDK_FREEZE_UNFIXED = 1;
     public static final String KEY_LIVESDK_PLUG_FLOW_CLICK_FREEZE = "plug_flow-click-freeze-%d-%s";//固定悬浮窗打点  点击一次打一次  (固定住%d=0；可移动%d=1)
+
+    // 游戏推荐打点
+    public static final String KEY_GAME_ICON_SHOW = "gameSDK-show-%s-%s";
+    public static final String KEY_GAME_ICON_CLICK = "gameSDK-click-%s-%s";
+    public static final String KEY_GAME_DOWNLOAD_CLICK = "gameSDK-download-%s-%s";
 }

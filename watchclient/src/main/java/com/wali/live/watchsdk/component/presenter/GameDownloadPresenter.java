@@ -13,8 +13,10 @@ import com.base.version.http.bean.BasicNameValuePair;
 import com.base.version.http.bean.NameValuePair;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.component.view.GameDownloadPanel;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
@@ -88,8 +90,11 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                                         if (gameModel.isValid()) {
                                             MyLog.d(TAG, "call: onEvent MSG_BOTTOM_SHOE_GAME_ICON");
                                             mGameModel = gameModel;
+
                                             mView.inflate();
                                             mComponentController.onEvent(ComponentController.MSG_SHOE_GAME_ICON);
+
+                                            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(formatGameIconShowKey(), 1);
                                         }
                                     }
                                 }, new Action1<Throwable>() {
@@ -107,7 +112,21 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                 });
     }
 
+    private String formatGameIconShowKey() {
+        return String.format(StatisticsKey.KEY_GAME_ICON_SHOW, mMyRoomData.getRoomId(), mGameModel.getName());
+    }
+
+    private String formatGameIconClickKey() {
+        return String.format(StatisticsKey.KEY_GAME_ICON_CLICK, mMyRoomData.getRoomId(), mGameModel.getName());
+    }
+
+    private String formatGameDownloadKey() {
+        return String.format(StatisticsKey.KEY_GAME_DOWNLOAD_CLICK, mMyRoomData.getRoomId(), mGameModel.getName());
+    }
+
     private void showGameDownloadView() {
+        StatisticsAlmightyWorker.getsInstance().recordDelayDefault(formatGameIconClickKey(), 1);
+
         mView.showGameDownloadView();
     }
 
@@ -118,6 +137,11 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     @Override
     public GameViewModel getGameModel() {
         return mGameModel;
+    }
+
+    @Override
+    public void reportDownloadKey() {
+        StatisticsAlmightyWorker.getsInstance().recordDelayDefault(formatGameDownloadKey(), 1);
     }
 
     @Override

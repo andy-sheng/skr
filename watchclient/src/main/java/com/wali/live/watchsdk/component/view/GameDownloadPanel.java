@@ -130,6 +130,8 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
                         mDownloadId = downloadManager.enqueue(request);
 
                         ToastUtils.showToast(R.string.downloading);
+
+                        mPresenter.reportDownloadKey();
                     }
                 });
                 mDownloadTv.setVisibility(View.VISIBLE);
@@ -178,6 +180,8 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
 
     public interface IPresenter {
         GameViewModel getGameModel();
+
+        void reportDownloadKey();
     }
 
     public interface IView extends IViewProxy {
