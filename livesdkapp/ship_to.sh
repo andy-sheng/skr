@@ -38,3 +38,5 @@ git checkout ./src/main/res/values/strings.xml
 git checkout ./src/main/res/values-zh-rTW/strings.xml
 git checkout ./src/main/res/values-zh-rCN/strings.xml
 git checkout ././build.gradle
+git checkout ../buildsystem/dependencies.gradle
+git checkout ./src/main/AndroidManifest.xml
