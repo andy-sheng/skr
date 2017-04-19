@@ -24,6 +24,8 @@ import com.mi.live.data.location.Location;
 import com.wali.live.livesdk.live.MiLiveSdkController;
 import com.wali.live.sdk.manager.aardemo.global.GlobalData;
 import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
+import com.wali.live.watchsdk.IMiLiveSdk;
+import com.wali.live.watchsdk.ipc.service.LiveInfo;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -105,6 +107,24 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         MiLiveSdkController.getInstance().clearAccount();
                     }
                 }).start();
+            }
+        }));
+        mDataList.add(new Bean("拉列表", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().getChannelLives(new IMiLiveSdk.IChannelCallback() {
+                    @Override
+                    public void notifyGetChannelLives(int errcode, List<LiveInfo> list) {
+                        Log.w(TAG, "notifyGetChannelLives");
+                        if (list != null) {
+                            Log.w(TAG, "notifyGetChannelLives list.size()=" + list.size());
+                            for (LiveInfo liveInfo : list) {
+                                Log.w(TAG, " uuid=" + liveInfo.getLiveId() + " nickName=" + liveInfo.getNickname());
+                                ToastUtils.showToast("uuid=" + liveInfo + " nickName=" + liveInfo.getNickname());
+                            }
+                        }
+                    }
+                });
             }
         }));
     }

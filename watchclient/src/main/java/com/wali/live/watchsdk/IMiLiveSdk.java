@@ -5,6 +5,9 @@ import android.app.Application;
 import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
+import com.wali.live.watchsdk.ipc.service.LiveInfo;
+
+import java.util.List;
 
 /**
  * Created by lan on 17/2/20.
@@ -90,6 +93,14 @@ public interface IMiLiveSdk {
      */
     void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign);
 
+
+    /**
+     * 获取频道列表
+     *
+     * @version 205008
+     */
+    void getChannelLives(IChannelCallback callback);
+
     /**
      * sdk 上层应用回调
      */
@@ -125,6 +136,13 @@ public interface IMiLiveSdk {
          * 通知上层有其它的app在活跃状态
          */
         void notifyOtherAppActive();
+    }
 
+    @Keep
+    interface IChannelCallback{
+        /**
+         * 通知上层直播列表的方法回调
+         */
+        void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos);
     }
 }

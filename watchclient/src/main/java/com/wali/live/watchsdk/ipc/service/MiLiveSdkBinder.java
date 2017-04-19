@@ -15,7 +15,7 @@ import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.ChannelLiveProto;
 import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.proto.SecurityProto;
-import com.wali.live.watchsdk.IMiLiveSdk;
+import com.wali.live.watchsdk.AarCallback;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
@@ -44,7 +44,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     private final HashMap<Integer, String> mAuthMap;
     private final HashMap<Integer, RemoteCallbackList<IMiLiveSdkEventCallback>> mEventCallBackListMap;
-    private IMiLiveSdk.ICallback mAARCallback;
+    private AarCallback mAARCallback;
 
     private MiLiveSdkBinder() {
         mAuthMap = new HashMap();
@@ -68,7 +68,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         list.register(callback);
     }
 
-    public void setCallback(IMiLiveSdk.ICallback callback) {
+    public void setCallback(AarCallback callback) {
         mAARCallback = callback;
     }
 
@@ -693,6 +693,10 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     public void onEventGetRecommendLives(int channelId, int errCode, List<LiveInfo> liveInfos) {
         MyLog.d(TAG, "onEventGetRecommendLives " + liveInfos.size());
+        if (mAARCallback != null) {
+            mAARCallback.notifyGetChannelLives(errCode, liveInfos);
+            return;
+        }
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
