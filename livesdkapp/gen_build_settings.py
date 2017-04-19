@@ -27,6 +27,16 @@ f = open('./src/main/AndroidManifest.xml', 'w')
 f.write(s)
 f.close()
 
+f = open('../buildsystem/dependencies.gradle', 'r')
+s = ''
+for line in f:
+    line = line.replace("buildFlavorType = 'livesdkaar'", "buildFlavorType = 'livesdkapp'")
+    s += line
+f.close()
+f = open('../buildsystem/dependencies.gradle', 'w')
+f.write(s)
+f.close()
+
 if(sys.argv[1] == 'debugmi'):
     f = open('./build.gradle', 'r')
     s = ''
