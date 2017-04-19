@@ -1,8 +1,6 @@
 #!/bin/bash
 
-#pushd ./
 python gen_build_settings_aar.py
-#popd
 
 gradle assembleRelease --info
 

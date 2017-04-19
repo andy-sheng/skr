@@ -12,6 +12,7 @@ import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.UserInfoManager;
 import com.wali.live.proto.Live2Proto;
 import com.wali.live.proto.LiveProto;
+import com.wali.live.watchsdk.AarCallback;
 import com.wali.live.watchsdk.IMiLiveSdk;
 import com.wali.live.watchsdk.init.InitManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
@@ -33,8 +34,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     private int mChannelId = 0;
     private String mChannelSecret;
-    private ICallback mCallback;
     private String mPackageName;
+
+    private AarCallback mCallback;
 
     public static IMiLiveSdk getInstance() {
         return sSdkController;
@@ -49,7 +51,13 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     public void setCallback(ICallback callback) {
-        mCallback = callback;
+        if (callback == null) {
+            return;
+        }
+        if (mCallback == null) {
+            mCallback = new AarCallback();
+        }
+        mCallback.setCallback(callback);
         if (mCallback != null) {
             MiLiveSdkBinder.getInstance().setCallback(mCallback);
         }
@@ -93,6 +101,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
         thirdPartLoginData.setSign(sign);
         try {
             MiLiveSdkBinder.getInstance().thirdPartLogin(mPackageName, mChannelSecret, thirdPartLoginData);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getChannelLives(IChannelCallback callback) {
+        checkHasInit();
+        mCallback.setChannelCallback(callback);
+        try {
+            MiLiveSdkBinder.getInstance().getChannelLives(mChannelId, mPackageName, mChannelSecret);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
