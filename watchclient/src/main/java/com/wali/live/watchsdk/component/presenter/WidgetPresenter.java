@@ -66,6 +66,8 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(ComponentController.MSG_ON_LIVE_SUCCESS);
+        registerAction(ComponentController.MSG_INPUT_VIEW_SHOWED);
+        registerAction(ComponentController.MSG_INPUT_VIEW_HIDDEN);
 
         mMyRoomData = myRoomData;
         mUIHandler = new Handler(Looper.getMainLooper());
@@ -89,15 +91,10 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         }
         mWidgetList.addAll(list);
 
-        hideWidget();
+        mView.hideWidgetView();
         if (mWidgetList != null && mWidgetList.size() > 0) {
             mView.showWidgetView(mWidgetList);
         }
-    }
-
-    // 隐藏运营位数据
-    public void hideWidget() {
-        mView.hideWidgetView();
     }
 
     public void destroy() {
@@ -294,6 +291,12 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                             getRoomAttachment();
                         }
                     }
+                    break;
+                case ComponentController.MSG_INPUT_VIEW_SHOWED:
+                    mView.adjustWidgetView(false);
+                    break;
+                case ComponentController.MSG_INPUT_VIEW_HIDDEN:
+                    mView.adjustWidgetView(true);
                     break;
                 default:
                     break;

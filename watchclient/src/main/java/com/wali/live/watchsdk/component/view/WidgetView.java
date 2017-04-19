@@ -1,3 +1,4 @@
+
 package com.wali.live.watchsdk.component.view;
 
 import android.content.Context;
@@ -38,6 +39,8 @@ public class WidgetView extends RelativeLayout
     private WidgetItemView mRightTopWiv;
     private WidgetItemView mLeftBottomWiv;
     private WidgetItemView mRightBottomWiv;
+
+    private boolean mNeedShow = true;
 
     public WidgetView(Context context) {
         this(context, null, 0);
@@ -109,7 +112,7 @@ public class WidgetView extends RelativeLayout
             mLeftTopWiv.setWidgetPos(WidgetItemView.POS_LEFT_TOP);
             mLeftTopWiv.setPresenter(mPresenter);
         }
-        mLeftTopWiv.showWidgetItem(info);
+        mLeftTopWiv.showWidgetItem(info, mNeedShow);
     }
 
     /**
@@ -121,7 +124,7 @@ public class WidgetView extends RelativeLayout
             mRightTopWiv.setWidgetPos(WidgetItemView.POS_RIGHT_TOP);
             mRightTopWiv.setPresenter(mPresenter);
         }
-        mRightTopWiv.showWidgetItem(info);
+        mRightTopWiv.showWidgetItem(info, mNeedShow);
     }
 
     /**
@@ -133,7 +136,7 @@ public class WidgetView extends RelativeLayout
             mLeftBottomWiv.setWidgetPos(WidgetItemView.POS_LEFT_BOTTOM);
             mLeftBottomWiv.setPresenter(mPresenter);
         }
-        mLeftBottomWiv.showWidgetItem(info);
+        mLeftBottomWiv.showWidgetItem(info, mNeedShow);
     }
 
     /**
@@ -145,7 +148,18 @@ public class WidgetView extends RelativeLayout
             mRightBottomWiv.setWidgetPos(WidgetItemView.POS_RIGHT_BOTTOM);
             mRightBottomWiv.setPresenter(mPresenter);
         }
-        mRightBottomWiv.showWidgetItem(info);
+        mRightBottomWiv.showWidgetItem(info, mNeedShow);
+    }
+
+    private void adjustWidgetView(boolean needShow) {
+        if (mNeedShow != needShow) {
+            mNeedShow = needShow;
+            if (mNeedShow) {
+                showWidgetView();
+            } else {
+                hideWidgetView();
+            }
+        }
     }
 
     private void hideWidgetView() {
@@ -160,6 +174,21 @@ public class WidgetView extends RelativeLayout
         }
         if (mRightBottomWiv != null) {
             mRightBottomWiv.hide();
+        }
+    }
+
+    private void showWidgetView() {
+        if (mLeftTopWiv != null) {
+            mLeftTopWiv.show();
+        }
+        if (mRightTopWiv != null) {
+            mRightTopWiv.show();
+        }
+        if (mLeftBottomWiv != null) {
+            mLeftBottomWiv.show();
+        }
+        if (mRightBottomWiv != null) {
+            mRightBottomWiv.show();
         }
     }
 
@@ -209,6 +238,11 @@ public class WidgetView extends RelativeLayout
             }
 
             @Override
+            public void adjustWidgetView(boolean needShow) {
+                WidgetView.this.adjustWidgetView(needShow);
+            }
+
+            @Override
             public void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list) {
                 WidgetView.this.showWidgetView(list);
             }
@@ -230,6 +264,8 @@ public class WidgetView extends RelativeLayout
         void onOrientation(boolean isLandscape);
 
         void hideWidgetView();
+
+        void adjustWidgetView(boolean needShow);
 
         void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list);
 

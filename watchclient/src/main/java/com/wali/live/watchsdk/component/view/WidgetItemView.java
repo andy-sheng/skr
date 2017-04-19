@@ -130,12 +130,25 @@ public class WidgetItemView extends LinearLayout {
     }
 
     public void hide() {
-        setVisibility(GONE);
+        if (getVisibility() != View.GONE) {
+            clearAnimation();
+            setVisibility(GONE);
+        }
     }
 
-    public void showWidgetItem(LiveCommonProto.NewWidgetItem info) {
+    public void show() {
+        if (getVisibility() != View.VISIBLE) {
+            setVisibility(VISIBLE);
+            setAlpha(0);
+            animate().alpha(1f).setStartDelay(300).setDuration(300).start();
+        }
+    }
+
+    public void showWidgetItem(LiveCommonProto.NewWidgetItem info, boolean needShow) {
         initWidget(info.getDisplayType(), info, mItemIv, mItemTv, mItemIv2, this, mPosFlag);
-        setVisibility(VISIBLE);
+        if (needShow) {
+            show();
+        }
     }
 
     /**
