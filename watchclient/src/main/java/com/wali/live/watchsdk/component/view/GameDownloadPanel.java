@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,7 +39,7 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
     private TextView mCountTv;
     private TextView mDownloadTv;
 
-    private GestureDetector mGestureDetector;
+//    private GestureDetector mGestureDetector;
 
     private GameViewModel mGameViewModel;
     private long mDownloadId;
@@ -67,21 +65,28 @@ public class GameDownloadPanel extends BaseBottomPanel<RelativeLayout, RelativeL
         mCountTv = $(R.id.count_tv);
         mDownloadTv = $(R.id.download_tv);
 
-        mGestureDetector = new GestureDetector(mContentView.getContext(),
-                new GestureDetector.SimpleOnGestureListener() {
-                    public boolean onFling(MotionEvent e1, MotionEvent e2,
-                                           float velocityX, float velocityY) {
-                        if (velocityY > 1000) {
-                            hideSelf(true);
-                        }
-                        return false;
-                    }
-                });
-        mHeadBgView.setOnTouchListener(new View.OnTouchListener() {
+//        mGestureDetector = new GestureDetector(mContentView.getContext(),
+//                new GestureDetector.SimpleOnGestureListener() {
+//                    public boolean onFling(MotionEvent e1, MotionEvent e2,
+//                                           float velocityX, float velocityY) {
+//                        if (velocityY > 1000) {
+//                            hideSelf(true);
+//                        }
+//                        return false;
+//                    }
+//                });
+//        mHeadBgView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                mGestureDetector.onTouchEvent(event);
+//                return true;
+//            }
+//        });
+
+        mHeadBgView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mGestureDetector.onTouchEvent(event);
-                return true;
+            public void onClick(View v) {
+                hideSelf(true);
             }
         });
     }
