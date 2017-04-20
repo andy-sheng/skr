@@ -18,7 +18,6 @@ import com.base.fragment.MyRxFragment;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
-import com.base.thread.ThreadPool;
 import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.assist.Attachment;
@@ -36,11 +35,6 @@ import com.wali.live.utils.AttachmentUtils;
 
 import java.io.File;
 import java.util.HashMap;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by yurui on 4/26/16.
@@ -186,49 +180,30 @@ public class PrepareLiveCoverManager {
      */
     public void onClickTakePicButton(final BaseSdkActivity activity) {
         MyLog.w(TAG, "onClickTakePicButton");
-        PermissionUtils.checkPermissionByType(activity, PermissionUtils.PermissionType.CAMERA, new PermissionUtils.IPermissionCallback() {
-            @Override
-            public void okProcess() {
-                final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String dirPath = Environment.getExternalStorageDirectory().getPath() + SDCardUtils.IMAGE_DIR_PATH;
-                File dir = new File(dirPath);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                File file = new File(dirPath, System.currentTimeMillis() + ".jpg");
-                mTakePhotoPath = file.getAbsolutePath();
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                Observable.create(new Observable.OnSubscribe<Void>() {
-                    @Override
-                    public void call(Subscriber<? super Void> subscriber) {
-                        //TODO 通知LiveSdkActivity是方向机资源
-//                        EventBus.getDefault().post(new LiveEventClass.CameraEvent(LiveEventClass.CameraEvent.EVENT_TYPE_PAUSE));
-                        subscriber.onNext(null);
-                        subscriber.onCompleted();
+        if (PermissionUtils.checkSdcardAlertWindow(activity)) {
+            PermissionUtils.checkPermissionByType(activity, PermissionUtils.PermissionType.CAMERA, new PermissionUtils.IPermissionCallback() {
+                @Override
+                public void okProcess() {
+                    final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    String dirPath = Environment.getExternalStorageDirectory().getPath() + SDCardUtils.IMAGE_DIR_PATH;
+                    File dir = new File(dirPath);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
                     }
-                }).subscribeOn(Schedulers.from(ThreadPool.getEngineExecutor()))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(activity.bindUntilEvent())
-                        .subscribe(new Subscriber<Object>() {
-                            @Override
-                            public void onCompleted() {
-                            }
+                    File file = new File(dirPath, System.currentTimeMillis() + ".jpg");
+                    mTakePhotoPath = file.getAbsolutePath();
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
 
-                            @Override
-                            public void onError(Throwable e) {
-                            }
-
-                            @Override
-                            public void onNext(Object v) {
-                                if (mFragment != null) {
-                                    mFragment.startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
-                                } else if (mActivity != null) {
-                                    mActivity.startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
-                                }
-                            }
-                        });
-            }
-        });
+                    if (mFragment != null) {
+                        mFragment.startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+                    } else if (mActivity != null) {
+                        mActivity.startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+                    }
+                }
+            });
+        } else {
+            PermissionUtils.requestPermissionDialog(activity, PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.presenter.Presenter;
 import com.base.utils.callback.ICommonCallBack;
+import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.engine.base.GalileoConstants;
@@ -111,10 +112,10 @@ public class GameLivePresenter implements Presenter {
 
     public void screenshot(final ICommonCallBack callback) {
         if (mScreenRecordManager != null) {
-            String screenshotPath = Environment.getExternalStorageDirectory().getPath() + "/Xiaomi/WALI_LIVE/image";
+            String screenshotPath = Environment.getExternalStorageDirectory().getPath() + SDCardUtils.IMAGE_DIR_PATH;
             File filePath = new File(screenshotPath);
             if (!filePath.exists()) {
-                filePath.mkdir();
+                filePath.mkdirs();
             }
             final String fileName = screenshotPath + "/screenshot_" + System.currentTimeMillis() + ".jpg";
             mScreenRecordManager.getScreenshot(new ScreenRecordManager.OnScreenshotReadyListener() {
