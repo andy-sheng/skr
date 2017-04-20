@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.request.live.BaseLiveRequest;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.wali.live.proto.AccountProto;
@@ -15,7 +15,7 @@ import com.wali.live.proto.LiveProto.EndLiveRsp;
  * Created by lan on 16-3-18.
  * 注意修改命令字和Action
  */
-public class EndLiveRequest extends BaseLiveRequest {
+public class EndLiveRequest extends BaseRequest {
     public EndLiveRequest() {
         super(MiLinkCommand.COMMAND_LIVE_END, "EndLive", null);
     }

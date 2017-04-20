@@ -2,7 +2,7 @@ package com.wali.live.livesdk.live.api;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.request.live.BaseLiveRequest;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
 import com.wali.live.proto.Live2Proto.GetTitleListReq;
@@ -11,7 +11,7 @@ import com.wali.live.proto.Live2Proto.GetTitleListRsp;
 /**
  * Created by lan on 17/4/5.
  */
-public class TitleListRequest extends BaseLiveRequest {
+public class TitleListRequest extends BaseRequest {
     public TitleListRequest() {
         this(TitleViewModel.SOURCE_NORMAL);
     }

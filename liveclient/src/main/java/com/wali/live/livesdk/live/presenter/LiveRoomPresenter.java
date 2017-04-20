@@ -30,9 +30,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by chenyong on 2017/2/10.
  */
-
 public class LiveRoomPresenter extends RxLifeCyclePresenter {
-
     private static final String TAG = "LiveRoomPresenter";
 
     private IActionCallBack mCallback;
@@ -135,7 +133,7 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
         Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
-                MyLog.w(TAG,"endLiveByAppInfo,liveId:"+liveId);
+                MyLog.w(TAG, "endLiveByAppInfo,liveId:" + liveId);
                 LiveProto.EndLiveRsp rsp = null;
                 if (appInfo != null) {
                     rsp = new EndLiveRequest(liveId, appInfo).syncRsp();
@@ -174,7 +172,6 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                         MyLog.e(throwable);
                     }
                 });
-
     }
 
     @Override

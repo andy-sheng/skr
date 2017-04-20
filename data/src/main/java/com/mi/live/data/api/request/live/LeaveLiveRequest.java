@@ -2,6 +2,7 @@ package com.mi.live.data.api.request.live;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.LiveProto.LeaveLiveReq;
 import com.wali.live.proto.LiveProto.LeaveLiveRsp;
@@ -10,12 +11,7 @@ import com.wali.live.proto.LiveProto.LeaveLiveRsp;
  * Created by lan on 16-3-18.
  * 注意修改命令字和Action
  */
-public class LeaveLiveRequest extends BaseLiveRequest {
-    {
-        mCommand = MiLinkCommand.COMMAND_LIVE_LEAVE;
-        mAction = "LeaveLive";
-    }
-
+public class LeaveLiveRequest extends BaseRequest {
     public LeaveLiveRequest(long ownerId, String liveId) {
         super(MiLinkCommand.COMMAND_LIVE_LEAVE, "LeaveLive", null);
         mRequest = generateBuilder()
