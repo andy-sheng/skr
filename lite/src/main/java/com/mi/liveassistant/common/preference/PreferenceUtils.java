@@ -17,6 +17,9 @@ public abstract class PreferenceUtils {
     private static final String TAG = PreferenceUtils.class.getSimpleName();
     private static final List<PrefObserver> PREF_OBSERVER_LIST = new ArrayList();
 
+    // 是否开启媒体参数调节界面，boolean值
+    public static final String KEY_DEBUG_MEDIA_INFO = "pref_debug_media_info";
+
     public interface PrefObserver {
         void notifyPrefChange(final String key, Object value);
     }

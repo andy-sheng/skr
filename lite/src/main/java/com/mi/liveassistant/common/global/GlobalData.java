@@ -1,10 +1,9 @@
 package com.mi.liveassistant.common.global;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-import com.base.log.MyLog;
+import com.mi.liveassistant.common.log.MyLog;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -28,17 +27,17 @@ public class GlobalData {
 
     private static ThreadPoolExecutor executors[] = new ThreadPoolExecutor[1];
 
-    private static Application sApplication;
+    private static Context sApplication;
 
     public static DisplayMetrics displayMetrics;
     public static int screenWidth = 0;
     public static int screenHeight = 0;
 
-    public static Application app() {
+    public static Context app() {
         return sApplication;
     }
 
-    public static void setApplication(Application app) {
+    public static void setApplication(Context app) {
         sApplication = app;
         recordScreenParam(app);
         initialize();
