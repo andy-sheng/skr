@@ -3,11 +3,10 @@ package com.mi.liveassistant.room.request;
 import android.text.TextUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
+import com.mi.liveassistant.common.api.BaseRequest;
 import com.wali.live.proto.Live2Proto.LiveCover;
 import com.wali.live.proto.LiveProto.BeginLiveReq;
 import com.wali.live.proto.LiveProto.BeginLiveRsp;
@@ -27,8 +26,8 @@ public class BeginLiveRequest extends BaseRequest {
     }
 
     private void build(Location location, int type, String title, String coverUrl) {
-        mBuilder = BeginLiveReq.newBuilder()
-                .setUuid(UserAccountManager.getInstance().getUuidAsLong());
+        mBuilder = BeginLiveReq.newBuilder();
+//                .setUuid(UserAccountManager.getInstance().getUuidAsLong());
 
         if (location != null) {
             mBuilder.setLocation(location.build());

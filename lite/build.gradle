@@ -28,5 +28,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
 
-    compile project(':data')
+    compile files('libs/milinksdk-3.1.4.jar')
+    compile files('libs/protobuf-java-2.6.0.jar')
+
+    // 将日志写入文件的库
+    compile 'org.slf4j:slf4j-api:1.7.21'
 }
