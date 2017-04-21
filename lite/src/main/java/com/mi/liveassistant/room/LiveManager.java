@@ -1,10 +1,10 @@
 package com.mi.liveassistant.room;
 
-import com.mi.live.data.location.Location;
 import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.presenter.LivePresenter;
 import com.mi.liveassistant.room.view.ILiveView;
-import com.wali.live.proto.LiveCommonProto;
 
 import java.util.List;
 

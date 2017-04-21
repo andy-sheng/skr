@@ -1,14 +1,14 @@
 package com.mi.liveassistant.room.presenter;
 
-import com.base.log.MyLog;
-import com.mi.live.data.api.ErrorCode;
-import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.location.Location;
+import com.mi.liveassistant.common.api.ErrorCode;
+import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.mvp.BaseRxPresenter;
+import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.proto.LiveProto;
+import com.mi.liveassistant.room.constant.LiveRoomType;
 import com.mi.liveassistant.room.request.BeginLiveRequest;
 import com.mi.liveassistant.room.request.EndLiveRequest;
 import com.mi.liveassistant.room.view.ILiveView;
-import com.wali.live.proto.LiveProto;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -26,11 +26,11 @@ public class LivePresenter extends BaseRxPresenter<ILiveView> {
     }
 
     public void beginNormalLive(Location location, String title, String coverUrl) {
-        innerBeginLive(location, LiveManager.TYPE_LIVE_PUBLIC, title, coverUrl);
+        innerBeginLive(location, LiveRoomType.TYPE_LIVE_PUBLIC, title, coverUrl);
     }
 
     public void beginGameLive(Location location, String title, String coverUrl) {
-        innerBeginLive(location, LiveManager.TYPE_LIVE_GAME, title, coverUrl);
+        innerBeginLive(location, LiveRoomType.TYPE_LIVE_GAME, title, coverUrl);
     }
 
     private void innerBeginLive(final Location location, final int type, final String title, final String coverUrl) {

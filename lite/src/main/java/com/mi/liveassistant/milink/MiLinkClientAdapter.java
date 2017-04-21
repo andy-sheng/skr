@@ -32,7 +32,7 @@ public class MiLinkClientAdapter {
     // 重新new MiLinkChannelStatusObserver，取消登录事件
     MiLinkChannelStatusObserver mMiLinkChannelStatusObserver = new MiLinkChannelStatusObserver();
 
-    private String clientIp;
+    private String mClientIp;
 
     private boolean mIsTouristMode = false;
 
@@ -224,11 +224,11 @@ public class MiLinkClientAdapter {
     }
 
     public void setClientIp(String clientIp) {
-        this.clientIp = clientIp;
+        this.mClientIp = clientIp;
     }
 
     public String getClientIp() {
-        return clientIp;
+        return mClientIp;
     }
 
     public void setIsTouristMode(boolean isTouristMode) {

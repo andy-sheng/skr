@@ -1,7 +1,7 @@
 package com.mi.liveassistant.milink.callback;
 
-import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.milink.event.MiLinkEvent;
 import com.mi.milink.sdk.client.MiLinkObserver;
 import com.mi.milink.sdk.data.Const;
 

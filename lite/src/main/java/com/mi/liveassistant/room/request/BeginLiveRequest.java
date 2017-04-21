@@ -27,6 +27,7 @@ public class BeginLiveRequest extends BaseRequest {
 
     private void build(Location location, int type, String title, String coverUrl) {
         mBuilder = BeginLiveReq.newBuilder();
+        // TODO
 //                .setUuid(UserAccountManager.getInstance().getUuidAsLong());
 
         if (location != null) {
