@@ -11,11 +11,12 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.Surface;
 
-import com.base.global.GlobalData;
-import com.base.log.MyLog;
+import com.mi.liveassistant.common.global.GlobalData;
+import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.engine.media.player.IMediaPlayer;
 import com.mi.liveassistant.engine.media.player.MediaInfo;
 import com.mi.liveassistant.engine.media.player.util.PlayConfig;
+import com.mi.liveassistant.engine.player.GalileoPlayer;
 import com.mi.liveassistant.engine.player.IPlayer;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.enums.PlayerWorkingMode;

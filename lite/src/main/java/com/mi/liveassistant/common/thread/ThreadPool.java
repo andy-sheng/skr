@@ -1,10 +1,10 @@
-package com.mi.liveassistant.thread;
+package com.mi.liveassistant.common.thread;
 
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 
-import com.base.log.MyLog;
+import com.mi.liveassistant.common.log.MyLog;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,10 +75,10 @@ public class ThreadPool {
                 @Override
                 public void run() {
                     long begin = System.currentTimeMillis();
-                    MyLog.d("ThreadForEngine","exec "+from+" begin");
+                    MyLog.d("ThreadForEngine", "exec " + from + " begin");
                     r.run();
                     long end = System.currentTimeMillis();
-                    MyLog.d("ThreadForEngine","exec "+from+",time:"+(end-begin));
+                    MyLog.d("ThreadForEngine", "exec " + from + ",time:" + (end - begin));
                 }
             });
         }
@@ -116,7 +116,7 @@ public class ThreadPool {
         return sEngineService;
     }
 
-    public static ExecutorService getUserInfoExecutor(){
+    public static ExecutorService getUserInfoExecutor() {
         return sUserInfoExecutor;
     }
 

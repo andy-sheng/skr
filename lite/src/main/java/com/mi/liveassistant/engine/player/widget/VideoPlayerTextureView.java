@@ -9,9 +9,8 @@ import android.view.SurfaceHolder;
 import android.view.TextureView;
 import android.view.TextureView.SurfaceTextureListener;
 
-import com.base.global.GlobalData;
-import com.base.log.MyLog;
-import com.base.utils.display.DisplayUtils;
+import com.mi.liveassistant.common.global.GlobalData;
+import com.mi.liveassistant.common.log.MyLog;
 import com.xiaomi.player.Player;
 
 /**

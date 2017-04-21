@@ -1,4 +1,4 @@
-package com.mi.liveassistant.thread;
+package com.mi.liveassistant.common.thread;
 
 import android.os.Looper;
 

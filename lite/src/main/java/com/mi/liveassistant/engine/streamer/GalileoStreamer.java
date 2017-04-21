@@ -8,14 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.base.global.GlobalData;
-import com.base.log.MyLog;
-import com.base.preference.PreferenceUtils;
+import com.mi.liveassistant.common.global.GlobalData;
+import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.common.preference.PreferenceUtils;
+import com.mi.liveassistant.common.thread.ThreadPool;
 import com.mi.liveassistant.engine.base.EngineEventClass;
 import com.mi.liveassistant.engine.base.GalileoConstants;
 import com.mi.liveassistant.engine.base.GalileoDeviceManager;
 import com.mi.liveassistant.engine.base.GalileoRenderManager;
-import com.mi.liveassistant.thread.ThreadPool;
 import com.xiaomi.broadcaster.BroadCaster;
 import com.xiaomi.broadcaster.callback.BroadcastCallback;
 import com.xiaomi.broadcaster.dataStruct.ConnectedServerInfo;

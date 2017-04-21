@@ -8,9 +8,10 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.base.global.GlobalData;
-import com.base.log.MyLog;
-import com.base.utils.display.DisplayUtils;
+import com.mi.liveassistant.common.global.GlobalData;
+import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.common.utils.display.DisplayUtils;
+
 
 /**
  * Created by lan on 16-1-4.

@@ -27,7 +27,7 @@ import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.base.log.MyLog;
+import com.mi.liveassistant.common.log.MyLog;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.callback.PlayerCallback;
 import com.xiaomi.player.datastruct.VideoSize;

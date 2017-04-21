@@ -5,12 +5,12 @@ import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.base.global.GlobalData;
-import com.base.thread.ThreadPool;
-import com.base.utils.display.DisplayUtils;
-import com.mi.live.engine.base.GalileoDeviceManager;
-import com.mi.live.engine.media.player.IMediaPlayer;
-import com.mi.live.engine.media.player.IjkMediaPlayer;
+import com.mi.liveassistant.common.global.GlobalData;
+import com.mi.liveassistant.common.thread.ThreadPool;
+import com.mi.liveassistant.common.utils.display.DisplayUtils;
+import com.mi.liveassistant.engine.base.GalileoDeviceManager;
+import com.mi.liveassistant.engine.media.player.IMediaPlayer;
+import com.mi.liveassistant.engine.media.player.IjkMediaPlayer;
 import com.xiaomi.player.Player;
 import com.xiaomi.player.enums.PlayerWorkingMode;
 
