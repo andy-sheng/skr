@@ -1,6 +1,6 @@
-package com.mi.live.data.milink.event;
+package com.mi.liveassistant.milink.event;
 
-import com.mi.live.data.event.BaseEventClass;
+import com.mi.liveassistant.common.event.BaseEventClass;
 
 /**
  * Created by chengsimin on 16/7/1.

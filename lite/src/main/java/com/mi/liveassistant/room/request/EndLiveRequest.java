@@ -5,8 +5,8 @@ import android.text.TextUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.liveassistant.common.api.BaseRequest;
+import com.mi.liveassistant.milink.command.MiLinkCommand;
 import com.mi.liveassistant.proto.LiveProto.EndLiveReq;
 import com.mi.liveassistant.proto.LiveProto.EndLiveRsp;
 

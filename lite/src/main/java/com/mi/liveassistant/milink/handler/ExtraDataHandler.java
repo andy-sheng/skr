@@ -1,12 +1,12 @@
-package com.mi.live.data.milink.handler;
+package com.mi.liveassistant.milink.handler;
 
-import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.event.TouristLoginEvent;
-import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.mi.live.data.milink.callback.MiLinkPacketDispatcher;
-import com.mi.live.data.milink.event.MiLinkEvent;
+import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.milink.MiLinkClientAdapter;
+import com.mi.liveassistant.milink.callback.MiLinkPacketDispatcher;
+import com.mi.liveassistant.milink.event.MiLinkEvent;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.data.Const;
 import com.mi.milink.sdk.proto.DataExtraProto;
@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.EventBus;
  * Created by chengsimin on 16/7/1.
  */
 public class ExtraDataHandler implements MiLinkPacketDispatcher.PacketDataHandler {
-    private static final java.lang.String TAG = "ExtraDataHandler'";
+    private static final String TAG = "ExtraDataHandler'";
 
     @Override
     public boolean processPacketData(PacketData data) {
