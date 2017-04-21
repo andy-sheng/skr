@@ -4,9 +4,9 @@ import android.text.TextUtils;
 
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.milink.MiLinkClientAdapter;
+import com.mi.liveassistant.milink.constant.MiLinkConstant;
 import com.mi.milink.sdk.aidl.PacketData;
 
 /**
