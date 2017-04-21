@@ -13,8 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chengsimin on 16/7/1.
- *
- * @notice 以后都用这个globaldata
  */
 public class GlobalData {
     private static int REQUEST_CODE_FIRST = 100000;

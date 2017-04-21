@@ -1,0 +1,111 @@
+import "LiveCommon.proto";
+
+option java_package = "com.mi.liveassistant.proto";
+option java_outer_classname = "LiveProto";
+
+// wiki地址：http://wiki.n.miui.com/pages/viewpage.action?pageId=18996762
+
+//创建一个直播
+//zhibo.live.begin
+message BeginLiveReq {
+    required uint64 uuid = 1;                       // 操作人id
+    optional Location location = 2;                 // 操作人位置信息
+    optional uint32 type = 3;                       // 类型，0公开，1私密,2 密码验证,3=门票
+    repeated uint64 invitee = 4;                    // 被邀请的人
+    optional bool addHistory = 5;                   // 是否产生直播回放
+    optional string liveTitle = 6;                  // 直播标题
+    optional string password = 7;                   // 密码直播
+    optional LiveCover liveCover = 8;               // 房间的封面信息
+    optional string liveId = 9;                     // 房间ID，如果没有则分配一个，老客户端不传，新客户端需要传
+    optional uint32 appType = 10;                   // 0:小米直播app，1:第三方设备，只有无人机
+    optional AppInfo appInfo = 11;
+    optional uint32 playUI = 12;                    // 视频画面调整方式, 0默认(裁左右宽度), 1补上下高度
+    optional TicketLiveInfo ticketLiveInfo = 13;    // 门票直播需要传
+    repeated TagInfo tagInfos = 14;                 // 标签ID
+    optional bool supportMagicFace = 16;            // 支持魔法表情
+    optional uint32 source   = 17;                  // 0：摄像头 1：录屏 2：外设
+}
+
+message BeginLiveRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional string liveId = 2; //id＝System.currentTime/1000＋uuid
+    optional uint64 createTime = 3; //创建的评论的服务器时间
+    optional string shareUrl = 4; //分享的url
+    optional string upStreamUrl = 5; //完整的url
+    optional uint32 beginLevel = 6; //开播需要的最低用户等级
+    optional uint32 showIconCtrl = 7; //显示icon隐藏开关：从最低位开始：1-显示弹幕icon
+    optional string udpUpstreamUrl = 8; //Udp推流地址
+    repeated UpStreamUrl newUpStreamUrl = 9; //新的完整推流url
+}
+
+//结束一个直播
+//zhibo.live.end
+message EndLiveReq {
+    required uint64 uuid = 1; //操作人id
+    required string liveId = 2;
+    optional uint32 appType = 3; //0:小米直播app，1:第三方设备，只有无人机
+    optional AppInfo appInfo = 4;
+    optional uint64 guildId     = 5; //公会id
+}
+
+message EndLiveRsp {
+    required uint32 retCode         = 1; //0:表示成功
+    optional uint32 hisViewerCnt    = 2; //历史房间观众数
+    optional bool generateHistorySucc   = 3; //是否生成历史回放
+    optional string generateHistoryMsg  = 4; //如果没有生成回放的提示语
+    optional uint32 ticketBuyerCount  = 5;//门票购买计数
+    optional uint64 hisBeginLiveCnt   = 6;//历史开播次数
+    optional uint64 duration          = 7;//开播时长（ms）
+    optional uint64 newFollowerCnt    = 8;//新增关注数
+}
+
+//进入房间
+//zhibo.live.enter
+message EnterLiveReq {
+    required uint64 uuid = 1; //操作人id
+    required uint64 zuid = 2; //直播人id
+    required string liveId = 3;
+    optional string password = 4; //房间密码
+    optional uint32 type     = 5; //0：默认 1：通过附近频道进入
+}
+
+message EnterLiveRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional uint32 viewerCnt = 2; //观众数
+    //    optional uint32 ticket          = 3; //票数
+    repeated Viewer viewer = 4; //观众
+    //    optional UserInfo liveOwner     = 5;
+    optional bool isManager = 6; //是否是管理员
+    optional bool banSpeak = 7; //是否被禁言了
+    optional Location location = 8; //位置
+    optional uint32 type = 9; //类型，0公开，1私密, 2密码, 3门票直播
+    optional string shareUrl = 10; //分享的url
+    optional PKInfo otherPKInfo = 11; //如果在pk，则有此信息
+    optional uint32 pkInitTicket = 12; //主播pk初始票值
+    optional string downStreamUrl = 13; //完整的url拉流地址
+    optional MicInfo micInfo = 14; //连麦的信息，如果在连麦，则有此信息
+    optional uint32 micuidStatus = 15; //连麦嘉宾状态， 0：正常， 1：连麦嘉宾退到后台
+    optional uint64 timestamp = 16; //进房间时间戳(毫秒)
+    optional LiveCover liveCover = 17; //房间的封面信息
+    optional string liveTitle = 18; //直播标题
+    optional int32 messageMode = 19; //房间的弹幕拉状态位，0:push模型，1:pull模型
+    optional MsgRule msgRule = 20; //房间的发消息的规则
+    optional bool isShop = 21; //是否是商铺房间，默认是false
+    optional bool hideGift = 22; //是否是隐藏商品，默认是false
+    optional int32 hideIcon = 23; //从最低位开始：1-是否隐藏发弹幕icon 2-是否隐藏私信icon 3-是否隐藏分享icon 4-是否隐藏礼物icon 5-是否隐藏点亮 （默认全不隐藏，该位为1时隐藏）
+    optional TicketLiveStatus ticketStatus = 24; //用户观看门票直播状态信息
+    optional bool supportMagicFace = 26;//支持魔法表情
+}
+
+//离开房间
+//zhibo.live.leave
+message LeaveLiveReq {
+    required uint64 uuid = 1; //操作人id
+    required uint64 zuid = 2; //直播人id
+    required string liveId = 3;
+    optional int32 messageMode = 4; //房间的弹幕拉状态位，0:push模型，1:pull模型
+}
+
+message LeaveLiveRsp {
+    required uint32 retCode = 1; //0:表示成功
+}
