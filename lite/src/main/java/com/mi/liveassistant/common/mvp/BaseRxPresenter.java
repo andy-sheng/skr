@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.mvp;
+package com.mi.liveassistant.common.mvp;
 
 /**
  * Created by lan on 17/4/13.

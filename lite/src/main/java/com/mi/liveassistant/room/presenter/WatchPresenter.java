@@ -2,7 +2,7 @@ package com.mi.liveassistant.room.presenter;
 
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
-import com.mi.liveassistant.room.mvp.BaseRxPresenter;
+import com.mi.liveassistant.common.mvp.BaseRxPresenter;
 import com.mi.liveassistant.room.request.EnterLiveRequest;
 import com.mi.liveassistant.room.view.IWatchView;
 import com.wali.live.proto.LiveProto;

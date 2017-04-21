@@ -3,13 +3,13 @@ package com.mi.liveassistant.room.request;
 import android.text.TextUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.live.data.location.Location;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.liveassistant.common.api.BaseRequest;
-import com.wali.live.proto.Live2Proto.LiveCover;
-import com.wali.live.proto.LiveProto.BeginLiveReq;
-import com.wali.live.proto.LiveProto.BeginLiveRsp;
+import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.proto.LiveCommonProto.LiveCover;
+import com.mi.liveassistant.proto.LiveProto.BeginLiveReq;
+import com.mi.liveassistant.proto.LiveProto.BeginLiveRsp;
 
 /**
  * Created by lan on 16-3-18.

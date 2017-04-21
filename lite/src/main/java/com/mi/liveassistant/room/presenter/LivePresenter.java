@@ -4,7 +4,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.location.Location;
-import com.mi.liveassistant.room.mvp.BaseRxPresenter;
+import com.mi.liveassistant.common.mvp.BaseRxPresenter;
 import com.mi.liveassistant.room.request.BeginLiveRequest;
 import com.mi.liveassistant.room.request.EndLiveRequest;
 import com.mi.liveassistant.room.view.ILiveView;

@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-import com.base.log.MyLog;
+import com.mi.liveassistant.common.log.MyLog;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -14,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chengsimin on 16/7/1.
- *
- * @notice 以后都用这个globaldata
  */
 public class GlobalData {
     private static int REQUEST_CODE_FIRST = 100000;

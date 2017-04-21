@@ -1,0 +1,197 @@
+option java_package = "com.mi.liveassistant.proto";
+option java_outer_classname = "LiveCommonProto";
+
+// wiki地址：http://wiki.n.miui.com/pages/viewpage.action?pageId=18996762
+
+// 第三方appInfo
+message AppInfo {
+    optional string appId = 1;
+    optional string appKey = 2;
+}
+
+message Location {
+    optional double lon        = 1; //经度
+    optional double lat        = 2; //纬度
+    optional string country    = 3; //国家
+    optional string province   = 4; //省份
+    optional string city       = 5; //市
+    optional uint32 type       = 6; //地址定位的地图类型:0:百度,1:ios原生,2:高德,3:其他
+}
+
+message LiveCover {
+    optional string coverUrl    = 1; //房间的封面图片地址
+}
+
+message TagInfo {
+    optional uint32 tagId       = 1; //标签ID
+    optional string tagName     = 2; //名称
+    optional string iconUrl     = 3; //icon url
+    optional uint32 tagStatus   = 4; //0:不可用 1:可用
+}
+
+message TicketLiveInfo {
+    optional uint32 ticketId        = 1; //门票id（礼物id），开播时客户端需要传
+    optional bool isEnableTrailer   = 2; //是否支持试看 true：支持
+}
+
+message TicketLiveStatus {
+    optional uint32 ticketId            = 1; //门票id（礼物id）
+    optional bool isAlreadyBuyTicket    = 2; //用户是否已买票
+    optional bool isEnableTrailer       = 3; //主播是否允许试看
+    optional uint32 BuyTicketCnt        = 4; //购买门票人数(结束页用到)
+}
+
+message UpStreamUrl {
+    optional string url         = 1; //完整推流url(带wsHost)
+    optional uint32 weight      = 2; //权重
+}
+
+message MsgRule {
+    optional bool unrepeatable  = 1; //不能重复，默认false，不设置或者​false：可以重复发言，true：不能重复发言
+    optional uint32 speakPeriod = 2; //发言频率周期,单位s,不设置或者0代表没有限制
+}
+
+message MicSubViewPos {
+    required float topXScale    = 1; //子视图左上角X在实际推流视频中的比例
+    required float topYScale    = 2; //子视图左上角Y在实际推流视频中的比例
+    required float widthScale   = 3; //子视图宽度在实际推流视频中的比例
+    required float heightScale  = 4; //子视图高度左上角在推流视频中的比例
+}
+
+message MicInfo {
+    required uint64 micuid = 1;             // 连麦的观众id
+    optional MicSubViewPos subViewPos = 2;  // 子视图的比例位置
+}
+
+message Viewer {
+    required uint64 uuid = 1;               // 用户id
+    optional uint32 level = 2;              // 等级
+    optional uint64 avatar = 3;             // 头像
+    optional uint32 certification_type = 4; // 认证类型
+    optional bool redName = 5;              // 社区红名
+}
+
+message PKInfo {
+    optional uint64 uuid = 1;               // 用户id
+    optional string liveId = 2;             // 房间号
+    optional uint32 pkInitTicket = 3;       // pk初始票值
+}
+
+//拉取房间的观众信息
+//zhibo.live.viewerinfo
+message ViewerInfoReq {
+    required uint64 uuid = 1;               // 操作人id
+    required uint64 zuid = 2;               // 直播人id
+    required string liveId = 3;
+}
+
+message UserRoomInfo {
+    optional uint32 type = 1;               // 类型，0公开，1私密,2加密房间
+    optional uint32 appType = 2;            // 0:小米直播app，1:无人机 2:导播台 3:录屏 4:一直播
+    optional string tvRoomid = 3;           // 电视台roomid。为解决iOS老版本入口展示问题，roomid不在外层下发，而在UserRoomInfo中下发
+}
+
+message WidgetInfo {
+    required string link_url = 1;           // 跳转地址，支持native和h5跳转
+    required uint32 position = 2;           // 坐标：0:左上角，1:右上角，2:左下角，3：右下角
+    optional string icon = 3;               // 图标地址
+    optional string text = 4;               // 文字内容
+}
+
+message ColorConfig {
+    required uint32 rgb = 1;                // 16-23bit:red,8-15bit:green,0-7bit:blue
+}
+
+message CounterItem {
+    optional string imageUrl = 1;           // 计数背景图片
+    optional string counterText = 2;        // 计数文本,包含数字
+    optional ColorConfig textColor = 3;     // 计数组件文本颜色
+    optional ColorConfig textEdgeColor = 4; // 计数组件描边颜色
+    optional bool isBold = 5;               // 计数组件文本是否加粗
+}
+
+message ClickItem {
+    required uint32 clickType = 1;              // 点击类型: 0:增加分数, 1:选中礼物
+    optional string clickImageUrl = 2;          // 点击按钮背景图
+    optional uint32 clickInterval = 3;          // 点击间隔,单位:秒
+    optional uint32 giftId = 4;                 // 礼物id,点击类型为选中礼物时使用
+    optional string clickWaitingImageUrl = 5;   // 点击按钮等待背景图
+}
+
+message NewWidgetUnit {
+    optional string link_url = 1;               // 跳转地址，支持native和h5跳转
+    optional string icon = 2;                   // 图标地址
+    optional string text = 3;                   // 文本
+    optional ColorConfig textColor = 4;         // 文本颜色
+    optional bool urlNeedParam = 5;             // url是否需要带上主播id，观众id，房间id
+    optional string schemaPrefix = 6;
+    optional string schemaPostfix = 7;
+    optional uint32 openType = 8;               // 0:全屏打开,1:半屏打开
+}
+
+message NewWidgetItem {
+    required uint32 widgetID = 1;           // 运营位ID
+    required uint32 position = 2;           // 坐标：0:左上角，1:右上角，2:左下角，3：右下角
+    optional uint32 displayType = 3;        // 运营位展示类型: 0:常驻式, 1:一次性显示, 2:轮播式
+    repeated NewWidgetUnit widgetUint = 4;  // 运营位展示单元
+    optional uint32 displayTime = 5;        // 运营位单元展示间隔时间,单位:秒
+    optional CounterItem counterItem = 6;   // 计数组件
+    optional ClickItem clickItem = 7;       // 点击组件
+}
+
+message NewWidgetInfo {
+    repeated NewWidgetItem widgetItem = 1;
+    optional uint32 pullInterval = 2;       // 更新间隔
+}
+
+message ShoppingConfig {
+    required int32 shop_type = 1 [default = -1];    // -1，没有店铺 0, 京东 1， 小米
+}
+
+message RoomIconConfig {
+    optional bool noMic = 1;                // 是否不显示连麦
+    optional bool noPic = 2;                // 是否不显示图片
+    optional bool noVideo = 3;              // 是否不显示视频
+    optional bool noScreenProjection = 4;   // 是否不显示投屏
+    optional bool noAtmosphere = 5;         // 是否不显示氛围
+    optional bool noMusic = 6;              // 是否不显示音乐
+    optional bool noEmoticon = 7;           // 是否不显示动态表情
+    optional bool noHongBao = 8;            // 是否不显示红包
+}
+
+message WidgetCounterPush {
+    required uint32 widgetID    = 1; //运营位ID
+    optional int64 counterValue = 2; //当前计数数值
+}
+
+//push
+//zhibo.live.viewerPush
+message ViewerPush {
+    required Viewer viewer      = 1; //观众
+    optional bool leave         = 2; //此用户是否是离开房间
+    optional uint32 viewerCnt   = 3; //观众人数
+}
+
+message LevelRange {
+    optional uint32 start       = 1;
+    optional uint32 end         = 2;
+}
+
+//特效配置内容
+message JoinRoomAnimationConfig {
+    repeated AnimationConfig animation_config   = 1;
+}
+
+message UpgradeAnimationConfig {
+    repeated AnimationConfig animation_config   = 1;
+}
+
+message AnimationConfig {
+    optional uint32 animation_effect    = 1;
+    optional LevelRange level_range     = 2;
+}
+
+message RoomAnimationConfig {
+    optional JoinRoomAnimationConfig join_room_animation_config     = 1;
+    optional UpgradeAnimationConfig upgrade_animation_config        = 2;
+}
