@@ -1,6 +1,6 @@
-package com.mi.live.room.view;
+package com.mi.liveassistant.room.view;
 
-import com.mi.live.room.mvp.IView;
+import com.mi.liveassistant.room.mvp.IView;
 
 /**
  * Created by lan on 17/4/21.

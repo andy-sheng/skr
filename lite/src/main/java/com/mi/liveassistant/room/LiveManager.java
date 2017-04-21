@@ -1,9 +1,9 @@
-package com.mi.live.room;
+package com.mi.liveassistant.room;
 
 import com.base.log.MyLog;
 import com.mi.live.data.location.Location;
-import com.mi.live.room.presenter.LivePresenter;
-import com.mi.live.room.view.ILiveView;
+import com.mi.liveassistant.room.presenter.LivePresenter;
+import com.mi.liveassistant.room.view.ILiveView;
 import com.wali.live.proto.LiveCommonProto;
 
 import java.util.List;

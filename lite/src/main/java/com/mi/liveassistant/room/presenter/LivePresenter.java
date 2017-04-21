@@ -1,13 +1,13 @@
-package com.mi.live.room.presenter;
+package com.mi.liveassistant.room.presenter;
 
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.location.Location;
-import com.mi.live.room.mvp.BaseRxPresenter;
-import com.mi.live.room.request.LitBeginLiveRequest;
-import com.mi.live.room.request.LitEndLiveRequest;
-import com.mi.live.room.view.ILiveView;
+import com.mi.liveassistant.room.mvp.BaseRxPresenter;
+import com.mi.liveassistant.room.request.BeginLiveRequest;
+import com.mi.liveassistant.room.request.EndLiveRequest;
+import com.mi.liveassistant.room.view.ILiveView;
 import com.wali.live.proto.LiveProto;
 
 import rx.Observable;
@@ -39,7 +39,7 @@ public class LivePresenter extends BaseRxPresenter<ILiveView> {
                 .map(new Func1<Integer, LiveProto.BeginLiveRsp>() {
                     @Override
                     public LiveProto.BeginLiveRsp call(Integer integer) {
-                        return new LitBeginLiveRequest(location, type, title, coverUrl).syncRsp();
+                        return new BeginLiveRequest(location, type, title, coverUrl).syncRsp();
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -68,7 +68,7 @@ public class LivePresenter extends BaseRxPresenter<ILiveView> {
                 .create(new Observable.OnSubscribe<LiveProto.EndLiveRsp>() {
                     @Override
                     public void call(Subscriber<? super LiveProto.EndLiveRsp> subscriber) {
-                        LiveProto.EndLiveRsp rsp = new LitEndLiveRequest(liveId).syncRsp();
+                        LiveProto.EndLiveRsp rsp = new EndLiveRequest(liveId).syncRsp();
                         subscriber.onNext(rsp);
                         subscriber.onCompleted();
                     }

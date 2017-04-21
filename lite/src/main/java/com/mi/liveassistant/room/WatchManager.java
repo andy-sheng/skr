@@ -1,7 +1,7 @@
-package com.mi.live.room;
+package com.mi.liveassistant.room;
 
-import com.mi.live.room.presenter.WatchPresenter;
-import com.mi.live.room.view.IWatchView;
+import com.mi.liveassistant.room.presenter.WatchPresenter;
+import com.mi.liveassistant.room.view.IWatchView;
 
 /**
  * Created by lan on 17/4/20.

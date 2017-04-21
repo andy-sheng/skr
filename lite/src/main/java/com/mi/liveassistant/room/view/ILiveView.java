@@ -1,7 +1,7 @@
-package com.mi.live.room.view;
+package com.mi.liveassistant.room.view;
 
 import com.mi.live.data.location.Location;
-import com.mi.live.room.mvp.IView;
+import com.mi.liveassistant.room.mvp.IView;
 import com.wali.live.proto.LiveCommonProto;
 
 import java.util.List;

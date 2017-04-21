@@ -1,4 +1,4 @@
-package com.mi.live.room.request;
+package com.mi.liveassistant.room.request;
 
 import android.text.TextUtils;
 
@@ -18,10 +18,10 @@ import com.wali.live.proto.LiveProto.BeginLiveRsp;
  * @version lit structure
  * @notice 注意修改命令字和Action
  */
-public class LitBeginLiveRequest extends BaseRequest {
+public class BeginLiveRequest extends BaseRequest {
     protected BeginLiveReq.Builder mBuilder;
 
-    public LitBeginLiveRequest(Location location, int type, String title, String coverUrl) {
+    public BeginLiveRequest(Location location, int type, String title, String coverUrl) {
         super(MiLinkCommand.COMMAND_LIVE_BEGIN, "BeginLive", null);
         build(location, type, title, coverUrl);
     }

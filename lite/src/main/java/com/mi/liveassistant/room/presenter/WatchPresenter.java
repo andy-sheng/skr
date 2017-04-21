@@ -1,10 +1,10 @@
-package com.mi.live.room.presenter;
+package com.mi.liveassistant.room.presenter;
 
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
-import com.mi.live.room.mvp.BaseRxPresenter;
-import com.mi.live.room.request.LitEnterLiveRequest;
-import com.mi.live.room.view.IWatchView;
+import com.mi.liveassistant.room.mvp.BaseRxPresenter;
+import com.mi.liveassistant.room.request.EnterLiveRequest;
+import com.mi.liveassistant.room.view.IWatchView;
 import com.wali.live.proto.LiveProto;
 
 import rx.Observable;
@@ -27,7 +27,7 @@ public class WatchPresenter extends BaseRxPresenter<IWatchView> {
                 .map(new Func1<Integer, LiveProto.EnterLiveRsp>() {
                     @Override
                     public LiveProto.EnterLiveRsp call(Integer integer) {
-                        return new LitEnterLiveRequest(playerId, liveId).syncRsp();
+                        return new EnterLiveRequest(playerId, liveId).syncRsp();
                     }
                 })
                 .subscribeOn(Schedulers.io())

@@ -1,4 +1,4 @@
-package com.mi.live.room.request;
+package com.mi.liveassistant.room.request;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
@@ -13,8 +13,8 @@ import com.wali.live.proto.LiveProto.EnterLiveRsp;
  * @version lit structure
  * @notice 注意修改命令字和Action
  */
-public class LitLeaveLiveRequest extends BaseRequest {
-    public LitLeaveLiveRequest(long playerId, String liveId) {
+public class EnterLiveRequest extends BaseRequest {
+    public EnterLiveRequest(long playerId, String liveId) {
         super(MiLinkCommand.COMMAND_LIVE_ENTER, "EnterLive", null);
         build(playerId, liveId);
     }

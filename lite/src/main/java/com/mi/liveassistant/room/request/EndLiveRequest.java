@@ -1,4 +1,4 @@
-package com.mi.live.room.request;
+package com.mi.liveassistant.room.request;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -16,12 +16,12 @@ import com.wali.live.proto.LiveProto.EndLiveRsp;
  * @version lit structure
  * @notice 注意修改命令字和Action
  */
-public class LitEndLiveRequest extends BaseRequest {
-    public LitEndLiveRequest() {
+public class EndLiveRequest extends BaseRequest {
+    public EndLiveRequest() {
         super(MiLinkCommand.COMMAND_LIVE_END, "EndLive", null);
     }
 
-    public LitEndLiveRequest(String liveId) {
+    public EndLiveRequest(String liveId) {
         this();
         if (TextUtils.isEmpty(liveId)) {
             return;

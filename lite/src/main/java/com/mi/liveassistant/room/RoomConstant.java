@@ -1,4 +1,4 @@
-package com.mi.live.room;
+package com.mi.liveassistant.room;
 
 /**
  * Created by lan on 17/4/21.
