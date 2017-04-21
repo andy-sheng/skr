@@ -31,6 +31,10 @@ import com.mi.milink.sdk.base.CustomHandlerThread;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+
 /**
  * Created by chenyong on 2016/10/17.
  */
