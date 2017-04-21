@@ -1,4 +1,4 @@
-package com.mi.liveassistant.global;
+package com.mi.liveassistant.common.global;
 
 import android.app.Application;
 import android.content.Context;
