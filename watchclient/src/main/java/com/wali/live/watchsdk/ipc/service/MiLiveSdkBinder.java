@@ -641,7 +641,9 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
     @Override
     public void thirdPartLogin(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
-        MyLog.w(TAG, "thirdPartLogin channelId=" + loginData.getChannelId());
+        if (loginData != null) {
+            MyLog.w(TAG, "thirdPartLogin channelId=" + loginData.getChannelId());
+        }
         final int channelId = loginData.getChannelId();
         secureOperate(loginData.getChannelId(), packageName, channelSecret, new SecureLoginCallback() {
             @Override
@@ -692,7 +694,9 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void onEventGetRecommendLives(int channelId, int errCode, List<LiveInfo> liveInfos) {
-        MyLog.d(TAG, "onEventGetRecommendLives " + liveInfos.size());
+        if (liveInfos != null) {
+            MyLog.d(TAG, "onEventGetRecommendLives " + liveInfos.size());
+        }
         if (mAARCallback != null) {
             mAARCallback.notifyGetChannelLives(errCode, liveInfos);
             return;
