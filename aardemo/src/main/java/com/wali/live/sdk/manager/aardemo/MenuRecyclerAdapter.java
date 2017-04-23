@@ -115,7 +115,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 MiLiveSdkController.getInstance().getChannelLives(new IMiLiveSdk.IChannelCallback() {
                     @Override
                     public void notifyGetChannelLives(int errcode, List<LiveInfo> list) {
-                        Log.w(TAG, "notifyGetChannelLives");
+                        Log.w(TAG, "notifyGetChannelLives, " + "errcode=" + errcode);
                         if (list != null) {
                             Log.w(TAG, "notifyGetChannelLives list.size()=" + list.size());
                             for (LiveInfo liveInfo : list) {
