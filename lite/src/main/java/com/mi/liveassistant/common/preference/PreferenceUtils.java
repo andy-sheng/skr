@@ -4,20 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.global.GlobalData;
+import com.mi.liveassistant.common.log.MyLog;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public abstract class PreferenceUtils {
     private static final String TAG = PreferenceUtils.class.getSimpleName();
-
-    // 是否开启媒体参数调节界面，boolean值
-    public static final String KEY_DEBUG_MEDIA_INFO = "pref_debug_media_info";
 
     public static void setSettingString(final SharedPreferences sp, final String key, final String value) {
         sp.edit().putString(key, value).apply();
@@ -27,20 +22,19 @@ public abstract class PreferenceUtils {
         return sp.getString(key, defaultValue);
     }
 
-    public static String getSettingString(final Context c, final String key,
-                                          final String defaultValue) {
+    public static String getSettingString(final String key, final String defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getString(key, defaultValue);
     }
 
-    public static void setSettingString(final Context c, final String key, final String value) {
+    public static void setSettingString(final String key, final String value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putString(key, value).apply();
     }
 
-    public static void setSettingSet(final Context c, final String key, final Set<String> value) {
+    public static void setSettingSet(final String key, final Set<String> value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putStringSet(key, value).apply();
     }
 
-    public static Set<String> getSettingSet(final Context c, final String key, final Set<String> defaultValue) {
+    public static Set<String> getSettingSet(final String key, final Set<String> defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getStringSet(key, defaultValue);
     }
 
@@ -52,29 +46,28 @@ public abstract class PreferenceUtils {
         return sp.getBoolean(key, defaultValue);
     }
 
-    public static boolean getSettingBoolean(final Context c, final String key,
-                                            final boolean defaultValue) {
+    public static boolean getSettingBoolean(final String key, final boolean defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getBoolean(key, defaultValue);
     }
 
-    public static void setSettingBoolean(final Context c, final String key, final boolean value) {
+    public static void setSettingBoolean(final String key, final boolean value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putBoolean(key, value).apply();
     }
 
-    public static void setSettingInt(final Context c, final String key, final int value) {
+    public static void setSettingInt(final String key, final int value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putInt(key, value).apply();
     }
 
-    public static void clear(final Context c, final String key) {
+    public static void clear(final String key) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().remove(key).apply();
     }
 
 
-    public static void increaseSettingInt(final Context c, final String key) {
+    public static void increaseSettingInt(final String key) {
         increaseSettingInt(PreferenceManager.getDefaultSharedPreferences(GlobalData.app()), key);
     }
 
-    public static int getSettingInt(final Context c, final String key, final int defaultValue) {
+    public static int getSettingInt(final String key, final int defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getInt(key, defaultValue);
     }
 
@@ -86,19 +79,19 @@ public abstract class PreferenceUtils {
         return sp.getFloat(key, defaultValue);
     }
 
-    public static void setSettingFloat(final Context c, final String key, final float value) {
+    public static void setSettingFloat(final String key, final float value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putFloat(key, value).apply();
     }
 
-    public static float getSettingFloat(final Context c, final String key, final float defaultValue) {
+    public static float getSettingFloat(final String key, final float defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getFloat(key, defaultValue);
     }
 
-    public static void setSettingLong(final Context c, final String key, final long value) {
+    public static void setSettingLong(final String key, final long value) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().putLong(key, value).apply();
     }
 
-    public static long getSettingLong(final Context c, final String key, final long defaultValue) {
+    public static long getSettingLong(final String key, final long defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).getLong(key, defaultValue);
     }
 
@@ -135,11 +128,11 @@ public abstract class PreferenceUtils {
         sp.edit().putLong(key, v).apply();
     }
 
-    public static boolean hasKey(final Context c, final String key) {
+    public static boolean hasKey(final String key) {
         return PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).contains(key);
     }
 
-    public static void removePreference(final Context context, final String key) {
+    public static void removePreference(final String key) {
         PreferenceManager.getDefaultSharedPreferences(GlobalData.app()).edit().remove(key).apply();
     }
 
@@ -149,12 +142,12 @@ public abstract class PreferenceUtils {
         editor.apply();
     }
 
-    public static void dumpDefaultPreference(final Context context) {
+    public static void dumpDefaultPreference() {
         dumpPreference(PreferenceManager.getDefaultSharedPreferences(GlobalData.app()),
                 "default preference:");
     }
 
-    public static void dumpDefaultPreference(final Context context, final String preference) {
+    public static void dumpDefaultPreference(final String preference) {
         dumpPreference(GlobalData.app().getSharedPreferences(preference, Context.MODE_PRIVATE), preference);
     }
 

@@ -5,6 +5,7 @@ import com.mi.liveassistant.data.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.callback.ICallback;
 import com.mi.liveassistant.room.presenter.LivePresenter;
+import com.mi.liveassistant.room.streamer.StreamerPresenter;
 import com.mi.liveassistant.room.view.ILiveView;
 
 import java.util.List;
@@ -21,8 +22,11 @@ public class LiveManager implements ILiveView {
     private ICallback mOutBeginCallback;
     private ICallback mOutEndCallback;
 
+    private StreamerPresenter mStreamerPresenter;
+
     public LiveManager() {
         mLivePresenter = new LivePresenter(this);
+        mStreamerPresenter = new StreamerPresenter();
     }
 
     @Override
@@ -54,6 +58,9 @@ public class LiveManager implements ILiveView {
         if (mOutBeginCallback != null) {
             mOutBeginCallback.notifySuccess();
         }
+
+        // 开始推流
+        mStreamerPresenter.startLive();
     }
 
     @Override
