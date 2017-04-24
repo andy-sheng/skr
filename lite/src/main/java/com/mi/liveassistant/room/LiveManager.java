@@ -4,6 +4,7 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.data.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.callback.ICallback;
+import com.mi.liveassistant.room.heartbeat.HeartbeatManager;
 import com.mi.liveassistant.room.presenter.LivePresenter;
 import com.mi.liveassistant.room.streamer.StreamerPresenter;
 import com.mi.liveassistant.room.view.ILiveView;
@@ -19,20 +20,26 @@ public class LiveManager implements ILiveView {
     private LivePresenter mLivePresenter;
     private String mLiveId;
 
+    private boolean mIsGameLive = false;
+    private boolean mIsPaused = false;
+
     private ICallback mOutBeginCallback;
     private ICallback mOutEndCallback;
 
     private StreamerPresenter mStreamerPresenter;
+    private boolean mIsRecording;
+
+    private HeartbeatManager mHeartbeatManager;
 
     public LiveManager() {
         mLivePresenter = new LivePresenter(this);
-        mStreamerPresenter = new StreamerPresenter();
     }
 
     @Override
     public void beginNormalLive(Location location, String title, String coverUrl, ICallback callback) {
         MyLog.w(TAG, "beginNormalLive");
         mOutBeginCallback = callback;
+        mIsGameLive = false;
         mLivePresenter.beginNormalLive(location, title, coverUrl);
     }
 
@@ -40,6 +47,7 @@ public class LiveManager implements ILiveView {
     public void beginGameLive(Location location, String title, String coverUrl, ICallback callback) {
         MyLog.w(TAG, "beginGameLive");
         mOutBeginCallback = callback;
+        mIsGameLive = true;
         mLivePresenter.beginGameLive(location, title, coverUrl);
     }
 
@@ -60,14 +68,48 @@ public class LiveManager implements ILiveView {
         }
 
         // 开始推流
-        mStreamerPresenter.startLive();
+        if (!mIsRecording) {
+            mIsRecording = true;
+
+            if (mStreamerPresenter == null) {
+                mStreamerPresenter = new StreamerPresenter();
+            }
+            mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpStreamUrl);
+            mStreamerPresenter.startLive();
+
+            if (mHeartbeatManager == null) {
+                mHeartbeatManager = new HeartbeatManager(mLiveId, mIsGameLive);
+            }
+            mHeartbeatManager.start(new HeartbeatManager.ICallback() {
+                @Override
+                public void notifyTimeout() {
+                    endLiveException("heartbeat timeout");
+                }
+            });
+        }
     }
 
     @Override
     public void endLive(ICallback callback) {
         MyLog.w(TAG, "endLive");
         mOutEndCallback = callback;
+        innerEndLive();
+    }
+
+    private void endLiveException(String reason) {
+        MyLog.w(TAG, "endLiveException reason=" + reason);
+        innerEndLive();
+    }
+
+    private void innerEndLive() {
         mLivePresenter.endLive(mLiveId);
+
+        // 结束推流
+        if (mIsRecording) {
+            mStreamerPresenter.stopLive();
+            mHeartbeatManager.stop();
+            mIsRecording = false;
+        }
     }
 
     @Override
@@ -84,5 +126,17 @@ public class LiveManager implements ILiveView {
         if (mOutEndCallback != null) {
             mOutEndCallback.notifySuccess();
         }
+    }
+
+    @Override
+    public void pause() {
+        mIsPaused = true;
+        mHeartbeatManager.pause();
+    }
+
+    @Override
+    public void resume() {
+        mIsPaused = false;
+        mHeartbeatManager.resume();
     }
 }

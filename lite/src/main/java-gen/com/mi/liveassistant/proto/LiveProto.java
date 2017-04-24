@@ -14411,6 +14411,1630 @@ public final class LiveProto {
     // @@protoc_insertion_point(class_scope:LeaveLiveRsp)
   }
 
+  public interface HeartBeatReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:HeartBeatReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    boolean hasLiveId();
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    java.lang.String getLiveId();
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getLiveIdBytes();
+
+    /**
+     * <code>optional uint64 pkuid = 2;</code>
+     *
+     * <pre>
+     *如果在pk，对应pk的用户id
+     * </pre>
+     */
+    boolean hasPkuid();
+    /**
+     * <code>optional uint64 pkuid = 2;</code>
+     *
+     * <pre>
+     *如果在pk，对应pk的用户id
+     * </pre>
+     */
+    long getPkuid();
+
+    /**
+     * <code>optional string pkLiveId = 3;</code>
+     *
+     * <pre>
+     *如果在pk，被pk的用户的房间号
+     * </pre>
+     */
+    boolean hasPkLiveId();
+    /**
+     * <code>optional string pkLiveId = 3;</code>
+     *
+     * <pre>
+     *如果在pk，被pk的用户的房间号
+     * </pre>
+     */
+    java.lang.String getPkLiveId();
+    /**
+     * <code>optional string pkLiveId = 3;</code>
+     *
+     * <pre>
+     *如果在pk，被pk的用户的房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getPkLiveIdBytes();
+
+    /**
+     * <code>optional int32 status = 4;</code>
+     *
+     * <pre>
+     *此房间的状态，0：正常，1：主播退到后台
+     * </pre>
+     */
+    boolean hasStatus();
+    /**
+     * <code>optional int32 status = 4;</code>
+     *
+     * <pre>
+     *此房间的状态，0：正常，1：主播退到后台
+     * </pre>
+     */
+    int getStatus();
+
+    /**
+     * <code>optional uint64 micuid = 5;</code>
+     *
+     * <pre>
+     *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+     * </pre>
+     */
+    boolean hasMicuid();
+    /**
+     * <code>optional uint64 micuid = 5;</code>
+     *
+     * <pre>
+     *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+     * </pre>
+     */
+    long getMicuid();
+
+    /**
+     * <code>optional int32 micuidStatus = 6;</code>
+     *
+     * <pre>
+     *连麦的观众的状态，0：正常，1：退到后台
+     * </pre>
+     */
+    boolean hasMicuidStatus();
+    /**
+     * <code>optional int32 micuidStatus = 6;</code>
+     *
+     * <pre>
+     *连麦的观众的状态，0：正常，1：退到后台
+     * </pre>
+     */
+    int getMicuidStatus();
+  }
+  /**
+   * Protobuf type {@code HeartBeatReq}
+   *
+   * <pre>
+   *主播心跳
+   *zhibo.live.hb
+   * </pre>
+   */
+  public static final class HeartBeatReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:HeartBeatReq)
+      HeartBeatReqOrBuilder {
+    // Use HeartBeatReq.newBuilder() to construct.
+    private HeartBeatReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HeartBeatReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HeartBeatReq defaultInstance;
+    public static HeartBeatReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HeartBeatReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HeartBeatReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              liveId_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              pkuid_ = input.readUInt64();
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              pkLiveId_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              status_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              micuid_ = input.readUInt64();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              micuidStatus_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.HeartBeatReq.class, com.mi.liveassistant.proto.LiveProto.HeartBeatReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HeartBeatReq> PARSER =
+        new com.google.protobuf.AbstractParser<HeartBeatReq>() {
+      public HeartBeatReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HeartBeatReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HeartBeatReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int LIVEID_FIELD_NUMBER = 1;
+    private java.lang.Object liveId_;
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public boolean hasLiveId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public java.lang.String getLiveId() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          liveId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getLiveIdBytes() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        liveId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PKUID_FIELD_NUMBER = 2;
+    private long pkuid_;
+    /**
+     * <code>optional uint64 pkuid = 2;</code>
+     *
+     * <pre>
+     *如果在pk，对应pk的用户id
+     * </pre>
+     */
+    public boolean hasPkuid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 pkuid = 2;</code>
+     *
+     * <pre>
+     *如果在pk，对应pk的用户id
+     * </pre>
+     */
+    public long getPkuid() {
+      return pkuid_;
+    }
+
+    public static final int PKLIVEID_FIELD_NUMBER = 3;
+    private java.lang.Object pkLiveId_;
+    /**
+     * <code>optional string pkLiveId = 3;</code>
+     *
+     * <pre>
+     *如果在pk，被pk的用户的房间号
+     * </pre>
+     */
+    public boolean hasPkLiveId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string pkLiveId = 3;</code>
+     *
+     * <pre>
+     *如果在pk，被pk的用户的房间号
+     * </pre>
+     */
+    public java.lang.String getPkLiveId() {
+      java.lang.Object ref = pkLiveId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          pkLiveId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string pkLiveId = 3;</code>
+     *
+     * <pre>
+     *如果在pk，被pk的用户的房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getPkLiveIdBytes() {
+      java.lang.Object ref = pkLiveId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pkLiveId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 4;
+    private int status_;
+    /**
+     * <code>optional int32 status = 4;</code>
+     *
+     * <pre>
+     *此房间的状态，0：正常，1：主播退到后台
+     * </pre>
+     */
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 status = 4;</code>
+     *
+     * <pre>
+     *此房间的状态，0：正常，1：主播退到后台
+     * </pre>
+     */
+    public int getStatus() {
+      return status_;
+    }
+
+    public static final int MICUID_FIELD_NUMBER = 5;
+    private long micuid_;
+    /**
+     * <code>optional uint64 micuid = 5;</code>
+     *
+     * <pre>
+     *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+     * </pre>
+     */
+    public boolean hasMicuid() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 micuid = 5;</code>
+     *
+     * <pre>
+     *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+     * </pre>
+     */
+    public long getMicuid() {
+      return micuid_;
+    }
+
+    public static final int MICUIDSTATUS_FIELD_NUMBER = 6;
+    private int micuidStatus_;
+    /**
+     * <code>optional int32 micuidStatus = 6;</code>
+     *
+     * <pre>
+     *连麦的观众的状态，0：正常，1：退到后台
+     * </pre>
+     */
+    public boolean hasMicuidStatus() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional int32 micuidStatus = 6;</code>
+     *
+     * <pre>
+     *连麦的观众的状态，0：正常，1：退到后台
+     * </pre>
+     */
+    public int getMicuidStatus() {
+      return micuidStatus_;
+    }
+
+    private void initFields() {
+      liveId_ = "";
+      pkuid_ = 0L;
+      pkLiveId_ = "";
+      status_ = 0;
+      micuid_ = 0L;
+      micuidStatus_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasLiveId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, pkuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getPkLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, status_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, micuid_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(6, micuidStatus_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, pkuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getPkLiveIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, status_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, micuid_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, micuidStatus_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.HeartBeatReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code HeartBeatReq}
+     *
+     * <pre>
+     *主播心跳
+     *zhibo.live.hb
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:HeartBeatReq)
+        com.mi.liveassistant.proto.LiveProto.HeartBeatReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.HeartBeatReq.class, com.mi.liveassistant.proto.LiveProto.HeartBeatReq.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.HeartBeatReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        liveId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        pkuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        pkLiveId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        status_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        micuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        micuidStatus_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatReq_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.HeartBeatReq getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.HeartBeatReq.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.HeartBeatReq build() {
+        com.mi.liveassistant.proto.LiveProto.HeartBeatReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.HeartBeatReq buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.HeartBeatReq result = new com.mi.liveassistant.proto.LiveProto.HeartBeatReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.liveId_ = liveId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.pkuid_ = pkuid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.pkLiveId_ = pkLiveId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.status_ = status_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.micuid_ = micuid_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.micuidStatus_ = micuidStatus_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.HeartBeatReq) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.HeartBeatReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.HeartBeatReq other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.HeartBeatReq.getDefaultInstance()) return this;
+        if (other.hasLiveId()) {
+          bitField0_ |= 0x00000001;
+          liveId_ = other.liveId_;
+          onChanged();
+        }
+        if (other.hasPkuid()) {
+          setPkuid(other.getPkuid());
+        }
+        if (other.hasPkLiveId()) {
+          bitField0_ |= 0x00000004;
+          pkLiveId_ = other.pkLiveId_;
+          onChanged();
+        }
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
+        }
+        if (other.hasMicuid()) {
+          setMicuid(other.getMicuid());
+        }
+        if (other.hasMicuidStatus()) {
+          setMicuidStatus(other.getMicuidStatus());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasLiveId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.HeartBeatReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.HeartBeatReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object liveId_ = "";
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public boolean hasLiveId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public java.lang.String getLiveId() {
+        java.lang.Object ref = liveId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getLiveIdBytes() {
+        java.lang.Object ref = liveId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          liveId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder setLiveId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder clearLiveId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        liveId_ = getDefaultInstance().getLiveId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder setLiveIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long pkuid_ ;
+      /**
+       * <code>optional uint64 pkuid = 2;</code>
+       *
+       * <pre>
+       *如果在pk，对应pk的用户id
+       * </pre>
+       */
+      public boolean hasPkuid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 pkuid = 2;</code>
+       *
+       * <pre>
+       *如果在pk，对应pk的用户id
+       * </pre>
+       */
+      public long getPkuid() {
+        return pkuid_;
+      }
+      /**
+       * <code>optional uint64 pkuid = 2;</code>
+       *
+       * <pre>
+       *如果在pk，对应pk的用户id
+       * </pre>
+       */
+      public Builder setPkuid(long value) {
+        bitField0_ |= 0x00000002;
+        pkuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 pkuid = 2;</code>
+       *
+       * <pre>
+       *如果在pk，对应pk的用户id
+       * </pre>
+       */
+      public Builder clearPkuid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        pkuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pkLiveId_ = "";
+      /**
+       * <code>optional string pkLiveId = 3;</code>
+       *
+       * <pre>
+       *如果在pk，被pk的用户的房间号
+       * </pre>
+       */
+      public boolean hasPkLiveId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string pkLiveId = 3;</code>
+       *
+       * <pre>
+       *如果在pk，被pk的用户的房间号
+       * </pre>
+       */
+      public java.lang.String getPkLiveId() {
+        java.lang.Object ref = pkLiveId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pkLiveId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string pkLiveId = 3;</code>
+       *
+       * <pre>
+       *如果在pk，被pk的用户的房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getPkLiveIdBytes() {
+        java.lang.Object ref = pkLiveId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pkLiveId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string pkLiveId = 3;</code>
+       *
+       * <pre>
+       *如果在pk，被pk的用户的房间号
+       * </pre>
+       */
+      public Builder setPkLiveId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        pkLiveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string pkLiveId = 3;</code>
+       *
+       * <pre>
+       *如果在pk，被pk的用户的房间号
+       * </pre>
+       */
+      public Builder clearPkLiveId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        pkLiveId_ = getDefaultInstance().getPkLiveId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string pkLiveId = 3;</code>
+       *
+       * <pre>
+       *如果在pk，被pk的用户的房间号
+       * </pre>
+       */
+      public Builder setPkLiveIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        pkLiveId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int status_ ;
+      /**
+       * <code>optional int32 status = 4;</code>
+       *
+       * <pre>
+       *此房间的状态，0：正常，1：主播退到后台
+       * </pre>
+       */
+      public boolean hasStatus() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 status = 4;</code>
+       *
+       * <pre>
+       *此房间的状态，0：正常，1：主播退到后台
+       * </pre>
+       */
+      public int getStatus() {
+        return status_;
+      }
+      /**
+       * <code>optional int32 status = 4;</code>
+       *
+       * <pre>
+       *此房间的状态，0：正常，1：主播退到后台
+       * </pre>
+       */
+      public Builder setStatus(int value) {
+        bitField0_ |= 0x00000008;
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 status = 4;</code>
+       *
+       * <pre>
+       *此房间的状态，0：正常，1：主播退到后台
+       * </pre>
+       */
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        status_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long micuid_ ;
+      /**
+       * <code>optional uint64 micuid = 5;</code>
+       *
+       * <pre>
+       *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+       * </pre>
+       */
+      public boolean hasMicuid() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 micuid = 5;</code>
+       *
+       * <pre>
+       *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+       * </pre>
+       */
+      public long getMicuid() {
+        return micuid_;
+      }
+      /**
+       * <code>optional uint64 micuid = 5;</code>
+       *
+       * <pre>
+       *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+       * </pre>
+       */
+      public Builder setMicuid(long value) {
+        bitField0_ |= 0x00000010;
+        micuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 micuid = 5;</code>
+       *
+       * <pre>
+       *连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+       * </pre>
+       */
+      public Builder clearMicuid() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        micuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int micuidStatus_ ;
+      /**
+       * <code>optional int32 micuidStatus = 6;</code>
+       *
+       * <pre>
+       *连麦的观众的状态，0：正常，1：退到后台
+       * </pre>
+       */
+      public boolean hasMicuidStatus() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional int32 micuidStatus = 6;</code>
+       *
+       * <pre>
+       *连麦的观众的状态，0：正常，1：退到后台
+       * </pre>
+       */
+      public int getMicuidStatus() {
+        return micuidStatus_;
+      }
+      /**
+       * <code>optional int32 micuidStatus = 6;</code>
+       *
+       * <pre>
+       *连麦的观众的状态，0：正常，1：退到后台
+       * </pre>
+       */
+      public Builder setMicuidStatus(int value) {
+        bitField0_ |= 0x00000020;
+        micuidStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 micuidStatus = 6;</code>
+       *
+       * <pre>
+       *连麦的观众的状态，0：正常，1：退到后台
+       * </pre>
+       */
+      public Builder clearMicuidStatus() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        micuidStatus_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:HeartBeatReq)
+    }
+
+    static {
+      defaultInstance = new HeartBeatReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:HeartBeatReq)
+  }
+
+  public interface HeartBeatRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:HeartBeatRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    int getRetCode();
+  }
+  /**
+   * Protobuf type {@code HeartBeatRsp}
+   */
+  public static final class HeartBeatRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:HeartBeatRsp)
+      HeartBeatRspOrBuilder {
+    // Use HeartBeatRsp.newBuilder() to construct.
+    private HeartBeatRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private HeartBeatRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final HeartBeatRsp defaultInstance;
+    public static HeartBeatRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public HeartBeatRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HeartBeatRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.HeartBeatRsp.class, com.mi.liveassistant.proto.LiveProto.HeartBeatRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<HeartBeatRsp> PARSER =
+        new com.google.protobuf.AbstractParser<HeartBeatRsp>() {
+      public HeartBeatRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HeartBeatRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HeartBeatRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.HeartBeatRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code HeartBeatRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:HeartBeatRsp)
+        com.mi.liveassistant.proto.LiveProto.HeartBeatRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.HeartBeatRsp.class, com.mi.liveassistant.proto.LiveProto.HeartBeatRsp.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.HeartBeatRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_HeartBeatRsp_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.HeartBeatRsp getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.HeartBeatRsp.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.HeartBeatRsp build() {
+        com.mi.liveassistant.proto.LiveProto.HeartBeatRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.HeartBeatRsp buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.HeartBeatRsp result = new com.mi.liveassistant.proto.LiveProto.HeartBeatRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.HeartBeatRsp) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.HeartBeatRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.HeartBeatRsp other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.HeartBeatRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.HeartBeatRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.HeartBeatRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:HeartBeatRsp)
+    }
+
+    static {
+      defaultInstance = new HeartBeatRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:HeartBeatRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BeginLiveReq_descriptor;
   private static
@@ -14451,6 +16075,16 @@ public final class LiveProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LeaveLiveRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_HeartBeatReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_HeartBeatReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_HeartBeatRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_HeartBeatRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -14501,8 +16135,12 @@ public final class LiveProto {
       "\022\030\n\020supportMagicFace\030\032 \001(\010\"O\n\014LeaveLiveR" +
       "eq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId",
       "\030\003 \002(\t\022\023\n\013messageMode\030\004 \001(\005\"\037\n\014LeaveLive" +
-      "Rsp\022\017\n\007retCode\030\001 \002(\rB\'\n\032com.mi.liveassis" +
-      "tant.protoB\tLiveProto"
+      "Rsp\022\017\n\007retCode\030\001 \002(\r\"u\n\014HeartBeatReq\022\016\n\006" +
+      "liveId\030\001 \002(\t\022\r\n\005pkuid\030\002 \001(\004\022\020\n\010pkLiveId\030" +
+      "\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\016\n\006micuid\030\005 \001(\004\022\024\n" +
+      "\014micuidStatus\030\006 \001(\005\"\037\n\014HeartBeatRsp\022\017\n\007r" +
+      "etCode\030\001 \002(\rB\'\n\032com.mi.liveassistant.pro" +
+      "toB\tLiveProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14564,6 +16202,18 @@ public final class LiveProto {
     internal_static_LeaveLiveRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_LeaveLiveRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_HeartBeatReq_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_HeartBeatReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_HeartBeatReq_descriptor,
+        new java.lang.String[] { "LiveId", "Pkuid", "PkLiveId", "Status", "Micuid", "MicuidStatus", });
+    internal_static_HeartBeatRsp_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_HeartBeatRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_HeartBeatRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     com.mi.liveassistant.proto.LiveCommonProto.getDescriptor();
   }

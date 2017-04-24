@@ -10,4 +10,6 @@ public class MiLinkCommand {
     public static final String COMMAND_LIVE_END = "zhibo.live.end";                         //结束一个直播
     public static final String COMMAND_LIVE_ENTER = "zhibo.live.enter";
     public static final String COMMAND_LIVE_LEAVE = "zhibo.live.leave";
+
+    public static final String COMMAND_LIVE_HB = "zhibo.live.hb";                           //直播时的心跳
 }

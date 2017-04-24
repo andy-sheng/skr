@@ -100,12 +100,27 @@ message EnterLiveRsp {
 //离开房间
 //zhibo.live.leave
 message LeaveLiveReq {
-    required uint64 uuid = 1; //操作人id
-    required uint64 zuid = 2; //直播人id
-    required string liveId = 3;
-    optional int32 messageMode = 4; //房间的弹幕拉状态位，0:push模型，1:pull模型
+    required uint64 uuid        = 1; //操作人id
+    required uint64 zuid        = 2; //直播人id
+    required string liveId      = 3;
+    optional int32 messageMode  = 4; //房间的弹幕拉状态位，0:push模型，1:pull模型
 }
 
 message LeaveLiveRsp {
-    required uint32 retCode = 1; //0:表示成功
+    required uint32 retCode     = 1; //0:表示成功
+}
+
+//主播心跳
+//zhibo.live.hb
+message HeartBeatReq {
+    required string liveId      = 1; //流名或者是房间号
+    optional uint64 pkuid       = 2; //如果在pk，对应pk的用户id
+    optional string pkLiveId    = 3; //如果在pk，被pk的用户的房间号
+    optional int32 status       = 4; //此房间的状态，0：正常，1：主播退到后台
+    optional uint64 micuid      = 5; //连麦的观众id,如果主播在和观众连麦，则有此字段，用于服务器校验
+    optional int32 micuidStatus = 6; //连麦的观众的状态，0：正常，1：退到后台
+}
+
+message HeartBeatRsp {
+    required uint32 retCode     = 1; //0:表示成功
 }
