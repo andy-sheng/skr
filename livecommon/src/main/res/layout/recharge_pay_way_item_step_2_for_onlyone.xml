@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/item_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_120"
+                android:background="@drawable/recharge_pay_way_list_item_bg">
+
+    <TextView
+        android:id="@+id/pay_way_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/arrow"
+        android:drawableLeft="@drawable/pay_list_icon_wechat"
+        android:drawablePadding="@dimen/margin_5"
+        android:gravity="center"
+        android:text="@string/weixin"
+        android:textColor="@color/color_black_trans_50"
+        android:textSize="@dimen/text_size_40"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_line_e5e5e5"/>
+
+</RelativeLayout>

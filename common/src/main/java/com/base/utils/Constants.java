@@ -1,5 +1,6 @@
 package com.base.utils;
 
+import com.base.common.BuildConfig;
 import com.base.utils.channel.ReleaseChannelUtils;
 
 /**
@@ -31,7 +32,7 @@ public class Constants {
 
     public static final String APPNAME = "WALI_LIVE_SDK";
 
-    public static final int MILINK_APP_ID = 10008;
+    public static final int MILINK_APP_ID = BuildConfig.MILINK_APP_ID;
 
     public static final String SID = "miui-social";
 

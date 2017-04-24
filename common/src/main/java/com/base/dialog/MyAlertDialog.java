@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.ColorInt;
 import android.support.annotation.StringRes;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -61,6 +62,47 @@ public class MyAlertDialog extends Dialog implements DialogInterface {
 
     public void setParentMargin(int left, int top, int right, int bottom){
         mAlertController.setParentMargin(left, top, right, bottom);
+    }
+
+    /**
+     * 设置顶部EmptyView的可见性
+     *
+     * @param visibility One of {@link View#VISIBLE}, {@link View#INVISIBLE}, or {@link View#GONE}.
+     */
+    public void setTopEmptyViewVisibility(int visibility) {
+        mAlertController.setTopEmptyViewVisibility(visibility);
+    }
+
+    /**
+     * 设置顶部面板的margin
+     *
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setTopPanelMargin(int left, int top, int right, int bottom) {
+        mAlertController.setTopPanelMargin(left, top, right, bottom);
+    }
+
+    public void setTitleHeight(int height) {
+        mAlertController.setTitleHeight(height);
+    }
+
+    public void setTitleColor(@ColorInt int color) {
+        mAlertController.setTitleColor(color);
+    }
+
+    /**
+     * 使title位于顶部的中央<br>
+     * 在{@link #show()}之后调用
+     *
+     * @param height
+     */
+    public void makeTitleInCenter(int height) {
+        setTopEmptyViewVisibility(View.GONE);
+        setTopPanelMargin(0, 0, 0, 0);
+        setTitleHeight(height);
     }
 
     public TextView getButton(int whichButton) {

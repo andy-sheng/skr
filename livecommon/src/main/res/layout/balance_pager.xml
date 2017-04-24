@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_f2f2f2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/no_empty_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--钻石-->
+            <TextView
+                android:id="@+id/gem_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_80"
+                android:gravity="center_vertical|start"
+                android:paddingLeft="10dip"
+                android:text="@string/gem"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_36"/>
+
+            <!--金钻 + 银钻-->
+            <LinearLayout
+                android:id="@+id/gem_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"/>
+
+            <!--背包-->
+            <TextView
+                android:id="@+id/backpack_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_80"
+                android:gravity="center_vertical|start"
+                android:paddingLeft="10dip"
+                android:text="@string/back_pack"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_36"/>
+            <!--可用-->
+            <LinearLayout
+                android:id="@+id/backpack_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"/>
+
+            <!--提示部分-->
+            <LinearLayout
+                android:id="@+id/balance_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_54"
+                android:orientation="vertical"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/balance_tip_title"
+                    android:textColor="@color/color_black_trans_40"
+                    android:textSize="@dimen/text_size_36"/>
+                <LinearLayout
+                    android:id="@+id/ll_tip_container"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_23"
+                        android:lineSpacingExtra="@dimen/margin_2"
+                        android:text="@string/balance_tip_1"
+                        android:textColor="@color/color_black_trans_40"
+                        android:textSize="@dimen/text_size_36"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:lineSpacingExtra="@dimen/margin_2"
+                        android:text="@string/balance_tip_2"
+                        android:textColor="@color/color_black_trans_40"
+                        android:textSize="@dimen/text_size_36"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_38"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:lineSpacingExtra="@dimen/margin_2"
+                        android:text="@string/balance_tip_3"
+                        android:textColor="@color/color_black_trans_40"
+                        android:textSize="@dimen/text_size_36"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_pkt_tip1"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_38"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:lineSpacingExtra="@dimen/margin_2"
+                    android:text="@string/balance_pkt_only_tip_1"
+                    android:textColor="@color/color_black_trans_40"
+                    android:textSize="@dimen/text_size_36"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--空界面-->
+        <LinearLayout
+            android:id="@+id/empty_tip_section"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="bottom|center_horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/empty_tip_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/margin_22"
+                android:drawableTop="@drawable/balance_detail_empty_expired_page"
+                android:gravity="center"
+                android:text="@string/no_expired_tip"
+                android:textColor="@color/color_black_trans_40"
+                android:textSize="@dimen/text_size_40"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

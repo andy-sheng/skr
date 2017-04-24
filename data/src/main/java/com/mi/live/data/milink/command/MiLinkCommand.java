@@ -471,4 +471,7 @@ public class MiLinkCommand {
     public static final String COMMAND_FEED_RECOMUSERS = "zhibo.feed.recomUsers";
 
     public static final String COMMAND_LIVE_GET_TITLE_LIST = "zhibo.live.gettitlelist";
+
+    public static final String COMMAND_EXCHANGEGAME = "zhibo.bank.exchangeGameTicket";                            //票换钻
+    public static final String COMMAND_GET_EXCHANGEGAME_LIST = "zhibo.bank.getExchangeGameTicketList";            //查询尚票和钻的兑换列表
 }

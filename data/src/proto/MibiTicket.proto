@@ -1,0 +1,110 @@
+import "Pay.proto";
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "MibiTicketProto";
+
+// http://wiki.n.miui.com/pages/viewpage.action?pageId=30227349
+
+//OpenAccountInfo组成字段
+message OpenAccountInfo
+{
+    required string openid = 1 [default = ""];
+    required uint64 uid = 2 [default = 0];
+    required string access_token = 3 [default = ""];
+    required uint32 expires_in = 4 [default = 0];
+    required uint32 token_update_ts = 5 [default = 0];//access_token更新的时间，精确到秒
+    optional string refresh_token = 6;
+}
+
+//小米 accesstoken 获取协议
+message GetMiAccessTokenByCodeReq
+{
+    required uint64 uuid = 1;
+    required string code = 2;//code
+}
+message GetMiAccessTokenByCodeRsp
+{
+    required uint32 retCode = 1;//返回码
+    optional OpenAccountInfo open_account_info = 2;//OpenAccountInfo
+}
+//小米 accesstoken 获取协议
+message RefreshMiAccessTokenByCodeReq
+{
+    required uint64 uuid = 1;
+    required string refresh_token = 2;//refresh_token
+}
+message RefreshMiAccessTokenByCodeRsp
+{
+    required uint32 retCode = 1;//返回码
+    optional OpenAccountInfo open_account_info = 2;//OpenAccountInfo
+}
+
+//米币星票换米币//cmd :
+message ExchangeMibiRequest{
+    required uint64     uuid        = 1;
+    required uint64     client_id   = 2;//客户端产生的唯一ID，标示同一个请求
+    required uint32     exchange_id = 3;
+    required uint32     mibi_cnt     = 4;
+    required uint32     mibi_ticket_cnt = 5;
+    required uint32     give_mibi_cnt   = 6;
+    required string     access_token    = 7;
+    optional Platform   platform    = 8;
+}
+message ExchangeMibiResponse{
+    required uint32 ret_code            = 1;
+    optional uint32 usable_mibi_ticket_cnt   = 2;
+}
+
+message MibiExchange{
+    required uint32 exchange_id     = 1;
+    required uint32 mibi_cnt         = 2;
+    required uint32 ticket_cnt      = 3;
+    optional uint32 give_mibi_cnt            = 4;
+    optional string subtitle                = 5;// 副标题
+    optional uint64 begin_time      = 6;//限时商品，开始时间
+    optional uint64 end_time        = 7;//限时商品，结束时间
+}
+
+//查讯票换米币价格列表//cmd :
+message GetMibiExchangeListRequest{
+    required uint64     uuid        = 1;
+    required Platform   platform    = 2;
+}
+message GetMibiExchangeListResponse{
+    required uint32         ret_code            = 1;
+    repeated MibiExchange   mibi_exchange_list  = 2;
+    optional uint32         usable_mibi_ticket_cnt   = 3;
+}
+
+//票换钻价格列表
+//cmd : zhibo.bank.getExchangeGameTicketList
+message GetGameTicketExchangeRequest{
+required uint64 uuid = 1;
+required Platform platform = 2;
+}
+message GetGameTicketExchangeResponse{
+required uint32 ret_code = 1;
+optional uint32 usable_gem_cnt = 2;
+repeated GemExchange gem_exchange_list= 3;
+optional uint32 usable_ticket_cnt = 4;
+optional NotifyType notifyType = 5;
+optional string msg = 6;
+optional uint32 usable_game_ticket_cnt     = 7;
+
+}
+//票换钻
+//cmd : zhibo.bank.exchangeGameTicket
+message GameTicketExchangeGemRequest{
+required uint64 uuid = 1;
+required uint64 client_id = 2;//客户端产生的唯一ID，标示同一个请求
+required uint32 exchange_id = 3;
+required uint32 gem_cnt = 4;
+required uint32 tichket_cnt = 5;
+optional uint32 give_gem_cnt = 6;
+optional Platform platform = 7;
+}
+message GameTicketExchangeGemResponse{
+required uint32 ret_code = 1;
+optional uint32 usable_gem_cnt = 2;
+optional uint32 usable_ticket_cnt = 3;
+}

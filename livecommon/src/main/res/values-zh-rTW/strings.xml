@@ -242,4 +242,56 @@
     <string name="file_upload_failed_path_error">檔案上傳失敗,原因：本地路徑有誤！</string>
     <string name="follow">關注</string>
     <string name="network_offline_warning">目前網路連接不可用，請檢查網路設定</string>
+    <string name="account_cur_ticket">娛樂星票</string>
+    <string name="back_pack">背包</string>
+    <string name="balance_gift_card_count">%1$d*%2$s</string>
+    <string name="balance_pkt_only_tip_1">背包是指系統發放的虛擬物品，過期後會被系統清空。</string>
+    <string name="balance_tip_1">1.金鑽是永久有效的平臺虛擬貨幣，可用於購買禮物。</string>
+    <string name="balance_tip_2">2.銀鑽具有一定有效期，消費時系統會優先扣減銀鑽，過期後會被系統清空。</string>
+    <string name="balance_tip_3">3.背包是指系統發放的虛擬物品，過期後會被系統清空。</string>
+    <string name="balance_tip_title">溫馨提示</string>
+    <string name="can_use_text">可使用</string>
+    <string name="count_mibi_ticket">%1$d遊戲星票</string>
+    <string name="exchange">兌換</string>
+    <string name="exchange_diamond_dialog_title">確認兌換%1$d金鑽嗎？</string>
+    <string name="exchange_diamond_silver_dialog">確認兌換%1$d銀鑽嗎？</string>
+    <string name="exchange_failure_dialog_message">星票不夠，不能兌換</string>
+    <string name="exchange_failure_dialog_title">兌換失敗</string>
+    <string name="exchange_in_progress_tip">請稍後</string>
+    <string name="exchange_success">兌換成功</string>
+    <string name="exchange_ticket">%d票</string>
+    <string name="foever_text">永久有效</string>
+    <string name="gem">鑽石</string>
+    <string name="income_isok_to_mibi">確認兌換%1$d米幣嗎？</string>
+    <string name="income_mibi_not_enough">遊戲星票不夠，不能兌換</string>
+    <string name="income_mibi_ticket">遊戲星票</string>
+    <string name="income_ticket_tomibi">星票兌換米幣</string>
+    <string name="loading">載入中</string>
+    <string name="no_expired_tip">暫無過期餘額</string>
+    <string name="no_net">網路異常，請稍後重試</string>
+    <string name="notice_text_top">公告：自2017年4月20日後，由於系統調整，娛樂星票兌換鑽石將改為有效期為30天的銀鑽，請您知曉。</string>
+    <string name="out_date_text">已過期</string>
+    <string name="payway_coda_atm">ATM/Alfamart</string>
+    <string name="payway_coda_idr">Potong Pulsa</string>
+    <string name="record_fail">轉帳失敗</string>
+    <string name="record_processing">處理中</string>
+    <string name="record_success">已經到帳</string>
+    <string name="silver_diamond">銀鑽</string>
+    <string name="ticket_all">總星票</string>
+    <string name="ticket_silver_tip">星票兌換銀鑽有效期為30天</string>
+    <plurals name="cost_show_ticket_now">
+        <item quantity="other">立即扣除:%1$d娛樂星票</item>
+    </plurals>
+    <plurals name="cost_game_ticket_now">
+        <item quantity="other">立即扣除:%1$d遊戲星票</item>
+    </plurals>
+    <plurals name="mibi">
+        <item quantity="other">%1$s米幣</item>
+    </plurals>
+    <plurals name="recharge_money_coda_unit">
+        <item quantity="other">%1$s IDR</item>
+    </plurals>
+    <plurals name="silver_diamond_plural">
+        <item quantity="other">%1$s銀鑽</item>
+    </plurals>
 </resources>

@@ -32,6 +32,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+
+import android.support.annotation.ColorRes;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,6 +51,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -1696,4 +1700,85 @@ public abstract class CommonUtils {
         }
         return null;
     }
+    /**
+     * 把钱数由分变为元，例如1分变为0.01，20分变为0.2，123分变为1.23
+     *
+     * @param cent 分的数量
+     * @return
+     */
+    public static String getHumanReadableMoney(int cent) {
+        if (cent == 0) {
+            return "0";
+        }
+        String s = String.valueOf(cent);
+        switch (s.length()) {
+            case 1:
+                return "0.0" + s;
+            case 2:
+                s = "0." + s;
+                break;
+            default:
+                s = s.substring(0, s.length() - 2) + "." + s.substring(s.length() - 2);
+                break;
+        }
+        while (s.endsWith("0")) {
+            s = s.substring(0, s.length() - 1);
+        }
+        if (s.endsWith(".")) {
+            s = s.substring(0, s.length() - 1);
+        }
+        return s;
+    }
+
+    /**
+     * 通常用于把只包含一个数字的字符串中的数字变成指定颜色<br>
+     * 只会把第一次出现高亮
+     *
+     * @param text       源字符串
+     * @param keyword    需要高亮的字符串
+     * @param colorResId
+     * @return
+     */
+    public static CharSequence getHighLightKeywordText(@NonNull String text, @NonNull String keyword, @ColorRes int colorResId) {
+        if (TextUtils.isEmpty(text)) {
+            return "";
+        }
+        if (TextUtils.isEmpty(keyword)) {
+            return text;
+        }
+        int start = text.indexOf(keyword);
+        if (start < 0) {
+            return text;
+        }
+        int end = start + keyword.length();
+        SpannableStringBuilder ssb = new SpannableStringBuilder(text);
+        ssb.setSpan(new ForegroundColorSpan(GlobalData.app().getResources().getColor(colorResId)), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
+    }
+
+    public static void setMargins(@NonNull View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.setLayoutParams(p);
+        }
+    }
+
+    public static final String SP_FILE_NAME_MIWALLET = "miwallet";
+    public static final String SP_KEY_MIWALLET_LOGIN_ACCOUNT_TYPE = "login.account.type";// 第一次使用小米钱包时，做出的选择，1：选择使用系统小米账号，2：没有选择使用系统小米账号
+    public static final int LOGIN_ACCOUNT_TYPE_NONE = 0;
+    public static final int LOGIN_ACCOUNT_TYPE_SYSTEM = 1;
+    public static final int LOGIN_ACCOUNT_TYPE_OTHER = 2;
+
+    public static int getMiWalletLoginAccountType() {
+        return PreferenceUtils.getSettingInt(GlobalData.app().getSharedPreferences(SP_FILE_NAME_MIWALLET, Context.MODE_PRIVATE),
+                SP_KEY_MIWALLET_LOGIN_ACCOUNT_TYPE, LOGIN_ACCOUNT_TYPE_NONE);
+    }
+
+    public static void setMiWalletLoginAccountType(int loginAccountType) {
+        PreferenceUtils.setSettingInt(GlobalData.app().getSharedPreferences(SP_FILE_NAME_MIWALLET, Context.MODE_PRIVATE),
+                SP_KEY_MIWALLET_LOGIN_ACCOUNT_TYPE, loginAccountType);
+    }
+
+
 }

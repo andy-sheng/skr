@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/recharge_divider_section_bg"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_20"/>
+
+    <!--1和2是互斥显示的-->
+    <!--1-->
+    <RelativeLayout
+        android:id="@+id/step_1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_120"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:text="@string/recharge_select_pay_way_tip"
+            android:textColor="@color/color_black_trans_50"
+            android:textSize="@dimen/text_size_36"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_line_e5e5e5"/>
+
+    </RelativeLayout>
+
+    <!--2-->
+    <View
+        android:id="@+id/step_2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_line_e5e5e5"/>
+
+</LinearLayout>

@@ -72,4 +72,14 @@
     <color name="color_7EEEFF">#7EEEFF</color>
 
     <color name="color_fed533">#fed533</color>
+    <color name="color_f0eff4">#f0eff4</color>
+    <color name="text_color_black_trans_90">#E5000000</color>
+    <color name="recharge_divider_section_bg">#f2f2f2</color>
+    <color name="text_color_black_trans_50">#80000000</color>
+    <color name="recharge_pay_way_switch_dialog_list_item_bg_normal">#f7f7f7</color>
+    <color name="recharge_pay_way_switch_dialog_list_item_bg_pressed">#f2f2f2</color>
+    <color name="color_black_tran_70">#B2000000</color>
+    <color name="color_zhibo_btn_bg_normal">#FF2966</color>
+    <color name="color_zhibo_text_pressed">#7FFF2966</color>
+    <color name="color_zhibo_btn_bg_pressed">#BB1544</color>
 </resources>

@@ -162,7 +162,6 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
                             // 如果是大金龙消息
                             if (barrageMsg.getMsgType() == BarrageMsgType.B_MSG_TYPE_GLABAL_MSG) {
                                 //TODO 大金龙待优化
-//                                GiftManager.popupGlobalGiftMsgWindow(barrageMsg, (BarrageMsg.GiftMsgExt) barrageMsg.getMsgExt(), RoomInfoGlobalCache.getsInstance().getCurrentRoomId());
                             } else if (barrageMsg.getMsgType() == BarrageMsgType.B_MSG_TYPE_RED_NAME_STATUES) {
                                 MyUserInfoManager.getInstance().syncSelfDetailInfo();
                             }

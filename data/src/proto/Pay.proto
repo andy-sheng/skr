@@ -56,6 +56,7 @@ enum ActType {
 enum AppType {
     ZHIBO = 0;
     ZHIBO_ZHUSHOU = 1;
+    ZHIBO_ZHUSHOU_AAR = 2;
 }
 
 //消息提示类型
@@ -200,27 +201,35 @@ message PaypalPay {
 
 message QueryProfitResponse {
     required uint32 ret_code = 1; //返回码
-    optional uint32 usable_ticket_cnt = 2; //未兑换、未提现的票数
-    optional uint32 exchange_cash_cnt = 3; //可兑换现金数，单位分
-    optional uint32 exchange_cash_today_cnt = 4; //今日可兑换现金数剩余额度
-    optional AliPay alipay = 5;
-    optional uint32 account_status = 6; //0-正常， 1-账户结算中不可提现和兑换
-    optional uint32 max_cash_cnt_times = 7;
-    optional WeixinPay wxpay = 8;
-    optional NotifyType notifyType = 9;
-    optional string msg = 10;
-    optional PaypalPay paypal = 11;
-    optional uint32 exchange_usd_cash_cnt = 12; //可兑换现金数，单位美分
-    optional uint32 exchange_usd_cash_today_cnt = 13; //今日可兑换现金数剩余额度(美分)
-    optional uint32 exchange_min_cash_cnt_onetime = 14; //每次最小提现金额
-    optional uint32 exchange_min_usd_cash_cnt_onetime = 15; //每次最小提现金额(美分)
-    optional uint32 exchange_max_cash_cnt_onetime = 16; //每次最大提现金额
-    optional uint32 exchange_max_usd_cash_cnt_onetime = 17; //每次最大提现金额(美分)
-    optional uint32 sign_status = 18; //0,普通用户,1,签约用户
-    optional string redirect_url = 19; //下发的url
-    optional uint32 frozen_usable_ticket_cnt = 20; //签约主播冻结的可用星票数
-    optional uint32 usable_mibi_ticket_cnt = 21; //（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
-    optional uint32 clear_mibi_ticket_cnt = 22; //签约前未兑换的米币星票数
+        optional uint32 usable_ticket_cnt = 2; //未兑换、未提现的票数
+        optional uint32 exchange_cash_cnt = 3; //可兑换现金数，单位分
+        optional uint32 exchange_cash_today_cnt = 4; //今日可兑换现金数剩余额度
+        optional AliPay alipay = 5;
+        optional uint32 account_status = 6; //0-正常， 1-账户结算中不可提现和兑换
+        optional uint32 max_cash_cnt_times = 7;
+        optional WeixinPay wxpay = 8;
+        optional NotifyType notifyType = 9;
+        optional string msg = 10;
+        optional PaypalPay paypal = 11;
+        optional uint32 exchange_usd_cash_cnt = 12; //可兑换现金数，单位美分
+        optional uint32 exchange_usd_cash_today_cnt = 13; //今日可兑换现金数剩余额度(美分)
+        optional uint32 exchange_min_cash_cnt_onetime = 14; //每次最小提现金额
+        optional uint32 exchange_min_usd_cash_cnt_onetime = 15; //每次最小提现金额(美分)
+        optional uint32 exchange_max_cash_cnt_onetime = 16; //每次最大提现金额
+        optional uint32 exchange_max_usd_cash_cnt_onetime = 17; //每次最大提现金额(美分)
+        optional uint32 sign_status = 18; //0,普通用户,1,签约用户
+        optional string redirect_url = 19; //下发的url
+        optional uint32	frozen_usable_ticket_cnt = 20;//签约主播冻结的可用星票数
+        optional uint32 usable_mibi_ticket_cnt  = 21;//（未签约时：未兑换的米币星票数。签约后：签约主播冻结的可用米币星票数）
+        optional uint32 clear_mibi_ticket_cnt = 22; //签约前未兑换的米币星票数
+        optional uint32 monthly_withdraw_amount = 23; // 游戏星票可兑换现金数
+        optional uint32 remain_notax_quota = 24; // 游戏星票可兑换现金数
+        optional uint32 clear_cash_cnt = 25; // 结余金额
+        optional uint32 clear_usd_cash_cnt = 26; // 结余美金
+        optional uint32 ticket_cash_cnt = 27; // 娱乐星票可兑换现金数
+        optional uint32 ticket_usd_cash_cnt = 28; // 娱乐星票可兑换美金数
+        optional uint32 game_ticket_cash_cnt = 29; // 游戏星票可兑换现金数
+        optional uint32 game_ticket_usd_cash_cnt = 30; // 游戏星票可兑换美金数
 }
 
 //查讯票换钻价格列表
@@ -236,12 +245,13 @@ message GemExchange {
     optional uint32 give_gem_cnt = 4;
 }
 message GetExchangeResponse {
-    required uint32 ret_code = 1;
-    optional uint32 usable_gem_cnt = 2;
-    repeated GemExchange gem_exchange_list = 3;
-    optional uint32 uasble_ticket_cnt = 4;
-    optional NotifyType notifyType = 5;
-    optional string msg = 6;
+    required uint32      ret_code           = 1;
+    optional uint32      usable_gem_cnt     = 2;
+    repeated GemExchange gem_exchange_list  = 3;
+    optional uint32      uasble_ticket_cnt  = 4;
+    optional NotifyType  notifyType         = 5;
+    optional string      msg                = 6;
+    optional uint32 usable_game_ticket_cnt     = 7;
 }
 
 //票换钻
@@ -258,7 +268,7 @@ message ExchangeGemRequest {
 message ExchangeGemResponse {
     required uint32 ret_code = 1;
     optional uint32 usable_gem_cnt = 2;
-    optional uint32 usable_ticket_cnt = 3; //可用普通星票数
+    optional uint32 usable_ticket_cnt = 3;//可用普通星票数
 }
 
 //提现

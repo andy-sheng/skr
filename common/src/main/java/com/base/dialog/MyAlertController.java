@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -225,6 +226,50 @@ public class MyAlertController {
             mParentContainer.requestLayout();
         }
     }
+
+    public void setTopEmptyViewVisibility(int visibility) {
+        if (mParentContainer != null) {
+            View emptyView = mParentContainer.findViewById(R.id.empty_view);
+            if (emptyView != null) {
+                emptyView.setVisibility(visibility);
+            }
+
+        }
+    }
+
+    public void setTopPanelMargin(int l, int t, int r, int b) {
+        if (mParentContainer != null) {
+            View topPanel = mParentContainer.findViewById(R.id.topPanel);
+            if (topPanel != null) {
+                if (topPanel.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) topPanel.getLayoutParams();
+                    p.setMargins(l, t, r, b);
+                    topPanel.setLayoutParams(p);
+                }
+            }
+        }
+    }
+
+    public void setTitleHeight(int height) {
+        if (mParentContainer != null) {
+            View titleTv = mParentContainer.findViewById(R.id.alertTitle);
+            if (titleTv != null) {
+                LayoutParams layoutParams = titleTv.getLayoutParams();
+                layoutParams.height = height;
+                titleTv.setLayoutParams(layoutParams);
+            }
+        }
+    }
+
+    public void setTitleColor(@ColorInt int color) {
+        if (mParentContainer != null) {
+            TextView titleTv = (TextView) mParentContainer.findViewById(R.id.alertTitle);
+            if (titleTv != null) {
+                titleTv.setTextColor(color);
+            }
+        }
+    }
+
 
     public void installContent() {
         mWindow.requestFeature(Window.FEATURE_NO_TITLE);

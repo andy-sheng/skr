@@ -115,4 +115,7 @@ public class PreferenceKeys {
     public static final String PRE_KEY_TRASH_BIN_LIST = "pre_key_trash_bin_list_%s";
 
     public static final String PRE_KEY_FEEDS_RECOM_HAS_TOAST = "pre_key_feeds_recom_has_toast";
+
+    public static final String PER_KEY_TICKET_EXCHANGE_TYPE = "per_key_ticket_exchange_type";//提现图标显示1银钻，2金钻
+    public static final String PER_KEY_TICKET_EXCHANGE_NOTICE = "per_key_ticket_exchange_notice";//是否显示文案 0关，1开
 }
