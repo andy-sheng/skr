@@ -11,7 +11,7 @@ import android.view.TextureView.SurfaceTextureListener;
 
 import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.common.utils.display.DisplayUtils;
+import com.mi.liveassistant.common.display.DisplayUtils;
 import com.xiaomi.player.Player;
 
 /**

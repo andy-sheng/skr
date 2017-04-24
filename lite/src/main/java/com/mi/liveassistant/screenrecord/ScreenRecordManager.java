@@ -24,6 +24,7 @@ import android.view.WindowManager;
 
 import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.rx.LooperScheduler;
 import com.mi.liveassistant.engine.base.GalileoConstants;
 import com.mi.liveassistant.engine.streamer.IStreamer;
 import com.mi.milink.sdk.base.CustomHandlerThread;
@@ -38,10 +39,8 @@ import rx.Subscription;
 /**
  * Created by chenyong on 2016/10/17.
  */
-
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ScreenRecordManager implements SurfaceTexture.OnFrameAvailableListener {
-
     private final static String TAG = "ScreenRecordManager";
 
     private static final int MSG_SCREENSHOT = 100;

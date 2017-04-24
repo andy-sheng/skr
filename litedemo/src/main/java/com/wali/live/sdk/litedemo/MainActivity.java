@@ -1,9 +1,10 @@
 package com.wali.live.sdk.litedemo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+import com.wali.live.sdk.litedemo.base.activity.RxActivity;
+
+public class MainActivity extends RxActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

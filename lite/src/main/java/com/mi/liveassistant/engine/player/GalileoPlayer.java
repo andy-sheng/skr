@@ -7,7 +7,7 @@ import android.view.SurfaceHolder;
 
 import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.thread.ThreadPool;
-import com.mi.liveassistant.common.utils.display.DisplayUtils;
+import com.mi.liveassistant.common.display.DisplayUtils;
 import com.mi.liveassistant.engine.base.GalileoDeviceManager;
 import com.mi.liveassistant.engine.media.player.IMediaPlayer;
 import com.mi.liveassistant.engine.media.player.IjkMediaPlayer;

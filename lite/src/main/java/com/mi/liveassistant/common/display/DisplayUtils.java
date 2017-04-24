@@ -1,4 +1,4 @@
-package com.mi.liveassistant.common.utils.display;
+package com.mi.liveassistant.common.display;
 
 import android.app.Activity;
 import android.content.Context;
