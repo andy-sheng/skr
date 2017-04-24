@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.mi.liveassistant.room.LiveManager;
+import com.mi.liveassistant.room.BaseLiveManager;
+import com.mi.liveassistant.room.LiveManagerFactory;
 import com.mi.liveassistant.room.callback.ICallback;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
@@ -12,7 +13,7 @@ import com.wali.live.sdk.litedemo.utils.ToastUtils;
 public class MainActivity extends RxActivity implements View.OnClickListener {
     private Button mGameLiveBtn;
 
-    private LiveManager mLiveManager;
+    private BaseLiveManager mLiveManager;
     private boolean mIsBegin;
 
     @Override
@@ -30,7 +31,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
     }
 
     private void initManager() {
-        mLiveManager = new LiveManager();
+        mLiveManager = LiveManagerFactory.newGameLiveManager().build();
     }
 
     @Override
@@ -60,7 +61,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
             });
         } else {
             ToastUtils.showToast("begin game live ...");
-            mLiveManager.beginGameLive(null, "TEST", null, new ICallback() {
+            mLiveManager.beginLive(null, "TEST", null, new ICallback() {
                 @Override
                 public void notifyFail(int errCode) {
                     ToastUtils.showToast("begin game live fail=" + errCode);

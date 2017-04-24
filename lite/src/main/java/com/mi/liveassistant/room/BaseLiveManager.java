@@ -14,41 +14,35 @@ import java.util.List;
 /**
  * Created by lan on 17/4/20.
  */
-public class LiveManager implements ILiveView {
-    private static final String TAG = RoomConstant.LOG_PREFIX + LiveManager.class.getSimpleName();
+public abstract class BaseLiveManager implements ILiveView {
+    protected final String TAG = getTAG();
 
-    private LivePresenter mLivePresenter;
-    private String mLiveId;
+    protected LivePresenter mLivePresenter;
+    protected String mLiveId;
 
-    private boolean mIsGameLive = false;
-    private boolean mIsPaused = false;
+    protected boolean mIsGameLive = false;
+    protected boolean mIsPaused = false;
 
-    private ICallback mOutBeginCallback;
-    private ICallback mOutEndCallback;
+    protected ICallback mOutBeginCallback;
+    protected ICallback mOutEndCallback;
 
-    private StreamerPresenter mStreamerPresenter;
-    private boolean mIsRecording;
+    protected StreamerPresenter mStreamerPresenter;
+    protected boolean mIsRecording;
 
-    private HeartbeatManager mHeartbeatManager;
+    protected HeartbeatManager mHeartbeatManager;
 
-    public LiveManager() {
+    protected BaseLiveManager() {
         mLivePresenter = new LivePresenter(this);
     }
 
-    @Override
-    public void beginNormalLive(Location location, String title, String coverUrl, ICallback callback) {
-        MyLog.w(TAG, "beginNormalLive");
-        mOutBeginCallback = callback;
-        mIsGameLive = false;
-        mLivePresenter.beginNormalLive(location, title, coverUrl);
+    public String getTAG() {
+        return RoomConstant.LOG_PREFIX + getClass().getSimpleName();
     }
 
     @Override
-    public void beginGameLive(Location location, String title, String coverUrl, ICallback callback) {
-        MyLog.w(TAG, "beginGameLive");
+    public void beginLive(Location location, String title, String coverUrl, ICallback callback) {
+        MyLog.w(TAG, "beginNormalLive");
         mOutBeginCallback = callback;
-        mIsGameLive = true;
-        mLivePresenter.beginGameLive(location, title, coverUrl);
     }
 
     @Override

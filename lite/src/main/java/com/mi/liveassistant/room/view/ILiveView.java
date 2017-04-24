@@ -10,9 +10,7 @@ import java.util.List;
  * Created by lan on 17/4/20.
  */
 public interface ILiveView extends ILifecycleView {
-    void beginNormalLive(Location location, String title, String coverUrl, ICallback callback);
-
-    void beginGameLive(Location location, String title, String coverUrl, ICallback callback);
+    void beginLive(Location location, String title, String coverUrl, ICallback callback);
 
     void notifyBeginLiveFail(int errCode);
 
