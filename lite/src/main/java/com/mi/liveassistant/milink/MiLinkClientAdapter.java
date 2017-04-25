@@ -2,8 +2,7 @@ package com.mi.liveassistant.milink;
 
 import android.text.TextUtils;
 
-import com.mi.live.data.account.HostChannelManager;
-import com.mi.live.data.account.UserAccountManager;
+import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.preference.PreferenceUtils;
 import com.mi.liveassistant.milink.callback.MiLinkChannelStatusObserver;
@@ -210,8 +209,8 @@ public class MiLinkClientAdapter {
     }
 
     private void setChannelId(PacketData packet) {
-        if (packet != null && TextUtils.isEmpty(packet.getChannelId()) && HostChannelManager.getInstance().getChannelId() != 0) {
-            packet.setChannelId(String.valueOf(HostChannelManager.getInstance().getChannelId()));
+        if (packet != null && TextUtils.isEmpty(packet.getChannelId()) && UserAccountManager.getInstance().getChannelId() != 0) {
+            packet.setChannelId(String.valueOf(UserAccountManager.getInstance().getChannelId()));
         }
     }
 

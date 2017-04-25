@@ -1,11 +1,11 @@
 package com.mi.liveassistant.room.presenter;
 
-import com.base.log.MyLog;
-import com.mi.live.data.api.ErrorCode;
+import com.mi.liveassistant.common.api.ErrorCode;
+import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.mvp.BaseRxPresenter;
+import com.mi.liveassistant.proto.LiveProto;
 import com.mi.liveassistant.room.request.EnterLiveRequest;
 import com.mi.liveassistant.room.view.IWatchView;
-import com.wali.live.proto.LiveProto;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

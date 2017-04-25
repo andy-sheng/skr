@@ -1,9 +1,9 @@
 package com.mi.liveassistant.milink.handler;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.account.event.TouristLoginEvent;
+import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.event.TouristLoginEvent;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.milink.callback.MiLinkPacketDispatcher;
 import com.mi.liveassistant.milink.event.MiLinkEvent;

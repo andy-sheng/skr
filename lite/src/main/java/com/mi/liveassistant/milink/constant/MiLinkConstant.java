@@ -7,4 +7,6 @@ public class MiLinkConstant {
     public static final int TIME_OUT = 10 * 1000;
 
     public static final int MY_APP_TYPE = 0; // 小米直播app
+
+    public static final int ERROR_CODE_SUCCESS = 0;
 }

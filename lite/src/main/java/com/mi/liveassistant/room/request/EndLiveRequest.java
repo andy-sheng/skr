@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mi.live.data.account.UserAccountManager;
+import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.api.BaseRequest;
 import com.mi.liveassistant.milink.command.MiLinkCommand;
 import com.mi.liveassistant.proto.LiveProto.EndLiveReq;

@@ -48,4 +48,5 @@ dependencies {
     compile files('rxandroid-1.1.0.jar')
     compile files('rxjava-1.0.14.jar')
     compile files('rxlifecycle-0.4.0.jar')
+    compile files('libs/greendao-2.0.0.jar')
 }
