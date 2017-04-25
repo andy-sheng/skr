@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.streamer;
+package com.mi.liveassistant.room.presenter.streamer;
 
 import android.content.Context;
 import android.media.AudioManager;

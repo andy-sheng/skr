@@ -4,16 +4,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.mi.liveassistant.room.BaseLiveManager;
-import com.mi.liveassistant.room.LiveManagerFactory;
 import com.mi.liveassistant.room.callback.ICallback;
+import com.mi.liveassistant.room.manager.GameLiveManager;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 public class MainActivity extends RxActivity implements View.OnClickListener {
     private Button mGameLiveBtn;
 
-    private BaseLiveManager mLiveManager;
+    private GameLiveManager mLiveManager;
     private boolean mIsBegin;
 
     @Override
@@ -31,7 +30,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
     }
 
     private void initManager() {
-        mLiveManager = LiveManagerFactory.newGameLiveManager().build();
+        mLiveManager = new GameLiveManager();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.streamer;
+package com.mi.liveassistant.room.presenter.streamer;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;

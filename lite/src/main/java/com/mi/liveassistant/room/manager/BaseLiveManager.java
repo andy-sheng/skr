@@ -1,12 +1,13 @@
-package com.mi.liveassistant.room;
+package com.mi.liveassistant.room.manager;
 
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.data.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
+import com.mi.liveassistant.room.RoomConstant;
 import com.mi.liveassistant.room.callback.ICallback;
 import com.mi.liveassistant.room.heartbeat.HeartbeatManager;
-import com.mi.liveassistant.room.presenter.LivePresenter;
-import com.mi.liveassistant.room.streamer.StreamerPresenter;
+import com.mi.liveassistant.room.presenter.BaseLivePresenter;
+import com.mi.liveassistant.room.presenter.streamer.StreamerPresenter;
 import com.mi.liveassistant.room.view.ILiveView;
 
 import java.util.List;
@@ -14,28 +15,30 @@ import java.util.List;
 /**
  * Created by lan on 17/4/20.
  */
-public abstract class BaseLiveManager implements ILiveView {
+public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements ILiveView {
     protected final String TAG = getTAG();
 
-    protected LivePresenter mLivePresenter;
+    /*直播开启关闭控制*/
+    protected LP mLivePresenter;
     protected String mLiveId;
+    /*外部接口的回调*/
+    protected ICallback mOutBeginCallback;
+    protected ICallback mOutEndCallback;
 
     protected boolean mIsGameLive = false;
     protected boolean mIsPaused = false;
 
-    protected ICallback mOutBeginCallback;
-    protected ICallback mOutEndCallback;
+    /*心跳管理*/
+    protected HeartbeatManager mHeartbeatManager;
 
+    /*直播推流控制*/
     protected StreamerPresenter mStreamerPresenter;
     protected boolean mIsRecording;
 
-    protected HeartbeatManager mHeartbeatManager;
-
     protected BaseLiveManager() {
-        mLivePresenter = new LivePresenter(this);
     }
 
-    public String getTAG() {
+    protected String getTAG() {
         return RoomConstant.LOG_PREFIX + getClass().getSimpleName();
     }
 
@@ -43,6 +46,7 @@ public abstract class BaseLiveManager implements ILiveView {
     public void beginLive(Location location, String title, String coverUrl, ICallback callback) {
         MyLog.w(TAG, "beginNormalLive");
         mOutBeginCallback = callback;
+        mLivePresenter.beginLive(location, title, coverUrl);
     }
 
     @Override
@@ -68,6 +72,7 @@ public abstract class BaseLiveManager implements ILiveView {
             if (mStreamerPresenter == null) {
                 mStreamerPresenter = new StreamerPresenter();
             }
+            createStreamer();
             mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpStreamUrl);
             mStreamerPresenter.startLive();
 
@@ -82,6 +87,8 @@ public abstract class BaseLiveManager implements ILiveView {
             });
         }
     }
+
+    protected abstract void createStreamer();
 
     @Override
     public void endLive(ICallback callback) {

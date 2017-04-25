@@ -5,7 +5,6 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.mvp.BaseRxPresenter;
 import com.mi.liveassistant.data.Location;
 import com.mi.liveassistant.proto.LiveProto;
-import com.mi.liveassistant.room.constant.LiveRoomType;
 import com.mi.liveassistant.room.request.BeginLiveRequest;
 import com.mi.liveassistant.room.request.EndLiveRequest;
 import com.mi.liveassistant.room.view.ILiveView;
@@ -19,27 +18,23 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by lan on 17/4/20.
+ *
+ * @description 开启直播，结束直播
  */
-public class LivePresenter extends BaseRxPresenter<ILiveView> {
-    public LivePresenter(ILiveView view) {
+public abstract class BaseLivePresenter extends BaseRxPresenter<ILiveView> {
+    protected int mLiveRoomType;
+
+    public BaseLivePresenter(ILiveView view) {
         super(view);
     }
 
-    public void beginNormalLive(Location location, String title, String coverUrl) {
-        innerBeginLive(location, LiveRoomType.TYPE_LIVE_PUBLIC, title, coverUrl);
-    }
-
-    public void beginGameLive(Location location, String title, String coverUrl) {
-        innerBeginLive(location, LiveRoomType.TYPE_LIVE_GAME, title, coverUrl);
-    }
-
-    private void innerBeginLive(final Location location, final int type, final String title, final String coverUrl) {
-        MyLog.d(TAG, "inner beginLive type=" + type);
+    public void beginLive(final Location location, final String title, final String coverUrl) {
+        MyLog.d(TAG, "beginLive liveRoomType=" + mLiveRoomType);
         Observable.just(0)
                 .map(new Func1<Integer, LiveProto.BeginLiveRsp>() {
                     @Override
                     public LiveProto.BeginLiveRsp call(Integer integer) {
-                        return new BeginLiveRequest(location, type, title, coverUrl).syncRsp();
+                        return new BeginLiveRequest(location, mLiveRoomType, title, coverUrl).syncRsp();
                     }
                 })
                 .subscribeOn(Schedulers.io())

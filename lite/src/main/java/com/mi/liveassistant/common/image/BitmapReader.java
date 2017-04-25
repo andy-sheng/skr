@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.utils;
+package com.mi.liveassistant.common.image;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BitmapReader {
-    final static int SIZE_USE_BYTE_ARRAY = 700 * 700;
+    public static final int SIZE_USE_BYTE_ARRAY = 700 * 700;
 
     public static Bitmap decodeBmpFromFile(String filePath) {
         return decodeBmpFromFile(filePath, null);
@@ -51,27 +51,7 @@ public class BitmapReader {
     }
 
     public static Bitmap decodeBmpFromStream(InputStream is, BitmapFactory.Options options) {
-        //MyLog.d("BitmapReader","BitmapReader options.inSampleSize" + options.inSampleSize);
         return BitmapFactory.decodeStream(is, null, options);
-//        Bitmap bmp = null;
-//        if (null != is) {
-//            try {
-//                byte[] data = readStream(is);
-//                if (null != data) {
-//                    bmp = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-//                    data = null;
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } catch (OutOfMemoryError err) {
-//                err.printStackTrace();
-//                System.gc();
-//                bmp = BitmapFactory.decodeStream(is, null, options);
-//            }
-//
-//        }
-//
-//        return bmp;
     }
 
     /*
@@ -104,7 +84,6 @@ public class BitmapReader {
      * @return The value to be used for inSampleSize
      */
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
