@@ -1,14 +1,12 @@
 package com.mi.liveassistant.account;
 
-import android.text.TextUtils;
 
-
-import com.mi.liveassistant.api.request.GetOwninfoRequest;
+import com.mi.liveassistant.account.request.GetOwnInfoRequest;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.thread.ThreadPool;
 import com.mi.liveassistant.dao.OwnUserInfo;
 import com.mi.liveassistant.data.User;
-import com.mi.liveassistant.data.repository.datasource.MyUserInfoLocalStore;
+import com.mi.liveassistant.data.repository.MyUserInfoLocalStore;
 import com.mi.liveassistant.event.UserInfoEvent;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.milink.constant.MiLinkConstant;
@@ -173,7 +171,7 @@ public class MyUserInfoManager {
                 .map(new Func1<Integer, UserProto.GetOwnInfoRsp>() {
                     @Override
                     public UserProto.GetOwnInfoRsp call(Integer integer) {
-                        GetOwninfoRequest request = new GetOwninfoRequest(uuid);
+                        GetOwnInfoRequest request = new GetOwnInfoRequest(uuid);
                         return request.syncRsp();
                     }
                 })

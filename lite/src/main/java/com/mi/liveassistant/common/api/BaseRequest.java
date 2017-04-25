@@ -1,7 +1,5 @@
 package com.mi.liveassistant.common.api;
 
-import android.text.TextUtils;
-
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.common.log.MyLog;
@@ -25,7 +23,6 @@ public abstract class BaseRequest {
 
     protected String mCommand;
     protected String mAction;
-    protected String mChannelId;
 
     protected GeneratedMessage mRequest;
     protected GeneratedMessage mResponse;
@@ -34,10 +31,9 @@ public abstract class BaseRequest {
         return getClass().getSimpleName();
     }
 
-    public BaseRequest(String command, String action, String channelId) {
+    public BaseRequest(String command, String action) {
         mCommand = command;
         mAction = action;
-        mChannelId = channelId;
     }
 
     /**
@@ -47,9 +43,6 @@ public abstract class BaseRequest {
         PacketData reqData = new PacketData();
         reqData.setCommand(mCommand);
         reqData.setData(mRequest.toByteArray());
-        if (!TextUtils.isEmpty(mChannelId)) {
-            reqData.setChannelId(mChannelId);
-        }
         MyLog.d(TAG, mAction + " request : \n" + mRequest.toString());
         return reqData;
     }

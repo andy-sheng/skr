@@ -2,7 +2,7 @@ package com.wali.live.sdk.litedemo.fresco.image;
 
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.facebook.imagepipeline.request.Postprocessor;
-import com.little.glint.fresco.callback.IFrescoCallback;
+import com.wali.live.sdk.litedemo.fresco.callback.IFrescoCallback;
 
 /**
  * Created by lan on 15-12-14.

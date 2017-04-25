@@ -22,7 +22,7 @@ public class BeginLiveRequest extends BaseRequest {
     protected BeginLiveReq.Builder mBuilder;
 
     public BeginLiveRequest(Location location, int type, String title, String coverUrl) {
-        super(MiLinkCommand.COMMAND_LIVE_BEGIN, "BeginLive", null);
+        super(MiLinkCommand.COMMAND_LIVE_BEGIN, "BeginLive");
         build(location, type, title, coverUrl);
     }
 

@@ -2,13 +2,11 @@ package com.mi.liveassistant.account;
 
 import android.text.TextUtils;
 
-
 import com.mi.liveassistant.account.task.AccountCaller;
 import com.mi.liveassistant.common.api.ErrorCode;
-import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
-import com.mi.liveassistant.data.repository.datasource.AccountLocalStore;
+import com.mi.liveassistant.data.repository.AccountLocalStore;
 import com.mi.liveassistant.event.AccountEventController;
 import com.mi.liveassistant.event.SetUserAccountEvent;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;

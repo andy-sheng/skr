@@ -11,7 +11,7 @@ import com.mi.liveassistant.proto.LiveProto.HeartBeatRsp;
  */
 public class HeartbeatRequest extends BaseRequest {
     public HeartbeatRequest(String liveId, int status) {
-        super(MiLinkCommand.COMMAND_LIVE_HB, "Heartbeat", null);
+        super(MiLinkCommand.COMMAND_LIVE_HB, "Heartbeat");
         build(liveId, status);
     }
 

@@ -15,7 +15,7 @@ import com.mi.liveassistant.proto.LiveProto.EnterLiveRsp;
  */
 public class LeaveLiveRequest extends BaseRequest {
     public LeaveLiveRequest(long playerId, String liveId) {
-        super(MiLinkCommand.COMMAND_LIVE_ENTER, "EnterLive", null);
+        super(MiLinkCommand.COMMAND_LIVE_ENTER, "EnterLive");
         build(playerId, liveId);
     }
 

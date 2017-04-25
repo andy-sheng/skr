@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -40,5 +41,15 @@ public class BaseApplication extends Application {
 
     private void initialize() {
         Fresco.initialize(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        try {
+            MultiDex.install(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
