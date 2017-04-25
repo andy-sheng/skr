@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.common.preference.PreferenceKey;
+import com.mi.liveassistant.common.preference.PreferenceKeys;
 import com.mi.liveassistant.common.preference.PreferenceUtils;
 import com.mi.liveassistant.common.thread.ThreadPool;
 import com.mi.liveassistant.engine.base.EngineEventClass;
@@ -520,7 +520,7 @@ public class GalileoStreamer implements IStreamer {
             MyLog.e(TAG, "setOptimalDefaultParams params is null");
             return;
         }
-        if (PreferenceUtils.getSettingBoolean(PreferenceKey.KEY_DEBUG_MEDIA_INFO, false)) {
+        if (PreferenceUtils.getSettingBoolean(PreferenceKeys.KEY_DEBUG_MEDIA_INFO, false)) {
             return;
         }
         try {

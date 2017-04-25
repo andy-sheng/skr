@@ -8,6 +8,7 @@ import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.mi.liveassistant.init.InitManager;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class BaseApplication extends Application {
         if (isCoreProcess) {
             initialize();
         }
+        InitManager.init(this);
     }
 
     private void initialize() {
