@@ -72,9 +72,9 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
             if (mStreamerPresenter == null) {
                 mStreamerPresenter = new StreamerPresenter();
             }
-            createStreamer();
             mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpStreamUrl);
-            mStreamerPresenter.startLive();
+            createStreamer();
+            startLive();
 
             if (mHeartbeatManager == null) {
                 mHeartbeatManager = new HeartbeatManager(mLiveId, mIsGameLive);
@@ -89,6 +89,10 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     }
 
     protected abstract void createStreamer();
+
+    protected void startLive() {
+        mStreamerPresenter.startLive();
+    }
 
     @Override
     public void endLive(ICallback callback) {
@@ -107,10 +111,14 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
 
         // 结束推流
         if (mIsRecording) {
-            mStreamerPresenter.stopLive();
+            stopLive();
             mHeartbeatManager.stop();
             mIsRecording = false;
         }
+    }
+
+    protected void stopLive() {
+        mStreamerPresenter.stopLive();
     }
 
     @Override

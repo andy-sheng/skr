@@ -1,5 +1,6 @@
 package com.mi.liveassistant.room.manager;
 
+import android.content.Intent;
 import android.text.TextUtils;
 
 import com.mi.liveassistant.account.UserAccountManager;
@@ -22,10 +23,17 @@ public class GameLiveManager extends BaseLiveManager<GameLivePresenter> {
 
     private int mClarity = MEDIUM_CLARITY;
 
+    private Intent mCaptureIntent;
+
     public GameLiveManager() {
         super();
         mIsGameLive = true;
         mLivePresenter = new GameLivePresenter(this);
+    }
+
+    /*设置录屏intent*/
+    public void setCaptureIntent(Intent intent) {
+        mCaptureIntent = intent;
     }
 
     /*设置分辨率*/
@@ -79,7 +87,18 @@ public class GameLiveManager extends BaseLiveManager<GameLivePresenter> {
         }
 
         mStreamerPresenter.setStreamer(streamer);
-        // TODO
-        mLivePresenter.initStreamer(streamer, width, height, null);
+        mLivePresenter.initStreamer(streamer, width, height, mCaptureIntent);
+    }
+
+    @Override
+    protected void startLive() {
+        super.startLive();
+        mLivePresenter.startLive();
+    }
+
+    @Override
+    protected void stopLive() {
+        super.stopLive();
+        mLivePresenter.stopLive();
     }
 }

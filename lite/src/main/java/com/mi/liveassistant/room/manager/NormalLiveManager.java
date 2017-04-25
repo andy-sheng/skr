@@ -22,6 +22,5 @@ public class NormalLiveManager extends BaseLiveManager {
 
     @Override
     protected void createStreamer() {
-
     }
 }
