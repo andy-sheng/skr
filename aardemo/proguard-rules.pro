@@ -25,6 +25,7 @@
 -keep class android.support.** {*;}
 -keep class com.wali.live.watchsdk.ipc.service.ThirdPartLoginData {*;}
 -keep class com.wali.live.watchsdk.ipc.service.LiveInfo {*;}
+-keep class com.wali.live.watchsdk.ipc.service.UserInfo {*;}
 
 #eventBus
 -keepattributes *Annotation*

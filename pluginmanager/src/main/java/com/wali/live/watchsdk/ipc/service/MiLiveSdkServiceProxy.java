@@ -36,6 +36,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     private IMiLiveSdk.ICallback mCallback;
     private IMiLiveSdk.IChannelAssistantCallback mChannelCallback;
+    private IMiLiveSdk.IFollowingListCallback mFollowingListCallback;
 
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
@@ -84,6 +85,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             if (mChannelCallback != null) {
                 mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
                 mChannelCallback = null;
+            }
+        }
+
+        @Override
+        public void onEventGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) throws RemoteException {
+            if (mFollowingListCallback != null) {
+                mFollowingListCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+                mFollowingListCallback = null;
             }
         }
     };
@@ -241,6 +250,25 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_CHANNEL_LIVES);
+            }
+        }
+    }
+
+    public void getFollowingList(IMiLiveSdk.IFollowingListCallback followingListCallback, boolean isBothWay, long timeStamp) {
+        Logger.w(TAG, "getFollowingList");
+        if (followingListCallback == null) {
+            Logger.w(TAG, "getFollowingList callback is null");
+            return;
+        }
+        mFollowingListCallback = followingListCallback;
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+        } else {
+            try {
+                mRemoteService.getFollowingList(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(), isBothWay, timeStamp);
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
             }
         }
     }

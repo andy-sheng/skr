@@ -23396,6 +23396,1183 @@ public final class RelationProto {
     // @@protoc_insertion_point(class_scope:com.mi.live.proto.GetSubscribeInfoResponse)
   }
 
+  public interface GetMultiOnlineUserRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.live.proto.GetMultiOnlineUserRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated uint64 uids = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    java.util.List<java.lang.Long> getUidsList();
+    /**
+     * <code>repeated uint64 uids = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    int getUidsCount();
+    /**
+     * <code>repeated uint64 uids = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    long getUids(int index);
+  }
+  /**
+   * Protobuf type {@code com.mi.live.proto.GetMultiOnlineUserRequest}
+   *
+   * <pre>
+   *批量查询在线用户
+   *cmd:zhibo.relation.getmultionlineuser
+   * </pre>
+   */
+  public static final class GetMultiOnlineUserRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.live.proto.GetMultiOnlineUserRequest)
+      GetMultiOnlineUserRequestOrBuilder {
+    // Use GetMultiOnlineUserRequest.newBuilder() to construct.
+    private GetMultiOnlineUserRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetMultiOnlineUserRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetMultiOnlineUserRequest defaultInstance;
+    public static GetMultiOnlineUserRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetMultiOnlineUserRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetMultiOnlineUserRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                uids_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              uids_.add(input.readUInt64());
+              break;
+            }
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
+                uids_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                uids_.add(input.readUInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          uids_ = java.util.Collections.unmodifiableList(uids_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest.class, com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetMultiOnlineUserRequest> PARSER =
+        new com.google.protobuf.AbstractParser<GetMultiOnlineUserRequest>() {
+      public GetMultiOnlineUserRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetMultiOnlineUserRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetMultiOnlineUserRequest> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int UIDS_FIELD_NUMBER = 1;
+    private java.util.List<java.lang.Long> uids_;
+    /**
+     * <code>repeated uint64 uids = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    public java.util.List<java.lang.Long>
+        getUidsList() {
+      return uids_;
+    }
+    /**
+     * <code>repeated uint64 uids = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    public int getUidsCount() {
+      return uids_.size();
+    }
+    /**
+     * <code>repeated uint64 uids = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    public long getUids(int index) {
+      return uids_.get(index);
+    }
+
+    private void initFields() {
+      uids_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < uids_.size(); i++) {
+        output.writeUInt64(1, uids_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < uids_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeUInt64SizeNoTag(uids_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getUidsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mi.live.proto.GetMultiOnlineUserRequest}
+     *
+     * <pre>
+     *批量查询在线用户
+     *cmd:zhibo.relation.getmultionlineuser
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.live.proto.GetMultiOnlineUserRequest)
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest.class, com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uids_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_descriptor;
+      }
+
+      public com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest build() {
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest buildPartial() {
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest result = new com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          uids_ = java.util.Collections.unmodifiableList(uids_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.uids_ = uids_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest) {
+          return mergeFrom((com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest other) {
+        if (other == com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest.getDefaultInstance()) return this;
+        if (!other.uids_.isEmpty()) {
+          if (uids_.isEmpty()) {
+            uids_ = other.uids_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureUidsIsMutable();
+            uids_.addAll(other.uids_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.RelationProto.GetMultiOnlineUserRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<java.lang.Long> uids_ = java.util.Collections.emptyList();
+      private void ensureUidsIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          uids_ = new java.util.ArrayList<java.lang.Long>(uids_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated uint64 uids = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public java.util.List<java.lang.Long>
+          getUidsList() {
+        return java.util.Collections.unmodifiableList(uids_);
+      }
+      /**
+       * <code>repeated uint64 uids = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public int getUidsCount() {
+        return uids_.size();
+      }
+      /**
+       * <code>repeated uint64 uids = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public long getUids(int index) {
+        return uids_.get(index);
+      }
+      /**
+       * <code>repeated uint64 uids = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder setUids(
+          int index, long value) {
+        ensureUidsIsMutable();
+        uids_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint64 uids = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder addUids(long value) {
+        ensureUidsIsMutable();
+        uids_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint64 uids = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder addAllUids(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureUidsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, uids_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint64 uids = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder clearUids() {
+        uids_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.live.proto.GetMultiOnlineUserRequest)
+    }
+
+    static {
+      defaultInstance = new GetMultiOnlineUserRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mi.live.proto.GetMultiOnlineUserRequest)
+  }
+
+  public interface GetMultiOnlineUserResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.live.proto.GetMultiOnlineUserResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 code = 1;</code>
+     *
+     * <pre>
+     *状态码
+     * </pre>
+     */
+    boolean hasCode();
+    /**
+     * <code>required uint32 code = 1;</code>
+     *
+     * <pre>
+     *状态码
+     * </pre>
+     */
+    int getCode();
+
+    /**
+     * <code>repeated uint64 uids = 2;</code>
+     *
+     * <pre>
+     *在线用户id
+     * </pre>
+     */
+    java.util.List<java.lang.Long> getUidsList();
+    /**
+     * <code>repeated uint64 uids = 2;</code>
+     *
+     * <pre>
+     *在线用户id
+     * </pre>
+     */
+    int getUidsCount();
+    /**
+     * <code>repeated uint64 uids = 2;</code>
+     *
+     * <pre>
+     *在线用户id
+     * </pre>
+     */
+    long getUids(int index);
+  }
+  /**
+   * Protobuf type {@code com.mi.live.proto.GetMultiOnlineUserResponse}
+   */
+  public static final class GetMultiOnlineUserResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.live.proto.GetMultiOnlineUserResponse)
+      GetMultiOnlineUserResponseOrBuilder {
+    // Use GetMultiOnlineUserResponse.newBuilder() to construct.
+    private GetMultiOnlineUserResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetMultiOnlineUserResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetMultiOnlineUserResponse defaultInstance;
+    public static GetMultiOnlineUserResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetMultiOnlineUserResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetMultiOnlineUserResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              code_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                uids_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              uids_.add(input.readUInt64());
+              break;
+            }
+            case 18: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+                uids_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                uids_.add(input.readUInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          uids_ = java.util.Collections.unmodifiableList(uids_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse.class, com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetMultiOnlineUserResponse> PARSER =
+        new com.google.protobuf.AbstractParser<GetMultiOnlineUserResponse>() {
+      public GetMultiOnlineUserResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetMultiOnlineUserResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetMultiOnlineUserResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private int code_;
+    /**
+     * <code>required uint32 code = 1;</code>
+     *
+     * <pre>
+     *状态码
+     * </pre>
+     */
+    public boolean hasCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 code = 1;</code>
+     *
+     * <pre>
+     *状态码
+     * </pre>
+     */
+    public int getCode() {
+      return code_;
+    }
+
+    public static final int UIDS_FIELD_NUMBER = 2;
+    private java.util.List<java.lang.Long> uids_;
+    /**
+     * <code>repeated uint64 uids = 2;</code>
+     *
+     * <pre>
+     *在线用户id
+     * </pre>
+     */
+    public java.util.List<java.lang.Long>
+        getUidsList() {
+      return uids_;
+    }
+    /**
+     * <code>repeated uint64 uids = 2;</code>
+     *
+     * <pre>
+     *在线用户id
+     * </pre>
+     */
+    public int getUidsCount() {
+      return uids_.size();
+    }
+    /**
+     * <code>repeated uint64 uids = 2;</code>
+     *
+     * <pre>
+     *在线用户id
+     * </pre>
+     */
+    public long getUids(int index) {
+      return uids_.get(index);
+    }
+
+    private void initFields() {
+      code_ = 0;
+      uids_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, code_);
+      }
+      for (int i = 0; i < uids_.size(); i++) {
+        output.writeUInt64(2, uids_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, code_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < uids_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeUInt64SizeNoTag(uids_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getUidsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mi.live.proto.GetMultiOnlineUserResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.live.proto.GetMultiOnlineUserResponse)
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse.class, com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        code_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uids_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.RelationProto.internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_descriptor;
+      }
+
+      public com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse build() {
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse buildPartial() {
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse result = new com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.code_ = code_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          uids_ = java.util.Collections.unmodifiableList(uids_);
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.uids_ = uids_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse) {
+          return mergeFrom((com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse other) {
+        if (other == com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse.getDefaultInstance()) return this;
+        if (other.hasCode()) {
+          setCode(other.getCode());
+        }
+        if (!other.uids_.isEmpty()) {
+          if (uids_.isEmpty()) {
+            uids_ = other.uids_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureUidsIsMutable();
+            uids_.addAll(other.uids_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.RelationProto.GetMultiOnlineUserResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int code_ ;
+      /**
+       * <code>required uint32 code = 1;</code>
+       *
+       * <pre>
+       *状态码
+       * </pre>
+       */
+      public boolean hasCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 code = 1;</code>
+       *
+       * <pre>
+       *状态码
+       * </pre>
+       */
+      public int getCode() {
+        return code_;
+      }
+      /**
+       * <code>required uint32 code = 1;</code>
+       *
+       * <pre>
+       *状态码
+       * </pre>
+       */
+      public Builder setCode(int value) {
+        bitField0_ |= 0x00000001;
+        code_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 code = 1;</code>
+       *
+       * <pre>
+       *状态码
+       * </pre>
+       */
+      public Builder clearCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        code_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Long> uids_ = java.util.Collections.emptyList();
+      private void ensureUidsIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          uids_ = new java.util.ArrayList<java.lang.Long>(uids_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated uint64 uids = 2;</code>
+       *
+       * <pre>
+       *在线用户id
+       * </pre>
+       */
+      public java.util.List<java.lang.Long>
+          getUidsList() {
+        return java.util.Collections.unmodifiableList(uids_);
+      }
+      /**
+       * <code>repeated uint64 uids = 2;</code>
+       *
+       * <pre>
+       *在线用户id
+       * </pre>
+       */
+      public int getUidsCount() {
+        return uids_.size();
+      }
+      /**
+       * <code>repeated uint64 uids = 2;</code>
+       *
+       * <pre>
+       *在线用户id
+       * </pre>
+       */
+      public long getUids(int index) {
+        return uids_.get(index);
+      }
+      /**
+       * <code>repeated uint64 uids = 2;</code>
+       *
+       * <pre>
+       *在线用户id
+       * </pre>
+       */
+      public Builder setUids(
+          int index, long value) {
+        ensureUidsIsMutable();
+        uids_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint64 uids = 2;</code>
+       *
+       * <pre>
+       *在线用户id
+       * </pre>
+       */
+      public Builder addUids(long value) {
+        ensureUidsIsMutable();
+        uids_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint64 uids = 2;</code>
+       *
+       * <pre>
+       *在线用户id
+       * </pre>
+       */
+      public Builder addAllUids(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureUidsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, uids_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint64 uids = 2;</code>
+       *
+       * <pre>
+       *在线用户id
+       * </pre>
+       */
+      public Builder clearUids() {
+        uids_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.live.proto.GetMultiOnlineUserResponse)
+    }
+
+    static {
+      defaultInstance = new GetMultiOnlineUserResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mi.live.proto.GetMultiOnlineUserResponse)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_live_proto_Follower_descriptor;
   private static
@@ -23556,6 +24733,16 @@ public final class RelationProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_live_proto_GetSubscribeInfoResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -23623,8 +24810,11 @@ public final class RelationProto {
       ";\n\027GetSubscribeInfoRequest\022\016\n\006userId\030\001 \002" +
       "(\004\022\020\n\010targetId\030\002 \002(\004\"S\n\030GetSubscribeInfo" +
       "Response\022\014\n\004code\030\001 \002(\r\022\023\n\013isSubscribe\030\002 " +
-      "\001(\010\022\024\n\014subscribeNum\030\003 \001(\rB$\n\023com.wali.li" +
-      "ve.protoB\rRelationProto"
+      "\001(\010\022\024\n\014subscribeNum\030\003 \001(\r\")\n\031GetMultiOnl" +
+      "ineUserRequest\022\014\n\004uids\030\001 \003(\004\"8\n\032GetMulti",
+      "OnlineUserResponse\022\014\n\004code\030\001 \002(\r\022\014\n\004uids" +
+      "\030\002 \003(\004B$\n\023com.wali.live.protoB\rRelationP" +
+      "roto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -23830,6 +25020,18 @@ public final class RelationProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_GetSubscribeInfoResponse_descriptor,
         new java.lang.String[] { "Code", "IsSubscribe", "SubscribeNum", });
+    internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_descriptor =
+      getDescriptor().getMessageTypes().get(32);
+    internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_live_proto_GetMultiOnlineUserRequest_descriptor,
+        new java.lang.String[] { "Uids", });
+    internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_descriptor =
+      getDescriptor().getMessageTypes().get(33);
+    internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_live_proto_GetMultiOnlineUserResponse_descriptor,
+        new java.lang.String[] { "Code", "Uids", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

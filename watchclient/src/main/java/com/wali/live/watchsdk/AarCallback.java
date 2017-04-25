@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk;
 
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.UserInfo;
 
 import java.util.List;
 
@@ -8,9 +9,10 @@ import java.util.List;
  * Created by zyh on 2017/4/19.
  */
 
-public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCallback {
+public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCallback, IMiLiveSdk.IFollowingListCallback {
     private IMiLiveSdk.ICallback mCallback;
     private IMiLiveSdk.IChannelCallback mChannelCallback;
+    private IMiLiveSdk.IFollowingListCallback mFollowingListCallback;
 
     public void setCallback(IMiLiveSdk.ICallback callback) {
         mCallback = callback;
@@ -18,7 +20,10 @@ public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCal
 
     public void setChannelCallback(IMiLiveSdk.IChannelCallback callback) {
         mChannelCallback = callback;
+    }
 
+    public void setFollowingListCallback(IMiLiveSdk.IFollowingListCallback followingListCallback) {
+        mFollowingListCallback = followingListCallback;
     }
 
     @Override
@@ -63,4 +68,12 @@ public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCal
             mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
         }
     }
+
+    @Override
+    public void notifyGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
+        if (mFollowingListCallback != null) {
+            mFollowingListCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+        }
+    }
+
 }

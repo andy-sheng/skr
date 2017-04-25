@@ -23,9 +23,11 @@ import android.widget.TextView;
 import com.mi.live.data.location.Location;
 import com.wali.live.livesdk.live.MiLiveSdkController;
 import com.wali.live.sdk.manager.aardemo.global.GlobalData;
+import com.wali.live.sdk.manager.aardemo.utils.StringUtils;
 import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 import com.wali.live.watchsdk.IMiLiveSdk;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.UserInfo;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -116,15 +118,28 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void notifyGetChannelLives(int errcode, List<LiveInfo> list) {
                         Log.w(TAG, "notifyGetChannelLives, " + "errcode=" + errcode);
+                        ToastUtils.showToast("notifyGetChannelLives, " + "errcode=" + errcode);
                         if (list != null) {
-                            Log.w(TAG, "notifyGetChannelLives list.size()=" + list.size());
-                            for (LiveInfo liveInfo : list) {
-                                Log.w(TAG, " uuid=" + liveInfo.getLiveId() + " nickName=" + liveInfo.getNickname());
-                                ToastUtils.showToast("uuid=" + liveInfo + " nickName=" + liveInfo.getNickname());
-                            }
+                            ToastUtils.showToast(StringUtils.join(list, "\n"));
                         }
                     }
                 });
+            }
+        }));
+
+        mDataList.add(new Bean("拉关注人列表", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().getFollowingList(new IMiLiveSdk.IFollowingListCallback() {
+                    @Override
+                    public void notifyGetFollowingList(int i, List<UserInfo> list, int i1, long l) {
+                        Log.w(TAG, "notifyGetFollowingList," + "errcode=" + i);
+                        ToastUtils.showToast("notifyGetFollowingList," + "errcode=" + i);
+                        if (list != null) {
+                            ToastUtils.showToast(StringUtils.join(list, "\n"));
+                        }
+                    }
+                }, false, 0);
             }
         }));
     }

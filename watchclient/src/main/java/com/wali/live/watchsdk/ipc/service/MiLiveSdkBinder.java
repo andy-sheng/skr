@@ -12,14 +12,16 @@ import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.AccountProto;
-import com.wali.live.proto.ChannelLiveProto;
 import com.wali.live.proto.CommonChannelProto;
+import com.wali.live.proto.ListProto;
+import com.wali.live.proto.RelationProto;
 import com.wali.live.proto.SecurityProto;
 import com.wali.live.watchsdk.AarCallback;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.callback.SecureLoginCallback;
-import com.wali.live.watchsdk.channellive.presenter.ChannelLiveCaller;
+import com.wali.live.watchsdk.list.ChannelLiveCaller;
+import com.wali.live.watchsdk.list.RelationCaller;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.watch.ReplaySdkActivity;
@@ -77,6 +79,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         //nothing to do
     }
 
+
     @Override
     public void getChannelLives(final int channelId, String packageName, final String channelSecret) throws RemoteException {
         MyLog.w(TAG, "getChannelLives");
@@ -86,7 +89,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 ChannelLiveCaller.getChannelLive(channelId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<ChannelLiveProto.GetChannelLiveDetailRsp>() {
+                        .subscribe(new Observer<ListProto.GetChannelLiveDetailRsp>() {
                             @Override
                             public void onCompleted() {
                                 MyLog.w(TAG, "getChannelLives onCompleted");
@@ -99,7 +102,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                             }
 
                             @Override
-                            public void onNext(ChannelLiveProto.GetChannelLiveDetailRsp getChannelLiveDetailRsp) {
+                            public void onNext(ListProto.GetChannelLiveDetailRsp getChannelLiveDetailRsp) {
                                 int errCode = ErrorCode.CODE_ERROR_NORMAL;
                                 if (getChannelLiveDetailRsp == null || (errCode = getChannelLiveDetailRsp.getRet()) != ErrorCode.CODE_SUCCESS) {
                                     //拉列表失败
@@ -108,8 +111,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                     return;
                                 }
                                 List<LiveInfo> liveInfos = new ArrayList<LiveInfo>();
-                                List<ChannelLiveProto.Item> items = getChannelLiveDetailRsp.getItemList();
-                                for (ChannelLiveProto.Item item : items) {
+                                List<ListProto.Item> items = getChannelLiveDetailRsp.getItemList();
+                                for (ListProto.Item item : items) {
                                     if (item != null && item.getType() == ChannelLiveCaller.TYPE_LIVE) {
                                         List<ByteString> list = item.getDataList();
                                         if (list != null) {
@@ -133,7 +136,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
             @Override
             public void postError() {
-
             }
 
             @Override
@@ -142,6 +144,59 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         });
     }
+
+    @Override
+    public void getFollowingList(final int channelId, final String packageName, final String channelSecret, final boolean isBothWay, final long timeStamp) throws RemoteException {
+        MyLog.w(TAG, "getFollowingList channelId=" + channelId + " isBothWay=" + isBothWay + " timeStamp=" + timeStamp);
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                RelationCaller.getFollowingList(UserAccountManager.getInstance().getUuidAsLong(), isBothWay, timeStamp)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<RelationProto.FollowingListResponse>() {
+                            @Override
+                            public void onCompleted() {
+                                MyLog.w(TAG, "getFollowingList onCompleted");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.e(e);
+                                onEventGetFollowingList(channelId, ErrorCode.CODE_ERROR_NORMAL, null, 0, 0);
+                            }
+
+                            @Override
+                            public void onNext(RelationProto.FollowingListResponse followingListResponse) {
+                                int errCode = ErrorCode.CODE_ERROR_NORMAL;
+                                if (followingListResponse == null || (errCode = followingListResponse.getCode()) != ErrorCode.CODE_SUCCESS) {
+                                    //拉列表失败
+                                    MyLog.e(TAG, "getFollowingList failed channelId=" + channelId);
+                                    onEventGetFollowingList(channelId, errCode, null, 0, 0);
+                                    return;
+                                }
+                                List<UserInfo> userInfos = new ArrayList<UserInfo>();
+                                List<RelationProto.UserInfo> items = followingListResponse.getUsersList();
+                                for (RelationProto.UserInfo item : items) {
+                                    userInfos.add(new UserInfo(item));
+                                }
+                                onEventGetFollowingList(channelId, errCode, userInfos, followingListResponse.getTotal(), followingListResponse.getSyncTime());
+                            }
+                        });
+
+            }
+
+            @Override
+            public void postError() {
+            }
+
+            @Override
+            public void processFailure() {
+
+            }
+        });
+    }
+
 
     @Override
     public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
@@ -358,7 +413,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void openNormalLive(final Activity activity, final int channelId, final String packageName, String channelSecret,
                                final ICommonCallBack callback, final boolean needFinish) {
         MyLog.w(TAG, "openNormalLive by activity channelId=" + channelId);
-
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
@@ -724,5 +778,37 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         }
         MyLog.d(TAG, "onEventGetRecommendLives aidl success=" + aidlSuccess);
+    }
+
+
+    public void onEventGetFollowingList(int channelId, int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
+        MyLog.d(TAG, "onEventGetFollowingList channelId=" + channelId);
+        if (mAARCallback != null) {
+            mAARCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+            return;
+        }
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+        boolean aidlSuccess = false;
+        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+        if (callbackList != null) {
+            MyLog.w(TAG, "callbackList != null");
+            int n = callbackList.beginBroadcast();
+            for (int i = 0; i < n; i++) {
+                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                try {
+                    callback.onEventGetFollowingList(errCode, userInfos, total, timeStamp);
+                    aidlSuccess = true;
+                } catch (Exception e) {
+                    MyLog.v(TAG, "dead callback.");
+                    deadCallback.add(callback);
+                }
+            }
+            callbackList.finishBroadcast();
+            for (IMiLiveSdkEventCallback callback : deadCallback) {
+                MyLog.v(TAG, "unregister event callback.");
+                callbackList.unregister(callback);
+            }
+        }
+        MyLog.d(TAG, "onEventGetFollowingList aidl success=" + aidlSuccess);
     }
 }

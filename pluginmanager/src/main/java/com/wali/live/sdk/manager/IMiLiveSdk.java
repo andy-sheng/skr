@@ -7,6 +7,7 @@ import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.UserInfo;
 
 import java.util.List;
 
@@ -127,6 +128,13 @@ public interface IMiLiveSdk {
     void getChannelLives(IChannelAssistantCallback callback);
 
     /**
+     * 获取关注人信息列表
+     *
+     * @version 205011
+     */
+    void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp);
+
+    /**
      * 判断该手机中是否安装的直播助手
      */
     boolean hasInstallLiveSdk();
@@ -153,7 +161,12 @@ public interface IMiLiveSdk {
 
         int THIRD_PART_LOGIN = 1004;
 
-        int GET_CHANNEL_LIVES = 1005;
+        /**
+         * 列表相关的接口
+         */
+        int GET_CHANNEL_LIVES = 1100;
+
+        int GET_FOLLOWING_LIST = 1101;
 
         /**
          * 登录相关接口的返回码
@@ -218,6 +231,12 @@ public interface IMiLiveSdk {
          * 通知上层直播列表的方法回调
          */
         void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos);
+    }
+
+    @Keep
+    interface IFollowingListCallback extends IAssistantCallback {
+
+        void notifyGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp);
     }
 
     @Keep
