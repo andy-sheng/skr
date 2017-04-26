@@ -5,6 +5,7 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.mvp.BaseRxPresenter;
 import com.mi.liveassistant.proto.LiveProto;
 import com.mi.liveassistant.room.request.EnterLiveRequest;
+import com.mi.liveassistant.room.request.LeaveLiveRequest;
 import com.mi.liveassistant.room.view.IWatchView;
 
 import rx.Observable;
@@ -40,6 +41,34 @@ public class WatchPresenter extends BaseRxPresenter<IWatchView> {
                             mView.notifyEnterLiveSuccess(rsp.getDownStreamUrl());
                         } else {
                             mView.notifyEnterLiveFail(errCode);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(throwable);
+                    }
+                });
+    }
+
+    public void leaveLive(final long playerId, final String liveId) {
+        Observable.just(0)
+                .map(new Func1<Integer, LiveProto.LeaveLiveRsp>() {
+                    @Override
+                    public LiveProto.LeaveLiveRsp call(Integer integer) {
+                        return new LeaveLiveRequest(playerId, liveId).syncRsp();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<LiveProto.LeaveLiveRsp>() {
+                    @Override
+                    public void call(LiveProto.LeaveLiveRsp rsp) {
+                        int errCode = ErrorCode.CODE_ERROR_NORMAL;
+                        if (rsp != null && (errCode = rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
+                            MyLog.d(TAG, "leave live success");
+                        } else {
+                            MyLog.d(TAG, "leave live fail, errCode=" + errCode);
                         }
                     }
                 }, new Action1<Throwable>() {

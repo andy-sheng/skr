@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.manager;
+package com.mi.liveassistant.room.manager.live;
 
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.data.Location;
@@ -6,7 +6,7 @@ import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.RoomConstant;
 import com.mi.liveassistant.room.callback.ICallback;
 import com.mi.liveassistant.room.heartbeat.HeartbeatManager;
-import com.mi.liveassistant.room.presenter.BaseLivePresenter;
+import com.mi.liveassistant.room.presenter.live.BaseLivePresenter;
 import com.mi.liveassistant.room.presenter.streamer.StreamerPresenter;
 import com.mi.liveassistant.room.view.ILiveView;
 

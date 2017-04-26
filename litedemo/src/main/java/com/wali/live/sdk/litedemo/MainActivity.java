@@ -13,7 +13,7 @@ import android.widget.Button;
 import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.room.callback.ICallback;
-import com.mi.liveassistant.room.manager.GameLiveManager;
+import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.wali.live.sdk.litedemo.account.LoginManager;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;

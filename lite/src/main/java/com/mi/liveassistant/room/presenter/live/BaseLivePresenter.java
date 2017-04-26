@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.presenter;
+package com.mi.liveassistant.room.presenter.live;
 
 import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;

@@ -1,5 +1,6 @@
-package com.mi.liveassistant.room;
+package com.mi.liveassistant.room.manager.watch;
 
+import com.mi.liveassistant.room.RoomConstant;
 import com.mi.liveassistant.room.presenter.WatchPresenter;
 import com.mi.liveassistant.room.view.IWatchView;
 
@@ -35,5 +36,10 @@ public class WatchManager implements IWatchView {
     @Override
     public void notifyEnterLiveSuccess(String downStreamUrl) {
         mDownStreamUrl = downStreamUrl;
+    }
+
+    @Override
+    public void leaveLive() {
+        mWatchPresenter.leaveLive(mPlayerId, mLiveId);
     }
 }

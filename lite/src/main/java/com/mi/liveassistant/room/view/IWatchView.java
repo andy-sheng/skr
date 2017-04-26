@@ -11,4 +11,6 @@ public interface IWatchView extends IView {
     void notifyEnterLiveFail(int errCode);
 
     void notifyEnterLiveSuccess(String downStreamUrl);
+
+    void leaveLive();
 }

@@ -1,8 +1,8 @@
-package com.mi.liveassistant.room.manager;
+package com.mi.liveassistant.room.manager.live;
 
 import com.mi.liveassistant.data.Location;
 import com.mi.liveassistant.room.callback.ICallback;
-import com.mi.liveassistant.room.presenter.NormalLivePresenter;
+import com.mi.liveassistant.room.presenter.live.NormalLivePresenter;
 
 /**
  * Created by lan on 17/4/20.

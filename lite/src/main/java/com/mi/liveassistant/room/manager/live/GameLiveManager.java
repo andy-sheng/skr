@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.manager;
+package com.mi.liveassistant.room.manager.live;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -11,7 +11,7 @@ import com.mi.liveassistant.engine.streamer.GalileoStreamer;
 import com.mi.liveassistant.engine.streamer.IStreamer;
 import com.mi.liveassistant.engine.streamer.StreamerConfig;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
-import com.mi.liveassistant.room.presenter.GameLivePresenter;
+import com.mi.liveassistant.room.presenter.live.GameLivePresenter;
 
 /**
  * Created by lan on 17/4/20.

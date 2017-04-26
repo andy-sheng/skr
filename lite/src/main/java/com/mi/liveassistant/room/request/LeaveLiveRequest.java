@@ -4,8 +4,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.api.BaseRequest;
 import com.mi.liveassistant.milink.command.MiLinkCommand;
-import com.mi.liveassistant.proto.LiveProto.EnterLiveReq;
-import com.mi.liveassistant.proto.LiveProto.EnterLiveRsp;
+import com.mi.liveassistant.proto.LiveProto.LeaveLiveReq;
+import com.mi.liveassistant.proto.LiveProto.LeaveLiveRsp;
 
 /**
  * Created by lan on 16-3-18.
@@ -20,14 +20,14 @@ public class LeaveLiveRequest extends BaseRequest {
     }
 
     private void build(long playerId, String liveId) {
-        mRequest = EnterLiveReq.newBuilder()
+        mRequest = LeaveLiveReq.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setZuid(playerId)
                 .setLiveId(liveId)
                 .build();
     }
 
-    protected EnterLiveRsp parse(byte[] bytes) throws InvalidProtocolBufferException {
-        return EnterLiveRsp.parseFrom(bytes);
+    protected LeaveLiveRsp parse(byte[] bytes) throws InvalidProtocolBufferException {
+        return LeaveLiveRsp.parseFrom(bytes);
     }
 }

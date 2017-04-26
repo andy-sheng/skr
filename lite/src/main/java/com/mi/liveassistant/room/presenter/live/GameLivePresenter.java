@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.presenter;
+package com.mi.liveassistant.room.presenter.live;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

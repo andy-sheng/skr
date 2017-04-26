@@ -1,4 +1,4 @@
-package com.mi.liveassistant.room.presenter;
+package com.mi.liveassistant.room.presenter.live;
 
 import com.mi.liveassistant.room.constant.LiveRoomType;
 import com.mi.liveassistant.room.view.ILiveView;
