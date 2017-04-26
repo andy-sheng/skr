@@ -33,6 +33,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     protected View mGiftBtn;
     //    protected View mRotateBtn;
     protected View mGameBtn;
+    protected View mShareBtn;
 
     private boolean mIsGameMode = false;
 
@@ -60,6 +61,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
             mPresenter.showGameDownloadView();
+        } else if (id == R.id.share_btn) {
+            mPresenter.showShareView();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -86,12 +89,17 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 //        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
 //        addCreatedView(mGiftBtn, R.id.rotate_btn);
 
+        mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+        addCreatedView(mShareBtn, R.id.share_btn);
+
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mCommentBtn);
         mRightBtnSetPort.add(mGiftBtn);
+        mRightBtnSetPort.add(mShareBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
         mBottomBtnSetLand.add(mCommentBtn);
+        mBottomBtnSetLand.add(mShareBtn);
         //mBottomBtnSetLand.add(mRotateBtn);
 
         orientChild();
@@ -112,7 +120,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         addCreatedView(mGameBtn, R.id.game_btn);
 
         mRightBtnSetPort.add(mGameBtn);
-        mBottomBtnSetLand.add(1, mGameBtn);
+        mBottomBtnSetLand.add(mGameBtn);
         orientChild();
 
         if (mAnimatorRunnable == null) {
@@ -219,6 +227,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 增加游戏下载
          */
         void showGameDownloadView();
+
+        /**
+         * 显示分享界面
+         */
+        void showShareView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

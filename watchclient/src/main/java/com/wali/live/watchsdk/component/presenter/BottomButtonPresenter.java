@@ -57,6 +57,11 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
     }
 
     @Override
+    public void showShareView() {
+        MyLog.e(TAG, "ddd");
+    }
+
+    @Override
     public void destroy() {
         super.destroy();
         mView.destroyView();
