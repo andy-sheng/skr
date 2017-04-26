@@ -1,5 +1,5 @@
 <configuration>
-    <property name="LOG_DIR" value="/storage/emulated/0/Xiaomi/WALI_LIVE_SDK/logs/com.mi.liveassistant/" />
+    <property name="LOG_DIR" value="${EXT_DIR:-/sdcard}/Xiaomi/WALI_LIVE_SDK/logs/${PACKAGE_NAME}/" />
     <!--声明一个时间戳-->
     <timestamp datePattern="yyyyMMdd" key="today" />
     <!--声明一个FileAppender-->

@@ -29,6 +29,7 @@
 
 #log
 -keep public class ch.qos.logback.** { *; }
+-keep class org.slf4j.** { *; }
 
 #eventBus
 -keepattributes *Annotation*
