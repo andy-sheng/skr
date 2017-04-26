@@ -92,6 +92,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.ranking.RankingFragment;
 import com.wali.live.watchsdk.schema.SchemeActivity;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
@@ -539,7 +540,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mPhoneStateReceiver = PhoneStateReceiver.registerReceiver(this);
         registerScreenStateReceiver();
 
-        if(mMyRoomData.getUser() == null ||mMyRoomData.getUser().getUid()<=0 || TextUtils.isEmpty(mMyRoomData.getUser().getNickname())){
+        if (mMyRoomData.getUser() == null || mMyRoomData.getUser().getUid() <= 0 || TextUtils.isEmpty(mMyRoomData.getUser().getNickname())) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
         }
         // 顶部view
@@ -815,7 +816,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     //开始动画,并且开始推流
     private void beginLiveToServer() {
-        MyLog.w(TAG,"beginLiveToServer");
+        MyLog.w(TAG, "beginLiveToServer");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
@@ -827,7 +828,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private void processStartRecord(String liveId, long createTime, String shareUrl,
                                     List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
-        MyLog.w(TAG, "processStartRecord,liveId:"+liveId);
+        MyLog.w(TAG, "processStartRecord,liveId:" + liveId);
         mMyRoomData.setRoomId(liveId);
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
@@ -969,7 +970,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private void endLiveToServer() {
-        MyLog.w(TAG,"endLiveToServer");
+        MyLog.w(TAG, "endLiveToServer");
         mLiveRoomPresenter.endLiveByAppInfo(mMyRoomData.getRoomId(), null);
     }
 
@@ -1043,6 +1044,15 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return;
         }
         switch (event.type) {
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET: {
+                long uid = (long) event.obj1;
+                int ticket = (int) event.obj2;
+                String liveId = (String) event.obj3;
+                RankingFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
+                        mMyRoomData.isTicketing() ? RankingFragment.PARAM_FROM_CURRENT : RankingFragment.PARAM_FROM_TOTAL,
+                        true, isDisplayLandscape());
+            }
+            break;
             case UserActionEvent.EVENT_TYPE_REQUEST_SET_MANAGER: {
                 Bundle bundle = new Bundle();
                 bundle.putString(RoomAdminFragment.INTENT_LIVE_ROOM_ID, mMyRoomData.getRoomId());

@@ -15,7 +15,12 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.proto.Rank;
+import com.wali.live.proto.RankProto;
+import com.wali.live.proto.RankProto.GetRankListRequestV2;
+import com.wali.live.proto.RankProto.GetRankListResponseV2;
+import com.wali.live.proto.RankProto.GetRankRoomListRequest;
+import com.wali.live.proto.RankProto.GetRankRoomListResponse;
+import com.wali.live.proto.RankProto.RankUser;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.proto.RelationProto.BlockerListRequest;
 import com.wali.live.proto.RelationProto.BlockerListResponse;
@@ -35,6 +40,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mi.live.data.api.BanSpeakerUtils.RESULT_CODE_SUCCESS;
 
 /**
  * Created by lan on 2/24/16.
@@ -56,6 +63,10 @@ public class RelationUtils {
     }
 
     public static int follow(long uuid, long target, String roomid) {
+        return follow(uuid, target, roomid, null);
+    }
+
+    public static int follow(long uuid, long target, String roomid, String source) {
         RelationProto.FollowRequest.Builder builder = FollowRequest.newBuilder().setUserId(uuid).setTargetId(target);
         if (!TextUtils.isEmpty(roomid)) {
             builder.setRoomId(roomid);
@@ -71,8 +82,8 @@ public class RelationUtils {
                 FollowResponse response = FollowResponse.parseFrom(responseData.getData());
                 MyLog.v(TAG + " followRequest result:" + response.getCode());
                 sErrorCode = response.getCode();
-                if (response.getCode() == ErrorCode.CODE_SUCCESS) {
-                    FollowOrUnfollowEvent event = new FollowOrUnfollowEvent(FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW, target);
+                if (response.getCode() == RESULT_CODE_SUCCESS) {
+                    FollowOrUnfollowEvent event = new FollowOrUnfollowEvent(FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW, target, source);
                     event.isBothFollow = response.getIsBothway();
                     EventBus.getDefault().post(event);
                     return response.getIsBothway() ? FOLLOW_STATE_BOTH_WAY : FOLLOW_STATE_SUCCESS;
@@ -242,9 +253,9 @@ public class RelationUtils {
     /**
      * 星票榜单
      */
-    public static List<Rank.RankUser> getTicketListResponse(long uuid, int pageCount, int offset) {
-        List<Rank.RankUser> rankItemList = new ArrayList<>();
-        Rank.GetRankListRequestV2 request = Rank.GetRankListRequestV2.newBuilder()
+    public static List<RankUser> getTicketListResponse(long uuid, int pageCount, int offset) {
+        List<RankUser> rankItemList = new ArrayList<>();
+        GetRankListRequestV2 request = GetRankListRequestV2.newBuilder()
                 .setZuid(uuid).setLimit(pageCount).setOffset(offset).build();
         PacketData packetData = new PacketData();
         packetData.setCommand(MiLinkCommand.COMMAND_GET_RANK_LIST_V2);
@@ -255,9 +266,9 @@ public class RelationUtils {
 
         try {
             if (responseData != null) {
-                Rank.GetRankListResponseV2 response = Rank.GetRankListResponseV2.parseFrom(responseData.getData());
+                GetRankListResponseV2 response = GetRankListResponseV2.parseFrom(responseData.getData());
                 MyLog.v(TAG, "getRankItemList responseData=" + response);
-                List<Rank.RankUser> rankList = new ArrayList<Rank.RankUser>();
+                List<RankUser> rankList = new ArrayList<>();
                 if (response.getRetCode() == 0) {
                     rankList = response.getItemsList();
                 }
@@ -273,9 +284,9 @@ public class RelationUtils {
     /**
      * 本场星票榜单
      */
-    public static List<Rank.RankUser> getRankRoomList(String liveId, int pageCount, int offset) {
-        List<Rank.RankUser> rankItemList = new ArrayList<>();
-        Rank.GetRankRoomListRequest request = Rank.GetRankRoomListRequest.newBuilder().setLiveId(liveId).setLimit(pageCount).setOffset(offset).build();
+    public static List<RankUser> getRankRoomList(String liveId, int pageCount, int offset) {
+        List<RankUser> rankItemList = new ArrayList<>();
+        GetRankRoomListRequest request = GetRankRoomListRequest.newBuilder().setLiveId(liveId).setLimit(pageCount).setOffset(offset).build();
         PacketData packetData = new PacketData();
         packetData.setCommand(MiLinkCommand.COMMAND_GET_RANK_ROOM_LIST);
         packetData.setData(request.toByteArray());
@@ -285,9 +296,9 @@ public class RelationUtils {
 
         try {
             if (responseData != null) {
-                Rank.GetRankRoomListResponse response = Rank.GetRankRoomListResponse.parseFrom(responseData.getData());
+                GetRankRoomListResponse response = GetRankRoomListResponse.parseFrom(responseData.getData());
                 MyLog.v(TAG, "getRankItemList responseData=" + response);
-                List<Rank.RankUser> rankList = new ArrayList<Rank.RankUser>();
+                List<RankUser> rankList = new ArrayList<>();
                 if (response.getRetCode() == 0) {
                     rankList = response.getItemsList();
                 }
@@ -297,15 +308,42 @@ public class RelationUtils {
             MyLog.e(e);
         }
         return rankItemList;
+    }
 
+    /**
+     * 本场星票榜单
+     */
+    public static int getRankRoomTicket(String liveId) {
+        RankProto.GetRankRoomTotalTicketRequest request = RankProto.GetRankRoomTotalTicketRequest.newBuilder().setLiveid(liveId).build();
+        PacketData packetData = new PacketData();
+        packetData.setCommand(MiLinkCommand.COMMAND_GET_RANK_ROOM_TICKET);
+        packetData.setData(request.toByteArray());
+        MyLog.v(TAG, "GetRankRoomTotalTicketRequest request : \n" + request.toString());
+
+        PacketData responseData = MiLinkClientAdapter.getsInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+
+        try {
+            if (responseData != null) {
+                RankProto.GetRankRoomTotalTicketResponse response = RankProto.GetRankRoomTotalTicketResponse.parseFrom(responseData.getData());
+                MyLog.v(TAG, "GetRankRoomTotalTicketRequest responseData=" + response);
+                int ticket = 0;
+                if (response.getRetCode() == 0) {
+                    ticket = response.getTotalTicket();
+                }
+                return ticket;
+            }
+        } catch (InvalidProtocolBufferException e) {
+            MyLog.e(e);
+        }
+        return 0;
     }
 
     /**
      * 本场近十分鐘星票榜单
      */
-    public static List<Rank.RankUser> getRankRoomTenMinList(String liveId, int pageCount, int offset) {
-        List<Rank.RankUser> rankItemList = new ArrayList<>();
-        Rank.GetRankRoomListRequest request = Rank.GetRankRoomListRequest.newBuilder().setLiveId(liveId).setLimit(pageCount).setOffset(offset).build();
+    public static List<RankUser> getRankRoomTenMinList(String liveId, int pageCount, int offset) {
+        List<RankUser> rankItemList = new ArrayList<>();
+        GetRankRoomListRequest request = GetRankRoomListRequest.newBuilder().setLiveId(liveId).setLimit(pageCount).setOffset(offset).build();
         PacketData packetData = new PacketData();
         packetData.setCommand(MiLinkCommand.COMMAND_GET_RANK_ROOM_TEN_MIN_LIST);
         packetData.setData(request.toByteArray());
@@ -315,9 +353,9 @@ public class RelationUtils {
 
         try {
             if (responseData != null) {
-                Rank.GetRankRoomListResponse response = Rank.GetRankRoomListResponse.parseFrom(responseData.getData());
+                GetRankRoomListResponse response = GetRankRoomListResponse.parseFrom(responseData.getData());
                 MyLog.v(TAG, "getRankRoomTenMinList responseData=" + response);
-                List<Rank.RankUser> rankList = new ArrayList<Rank.RankUser>();
+                List<RankUser> rankList = new ArrayList<RankUser>();
                 if (response.getRetCode() == 0) {
                     rankList = response.getItemsList();
                 }

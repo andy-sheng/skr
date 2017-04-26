@@ -47,4 +47,11 @@
     <string name="ten_thousand_download">%d萬次下載</string>
     <string name="download">下載</string>
     <string name="downloading">開始下載</string>
+    <string name="on_air">直播中</string>
+    <string name="rankTitle">星票榜單</string>
+    <string name="empty_tips">頁面暫時為空</string>
+    <string name="refreshing">載入中...</string>
+    <plurals name="contribute_ticket_num">
+        <item quantity="other">貢獻%1$s星票</item>
+    </plurals>
 </resources>

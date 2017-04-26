@@ -11,7 +11,9 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.milink.sdk.aidl.PacketData;
-import com.wali.live.proto.Rank;
+import com.wali.live.proto.RankProto;
+import com.wali.live.proto.RankProto.*;
+import com.wali.live.proto.RankProto.RankUser;
 import com.wali.live.proto.RelationProto;
 
 import org.greenrobot.eventbus.EventBus;
@@ -271,9 +273,9 @@ public class RelationApi {
     /**
      * 星票榜单
      */
-    public static List<Rank.RankUser> getTicketListResponse(long uuid, int pageCount, int offset) {
-        List<Rank.RankUser> rankItemList = new ArrayList<>();
-        Rank.GetRankListRequestV2 request = Rank.GetRankListRequestV2.newBuilder()
+    public static List<RankUser> getTicketListResponse(long uuid, int pageCount, int offset) {
+        List<RankUser> rankItemList = new ArrayList<>();
+        GetRankListRequestV2 request = GetRankListRequestV2.newBuilder()
                 .setZuid(uuid).setLimit(pageCount).setOffset(offset).build();
         PacketData packetData = new PacketData();
         packetData.setCommand(MiLinkCommand.COMMAND_GET_RANK_LIST_V2);
@@ -284,9 +286,9 @@ public class RelationApi {
 
         try {
             if (responseData != null) {
-                Rank.GetRankListResponseV2 response = Rank.GetRankListResponseV2.parseFrom(responseData.getData());
+                GetRankListResponseV2 response = GetRankListResponseV2.parseFrom(responseData.getData());
                 MyLog.v(TAG, "getRankItemList responseData=" + response);
-                List<Rank.RankUser> rankList = new ArrayList<Rank.RankUser>();
+                List<RankProto.RankUser> rankList = new ArrayList();
                 if (response.getRetCode() == 0) {
                     rankList = response.getItemsList();
                 }

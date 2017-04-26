@@ -218,7 +218,9 @@ class CopyLayoutRes:
 
     def __doCopy(self, resPath,fileName):
         srcFile = org_res_path + resPath + fileName
+        print(srcFile)
         dstPath = dst_res_path + resPath
+        print(dstPath)
 
         if not os.path.exists(dstPath):
             os.makedirs(dstPath)
