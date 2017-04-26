@@ -210,13 +210,14 @@ public class MiLinkCommand {
     public static final String COMMAND_ACCOUNT_CONFIRM_LOGIN_BY_QRCODE = "zhibo.account.confirmloginbyqrcode"; //扫描二维码后，确认登录
     public static final String COMMAND_ACCOUNT_XIAOMI_SSO_LOGIN = "zhibo.account.missologin";   //小米帐号sso登录
     public static final String COMMAND_ACCOUNT_GET_ACCESS_TOKEN = "zhibo.account.getaccesstoken"; //用于第三方（如小米游戏）接入小米直播
-    public static final String COMMAND_ACCOUNT_3PARTSIGNLOGIN="zhibo.account.3partsignlogin"; //对接第三方账号签名登陆，比如对接真真海淘，直播客户端用户进入直播房间要打通用户对输入参数进行签名
+    public static final String COMMAND_ACCOUNT_3PARTSIGNLOGIN = "zhibo.account.3partsignlogin"; //对接第三方账号签名登陆，比如对接真真海淘，直播客户端用户进入直播房间要打通用户对输入参数进行签名
 
     /*提现相关*/
     public static final String COMMAND_GET_RANK_LIST = "zhibo.rank.list";                           //查询尚票排行榜
     public static final String COMMAND_GET_RANK_LIST_V2 = "zhibo.rank.listv2";                      //查询尚票排行榜
     public static final String COMMAND_GET_RANK_ROOM_LIST = "zhibo.rank.room";                      //查询房间星票排行榜
-    public static final String COMMAND_GET_RANK_ROOM_TEN_MIN_LIST = "zhibo.rank.tenmin";                      //查询房间近十分钟星票排行榜
+    public static final String COMMAND_GET_RANK_ROOM_TICKET = "zhibo.rank.roomtotalticket";         //查询房间星票数
+    public static final String COMMAND_GET_RANK_ROOM_TEN_MIN_LIST = "zhibo.rank.tenmin";            //查询房间近十分钟星票排行榜
     public static final String COMMAND_GET_EXCHANGE_LIST = "zhibo.bank.getExchangeList";            //查询尚票和钻的兑换列表
     public static final String COMMAND_QUERY_PROFIT = "zhibo.bank.queryProfit";                     //查询用户收益
     public static final String COMMAND_EXCHANGE = "zhibo.bank.exchange";                            //票换钻

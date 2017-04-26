@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rank_type">
+        <item>總榜</item>
+        <item>本場</item>
+    </string-array>
+</resources>

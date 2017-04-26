@@ -36,6 +36,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.watchtop.adapter.UserAvatarRecyclerAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -203,6 +204,9 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+                        if (!AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                            return;
+                        }
                         UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET,
                                 mMyRoomBaseDataModel.getUid(), mMyRoomBaseDataModel.getTicket(), mMyRoomBaseDataModel.getRoomId());
                     }

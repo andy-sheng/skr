@@ -3,8 +3,8 @@
 
 package com.wali.live.proto;
 
-public final class Rank {
-  private Rank() {}
+public final class RankProto {
+  private RankProto() {}
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
@@ -122,14 +122,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItem_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItem_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItem_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItem_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.RankItem.class, com.wali.live.proto.Rank.RankItem.Builder.class);
+              com.wali.live.proto.RankProto.RankItem.class, com.wali.live.proto.RankProto.RankItem.Builder.class);
     }
 
     public static com.google.protobuf.Parser<RankItem> PARSER =
@@ -254,53 +254,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.RankItem parseFrom(
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankItem parseFrom(
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItem parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankItem parseFrom(
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItem parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankItem parseFrom(
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItem parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankItem parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankItem parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.RankItem parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItem parseFrom(
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankItem parseFrom(
+    public static com.wali.live.proto.RankProto.RankItem parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -309,7 +309,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.RankItem prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.RankItem prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -326,20 +326,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RankItem)
-        com.wali.live.proto.Rank.RankItemOrBuilder {
+        com.wali.live.proto.RankProto.RankItemOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItem_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItem_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItem_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItem_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.RankItem.class, com.wali.live.proto.Rank.RankItem.Builder.class);
+                com.wali.live.proto.RankProto.RankItem.class, com.wali.live.proto.RankProto.RankItem.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.RankItem.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.RankItem.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -372,23 +372,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItem_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItem_descriptor;
       }
 
-      public com.wali.live.proto.Rank.RankItem getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.RankItem.getDefaultInstance();
+      public com.wali.live.proto.RankProto.RankItem getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.RankItem.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.RankItem build() {
-        com.wali.live.proto.Rank.RankItem result = buildPartial();
+      public com.wali.live.proto.RankProto.RankItem build() {
+        com.wali.live.proto.RankProto.RankItem result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.RankItem buildPartial() {
-        com.wali.live.proto.Rank.RankItem result = new com.wali.live.proto.Rank.RankItem(this);
+      public com.wali.live.proto.RankProto.RankItem buildPartial() {
+        com.wali.live.proto.RankProto.RankItem result = new com.wali.live.proto.RankProto.RankItem(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -405,16 +405,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.RankItem) {
-          return mergeFrom((com.wali.live.proto.Rank.RankItem)other);
+        if (other instanceof com.wali.live.proto.RankProto.RankItem) {
+          return mergeFrom((com.wali.live.proto.RankProto.RankItem)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.RankItem other) {
-        if (other == com.wali.live.proto.Rank.RankItem.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.RankItem other) {
+        if (other == com.wali.live.proto.RankProto.RankItem.getDefaultInstance()) return this;
         if (other.hasUuid()) {
           setUuid(other.getUuid());
         }
@@ -441,11 +441,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.RankItem parsedMessage = null;
+        com.wali.live.proto.RankProto.RankItem parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.RankItem) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.RankItem) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -730,14 +730,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItemInfo_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItemInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItemInfo_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItemInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.RankItemInfo.class, com.wali.live.proto.Rank.RankItemInfo.Builder.class);
+              com.wali.live.proto.RankProto.RankItemInfo.class, com.wali.live.proto.RankProto.RankItemInfo.Builder.class);
     }
 
     public static com.google.protobuf.Parser<RankItemInfo> PARSER =
@@ -939,53 +939,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankItemInfo parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.RankItemInfo parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankItemInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RankItemInfo parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -994,7 +994,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.RankItemInfo prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.RankItemInfo prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -1011,20 +1011,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RankItemInfo)
-        com.wali.live.proto.Rank.RankItemInfoOrBuilder {
+        com.wali.live.proto.RankProto.RankItemInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItemInfo_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItemInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItemInfo_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItemInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.RankItemInfo.class, com.wali.live.proto.Rank.RankItemInfo.Builder.class);
+                com.wali.live.proto.RankProto.RankItemInfo.class, com.wali.live.proto.RankProto.RankItemInfo.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.RankItemInfo.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.RankItemInfo.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1061,23 +1061,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankItemInfo_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankItemInfo_descriptor;
       }
 
-      public com.wali.live.proto.Rank.RankItemInfo getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.RankItemInfo.getDefaultInstance();
+      public com.wali.live.proto.RankProto.RankItemInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.RankItemInfo.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.RankItemInfo build() {
-        com.wali.live.proto.Rank.RankItemInfo result = buildPartial();
+      public com.wali.live.proto.RankProto.RankItemInfo build() {
+        com.wali.live.proto.RankProto.RankItemInfo result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.RankItemInfo buildPartial() {
-        com.wali.live.proto.Rank.RankItemInfo result = new com.wali.live.proto.Rank.RankItemInfo(this);
+      public com.wali.live.proto.RankProto.RankItemInfo buildPartial() {
+        com.wali.live.proto.RankProto.RankItemInfo result = new com.wali.live.proto.RankProto.RankItemInfo(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1103,16 +1103,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.RankItemInfo) {
-          return mergeFrom((com.wali.live.proto.Rank.RankItemInfo)other);
+        if (other instanceof com.wali.live.proto.RankProto.RankItemInfo) {
+          return mergeFrom((com.wali.live.proto.RankProto.RankItemInfo)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.RankItemInfo other) {
-        if (other == com.wali.live.proto.Rank.RankItemInfo.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.RankItemInfo other) {
+        if (other == com.wali.live.proto.RankProto.RankItemInfo.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -1156,11 +1156,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.RankItemInfo parsedMessage = null;
+        com.wali.live.proto.RankProto.RankItemInfo parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.RankItemInfo) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.RankItemInfo) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1443,12 +1443,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    java.util.List<com.wali.live.proto.Rank.RankItem> 
+    java.util.List<com.wali.live.proto.RankProto.RankItem> 
         getItemsList();
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    com.wali.live.proto.Rank.RankItem getItems(int index);
+    com.wali.live.proto.RankProto.RankItem getItems(int index);
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
@@ -1456,12 +1456,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+    java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
         getItemsOrBuilderList();
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+    com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
@@ -1523,10 +1523,10 @@ public final class Rank {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankItem>();
+                items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankItem>();
                 mutable_bitField0_ |= 0x00000002;
               }
-              items_.add(input.readMessage(com.wali.live.proto.Rank.RankItem.PARSER, extensionRegistry));
+              items_.add(input.readMessage(com.wali.live.proto.RankProto.RankItem.PARSER, extensionRegistry));
               break;
             }
           }
@@ -1546,14 +1546,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankList_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankList_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankList_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankList_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.RankList.class, com.wali.live.proto.Rank.RankList.Builder.class);
+              com.wali.live.proto.RankProto.RankList.class, com.wali.live.proto.RankProto.RankList.Builder.class);
     }
 
     public static com.google.protobuf.Parser<RankList> PARSER =
@@ -1596,17 +1596,17 @@ public final class Rank {
     }
 
     public static final int ITEMS_FIELD_NUMBER = 3;
-    private java.util.List<com.wali.live.proto.Rank.RankItem> items_;
+    private java.util.List<com.wali.live.proto.RankProto.RankItem> items_;
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    public java.util.List<com.wali.live.proto.Rank.RankItem> getItemsList() {
+    public java.util.List<com.wali.live.proto.RankProto.RankItem> getItemsList() {
       return items_;
     }
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    public java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+    public java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
@@ -1619,13 +1619,13 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    public com.wali.live.proto.Rank.RankItem getItems(int index) {
+    public com.wali.live.proto.RankProto.RankItem getItems(int index) {
       return items_.get(index);
     }
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
      */
-    public com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+    public com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
         int index) {
       return items_.get(index);
     }
@@ -1692,53 +1692,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.RankList parseFrom(
+    public static com.wali.live.proto.RankProto.RankList parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankList parseFrom(
+    public static com.wali.live.proto.RankProto.RankList parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankList parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.RankList parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankList parseFrom(
+    public static com.wali.live.proto.RankProto.RankList parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankList parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankList parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankList parseFrom(
+    public static com.wali.live.proto.RankProto.RankList parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankList parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankList parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankList parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.RankList parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankList parseFrom(
+    public static com.wali.live.proto.RankProto.RankList parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankList parseFrom(
+    public static com.wali.live.proto.RankProto.RankList parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1747,7 +1747,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.RankList prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.RankList prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -1764,20 +1764,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RankList)
-        com.wali.live.proto.Rank.RankListOrBuilder {
+        com.wali.live.proto.RankProto.RankListOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankList_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankList_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankList_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankList_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.RankList.class, com.wali.live.proto.Rank.RankList.Builder.class);
+                com.wali.live.proto.RankProto.RankList.class, com.wali.live.proto.RankProto.RankList.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.RankList.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.RankList.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1815,23 +1815,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankList_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankList_descriptor;
       }
 
-      public com.wali.live.proto.Rank.RankList getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.RankList.getDefaultInstance();
+      public com.wali.live.proto.RankProto.RankList getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.RankList.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.RankList build() {
-        com.wali.live.proto.Rank.RankList result = buildPartial();
+      public com.wali.live.proto.RankProto.RankList build() {
+        com.wali.live.proto.RankProto.RankList result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.RankList buildPartial() {
-        com.wali.live.proto.Rank.RankList result = new com.wali.live.proto.Rank.RankList(this);
+      public com.wali.live.proto.RankProto.RankList buildPartial() {
+        com.wali.live.proto.RankProto.RankList result = new com.wali.live.proto.RankProto.RankList(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1853,16 +1853,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.RankList) {
-          return mergeFrom((com.wali.live.proto.Rank.RankList)other);
+        if (other instanceof com.wali.live.proto.RankProto.RankList) {
+          return mergeFrom((com.wali.live.proto.RankProto.RankList)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.RankList other) {
-        if (other == com.wali.live.proto.Rank.RankList.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.RankList other) {
+        if (other == com.wali.live.proto.RankProto.RankList.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -1914,11 +1914,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.RankList parsedMessage = null;
+        com.wali.live.proto.RankProto.RankList parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.RankList) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.RankList) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1977,22 +1977,22 @@ public final class Rank {
         return this;
       }
 
-      private java.util.List<com.wali.live.proto.Rank.RankItem> items_ =
+      private java.util.List<com.wali.live.proto.RankProto.RankItem> items_ =
         java.util.Collections.emptyList();
       private void ensureItemsIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankItem>(items_);
+          items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankItem>(items_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder> itemsBuilder_;
+          com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder> itemsBuilder_;
 
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankItem> getItemsList() {
+      public java.util.List<com.wali.live.proto.RankProto.RankItem> getItemsList() {
         if (itemsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(items_);
         } else {
@@ -2012,7 +2012,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public com.wali.live.proto.Rank.RankItem getItems(int index) {
+      public com.wali.live.proto.RankProto.RankItem getItems(int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);
         } else {
@@ -2023,7 +2023,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankItem value) {
+          int index, com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2040,7 +2040,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.set(index, builderForValue.build());
@@ -2053,7 +2053,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public Builder addItems(com.wali.live.proto.Rank.RankItem value) {
+      public Builder addItems(com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2070,7 +2070,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankItem value) {
+          int index, com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2087,7 +2087,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
       public Builder addItems(
-          com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(builderForValue.build());
@@ -2101,7 +2101,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(index, builderForValue.build());
@@ -2115,7 +2115,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
       public Builder addAllItems(
-          java.lang.Iterable<? extends com.wali.live.proto.Rank.RankItem> values) {
+          java.lang.Iterable<? extends com.wali.live.proto.RankProto.RankItem> values) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2155,14 +2155,14 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder getItemsBuilder(
+      public com.wali.live.proto.RankProto.RankItem.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+      public com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
           int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);  } else {
@@ -2172,7 +2172,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+      public java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
            getItemsOrBuilderList() {
         if (itemsBuilder_ != null) {
           return itemsBuilder_.getMessageOrBuilderList();
@@ -2183,31 +2183,31 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder addItemsBuilder() {
+      public com.wali.live.proto.RankProto.RankItem.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
-            com.wali.live.proto.Rank.RankItem.getDefaultInstance());
+            com.wali.live.proto.RankProto.RankItem.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder addItemsBuilder(
+      public com.wali.live.proto.RankProto.RankItem.Builder addItemsBuilder(
           int index) {
         return getItemsFieldBuilder().addBuilder(
-            index, com.wali.live.proto.Rank.RankItem.getDefaultInstance());
+            index, com.wali.live.proto.RankProto.RankItem.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 3;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankItem.Builder> 
+      public java.util.List<com.wali.live.proto.RankProto.RankItem.Builder> 
            getItemsBuilderList() {
         return getItemsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder> 
+          com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder> 
           getItemsFieldBuilder() {
         if (itemsBuilder_ == null) {
           itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder>(
+              com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder>(
                   items_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -2348,14 +2348,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequest_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequest_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankListRequest.class, com.wali.live.proto.Rank.GetRankListRequest.Builder.class);
+              com.wali.live.proto.RankProto.GetRankListRequest.class, com.wali.live.proto.RankProto.GetRankListRequest.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankListRequest> PARSER =
@@ -2499,53 +2499,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2554,7 +2554,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankListRequest prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankListRequest prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -2571,20 +2571,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankListRequest)
-        com.wali.live.proto.Rank.GetRankListRequestOrBuilder {
+        com.wali.live.proto.RankProto.GetRankListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequest_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankListRequest.class, com.wali.live.proto.Rank.GetRankListRequest.Builder.class);
+                com.wali.live.proto.RankProto.GetRankListRequest.class, com.wali.live.proto.RankProto.GetRankListRequest.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankListRequest.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankListRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2619,23 +2619,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequest_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankListRequest getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankListRequest.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankListRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankListRequest.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankListRequest build() {
-        com.wali.live.proto.Rank.GetRankListRequest result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankListRequest build() {
+        com.wali.live.proto.RankProto.GetRankListRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankListRequest buildPartial() {
-        com.wali.live.proto.Rank.GetRankListRequest result = new com.wali.live.proto.Rank.GetRankListRequest(this);
+      public com.wali.live.proto.RankProto.GetRankListRequest buildPartial() {
+        com.wali.live.proto.RankProto.GetRankListRequest result = new com.wali.live.proto.RankProto.GetRankListRequest(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -2656,16 +2656,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankListRequest) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankListRequest)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankListRequest) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankListRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankListRequest other) {
-        if (other == com.wali.live.proto.Rank.GetRankListRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankListRequest other) {
+        if (other == com.wali.live.proto.RankProto.GetRankListRequest.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -2699,11 +2699,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankListRequest parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankListRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankListRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankListRequest) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -2861,12 +2861,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    java.util.List<com.wali.live.proto.Rank.RankItem> 
+    java.util.List<com.wali.live.proto.RankProto.RankItem> 
         getItemsList();
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankItem getItems(int index);
+    com.wali.live.proto.RankProto.RankItem getItems(int index);
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
@@ -2874,12 +2874,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+    java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
         getItemsOrBuilderList();
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+    com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
@@ -2941,10 +2941,10 @@ public final class Rank {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankItem>();
+                items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankItem>();
                 mutable_bitField0_ |= 0x00000002;
               }
-              items_.add(input.readMessage(com.wali.live.proto.Rank.RankItem.PARSER, extensionRegistry));
+              items_.add(input.readMessage(com.wali.live.proto.RankProto.RankItem.PARSER, extensionRegistry));
               break;
             }
           }
@@ -2964,14 +2964,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponse_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponse_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankListResponse.class, com.wali.live.proto.Rank.GetRankListResponse.Builder.class);
+              com.wali.live.proto.RankProto.GetRankListResponse.class, com.wali.live.proto.RankProto.GetRankListResponse.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankListResponse> PARSER =
@@ -3014,17 +3014,17 @@ public final class Rank {
     }
 
     public static final int ITEMS_FIELD_NUMBER = 2;
-    private java.util.List<com.wali.live.proto.Rank.RankItem> items_;
+    private java.util.List<com.wali.live.proto.RankProto.RankItem> items_;
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public java.util.List<com.wali.live.proto.Rank.RankItem> getItemsList() {
+    public java.util.List<com.wali.live.proto.RankProto.RankItem> getItemsList() {
       return items_;
     }
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+    public java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
@@ -3037,13 +3037,13 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankItem getItems(int index) {
+    public com.wali.live.proto.RankProto.RankItem getItems(int index) {
       return items_.get(index);
     }
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+    public com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
         int index) {
       return items_.get(index);
     }
@@ -3110,53 +3110,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponse parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3165,7 +3165,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankListResponse prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankListResponse prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -3182,20 +3182,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankListResponse)
-        com.wali.live.proto.Rank.GetRankListResponseOrBuilder {
+        com.wali.live.proto.RankProto.GetRankListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponse_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankListResponse.class, com.wali.live.proto.Rank.GetRankListResponse.Builder.class);
+                com.wali.live.proto.RankProto.GetRankListResponse.class, com.wali.live.proto.RankProto.GetRankListResponse.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankListResponse.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankListResponse.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3233,23 +3233,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponse_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankListResponse getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankListResponse.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankListResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankListResponse.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankListResponse build() {
-        com.wali.live.proto.Rank.GetRankListResponse result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankListResponse build() {
+        com.wali.live.proto.RankProto.GetRankListResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankListResponse buildPartial() {
-        com.wali.live.proto.Rank.GetRankListResponse result = new com.wali.live.proto.Rank.GetRankListResponse(this);
+      public com.wali.live.proto.RankProto.GetRankListResponse buildPartial() {
+        com.wali.live.proto.RankProto.GetRankListResponse result = new com.wali.live.proto.RankProto.GetRankListResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -3271,16 +3271,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankListResponse) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankListResponse)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankListResponse) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankListResponse)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankListResponse other) {
-        if (other == com.wali.live.proto.Rank.GetRankListResponse.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankListResponse other) {
+        if (other == com.wali.live.proto.RankProto.GetRankListResponse.getDefaultInstance()) return this;
         if (other.hasRetCode()) {
           setRetCode(other.getRetCode());
         }
@@ -3332,11 +3332,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankListResponse parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankListResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankListResponse) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankListResponse) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -3395,22 +3395,22 @@ public final class Rank {
         return this;
       }
 
-      private java.util.List<com.wali.live.proto.Rank.RankItem> items_ =
+      private java.util.List<com.wali.live.proto.RankProto.RankItem> items_ =
         java.util.Collections.emptyList();
       private void ensureItemsIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankItem>(items_);
+          items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankItem>(items_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder> itemsBuilder_;
+          com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder> itemsBuilder_;
 
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankItem> getItemsList() {
+      public java.util.List<com.wali.live.proto.RankProto.RankItem> getItemsList() {
         if (itemsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(items_);
         } else {
@@ -3430,7 +3430,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem getItems(int index) {
+      public com.wali.live.proto.RankProto.RankItem getItems(int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);
         } else {
@@ -3441,7 +3441,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankItem value) {
+          int index, com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3458,7 +3458,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.set(index, builderForValue.build());
@@ -3471,7 +3471,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public Builder addItems(com.wali.live.proto.Rank.RankItem value) {
+      public Builder addItems(com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3488,7 +3488,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankItem value) {
+          int index, com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3505,7 +3505,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addItems(
-          com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(builderForValue.build());
@@ -3519,7 +3519,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(index, builderForValue.build());
@@ -3533,7 +3533,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addAllItems(
-          java.lang.Iterable<? extends com.wali.live.proto.Rank.RankItem> values) {
+          java.lang.Iterable<? extends com.wali.live.proto.RankProto.RankItem> values) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3573,14 +3573,14 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder getItemsBuilder(
+      public com.wali.live.proto.RankProto.RankItem.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+      public com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
           int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);  } else {
@@ -3590,7 +3590,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+      public java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
            getItemsOrBuilderList() {
         if (itemsBuilder_ != null) {
           return itemsBuilder_.getMessageOrBuilderList();
@@ -3601,31 +3601,31 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder addItemsBuilder() {
+      public com.wali.live.proto.RankProto.RankItem.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
-            com.wali.live.proto.Rank.RankItem.getDefaultInstance());
+            com.wali.live.proto.RankProto.RankItem.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder addItemsBuilder(
+      public com.wali.live.proto.RankProto.RankItem.Builder addItemsBuilder(
           int index) {
         return getItemsFieldBuilder().addBuilder(
-            index, com.wali.live.proto.Rank.RankItem.getDefaultInstance());
+            index, com.wali.live.proto.RankProto.RankItem.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankItem.Builder> 
+      public java.util.List<com.wali.live.proto.RankProto.RankItem.Builder> 
            getItemsBuilderList() {
         return getItemsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder> 
+          com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder> 
           getItemsFieldBuilder() {
         if (itemsBuilder_ == null) {
           itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder>(
+              com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder>(
                   items_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -3738,14 +3738,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeRequest_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeRequest_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankTopThreeRequest.class, com.wali.live.proto.Rank.GetRankTopThreeRequest.Builder.class);
+              com.wali.live.proto.RankProto.GetRankTopThreeRequest.class, com.wali.live.proto.RankProto.GetRankTopThreeRequest.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankTopThreeRequest> PARSER =
@@ -3835,53 +3835,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3890,7 +3890,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankTopThreeRequest prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankTopThreeRequest prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -3907,20 +3907,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankTopThreeRequest)
-        com.wali.live.proto.Rank.GetRankTopThreeRequestOrBuilder {
+        com.wali.live.proto.RankProto.GetRankTopThreeRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeRequest_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankTopThreeRequest.class, com.wali.live.proto.Rank.GetRankTopThreeRequest.Builder.class);
+                com.wali.live.proto.RankProto.GetRankTopThreeRequest.class, com.wali.live.proto.RankProto.GetRankTopThreeRequest.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankTopThreeRequest.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankTopThreeRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3951,23 +3951,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeRequest_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankTopThreeRequest getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankTopThreeRequest.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankTopThreeRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankTopThreeRequest.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankTopThreeRequest build() {
-        com.wali.live.proto.Rank.GetRankTopThreeRequest result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankTopThreeRequest build() {
+        com.wali.live.proto.RankProto.GetRankTopThreeRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankTopThreeRequest buildPartial() {
-        com.wali.live.proto.Rank.GetRankTopThreeRequest result = new com.wali.live.proto.Rank.GetRankTopThreeRequest(this);
+      public com.wali.live.proto.RankProto.GetRankTopThreeRequest buildPartial() {
+        com.wali.live.proto.RankProto.GetRankTopThreeRequest result = new com.wali.live.proto.RankProto.GetRankTopThreeRequest(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -3980,16 +3980,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankTopThreeRequest) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankTopThreeRequest)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankTopThreeRequest) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankTopThreeRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankTopThreeRequest other) {
-        if (other == com.wali.live.proto.Rank.GetRankTopThreeRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankTopThreeRequest other) {
+        if (other == com.wali.live.proto.RankProto.GetRankTopThreeRequest.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -4009,11 +4009,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankTopThreeRequest parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankTopThreeRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankTopThreeRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankTopThreeRequest) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -4107,12 +4107,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    java.util.List<com.wali.live.proto.Rank.RankItem> 
+    java.util.List<com.wali.live.proto.RankProto.RankItem> 
         getItemsList();
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankItem getItems(int index);
+    com.wali.live.proto.RankProto.RankItem getItems(int index);
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
@@ -4120,12 +4120,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+    java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
         getItemsOrBuilderList();
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+    com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
@@ -4187,10 +4187,10 @@ public final class Rank {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankItem>();
+                items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankItem>();
                 mutable_bitField0_ |= 0x00000002;
               }
-              items_.add(input.readMessage(com.wali.live.proto.Rank.RankItem.PARSER, extensionRegistry));
+              items_.add(input.readMessage(com.wali.live.proto.RankProto.RankItem.PARSER, extensionRegistry));
               break;
             }
           }
@@ -4210,14 +4210,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeResponse_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeResponse_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankTopThreeResponse.class, com.wali.live.proto.Rank.GetRankTopThreeResponse.Builder.class);
+              com.wali.live.proto.RankProto.GetRankTopThreeResponse.class, com.wali.live.proto.RankProto.GetRankTopThreeResponse.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankTopThreeResponse> PARSER =
@@ -4260,17 +4260,17 @@ public final class Rank {
     }
 
     public static final int ITEMS_FIELD_NUMBER = 2;
-    private java.util.List<com.wali.live.proto.Rank.RankItem> items_;
+    private java.util.List<com.wali.live.proto.RankProto.RankItem> items_;
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public java.util.List<com.wali.live.proto.Rank.RankItem> getItemsList() {
+    public java.util.List<com.wali.live.proto.RankProto.RankItem> getItemsList() {
       return items_;
     }
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+    public java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
@@ -4283,13 +4283,13 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankItem getItems(int index) {
+    public com.wali.live.proto.RankProto.RankItem getItems(int index) {
       return items_.get(index);
     }
     /**
      * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+    public com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
         int index) {
       return items_.get(index);
     }
@@ -4356,53 +4356,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankTopThreeResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankTopThreeResponse parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -4411,7 +4411,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankTopThreeResponse prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankTopThreeResponse prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -4428,20 +4428,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankTopThreeResponse)
-        com.wali.live.proto.Rank.GetRankTopThreeResponseOrBuilder {
+        com.wali.live.proto.RankProto.GetRankTopThreeResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeResponse_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankTopThreeResponse.class, com.wali.live.proto.Rank.GetRankTopThreeResponse.Builder.class);
+                com.wali.live.proto.RankProto.GetRankTopThreeResponse.class, com.wali.live.proto.RankProto.GetRankTopThreeResponse.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankTopThreeResponse.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankTopThreeResponse.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -4479,23 +4479,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankTopThreeResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankTopThreeResponse_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankTopThreeResponse getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankTopThreeResponse.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankTopThreeResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankTopThreeResponse.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankTopThreeResponse build() {
-        com.wali.live.proto.Rank.GetRankTopThreeResponse result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankTopThreeResponse build() {
+        com.wali.live.proto.RankProto.GetRankTopThreeResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankTopThreeResponse buildPartial() {
-        com.wali.live.proto.Rank.GetRankTopThreeResponse result = new com.wali.live.proto.Rank.GetRankTopThreeResponse(this);
+      public com.wali.live.proto.RankProto.GetRankTopThreeResponse buildPartial() {
+        com.wali.live.proto.RankProto.GetRankTopThreeResponse result = new com.wali.live.proto.RankProto.GetRankTopThreeResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -4517,16 +4517,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankTopThreeResponse) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankTopThreeResponse)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankTopThreeResponse) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankTopThreeResponse)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankTopThreeResponse other) {
-        if (other == com.wali.live.proto.Rank.GetRankTopThreeResponse.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankTopThreeResponse other) {
+        if (other == com.wali.live.proto.RankProto.GetRankTopThreeResponse.getDefaultInstance()) return this;
         if (other.hasRetCode()) {
           setRetCode(other.getRetCode());
         }
@@ -4578,11 +4578,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankTopThreeResponse parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankTopThreeResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankTopThreeResponse) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankTopThreeResponse) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -4641,22 +4641,22 @@ public final class Rank {
         return this;
       }
 
-      private java.util.List<com.wali.live.proto.Rank.RankItem> items_ =
+      private java.util.List<com.wali.live.proto.RankProto.RankItem> items_ =
         java.util.Collections.emptyList();
       private void ensureItemsIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankItem>(items_);
+          items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankItem>(items_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder> itemsBuilder_;
+          com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder> itemsBuilder_;
 
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankItem> getItemsList() {
+      public java.util.List<com.wali.live.proto.RankProto.RankItem> getItemsList() {
         if (itemsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(items_);
         } else {
@@ -4676,7 +4676,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem getItems(int index) {
+      public com.wali.live.proto.RankProto.RankItem getItems(int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);
         } else {
@@ -4687,7 +4687,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankItem value) {
+          int index, com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4704,7 +4704,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.set(index, builderForValue.build());
@@ -4717,7 +4717,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public Builder addItems(com.wali.live.proto.Rank.RankItem value) {
+      public Builder addItems(com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4734,7 +4734,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankItem value) {
+          int index, com.wali.live.proto.RankProto.RankItem value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4751,7 +4751,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addItems(
-          com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(builderForValue.build());
@@ -4765,7 +4765,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankItem.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankItem.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(index, builderForValue.build());
@@ -4779,7 +4779,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
       public Builder addAllItems(
-          java.lang.Iterable<? extends com.wali.live.proto.Rank.RankItem> values) {
+          java.lang.Iterable<? extends com.wali.live.proto.RankProto.RankItem> values) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -4819,14 +4819,14 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder getItemsBuilder(
+      public com.wali.live.proto.RankProto.RankItem.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItemOrBuilder getItemsOrBuilder(
+      public com.wali.live.proto.RankProto.RankItemOrBuilder getItemsOrBuilder(
           int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);  } else {
@@ -4836,7 +4836,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public java.util.List<? extends com.wali.live.proto.Rank.RankItemOrBuilder> 
+      public java.util.List<? extends com.wali.live.proto.RankProto.RankItemOrBuilder> 
            getItemsOrBuilderList() {
         if (itemsBuilder_ != null) {
           return itemsBuilder_.getMessageOrBuilderList();
@@ -4847,31 +4847,31 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder addItemsBuilder() {
+      public com.wali.live.proto.RankProto.RankItem.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
-            com.wali.live.proto.Rank.RankItem.getDefaultInstance());
+            com.wali.live.proto.RankProto.RankItem.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankItem.Builder addItemsBuilder(
+      public com.wali.live.proto.RankProto.RankItem.Builder addItemsBuilder(
           int index) {
         return getItemsFieldBuilder().addBuilder(
-            index, com.wali.live.proto.Rank.RankItem.getDefaultInstance());
+            index, com.wali.live.proto.RankProto.RankItem.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankItem items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankItem.Builder> 
+      public java.util.List<com.wali.live.proto.RankProto.RankItem.Builder> 
            getItemsBuilderList() {
         return getItemsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder> 
+          com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder> 
           getItemsFieldBuilder() {
         if (itemsBuilder_ == null) {
           itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.wali.live.proto.Rank.RankItem, com.wali.live.proto.Rank.RankItem.Builder, com.wali.live.proto.Rank.RankItemOrBuilder>(
+              com.wali.live.proto.RankProto.RankItem, com.wali.live.proto.RankProto.RankItem.Builder, com.wali.live.proto.RankProto.RankItemOrBuilder>(
                   items_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -5084,14 +5084,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemRequest_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemRequest_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.AddRankItemRequest.class, com.wali.live.proto.Rank.AddRankItemRequest.Builder.class);
+              com.wali.live.proto.RankProto.AddRankItemRequest.class, com.wali.live.proto.RankProto.AddRankItemRequest.Builder.class);
     }
 
     public static com.google.protobuf.Parser<AddRankItemRequest> PARSER =
@@ -5367,53 +5367,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.AddRankItemRequest parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -5422,7 +5422,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.AddRankItemRequest prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.AddRankItemRequest prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -5439,20 +5439,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.AddRankItemRequest)
-        com.wali.live.proto.Rank.AddRankItemRequestOrBuilder {
+        com.wali.live.proto.RankProto.AddRankItemRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemRequest_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.AddRankItemRequest.class, com.wali.live.proto.Rank.AddRankItemRequest.Builder.class);
+                com.wali.live.proto.RankProto.AddRankItemRequest.class, com.wali.live.proto.RankProto.AddRankItemRequest.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.AddRankItemRequest.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.AddRankItemRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -5491,23 +5491,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemRequest_descriptor;
       }
 
-      public com.wali.live.proto.Rank.AddRankItemRequest getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.AddRankItemRequest.getDefaultInstance();
+      public com.wali.live.proto.RankProto.AddRankItemRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.AddRankItemRequest.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.AddRankItemRequest build() {
-        com.wali.live.proto.Rank.AddRankItemRequest result = buildPartial();
+      public com.wali.live.proto.RankProto.AddRankItemRequest build() {
+        com.wali.live.proto.RankProto.AddRankItemRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.AddRankItemRequest buildPartial() {
-        com.wali.live.proto.Rank.AddRankItemRequest result = new com.wali.live.proto.Rank.AddRankItemRequest(this);
+      public com.wali.live.proto.RankProto.AddRankItemRequest buildPartial() {
+        com.wali.live.proto.RankProto.AddRankItemRequest result = new com.wali.live.proto.RankProto.AddRankItemRequest(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -5536,16 +5536,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.AddRankItemRequest) {
-          return mergeFrom((com.wali.live.proto.Rank.AddRankItemRequest)other);
+        if (other instanceof com.wali.live.proto.RankProto.AddRankItemRequest) {
+          return mergeFrom((com.wali.live.proto.RankProto.AddRankItemRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.AddRankItemRequest other) {
-        if (other == com.wali.live.proto.Rank.AddRankItemRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.AddRankItemRequest other) {
+        if (other == com.wali.live.proto.RankProto.AddRankItemRequest.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -5589,11 +5589,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.AddRankItemRequest parsedMessage = null;
+        com.wali.live.proto.RankProto.AddRankItemRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.AddRankItemRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.AddRankItemRequest) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -6157,14 +6157,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RecallInfo_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RecallInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RecallInfo_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RecallInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.RecallInfo.class, com.wali.live.proto.Rank.RecallInfo.Builder.class);
+              com.wali.live.proto.RankProto.RecallInfo.class, com.wali.live.proto.RankProto.RecallInfo.Builder.class);
     }
 
     public static com.google.protobuf.Parser<RecallInfo> PARSER =
@@ -6471,53 +6471,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RecallInfo parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.RecallInfo parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RecallInfo parseFrom(
+    public static com.wali.live.proto.RankProto.RecallInfo parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -6526,7 +6526,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.RecallInfo prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.RecallInfo prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -6543,20 +6543,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RecallInfo)
-        com.wali.live.proto.Rank.RecallInfoOrBuilder {
+        com.wali.live.proto.RankProto.RecallInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RecallInfo_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RecallInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RecallInfo_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RecallInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.RecallInfo.class, com.wali.live.proto.Rank.RecallInfo.Builder.class);
+                com.wali.live.proto.RankProto.RecallInfo.class, com.wali.live.proto.RankProto.RecallInfo.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.RecallInfo.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.RecallInfo.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -6597,23 +6597,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RecallInfo_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RecallInfo_descriptor;
       }
 
-      public com.wali.live.proto.Rank.RecallInfo getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.RecallInfo.getDefaultInstance();
+      public com.wali.live.proto.RankProto.RecallInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.RecallInfo.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.RecallInfo build() {
-        com.wali.live.proto.Rank.RecallInfo result = buildPartial();
+      public com.wali.live.proto.RankProto.RecallInfo build() {
+        com.wali.live.proto.RankProto.RecallInfo result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.RecallInfo buildPartial() {
-        com.wali.live.proto.Rank.RecallInfo result = new com.wali.live.proto.Rank.RecallInfo(this);
+      public com.wali.live.proto.RankProto.RecallInfo buildPartial() {
+        com.wali.live.proto.RankProto.RecallInfo result = new com.wali.live.proto.RankProto.RecallInfo(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -6646,16 +6646,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.RecallInfo) {
-          return mergeFrom((com.wali.live.proto.Rank.RecallInfo)other);
+        if (other instanceof com.wali.live.proto.RankProto.RecallInfo) {
+          return mergeFrom((com.wali.live.proto.RankProto.RecallInfo)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.RecallInfo other) {
-        if (other == com.wali.live.proto.Rank.RecallInfo.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.RecallInfo other) {
+        if (other == com.wali.live.proto.RankProto.RecallInfo.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -6702,11 +6702,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.RecallInfo parsedMessage = null;
+        com.wali.live.proto.RankProto.RecallInfo parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.RecallInfo) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.RecallInfo) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -7205,14 +7205,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_IrisList_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_IrisList_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_IrisList_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_IrisList_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.IrisList.class, com.wali.live.proto.Rank.IrisList.Builder.class);
+              com.wali.live.proto.RankProto.IrisList.class, com.wali.live.proto.RankProto.IrisList.Builder.class);
     }
 
     public static com.google.protobuf.Parser<IrisList> PARSER =
@@ -7308,53 +7308,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.IrisList parseFrom(
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.IrisList parseFrom(
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.IrisList parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.IrisList parseFrom(
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.IrisList parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.IrisList parseFrom(
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.IrisList parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.IrisList parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.IrisList parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.IrisList parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.IrisList parseFrom(
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.IrisList parseFrom(
+    public static com.wali.live.proto.RankProto.IrisList parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -7363,7 +7363,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.IrisList prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.IrisList prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -7380,20 +7380,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.IrisList)
-        com.wali.live.proto.Rank.IrisListOrBuilder {
+        com.wali.live.proto.RankProto.IrisListOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_IrisList_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_IrisList_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_IrisList_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_IrisList_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.IrisList.class, com.wali.live.proto.Rank.IrisList.Builder.class);
+                com.wali.live.proto.RankProto.IrisList.class, com.wali.live.proto.RankProto.IrisList.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.IrisList.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.IrisList.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -7424,23 +7424,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_IrisList_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_IrisList_descriptor;
       }
 
-      public com.wali.live.proto.Rank.IrisList getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.IrisList.getDefaultInstance();
+      public com.wali.live.proto.RankProto.IrisList getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.IrisList.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.IrisList build() {
-        com.wali.live.proto.Rank.IrisList result = buildPartial();
+      public com.wali.live.proto.RankProto.IrisList build() {
+        com.wali.live.proto.RankProto.IrisList result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.IrisList buildPartial() {
-        com.wali.live.proto.Rank.IrisList result = new com.wali.live.proto.Rank.IrisList(this);
+      public com.wali.live.proto.RankProto.IrisList buildPartial() {
+        com.wali.live.proto.RankProto.IrisList result = new com.wali.live.proto.RankProto.IrisList(this);
         int from_bitField0_ = bitField0_;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           keys_ = keys_.getUnmodifiableView();
@@ -7452,16 +7452,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.IrisList) {
-          return mergeFrom((com.wali.live.proto.Rank.IrisList)other);
+        if (other instanceof com.wali.live.proto.RankProto.IrisList) {
+          return mergeFrom((com.wali.live.proto.RankProto.IrisList)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.IrisList other) {
-        if (other == com.wali.live.proto.Rank.IrisList.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.IrisList other) {
+        if (other == com.wali.live.proto.RankProto.IrisList.getDefaultInstance()) return this;
         if (!other.keys_.isEmpty()) {
           if (keys_.isEmpty()) {
             keys_ = other.keys_;
@@ -7484,11 +7484,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.IrisList parsedMessage = null;
+        com.wali.live.proto.RankProto.IrisList parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.IrisList) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.IrisList) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -7687,14 +7687,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemResponse_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemResponse_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.AddRankItemResponse.class, com.wali.live.proto.Rank.AddRankItemResponse.Builder.class);
+              com.wali.live.proto.RankProto.AddRankItemResponse.class, com.wali.live.proto.RankProto.AddRankItemResponse.Builder.class);
     }
 
     public static com.google.protobuf.Parser<AddRankItemResponse> PARSER =
@@ -7776,53 +7776,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.AddRankItemResponse parseFrom(
+    public static com.wali.live.proto.RankProto.AddRankItemResponse parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -7831,7 +7831,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.AddRankItemResponse prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.AddRankItemResponse prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -7848,20 +7848,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.AddRankItemResponse)
-        com.wali.live.proto.Rank.AddRankItemResponseOrBuilder {
+        com.wali.live.proto.RankProto.AddRankItemResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemResponse_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.AddRankItemResponse.class, com.wali.live.proto.Rank.AddRankItemResponse.Builder.class);
+                com.wali.live.proto.RankProto.AddRankItemResponse.class, com.wali.live.proto.RankProto.AddRankItemResponse.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.AddRankItemResponse.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.AddRankItemResponse.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -7892,23 +7892,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_AddRankItemResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_AddRankItemResponse_descriptor;
       }
 
-      public com.wali.live.proto.Rank.AddRankItemResponse getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.AddRankItemResponse.getDefaultInstance();
+      public com.wali.live.proto.RankProto.AddRankItemResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.AddRankItemResponse.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.AddRankItemResponse build() {
-        com.wali.live.proto.Rank.AddRankItemResponse result = buildPartial();
+      public com.wali.live.proto.RankProto.AddRankItemResponse build() {
+        com.wali.live.proto.RankProto.AddRankItemResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.AddRankItemResponse buildPartial() {
-        com.wali.live.proto.Rank.AddRankItemResponse result = new com.wali.live.proto.Rank.AddRankItemResponse(this);
+      public com.wali.live.proto.RankProto.AddRankItemResponse buildPartial() {
+        com.wali.live.proto.RankProto.AddRankItemResponse result = new com.wali.live.proto.RankProto.AddRankItemResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -7921,16 +7921,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.AddRankItemResponse) {
-          return mergeFrom((com.wali.live.proto.Rank.AddRankItemResponse)other);
+        if (other instanceof com.wali.live.proto.RankProto.AddRankItemResponse) {
+          return mergeFrom((com.wali.live.proto.RankProto.AddRankItemResponse)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.AddRankItemResponse other) {
-        if (other == com.wali.live.proto.Rank.AddRankItemResponse.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.AddRankItemResponse other) {
+        if (other == com.wali.live.proto.RankProto.AddRankItemResponse.getDefaultInstance()) return this;
         if (other.hasRetCode()) {
           setRetCode(other.getRetCode());
         }
@@ -7950,11 +7950,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.AddRankItemResponse parsedMessage = null;
+        com.wali.live.proto.RankProto.AddRankItemResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.AddRankItemResponse) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.AddRankItemResponse) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -8264,14 +8264,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankUser_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankUser_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankUser_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankUser_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.RankUser.class, com.wali.live.proto.Rank.RankUser.Builder.class);
+              com.wali.live.proto.RankProto.RankUser.class, com.wali.live.proto.RankProto.RankUser.Builder.class);
     }
 
     public static com.google.protobuf.Parser<RankUser> PARSER =
@@ -8613,53 +8613,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.RankUser parseFrom(
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankUser parseFrom(
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankUser parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankUser parseFrom(
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankUser parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankUser parseFrom(
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankUser parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankUser parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankUser parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.RankUser parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankUser parseFrom(
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankUser parseFrom(
+    public static com.wali.live.proto.RankProto.RankUser parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -8668,7 +8668,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.RankUser prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.RankUser prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -8685,20 +8685,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RankUser)
-        com.wali.live.proto.Rank.RankUserOrBuilder {
+        com.wali.live.proto.RankProto.RankUserOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankUser_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankUser_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankUser_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankUser_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.RankUser.class, com.wali.live.proto.Rank.RankUser.Builder.class);
+                com.wali.live.proto.RankProto.RankUser.class, com.wali.live.proto.RankProto.RankUser.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.RankUser.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.RankUser.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -8743,23 +8743,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankUser_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankUser_descriptor;
       }
 
-      public com.wali.live.proto.Rank.RankUser getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.RankUser.getDefaultInstance();
+      public com.wali.live.proto.RankProto.RankUser getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.RankUser.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.RankUser build() {
-        com.wali.live.proto.Rank.RankUser result = buildPartial();
+      public com.wali.live.proto.RankProto.RankUser build() {
+        com.wali.live.proto.RankProto.RankUser result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.RankUser buildPartial() {
-        com.wali.live.proto.Rank.RankUser result = new com.wali.live.proto.Rank.RankUser(this);
+      public com.wali.live.proto.RankProto.RankUser buildPartial() {
+        com.wali.live.proto.RankProto.RankUser result = new com.wali.live.proto.RankProto.RankUser(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -8800,16 +8800,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.RankUser) {
-          return mergeFrom((com.wali.live.proto.Rank.RankUser)other);
+        if (other instanceof com.wali.live.proto.RankProto.RankUser) {
+          return mergeFrom((com.wali.live.proto.RankProto.RankUser)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.RankUser other) {
-        if (other == com.wali.live.proto.Rank.RankUser.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.RankUser other) {
+        if (other == com.wali.live.proto.RankProto.RankUser.getDefaultInstance()) return this;
         if (other.hasUuid()) {
           setUuid(other.getUuid());
         }
@@ -8856,11 +8856,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.RankUser parsedMessage = null;
+        com.wali.live.proto.RankProto.RankUser parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.RankUser) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.RankUser) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -9438,14 +9438,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequestV2_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequestV2_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequestV2_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequestV2_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankListRequestV2.class, com.wali.live.proto.Rank.GetRankListRequestV2.Builder.class);
+              com.wali.live.proto.RankProto.GetRankListRequestV2.class, com.wali.live.proto.RankProto.GetRankListRequestV2.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankListRequestV2> PARSER =
@@ -9589,53 +9589,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListRequestV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListRequestV2 parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -9644,7 +9644,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankListRequestV2 prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankListRequestV2 prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -9661,20 +9661,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankListRequestV2)
-        com.wali.live.proto.Rank.GetRankListRequestV2OrBuilder {
+        com.wali.live.proto.RankProto.GetRankListRequestV2OrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequestV2_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequestV2_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequestV2_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequestV2_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankListRequestV2.class, com.wali.live.proto.Rank.GetRankListRequestV2.Builder.class);
+                com.wali.live.proto.RankProto.GetRankListRequestV2.class, com.wali.live.proto.RankProto.GetRankListRequestV2.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankListRequestV2.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankListRequestV2.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -9709,23 +9709,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListRequestV2_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListRequestV2_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankListRequestV2 getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankListRequestV2.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankListRequestV2 getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankListRequestV2.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankListRequestV2 build() {
-        com.wali.live.proto.Rank.GetRankListRequestV2 result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankListRequestV2 build() {
+        com.wali.live.proto.RankProto.GetRankListRequestV2 result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankListRequestV2 buildPartial() {
-        com.wali.live.proto.Rank.GetRankListRequestV2 result = new com.wali.live.proto.Rank.GetRankListRequestV2(this);
+      public com.wali.live.proto.RankProto.GetRankListRequestV2 buildPartial() {
+        com.wali.live.proto.RankProto.GetRankListRequestV2 result = new com.wali.live.proto.RankProto.GetRankListRequestV2(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -9746,16 +9746,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankListRequestV2) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankListRequestV2)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankListRequestV2) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankListRequestV2)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankListRequestV2 other) {
-        if (other == com.wali.live.proto.Rank.GetRankListRequestV2.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankListRequestV2 other) {
+        if (other == com.wali.live.proto.RankProto.GetRankListRequestV2.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -9789,11 +9789,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankListRequestV2 parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankListRequestV2 parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankListRequestV2) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankListRequestV2) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -9951,12 +9951,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    java.util.List<com.wali.live.proto.Rank.RankUser> 
+    java.util.List<com.wali.live.proto.RankProto.RankUser> 
         getItemsList();
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankUser getItems(int index);
+    com.wali.live.proto.RankProto.RankUser getItems(int index);
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
@@ -9964,12 +9964,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    java.util.List<? extends com.wali.live.proto.Rank.RankUserOrBuilder> 
+    java.util.List<? extends com.wali.live.proto.RankProto.RankUserOrBuilder> 
         getItemsOrBuilderList();
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankUserOrBuilder getItemsOrBuilder(
+    com.wali.live.proto.RankProto.RankUserOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
@@ -10031,10 +10031,10 @@ public final class Rank {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankUser>();
+                items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankUser>();
                 mutable_bitField0_ |= 0x00000002;
               }
-              items_.add(input.readMessage(com.wali.live.proto.Rank.RankUser.PARSER, extensionRegistry));
+              items_.add(input.readMessage(com.wali.live.proto.RankProto.RankUser.PARSER, extensionRegistry));
               break;
             }
           }
@@ -10054,14 +10054,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponseV2_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponseV2_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponseV2_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponseV2_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankListResponseV2.class, com.wali.live.proto.Rank.GetRankListResponseV2.Builder.class);
+              com.wali.live.proto.RankProto.GetRankListResponseV2.class, com.wali.live.proto.RankProto.GetRankListResponseV2.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankListResponseV2> PARSER =
@@ -10104,17 +10104,17 @@ public final class Rank {
     }
 
     public static final int ITEMS_FIELD_NUMBER = 2;
-    private java.util.List<com.wali.live.proto.Rank.RankUser> items_;
+    private java.util.List<com.wali.live.proto.RankProto.RankUser> items_;
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public java.util.List<com.wali.live.proto.Rank.RankUser> getItemsList() {
+    public java.util.List<com.wali.live.proto.RankProto.RankUser> getItemsList() {
       return items_;
     }
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public java.util.List<? extends com.wali.live.proto.Rank.RankUserOrBuilder> 
+    public java.util.List<? extends com.wali.live.proto.RankProto.RankUserOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
@@ -10127,13 +10127,13 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankUser getItems(int index) {
+    public com.wali.live.proto.RankProto.RankUser getItems(int index) {
       return items_.get(index);
     }
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankUserOrBuilder getItemsOrBuilder(
+    public com.wali.live.proto.RankProto.RankUserOrBuilder getItemsOrBuilder(
         int index) {
       return items_.get(index);
     }
@@ -10200,53 +10200,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankListResponseV2 parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankListResponseV2 parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -10255,7 +10255,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankListResponseV2 prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankListResponseV2 prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -10272,20 +10272,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankListResponseV2)
-        com.wali.live.proto.Rank.GetRankListResponseV2OrBuilder {
+        com.wali.live.proto.RankProto.GetRankListResponseV2OrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponseV2_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponseV2_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponseV2_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponseV2_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankListResponseV2.class, com.wali.live.proto.Rank.GetRankListResponseV2.Builder.class);
+                com.wali.live.proto.RankProto.GetRankListResponseV2.class, com.wali.live.proto.RankProto.GetRankListResponseV2.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankListResponseV2.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankListResponseV2.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -10323,23 +10323,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankListResponseV2_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankListResponseV2_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankListResponseV2 getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankListResponseV2.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankListResponseV2 getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankListResponseV2.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankListResponseV2 build() {
-        com.wali.live.proto.Rank.GetRankListResponseV2 result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankListResponseV2 build() {
+        com.wali.live.proto.RankProto.GetRankListResponseV2 result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankListResponseV2 buildPartial() {
-        com.wali.live.proto.Rank.GetRankListResponseV2 result = new com.wali.live.proto.Rank.GetRankListResponseV2(this);
+      public com.wali.live.proto.RankProto.GetRankListResponseV2 buildPartial() {
+        com.wali.live.proto.RankProto.GetRankListResponseV2 result = new com.wali.live.proto.RankProto.GetRankListResponseV2(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -10361,16 +10361,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankListResponseV2) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankListResponseV2)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankListResponseV2) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankListResponseV2)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankListResponseV2 other) {
-        if (other == com.wali.live.proto.Rank.GetRankListResponseV2.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankListResponseV2 other) {
+        if (other == com.wali.live.proto.RankProto.GetRankListResponseV2.getDefaultInstance()) return this;
         if (other.hasRetCode()) {
           setRetCode(other.getRetCode());
         }
@@ -10422,11 +10422,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankListResponseV2 parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankListResponseV2 parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankListResponseV2) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankListResponseV2) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -10485,22 +10485,22 @@ public final class Rank {
         return this;
       }
 
-      private java.util.List<com.wali.live.proto.Rank.RankUser> items_ =
+      private java.util.List<com.wali.live.proto.RankProto.RankUser> items_ =
         java.util.Collections.emptyList();
       private void ensureItemsIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankUser>(items_);
+          items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankUser>(items_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankUser, com.wali.live.proto.Rank.RankUser.Builder, com.wali.live.proto.Rank.RankUserOrBuilder> itemsBuilder_;
+          com.wali.live.proto.RankProto.RankUser, com.wali.live.proto.RankProto.RankUser.Builder, com.wali.live.proto.RankProto.RankUserOrBuilder> itemsBuilder_;
 
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankUser> getItemsList() {
+      public java.util.List<com.wali.live.proto.RankProto.RankUser> getItemsList() {
         if (itemsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(items_);
         } else {
@@ -10520,7 +10520,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser getItems(int index) {
+      public com.wali.live.proto.RankProto.RankUser getItems(int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);
         } else {
@@ -10531,7 +10531,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankUser value) {
+          int index, com.wali.live.proto.RankProto.RankUser value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -10548,7 +10548,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankUser.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankUser.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.set(index, builderForValue.build());
@@ -10561,7 +10561,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public Builder addItems(com.wali.live.proto.Rank.RankUser value) {
+      public Builder addItems(com.wali.live.proto.RankProto.RankUser value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -10578,7 +10578,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankUser value) {
+          int index, com.wali.live.proto.RankProto.RankUser value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -10595,7 +10595,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addItems(
-          com.wali.live.proto.Rank.RankUser.Builder builderForValue) {
+          com.wali.live.proto.RankProto.RankUser.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(builderForValue.build());
@@ -10609,7 +10609,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankUser.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankUser.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(index, builderForValue.build());
@@ -10623,7 +10623,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addAllItems(
-          java.lang.Iterable<? extends com.wali.live.proto.Rank.RankUser> values) {
+          java.lang.Iterable<? extends com.wali.live.proto.RankProto.RankUser> values) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -10663,14 +10663,14 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser.Builder getItemsBuilder(
+      public com.wali.live.proto.RankProto.RankUser.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUserOrBuilder getItemsOrBuilder(
+      public com.wali.live.proto.RankProto.RankUserOrBuilder getItemsOrBuilder(
           int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);  } else {
@@ -10680,7 +10680,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public java.util.List<? extends com.wali.live.proto.Rank.RankUserOrBuilder> 
+      public java.util.List<? extends com.wali.live.proto.RankProto.RankUserOrBuilder> 
            getItemsOrBuilderList() {
         if (itemsBuilder_ != null) {
           return itemsBuilder_.getMessageOrBuilderList();
@@ -10691,31 +10691,31 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser.Builder addItemsBuilder() {
+      public com.wali.live.proto.RankProto.RankUser.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
-            com.wali.live.proto.Rank.RankUser.getDefaultInstance());
+            com.wali.live.proto.RankProto.RankUser.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser.Builder addItemsBuilder(
+      public com.wali.live.proto.RankProto.RankUser.Builder addItemsBuilder(
           int index) {
         return getItemsFieldBuilder().addBuilder(
-            index, com.wali.live.proto.Rank.RankUser.getDefaultInstance());
+            index, com.wali.live.proto.RankProto.RankUser.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankUser.Builder> 
+      public java.util.List<com.wali.live.proto.RankProto.RankUser.Builder> 
            getItemsBuilderList() {
         return getItemsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankUser, com.wali.live.proto.Rank.RankUser.Builder, com.wali.live.proto.Rank.RankUserOrBuilder> 
+          com.wali.live.proto.RankProto.RankUser, com.wali.live.proto.RankProto.RankUser.Builder, com.wali.live.proto.RankProto.RankUserOrBuilder> 
           getItemsFieldBuilder() {
         if (itemsBuilder_ == null) {
           itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.wali.live.proto.Rank.RankUser, com.wali.live.proto.Rank.RankUser.Builder, com.wali.live.proto.Rank.RankUserOrBuilder>(
+              com.wali.live.proto.RankProto.RankUser, com.wali.live.proto.RankProto.RankUser.Builder, com.wali.live.proto.RankProto.RankUserOrBuilder>(
                   items_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -10866,14 +10866,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListRequest_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListRequest_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankRoomListRequest.class, com.wali.live.proto.Rank.GetRankRoomListRequest.Builder.class);
+              com.wali.live.proto.RankProto.GetRankRoomListRequest.class, com.wali.live.proto.RankProto.GetRankRoomListRequest.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankRoomListRequest> PARSER =
@@ -11048,53 +11048,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListRequest parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -11103,7 +11103,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankRoomListRequest prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankRoomListRequest prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -11120,20 +11120,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankRoomListRequest)
-        com.wali.live.proto.Rank.GetRankRoomListRequestOrBuilder {
+        com.wali.live.proto.RankProto.GetRankRoomListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListRequest_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankRoomListRequest.class, com.wali.live.proto.Rank.GetRankRoomListRequest.Builder.class);
+                com.wali.live.proto.RankProto.GetRankRoomListRequest.class, com.wali.live.proto.RankProto.GetRankRoomListRequest.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankRoomListRequest.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankRoomListRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -11168,23 +11168,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListRequest_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListRequest_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankRoomListRequest getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankRoomListRequest.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankRoomListRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankRoomListRequest.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankRoomListRequest build() {
-        com.wali.live.proto.Rank.GetRankRoomListRequest result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankRoomListRequest build() {
+        com.wali.live.proto.RankProto.GetRankRoomListRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankRoomListRequest buildPartial() {
-        com.wali.live.proto.Rank.GetRankRoomListRequest result = new com.wali.live.proto.Rank.GetRankRoomListRequest(this);
+      public com.wali.live.proto.RankProto.GetRankRoomListRequest buildPartial() {
+        com.wali.live.proto.RankProto.GetRankRoomListRequest result = new com.wali.live.proto.RankProto.GetRankRoomListRequest(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -11205,16 +11205,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankRoomListRequest) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankRoomListRequest)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankRoomListRequest) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankRoomListRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankRoomListRequest other) {
-        if (other == com.wali.live.proto.Rank.GetRankRoomListRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankRoomListRequest other) {
+        if (other == com.wali.live.proto.RankProto.GetRankRoomListRequest.getDefaultInstance()) return this;
         if (other.hasLiveId()) {
           bitField0_ |= 0x00000001;
           liveId_ = other.liveId_;
@@ -11250,11 +11250,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankRoomListRequest parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankRoomListRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankRoomListRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankRoomListRequest) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -11464,12 +11464,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    java.util.List<com.wali.live.proto.Rank.RankUser> 
+    java.util.List<com.wali.live.proto.RankProto.RankUser> 
         getItemsList();
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankUser getItems(int index);
+    com.wali.live.proto.RankProto.RankUser getItems(int index);
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
@@ -11477,12 +11477,12 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    java.util.List<? extends com.wali.live.proto.Rank.RankUserOrBuilder> 
+    java.util.List<? extends com.wali.live.proto.RankProto.RankUserOrBuilder> 
         getItemsOrBuilderList();
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    com.wali.live.proto.Rank.RankUserOrBuilder getItemsOrBuilder(
+    com.wali.live.proto.RankProto.RankUserOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
@@ -11544,10 +11544,10 @@ public final class Rank {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankUser>();
+                items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankUser>();
                 mutable_bitField0_ |= 0x00000002;
               }
-              items_.add(input.readMessage(com.wali.live.proto.Rank.RankUser.PARSER, extensionRegistry));
+              items_.add(input.readMessage(com.wali.live.proto.RankProto.RankUser.PARSER, extensionRegistry));
               break;
             }
           }
@@ -11567,14 +11567,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListResponse_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListResponse_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.GetRankRoomListResponse.class, com.wali.live.proto.Rank.GetRankRoomListResponse.Builder.class);
+              com.wali.live.proto.RankProto.GetRankRoomListResponse.class, com.wali.live.proto.RankProto.GetRankRoomListResponse.Builder.class);
     }
 
     public static com.google.protobuf.Parser<GetRankRoomListResponse> PARSER =
@@ -11617,17 +11617,17 @@ public final class Rank {
     }
 
     public static final int ITEMS_FIELD_NUMBER = 2;
-    private java.util.List<com.wali.live.proto.Rank.RankUser> items_;
+    private java.util.List<com.wali.live.proto.RankProto.RankUser> items_;
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public java.util.List<com.wali.live.proto.Rank.RankUser> getItemsList() {
+    public java.util.List<com.wali.live.proto.RankProto.RankUser> getItemsList() {
       return items_;
     }
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public java.util.List<? extends com.wali.live.proto.Rank.RankUserOrBuilder> 
+    public java.util.List<? extends com.wali.live.proto.RankProto.RankUserOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
@@ -11640,13 +11640,13 @@ public final class Rank {
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankUser getItems(int index) {
+    public com.wali.live.proto.RankProto.RankUser getItems(int index) {
       return items_.get(index);
     }
     /**
      * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
      */
-    public com.wali.live.proto.Rank.RankUserOrBuilder getItemsOrBuilder(
+    public com.wali.live.proto.RankProto.RankUserOrBuilder getItemsOrBuilder(
         int index) {
       return items_.get(index);
     }
@@ -11713,53 +11713,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.GetRankRoomListResponse parseFrom(
+    public static com.wali.live.proto.RankProto.GetRankRoomListResponse parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -11768,7 +11768,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.GetRankRoomListResponse prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankRoomListResponse prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -11785,20 +11785,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankRoomListResponse)
-        com.wali.live.proto.Rank.GetRankRoomListResponseOrBuilder {
+        com.wali.live.proto.RankProto.GetRankRoomListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListResponse_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.GetRankRoomListResponse.class, com.wali.live.proto.Rank.GetRankRoomListResponse.Builder.class);
+                com.wali.live.proto.RankProto.GetRankRoomListResponse.class, com.wali.live.proto.RankProto.GetRankRoomListResponse.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.GetRankRoomListResponse.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.GetRankRoomListResponse.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -11836,23 +11836,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_GetRankRoomListResponse_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomListResponse_descriptor;
       }
 
-      public com.wali.live.proto.Rank.GetRankRoomListResponse getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.GetRankRoomListResponse.getDefaultInstance();
+      public com.wali.live.proto.RankProto.GetRankRoomListResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankRoomListResponse.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.GetRankRoomListResponse build() {
-        com.wali.live.proto.Rank.GetRankRoomListResponse result = buildPartial();
+      public com.wali.live.proto.RankProto.GetRankRoomListResponse build() {
+        com.wali.live.proto.RankProto.GetRankRoomListResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.GetRankRoomListResponse buildPartial() {
-        com.wali.live.proto.Rank.GetRankRoomListResponse result = new com.wali.live.proto.Rank.GetRankRoomListResponse(this);
+      public com.wali.live.proto.RankProto.GetRankRoomListResponse buildPartial() {
+        com.wali.live.proto.RankProto.GetRankRoomListResponse result = new com.wali.live.proto.RankProto.GetRankRoomListResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -11874,16 +11874,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.GetRankRoomListResponse) {
-          return mergeFrom((com.wali.live.proto.Rank.GetRankRoomListResponse)other);
+        if (other instanceof com.wali.live.proto.RankProto.GetRankRoomListResponse) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankRoomListResponse)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.GetRankRoomListResponse other) {
-        if (other == com.wali.live.proto.Rank.GetRankRoomListResponse.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankRoomListResponse other) {
+        if (other == com.wali.live.proto.RankProto.GetRankRoomListResponse.getDefaultInstance()) return this;
         if (other.hasRetCode()) {
           setRetCode(other.getRetCode());
         }
@@ -11935,11 +11935,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.GetRankRoomListResponse parsedMessage = null;
+        com.wali.live.proto.RankProto.GetRankRoomListResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.GetRankRoomListResponse) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankRoomListResponse) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -11998,22 +11998,22 @@ public final class Rank {
         return this;
       }
 
-      private java.util.List<com.wali.live.proto.Rank.RankUser> items_ =
+      private java.util.List<com.wali.live.proto.RankProto.RankUser> items_ =
         java.util.Collections.emptyList();
       private void ensureItemsIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          items_ = new java.util.ArrayList<com.wali.live.proto.Rank.RankUser>(items_);
+          items_ = new java.util.ArrayList<com.wali.live.proto.RankProto.RankUser>(items_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankUser, com.wali.live.proto.Rank.RankUser.Builder, com.wali.live.proto.Rank.RankUserOrBuilder> itemsBuilder_;
+          com.wali.live.proto.RankProto.RankUser, com.wali.live.proto.RankProto.RankUser.Builder, com.wali.live.proto.RankProto.RankUserOrBuilder> itemsBuilder_;
 
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankUser> getItemsList() {
+      public java.util.List<com.wali.live.proto.RankProto.RankUser> getItemsList() {
         if (itemsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(items_);
         } else {
@@ -12033,7 +12033,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser getItems(int index) {
+      public com.wali.live.proto.RankProto.RankUser getItems(int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);
         } else {
@@ -12044,7 +12044,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankUser value) {
+          int index, com.wali.live.proto.RankProto.RankUser value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -12061,7 +12061,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder setItems(
-          int index, com.wali.live.proto.Rank.RankUser.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankUser.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.set(index, builderForValue.build());
@@ -12074,7 +12074,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public Builder addItems(com.wali.live.proto.Rank.RankUser value) {
+      public Builder addItems(com.wali.live.proto.RankProto.RankUser value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -12091,7 +12091,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankUser value) {
+          int index, com.wali.live.proto.RankProto.RankUser value) {
         if (itemsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -12108,7 +12108,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addItems(
-          com.wali.live.proto.Rank.RankUser.Builder builderForValue) {
+          com.wali.live.proto.RankProto.RankUser.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(builderForValue.build());
@@ -12122,7 +12122,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addItems(
-          int index, com.wali.live.proto.Rank.RankUser.Builder builderForValue) {
+          int index, com.wali.live.proto.RankProto.RankUser.Builder builderForValue) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           items_.add(index, builderForValue.build());
@@ -12136,7 +12136,7 @@ public final class Rank {
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
       public Builder addAllItems(
-          java.lang.Iterable<? extends com.wali.live.proto.Rank.RankUser> values) {
+          java.lang.Iterable<? extends com.wali.live.proto.RankProto.RankUser> values) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -12176,14 +12176,14 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser.Builder getItemsBuilder(
+      public com.wali.live.proto.RankProto.RankUser.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUserOrBuilder getItemsOrBuilder(
+      public com.wali.live.proto.RankProto.RankUserOrBuilder getItemsOrBuilder(
           int index) {
         if (itemsBuilder_ == null) {
           return items_.get(index);  } else {
@@ -12193,7 +12193,7 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public java.util.List<? extends com.wali.live.proto.Rank.RankUserOrBuilder> 
+      public java.util.List<? extends com.wali.live.proto.RankProto.RankUserOrBuilder> 
            getItemsOrBuilderList() {
         if (itemsBuilder_ != null) {
           return itemsBuilder_.getMessageOrBuilderList();
@@ -12204,31 +12204,31 @@ public final class Rank {
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser.Builder addItemsBuilder() {
+      public com.wali.live.proto.RankProto.RankUser.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
-            com.wali.live.proto.Rank.RankUser.getDefaultInstance());
+            com.wali.live.proto.RankProto.RankUser.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public com.wali.live.proto.Rank.RankUser.Builder addItemsBuilder(
+      public com.wali.live.proto.RankProto.RankUser.Builder addItemsBuilder(
           int index) {
         return getItemsFieldBuilder().addBuilder(
-            index, com.wali.live.proto.Rank.RankUser.getDefaultInstance());
+            index, com.wali.live.proto.RankProto.RankUser.getDefaultInstance());
       }
       /**
        * <code>repeated .com.wali.live.proto.RankUser items = 2;</code>
        */
-      public java.util.List<com.wali.live.proto.Rank.RankUser.Builder> 
+      public java.util.List<com.wali.live.proto.RankProto.RankUser.Builder> 
            getItemsBuilderList() {
         return getItemsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.wali.live.proto.Rank.RankUser, com.wali.live.proto.Rank.RankUser.Builder, com.wali.live.proto.Rank.RankUserOrBuilder> 
+          com.wali.live.proto.RankProto.RankUser, com.wali.live.proto.RankProto.RankUser.Builder, com.wali.live.proto.RankProto.RankUserOrBuilder> 
           getItemsFieldBuilder() {
         if (itemsBuilder_ == null) {
           itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.wali.live.proto.Rank.RankUser, com.wali.live.proto.Rank.RankUser.Builder, com.wali.live.proto.Rank.RankUserOrBuilder>(
+              com.wali.live.proto.RankProto.RankUser, com.wali.live.proto.RankProto.RankUser.Builder, com.wali.live.proto.RankProto.RankUserOrBuilder>(
                   items_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -12439,14 +12439,14 @@ public final class Rank {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankTopChange_descriptor;
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankTopChange_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankTopChange_fieldAccessorTable
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankTopChange_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.Rank.RankTopChange.class, com.wali.live.proto.Rank.RankTopChange.Builder.class);
+              com.wali.live.proto.RankProto.RankTopChange.class, com.wali.live.proto.RankProto.RankTopChange.Builder.class);
     }
 
     public static com.google.protobuf.Parser<RankTopChange> PARSER =
@@ -12691,53 +12691,53 @@ public final class Rank {
       return super.writeReplace();
     }
 
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(byte[] data)
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseDelimitedFrom(java.io.InputStream input)
+    public static com.wali.live.proto.RankProto.RankTopChange parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseDelimitedFrom(
+    public static com.wali.live.proto.RankProto.RankTopChange parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.wali.live.proto.Rank.RankTopChange parseFrom(
+    public static com.wali.live.proto.RankProto.RankTopChange parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -12746,7 +12746,7 @@ public final class Rank {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.Rank.RankTopChange prototype) {
+    public static Builder newBuilder(com.wali.live.proto.RankProto.RankTopChange prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -12763,20 +12763,20 @@ public final class Rank {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RankTopChange)
-        com.wali.live.proto.Rank.RankTopChangeOrBuilder {
+        com.wali.live.proto.RankProto.RankTopChangeOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankTopChange_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankTopChange_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankTopChange_fieldAccessorTable
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankTopChange_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.Rank.RankTopChange.class, com.wali.live.proto.Rank.RankTopChange.Builder.class);
+                com.wali.live.proto.RankProto.RankTopChange.class, com.wali.live.proto.RankProto.RankTopChange.Builder.class);
       }
 
-      // Construct using com.wali.live.proto.Rank.RankTopChange.newBuilder()
+      // Construct using com.wali.live.proto.RankProto.RankTopChange.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -12815,23 +12815,23 @@ public final class Rank {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.Rank.internal_static_com_wali_live_proto_RankTopChange_descriptor;
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_RankTopChange_descriptor;
       }
 
-      public com.wali.live.proto.Rank.RankTopChange getDefaultInstanceForType() {
-        return com.wali.live.proto.Rank.RankTopChange.getDefaultInstance();
+      public com.wali.live.proto.RankProto.RankTopChange getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.RankTopChange.getDefaultInstance();
       }
 
-      public com.wali.live.proto.Rank.RankTopChange build() {
-        com.wali.live.proto.Rank.RankTopChange result = buildPartial();
+      public com.wali.live.proto.RankProto.RankTopChange build() {
+        com.wali.live.proto.RankProto.RankTopChange result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.wali.live.proto.Rank.RankTopChange buildPartial() {
-        com.wali.live.proto.Rank.RankTopChange result = new com.wali.live.proto.Rank.RankTopChange(this);
+      public com.wali.live.proto.RankProto.RankTopChange buildPartial() {
+        com.wali.live.proto.RankProto.RankTopChange result = new com.wali.live.proto.RankProto.RankTopChange(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -12860,16 +12860,16 @@ public final class Rank {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.Rank.RankTopChange) {
-          return mergeFrom((com.wali.live.proto.Rank.RankTopChange)other);
+        if (other instanceof com.wali.live.proto.RankProto.RankTopChange) {
+          return mergeFrom((com.wali.live.proto.RankProto.RankTopChange)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.wali.live.proto.Rank.RankTopChange other) {
-        if (other == com.wali.live.proto.Rank.RankTopChange.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.wali.live.proto.RankProto.RankTopChange other) {
+        if (other == com.wali.live.proto.RankProto.RankTopChange.getDefaultInstance()) return this;
         if (other.hasZuid()) {
           setZuid(other.getZuid());
         }
@@ -12903,11 +12903,11 @@ public final class Rank {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.wali.live.proto.Rank.RankTopChange parsedMessage = null;
+        com.wali.live.proto.RankProto.RankTopChange parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.Rank.RankTopChange) e.getUnfinishedMessage();
+          parsedMessage = (com.wali.live.proto.RankProto.RankTopChange) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -13221,6 +13221,1305 @@ public final class Rank {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.RankTopChange)
   }
 
+  public interface GetRankRoomTotalTicketRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRankRoomTotalTicketRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string liveid = 1;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    boolean hasLiveid();
+    /**
+     * <code>required string liveid = 1;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    java.lang.String getLiveid();
+    /**
+     * <code>required string liveid = 1;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getLiveidBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetRankRoomTotalTicketRequest}
+   */
+  public static final class GetRankRoomTotalTicketRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRankRoomTotalTicketRequest)
+      GetRankRoomTotalTicketRequestOrBuilder {
+    // Use GetRankRoomTotalTicketRequest.newBuilder() to construct.
+    private GetRankRoomTotalTicketRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetRankRoomTotalTicketRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetRankRoomTotalTicketRequest defaultInstance;
+    public static GetRankRoomTotalTicketRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetRankRoomTotalTicketRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetRankRoomTotalTicketRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              liveid_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest.class, com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetRankRoomTotalTicketRequest> PARSER =
+        new com.google.protobuf.AbstractParser<GetRankRoomTotalTicketRequest>() {
+      public GetRankRoomTotalTicketRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetRankRoomTotalTicketRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetRankRoomTotalTicketRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int LIVEID_FIELD_NUMBER = 1;
+    private java.lang.Object liveid_;
+    /**
+     * <code>required string liveid = 1;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public boolean hasLiveid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string liveid = 1;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public java.lang.String getLiveid() {
+      java.lang.Object ref = liveid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          liveid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string liveid = 1;</code>
+     *
+     * <pre>
+     *房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getLiveidBytes() {
+      java.lang.Object ref = liveid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        liveid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      liveid_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasLiveid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getLiveidBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getLiveidBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetRankRoomTotalTicketRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankRoomTotalTicketRequest)
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest.class, com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        liveid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_descriptor;
+      }
+
+      public com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest build() {
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest buildPartial() {
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest result = new com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.liveid_ = liveid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest other) {
+        if (other == com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest.getDefaultInstance()) return this;
+        if (other.hasLiveid()) {
+          bitField0_ |= 0x00000001;
+          liveid_ = other.liveid_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasLiveid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankRoomTotalTicketRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object liveid_ = "";
+      /**
+       * <code>required string liveid = 1;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public boolean hasLiveid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string liveid = 1;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public java.lang.String getLiveid() {
+        java.lang.Object ref = liveid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string liveid = 1;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getLiveidBytes() {
+        java.lang.Object ref = liveid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          liveid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string liveid = 1;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder setLiveid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveid = 1;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder clearLiveid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        liveid_ = getDefaultInstance().getLiveid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveid = 1;</code>
+       *
+       * <pre>
+       *房间号
+       * </pre>
+       */
+      public Builder setLiveidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveid_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRankRoomTotalTicketRequest)
+    }
+
+    static {
+      defaultInstance = new GetRankRoomTotalTicketRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRankRoomTotalTicketRequest)
+  }
+
+  public interface GetRankRoomTotalTicketResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRankRoomTotalTicketResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional uint32 total_ticket = 2;</code>
+     *
+     * <pre>
+     *总票数
+     * </pre>
+     */
+    boolean hasTotalTicket();
+    /**
+     * <code>optional uint32 total_ticket = 2;</code>
+     *
+     * <pre>
+     *总票数
+     * </pre>
+     */
+    int getTotalTicket();
+
+    /**
+     * <code>optional uint32 order_cnt = 3;</code>
+     *
+     * <pre>
+     *赠送次数
+     * </pre>
+     */
+    boolean hasOrderCnt();
+    /**
+     * <code>optional uint32 order_cnt = 3;</code>
+     *
+     * <pre>
+     *赠送次数
+     * </pre>
+     */
+    int getOrderCnt();
+
+    /**
+     * <code>optional uint32 total_mibi_ticket = 4;</code>
+     *
+     * <pre>
+     *米币总票数
+     * </pre>
+     */
+    boolean hasTotalMibiTicket();
+    /**
+     * <code>optional uint32 total_mibi_ticket = 4;</code>
+     *
+     * <pre>
+     *米币总票数
+     * </pre>
+     */
+    int getTotalMibiTicket();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetRankRoomTotalTicketResponse}
+   */
+  public static final class GetRankRoomTotalTicketResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRankRoomTotalTicketResponse)
+      GetRankRoomTotalTicketResponseOrBuilder {
+    // Use GetRankRoomTotalTicketResponse.newBuilder() to construct.
+    private GetRankRoomTotalTicketResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetRankRoomTotalTicketResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetRankRoomTotalTicketResponse defaultInstance;
+    public static GetRankRoomTotalTicketResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetRankRoomTotalTicketResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetRankRoomTotalTicketResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              totalTicket_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              orderCnt_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              totalMibiTicket_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse.class, com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetRankRoomTotalTicketResponse> PARSER =
+        new com.google.protobuf.AbstractParser<GetRankRoomTotalTicketResponse>() {
+      public GetRankRoomTotalTicketResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetRankRoomTotalTicketResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetRankRoomTotalTicketResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_CODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 ret_code = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int TOTAL_TICKET_FIELD_NUMBER = 2;
+    private int totalTicket_;
+    /**
+     * <code>optional uint32 total_ticket = 2;</code>
+     *
+     * <pre>
+     *总票数
+     * </pre>
+     */
+    public boolean hasTotalTicket() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 total_ticket = 2;</code>
+     *
+     * <pre>
+     *总票数
+     * </pre>
+     */
+    public int getTotalTicket() {
+      return totalTicket_;
+    }
+
+    public static final int ORDER_CNT_FIELD_NUMBER = 3;
+    private int orderCnt_;
+    /**
+     * <code>optional uint32 order_cnt = 3;</code>
+     *
+     * <pre>
+     *赠送次数
+     * </pre>
+     */
+    public boolean hasOrderCnt() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 order_cnt = 3;</code>
+     *
+     * <pre>
+     *赠送次数
+     * </pre>
+     */
+    public int getOrderCnt() {
+      return orderCnt_;
+    }
+
+    public static final int TOTAL_MIBI_TICKET_FIELD_NUMBER = 4;
+    private int totalMibiTicket_;
+    /**
+     * <code>optional uint32 total_mibi_ticket = 4;</code>
+     *
+     * <pre>
+     *米币总票数
+     * </pre>
+     */
+    public boolean hasTotalMibiTicket() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 total_mibi_ticket = 4;</code>
+     *
+     * <pre>
+     *米币总票数
+     * </pre>
+     */
+    public int getTotalMibiTicket() {
+      return totalMibiTicket_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      totalTicket_ = 0;
+      orderCnt_ = 0;
+      totalMibiTicket_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, totalTicket_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, orderCnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, totalMibiTicket_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, totalTicket_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, orderCnt_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, totalMibiTicket_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetRankRoomTotalTicketResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRankRoomTotalTicketResponse)
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse.class, com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        totalTicket_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        orderCnt_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        totalMibiTicket_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.RankProto.internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_descriptor;
+      }
+
+      public com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse build() {
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse buildPartial() {
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse result = new com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.totalTicket_ = totalTicket_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.orderCnt_ = orderCnt_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.totalMibiTicket_ = totalMibiTicket_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse) {
+          return mergeFrom((com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse other) {
+        if (other == com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasTotalTicket()) {
+          setTotalTicket(other.getTotalTicket());
+        }
+        if (other.hasOrderCnt()) {
+          setOrderCnt(other.getOrderCnt());
+        }
+        if (other.hasTotalMibiTicket()) {
+          setTotalMibiTicket(other.getTotalMibiTicket());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.RankProto.GetRankRoomTotalTicketResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 ret_code = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int totalTicket_ ;
+      /**
+       * <code>optional uint32 total_ticket = 2;</code>
+       *
+       * <pre>
+       *总票数
+       * </pre>
+       */
+      public boolean hasTotalTicket() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 total_ticket = 2;</code>
+       *
+       * <pre>
+       *总票数
+       * </pre>
+       */
+      public int getTotalTicket() {
+        return totalTicket_;
+      }
+      /**
+       * <code>optional uint32 total_ticket = 2;</code>
+       *
+       * <pre>
+       *总票数
+       * </pre>
+       */
+      public Builder setTotalTicket(int value) {
+        bitField0_ |= 0x00000002;
+        totalTicket_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 total_ticket = 2;</code>
+       *
+       * <pre>
+       *总票数
+       * </pre>
+       */
+      public Builder clearTotalTicket() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        totalTicket_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int orderCnt_ ;
+      /**
+       * <code>optional uint32 order_cnt = 3;</code>
+       *
+       * <pre>
+       *赠送次数
+       * </pre>
+       */
+      public boolean hasOrderCnt() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 order_cnt = 3;</code>
+       *
+       * <pre>
+       *赠送次数
+       * </pre>
+       */
+      public int getOrderCnt() {
+        return orderCnt_;
+      }
+      /**
+       * <code>optional uint32 order_cnt = 3;</code>
+       *
+       * <pre>
+       *赠送次数
+       * </pre>
+       */
+      public Builder setOrderCnt(int value) {
+        bitField0_ |= 0x00000004;
+        orderCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 order_cnt = 3;</code>
+       *
+       * <pre>
+       *赠送次数
+       * </pre>
+       */
+      public Builder clearOrderCnt() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        orderCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int totalMibiTicket_ ;
+      /**
+       * <code>optional uint32 total_mibi_ticket = 4;</code>
+       *
+       * <pre>
+       *米币总票数
+       * </pre>
+       */
+      public boolean hasTotalMibiTicket() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 total_mibi_ticket = 4;</code>
+       *
+       * <pre>
+       *米币总票数
+       * </pre>
+       */
+      public int getTotalMibiTicket() {
+        return totalMibiTicket_;
+      }
+      /**
+       * <code>optional uint32 total_mibi_ticket = 4;</code>
+       *
+       * <pre>
+       *米币总票数
+       * </pre>
+       */
+      public Builder setTotalMibiTicket(int value) {
+        bitField0_ |= 0x00000008;
+        totalMibiTicket_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 total_mibi_ticket = 4;</code>
+       *
+       * <pre>
+       *米币总票数
+       * </pre>
+       */
+      public Builder clearTotalMibiTicket() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        totalMibiTicket_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRankRoomTotalTicketResponse)
+    }
+
+    static {
+      defaultInstance = new GetRankRoomTotalTicketResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRankRoomTotalTicketResponse)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_RankItem_descriptor;
   private static
@@ -13306,6 +14605,16 @@ public final class Rank {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_RankTopChange_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -13349,7 +14658,12 @@ public final class Rank {
       "m.wali.live.proto.RankUser\"b\n\rRankTopCha" +
       "nge\022\014\n\004zuid\030\001 \002(\004\022\016\n\006liveId\030\002 \001(\t\022\014\n\004uui" +
       "d\030\003 \001(\004\022\024\n\014original_pos\030\004 \001(\r\022\017\n\007new_pos" +
-      "\030\005 \001(\r"
+      "\030\005 \001(\r\"/\n\035GetRankRoomTotalTicketRequest\022" +
+      "\016\n\006liveid\030\001 \002(\t\"v\n\036GetRankRoomTotalTicke" +
+      "tResponse\022\020\n\010ret_code\030\001 \002(\r\022\024\n\014total_tic" +
+      "ket\030\002 \001(\r\022\021\n\torder_cnt\030\003 \001(\r\022\031\n\021total_mi" +
+      "bi_ticket\030\004 \001(\rB \n\023com.wali.live.protoB\t" +
+      "RankProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13465,6 +14779,18 @@ public final class Rank {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RankTopChange_descriptor,
         new java.lang.String[] { "Zuid", "LiveId", "Uuid", "OriginalPos", "NewPos", });
+    internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetRankRoomTotalTicketRequest_descriptor,
+        new java.lang.String[] { "Liveid", });
+    internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetRankRoomTotalTicketResponse_descriptor,
+        new java.lang.String[] { "RetCode", "TotalTicket", "OrderCnt", "TotalMibiTicket", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

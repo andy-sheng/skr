@@ -1,0 +1,100 @@
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "RankProto";
+
+message RankItem{
+    required uint64 uuid             = 1;//用户id
+    required uint32 ticket           = 2;//票数量
+}
+message RankItemInfo{
+    required uint64 zuid             = 1;//主播id
+    required uint64 uuid             = 2;//用户id
+    required uint32 ticket           = 3;//票数量
+    repeated string outOrderIds      = 4;
+}
+message RankList{
+    required uint64 zuid             = 1; //主播id
+    repeated RankItem items          = 3;
+}
+message GetRankListRequest{
+    required uint64 zuid             = 1; //主播id
+    required uint32 offset           = 2;
+    required uint32 limit            = 3;
+}
+message GetRankListResponse{
+    required uint32 ret_code         = 1;//返回码
+    repeated RankItem items          = 2;
+}
+message GetRankTopThreeRequest{
+    required uint64 zuid             = 1; //主播id
+}
+message GetRankTopThreeResponse{
+    required uint32 ret_code         = 1;//返回码
+    repeated RankItem items          = 2;
+}
+message AddRankItemRequest{
+    required uint64 zuid             = 1;//主播id
+    required uint64 uuid             = 2;
+    required uint32 ticket           = 3;//票
+    optional string liveId           = 4;//房间id
+    optional string iris_key         = 5;//iris key
+}
+message RecallInfo{
+    required uint64 zuid             = 1;//主播id
+    required uint64 uuid             = 2;
+    required uint32 ticket           = 3;//票
+    optional string liveId           = 4;//房间id
+    optional string outOrderId       = 5;//outOrderId
+    optional uint32 status           = 6;//1,新建；2,统计完毕;3,排序完毕;4,处理完毕;
+}
+message IrisList{
+    repeated string keys             = 1;
+}
+message AddRankItemResponse{
+    required uint32 ret_code         = 1;
+}
+message RankUser{
+    required uint64 uuid             = 1;//用户id
+    required uint32 ticket           = 2;//票数量
+    optional uint64 avatar           = 3; //头像
+    optional string nickname         = 4;//昵称
+    optional uint32 relation         = 5;//0,未关注；1,已关注；2，双向关注
+    optional uint32 gender         = 6;//性别
+    optional uint32 level            = 7;//等级
+    optional uint32 certification_type=8;//认证类型
+}
+message GetRankListRequestV2{
+    required uint64 zuid             = 1; //主播id
+    required uint32 offset           = 2;
+    required uint32 limit            = 3;
+}
+message GetRankListResponseV2{
+    required uint32 ret_code         = 1;//返回码
+    repeated RankUser items          = 2;
+}
+message GetRankRoomListRequest{
+    required string liveId           = 1; //房间id
+    required uint32 offset           = 2;
+    required uint32 limit            = 3;
+}
+message GetRankRoomListResponse{
+    required uint32 ret_code         = 1;//返回码
+    repeated RankUser items          = 2;
+}
+message RankTopChange{
+    required uint64 zuid             = 1; //主播id
+    optional string liveId           = 2; //房间id
+    optional uint64 uuid             = 3; //引起变动的用户id
+    optional uint32 original_pos     = 4; //该用户原始排名
+    optional uint32 new_pos          = 5; //该用户新排名
+}
+message GetRankRoomTotalTicketRequest{
+    required string liveid          = 1;//房间号
+}
+message GetRankRoomTotalTicketResponse{
+    required uint32 ret_code         = 1;//返回码
+    optional uint32 total_ticket     = 2;//总票数
+    optional uint32 order_cnt        = 3;//赠送次数
+    optional uint32 total_mibi_ticket =4;//米币总票数
+}

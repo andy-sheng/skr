@@ -79,7 +79,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         //nothing to do
     }
 
-
     @Override
     public void getChannelLives(final int channelId, String packageName, final String channelSecret) throws RemoteException {
         MyLog.w(TAG, "getChannelLives");
