@@ -6,6 +6,7 @@ import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.UserInfo;
 
 import java.util.List;
 
@@ -96,10 +97,13 @@ public interface IMiLiveSdk {
 
     /**
      * 获取频道列表
-     *
-     * @version 205008
      */
     void getChannelLives(IChannelCallback callback);
+
+    /**
+     * 获取关注人信息列表
+     */
+    void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp);
 
     /**
      * sdk 上层应用回调
@@ -139,10 +143,15 @@ public interface IMiLiveSdk {
     }
 
     @Keep
-    interface IChannelCallback{
+    interface IChannelCallback {
         /**
          * 通知上层直播列表的方法回调
          */
         void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos);
+    }
+
+    @Keep
+    interface IFollowingListCallback {
+        void notifyGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp);
     }
 }

@@ -22,7 +22,7 @@ import com.mi.milink.sdk.data.ClientAppInfo;
 import com.mi.milink.sdk.debug.MiLinkLog;
 import com.squareup.leakcanary.RefWatcher;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
-import com.wali.live.common.pay.handler.PayPacketHandler;
+import com.wali.live.pay.handler.PayPacketHandler;
 import com.wali.live.dns.PreDnsManager;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
@@ -113,6 +113,7 @@ public class InitManager {
     }
 
     private static ClientAppInfo getClientAppInfo() {
+        MyLog.d(TAG,"milinkAppId="+Constants.MILINK_APP_ID);
         return new ClientAppInfo.Builder(Constants.MILINK_APP_ID)
                 .setAppName(Constants.APPNAME)
                 .setPackageName(sPackageName)

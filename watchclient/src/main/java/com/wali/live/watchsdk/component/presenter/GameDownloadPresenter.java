@@ -22,7 +22,6 @@ import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -56,53 +55,44 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
         if (TextUtils.isEmpty(mMyRoomData.getGameId())) {
             return;
         }
-        // 启动2分钟后的定时任务
-        Observable.timer(2 * 60, TimeUnit.SECONDS)
-                .compose(bindUntilEvent(PresenterEvent.DESTROY))
-                .subscribe(new Action1<Object>() {
+        startGameWork();
+    }
+
+    private void startGameWork() {
+        Observable
+                .create((new Observable.OnSubscribe<GameViewModel>() {
                     @Override
-                    public void call(Object o) {
-                        Observable
-                                .create((new Observable.OnSubscribe<GameViewModel>() {
-                                    @Override
-                                    public void call(Subscriber<? super GameViewModel> subscriber) {
-                                        String url = String.format(GAME_INFO_URL, mMyRoomData.getGameId());
-                                        List<NameValuePair> postBody = new ArrayList();
-                                        postBody.add(new BasicNameValuePair("gameId", String.valueOf(mMyRoomData.getGameId())));
-                                        try {
-                                            SimpleRequest.StringContent result = HttpUtils.doV2Get(url, postBody);
-                                            GameViewModel gameModel = new GameViewModel(result.getBody());
-                                            subscriber.onNext(gameModel);
-                                            subscriber.onCompleted();
-                                        } catch (Exception e) {
-                                            Logger.e(TAG, e.getMessage());
-                                            subscriber.onError(e);
-                                            return;
-                                        }
-                                    }
-                                }))
-                                .subscribeOn(Schedulers.io())
-                                .compose(GameDownloadPresenter.this.<GameViewModel>bindUntilEvent(PresenterEvent.DESTROY))
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Action1<GameViewModel>() {
-                                    @Override
-                                    public void call(GameViewModel gameModel) {
-                                        if (gameModel.isValid()) {
-                                            MyLog.d(TAG, "call: onEvent MSG_BOTTOM_SHOE_GAME_ICON");
-                                            mGameModel = gameModel;
+                    public void call(Subscriber<? super GameViewModel> subscriber) {
+                        String url = String.format(GAME_INFO_URL, mMyRoomData.getGameId());
+                        List<NameValuePair> postBody = new ArrayList();
+                        postBody.add(new BasicNameValuePair("gameId", String.valueOf(mMyRoomData.getGameId())));
+                        try {
+                            SimpleRequest.StringContent result = HttpUtils.doV2Get(url, postBody);
+                            GameViewModel gameModel = new GameViewModel(result.getBody());
+                            subscriber.onNext(gameModel);
+                            subscriber.onCompleted();
+                        } catch (Exception e) {
+                            Logger.e(TAG, e.getMessage());
+                            subscriber.onError(e);
+                            return;
+                        }
+                    }
+                }))
+                .subscribeOn(Schedulers.io())
+                .compose(GameDownloadPresenter.this.<GameViewModel>bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<GameViewModel>() {
+                    @Override
+                    public void call(GameViewModel gameModel) {
+                        if (gameModel.isValid()) {
+                            MyLog.d(TAG, "call: onEvent MSG_BOTTOM_SHOE_GAME_ICON");
+                            mGameModel = gameModel;
 
-                                            mView.inflate();
-                                            mComponentController.onEvent(ComponentController.MSG_SHOE_GAME_ICON);
+                            mView.inflate();
+                            mComponentController.onEvent(ComponentController.MSG_SHOE_GAME_ICON);
 
-                                            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(formatGameIconShowKey(), 1);
-                                        }
-                                    }
-                                }, new Action1<Throwable>() {
-                                    @Override
-                                    public void call(Throwable throwable) {
-                                        MyLog.e(TAG, throwable);
-                                    }
-                                });
+                            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(formatGameIconShowKey(), 1);
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override

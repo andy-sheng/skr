@@ -313,4 +313,24 @@ public class MyUserInfoManager {
         mMyInfo = new User();
     }
 
+
+    public synchronized int getVirtualDiamondNum() {
+        if (mMyInfo != null) {
+            return mMyInfo.getVirtualDiamondNum();
+        } else {
+            return 0;
+        }
+    }
+
+    public synchronized void setVirtualDiamondNum(int vDiamondNum) {
+        MyLog.w(TAG, "set virtual diamond to:" + vDiamondNum);
+        if (mMyInfo == null) {
+            mMyInfo = new User();
+        }
+
+        mMyInfo.setVirtualDiamondNum(vDiamondNum);
+        //发送event
+        EventBus.getDefault().post(new UserInfoEvent());
+    }
+
 }

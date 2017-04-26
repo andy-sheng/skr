@@ -15,6 +15,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name="com.wali.live.income.exchange.ExchangeGemActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

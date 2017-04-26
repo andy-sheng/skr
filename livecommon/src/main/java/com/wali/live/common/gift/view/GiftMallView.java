@@ -337,79 +337,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                         //TODO 一定记得加上
                         EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
 
-//            if (Constants.isDebugOrTestBuild) {
-//                List<Gift> gifts = GiftManager.getGiftListCache();
-//                Random random = new Random();
-//                Observable.timer(100, TimeUnit.MILLISECONDS)
-//                        .subscribe(new Action1<Long>() {
-//                            @Override
-//                            public void call(Long aLong) {
-//                                // 直接丢到队列
-//                                Gift gift = gifts.get(random.nextInt(gifts.size()));
-//                                for (int i = 1; i < 1001; i++) {
-//                                    BarrageMsg msg = new BarrageMsg();
-//                                    msg.setRoomId(mMyRoomData.getRoomId());
-//                                    msg.setAnchorId(mMyRoomData.getUid());
-//
-//
-//                                    if (!gift.getCanContinuous()) {
-//                                        return;
-//                                    }
-//                                    // 根据礼物类型填充消息类型
-//                                    switch (gift.getCatagory()) {
-//                                        case GiftType.NORMAL_GIFT: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_GIFT);
-//                                        }
-//                                        break;
-//                                        case GiftType.NORMAL_EFFECTS_GIFT: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_GIFT);
-//                                        }
-//                                        break;
-//                                        case GiftType.HIGH_VALUE_GIFT: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_GIFT);
-//                                        }
-//                                        break;
-//                                        case GiftType.GLOBAL_GIFT: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_GLABAL_MSG);
-//                                        }
-//                                        break;
-//                                        case GiftType.ROOM_BACKGROUND_GIFT: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT);
-//                                        }
-//                                        break;
-//                                        case GiftType.LIGHT_UP_GIFT: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT);
-//                                        }
-//                                        break;
-//                                        case GiftType.BARRAGE_GIFT: {
-//                                        }
-//                                        break;
-//                                        case GiftType.RED_ENVELOPE_GIFT: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE);
-//                                        }
-//                                        break;
-//                                        default: {
-//                                            msg.setMsgType(BarrageMsgType.B_MSG_TYPE_GIFT);
-//                                        }
-//                                        break;
-//                                    }
-//                                    msg.setSender(3229025);
-//                                    msg.setSentTime(System.currentTimeMillis());
-//                                    BarrageMsg.GiftMsgExt ext = new BarrageMsg.GiftMsgExt();
-//                                    ext.giftId = gift.getGiftId();
-//                                    ext.giftName = gift.getName();
-//                                    if (i == 1) {
-//                                        ext.continueId = System.currentTimeMillis();
-//                                    }
-//                                    ext.giftCount = i;
-//                                    // 不填，订单号为空时默认放行
-//                                    // ext.orderId = String.valueOf(System.currentTimeMillis());
-//                                    msg.setMsgExt(ext);
-//                                    BarrageMessageManager.getInstance().pretendPushBarrage(msg);
-//                                }
-//                            }
-//                        });
-//            }
                     }
                 });
         mSendGiftTv = (TextView) findViewById(R.id.send_gift);
@@ -1285,23 +1212,6 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
 
     @Override
     public void setVisibility(int visibility) {
-//        if(Constants.isDebugOrTestBuild) {
-//            Observable.interval(20, TimeUnit.SECONDS)
-//                    .subscribe(aLong -> {
-//                        List<Gift> l = GiftManager.getGiftListCache();
-//                        PayProto.GiftCard card = PayProto.GiftCard.newBuilder().setGiftId(1261).setGiftCardCnt((int) (Math.random() * 1000)).build();
-//                        PayProto.GiftCardPush obj = PayProto.GiftCardPush.newBuilder().addGiftCards(0, card).setRetCode(0).setUserAssetTimestamp(System.currentTimeMillis()).build();
-//                        EventClass.GiftCardPush event = new EventClass.GiftCardPush(obj);
-//                        onEvent(event);
-//                    });
-//        }
-//        if (visibility != VISIBLE && this.getVisibility() != VISIBLE) {
-//            GiftMallView.super.setVisibility(VISIBLE);
-//        }
-//
-//        if (visibility == VISIBLE && this.getVisibility() == VISIBLE) {
-//            GiftMallView.super.setVisibility(GONE);
-//        }
 
         if (this.getVisibility() != GONE && visibility == GONE) {
             GiftMallView.super.setVisibility(GONE);

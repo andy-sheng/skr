@@ -118,6 +118,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp) {
+        checkHasInit();
+        mCallback.setFollowingListCallback(callback);
+        try {
+            MiLiveSdkBinder.getInstance().getFollowingList(mChannelId, mPackageName, mChannelSecret, isBothWay, timeStamp);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void clearAccount() {
         checkHasInit();
         try {

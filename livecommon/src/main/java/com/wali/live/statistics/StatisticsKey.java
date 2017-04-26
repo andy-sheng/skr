@@ -715,7 +715,18 @@ public class StatisticsKey {
             String MiWallet = "xm";
             String GoogleWallet = "gp";
             String PayPal = "pa";
+            String Mibi = "mibi";
+            String CodaIdr = "codaidr";
+            String CodaAtm = "codaatm";
+
         }
+
+        String RECHARGE_FROM = "recharge_from";
+
+        int FROM_OTHER = 0;
+        int FROM_ROOM = 1;
+        int FROM_SETTING = 2;
+
 
         String VISIT = "gem_pay-view";//钻石充值页面的pv
         String PRICE_LIST = "gem_pay-%s";//各支付渠道列表的展示次数

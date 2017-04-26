@@ -3,6 +3,7 @@ package com.wali.live.event;
 import android.support.annotation.Nullable;
 
 import com.wali.live.common.model.CommentModel;
+import com.wali.live.pay.constant.PayWay;
 import com.wali.live.proto.PayProto;
 import com.wali.live.receiver.NetworkReceiver;
 
@@ -158,4 +159,61 @@ public abstract class EventClass {
 
     public static class LoadingEndEvent {
     }
+    public static class GiftCardPush {
+        public Object obj1;
+
+        public GiftCardPush(Object obj1) {
+            this.obj1 = obj1;
+        }
+    }
+
+    public static class RechargeCheckOrderEvent {
+        public PayWay payWay;
+        public String orderId;
+        public String payId;
+        public String receipt;
+        public String transactionId;
+        public boolean showTip;
+
+        public RechargeCheckOrderEvent(PayWay payWay, String orderId, String payId, String receipt, String transactionId, boolean showTip) {
+            this.payWay = payWay;
+            this.orderId = orderId;
+            this.payId = payId;
+            this.receipt = receipt;
+            this.transactionId = transactionId;
+            this.showTip = showTip;
+        }
+    }
+
+    /**
+     * 极有可能通过MyInfoFragment发出UserInfoEvent
+     */
+    public static class WithdrawEvent {
+        public int eventType;
+
+        public static final int EVENT_TYPE_ACCOUNT_TICKET_CHANGE = 1;// 账户尚票发生变化
+        public static final int EVENT_TYPE_ACCOUNT_BIND_CHANGE = 2;// 绑定账户发生变化
+
+        public WithdrawEvent(int type) {
+            this.eventType = type;
+        }
+    }
+
+    /**
+     * 根据tag判断是否给其的event
+     */
+    public static class ItemClickEvent {
+        public String tag;
+
+        public ItemClickEvent(String tag) {
+            this.tag = tag;
+        }
+    }
+
+    public static class ShowRechargeProgressEvent{
+    }
+
+    public static class HideRechargeProgressEvent{
+    }
+
 }

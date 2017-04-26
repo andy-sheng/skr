@@ -259,4 +259,61 @@
     <string name="send">send</string>
     <string name="empty_edittext_hint">Say something here</string>
     <string name="follow">Follow</string>
+    <string name="can_use_text">Available</string>
+    <string name="out_date_text">Expired</string>
+    <string name="balance_gift_card_count">%1$d*%2$s</string>
+    <string name="payway_coda_idr">Potong Pulsa</string>
+    <string name="payway_coda_atm">ATM/Alfamart</string>
+    <plurals name="recharge_money_coda_unit">
+        <item quantity="one">%1$s IDR</item>
+        <item quantity="other">%1$s IDR</item>
+    </plurals>
+    <string name="gem">Gems</string>
+    <string name="back_pack">Backpack</string>
+    <string name="balance_tip_title">Attention</string>
+    <string name="balance_tip_1">1. Gold gems are permanent virtual currency to buy gifts on Mi Live.</string>
+    <string name="balance_tip_2">2. Use silver gems first, otherwise they will be cleared when expired.</string>
+    <string name="balance_tip_3">3. Backpacks are virtual items and will be cleared by the system if expired.</string>
+    <string name="balance_pkt_only_tip_1">Backpacks are virtual items and will be cleared by the system if expired.</string>
+    <string name="no_expired_tip">No balance expired</string>
+    <string name="no_net">Couldn\'t connect to the network, try again later</string>
+    <plurals name="silver_diamond_plural">
+        <item quantity="one">%1$s silver gem</item>
+        <item quantity="other">%1$s silver gems</item>
+    </plurals>
+    <string name="silver_diamond">Silver gems</string>
+    <string name="foever_text">Never expires</string>
+    <string name="loading">Just a sec\u2026</string>
+    <string name="exchange">Exchange</string>
+    <string name="exchange_failure_dialog_title">Couldn\'t exchange</string>
+    <string name="exchange_success">Exchanged successfully</string>
+    <plurals name="cost_show_ticket_now">
+        <item quantity="one">Deduct: %1$d coin (shows)</item>
+        <item quantity="other">Deduct: %1$d coins (shows)</item>
+    </plurals>
+    <plurals name="cost_game_ticket_now">
+        <item quantity="one">Deduct: %1$d coin (game)</item>
+        <item quantity="other">Deduct: %1$d coins (games)</item>
+    </plurals>
+    <string name="exchange_ticket">%d tickets</string>
+    <string name="exchange_failure_dialog_message">Not enough coins to exchange</string>
+    <string name="exchange_diamond_silver_dialog">Get %1$d silver gems now?</string>
+    <string name="exchange_diamond_dialog_title">Get %1$d gold gems now?</string>
+    <string name="exchange_in_progress_tip">Just a sec\u2026</string>
+    <string name="income_ticket_tomibi">Get Mi Credits with coins</string>
+    <plurals name="mibi">
+        <item quantity="one">%1$s Mi Credit</item>
+        <item quantity="other">%1$s Mi Credits</item>
+    </plurals>
+    <string name="count_mibi_ticket">%1$d coins (games)</string>
+    <string name="income_mibi_not_enough">Not enough coins to exchange</string>
+    <string name="income_isok_to_mibi">Get %1$d Mi Credits now?</string>
+    <string name="ticket_silver_tip">Silver gems you get with coins will expire in 30 days</string>
+    <string name="income_mibi_ticket">Coins (games)</string>
+    <string name="account_cur_ticket">Coins (shows)</string>
+    <string name="ticket_all">Total coins</string>
+    <string name="notice_text_top">Attention: Due to the system adjustment, you will be able to get silver gems (expires in 30 days) with show coins starting from April 20, 2017.</string>
+    <string name="record_processing">Processing…</string>
+    <string name="record_success">Credited into account</string>
+    <string name="record_fail">Couldn\'t transfer</string>
 </resources>

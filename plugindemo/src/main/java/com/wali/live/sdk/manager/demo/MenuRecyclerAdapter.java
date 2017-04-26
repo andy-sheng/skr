@@ -26,8 +26,10 @@ import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
+import com.wali.live.sdk.manager.demo.utils.StringUtils;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.UserInfo;
 import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
@@ -178,12 +180,10 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 MiLiveSdkController.getInstance().getChannelLives(new IMiLiveSdk.IChannelAssistantCallback() {
                     @Override
                     public void notifyGetChannelLives(int i, List<LiveInfo> list) {
-                        Log.w(TAG, "notifyGetChannelLives");
+                        Log.w(TAG, "notifyGetChannelLives errCode=" + i);
+                        ToastUtils.showToast("notifyGetChannelLives errCode=" + i);
                         if (list != null) {
-                            for (LiveInfo liveInfo : list) {
-                                Log.w(TAG, " uuid=" + liveInfo.getLiveId() + " nickName=" + liveInfo.getNickname());
-                                ToastUtils.showToast("uuid=" + liveInfo + " nickName=" + liveInfo.getNickname());
-                            }
+                            ToastUtils.showToast(StringUtils.join(list, "\n"));
                         }
                     }
 
@@ -197,6 +197,32 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         ToastUtils.showToast("notifyNotInstall");
                     }
                 });
+            }
+        }));
+
+        mDataList.add(new Bean("拉关注人信息", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().getFollowingList(new IMiLiveSdk.IFollowingListCallback() {
+                    @Override
+                    public void notifyGetFollowingList(int errCode, List<UserInfo> list, int total, long timeStamp) {
+                        Log.w(TAG, "notifyGetFollowingList errCode=" + errCode);
+                        ToastUtils.showToast("notifyGetChannelLives errCode=" + errCode);
+                        if (list != null) {
+                            ToastUtils.showToast(StringUtils.join(list, "\n"));
+                        }
+                    }
+
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("notifyVersionLow");
+                    }
+
+                    @Override
+                    public void notifyNotInstall() {
+                        ToastUtils.showToast("notifyNotInstall");
+                    }
+                }, false, 0);
             }
         }));
     }

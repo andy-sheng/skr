@@ -52,7 +52,7 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.common.pay.fragment.RechargeFragment;
+import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;

@@ -227,6 +227,7 @@ public class GameLivePresenter implements Presenter {
     public void stop() {
         mIsForeground = false;
         if (mIsStarted) {
+            onOrientation(false);
             stopAddExtra();
             mGameFloatWindow.showWindow(mToken, mMyRoomData.getViewerCnt());
             GlobalData.app().startService(mGameLiveServiceIntent);

@@ -18,13 +18,10 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
-import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
-import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
-import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -212,10 +209,12 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             switch (source) {
                 case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
                     mIsLandscape = false;
+                    mComponentController.mGameLivePresenter.onOrientation(false);
                     stopAllAnimator();
                     return true;
                 case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
                     mIsLandscape = true;
+                    mComponentController.mGameLivePresenter.onOrientation(true);
                     stopAllAnimator();
                     return true;
                 case LiveComponentController.MSG_INPUT_VIEW_SHOWED:

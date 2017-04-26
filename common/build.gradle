@@ -7,6 +7,11 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.androidMinSdkVersion
         targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        if(buildFlavorType == 'livesdkaar'){
+            buildConfigField("int","MILINK_APP_ID","10013")
+        }else{
+            buildConfigField("int","MILINK_APP_ID","10008")
+        }
     }
     lintOptions {
         checkReleaseBuilds false
@@ -85,7 +90,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 
     //compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/milinksdk-3.1.4.jar')
+    compile files('libs/milinksdk-3.1.5.jar')
     compile files('libs/protobuf-java-2.6.0.jar')
 //    compile files('libs/org.apache.http.legacy.jar')
     compile files('libs/renderscript-v8.jar')

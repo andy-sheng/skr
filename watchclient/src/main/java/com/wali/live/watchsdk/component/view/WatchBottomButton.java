@@ -36,6 +36,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     private boolean mIsGameMode = false;
 
+    private Runnable mAnimatorRunnable;
     private ValueAnimator mShakeAnimator;
 
     @Override
@@ -114,12 +115,15 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         mBottomBtnSetLand.add(1, mGameBtn);
         orientChild();
 
-        mGameBtn.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startGameAnimator();
-            }
-        }, 200);
+        if (mAnimatorRunnable == null) {
+            mAnimatorRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    startGameAnimator();
+                }
+            };
+        }
+        mGameBtn.postDelayed(mAnimatorRunnable, 60 * 1000);
     }
 
     private void startGameAnimator() {
@@ -157,6 +161,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     private void destroyView() {
+        if (mGameBtn != null) {
+            mGameBtn.removeCallbacks(mAnimatorRunnable);
+        }
         if (mShakeAnimator != null) {
             mShakeAnimator.cancel();
         }

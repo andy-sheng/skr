@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:is_profile_mode="true" />
+
+    <TextView
+        android:id="@+id/notice_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar"
+        android:layout_marginLeft="@dimen/view_dimen_20"
+        android:layout_marginRight="@dimen/view_dimen_20"
+        android:layout_marginTop="@dimen/view_dimen_15"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:text="@string/notice_text_top"
+        android:textColor="@color/text_color_black_trans_50"
+        android:textSize="@dimen/margin_34"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/all_ticket"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_430"
+        android:layout_below="@id/notice_top"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ticket_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/text_color_black_trans_50"
+                android:textSize="@dimen/view_dimen_140" />
+
+            <TextView
+                android:id="@+id/balance_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-2dp"
+                android:gravity="center"
+                android:text="@string/ticket_all"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_60" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_below="@id/all_ticket"
+        android:background="@color/color_e5e5e5" />
+
+    <LinearLayout
+        android:id="@+id/bottom_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_330"
+        android:layout_below="@id/line"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/bottom_exchange_show_area"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <!--娱乐星票-->
+            <TextView
+                android:id="@+id/excwhangeable_mibi_cnt_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:duplicateParentState="true"
+                android:text="0"
+                android:textColor="@color/zhibo_select_black_50"
+                android:textSize="@dimen/text_size_60" />
+
+            <!--上面的数字解释-->
+            <TextView
+                android:id="@+id/exchangewable_mibi_tip_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-1.67dp"
+                android:duplicateParentState="true"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/account_cur_ticket"
+                android:textColor="@color/zhibo_select_black_50"
+                android:textSize="@dimen/text_size_44" />
+
+            <View
+                android:layout_width="@dimen/margin_36"
+                android:layout_height="@dimen/margin_4"
+                android:layout_marginTop="@dimen/margin_12"
+                android:background="@drawable/down_line_select" />
+        </LinearLayout>
+
+
+        <!--兑换米币星票-->
+        <LinearLayout
+            android:id="@+id/bottom_exchange_mibi_area"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <!--主播可兑换米币的数量-->
+            <TextView
+                android:id="@+id/exchangeable_mibi_cnt_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:duplicateParentState="true"
+                android:text="0"
+                android:textColor="@color/zhibo_select_black_50"
+                android:textSize="@dimen/text_size_60" />
+
+            <!--上面的数字解释-->
+            <TextView
+                android:id="@+id/exchangeable_mibi_tip_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-1.67dp"
+                android:duplicateParentState="true"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/income_mibi_ticket"
+                android:textColor="@color/zhibo_select_black_50"
+                android:textSize="@dimen/text_size_44" />
+
+            <View
+                android:layout_width="@dimen/margin_36"
+                android:layout_height="@dimen/margin_4"
+                android:layout_marginTop="@dimen/margin_16"
+                android:background="@drawable/down_line_select" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bottom_area"
+        android:layout_centerHorizontal="true"
+        android:overScrollMode="never"
+        android:paddingLeft="@dimen/view_dimen_15"
+        android:paddingRight="@dimen/view_dimen_15" />
+
+    <TextView
+        android:id="@+id/bottom_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_dimen_125"
+        android:layout_marginTop="@dimen/margin_60"
+        android:text="@string/ticket_silver_tip"
+        android:textColor="@color/color_black_trans_30"
+        android:textSize="@dimen/text_size_36" />
+
+    <TextView
+        android:id="@+id/exchange_tv"
+        android:layout_width="@dimen/view_dimen_1020"
+        android:layout_height="@dimen/margin_120"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/width_208"
+        android:background="@drawable/withdraw_diamond_button"
+        android:gravity="center"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/text_size_44" />
+</RelativeLayout>

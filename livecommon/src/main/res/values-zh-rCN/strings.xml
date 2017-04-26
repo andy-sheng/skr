@@ -250,4 +250,58 @@
     <string name="file_upload_failed_file_error">文件上传失败，原因：文件不存在或长度为0或不是一个文件！</string>
     <string name="file_upload_failed_path_error">文件上传失败,原因：本地路径有误！</string>
     <string name="network_offline_warning">当前网络连接不可用，请检查网络设置</string>
+    <string name="account_cur_ticket">娱乐星票</string>
+    <string name="back_pack">背包</string>
+    <string name="balance_gift_card_count">%1$d*%2$s</string>
+    <string name="balance_pkt_only_tip_1">背包是指系统发放的虚拟物品，过期后会被系统清空。</string>
+    <string name="balance_tip_1">1.金钻是永久有效的平台虚拟货币，可用于购买礼物。</string>
+    <string name="balance_tip_2">2.银钻具有一定有效期，消费时系统会优先扣减银钻，过期后会被系统清空。</string>
+    <string name="balance_tip_3">3.背包是指系统发放的虚拟物品，过期后会被系统清空。</string>
+    <string name="balance_tip_title">温馨提示</string>
+    <string name="can_use_text">可使用</string>
+    <string name="count_mibi_ticket">%1$d游戏星票</string>
+    <string name="exchange">兑换</string>
+    <string name="exchange_diamond_dialog_title">确认兑换%1$d金钻吗？</string>
+    <string name="exchange_diamond_silver_dialog">确认兑换%1$d银钻吗？</string>
+    <string name="exchange_failure_dialog_message">星票不够，不能兑换</string>
+    <string name="exchange_failure_dialog_title">兑换失败</string>
+    <string name="exchange_in_progress_tip">请稍后</string>
+    <string name="exchange_success">兑换成功</string>
+    <string name="exchange_ticket">%d票</string>
+    <string name="foever_text">永久有效</string>
+    <string name="gem">钻石</string>
+    <string name="income_isok_to_mibi">确认兑换%1$d米币吗？</string>
+    <string name="income_mibi_not_enough">游戏星票不够，不能兑换</string>
+    <string name="income_mibi_ticket">游戏星票</string>
+    <string name="income_ticket_tomibi">星票兑换米币</string>
+    <string name="loading">加载中</string>
+    <string name="no_expired_tip">暂无过期余额</string>
+    <string name="no_net">网络异常，请稍后重试</string>
+    <string name="notice_text_top">公告：自2017年4月20日后，由于系统调整，娱乐星票兑换钻石将改为有效期为30天的银钻，请您知晓。</string>
+    <string name="out_date_text">已过期</string>
+    <string name="payway_coda_atm">ATM/Alfamart</string>
+    <string name="payway_coda_idr">Potong Pulsa</string>
+    <string name="record_fail">转账失败</string>
+    <string name="record_processing">处理中</string>
+    <string name="record_success">已经到账</string>
+    <string name="silver_diamond">银钻</string>
+    <string name="ticket_all">总星票</string>
+    <string name="ticket_silver_tip">星票兑换银钻有效期为30天</string>
+    <plurals name="cost_show_ticket_now">
+        <item quantity="one">立即扣除:%1$d娱乐星票</item>
+        <item quantity="other">立即扣除:%1$d娱乐星票</item>
+    </plurals>
+    <plurals name="cost_game_ticket_now">
+        <item quantity="one">立即扣除:%1$d游戏星票</item>
+        <item quantity="other">立即扣除:%1$d游戏星票</item>
+    </plurals>
+    <plurals name="mibi">
+        <item quantity="other">%1$s米币</item>
+    </plurals>
+    <plurals name="recharge_money_coda_unit">
+        <item quantity="other">%1$s IDR</item>
+    </plurals>
+    <plurals name="silver_diamond_plural">
+        <item quantity="other">%1$s银钻</item>
+    </plurals>
 </resources>

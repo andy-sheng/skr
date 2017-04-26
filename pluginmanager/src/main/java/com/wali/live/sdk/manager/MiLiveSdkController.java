@@ -56,6 +56,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
     private static final String ACTION_GET_CHANNEL_LIVES = "get_channel_lives";
+    private static final String ACTION_GET_FOLLOWING_LIST = "get_following_list";
 
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
@@ -90,6 +91,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_THIRD_PART_LOGIN, 205005);
         mMinVersionMap.put(ACTION_GET_CHANNEL_LIVES, 205008);
+        mMinVersionMap.put(ACTION_GET_FOLLOWING_LIST, 205011);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -393,6 +395,14 @@ public class MiLiveSdkController implements IMiLiveSdk {
             return;
         }
         MiLiveSdkServiceProxy.getInstance().getChannelLives(callback);
+    }
+
+    @Override
+    public void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp) {
+        if (!checkVersion(ACTION_GET_FOLLOWING_LIST, callback)) {
+            return;
+        }
+        MiLiveSdkServiceProxy.getInstance().getFollowingList(callback, isBothWay, timeStamp);
     }
 
     @Override
