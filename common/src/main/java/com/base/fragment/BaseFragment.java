@@ -366,6 +366,14 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
         return (V) mRootView.findViewById(resId);
     }
 
+    @Nullable
+    public <V extends View> V $(ViewGroup parent, @IdRes int resId) {
+        if (parent == null) {
+            return null;
+        }
+        return (V) parent.findViewById(resId);
+    }
+
     @Override
     public void onSelfPopped() {
         FragmentNaviUtils.popFragment(getActivity());

@@ -92,7 +92,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
-import com.wali.live.watchsdk.ranking.RankingFragment;
+import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.schema.SchemeActivity;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
@@ -1048,8 +1048,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 long uid = (long) event.obj1;
                 int ticket = (int) event.obj2;
                 String liveId = (String) event.obj3;
-                RankingFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
-                        mMyRoomData.isTicketing() ? RankingFragment.PARAM_FROM_CURRENT : RankingFragment.PARAM_FROM_TOTAL,
+                RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
+                        mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
                         true, isDisplayLandscape());
             }
             break;

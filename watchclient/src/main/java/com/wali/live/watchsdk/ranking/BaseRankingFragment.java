@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.ranking;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,12 +31,18 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Subscription;
+
 /**
  * Created by jiyangli on 16-6-30.
  */
 public abstract class BaseRankingFragment extends MyRxFragment {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
-    private static final String TAG = BaseRankingFragment.class.getSimpleName();
+
+    public static final String EXTRA_TICKET_NUM = "extra_ticket_num";
+    public static final String EXTRA_TICKET_START = "extra_ticket_start";
+    public static final String EXTRA_UUID = "extra_uuid";
+    public static final String EXTRA_LIVE_ID = "extra_live_id";
 
     protected final int PAGE_COUNT = 20;
 
@@ -44,40 +51,16 @@ public abstract class BaseRankingFragment extends MyRxFragment {
     protected RecyclerView mRecyclerView;
     protected View mLoadingView;
     protected View mEmptyView;
-    protected View mCoverView;
+    protected ViewGroup mCoverView;
 
-    protected boolean mIsLoading = false;
     protected long mUuid;
     protected String mLiveId;
     protected int mOffSet = 0;
     protected int mTicketNum = 0;
     protected volatile List<RankProto.RankUser> mResultList = new ArrayList();//为了动画流畅缓存第一次加载的数据，动画结束之后进行刷新
 
-    private String fragmentType;
-
-    public BaseRankingFragment() {
-
-    }
-
-    public BaseRankingFragment(int mTicketNum, long mUuid, String mLiveId) {
-        this.fragmentType = RankRecyclerViewAdapter.TOTAL_RANK;
-        this.mTicketNum = mTicketNum;
-        this.mUuid = mUuid;
-        this.mLiveId = mLiveId;
-        if (mUuid == 0) {
-            this.mUuid = UserAccountManager.getInstance().getUuidAsLong();
-        }
-    }
-
-    public BaseRankingFragment(int mTicketNum, int mStartTicket, long mUuid, String mLiveId) {
-        this.fragmentType = RankRecyclerViewAdapter.CURRENT_RANK;
-        this.mTicketNum = mTicketNum - mStartTicket;
-        this.mUuid = mUuid;
-        this.mLiveId = mLiveId;
-        if (mUuid == 0) {
-            this.mUuid = UserAccountManager.getInstance().getUuidAsLong();
-        }
-    }
+    protected String mFragmentType;
+    protected Subscription mSubscription;
 
     @Override
     public int getRequestCode() {
@@ -91,31 +74,40 @@ public abstract class BaseRankingFragment extends MyRxFragment {
 
     @Override
     protected void bindView() {
+        Bundle bundle = getArguments();
+        initData(bundle);
+
         initView();
-        initData();
         EventBus.getDefault().register(this);
     }
 
+    protected void initData(Bundle bundle) {
+        mUuid = bundle.getLong(EXTRA_UUID);
+        mLiveId = bundle.getString(EXTRA_LIVE_ID);
 
-    private void initView() {
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.rankList);
-        mCoverView = mRootView.findViewById(R.id.cover_view);
-        mLoadingView = mCoverView.findViewById(R.id.loading);
-        mEmptyView = mCoverView.findViewById(R.id.empty);
-        mLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        if (mUuid == 0) {
+            this.mUuid = UserAccountManager.getInstance().getUuidAsLong();
+        }
     }
 
-    private void initData() {
+    private void initView() {
+        mRecyclerView = $(R.id.rankList);
+        mCoverView = $(R.id.cover_view);
+        mLoadingView = $(mCoverView, R.id.loading);
+        mEmptyView = $(mCoverView, R.id.empty);
+
+        mLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                OnscrollRecyclerView(recyclerView);
+                scrollRecyclerView(recyclerView);
             }
         });
-        mVoteRankingAdapter = new RankRecyclerViewAdapter((RxActivity) getActivity(), fragmentType);
+        mVoteRankingAdapter = new RankRecyclerViewAdapter((RxActivity) getActivity(), mFragmentType);
         mVoteRankingAdapter.setShowTotalNumHeader(true);
-        if (!TextUtils.isEmpty(fragmentType) && fragmentType.equals(RankRecyclerViewAdapter.TOTAL_RANK)) {
+        if (!TextUtils.isEmpty(mFragmentType) && mFragmentType.equals(RankRecyclerViewAdapter.TOTAL_RANK)) {
             mVoteRankingAdapter.setTotalNum(mTicketNum);
         }
         mRecyclerView.setAdapter(mVoteRankingAdapter);
@@ -128,37 +120,29 @@ public abstract class BaseRankingFragment extends MyRxFragment {
         loadMoreData(mUuid, mLiveId, PAGE_COUNT, mOffSet);
     }
 
-
-    //--------------------------------------------视图逻辑------------------------------------------------------------
-
-    /*
-    滑动recyclerview加载数据
+    /**
+     * 滑动recyclerview加载数据
      */
-    public void OnscrollRecyclerView(RecyclerView recyclerView) {
-        //presenter OnscrollRecyclerView();
+    public void scrollRecyclerView(RecyclerView recyclerView) {
         if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
-            if (!mIsLoading) {
-                loadMoreData(mUuid, mLiveId, PAGE_COUNT, mOffSet);
-            }
+            loadMoreData(mUuid, mLiveId, PAGE_COUNT, mOffSet);
         }
     }
 
-    /*
-    点击item跳转用户详情页
+    /**
+     * 点击item跳转用户详情页
      */
     public void onClickItem(int position) {
-        //presenter onClickItem();
         UserListData userListData = mVoteRankingAdapter.getRankUser(position);
         if (null != userListData) {
             //TODO jump to PersonInfoFragment
         }
     }
 
-    /*
-    获取更多数据更新UI
+    /**
+     * 获取更多数据更新UI
      */
     public void updateView(List<RankProto.RankUser> result) {
-        //presenter updateView();
         if (result == null || result.size() == 0) {
             if (mOffSet == 0) {
                 mEmptyView.setVisibility(View.VISIBLE);
@@ -185,8 +169,8 @@ public abstract class BaseRankingFragment extends MyRxFragment {
         mVoteRankingAdapter.setTotalNum(ticket);
     }
 
-    /*
-    加载数据前 显示loadingView
+    /**
+     * 加载数据前 显示loadingView
      */
     public void preLoadData() {
         mCoverView.setVisibility(View.VISIBLE);
@@ -199,8 +183,6 @@ public abstract class BaseRankingFragment extends MyRxFragment {
 
     /**
      * 关注与取消关注
-     *
-     * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FollowOrUnfollowEvent event) {
@@ -225,7 +207,7 @@ public abstract class BaseRankingFragment extends MyRxFragment {
                     }
 
                     Fragment fragment = FragmentNaviUtils.getTopFragment(getActivity());
-                    if (!(fragment instanceof RankingFragment)) {
+                    if (!(fragment instanceof RankingPagerFragment)) {
                         mVoteRankingAdapter.notifyDataSetChanged();
                     } else {
                         mVoteRankingAdapter.notifyItemChanged(i);

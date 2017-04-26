@@ -67,7 +67,7 @@ import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
-import com.wali.live.watchsdk.ranking.RankingFragment;
+import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.schema.SchemeActivity;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -564,8 +564,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 long uid = (long) event.obj1;
                 int ticket = (int) event.obj2;
                 String liveId = (String) event.obj3;
-                RankingFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
-                        mMyRoomData.isTicketing() ? RankingFragment.PARAM_FROM_CURRENT : RankingFragment.PARAM_FROM_TOTAL,
+                RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
+                        mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
                         true, isDisplayLandscape());
             }
             break;
@@ -663,9 +663,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //        }
 //
 //        if (user.getUid() == mMyRoomData.getUid()) {
-//            RankingFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingFragment.PARAM_FROM_TOTAL, true);
+//            RankingPagerFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingPagerFragment.PARAM_FROM_TOTAL, true);
 //        } else {
-//            RankingFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingFragment.PARAM_FROM_TOTAL, false);
+//            RankingPagerFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingPagerFragment.PARAM_FROM_TOTAL, false);
 //        }
     }
 

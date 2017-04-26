@@ -1,11 +1,13 @@
 package com.wali.live.watchsdk.ranking;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.base.log.MyLog;
 import com.wali.live.proto.RankProto;
 import com.wali.live.proto.RankProto.RankUser;
 import com.wali.live.utils.relation.RelationUtils;
+import com.wali.live.watchsdk.ranking.adapter.RankRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -19,28 +21,25 @@ import rx.schedulers.Schedulers;
  * @module 本场星票排行榜页面
  */
 public class CurrentRankingFragment extends BaseRankingFragment {
-    private static final String TAG = CurrentRankingFragment.class.getSimpleName();
+    protected void initData(Bundle bundle) {
+        super.initData(bundle);
+        mTicketNum = bundle.getInt(EXTRA_TICKET_NUM) - bundle.getInt(EXTRA_TICKET_START);
 
-    public CurrentRankingFragment() {
-    }
-
-    public CurrentRankingFragment(int mTicketNum, int mStartTicket, long mUuid, String mLiveId) {
-        super(mTicketNum, mStartTicket, mUuid, mLiveId);
+        mFragmentType = RankRecyclerViewAdapter.CURRENT_RANK;
         mIsFollowSysRotateForViewPagerFragment = true;
     }
 
     @Override
     protected void loadMoreData(long id, final String liveId, final int pageCount, final int offset) {
-        if (mIsLoading) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             return;
         }
         preLoadData();
 
-        Observable
+        mSubscription = Observable
                 .create(new Observable.OnSubscribe<List<RankProto.RankUser>>() {
                     @Override
                     public void call(Subscriber<? super List<RankUser>> subscriber) {
-                        mIsLoading = true;
                         subscriber.onNext(RelationUtils.getRankRoomList(liveId, pageCount, offset));
                         subscriber.onCompleted();
                     }
@@ -61,13 +60,11 @@ public class CurrentRankingFragment extends BaseRankingFragment {
 
                     @Override
                     public void onNext(List<RankUser> result) {
-                        mIsLoading = false;
                         mLoadingView.setVisibility(View.GONE);
                         mResultList.addAll(result);
                         updateView(result);
                     }
                 });
-
 
         Observable
                 .create(new Observable.OnSubscribe<Integer>() {
@@ -87,8 +84,7 @@ public class CurrentRankingFragment extends BaseRankingFragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.e(TAG, "getTicketListResponse error");
-                        e.printStackTrace();
+                        MyLog.e(TAG, "getTicketListResponse error", e);
                     }
 
                     @Override

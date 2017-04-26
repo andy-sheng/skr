@@ -1,10 +1,12 @@
 package com.wali.live.watchsdk.ranking;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.base.log.MyLog;
 import com.wali.live.proto.RankProto;
 import com.wali.live.utils.relation.RelationUtils;
+import com.wali.live.watchsdk.ranking.adapter.RankRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -17,26 +19,26 @@ import rx.schedulers.Schedulers;
 /**
  * @module 总榜星票排行榜页面
  */
-public class TotleRankingFragment extends BaseRankingFragment {
-    private static final String TAG = TotleRankingFragment.class.getSimpleName();
+public class TotalRankingFragment extends BaseRankingFragment {
+    protected void initData(Bundle bundle) {
+        super.initData(bundle);
+        mTicketNum = bundle.getInt(EXTRA_TICKET_NUM);
 
-    public TotleRankingFragment(int mTicketNum, long mUuid, String mLiveId) {
-        super(mTicketNum, mUuid, mLiveId);
+        mFragmentType = RankRecyclerViewAdapter.TOTAL_RANK;
         mIsFollowSysRotateForViewPagerFragment = true;
     }
 
     @Override
     protected void loadMoreData(final long id, String mLiveId, final int pageCount, final int offset) {
-        if (mIsLoading) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             return;
         }
         preLoadData();
 
-        Observable
+        mSubscription = Observable
                 .create(new Observable.OnSubscribe<List<RankProto.RankUser>>() {
                     @Override
                     public void call(Subscriber<? super List<RankProto.RankUser>> subscriber) {
-                        mIsLoading = true;
                         subscriber.onNext(RelationUtils.getTicketListResponse(id, pageCount, offset));
                         subscriber.onCompleted();
                     }
@@ -51,18 +53,15 @@ public class TotleRankingFragment extends BaseRankingFragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.e(TAG, "getTicketListResponse error");
-                        e.printStackTrace();
+                        MyLog.e(TAG, "getTicketListResponse error", e);
                     }
 
                     @Override
                     public void onNext(List<RankProto.RankUser> result) {
-                        mIsLoading = false;
                         mLoadingView.setVisibility(View.GONE);
                         mResultList.addAll(result);
                         updateView(result);
                     }
                 });
     }
-
 }

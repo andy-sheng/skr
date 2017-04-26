@@ -21,6 +21,5 @@ public class RankingTotalHolder extends BaseHolder<SimpleTextModel> {
 
     @Override
     protected void bindView() {
-
     }
 }
