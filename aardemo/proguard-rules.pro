@@ -27,6 +27,9 @@
 -keep class com.wali.live.watchsdk.ipc.service.LiveInfo {*;}
 -keep class com.wali.live.watchsdk.ipc.service.UserInfo {*;}
 
+#log
+-keep public class ch.qos.logback.** { *; }
+
 #eventBus
 -keepattributes *Annotation*
 -keepclassmembers class ** {
