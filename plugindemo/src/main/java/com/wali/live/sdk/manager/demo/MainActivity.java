@@ -23,6 +23,7 @@ import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.notification.NotificationManger;
 import com.wali.live.sdk.manager.demo.utils.StringUtils;
 import com.wali.live.sdk.manager.demo.utils.ToastUtils;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
@@ -122,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
             public void notifyLogin(int var1) {
                 if (var1 == IMiLiveSdk.ICallback.CODE_SUCCESS) {
                     ToastUtils.showToast("登录成功");
-                }else{
-                    ToastUtils.showToast("登录错误，错误码："+var1);
+                } else {
+                    ToastUtils.showToast("登录错误，错误码：" + var1);
                 }
             }
 
@@ -148,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void notifyOtherAppActive() {
                 ToastUtils.showToast("有其他APP在活跃");
+            }
+
+            @Override
+            public void notifyWantShare(ShareInfo shareInfo) {
+                ToastUtils.showToast(" notifyWantShare" + ((shareInfo != null) ? shareInfo.toString() : ""));
             }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);

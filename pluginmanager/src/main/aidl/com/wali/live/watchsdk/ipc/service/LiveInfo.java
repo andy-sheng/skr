@@ -218,6 +218,26 @@ public class LiveInfo implements Parcelable {
         dest.writeString(this.mTag);
         dest.writeInt(this.mAppType);
         dest.writeInt(this.mLiveType);
+    }
 
+    @Override
+    public String toString() {
+        return "LiveInfo{" +
+                "mLiveId='" + mLiveId + '\'' +
+                ", mUserId=" + mUserId +
+                ", mNickname='" + mNickname + '\'' +
+                ", mAvatar=" + mAvatar +
+                ", mLevel=" + mLevel +
+                ", mCertType=" + mCertType +
+                ", mCity='" + mCity + '\'' +
+                ", mViewerCnt=" + mViewerCnt +
+                ", mUrl='" + mUrl + '\'' +
+                ", mCoverUrl='" + mCoverUrl + '\'' +
+                ", mLiveTitle='" + mLiveTitle + '\'' +
+                ", mStartTime=" + mStartTime +
+                ", mTag='" + mTag + '\'' +
+                ", mAppType=" + mAppType +
+                ", mLiveType=" + mLiveType +
+                '}';
     }
 }

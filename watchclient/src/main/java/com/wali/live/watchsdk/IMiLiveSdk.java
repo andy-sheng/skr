@@ -6,6 +6,7 @@ import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
 
 import java.util.List;
@@ -140,6 +141,11 @@ public interface IMiLiveSdk {
          * 通知上层有其它的app在活跃状态
          */
         void notifyOtherAppActive();
+
+        /**
+         * 通知上层分享
+         */
+        void notifyWantShare(ShareInfo shareInfo);
     }
 
     @Keep

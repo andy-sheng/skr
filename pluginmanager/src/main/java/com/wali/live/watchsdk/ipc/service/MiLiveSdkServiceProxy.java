@@ -95,6 +95,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 mFollowingListCallback = null;
             }
         }
+
+        @Override
+        public void onEventShareTrigger(ShareInfo shareInfo) throws RemoteException {
+            if (mCallback != null) {
+                mCallback.notifyWantShare(shareInfo);
+            }
+        }
     };
 
     private static MiLiveSdkServiceProxy sInstance;

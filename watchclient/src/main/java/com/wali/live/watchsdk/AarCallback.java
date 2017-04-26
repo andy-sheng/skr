@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk;
 
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
 
 import java.util.List;
@@ -59,6 +60,13 @@ public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCal
     public void notifyOtherAppActive() {
         if (mCallback != null) {
             mCallback.notifyOtherAppActive();
+        }
+    }
+
+    @Override
+    public void notifyWantShare(ShareInfo shareInfo) {
+        if (mCallback != null) {
+            mCallback.notifyWantShare(shareInfo);
         }
     }
 

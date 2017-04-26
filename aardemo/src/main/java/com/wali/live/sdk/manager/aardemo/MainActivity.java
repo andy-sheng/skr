@@ -9,6 +9,7 @@ import com.wali.live.livesdk.live.MiLiveSdkController;
 import com.wali.live.sdk.manager.aardemo.global.GlobalData;
 import com.wali.live.sdk.manager.aardemo.utils.ToastUtils;
 import com.wali.live.watchsdk.IMiLiveSdk;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void notifyOtherAppActive() {
                 ToastUtils.showToast("有其他APP在活跃");
+            }
+
+            @Override
+            public void notifyWantShare(ShareInfo shareInfo) {
+                ToastUtils.showToast("notifyWantShare " + ((shareInfo != null) ? shareInfo.toString() : ""));
             }
         });
     }
