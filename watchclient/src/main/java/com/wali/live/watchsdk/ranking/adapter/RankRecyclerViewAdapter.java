@@ -34,7 +34,6 @@ import com.wali.live.watchsdk.ranking.data.RankUserData;
 import com.wali.live.watchsdk.ranking.holder.AnchorRankingTopHolder;
 import com.wali.live.watchsdk.ranking.holder.AnchorRankingViewHolder;
 import com.wali.live.watchsdk.ranking.holder.EmptyViewHolder;
-import com.wali.live.watchsdk.ranking.holder.FooterViewHolder;
 import com.wali.live.watchsdk.ranking.holder.RankingTotalHolder;
 
 import java.util.ArrayList;
@@ -54,35 +53,36 @@ import rx.schedulers.Schedulers;
 public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
     public static final String TAG = RankRecyclerViewAdapter.class.getSimpleName();
 
+    public final static String TOTAL_RANK = "total";
+    public final static String CURRENT_RANK = "current";
+
     protected static int[] mIconDrawableList = {R.drawable.anchor_rank_list_item_icon_1, R.drawable.anchor_rank_list_item_icon_2, R.drawable.anchor_rank_list_item_icon_3};
     protected static int[] mIconBgList = {R.drawable.anchor_rank_round_bg_top1, R.drawable.anchor_rank_round_bg_top2, R.drawable.anchor_rank_round_bg_top3};
 
     private static final int TYPE_EMPTY = 9999;
     private static final int TYPE_HEADER_TOP_3 = -1;
     private static final int TYPE_HEADER_TOTAL_NUM = -2;
-    private static final int TYPE_FOOTER = Integer.MIN_VALUE;
     private static final int TYPE_ITEM_BIG_HEIGHT = 0;
     private static final int TYPE_ITEM = 1;
-    public final static String TOTAL_RANK = "total";
-    public final static String CURRENT_RANK = "current";
+
+    private RxActivity mAct;
 
     private int mNameTextMaxWidth;
-    private String type;
-    private RxActivity mAct;
-    private boolean hasFooter;//设置是否显示Footer
+    private String mType;
+
     private List<UserListData> mRankUserList = new ArrayList<>();
     private int mTotalNum;//总的星票数
 
-    public RankRecyclerViewAdapter(RxActivity mAct, String type) {
-        this.type = type;
-        this.mAct = mAct;
-    }
-
-    private boolean mShowTopThreeHeader; // top 3 header
-    private boolean mShowTotalNumHeader;  // 总共多少星票 header
+    private boolean mShowTopThreeHeader;    // top 3 header
+    private boolean mShowTotalNumHeader;    // 总共多少星票 header
 
     protected OnItemClickListener mClickListener;
     protected OnItemLongClickListener mLongClickListener;
+
+    public RankRecyclerViewAdapter(RxActivity mAct, String type) {
+        this.mType = type;
+        this.mAct = mAct;
+    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mClickListener = listener;
@@ -100,16 +100,13 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = null;
         if (viewType == TYPE_HEADER_TOP_3) {
-            if (type.equals(TOTAL_RANK) && getBasicItemCount() > 3) {
+            if (mType.equals(TOTAL_RANK) && getBasicItemCount() > 3) {
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.anchor_rank_list_total_top_3, viewGroup, false);
                 return new AnchorRankingTopHolder(view);
             }
         } else if (viewType == TYPE_HEADER_TOTAL_NUM) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.vote_ranking_total_item, viewGroup, false);
             return new RankingTotalHolder(view);
-        } else if (viewType == TYPE_FOOTER) {    //底部 加载view
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_view_load_more, viewGroup, false);
-            return new FooterViewHolder(view);
         } else if (viewType == TYPE_EMPTY) {
             view = LayoutInflater.from(GlobalData.app()).inflate(R.layout.empty_view, viewGroup, false);
             return new EmptyViewHolder(view);
@@ -144,7 +141,7 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
 
     public UserListData getRankUser(int position) {
         position = position - (mShowTotalNumHeader ? 1 : 0);
-        if (type.equals(TOTAL_RANK) && getBasicItemCount() > 3) {
+        if (mType.equals(TOTAL_RANK) && getBasicItemCount() > 3) {
             position += 2;
         }
         if (position < 0 || position >= mRankUserList.size()) {
@@ -202,11 +199,9 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
             }
             position--;
         }
-        if (position == 0 && mShowTopThreeHeader && type.equals(TOTAL_RANK)) {
+        if (position == 0 && mShowTopThreeHeader && mType.equals(TOTAL_RANK)) {
             return TYPE_HEADER_TOP_3;
-        } else if (position == getBasicItemCount() && hasFooter) {
-            return TYPE_FOOTER;
-        } else if (position >= 0 && position < 3 && type.equals(CURRENT_RANK) && getBasicItemCount() >= 3) {
+        } else if (position >= 0 && position < 3 && mType.equals(CURRENT_RANK) && getBasicItemCount() >= 3) {
             return TYPE_ITEM_BIG_HEIGHT;
         } else if (getBasicItemCount() == 0) {
             return TYPE_EMPTY;
@@ -218,10 +213,10 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         if (getBasicItemCount() == 0) {
             return 1;
-        } else if (type.equals(TOTAL_RANK) && getBasicItemCount() > 3) {
-            return getBasicItemCount() + (mShowTotalNumHeader ? 1 : 0) + (hasFooter ? 1 : 0) - 2;// 2=3-1,把头3聚合成一条，相当于减少了2个Item
+        } else if (mType.equals(TOTAL_RANK) && getBasicItemCount() > 3) {
+            return getBasicItemCount() + (mShowTotalNumHeader ? 1 : 0) - 2;// 2=3-1,把头3聚合成一条，相当于减少了2个Item
         } else {
-            return getBasicItemCount() + (mShowTotalNumHeader ? 1 : 0) + (hasFooter ? 1 : 0);
+            return getBasicItemCount() + (mShowTotalNumHeader ? 1 : 0);
         }
     }
 
@@ -244,7 +239,7 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
             holder.avatarBg.setBackgroundResource(0);
             holder.nameTv.setTextColor(mResources.getColor(R.color.color_black_trans_90));
 
-            if (type.equals(CURRENT_RANK) && getBasicItemCount() >= 3) {
+            if (mType.equals(CURRENT_RANK) && getBasicItemCount() >= 3) {
                 if (position > 2 + totalHeaderOffset) {
                     holder.rankNum.setText(String.valueOf(position + (mShowTotalNumHeader ? 0 : 1)));
                 } else {
@@ -277,7 +272,6 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
                 holder.imgGenderIv.setVisibility(View.GONE);
             }
 
-
             if (UserAccountManager.getInstance().getUuidAsLong() == item.userId) {
                 holder.followState.setVisibility(View.GONE);
                 holder.clickArea.setVisibility(View.GONE);
@@ -299,7 +293,7 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
                 holder.clickArea.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        clickRelation(item, holder.followState);
+                        clickRelation(item);
                     }
                 });
             }
@@ -353,8 +347,7 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void clickRelation(UserListData item, TextView followStateIv) {
-
+    public void clickRelation(UserListData item) {
         Observable.just(item)
                 .observeOn(Schedulers.io())
                 .flatMap(new Func1<UserListData, Observable<Boolean>>() {
@@ -457,7 +450,7 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
                 holder.rlytClickAreas[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        clickRelation(userData, holder.txtFollowStates[finalI]);
+                        clickRelation(userData);
                     }
                 });
             }

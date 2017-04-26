@@ -47,7 +47,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
-import com.wali.live.watchsdk.ranking.RankingFragment;
+import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -501,8 +501,8 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                 long uid = (long) event.obj1;
                 int ticket = (int) event.obj2;
                 String liveId = (String) event.obj3;
-                RankingFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
-                        mMyRoomData.isTicketing() ? RankingFragment.PARAM_FROM_CURRENT : RankingFragment.PARAM_FROM_TOTAL,
+                RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
+                        mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
                         true, isDisplayLandscape());
             }
             break;

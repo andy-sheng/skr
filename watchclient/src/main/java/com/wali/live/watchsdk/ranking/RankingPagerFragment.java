@@ -30,13 +30,14 @@ import java.util.List;
  * @module 星票排行榜页面
  * Created by jiyangli on 16-6-30.
  */
-public class RankingFragment extends BaseFragment {
+public class RankingPagerFragment extends BaseFragment {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
+
     public static final String EXTRA_TICKET_COUNT = "extra_ticket_count";
     public static final String EXTRA_START_TICKET_COUNT = "extra_start_ticket_count";
     public static final String EXTRA_UUID = "extra_uid";
     public static final String EXTRA_LIVEID = "extra_live_id";
-    public static final String IS_LANDSPACE = "isLandspace";
+    public static final String EXTRA_IS_LANDSCAPE = "extra_is_landscape";
 
     private List<Fragment> mTabContents = new ArrayList();
 
@@ -72,20 +73,27 @@ public class RankingFragment extends BaseFragment {
             mLiveId = bundle.getString(EXTRA_LIVEID);
             mFromType = bundle.getString(PARAM_FROM_TYPE);
             isShowCurrent = bundle.getBoolean(IS_SHOW_CURRENT);
-            isLandSpace = bundle.getBoolean(IS_LANDSPACE);
+            isLandSpace = bundle.getBoolean(EXTRA_IS_LANDSCAPE);
         }
         if (mUuid == 0) {
             mUuid = UserAccountManager.getInstance().getUuidAsLong();
         }
-        initView(rootView);
-        StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_RANKING_SHOW, 1);
 
         return rootView;
     }
 
     @Override
     protected void bindView() {
+        mViewPager = $(R.id.id_vp);
+        mIndicator = $(R.id.id_indicator);
+        mBackTitleBar = $(R.id.title_bar);
 
+        if (!isShowCurrent) {
+            mIndicator.setIsCanChange(false);
+            mViewPager.setNoScroll(true);
+        }
+
+        StatisticsWorker.getsInstance().sendCommand(StatisticsWorker.AC_APP, StatisticsKey.KEY_RANKING_SHOW, 1);
     }
 
     private void init() {
@@ -108,7 +116,6 @@ public class RankingFragment extends BaseFragment {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -122,7 +129,6 @@ public class RankingFragment extends BaseFragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -140,20 +146,33 @@ public class RankingFragment extends BaseFragment {
     private void initDatas() {
         mDatas = Arrays.asList(getResources().getStringArray(R.array.rank_type));
         {
-            TotleRankingFragment fragment = new TotleRankingFragment(mTicketNum, mUuid, mLiveId);
-            CurrentRankingFragment frag1ment = new CurrentRankingFragment(mTicketNum, mTicketStartNum, mUuid, mLiveId);
-
-            mTabContents.add(fragment);
-            mTabContents.add(frag1ment);
-
-            mBackTitleBar.setTitle(R.string.rankTitle);
-            mBackTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentNaviUtils.popFragmentFromStack(getActivity());
-                }
-            });
+            TotalRankingFragment totalFragment = new TotalRankingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(BaseRankingFragment.EXTRA_TICKET_NUM, mTicketNum);
+            bundle.putLong(BaseRankingFragment.EXTRA_UUID, mUuid);
+            bundle.putString(BaseRankingFragment.EXTRA_LIVE_ID, mLiveId);
+            totalFragment.setArguments(bundle);
+            mTabContents.add(totalFragment);
         }
+
+        {
+            CurrentRankingFragment currentFragment = new CurrentRankingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(BaseRankingFragment.EXTRA_TICKET_NUM, mTicketNum);
+            bundle.putInt(BaseRankingFragment.EXTRA_TICKET_START, mTicketStartNum);
+            bundle.putLong(BaseRankingFragment.EXTRA_UUID, mUuid);
+            bundle.putString(BaseRankingFragment.EXTRA_LIVE_ID, mLiveId);
+            currentFragment.setArguments(bundle);
+            mTabContents.add(currentFragment);
+        }
+
+        mBackTitleBar.setTitle(R.string.rankTitle);
+        mBackTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentNaviUtils.popFragmentFromStack(getActivity());
+            }
+        });
 
         mAdapter = new FragmentStatePagerAdapter(getFragmentManager()) {
             @Override
@@ -166,17 +185,6 @@ public class RankingFragment extends BaseFragment {
                 return mTabContents.get(position);
             }
         };
-    }
-
-    private void initView(View view) {
-        mViewPager = (NoScrollViewPager) view.findViewById(R.id.id_vp);
-        mIndicator = (ViewPagerIndicator) view.findViewById(R.id.id_indicator);
-        mBackTitleBar = (BackTitleBar) view.findViewById(R.id.title_bar);
-
-        if (!isShowCurrent) {
-            mIndicator.setIsCanChange(false);
-            mViewPager.setNoScroll(true);
-        }
     }
 
     @Override
@@ -232,21 +240,20 @@ public class RankingFragment extends BaseFragment {
         }
     }
 
-
     public static void openFragment(BaseActivity activity, int ticket, int startTicket, long ownerId, String roomId, String type, boolean isSHow, boolean isLandspace) {
         if (activity == null || activity.isFinishing()) {
             return;
         }
         Bundle bundle = new Bundle();
-        bundle.putInt(RankingFragment.EXTRA_TICKET_COUNT, ticket);
-        bundle.putInt(RankingFragment.EXTRA_START_TICKET_COUNT, startTicket);
-        bundle.putLong(RankingFragment.EXTRA_UUID, ownerId);
-        bundle.putString(RankingFragment.EXTRA_LIVEID, roomId);
+        bundle.putInt(RankingPagerFragment.EXTRA_TICKET_COUNT, ticket);
+        bundle.putInt(RankingPagerFragment.EXTRA_START_TICKET_COUNT, startTicket);
+        bundle.putLong(RankingPagerFragment.EXTRA_UUID, ownerId);
+        bundle.putString(RankingPagerFragment.EXTRA_LIVEID, roomId);
         bundle.putBoolean(BaseFragment.PARAM_FORCE_PORTRAIT, true);
-        bundle.putString(RankingFragment.PARAM_FROM_TYPE, type);
-        bundle.putBoolean(RankingFragment.IS_SHOW_CURRENT, isSHow);
+        bundle.putString(RankingPagerFragment.PARAM_FROM_TYPE, type);
+        bundle.putBoolean(RankingPagerFragment.IS_SHOW_CURRENT, isSHow);
 
-        bundle.putBoolean(RankingFragment.IS_LANDSPACE, isLandspace);
-        FragmentNaviUtils.addFragment(activity, R.id.main_act_container, RankingFragment.class, bundle, true, false, true);
+        bundle.putBoolean(RankingPagerFragment.EXTRA_IS_LANDSCAPE, isLandspace);
+        FragmentNaviUtils.addFragment(activity, R.id.main_act_container, RankingPagerFragment.class, bundle, true, false, true);
     }
 }
