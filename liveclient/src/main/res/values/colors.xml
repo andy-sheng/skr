@@ -6,4 +6,6 @@
     <color name="text_color_black_trans_90">#E5000000</color>
     <color name="colorPrimary">#FAFAFA</color>
     <color name="color_black_tran_70">#B2000000</color>
+    <color name="text_color_e5aa1e_trans_50">#80e5aa1e</color>
+    <color name="color_grey">#f8f8f8</color>
 </resources>

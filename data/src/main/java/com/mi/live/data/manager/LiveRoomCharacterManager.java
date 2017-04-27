@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.Constants;
 import com.mi.live.data.api.BanSpeakerUtils;
@@ -14,6 +15,7 @@ import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.proto.AccountProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,6 +29,7 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -36,6 +39,9 @@ import rx.schedulers.Schedulers;
  * 只有房主才需要
  */
 public class LiveRoomCharacterManager {
+
+    private static final String TAG = LiveRoomCharacterManager.class.getSimpleName();
+
     private static LiveRoomCharacterManager sInstance;
 
     public final static int MANAGER_CNT = 5;
@@ -234,17 +240,6 @@ public class LiveRoomCharacterManager {
                 });
     }
 
-//    public void banSpeaker(long uuid, boolean ebable) {
-//
-//        if (ebable) {
-//            if (!speakerBanList.contains(uuid)) {
-//                speakerBanList.add(uuid);
-//            }
-//        } else {
-//            speakerBanList.remove(uuid);
-//        }
-//    }
-
     public void banSpeaker(User user, boolean ebable) {
         int index = -1;
         for (int i = 0; i < speakerBanList.size(); i++) {
@@ -382,4 +377,9 @@ public class LiveRoomCharacterManager {
         }
         return result;
     }
+
+    public void clearManagerCache(){
+        managerList.clear();
+    }
+
 }

@@ -170,4 +170,18 @@
     <string name="cancel_share_tips">%1$s分享已關</string>
     <string name="prepare_live_share_tips">点击\"开始直播\"，把直播分享到%1$s</string>
     <string name="uninstall_share_tips">未安装%1$s，请安装后分享</string>
+
+    <string name="admin_manager_tips_1">1：房間管理員為永久管理員，設定後這個管理員下次你再次直播仍舊是你的管理員，無須重新設定。</string>
+    <string name="admin_manager_tips_2">2：房間管理員最多5位，請合理安排這5個名額。</string>
+    <string name="admin_manager_tips_3">3：你的榜一也擁有禁言權限，無須將榜一設定管理員他就可以幫你管理房間</string>
+    <string name="cancel_manage">取消管理</string>
+    <string name="search_txt">搜尋</string>
+    <string name="match_hint">只有選中的好友能看到直播</string>
+    <string name="refreshing">載入中...</string>
+    <string name="match_ok_btn">確定(%1$d/%2$d)</string>
+    <string name="select_live_line_friends">選擇好友通話</string>
+    <string name="room_friends">本房間的關注好友</string>
+    <string name="sel_count_hint">最多選擇%d人</string>
+    <string name="remove_manager_fail">取消管理失敗</string>
+
 </resources>

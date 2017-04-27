@@ -1,5 +1,6 @@
 package com.wali.live.event;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.wali.live.common.model.CommentModel;
@@ -214,6 +215,38 @@ public abstract class EventClass {
     }
 
     public static class HideRechargeProgressEvent{
+    }
+
+    public static class ChangeCancel {
+        public ChangeCancel(long userId) {
+            this.userId = userId;
+        }
+
+        public long userId;
+    }
+
+    public static class OnActivityResultEvent {
+        public int requestCode;
+        public int resultCode;
+        public Intent data;
+
+        public OnActivityResultEvent(int requestCode, int resultCode, Intent data) {
+            this.requestCode = requestCode;
+            this.resultCode = resultCode;
+            this.data = data;
+        }
+    }
+
+    public static class ChangeBootomInvitee {
+        public ChangeBootomInvitee(long userId, long avatar, boolean checked) {
+            this.userId = userId;
+            this.avatar = avatar;
+            this.checked = checked;
+        }
+
+        public final long userId;
+        public final long avatar;
+        public final boolean checked;
     }
 
 }

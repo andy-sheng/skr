@@ -158,6 +158,7 @@
     <string name="has_add_manager_count">Added %d</string>
     <string name="has_add_manager_count_zero">Haven\'t added managers</string>
     <string name="live_title_hint">Good titles give you more chances to get followers</string>
+
     <string name="qzone">Qzone</string>
     <string name="QQ">QQ</string>
     <string name="blog">Weibo</string>
@@ -174,5 +175,19 @@
     <string name="prepare_live_share_tips">Tap \"Start\" and share live stream to %1$s</string>
     <string name="cancel_share_tips">%1$s sharing is off</string>
     <string name="live_end_share">Share with</string>
+
+
+    <string name="admin_manager_tips_1">1. Your manager is permanent, you don\'t need to add again next time.</string>
+    <string name="admin_manager_tips_2">2. You can add up to 5 managers.</string>
+    <string name="admin_manager_tips_3">3. The first person in your rankings can also ban comments without being a manager.</string>
+    <string name="cancel_manage">Remove</string>
+    <string name="search_txt">Search</string>
+    <string name="match_hint">Only chosen people can view live stream</string>
+    <string name="refreshing">Just a sec\u2026</string>
+    <string name="match_ok_btn">OK (%1$d/%2$d)</string>
+    <string name="select_live_line_friends">Invite a friend</string>
+    <string name="room_friends">Friends in this session</string>
+    <string name="sel_count_hint">Can select up to %d people</string>
+    <string name="remove_manager_fail">Couldn\'t cancle</string>
 
 </resources>
