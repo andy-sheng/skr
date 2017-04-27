@@ -28,8 +28,8 @@ import rx.schedulers.Schedulers;
  * Created by chengsimin on 2016/12/8.
  */
 public class MiLiveSdkController implements IMiLiveSdk {
-
     public static final String TAG = MiLiveSdkController.class.getSimpleName();
+
     private static final MiLiveSdkController sSdkController = new MiLiveSdkController();
 
     private int mChannelId = 0;

@@ -8,7 +8,6 @@ import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
@@ -81,7 +80,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventGetRecommendLives(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
-            Log.w(TAG, "onEventGetRecommendLives");
+            Logger.w(TAG, "onEventGetRecommendLives");
             if (mChannelCallback != null) {
                 mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
                 mChannelCallback = null;
@@ -337,6 +336,4 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             mCallback.notifyAidlFailure(aidlFlag);
         }
     }
-
-
 }
