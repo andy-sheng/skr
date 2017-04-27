@@ -16,7 +16,7 @@ import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.liveshow.presenter.adapter.PlusItemAdapter;
+import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 
 import java.util.List;
 

@@ -25,15 +25,17 @@ import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.ShareControlPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
-import com.wali.live.watchsdk.component.view.GameDownloadPanel;
+import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
+import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -116,6 +118,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 GameDownloadPresenter presenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
                 addComponentView(panel, presenter);
             }
+
         } else {
             if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                 // 运营位
@@ -174,6 +177,12 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController);
             addComponentView(view, presenter);
+        }
+
+        {
+            ShareControlPanel panel = new ShareControlPanel((RelativeLayout) $(R.id.main_act_container));
+            ShareControlPresenter presenter =  new ShareControlPresenter(mComponentController);
+            addComponentView(panel, presenter);
         }
 
         mVerticalMoveSet.add($(R.id.close_btn));

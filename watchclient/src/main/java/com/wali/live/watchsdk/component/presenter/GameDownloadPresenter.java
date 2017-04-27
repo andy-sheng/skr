@@ -17,7 +17,7 @@ import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.statistics.StatisticsKey;
-import com.wali.live.watchsdk.component.view.GameDownloadPanel;
+import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
 import java.util.ArrayList;

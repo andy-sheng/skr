@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.liveshow.presenter.adapter;
+package com.wali.live.watchsdk.component.presenter.adapter;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -9,8 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.base.global.GlobalData;
-import com.wali.live.livesdk.R;
+import com.wali.live.watchsdk.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +20,22 @@ import java.util.List;
  * @module 直播加面板按钮显示适配器
  */
 public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHolder> {
-    private LayoutInflater mInflater;
+
+    protected int mItemWidth = 0;
+    protected int mItemHeight = 0;
+    protected LayoutInflater mInflater;
+
     private ArrayList<PlusItem> mPlusItems = new ArrayList<>(0);
-    private int mItemWidth = 0;
     private View.OnClickListener mListener;
 
     public PlusItemAdapter(int itemWidth) {
         this.mItemWidth = itemWidth;
+        this.mItemHeight = itemWidth;
+    }
+
+    public PlusItemAdapter(int itemWidth, int itemHeight) {
+        this.mItemWidth = itemWidth;
+        this.mItemHeight = itemHeight;
     }
 
     @Override
@@ -36,7 +44,7 @@ public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHo
             mInflater = LayoutInflater.from(parent.getContext());
         }
         View view = mInflater.inflate(R.layout.plus_item, null);
-        return new PlusHolder(view, mItemWidth);
+        return new PlusHolder(view, mItemWidth, mItemHeight, R.id.tv_plus);
     }
 
     @Override
@@ -61,14 +69,14 @@ public class PlusItemAdapter extends RecyclerView.Adapter<PlusItemAdapter.PlusHo
         mListener = listener;
     }
 
-    public static class PlusHolder extends RecyclerView.ViewHolder {
+    static class PlusHolder extends RecyclerView.ViewHolder {
         TextView mTvPlus;
 
-        public PlusHolder(View view, int width) {
+        PlusHolder(View view, int width, int height, int tvPlusId) {
             super(view);
-            mTvPlus = (TextView) view.findViewById(R.id.tv_plus);
+            mTvPlus = (TextView) view.findViewById(tvPlusId);
             RecyclerView.LayoutParams params =
-                    new RecyclerView.LayoutParams(width, width);
+                    new RecyclerView.LayoutParams(width, height);
             itemView.setLayoutParams(params);
         }
 

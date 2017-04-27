@@ -54,6 +54,8 @@
     <color name="color_white_trans_80">#CCFFFFFF</color>
     <color name="color_white_trans_85">#D9FFFFFF</color>
     <color name="color_white_trans_90">#E5FFFFFF</color>
+    <color name="color_white_trans_98">#FAFFFFFF</color>
+
     <color name="text_color_orange">#FF6600</color>
 
     <color name="color_black">#000000</color>

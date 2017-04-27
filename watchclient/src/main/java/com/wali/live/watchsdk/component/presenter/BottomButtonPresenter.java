@@ -58,7 +58,7 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
 
     @Override
     public void showShareView() {
-        MyLog.e(TAG, "ddd");
+        mComponentController.onEvent(WatchComponentController.MSG_SHOW_SHARE_PANEL);
     }
 
     @Override

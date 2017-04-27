@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/panel_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white_trans_98"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_120"
+            android:gravity="center"
+            android:text="@string/btn_share"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_45" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_black_trans_20" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gv_share_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scrollbars="none" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

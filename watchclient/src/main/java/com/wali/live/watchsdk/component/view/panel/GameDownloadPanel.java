@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.component.view;
+package com.wali.live.watchsdk.component.view.panel;
 
 import android.app.DownloadManager;
 import android.net.Uri;
