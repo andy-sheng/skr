@@ -25,17 +25,16 @@ import com.wali.live.watchsdk.component.presenter.GameDownloadPresenter;
 import com.wali.live.watchsdk.component.presenter.GameInputPresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
-import com.wali.live.watchsdk.component.presenter.ShareControlPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
-import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
-import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
+import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
+import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -155,6 +154,18 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             mLiveCommentView = view;
         }
 
+        // 底部面板
+        {
+            RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
+            if (relativeLayout == null) {
+                MyLog.e(TAG, "missing R.id.bottom_panel_view");
+                return;
+            }
+            PanelContainerPresenter presenter = new PanelContainerPresenter(mComponentController);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
+        }
+
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
@@ -177,12 +188,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController);
             addComponentView(view, presenter);
-        }
-
-        {
-            ShareControlPanel panel = new ShareControlPanel((RelativeLayout) $(R.id.main_act_container));
-            ShareControlPresenter presenter =  new ShareControlPresenter(mComponentController);
-            addComponentView(panel, presenter);
         }
 
         mVerticalMoveSet.add($(R.id.close_btn));

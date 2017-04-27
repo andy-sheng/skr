@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.component.presenter;
+package com.wali.live.watchsdk.component.presenter;
 
 
 import android.support.annotation.CallSuper;

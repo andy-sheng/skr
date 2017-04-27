@@ -18,7 +18,7 @@ import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.livesdk.live.component.presenter.BaseContainerPresenter;
+import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.data.MagicParamPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.FilterItemAdapter;
 import com.wali.live.livesdk.live.liveshow.presenter.adapter.SingleChooser;

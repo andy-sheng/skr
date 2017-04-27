@@ -9,7 +9,7 @@ import com.base.log.MyLog;
 import com.base.presenter.Presenter;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.livesdk.live.component.presenter.BaseContainerPresenter;
+import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;

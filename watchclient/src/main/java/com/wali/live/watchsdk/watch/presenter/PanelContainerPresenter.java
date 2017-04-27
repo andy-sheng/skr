@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.livegame.presenter;
+package com.wali.live.watchsdk.watch.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -6,24 +6,20 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
-import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
+import com.wali.live.component.ComponentController;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
-import com.wali.live.livesdk.live.livegame.LiveComponentController;
-import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
+import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
 
 /**
  * Created by yangli on 2017/2/18.
  *
- * @module 游戏直播底部面板表现
+ * @module 观众端底部面板表现
  */
 public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayout> {
     private static final String TAG = "PanelContainerPresenter";
 
-    @Nullable
-    protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
-
-    private BaseBottomPanel mSettingPanel;
+    private BaseBottomPanel mSharePanel;
 
     @Override
     protected String getTAG() {
@@ -31,14 +27,12 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     public PanelContainerPresenter(
-            @NonNull IComponentController componentController,
-            @Nullable LiveRoomChatMsgManager liveRoomChatMsgManager) {
+            @NonNull IComponentController componentController) {
         super(componentController);
-        mLiveRoomChatMsgManager = liveRoomChatMsgManager;
-        registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(LiveComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(LiveComponentController.MSG_SHOW_SETTING_PANEL);
+        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
+        registerAction(ComponentController.MSG_SHOW_SHARE_PANEL);
     }
 
     @Override
@@ -52,11 +46,11 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         });
     }
 
-    private void showSettingPanel() {
-        if (mSettingPanel == null) {
-            mSettingPanel = new GameSettingPanel(mView, mLiveRoomChatMsgManager);
+    private void showSharePanel() {
+        if (mSharePanel == null) {
+            mSharePanel = new ShareControlPanel(mView);
         }
-        showPanel(mSettingPanel, true);
+        showPanel(mSharePanel, true);
     }
 
     @Nullable
@@ -73,16 +67,16 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 return false;
             }
             switch (source) {
-                case LiveComponentController.MSG_ON_ORIENT_PORTRAIT:
+                case ComponentController.MSG_ON_ORIENT_PORTRAIT:
                     onOrientation(false);
                     return true;
-                case LiveComponentController.MSG_ON_ORIENT_LANDSCAPE:
+                case ComponentController.MSG_ON_ORIENT_LANDSCAPE:
                     onOrientation(true);
                     return true;
-                case LiveComponentController.MSG_SHOW_SETTING_PANEL:
-                    showSettingPanel();
+                case ComponentController.MSG_SHOW_SHARE_PANEL:
+                    showSharePanel();
                     return true;
-                case LiveComponentController.MSG_ON_BACK_PRESSED:
+                case ComponentController.MSG_ON_BACK_PRESSED:
                     return hidePanel(true);
                 default:
                     break;

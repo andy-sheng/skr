@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.component.view.panel;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +11,6 @@ import android.widget.RelativeLayout;
 
 import com.base.global.GlobalData;
 import com.base.utils.CommonUtils;
-import com.wali.live.component.view.IComponentView;
-import com.wali.live.component.view.IOrientationListener;
-import com.wali.live.component.view.IViewProxy;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
@@ -29,11 +25,8 @@ import java.util.List;
  * Created by yangli on 16-5-11.
  */
 public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
-        implements IComponentView<ShareControlPanel.IPresenter, ShareControlPanel.IView>, View.OnClickListener {
+        implements View.OnClickListener {
     private static final String TAG = "ShareControlPanel";
-
-    @Nullable
-    protected ShareControlPanel.IPresenter mPresenter;
 
     private RecyclerView mShareGridView;
     private ShareItemAdapter mShareAdapter;
@@ -199,50 +192,5 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
         }
         mShareGridView.setLayoutParams(layoutParams);
         mShareAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setPresenter(@Nullable IPresenter iPresenter) {
-        mPresenter = iPresenter;
-    }
-
-    @Override
-    public ShareControlPanel.IView getViewProxy() {
-        /**
-         * 局部内部类，用于Presenter回调通知该View改变状态
-         */
-        class ComponentView implements IView {
-            @Override
-            public <T extends View> T getRealView() {
-                return (T) mContentView;
-            }
-
-            @Override
-            public void showSelf() {
-                ShareControlPanel.this.showSelf(true, mIsLandscape);
-            }
-
-            @Override
-            public void hideSelf() {
-                ShareControlPanel.this.hideSelf(true);
-            }
-
-            @Override
-            public void onOrientation(boolean isLandscape) {
-                ShareControlPanel.this.onOrientation(isLandscape);
-            }
-        }
-        return new ComponentView();
-    }
-
-    public interface IPresenter {
-
-    }
-
-    public interface IView extends IViewProxy, IOrientationListener {
-
-        void showSelf();
-
-        void hideSelf();
     }
 }
