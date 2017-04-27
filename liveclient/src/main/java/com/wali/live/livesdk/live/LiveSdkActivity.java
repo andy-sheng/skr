@@ -65,6 +65,7 @@ import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.ZuidActiveRequest;
@@ -194,6 +195,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private boolean mGenerateHistorySucc;
     private String mGenerateHistoryMsg;
+    private MyAlertDialog mTrafficDialog; //流量窗
 
     @Override
     public boolean isKeyboardResize() {
@@ -226,6 +228,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mBlurIv = $(R.id.blur_iv);
         AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
+        check4GNet();
     }
 
     private void initData() {
@@ -302,6 +305,28 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         MyLog.d(TAG, "bring front event");
         ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_WITH_HOME);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
+        MyLog.w(TAG, "EventClass.NetWorkChangeEvent");
+        if (null != event) {
+            check4GNet();
+        }
+    }
+
+    private boolean check4GNet() {
+        if (is4g()) {
+            if (mTrafficDialog == null) {
+                mTrafficDialog = DialogUtils.showAlertDialog(this, getResources().getString(R.string.warm_prompt),
+                        getResources().getString(R.string.network_change_tip), getResources().getString(R.string.i_know));
+            }
+            if (!mTrafficDialog.isShowing()) {
+                mTrafficDialog.show();
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
