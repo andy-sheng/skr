@@ -46,11 +46,11 @@ public class ViewPagerIndicator extends LinearLayout {
     /**
      * 标题正常时的颜色
      */
-    private int COLOR_TEXT_NORMAL = 0xE5000000;
+    private int COLOR_TEXT_NORMAL = 0xe5000000;
     /**
      * 标题选中时的颜色
      */
-    private int COLOR_TEXT_HIGHLIGHTCOLOR = 0xFFff2966;
+    private int COLOR_TEXT_HIGHLIGHTCOLOR = 0xffffd439;
 
     private boolean canChange = true;
 
@@ -300,9 +300,6 @@ public class ViewPagerIndicator extends LinearLayout {
 
     /**
      * 根据标题生成我们的TextView
-     *
-     * @param text
-     * @return
      */
     private TextView generateUnClickTextView(String text) {
         TextView tv = new TextView(getContext());
@@ -318,23 +315,7 @@ public class ViewPagerIndicator extends LinearLayout {
     }
 
     /**
-     * 初始化三角形指示器
-     */
-    private void initTriangle() {
-//        mPath = new Path();
-//
-//        mTriangleHeight = (int) (mTriangleWidth / 2 / Math.sqrt(2));
-//        mPath.moveTo(0, 0);
-//        mPath.lineTo(mTriangleWidth, 0);
-//        mPath.lineTo(mTriangleWidth / 2, -mTriangleHeight);
-//        mPath.close();
-    }
-
-    /**
      * 指示器跟随手指滚动，以及容器滚动
-     *
-     * @param position
-     * @param offset
      */
     public void scroll(int position, float offset) {
         /**

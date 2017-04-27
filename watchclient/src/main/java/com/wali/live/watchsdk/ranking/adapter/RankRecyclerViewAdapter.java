@@ -499,7 +499,7 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
         if (m.find()) {
             int start = m.start();
             int end = m.end();
-            s.setSpan(new ForegroundColorSpan(tv.getResources().getColor(R.color.color_ff2966)), start, end,
+            s.setSpan(new ForegroundColorSpan(tv.getResources().getColor(R.color.color_ffd439)), start, end,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             tv.setText(s);
         }
