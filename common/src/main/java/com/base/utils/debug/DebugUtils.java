@@ -1,4 +1,6 @@
-package com.base.utils;
+package com.base.utils.debug;
+
+import com.base.utils.StringUtils;
 
 /**
  * Created by lan on 15-9-17.

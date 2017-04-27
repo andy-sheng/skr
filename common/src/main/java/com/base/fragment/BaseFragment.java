@@ -224,9 +224,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
 
     @Override
     public void onDestroyView() {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onDestroyView");
-        }
+        MyLog.d(TAG, "onDestroyView");
         super.onDestroyView();
         if (mForceOrient) {
             if (getActivity() instanceof IRotateActivity) {
@@ -247,9 +245,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
 
     @Override
     public void onDestroy() {
-        if (TAG != null) {
-//            MyLog.d(TAG, "onDestroy");
-        }
+        MyLog.d(TAG, "onDestroy");
         super.onDestroy();
         if (!Constants.isDebugMiChanel) { //耗时包不监控
             RefWatcher refWatcher = GlobalData.getRefWatcher();
@@ -277,11 +273,7 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
 
     @Override
     public void onDetach() {
-        MyLog.v(BaseFragment.class.getName() + " finish");
-
-        if (TAG != null) {
-//            MyLog.d(TAG, "onDetach");
-        }
+        MyLog.v(TAG, "onDetach");
         super.onDetach();
         try {
             Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");

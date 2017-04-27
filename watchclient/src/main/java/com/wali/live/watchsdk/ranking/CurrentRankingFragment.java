@@ -21,12 +21,16 @@ import rx.schedulers.Schedulers;
  * @module 本场星票排行榜页面
  */
 public class CurrentRankingFragment extends BaseRankingFragment {
+    public CurrentRankingFragment() {
+        super();
+        mIsFollowSysRotateForViewPagerFragment = true;
+    }
+
     protected void initData(Bundle bundle) {
         super.initData(bundle);
         mTicketNum = bundle.getInt(EXTRA_TICKET_NUM) - bundle.getInt(EXTRA_TICKET_START);
 
         mFragmentType = RankRecyclerViewAdapter.CURRENT_RANK;
-        mIsFollowSysRotateForViewPagerFragment = true;
     }
 
     @Override
