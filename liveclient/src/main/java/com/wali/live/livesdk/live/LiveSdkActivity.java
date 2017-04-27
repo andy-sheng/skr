@@ -830,6 +830,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                                     List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
         MyLog.w(TAG, "processStartRecord,liveId:" + liveId);
         mMyRoomData.setRoomId(liveId);
+        mShareUrl = shareUrl;
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
         startRecord();

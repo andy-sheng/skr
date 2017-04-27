@@ -2,6 +2,8 @@ package com.wali.live.watchsdk.ipc.service;
 
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
+
 interface IMiLiveSdkEventCallback {
     void onEventLogin(int code);
 
@@ -16,4 +18,6 @@ interface IMiLiveSdkEventCallback {
     void onEventGetRecommendLives(int errCode, in List<LiveInfo> liveInfos);
 
     void onEventGetFollowingList(int errCode, in List<UserInfo> userInfos, int total ,long timeStamp);
+
+    void onEventShareTrigger(in ShareInfo shareInfo);
 }

@@ -810,4 +810,35 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         }
         MyLog.d(TAG, "onEventGetFollowingList aidl success=" + aidlSuccess);
     }
+
+    public void onEventShareTrigger(int channelId, ShareInfo shareInfo) {
+        if (mAARCallback != null) {
+            mAARCallback.notifyWantShare(shareInfo);
+            return;
+        }
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
+        boolean aidlSuccess = false;
+        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+        if (callbackList != null) {
+            MyLog.w(TAG, "callbackList != null");
+            int n = callbackList.beginBroadcast();
+            for (int i = 0; i < n; i++) {
+                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                try {
+                    callback.onEventShareTrigger(shareInfo);
+                    aidlSuccess = true;
+                } catch (Exception e) {
+                    MyLog.v(TAG, "dead callback.");
+                    deadCallback.add(callback);
+                }
+            }
+            callbackList.finishBroadcast();
+            for (IMiLiveSdkEventCallback callback : deadCallback) {
+                MyLog.v(TAG, "unregister event callback.");
+                callbackList.unregister(callback);
+            }
+        }
+    }
+
+
 }

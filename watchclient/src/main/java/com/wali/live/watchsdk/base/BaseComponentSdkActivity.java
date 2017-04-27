@@ -76,6 +76,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
      * 本房间相关信息
      */
     protected RoomBaseDataModel mMyRoomData = new RoomBaseDataModel("sdk_Myroominfo");
+    protected String mShareUrl;
 
     /**
      * 房间弹幕管理
