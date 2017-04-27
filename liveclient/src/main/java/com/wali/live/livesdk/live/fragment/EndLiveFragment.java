@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,10 +24,10 @@ import com.base.utils.span.SpanUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.user.User;
-import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.common.action.VideoAction;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.task.IActionCallBack;
+import com.wali.live.livesdk.live.view.ShareButtonView;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.schema.processor.WaliliveProcessor;
 
@@ -81,15 +80,13 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     private int mLiveType;
     private boolean mGenerateHistorySucc;
     private String mGenerateHistoryMsg;
+    private String mShareUrl;
+    private String mCoverUrl;
+    private String mLiveTitle;
+    private String mLocation;
 
     private boolean mIsFailure;
-
-    CustomHandlerThread mHandlerThread = new CustomHandlerThread(TAG) {
-        @Override
-        protected void processMessage(Message message) {
-
-        }
-    };
+    private ShareButtonView mShareButtonView;
 
     @Override
     public int getRequestCode() {
@@ -127,13 +124,16 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         mGenerateHistorySucc = bundle.getBoolean(EXTRA_GENERATE_HISTORY, false);
         mGenerateHistoryMsg = bundle.getString(EXTRA_GENERATE_HISTORY_MSG, "");
         mOwner = (User) bundle.getSerializable(EXTRA_OWNER);
+        mCoverUrl = bundle.getString(EXTRA_GENERATE_COVER_URL, "");
+        mShareUrl = bundle.getString(EXTRA_SHARE_URL, "");
+        mLiveTitle = bundle.getString(EXTRA_GENERATE_LIVE_TITLE, "");
+        mLocation = bundle.getString(EXTRA_LOCATION, "");
     }
 
     private void initContentView() {
-        mAvatarBg = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_bg_dv);
+        mAvatarBg = $(R.id.avatar_bg_dv);
         AvatarUtils.loadAvatarByUidTs(mAvatarBg, mOwnerId, mAvatarTs, AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
-
-        mViewerTv = (TextView) mRootView.findViewById(R.id.viewer_tv);
+        mViewerTv = $(R.id.viewer_tv);
         mViewerTv.setText(SpanUtils.addColorSpan(String.valueOf(mViewerCnt),
                 getResources().getQuantityString(R.plurals.live_end_viewer_cnt, mViewerCnt, mViewerCnt),
                 R.color.color_ffd439,
@@ -142,8 +142,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
             //LIVEAND-2434 跟产品和张洋对过，房间5001时，不显示观看人数。
             mViewerTv.setVisibility(View.GONE);
         }
-
-        mTicketTv = (TextView) mRootView.findViewById(R.id.ticket_tv);
+        mTicketTv = $(R.id.ticket_tv);
         if (mIsShowTicketView) {
             mTicketTv.setText(SpanUtils.addColorSpan(String.valueOf(mTicket),
                     getResources().getQuantityString(R.plurals.live_end_ticket, mTicket, mTicket),
@@ -152,12 +151,11 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         } else {
             mTicketTv.setVisibility(View.GONE);
         }
-
-        mBackBtn = (TextView) mRootView.findViewById(R.id.back_btn);
+        mBackBtn = $(R.id.back_btn);
         mBackBtn.setTag(VideoAction.ACTION_END_BACK);
         mBackBtn.setOnClickListener(this);
 
-        mDeleteBtn = (TextView) mRootView.findViewById(R.id.delete_btn);
+        mDeleteBtn = $(R.id.delete_btn);
 
         //根据准备直播页面的CheckedTextView来确定是否显示删除按钮
         if (mIsAddHistory) {
@@ -172,6 +170,9 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         } else {
             mDeleteBtn.setVisibility(View.INVISIBLE);
         }
+        mShareButtonView = $(R.id.share_view);
+        mShareButtonView.setShareData(getActivity(), mOwner, mShareUrl, mCoverUrl, mLiveTitle, mLocation, mAvatarTs, mLiveType);
+
     }
 
     @Override
@@ -196,7 +197,6 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
                 DialogUtils.showNormalDialog(getActivity(), 0, R.string.confirm_delete_replay, R.string.ok, R.string.cancel, new DialogUtils.IDialogCallback() {
                     @Override
                     public void process(DialogInterface dialogInterface, int i) {
-//                        ThreadPool.runOnWorker(LiveTask.historyDelete(mRoomId, new WeakReference<>(this)));
                         getActivity().finish();
                     }
                 }, null);
@@ -208,12 +208,9 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public void onDestroyView() {
         mCurrentScrrenRotateIsLandScape = 0;
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mHandlerThread.destroy();
+        if (mShareButtonView != null) {
+            mShareButtonView.destroy();
+        }
     }
 
     @Override

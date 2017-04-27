@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/main_fragment_container"
+<RelativeLayout android:id="@+id/main_fragment_container"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="@color/color_black_trans_40">
@@ -253,6 +253,14 @@
                 android:textSize="@dimen/margin_36"/>
         </RelativeLayout>
     </RelativeLayout>
+
+    <!--分享按钮区域-->
+    <com.wali.live.livesdk.live.view.PreLiveShareButtonView
+        android:id="@+id/share_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/begin_btn"
+        android:layout_centerHorizontal="true"/>
 
     <!--开始直播按钮-->
     <TextView

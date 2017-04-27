@@ -50,4 +50,11 @@
     <string name="in_process">正在处理中</string>
     <string name="recommend">推荐</string>
     <string name="loading">加载中</string>
+    <string name="back_show_default_location">小米直播</string>
+    <string name="share_description_anchor">%1$s(直播号:%2$s)在%3$s直播%4$s。%5$s</string>
+    <string name="share_description_visitor">我在看%1$s(直播号:%2$s)在%3$s直播%4$s。%5$s</string>
+    <string name="share_description_anchor_abroad">%1$s(直播号:%2$s)在%3$s直播%4$s。%5$s</string>
+    <string name="share_description_visitor_abroad">我在看%1$s(直播号:%2$s)在%3$s直播%4$s。%5$s</string>
+    <string name="share_description_default">众多人气主播都在小米直播！</string>
+    <string name="share_title">“%1$s”在直播</string>
 </resources>

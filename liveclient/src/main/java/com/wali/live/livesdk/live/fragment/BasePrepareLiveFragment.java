@@ -31,8 +31,11 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
+import com.base.utils.CommonUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.livesdk.R;
@@ -40,6 +43,7 @@ import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
+import com.wali.live.livesdk.live.view.PreLiveShareButtonView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 
 import java.util.List;
@@ -65,6 +69,19 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     public final static int TOPIC_FROM_TMATY = 1;
     public final static int TOPIC_FROM_CUSTOM = 0;
 
+    // 分享相关
+    public static final int WHATSAPP = 1;
+    public static final int FACEBOOK = 1 << 1;
+    public static final int TWITTER = 1 << 2;
+    public static final int INSTAGRAM = 1 << 3;
+    public static final int WEI_XIN = 1 << 4;
+    public static final int MOMENT = 1 << 5;
+    public static final int QQ = 1 << 6;
+    public static final int QZONE = 1 << 7;
+    public static final int WEIBO = 1 << 8;
+    public static final int MILIAO = 1 << 9;
+    public static final int MILIAO_FEEDS = 1 << 10;
+
     @NonNull
     protected RoomBaseDataModel mMyRoomData;
     protected boolean mIsAddHistory = true;
@@ -82,6 +99,8 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected int mTagIndex = -1;
 
     protected LiveRoomChatMsgManager mRoomChatMsgManager;
+    private PreLiveShareButtonView mShareBtnView;
+
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
@@ -119,6 +138,8 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     protected void onBeginBtnClick() {
         openLive();
+        recordShareSelectState();
+        mShareBtnView.hideShareToast();
     }
 
     private void onCloseBtnClick() {
@@ -173,6 +194,8 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mCloseBtn.setOnClickListener(this);
 
         mTagNameTv = $(R.id.tag_name_tv);
+
+        mShareBtnView = $(R.id.share_view);
     }
 
     protected void initTitleView() {
@@ -239,6 +262,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     protected void putCommonData(Bundle bundle) {
         // 产品要求支持多个分享
+        bundle.putInt(EXTRA_SNS_TYPE, getSnsType());
         bundle.putString(EXTRA_LIVE_TITLE, mLiveTitleEt.getText().toString().trim());
         // 添加标签
         if (mRoomTag != null) {
@@ -332,6 +356,65 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         switch (requestCode) {
             default:
                 break;
+        }
+    }
+
+    protected int getSnsType() {
+        int snsType = 0;
+        if (!CommonUtils.isLocalChina()) {
+            if (mShareBtnView.isInstagramSelected()) {
+                snsType |= INSTAGRAM;
+            }
+            if (mShareBtnView.isWhatsAppSelected()) {
+                snsType |= WHATSAPP;
+            }
+            if (mShareBtnView.isFacebookSelected()) {
+                snsType |= FACEBOOK;
+            }
+            if (mShareBtnView.isTwitterSelected()) {
+                snsType |= TWITTER;
+            }
+        } else {
+            if (mShareBtnView.isQQSelected()) {
+                snsType |= QQ;
+            }
+            if (mShareBtnView.isQzoneSelected()) {
+                snsType |= QZONE;
+            }
+            if (mShareBtnView.isWeiboSelected()) {
+                snsType |= WEIBO;
+            }
+            if (mShareBtnView.isMiliaoSelected()) {
+                snsType |= MILIAO;
+            }
+            if (mShareBtnView.isMiliaoFeedsSelected()) {
+                snsType |= MILIAO_FEEDS;
+            }
+        }
+        // 共用
+        if (mShareBtnView.isWXSelected()) {
+            snsType |= WEI_XIN;
+        }
+        if (mShareBtnView.isMomentSelected()) {
+            snsType |= MOMENT;
+        }
+        return snsType;
+    }
+
+    protected void recordShareSelectState() {
+        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_FRIEND_SELECTED, mShareBtnView.isWXSelected());
+        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_MOMENT_SELECTED, mShareBtnView.isMomentSelected());
+        if (!CommonUtils.isLocalChina()) {
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_FACEBOOK_SELECTED, mShareBtnView.isFacebookSelected());
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_TWITTER_SELECTED, mShareBtnView.isTwitterSelected());
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_INSTAGRAM_SELECTED, mShareBtnView.isInstagramSelected());
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WHATSAPP_SELECTED, mShareBtnView.isWhatsAppSelected());
+        } else {
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QZONE_SELECTED, mShareBtnView.isQzoneSelected());
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIBO_SELECTED, mShareBtnView.isWeiboSelected());
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QQ_SELECTED, mShareBtnView.isQQSelected());
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_SELECTED, mShareBtnView.isMiliaoSelected());
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, mShareBtnView.isMiliaoFeedsSelected());
         }
     }
 

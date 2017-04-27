@@ -162,4 +162,20 @@
     <string name="has_add_manager_count">已添加%d个</string>
     <string name="has_add_manager_count_zero">未添加管理员</string>
     <string name="live_title_hint">好的标题更能吸引观众</string>
+
+    <!--share-->
+    <string name="qzone">QQ空间</string>
+    <string name="QQ">QQ</string>
+    <string name="blog">微博</string>
+    <string name="moment">朋友圈</string>
+    <string name="weixin_friend">微信</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="miliao">米聊</string>
+    <string name="miliao_feeds">微广播</string>
+    <string name="cancel_share_tips">%1$s分享已关</string>
+    <string name="prepare_live_share_tips">點擊\"開始直播\"，把直播分享到%1$s</string>
+    <string name="uninstall_share_tips">未安裝%1$s，請安裝後分享</string>
 </resources>

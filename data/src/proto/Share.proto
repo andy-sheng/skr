@@ -1,0 +1,65 @@
+package com.wali.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "ShareProto";
+
+//分享标签尾巴获取
+//cmd:zhibo.share.tagtail
+
+//角色类型
+enum RoleType
+{
+    NONE = 0;//defalut
+    ANCHOR = 1;//直播；
+    VISITOR = 2;//观众；
+}
+
+//渠道类型
+enum ChannelType
+{
+    UNKNOWN = 0;//defalut
+    QQ = 1;
+    WEIXIN = 2;
+    WEIXIN_CIRCLE =3;
+    WEIBO_SINA = 4;
+    QZONE = 5;
+    TWITTER = 6;
+    FACEBOOK = 7;
+    INSTAGRAM = 8;
+    WHATSAPP = 9;
+    MLDIALOG=10;
+    MLBROADCAST=11;
+}
+
+//直播阶段类型
+enum PeriodType
+{
+    NOT = 0;//defalut
+    PRE_LIVE = 1;//直播前
+    LIVING = 2;//直播中
+    END_LIVE =3;//直播结束
+}
+
+message TagTail
+{
+    required string value = 1;// 文本内容
+    required uint32 seq = 2;//编号
+    required ChannelType channel = 3;//渠道
+}
+
+
+//请求
+message GetShareTagTailReq
+{
+    required uint64 uuid = 1;//直播用户id
+    optional RoleType role = 2[default=NONE];//角色
+    repeated ChannelType channel = 3;//渠道
+    optional PeriodType period = 4[default=NOT];//直播阶段
+}
+
+//回复
+message GetShareTagTailRsp
+{
+    required uint32 retCode = 1; //0:表示成功
+    repeated TagTail tagTail= 2;// 内容
+}

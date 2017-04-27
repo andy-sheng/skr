@@ -136,6 +136,14 @@
 
     </RelativeLayout>
 
+    <!--分享按钮区域-->
+    <com.wali.live.livesdk.live.view.PreLiveShareButtonView
+        android:id="@+id/share_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/begin_btn"
+        android:layout_centerHorizontal="true"/>
+
     <!--开始直播按钮-->
     <TextView
         android:id="@+id/begin_btn"

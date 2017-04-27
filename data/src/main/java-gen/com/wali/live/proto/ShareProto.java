@@ -180,6 +180,14 @@ public final class ShareProto {
      * <code>WHATSAPP = 9;</code>
      */
     WHATSAPP(9, 9),
+    /**
+     * <code>MLDIALOG = 10;</code>
+     */
+    MLDIALOG(10, 10),
+    /**
+     * <code>MLBROADCAST = 11;</code>
+     */
+    MLBROADCAST(11, 11),
     ;
 
     /**
@@ -226,6 +234,14 @@ public final class ShareProto {
      * <code>WHATSAPP = 9;</code>
      */
     public static final int WHATSAPP_VALUE = 9;
+    /**
+     * <code>MLDIALOG = 10;</code>
+     */
+    public static final int MLDIALOG_VALUE = 10;
+    /**
+     * <code>MLBROADCAST = 11;</code>
+     */
+    public static final int MLBROADCAST_VALUE = 11;
 
 
     public final int getNumber() { return value; }
@@ -242,6 +258,8 @@ public final class ShareProto {
         case 7: return FACEBOOK;
         case 8: return INSTAGRAM;
         case 9: return WHATSAPP;
+        case 10: return MLDIALOG;
+        case 11: return MLBROADCAST;
         default: return null;
       }
     }
@@ -3077,13 +3095,14 @@ public final class ShareProto {
       "\022GetShareTagTailRsp\022\017\n\007retCode\030\001 \002(\r\022-\n\007" +
       "tagTail\030\002 \003(\0132\034.com.wali.live.proto.TagT",
       "ail*-\n\010RoleType\022\010\n\004NONE\020\000\022\n\n\006ANCHOR\020\001\022\013\n" +
-      "\007VISITOR\020\002*\224\001\n\013ChannelType\022\013\n\007UNKNOWN\020\000\022" +
+      "\007VISITOR\020\002*\263\001\n\013ChannelType\022\013\n\007UNKNOWN\020\000\022" +
       "\006\n\002QQ\020\001\022\n\n\006WEIXIN\020\002\022\021\n\rWEIXIN_CIRCLE\020\003\022\016" +
       "\n\nWEIBO_SINA\020\004\022\t\n\005QZONE\020\005\022\013\n\007TWITTER\020\006\022\014" +
       "\n\010FACEBOOK\020\007\022\r\n\tINSTAGRAM\020\010\022\014\n\010WHATSAPP\020" +
-      "\t*=\n\nPeriodType\022\007\n\003NOT\020\000\022\014\n\010PRE_LIVE\020\001\022\n" +
-      "\n\006LIVING\020\002\022\014\n\010END_LIVE\020\003B!\n\023com.wali.liv" +
-      "e.protoB\nShareProto"
+      "\t\022\014\n\010MLDIALOG\020\n\022\017\n\013MLBROADCAST\020\013*=\n\nPeri" +
+      "odType\022\007\n\003NOT\020\000\022\014\n\010PRE_LIVE\020\001\022\n\n\006LIVING\020" +
+      "\002\022\014\n\010END_LIVE\020\003B!\n\023com.wali.live.protoB\n" +
+      "ShareProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

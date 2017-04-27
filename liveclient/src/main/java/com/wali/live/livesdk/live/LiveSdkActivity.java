@@ -91,11 +91,13 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.schema.SchemeActivity;
 import com.wali.live.watchsdk.schema.SchemeConstants;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
@@ -153,6 +155,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private String mLiveTitle;
     private String mLiveCoverUrl;
     private RoomTag mRoomTag;
+    private int mSnsType = -1;
+    //TODO 该标志位用于区分分享类别
+    private int mSnsTypeFlag = 1;
+    private boolean mIsShare;
 
     private boolean mIsGameLive;
     private Location mLocation;
@@ -338,6 +344,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
+        if (mIsShare) {
+            if (mSnsType != 0) {
+                preLiveShareSNS();
+            } else {
+                beginLiveToServer();
+            }
+        }
         if (!mIsGameLive) {
             resumeStream();
         }
@@ -518,7 +531,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             case REQUEST_PREPARE_LIVE:
                 initPrepareData(bundle);
                 postPrepare();
-                beginLiveToServer();
+                if (mSnsType != 0) {
+                    getRoomIdToServer();
+                } else {
+                    beginLiveToServer();
+                }
                 break;
             default:
                 break;
@@ -539,6 +556,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
         mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
         mLiveCoverUrl = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL, "");
+        mSnsType = bundle.getInt(BasePrepareLiveFragment.EXTRA_SNS_TYPE, 0);
 
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
@@ -695,6 +713,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         MyLog.w(TAG, "processAction : " + action + " , errCode : " + errCode);
         if (!isFinishing()) {
             switch (action) {
+                case MiLinkCommand.COMMAND_LIVE_GET_ROOM_ID:
+                    processGetRoomId(errCode, objects);
+                    break;
                 case MiLinkCommand.COMMAND_LIVE_BEGIN:
                     processBeginLive(errCode, objects);
                     break;
@@ -723,6 +744,20 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
+    private void processGetRoomId(int errCode, Object... objects) {
+        switch (errCode) {
+            case ErrorCode.CODE_SUCCESS:
+            case ErrorCode.CODE_ZUID_CERTIFY_ERROR:
+            case ErrorCode.CODE_ZUID_NOT_ADULT:
+            case ErrorCode.CODE_ZUID_CERTIFY_GOING:
+                processRoomIdInfo((String) objects[0], (String) objects[1], (List<LiveCommonProto.UpStreamUrl>) objects[2], (String) objects[3]);
+                break;
+            default:
+                processPreLive();
+                break;
+        }
+    }
+
     private void processBeginLive(int errCode, Object... objects) {
         switch (errCode) {
             case ErrorCode.CODE_SUCCESS:
@@ -735,7 +770,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             default:
                 ToastUtils.showToast(GlobalData.app(), R.string.live_failure);
                 EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                        mMyRoomData.getAvatarTs(), 0, LiveManager.TYPE_LIVE_GAME, 0, "", mMyRoomData.getCity(), mMyRoomData.getUser(), null, null);
+                        mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), LiveManager.TYPE_LIVE_GAME, mMyRoomData.getTicket(), mShareUrl, mMyRoomData.getCity(), mMyRoomData.getUser(), mLiveCoverUrl, mLiveTitle);
                 break;
         }
     }
@@ -836,7 +871,59 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!judgeNetwork()) {
             return;
         }
-        beginLiveToServer();
+        if (mSnsType != 0 && !TextUtils.isEmpty(mShareUrl)) {
+            mIsShare = true;
+            preLiveShareSNS();
+        } else {
+            beginLiveToServer();
+        }
+    }
+
+    private int getShareType(int snsTypeFlag) {
+        switch (snsTypeFlag) {
+            case PrepareLiveFragment.WEI_XIN:
+                return ShareInfo.TYPE_WECHAT;
+            case PrepareLiveFragment.MOMENT:
+                return ShareInfo.TYPE_MOMENT;
+            case PrepareLiveFragment.QQ:
+                return ShareInfo.TYPE_QQ;
+            case PrepareLiveFragment.QZONE:
+                return ShareInfo.TYPE_QZONE;
+            case PrepareLiveFragment.WEIBO:
+                return ShareInfo.TYPE_WEIBO;
+            case PrepareLiveFragment.FACEBOOK:
+                return ShareInfo.TYPE_FACEBOOK;
+            case PrepareLiveFragment.TWITTER:
+                return ShareInfo.TYPE_TWITTER;
+            case PrepareLiveFragment.INSTAGRAM:
+                return ShareInfo.TYPE_INSTAGRAM;
+            case PrepareLiveFragment.WHATSAPP:
+                return ShareInfo.TYPE_WHATSAPP;
+            case PrepareLiveFragment.MILIAO:
+                return ShareInfo.TYPE_MILIAO;
+            case PrepareLiveFragment.MILIAO_FEEDS:
+                return ShareInfo.TYPE_MILIAO_FEEDS;
+            default:
+                break;
+        }
+        return -1;
+    }
+
+    private void preLiveShareSNS() {
+        MyLog.w(TAG, "preLiveShareSNS mSnsType=" + mSnsType);
+        while ((mSnsType & mSnsTypeFlag) == 0) {
+            MyLog.w(TAG, "mSnsType = " + mSnsType + " mSnsTypeFlag=" + mSnsTypeFlag);
+            mSnsTypeFlag <<= 1;
+        }
+        //分享
+        SnsShareHelper.getInstance().shareToSns(getShareType(mSnsTypeFlag), mShareUrl, mMyRoomData);
+        mSnsType &= (~mSnsTypeFlag);
+        mSnsTypeFlag <<= 1;
+        MyLog.w(TAG, "mCountDownView state" + mCountDownView.getVisibility());
+    }
+
+    private void getRoomIdToServer() {
+        mLiveRoomPresenter.getRoomIdByAppInfo(null);
     }
 
     //开始动画,并且开始推流
@@ -846,9 +933,15 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         startCountDown();
-
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
                 mLiveCoverUrl, "", null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
+    }
+
+    private void processRoomIdInfo(String liveId, String shareUrl, List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
+        mMyRoomData.setRoomId(liveId);
+        mShareUrl = shareUrl;
+        mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
+        processPreLive();
     }
 
     private void processStartRecord(String liveId, long createTime, String shareUrl,
@@ -1005,7 +1098,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return;
         }
         mIsLiveEnd = true;
-        Bundle bundle = EndLiveFragment.getBundle(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), 0, mMyRoomData.getTicket() - mLastTicket, "",
+        Bundle bundle = EndLiveFragment.getBundle(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(), mMyRoomData.getTicket() - mLastTicket, mShareUrl,
                 (mLocation == null) ? "" : mLocation.getCity(), mMyRoomData.getUser(), mMyRoomData.getCoverUrl(), mMyRoomData.getLiveTitle());
         bundle.putBoolean(EndLiveFragment.EXTRA_GENERATE_HISTORY, mGenerateHistorySucc);
         bundle.putString(EndLiveFragment.EXTRA_GENERATE_HISTORY_MSG, mGenerateHistoryMsg);

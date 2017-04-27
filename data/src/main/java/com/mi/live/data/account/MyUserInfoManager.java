@@ -12,19 +12,14 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.live.data.repository.datasource.MyUserInfoLocalStore;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.OwnUserInfo;
-import com.wali.live.dao.UserAccount;
 import com.wali.live.proto.UserProto;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -42,7 +37,7 @@ public class MyUserInfoManager {
 
     private final static MyUserInfoManager sInstance = new MyUserInfoManager();
 
-    Map<Integer,Long> mLastInfoTsMap = new HashMap<>();
+    Map<Integer, Long> mLastInfoTsMap = new HashMap<>();
 
     /**
      * MyUserInfoManager构造函数, 从
@@ -63,9 +58,9 @@ public class MyUserInfoManager {
                     @Override
                     public void call(Object o) {
                         User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
-                        if(userInfo != null && userInfo.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                        if (userInfo != null && userInfo.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                             mMyInfo = userInfo;
-                        }else{
+                        } else {
                             syncSelfDetailInfo();
                         }
                     }
@@ -163,15 +158,15 @@ public class MyUserInfoManager {
      * 同步自己的个人信息
      */
     public void syncSelfDetailInfo() {
-        syncSelfDetailInfo(UserAccountManager.getInstance().getUuidAsLong(),HostChannelManager.getInstance().getChannelId());
+        syncSelfDetailInfo(UserAccountManager.getInstance().getUuidAsLong(), HostChannelManager.getInstance().getChannelId());
     }
 
     /**
      * 同步自己的个人信息
      */
-    public void syncSelfDetailInfo(final long uuid,final int channelId) {
-        MyLog.w(TAG, "syncSelfDetailInfo,uuid="+uuid+" channelId="+channelId);
-        if(uuid <= 0){
+    public void syncSelfDetailInfo(final long uuid, final int channelId) {
+        MyLog.w(TAG, "syncSelfDetailInfo,uuid=" + uuid + " channelId=" + channelId);
+        if (uuid <= 0) {
             return;
         }
         Observable.just(0)
@@ -190,12 +185,12 @@ public class MyUserInfoManager {
                         if (rsp == null || rsp.getErrorCode() != MiLinkConstant.ERROR_CODE_SUCCESS) {
                             MyLog.e(TAG, "rsp==null || rsp.getErrorCode()!=0");
                             User user = readFromDB(channelId);
-                            if(user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()){
+                            if (user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                                 mMyInfo = user;
                             }
                             return;
                         }
-                        MyLog.d(TAG,rsp.toString());
+                        MyLog.d(TAG, rsp.toString());
                         User user = new User();
                         if (rsp.getPersonalInfo() != null) {
                             user.parse(rsp.getPersonalInfo());
@@ -207,8 +202,8 @@ public class MyUserInfoManager {
                             user.setRankTopThreeList(rsp.getRankTopThreeListList());
                         }
                         mLastInfoTsMap.put(channelId, System.currentTimeMillis());
-                        saveInfoIntoDB(user,channelId);
-                        if(channelId == HostChannelManager.getInstance().getChannelId() && user!=null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                        saveInfoIntoDB(user, channelId);
+                        if (channelId == HostChannelManager.getInstance().getChannelId() && user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                             mMyInfo = user;
                             EventBus.getDefault().post(new UserInfoEvent());
                         }
@@ -218,7 +213,7 @@ public class MyUserInfoManager {
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, throwable);
                         User user = readFromDB(channelId);
-                        if(user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()){
+                        if (user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                             mMyInfo = user;
                         }
                     }
@@ -229,7 +224,7 @@ public class MyUserInfoManager {
      * 得到User
      */
     public User getUser() {
-        MyLog.w(TAG,"getUser");
+        MyLog.w(TAG, "getUser");
         if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
             return mMyInfo;
         }
@@ -241,13 +236,20 @@ public class MyUserInfoManager {
                         @Override
                         public void call(Object o) {
                             User userInfo = readFromDB(HostChannelManager.getInstance().getChannelId());
-                            if(userInfo != null && userInfo.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                            if (userInfo != null && userInfo.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
                                 mMyInfo = userInfo;
                             }
                         }
                     });
         }
         return mMyInfo;
+    }
+
+    public long getUuid() {
+        if (mMyInfo != null) {
+            return mMyInfo.getUid();
+        }
+        return UserAccountManager.getInstance().getUuidAsLong();
     }
 
     public void setLevel(int level) {
@@ -309,7 +311,7 @@ public class MyUserInfoManager {
         mMyInfo = new User(); //清空內存中的值
     }
 
-    public void deleteCache(){
+    public void deleteCache() {
         mMyInfo = new User();
     }
 
