@@ -81,6 +81,8 @@ public class UserInfoPresenter {
                             mMyRoomData.setNickname(user.getNickname());
                             mMyRoomData.getUser().setIsFocused(user.isFocused());
                             mMyRoomData.setTicket(user.getLiveTicketNum());
+                            mMyRoomData.getUser().setAvatar(user.getAvatar());
+                            mMyRoomData.getUser().setSign(user.getSign());
 
                             EventBus.getDefault().post(new RoomDataChangeEvent(mMyRoomData, RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE));
                         }
@@ -118,6 +120,10 @@ public class UserInfoPresenter {
 
                             mMyRoomData.setNickname(user.getNickname());
                             mMyRoomData.getUser().setIsFocused(user.isFocused());
+                            mMyRoomData.getUser().setAvatar(user.getAvatar());
+                            mMyRoomData.setTicket(user.getLiveTicketNum());
+                            mMyRoomData.getUser().setSign(user.getSign());
+
                             EventBus.getDefault().post(new RoomDataChangeEvent(mMyRoomData, RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE));
                         }
                     }
