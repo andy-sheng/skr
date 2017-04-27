@@ -176,8 +176,6 @@
     <string name="miliao">米聊</string>
     <string name="miliao_feeds">微广播</string>
     <string name="cancel_share_tips">%1$s分享已关</string>
-    <string name="prepare_live_share_tips">點擊\"開始直播\"，把直播分享到%1$s</string>
-    <string name="uninstall_share_tips">未安裝%1$s，請安裝後分享</string>
 
     <string name="admin_manager_tips_1">1：房间管理员为永久管理员，设置后这个管理员下次你再次直播仍旧是你的管理员，无须重新设置。</string>
     <string name="admin_manager_tips_2">2：房间管理员最多5位，请合理安排这5个名额。</string>
@@ -191,4 +189,8 @@
     <string name="room_friends">本房间的关注好友</string>
     <string name="sel_count_hint">最多选择%d人</string>
     <string name="remove_manager_fail">取消管理失败</string>
+
+    <string name="prepare_live_share_tips">点击\"开始直播\"，把直播分享到%1$s</string>
+    <string name="uninstall_share_tips">未安装%1$s，请安装后分享</string>
+    <string name="live_end_share">分享到</string>
 </resources>
