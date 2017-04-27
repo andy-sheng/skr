@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -69,12 +70,12 @@ public class SnsShareHelper {
         return sSnsShareHelper;
     }
 
-    public void shareToSns(int type, String shareUrl, RoomBaseDataModel shareData) {
-        if (TextUtils.isEmpty(shareUrl) || shareData == null || TextUtils.isEmpty(shareData.getNickName())) {
+    public void shareToSns(int type, RoomBaseDataModel shareData) {
+        if (shareData == null || TextUtils.isEmpty(shareData.getShareUrl()) || TextUtils.isEmpty(shareData.getNickName())) {
             MyLog.w(TAG, "share params is error");
             return;
         }
-        shareToSns(type, shareUrl, shareData.getCoverUrl(), shareData.getCity(), shareData.getLiveTitle(), shareData.getUser());
+        shareToSns(type, shareData.getShareUrl(), shareData.getCoverUrl(), shareData.getCity(), shareData.getLiveTitle(), shareData.getUser());
     }
 
     public void shareToSns(int type, String shareUrl, String imgUrl, String location, String liveTitle, User owner) {
@@ -202,6 +203,67 @@ public class SnsShareHelper {
             }
         }
         return new Pair<>(shareUrl, tagTail);
+    }
+
+    public boolean isInstallApp(int type) {
+        switch (type) {
+            case BTN_WECHAT:
+            case BTN_WECHAT_MOMENT:
+                if (!SnsShareHelper.isWechatInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.weixin_friend)));
+                    return false;
+                }
+                break;
+            case BTN_QQ:
+            case BTN_QZONE:
+                if (!SnsShareHelper.isQQInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.QQ)));
+                    return false;
+                }
+                break;
+            case BTN_WEIBO:
+                if (!SnsShareHelper.isWeiboInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.blog)));
+                    return false;
+                }
+                break;
+            case BTN_FACEBOOK:
+                if (!SnsShareHelper.isFacebookInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.facebook)));
+                    return false;
+                }
+                break;
+            case BTN_TWITTER:
+                if (!SnsShareHelper.isTwitterInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.twitter)));
+                    return false;
+                }
+                break;
+            case BTN_INSTAGRAM: {
+                if (!SnsShareHelper.isInstagramInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.instagram)));
+                    return false;
+                }
+            }
+            break;
+            case BTN_WHATSAPP: {
+                if (!SnsShareHelper.isWhatsappInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.whatsapp)));
+                    return false;
+                }
+            }
+            break;
+            case BTN_MILIAO:
+            case BTN_MILIAO_FEEDS:
+                if (!SnsShareHelper.isMiliaoInstalled()) {
+                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.miliao)));
+                    return false;
+                }
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
 

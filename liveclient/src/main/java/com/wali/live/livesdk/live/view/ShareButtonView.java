@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
-import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.user.User;
 import com.wali.live.livesdk.R;
@@ -94,8 +92,6 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
     private String mLiveCoverUrl = "";
     private long mAvatarTs;
     private int mLiveType;
-
-    private SnsShareHelper mSnsShareHelper;
     private SharePresenter mSharePresenter;
 
     private Activity mActivity;
@@ -131,64 +127,10 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
             MyLog.w(TAG, "mOwner == null || mActivity == null");
             return;
         }
-        switch (type) {
-            case SnsShareHelper.BTN_WECHAT:
-            case SnsShareHelper.BTN_WECHAT_MOMENT:
-                if (!SnsShareHelper.isWechatInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.weixin_friend)));
-                    return;
-                }
-                break;
-            case SnsShareHelper.BTN_QQ:
-            case SnsShareHelper.BTN_QZONE:
-                if (!SnsShareHelper.isQQInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.QQ)));
-                    return;
-                }
-                break;
-            case SnsShareHelper.BTN_WEIBO:
-                if (!SnsShareHelper.isWeiboInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.blog)));
-                    return;
-                }
-                break;
-            case SnsShareHelper.BTN_FACEBOOK:
-                if (!SnsShareHelper.isFacebookInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.facebook)));
-                    return;
-                }
-                break;
-            case SnsShareHelper.BTN_TWITTER:
-                if (!SnsShareHelper.isTwitterInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.twitter)));
-                    return;
-                }
-                break;
-            case SnsShareHelper.BTN_INSTAGRAM: {
-                if (!SnsShareHelper.isInstagramInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.instagram)));
-                    return;
-                }
-            }
-            break;
-            case SnsShareHelper.BTN_WHATSAPP: {
-                if (!SnsShareHelper.isWhatsappInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.whatsapp)));
-                    return;
-                }
-            }
-            break;
-            case SnsShareHelper.BTN_MILIAO:
-            case SnsShareHelper.BTN_MILIAO_FEEDS:
-                if (!SnsShareHelper.isMiliaoInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.miliao)));
-                    return;
-                }
-                break;
-            default:
-                return;
+
+        if (SnsShareHelper.getInstance().isInstallApp(type)) {
+            SnsShareHelper.getInstance().shareToSns(type, mShareUrl, mLiveCoverUrl, mLocation, mLiveTitle, mOwner);
         }
-        mSnsShareHelper.shareToSns(type, mShareUrl, mLiveCoverUrl, mLocation, mLiveTitle, mOwner);
     }
 
     public ShareButtonView(Context context) {
@@ -239,7 +181,6 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
         mLocation = location;
         mAvatarTs = avatarTs;
         mLiveType = liveType;
-        mSnsShareHelper = new SnsShareHelper();
         getShareDataFromServer();
     }
 
@@ -249,7 +190,7 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
         if (tagTailList == null || tagTailList.size() <= 0) {
             return;
         }
-        mSnsShareHelper.setShareTagTailMap(tagTailList);
+        SnsShareHelper.getInstance().setShareTagTailMap(tagTailList);
     }
 
     public void destroy() {

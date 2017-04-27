@@ -194,4 +194,5 @@ public class LiveComponentController extends BaseLiveController {
             mRoomInfoPresenter.stop();
         }
     }
+
 }

@@ -161,7 +161,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 MyLog.e(TAG, "missing R.id.bottom_panel_view");
                 return;
             }
-            PanelContainerPresenter presenter = new PanelContainerPresenter(mComponentController);
+            PanelContainerPresenter presenter = new PanelContainerPresenter(mComponentController, mComponentController.mMyRoomData);
             presenter.setComponentView(relativeLayout);
             addComponentView(presenter);
         }

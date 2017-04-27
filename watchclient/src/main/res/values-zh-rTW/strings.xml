@@ -67,4 +67,5 @@
     <string name="miliao">米聊</string>
     <string name="miliao_feeds">微廣播</string>
     <string name="feeds">動態</string>
+    <string name="uninstall_share_tips">未安裝%1$s，請安裝後分享</string>
 </resources>

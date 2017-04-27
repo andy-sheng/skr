@@ -92,7 +92,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             PanelContainerPresenter presenter = new PanelContainerPresenter(
-                    mComponentController, mComponentController.mRoomChatMsgManager);
+                    mComponentController, mComponentController.mRoomChatMsgManager,
+                    mComponentController.mMyRoomData);
             presenter.setComponentView(relativeLayout);
             addComponentView(presenter);
         }
