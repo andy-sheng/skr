@@ -163,7 +163,6 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
 
     @Override
     protected void orientSelf() {
-        super.orientSelf();
         RelativeLayout.LayoutParams layoutParams;
         //横平时候的margin
         int margin = 0;
