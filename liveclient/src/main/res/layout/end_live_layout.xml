@@ -58,6 +58,25 @@
         android:textSize="@dimen/text_size_50"/>
 
     <TextView
+        android:id="@+id/share_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/share_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:text="@string/live_end_share"
+        android:textColor="@color/color_white_trans_50"
+        android:textSize="@dimen/text_size_36"/>
+
+    <com.wali.live.livesdk.live.view.ShareButtonView
+        android:id="@+id/share_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/back_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
         android:id="@+id/back_btn"
         android:layout_width="@dimen/view_dimen_800"
         android:layout_height="wrap_content"

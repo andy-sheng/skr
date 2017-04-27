@@ -158,4 +158,21 @@
     <string name="has_add_manager_count">Added %d</string>
     <string name="has_add_manager_count_zero">Haven\'t added managers</string>
     <string name="live_title_hint">Good titles give you more chances to get followers</string>
+    <string name="qzone">Qzone</string>
+    <string name="QQ">QQ</string>
+    <string name="blog">Weibo</string>
+    <string name="moment">Moments</string>
+    <string name="weixin_friend">WeChat</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="miliao">Mi Talk</string>
+    <string name="miliao_feeds">Newsfeed</string>
+
+    <string name="uninstall_share_tips">Install %1$s first</string>
+    <string name="prepare_live_share_tips">Tap \"Start\" and share live stream to %1$s</string>
+    <string name="cancel_share_tips">%1$s sharing is off</string>
+    <string name="live_end_share">Share with</string>
+
 </resources>
