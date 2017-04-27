@@ -187,7 +187,7 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
     }
 
     public void initManager(long uuid){
-        LiveRoomCharacterManager.getInstance().clearManagerCache();
+        LiveRoomCharacterManager.getInstance().clear();
         Observable.just(uuid)
                 .map(new Func1<Long, List<LiveRoomManagerModel>>() {
                     @Override
