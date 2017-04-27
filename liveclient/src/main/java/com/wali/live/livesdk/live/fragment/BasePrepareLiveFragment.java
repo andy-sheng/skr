@@ -33,6 +33,7 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
+import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.preference.PreferenceKeys;
@@ -137,6 +138,11 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected void onBeginBtnClick() {
+        //网络判断
+        if (!Network.hasNetwork((GlobalData.app()))) {
+            ToastUtils.showToast(GlobalData.app(), R.string.network_unavailable);
+            return;
+        }
         openLive();
         recordShareSelectState();
         mShareBtnView.hideShareToast();
