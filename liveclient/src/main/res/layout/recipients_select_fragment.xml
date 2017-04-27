@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_grey"
+    android:orientation="vertical">
+
+    <com.base.view.BackTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:is_profile_mode="true" />
+
+    <RelativeLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="43.33dp"
+        android:layout_below="@+id/title_bar"
+        android:background="#f0f0f0"
+        android:paddingLeft="@dimen/margin_30"
+        android:paddingRight="@dimen/margin_30">
+
+        <RelativeLayout
+            android:id="@+id/search_box"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_box_height"
+            android:layout_centerVertical="true"
+            android:background="@drawable/search_input_field_bg"
+            android:paddingLeft="10dip">
+
+            <EditText
+                android:id="@+id/search_input_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="25dip"
+                android:background="@null"
+                android:drawableLeft="@drawable/search_input_field_icon_normal"
+                android:drawablePadding="10dp"
+                android:hint="@string/search_txt"
+                android:imeOptions="actionSearch"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textColor="@color/color_black_trans_90"
+                android:textColorHint="@color/color_black_trans_40"
+                android:textCursorDrawable="@drawable/edittext_goldencolor_cursor"
+                android:textSize="@dimen/text_size_42" />
+
+            <ImageView
+                android:id="@+id/delete_btn"
+                android:layout_width="18.33dip"
+                android:layout_height="18.33dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_20"
+                android:src="@drawable/live_icon_close_btn"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <com.base.view.MLTextView
+        android:id="@+id/hint_title"
+        android:layout_width="match_parent"
+        android:layout_height="36.66dp"
+        android:layout_below="@+id/search_bar"
+        android:background="@color/color_f5f5f5"
+        android:drawableLeft="@drawable/huifang_icon_red"
+        android:drawablePadding="6.66dp"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="13.33dp"
+        android:singleLine="true"
+        android:text="@string/match_hint"
+        android:textColor="@color/color_black_trans_70"
+        android:textSize="@dimen/text_size_40" />
+
+    <View
+        android:id="@+id/linee"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_below="@+id/hint_title"
+        android:background="@color/color_line_e0dfde" />
+
+        <FrameLayout
+            android:id="@+id/friend_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/invite_bottom"
+            android:layout_below="@id/linee">
+
+            <include
+                android:id="@+id/cover_view"
+                layout="@layout/user_list_loading_and_empty_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.wali.live.livesdk.live.view.IndexableRecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never" />
+
+    </FrameLayout>
+   -->
+    <RelativeLayout
+        android:id="@+id/invite_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_180"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_fafafa"
+        android:padding="@dimen/view_dimen_40"
+        android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/invite_list_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/private_confirm" />
+
+        <TextView
+            android:id="@+id/private_confirm"
+            android:layout_width="@dimen/view_dimen_185"
+            android:layout_height="@dimen/view_dimen_90"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/confirm_btn"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/confirm_color"
+            android:textSize="@dimen/text_size_40" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

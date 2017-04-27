@@ -47,6 +47,7 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.location.Location;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
@@ -75,6 +76,7 @@ import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.fragment.EndLiveFragment;
+import com.wali.live.livesdk.live.fragment.RecipientsSelectFragment;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.livegame.fragment.PrepareLiveFragment;
 import com.wali.live.livesdk.live.presenter.LiveRoomPresenter;
@@ -148,6 +150,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private static final int MSG_ROOM_NOT_EXIT = 205;               // 房间不存在
 
     public static boolean sRecording = false; //将其变为静态并暴露给外面，用于各种跳转判定
+
+    public static final int REQUEST_CODE_PICK_MANAGER = 1000;
 
     private boolean mIsLiveEnd;
     private int mLastTicket;
@@ -513,6 +517,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                     }
                     EventBus.getDefault().post(new LiveEventClass.HidePrepareGameLiveEvent());
                     break;
+                case REQUEST_CODE_PICK_MANAGER:
+                    User pickManager = (User) data.getSerializableExtra(RecipientsSelectFragment.RESULT_SINGLE_OBJECT);
+                    if (pickManager != null && !TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+                        if (LiveRoomCharacterManager.getInstance().getManagerCount() < LiveRoomCharacterManager.MANAGER_CNT && !LiveRoomCharacterManager.getInstance().isManager(pickManager.getUid())) {
+                            LiveRoomCharacterManager.setManagerRxTask(this, pickManager, mMyRoomData.getRoomId(), mMyRoomData.getUid(), true);
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -536,6 +548,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 } else {
                     beginLiveToServer();
                 }
+                mLiveRoomPresenter.initManager(UserAccountManager.getInstance().getUuidAsLong());
                 break;
             default:
                 break;
@@ -933,8 +946,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         startCountDown();
+        String roomId = TextUtils.isEmpty(mMyRoomData.getRoomId()) ? "" : mMyRoomData.getRoomId();
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
-                mLiveCoverUrl, "", null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
+                mLiveCoverUrl, roomId, null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
     }
 
     private void processRoomIdInfo(String liveId, String shareUrl, List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
@@ -1225,6 +1239,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             default:
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.OnActivityResultEvent event) {
+        onActivityResult(event.requestCode, event.resultCode, event.data);
     }
 
     /**

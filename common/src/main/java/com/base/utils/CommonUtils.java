@@ -60,6 +60,7 @@ import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.image.fresco.FrescoWorker;
 import com.base.log.MyLog;
+import com.base.pinyin.HanziToPinyin;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.language.LocaleUtil;
 import com.base.utils.sdcard.SDCardUtils;
@@ -82,6 +83,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -117,6 +121,12 @@ public abstract class CommonUtils {
             "a", "b", "c", "d", "e", "f"};
 
     private static long sLastClickTime = 0;
+
+    private static HashMap<Character, String> mPinyinCache = new HashMap<Character, String>();
+    private static Map<String, String> mPolyPhoneWords = new HashMap<>();  // 包含多音字的词语
+    static {
+        mPolyPhoneWords.put("\u91cd\u5e86", "chongqin"); // 重庆
+    }
 
 
     // 检测MIUI
@@ -1779,6 +1789,118 @@ public abstract class CommonUtils {
         PreferenceUtils.setSettingInt(GlobalData.app().getSharedPreferences(SP_FILE_NAME_MIWALLET, Context.MODE_PRIVATE),
                 SP_KEY_MIWALLET_LOGIN_ACCOUNT_TYPE, loginAccountType);
     }
+
+    //排序
+    public static int sortName(final String LocalName1, final String LocalName2) {
+//
+//        String pinyin1 = PinyinUtils.getFirstHanziPinyinByName(LocalName1);
+//        String pinyin2 = PinyinUtils.getFirstHanziPinyinByName(LocalName2);
+        String pinyin1 = getPinyinByName(LocalName1);
+        String pinyin2 = getPinyinByName(LocalName2);
+        pinyin1 = null != pinyin1 ? pinyin1 : "";
+        pinyin2 = null != pinyin2 ? pinyin2 : "";
+        if (pinyin1.contains("#") && !pinyin2.contains("#")) {
+            return 1;
+        }
+        if (!pinyin1.contains("#") && pinyin2.contains("#")) {
+            return -1;
+        }
+
+        return Collator.getInstance().compare(pinyin1, pinyin2);
+    }
+
+    public static String getPinyinByName(final String name) {
+        if (name == null) {
+            return "#";
+        }
+        final String noSpace = name.trim();
+        if (TextUtils.isEmpty(noSpace)) {
+            return "#";
+        }
+        final char firstChar = noSpace.charAt(0);
+        if (mPinyinCache.containsKey(firstChar)) {
+            try {
+                return mPinyinCache.get(firstChar);
+            } catch (final NullPointerException e) {
+                //throw new NullPointerException("the hashmap is " + mPinyinCache + ", the key:"
+                //+ firstChar + ", the value:" + mPinyinCache.get(firstChar));
+                MyLog.e(e);
+            }
+        }
+        String pinYin = hanziToPinyin(String.valueOf(firstChar)).toUpperCase();
+        if (TextUtils.isEmpty(pinYin)) {
+            pinYin = "#";
+        } else {
+            String[] pinyins = pinYin.split(" ");
+            if (pinyins.length > 1 && noSpace.length() > 1) {
+                String sourceWords = noSpace.substring(0, 2);
+                if (getPolyphonePinyin(sourceWords) != null) {
+                    pinYin = getPolyphonePinyin(sourceWords).toUpperCase();
+                }
+            }
+            final char firstLetter = pinYin.charAt(0);
+            if ((firstLetter < 'A') || (firstLetter > 'Z')) {
+                pinYin = "#";
+            }
+        }
+        mPinyinCache.put(firstChar, pinYin);
+        return pinYin;
+    }
+
+    public static String hanziToPinyin(final String source) {
+        final StringBuilder sbFullPinyin = new StringBuilder();
+        if (Build.VERSION.SDK_INT < 14) {
+            final ArrayList<HanziToPinyin.Token> pinyins = HanziToPinyin.getInstance().get(source);
+
+            if ((pinyins != null) && (pinyins.size() > 0)) {
+                for (final HanziToPinyin.Token aToken : pinyins) {
+                    sbFullPinyin.append(aToken.target);
+                    sbFullPinyin.append(" ");
+                }
+            }
+        } else {
+            final ArrayList<HanziToPinyin.Token> pinyins = HanziToPinyin.getInstance().get(source);
+
+            if ((pinyins != null) && (pinyins.size() > 0)) {
+                for (final HanziToPinyin.Token aToken : pinyins) {
+                    if (aToken.polyPhones != null) {
+                        for (int i = 0; i < aToken.polyPhones.length; i++) {
+                            sbFullPinyin.append(aToken.polyPhones[i]);
+                            sbFullPinyin.append(" ");
+                        }
+                    } else {
+                        sbFullPinyin.append(aToken.target);
+                        sbFullPinyin.append(" ");
+                    }
+                }
+            }
+        }
+        if (TextUtils.isEmpty(sbFullPinyin)) {
+            return source.toLowerCase(Locale.ENGLISH);
+        }
+        return sbFullPinyin.toString().toLowerCase(Locale.ENGLISH);
+    }
+
+    public static String getPolyphonePinyin(String words) {
+        return mPolyPhoneWords.get(words);
+    }
+
+    public static char getFirstLetterByName(final String name) {
+        final String pinYin = getPinyinByName(name);
+        return getFirstLetterFromPinyin(pinYin);
+    }
+
+    private static char getFirstLetterFromPinyin(final String pinyin) {
+        char rv = '#';
+        if (!TextUtils.isEmpty(pinyin)) {
+            final char firstLetter = pinyin.toUpperCase().charAt(0);
+            if ((firstLetter >= 'A') && (firstLetter <= 'Z')) {
+                rv = firstLetter;
+            }
+        }
+        return rv;
+    }
+
 
 
 }
