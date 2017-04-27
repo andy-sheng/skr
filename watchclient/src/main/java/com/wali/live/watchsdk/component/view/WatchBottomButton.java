@@ -16,6 +16,7 @@ import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -62,7 +63,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         } else if (id == R.id.game_btn) {
             mPresenter.showGameDownloadView();
         } else if (id == R.id.share_btn) {
-            mPresenter.showShareView();
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showShareView();
+            }
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
