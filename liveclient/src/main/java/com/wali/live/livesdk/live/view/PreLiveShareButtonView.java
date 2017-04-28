@@ -275,19 +275,24 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
         if (mCustomToast != null) {
             mCustomToast.hide();
         }
-        int[] location = new int[2];
-        if (mShareTipsMarginLeft <= 0) {
-            mShareBtnWidth = findViewById(R.id.share_btn1).getWidth();
-            mShareToastWidth = this.getWidth();
-            //mShareTipsMarginBottom = mBeginBtn.getHeight();
-            mShareTipsMarginLeft = (DisplayUtils.getScreenWidth() - mShareToastWidth) / 2;
+        mShareBtnWidth = findViewById(R.id.share_btn1).getWidth();
+
+        int width = CommonUtils.measureWidth(getContext(), message);
+        if (width > mShareToastWidth) {
+            mShareToastWidth = width;
         }
+
+        //mShareTipsMarginBottom = mBeginBtn.getHeight();
+        mShareTipsMarginLeft = (DisplayUtils.getScreenWidth() - mShareToastWidth) / 2;
+
+        int[] location = new int[2];
         view.getLocationOnScreen(location);
         int x = location[0];
         int y = location[1];
         x -= mShareTipsMarginLeft;
         x += mShareBtnWidth / 4;
         y -= mShareTipsMarginBottom;
+
         mCustomToast = new CustomToast(x, y, message);
         mCustomToast.setWidth(mShareToastWidth);
         mCustomToast.showUntilCancel(5);

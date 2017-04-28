@@ -17,18 +17,19 @@ public class CustomToast {
     private boolean mCanceled = false;
     private boolean isDurationSetted = false;
     private Toast mToast;
-    private TextView tips;
+    private TextView mTipsTv;
 
     public CustomToast(int x, int y, String message) {
         View layout = LayoutInflater.from(GlobalData.app()).inflate(R.layout.share_toast_view, null);
 
-        tips = (TextView) layout.findViewById(R.id.message);
+        mTipsTv = (TextView) layout.findViewById(R.id.message);
         ImageView mNavImage = (ImageView) layout.findViewById(R.id.navi_image);
         mNavImage.setPadding(x, mNavImage.getPaddingTop(), mNavImage.getPaddingRight(), mNavImage.getPaddingBottom());
-        tips.setText(message);
+        mTipsTv.setText(message);
         if (TextUtils.isEmpty(message)) {
             layout.setVisibility(View.INVISIBLE);
         }
+
         mToast = new Toast(GlobalData.app());
         mToast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, y);
         mToast.setDuration(Toast.LENGTH_LONG);
@@ -37,9 +38,9 @@ public class CustomToast {
     }
 
     public void setWidth(int width) {
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) tips.getLayoutParams();
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mTipsTv.getLayoutParams();
         layoutParams.width = width;
-        tips.setLayoutParams(layoutParams);
+        mTipsTv.setLayoutParams(layoutParams);
     }
 
     public void setGravity(int x, int y) {
@@ -47,14 +48,14 @@ public class CustomToast {
     }
 
     public void show(int resId, int duration) {
-        tips.setText(resId);
+        mTipsTv.setText(resId);
         mCanceled = false;
         showUntilCancel(duration);
     }
 
 
     public void show(String text, int duration) {
-        tips.setText(text);
+        mTipsTv.setText(text);
         mCanceled = false;
         showUntilCancel(duration);
     }
@@ -76,20 +77,19 @@ public class CustomToast {
             return;
         }
         mToast.show();
-        tips.postDelayed(new Runnable() {
+        mTipsTv.postDelayed(new Runnable() {
             public void run() {
                 showUntilCancel(duration);
             }
         }, 1000);
 
         if (!isDurationSetted) {
-            tips.postDelayed(new Runnable() {
+            mTipsTv.postDelayed(new Runnable() {
                 public void run() {
                     hide();
                 }
             }, 1000 * duration);
             isDurationSetted = true;
         }
-
     }
 }

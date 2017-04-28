@@ -32,9 +32,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.Settings;
-
 import android.support.annotation.ColorRes;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,6 +48,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -62,6 +61,7 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.log.MyLog;
 import com.base.pinyin.HanziToPinyin;
 import com.base.preference.PreferenceUtils;
+import com.base.utils.display.DisplayUtils;
 import com.base.utils.language.LocaleUtil;
 import com.base.utils.sdcard.SDCardUtils;
 import com.google.protobuf.Descriptors;
@@ -124,6 +124,7 @@ public abstract class CommonUtils {
 
     private static HashMap<Character, String> mPinyinCache = new HashMap<Character, String>();
     private static Map<String, String> mPolyPhoneWords = new HashMap<>();  // 包含多音字的词语
+
     static {
         mPolyPhoneWords.put("\u91cd\u5e86", "chongqin"); // 重庆
     }
@@ -1643,15 +1644,23 @@ public abstract class CommonUtils {
      * 参数：maxWidth 最大宽度
      * 参数：content  指TextView中要显示的内容
      */
-    public static void setMaxEcplise(final TextView mTextView, int maxWidth, final String content) {
-        TextPaint textPaint = mTextView.getPaint();
+    public static void setMaxEclipse(final TextView textView, int maxWidth, final String content) {
+        TextPaint textPaint = textView.getPaint();
         float textPaintWidth = textPaint.measureText(content);
 
         if (textPaintWidth > maxWidth && content.length() > 6) {
-            setMaxEcplise(mTextView, maxWidth, content.substring(0, content.length() - 6) + "...");
+            setMaxEclipse(textView, maxWidth, content.substring(0, content.length() - 6) + "...");
         } else {
-            mTextView.setText(content);
+            textView.setText(content);
         }
+    }
+
+    public static int measureWidth(Context context, String content) {
+        TextView textView = new TextView(context);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, DisplayUtils.dip2px(12f));
+        TextPaint paint = textView.getPaint();
+        int width = (int) paint.measureText(content);
+        return width + DisplayUtils.dip2px(30);
     }
 
     /**
@@ -1710,6 +1719,7 @@ public abstract class CommonUtils {
         }
         return null;
     }
+
     /**
      * 把钱数由分变为元，例如1分变为0.01，20分变为0.2，123分变为1.23
      *
@@ -1900,7 +1910,6 @@ public abstract class CommonUtils {
         }
         return rv;
     }
-
 
 
 }

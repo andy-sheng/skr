@@ -177,8 +177,8 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
 
     private void getShareDataFromServer() {
         mSharePresenter = new SharePresenter(this);
-        mSharePresenter.getTagTailForShare(mOwner.getUid(), (mOwner.getUid() == UserAccountManager.getInstance().getUuidAsLong()) ?
-                        ShareProto.RoleType.ANCHOR : ShareProto.RoleType.VISITOR,
+        mSharePresenter.getTagTailForShare(mOwner.getUid(),
+                (mOwner.getUid() == UserAccountManager.getInstance().getUuidAsLong()) ? ShareProto.RoleType.ANCHOR : ShareProto.RoleType.VISITOR,
                 ShareProto.PeriodType.END_LIVE);
     }
 
