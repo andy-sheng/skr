@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
@@ -20,6 +21,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private static final String TAG = "PanelContainerPresenter";
 
     private BaseBottomPanel mSharePanel;
+    private RoomBaseDataModel mMyRoomData;
 
     @Override
     protected String getTAG() {
@@ -27,8 +29,10 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     public PanelContainerPresenter(
-            @NonNull IComponentController componentController) {
+            @NonNull IComponentController componentController,
+            @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
+        mMyRoomData = myRoomData;
         registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(ComponentController.MSG_ON_BACK_PRESSED);
@@ -48,7 +52,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
 
     private void showSharePanel() {
         if (mSharePanel == null) {
-            mSharePanel = new ShareControlPanel(mView);
+            mSharePanel = new ShareControlPanel(mView, mMyRoomData);
         }
         showPanel(mSharePanel, true);
     }

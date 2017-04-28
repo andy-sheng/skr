@@ -11,13 +11,27 @@ import android.widget.RelativeLayout;
 
 import com.base.global.GlobalData;
 import com.base.utils.CommonUtils;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 import com.wali.live.watchsdk.component.presenter.adapter.ShareItemAdapter;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_FACEBOOK;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_INSTAGRAM;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_MILIAO;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_MILIAO_FEEDS;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_QQ;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_QZONE;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_TWITTER;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WECHAT;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WECHAT_MOMENT;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WEIBO;
+import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WHATSAPP;
 
 /**
  * @module 分享面板
@@ -30,25 +44,14 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
 
     private RecyclerView mShareGridView;
     private ShareItemAdapter mShareAdapter;
+    @NonNull
+    private RoomBaseDataModel mMyRoomData;
 
     boolean isLocalChina = CommonUtils.isLocalChina();
     int shareBtnCnt = isLocalChina ? SHARE_BTN_CNT_DOMAIN : SHARE_BTN_CNT_ABROAD;
 
     public static final int SHARE_BTN_CNT_DOMAIN = 9;
     public static final int SHARE_BTN_CNT_ABROAD = 6;
-
-    public static final int BTN_WECHAT = 0;
-    public static final int BTN_WECHAT_MOMENT = 1;
-    public static final int BTN_QQ = 2;
-    public static final int BTN_QZONE = 3;
-    public static final int BTN_WEIBO = 4;
-    public static final int BTN_FACEBOOK = 5;
-    public static final int BTN_TWITTER = 6;
-    public static final int BTN_INSTAGRAM = 7;
-    public static final int BTN_WHATSAPP = 8;
-    public static final int BTN_MILIAO = 9;
-    public static final int BTN_MILIAO_FEEDS = 10;
-    public static final int BTN_FEEDS = 11;
 
     public static final int[] SHARE_ID = new int[]{
             R.id.weixin_friend,
@@ -95,6 +98,7 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             R.string.feeds
     };
 
+    //btn统一用SnsShareHelper
     public static final int[] SHARE_BTN_INDEX_DOMAIN = new int[]{
             BTN_WECHAT,
             BTN_WECHAT_MOMENT,
@@ -117,8 +121,9 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             BTN_WECHAT_MOMENT
     };
 
-    public ShareControlPanel(@NonNull RelativeLayout parentView) {
+    public ShareControlPanel(@NonNull RelativeLayout parentView, @NonNull RoomBaseDataModel roomBaseDataModel) {
         super(parentView);
+        this.mMyRoomData = roomBaseDataModel;
     }
 
     @Override
@@ -149,6 +154,38 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
         if (CommonUtils.isFastDoubleClick()) {
             return;
         }
+        int snsType = getShareType(v);
+        if (snsType != -1 && SnsShareHelper.getInstance().isInstallApp(snsType)) {
+            SnsShareHelper.getInstance().shareToSns(snsType, mMyRoomData);
+        }
+    }
+
+    private int getShareType(View v) {
+        int i = v.getId();
+        if (i == R.id.weixin_friend) {
+            return BTN_WECHAT;
+        } else if (i == R.id.moment) {
+            return BTN_WECHAT_MOMENT;
+        } else if (i == R.id.QQ) {
+            return BTN_QQ;
+        } else if (i == R.id.qzone) {
+            return BTN_QZONE;
+        } else if (i == R.id.blog) {
+            return BTN_WEIBO;
+        } else if (i == R.id.facebook) {
+            return BTN_FACEBOOK;
+        } else if (i == R.id.twitter) {
+            return BTN_TWITTER;
+        } else if (i == R.id.instagram) {
+            return BTN_INSTAGRAM;
+        } else if (i == R.id.whatsapp) {
+            return BTN_WHATSAPP;
+        } else if (i == R.id.miliao) {
+            return BTN_MILIAO;
+        } else if (i == R.id.miliao_feeds) {
+            return BTN_MILIAO_FEEDS;
+        }
+        return -1;
     }
 
     @Override

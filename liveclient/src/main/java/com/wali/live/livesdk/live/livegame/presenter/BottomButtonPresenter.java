@@ -48,6 +48,11 @@ public class BottomButtonPresenter extends
         }
     }
 
+    @Override
+    public void showShareView() {
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_SHARE_PANEL);
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {

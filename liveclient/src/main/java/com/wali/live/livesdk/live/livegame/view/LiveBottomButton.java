@@ -13,6 +13,7 @@ import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -29,6 +30,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mCommentBtn;
     protected View mSettingBtn;
     protected View mMuteBtn;
+    protected View mShareBtn;
 
     @Override
     protected String getTAG() {
@@ -50,8 +52,12 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mMuteBtn = createImageView(R.drawable.live_icon_mute_btn);
         addCreatedView(mMuteBtn, R.id.mute_btn);
 
+        mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+        addCreatedView(mShareBtn, R.id.share_btn);
+
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mMuteBtn);
+        mRightBtnSetPort.add(mShareBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mCommentBtn);
 
@@ -85,6 +91,10 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             view.setSelected(isSelected);
             mPresenter.muteAudio(isSelected);
             msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SILENT;
+        } else if (id == R.id.share_btn) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showShareView();
+            }
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -133,6 +143,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 禁音/取消禁音
          */
         void muteAudio(boolean isMute);
+
+        /**
+         * 显示分享面板
+         */
+        void showShareView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

@@ -66,4 +66,6 @@
     <string name="miliao">Mi Talk</string>
     <string name="miliao_feeds">Newsfeed</string>
     <string name="feeds">My feed</string>
+
+    <string name="uninstall_share_tips">Install %1$s first</string>
 </resources>

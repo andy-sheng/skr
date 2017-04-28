@@ -31,6 +31,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mPlusBtn;
     protected View mMagicBtn;
     protected View mSettingBtn;
+    protected View mShareBtn;
 
     @Override
     protected String getTAG() {
@@ -52,15 +53,20 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mSettingBtn = createImageView(R.drawable.live_icon_set_btn);
         addCreatedView(mSettingBtn, R.id.setting_btn);
 
+        mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+        addCreatedView(mShareBtn, R.id.share_btn);
+
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mPlusBtn);
 
+        mRightBtnSetPort.add(mShareBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mMagicBtn);
 
         mBottomBtnSetLand.add(mPlusBtn);
         mBottomBtnSetLand.add(mSettingBtn);
         mBottomBtnSetLand.add(mMagicBtn);
+        mBottomBtnSetLand.add(mShareBtn);
 
         orientChild();
     }
@@ -81,6 +87,8 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         } else if (id == R.id.magic_btn) {
             mPresenter.showMagicPanel();
             // TODO 增加打点
+        } else if (id == R.id.share_btn) {
+            mPresenter.showShareView();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -124,6 +132,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 显示美妆面板
          */
         void showMagicPanel();
+
+        /**
+         * 显示分享面板
+         */
+        void showShareView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

@@ -783,7 +783,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             default:
                 ToastUtils.showToast(GlobalData.app(), R.string.live_failure);
                 EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                        mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), LiveManager.TYPE_LIVE_GAME, mMyRoomData.getTicket(), mShareUrl, mMyRoomData.getCity(), mMyRoomData.getUser(), mLiveCoverUrl, mLiveTitle);
+                        mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), LiveManager.TYPE_LIVE_GAME, mMyRoomData.getTicket(), mMyRoomData.getShareUrl(), mMyRoomData.getCity(), mMyRoomData.getUser(), mLiveCoverUrl, mLiveTitle);
                 break;
         }
     }
@@ -884,7 +884,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!judgeNetwork()) {
             return;
         }
-        if (mSnsType != 0 && !TextUtils.isEmpty(mShareUrl)) {
+        if (mSnsType != 0 && !TextUtils.isEmpty(mMyRoomData.getShareUrl())) {
             mIsShare = true;
             preLiveShareSNS();
         } else {
@@ -929,7 +929,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mSnsTypeFlag <<= 1;
         }
         //分享
-        SnsShareHelper.getInstance().shareToSns(getShareType(mSnsTypeFlag), mShareUrl, mMyRoomData);
+        SnsShareHelper.getInstance().shareToSns(getShareType(mSnsTypeFlag), mMyRoomData);
         mSnsType &= (~mSnsTypeFlag);
         mSnsTypeFlag <<= 1;
         MyLog.w(TAG, "mCountDownView state" + mCountDownView.getVisibility());
@@ -953,7 +953,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private void processRoomIdInfo(String liveId, String shareUrl, List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
         mMyRoomData.setRoomId(liveId);
-        mShareUrl = shareUrl;
+        mMyRoomData.setShareUrl(shareUrl);
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
         processPreLive();
     }
@@ -962,7 +962,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                                     List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
         MyLog.w(TAG, "processStartRecord,liveId:" + liveId);
         mMyRoomData.setRoomId(liveId);
-        mShareUrl = shareUrl;
+        mMyRoomData.setShareUrl(shareUrl);
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
         mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpstreamUrl);
         startRecord();
@@ -1112,7 +1112,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             return;
         }
         mIsLiveEnd = true;
-        Bundle bundle = EndLiveFragment.getBundle(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(), mMyRoomData.getTicket() - mLastTicket, mShareUrl,
+        Bundle bundle = EndLiveFragment.getBundle(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(), mMyRoomData.getTicket() - mLastTicket, mMyRoomData.getShareUrl(),
                 (mLocation == null) ? "" : mLocation.getCity(), mMyRoomData.getUser(), mMyRoomData.getCoverUrl(), mMyRoomData.getLiveTitle());
         bundle.putBoolean(EndLiveFragment.EXTRA_GENERATE_HISTORY, mGenerateHistorySucc);
         bundle.putString(EndLiveFragment.EXTRA_GENERATE_HISTORY_MSG, mGenerateHistoryMsg);
