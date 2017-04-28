@@ -118,14 +118,21 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
     private CustomToast mCustomToast;
     private SharePresenter mSharePresenter;
 
+    private int mAllowShareType;
+
     //这里index是显示的实际button的下标, shareBtnIndex是对应SHARE_DRAWABLE_ID，SHARE_TV_ID的下标索引。
     private void bindShareBtnArrays(int index, int shareBtnIndex) {
         mBtnSet[index] = (ImageView) findViewById(SHARE_BTN_ID[index]);
         mBtnSet[index].setImageResource(SHARE_DRAWABLE_ID[shareBtnIndex]);
         mBtnSet[index].setTag(shareBtnIndex); //index as tag 0-10
-        mBtnSet[index].setSelected(mShareBtnStateSet[shareBtnIndex]);
-        mBtnSet[index].setVisibility(VISIBLE);
-        mBtnSet[index].setOnClickListener(this);
+
+        if ((mAllowShareType & (1 << shareBtnIndex)) != 0) {
+            mBtnSet[index].setSelected(mShareBtnStateSet[shareBtnIndex]);
+            mBtnSet[index].setVisibility(VISIBLE);
+            mBtnSet[index].setOnClickListener(this);
+        } else {
+            mBtnSet[index].setVisibility(GONE);
+        }
     }
 
     @Override
@@ -311,6 +318,11 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
         inflate(context, R.layout.share_button_view, this);
         ButterKnife.bind(this);
         initData();
+    }
+
+    public void setShareType(int shareType) {
+        mAllowShareType = shareType;
+
         initView();
         initPresenter();
     }
@@ -352,31 +364,47 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
     }
 
     private void initView() {
+        // 获取语言版本
         boolean isLocalChina = CommonUtils.isLocalChina();
 
-        final int defaultSelectBtnId = isLocalChina ? BTN_WECHAT_MOMENT : BTN_FACEBOOK;
-        int defaultSelectBtn = BTN_WECHAT;
+        // 获取支持的默认btnId
+        int defaultSelectBtnId = -1;
+        if (isLocalChina) {
+            if ((mAllowShareType & (1 << BTN_WECHAT_MOMENT)) != 0) {
+                defaultSelectBtnId = BTN_WECHAT_MOMENT;
+            }
+        } else if (!isLocalChina) {
+            if ((mAllowShareType & (1 << BTN_FACEBOOK)) != 0) {
+                defaultSelectBtnId = BTN_FACEBOOK;
+            }
+        }
+        final int finalDefaultSelectBtnId = defaultSelectBtnId;
+
+        // 获取btnId对应的btnIndex，同时绑定对应的分享按钮
+        int defaultSelectBtnIndex = -1;
         int btnCnt = isLocalChina ? SHARE_BTN_INDEX_DOMESTIC.length : SHARE_BTN_INDEX_ABROAD.length;
         for (int i = 0; i < btnCnt; i++) {
             int shareBtnIndex = isLocalChina ? SHARE_BTN_INDEX_DOMESTIC[i] : SHARE_BTN_INDEX_ABROAD[i];
-            //btn id始终保持1-?
             bindShareBtnArrays(i, shareBtnIndex);
-            if (shareBtnIndex == defaultSelectBtnId) {
-                defaultSelectBtn = i;//标记默认第几个btn被选中
+            if (shareBtnIndex == finalDefaultSelectBtnId) {
+                defaultSelectBtnIndex = i;//标记默认第几个btn被选中
             }
         }
-        if (!mIsFirstTips || defaultSelectBtn > SHARE_BTN_CNT ||
+
+        // 满足对应的条件，不需要默认选中状态和对应的文案，直接返回
+        if (!mIsFirstTips || defaultSelectBtnIndex < 0 || defaultSelectBtnIndex >= btnCnt ||
                 !((isLocalChina && isWechatInstalled()) || (!isLocalChina && SnsShareHelper.isFacebookInstalled()))) {
             return;
         }
-        final int defaultBtn = defaultSelectBtn;
-        mBtnSet[defaultBtn].setSelected(true);
+
+        final int defaultBtnIndex = defaultSelectBtnIndex;
+        mBtnSet[defaultBtnIndex].setSelected(true);
         mShareBtnStateSet[defaultSelectBtnId] = true;
-        mBtnSet[defaultBtn].postDelayed(new Runnable() {
+        mBtnSet[defaultBtnIndex].postDelayed(new Runnable() {
             @Override
             public void run() {
-                String tips = GlobalData.app().getString(R.string.prepare_live_share_tips, GlobalData.app().getString(SHARE_TV_ID[defaultSelectBtnId]));
-                showShareToast(mBtnSet[defaultBtn], tips);
+                String tips = GlobalData.app().getString(R.string.prepare_live_share_tips, GlobalData.app().getString(SHARE_TV_ID[finalDefaultSelectBtnId]));
+                showShareToast(mBtnSet[defaultBtnIndex], tips);
                 PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_FIRST_TIPS, false);
             }
         }, 500);
@@ -436,5 +464,4 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
             mSharePresenter.destroy();
         }
     }
-
 }

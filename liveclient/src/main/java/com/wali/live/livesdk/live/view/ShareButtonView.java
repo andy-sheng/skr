@@ -94,15 +94,22 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
     private int mLiveType;
     private SharePresenter mSharePresenter;
 
+    private int mAllowShareType;
+
     private Activity mActivity;
 
     private void bindShareBtnArrays(int index, int shareBtnIndex) {
         mBtnSet[index] = (ImageView) findViewById(SHARE_BTN_ID[index]);
         mBtnSet[index].setImageResource(SHARE_DRAWABLE_ID[shareBtnIndex]);
         mBtnSet[index].setTag(shareBtnIndex); //index as tag
-        mBtnSet[index].setSelected(mShareBtnStateSet[shareBtnIndex]);
-        mBtnSet[index].setVisibility(VISIBLE);
-        mBtnSet[index].setOnClickListener(this);
+
+        if ((mAllowShareType & (1 << shareBtnIndex)) != 0) {
+            mBtnSet[index].setSelected(mShareBtnStateSet[shareBtnIndex]);
+            mBtnSet[index].setVisibility(VISIBLE);
+            mBtnSet[index].setOnClickListener(this);
+        } else {
+            mBtnSet[index].setVisibility(GONE);
+        }
     }
 
     @Override
@@ -151,6 +158,10 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
     private void init(Context context) {
         inflate(context, R.layout.share_button_view, this);
         ButterKnife.bind(this);
+    }
+
+    public void setShareType(int shareType) {
+        mAllowShareType = shareType;
         initViews();
     }
 
@@ -183,7 +194,6 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
         mLiveType = liveType;
         getShareDataFromServer();
     }
-
 
     @Override
     public void notifyShareControlPanel(List<ShareProto.TagTail> tagTailList) {

@@ -1124,6 +1124,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 (mLocation == null) ? "" : mLocation.getCity(), mMyRoomData.getUser(), mMyRoomData.getCoverUrl(), mMyRoomData.getLiveTitle());
         bundle.putBoolean(EndLiveFragment.EXTRA_GENERATE_HISTORY, mGenerateHistorySucc);
         bundle.putString(EndLiveFragment.EXTRA_GENERATE_HISTORY_MSG, mGenerateHistoryMsg);
+        bundle.putInt(EndLiveFragment.EXTRA_SHARE_TYPE, mShareType);
         EndLiveFragment.openFragment(LiveSdkActivity.this, bundle);
     }
 

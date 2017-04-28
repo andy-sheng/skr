@@ -59,6 +59,8 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public static final String EXTRA_GENERATE_LIVE_TITLE = "extra_generate_live_title";
 
     public static final String EXTRA_LIVE_TYPE = "extra_live_type";
+    public static final String EXTRA_SHARE_TYPE = "extra_share_type";
+
     private static final String EXTRA_FAILURE = "extra_failure";
 
     private SimpleDraweeView mAvatarBg;
@@ -87,6 +89,8 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
 
     private boolean mIsFailure;
     private ShareButtonView mShareButtonView;
+
+    private int mAllowShareType;
 
     @Override
     public int getRequestCode() {
@@ -128,6 +132,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         mShareUrl = bundle.getString(EXTRA_SHARE_URL, "");
         mLiveTitle = bundle.getString(EXTRA_GENERATE_LIVE_TITLE, "");
         mLocation = bundle.getString(EXTRA_LOCATION, "");
+        mAllowShareType = bundle.getInt(EXTRA_SHARE_TYPE, 0);
     }
 
     private void initContentView() {
@@ -170,9 +175,14 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         } else {
             mDeleteBtn.setVisibility(View.INVISIBLE);
         }
-        mShareButtonView = $(R.id.share_view);
-        mShareButtonView.setShareData(getActivity(), mOwner, mShareUrl, mCoverUrl, mLiveTitle, mLocation, mAvatarTs, mLiveType);
 
+        mShareButtonView = $(R.id.share_view);
+        if (mAllowShareType == 0) {
+            mShareButtonView.setVisibility(View.GONE);
+        } else {
+            mShareButtonView.setShareData(getActivity(), mOwner, mShareUrl, mCoverUrl, mLiveTitle, mLocation, mAvatarTs, mLiveType);
+            mShareButtonView.setShareType(mAllowShareType);
+        }
     }
 
     @Override

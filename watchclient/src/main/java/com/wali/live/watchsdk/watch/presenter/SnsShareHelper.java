@@ -47,6 +47,9 @@ public class SnsShareHelper {
     public static final String SHARE_MILIAO = "?pf=miliao";
     public static final String SHARE_MILIAO_FEEDS = "?pf=miliaowall";
 
+    /**
+     * 保持和ShareType一致的顺序
+     */
     public static final int BTN_WECHAT = 0;
     public static final int BTN_WECHAT_MOMENT = 1;
     public static final int BTN_QQ = 2;

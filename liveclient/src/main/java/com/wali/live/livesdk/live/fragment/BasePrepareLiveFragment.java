@@ -105,6 +105,17 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
+        tryHideShareBtnView();
+    }
+
+    private void tryHideShareBtnView() {
+        if (mMyRoomData != null && mShareBtnView != null) {
+            if (mMyRoomData.getShareType() == 0) {
+                mShareBtnView.setVisibility(View.GONE);
+            } else {
+                mShareBtnView.setShareType(mMyRoomData.getShareType());
+            }
+        }
     }
 
     public void setRoomChatMsgManager(@NonNull LiveRoomChatMsgManager roomChatMsgManager) {
@@ -202,6 +213,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mTagNameTv = $(R.id.tag_name_tv);
 
         mShareBtnView = $(R.id.share_view);
+        tryHideShareBtnView();
     }
 
     protected void initTitleView() {
