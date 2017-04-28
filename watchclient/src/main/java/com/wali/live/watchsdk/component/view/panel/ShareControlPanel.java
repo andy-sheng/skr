@@ -47,12 +47,6 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
     @NonNull
     private RoomBaseDataModel mMyRoomData;
 
-    boolean isLocalChina = CommonUtils.isLocalChina();
-    int shareBtnCnt = isLocalChina ? SHARE_BTN_CNT_DOMAIN : SHARE_BTN_CNT_ABROAD;
-
-    public static final int SHARE_BTN_CNT_DOMAIN = 9;
-    public static final int SHARE_BTN_CNT_ABROAD = 6;
-
     public static final int[] SHARE_ID = new int[]{
             R.id.weixin_friend,
             R.id.moment,
@@ -214,7 +208,7 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
         //分享item宽高比例
         float itemHeight = (GlobalData.screenWidth / 4f);
         if (mIsLandscape) {
-            int gridWidth = GlobalData.screenWidth * shareBtnCnt / 5;
+            int gridWidth = GlobalData.screenWidth * mShareAdapter.getItemCount() / 5;
             if (gridWidth > GlobalData.screenHeight) {
                 gridWidth = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
@@ -227,8 +221,8 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             layoutParams = new RelativeLayout.LayoutParams(gridWidth, (int) itemHeight);
             layoutParams.setMargins(margin, 0, 0, 0);
         } else {
-            int layer = shareBtnCnt / 5;
-            if ((shareBtnCnt % 5) > 0) {
+            int layer = mShareAdapter.getItemCount() / 5;
+            if ((mShareAdapter.getItemCount() % 5) > 0) {
                 layer++;
             }
             mShareGridView.setLayoutManager(new GridLayoutManager(mShareGridView.getContext(), 5));
