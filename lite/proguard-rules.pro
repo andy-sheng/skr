@@ -179,6 +179,10 @@
     public *;
 }
 
+-keep class com.mi.liveassistant.camera.CameraView{
+    public *;
+}
+
 -keep class com.mi.liveassistant.room.callback.ICallback{
     public *;
 }
