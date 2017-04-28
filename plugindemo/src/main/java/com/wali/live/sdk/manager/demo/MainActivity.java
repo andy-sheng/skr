@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
 import com.wali.live.sdk.manager.SdkUpdateHelper;
-import com.wali.live.sdk.manager.ShareType;
 import com.wali.live.sdk.manager.aardemo.R;
 import com.wali.live.sdk.manager.demo.global.GlobalData;
 import com.wali.live.sdk.manager.demo.notification.NotificationManger;
@@ -158,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
-        MiLiveSdkController.getInstance().setShareType(ShareType.TYPE_WEIXIN |
-                ShareType.TYPE_MOMENT | ShareType.TYPE_QQ | ShareType.TYPE_QZONE);
+//        MiLiveSdkController.getInstance().setShareType(ShareType.TYPE_WEIXIN |
+//                ShareType.TYPE_MOMENT | ShareType.TYPE_QQ | ShareType.TYPE_QZONE);
     }
 
     public void showUpgradeDialog(final @NonNull Activity activity, final boolean canCancel) {
