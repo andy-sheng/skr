@@ -88,8 +88,9 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     private String mLocation;
 
     private boolean mIsFailure;
-    private ShareButtonView mShareButtonView;
 
+    private TextView mShareTv;
+    private ShareButtonView mShareButtonView;
     private int mAllowShareType;
 
     @Override
@@ -176,8 +177,10 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
             mDeleteBtn.setVisibility(View.INVISIBLE);
         }
 
+        mShareTv = $(R.id.share_tv);
         mShareButtonView = $(R.id.share_view);
         if (mAllowShareType == 0) {
+            mShareTv.setVisibility(View.GONE);
             mShareButtonView.setVisibility(View.GONE);
         } else {
             mShareButtonView.setShareData(getActivity(), mOwner, mShareUrl, mCoverUrl, mLiveTitle, mLocation, mAvatarTs, mLiveType);
