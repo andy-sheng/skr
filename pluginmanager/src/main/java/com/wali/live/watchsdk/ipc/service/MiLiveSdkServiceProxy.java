@@ -80,7 +80,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventGetRecommendLives(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
-            Logger.w(TAG, "onEventGetRecommendLives");
+            Logger.d(TAG, "onEventGetRecommendLives");
             if (mChannelCallback != null) {
                 mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
                 mChannelCallback = null;
@@ -96,7 +96,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
 
         @Override
-        public void onEventShareTrigger(ShareInfo shareInfo) throws RemoteException {
+        public void onEventShare(ShareInfo shareInfo) throws RemoteException {
             if (mCallback != null) {
                 mCallback.notifyWantShare(shareInfo);
             }
@@ -263,7 +263,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void getFollowingList(IMiLiveSdk.IFollowingListCallback followingListCallback, boolean isBothWay, long timeStamp) {
+    public void getFollowingList(boolean isBothWay, long timeStamp, IMiLiveSdk.IFollowingListCallback followingListCallback) {
         Logger.w(TAG, "getFollowingList");
         if (followingListCallback == null) {
             Logger.w(TAG, "getFollowingList callback is null");
@@ -281,6 +281,20 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             }
         }
     }
+
+    public void notifyShareSuc(int type) {
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+        } else {
+            try {
+                mRemoteService.notifyShareSuc(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(), type);
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+            }
+        }
+    }
+
 
     public void clearAccount() {
         Logger.w(TAG, "clearAccount");

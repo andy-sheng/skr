@@ -14,8 +14,8 @@ import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.presenter.IShareView;
-import com.wali.live.livesdk.live.presenter.SharePresenter;
+import com.wali.live.watchsdk.component.view.IShareView;
+import com.wali.live.watchsdk.component.presenter.SharePresenter;
 import com.wali.live.proto.ShareProto;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
@@ -334,7 +334,7 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
 
     private void initPresenter() {
         mSharePresenter = new SharePresenter(this);
-        mSharePresenter.getTagTailForShare(UserAccountManager.getInstance().getUuidAsLong(), ShareProto.RoleType.ANCHOR,
+        mSharePresenter.getTagTailForShare(UserAccountManager.getInstance().getUuidAsLong(),
                 ShareProto.PeriodType.PRE_LIVE);
     }
 

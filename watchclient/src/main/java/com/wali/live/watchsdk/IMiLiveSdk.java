@@ -104,7 +104,12 @@ public interface IMiLiveSdk {
     /**
      * 获取关注人信息列表
      */
-    void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp);
+    void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
+
+    /**
+     * 宿主app通知sdk分享成功接口
+     */
+    void notifyShareSuc(int type);
 
     /**
      * sdk 上层应用回调

@@ -618,6 +618,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.ShareSucEvent event) {
+        MyLog.w(TAG, "EventClass.ShareSucEvent");
+        if (event != null) {
+            mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
+            //基类增长经验值 不要删掉
+            super.onEventMainThread(event);
+        }
+    }
+
     private void viewerTopFromServer(RoomBaseDataModel roomData) {
         mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
     }

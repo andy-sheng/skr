@@ -139,7 +139,14 @@ public interface IMiLiveSdk {
      *
      * @version 205011
      */
-    void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp);
+    void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
+
+    /**
+     * 宿主app通知sdk分享成功接口
+     *
+     * @version 205014
+     */
+    void notifyShareSuc(int type, IAssistantCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手

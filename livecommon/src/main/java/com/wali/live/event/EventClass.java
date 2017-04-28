@@ -160,6 +160,7 @@ public abstract class EventClass {
 
     public static class LoadingEndEvent {
     }
+
     public static class GiftCardPush {
         public Object obj1;
 
@@ -211,10 +212,10 @@ public abstract class EventClass {
         }
     }
 
-    public static class ShowRechargeProgressEvent{
+    public static class ShowRechargeProgressEvent {
     }
 
-    public static class HideRechargeProgressEvent{
+    public static class HideRechargeProgressEvent {
     }
 
     public static class ChangeCancel {
@@ -247,6 +248,19 @@ public abstract class EventClass {
         public final long userId;
         public final long avatar;
         public final boolean checked;
+    }
+
+    public static class ShareSucEvent {
+        public static final int TYPE_NONE = 0;
+        public int snsType = -1;
+
+        public ShareSucEvent(int type) {
+            this.snsType = type;
+        }
+
+        public int getSnsType() {
+            return snsType;
+        }
     }
 
 }

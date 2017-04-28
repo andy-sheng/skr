@@ -130,7 +130,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("拉关注人列表", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().getFollowingList(new IMiLiveSdk.IFollowingListCallback() {
+                MiLiveSdkController.getInstance().getFollowingList(false, 0, new IMiLiveSdk.IFollowingListCallback() {
                     @Override
                     public void notifyGetFollowingList(int i, List<UserInfo> list, int i1, long l) {
                         Log.w(TAG, "notifyGetFollowingList," + "errcode=" + i);
@@ -139,7 +139,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             ToastUtils.showToast(StringUtils.join(list, "\n"));
                         }
                     }
-                }, false, 0);
+                });
             }
         }));
     }

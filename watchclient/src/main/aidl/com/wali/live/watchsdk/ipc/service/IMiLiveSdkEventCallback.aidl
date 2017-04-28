@@ -18,5 +18,5 @@ interface IMiLiveSdkEventCallback {
 
     void onEventGetFollowingList(int errCode, in List<UserInfo> userInfos, int total ,long timeStamp);
 
-    void onEventShareTrigger(in ShareInfo shareInfo);
+    void onEventShare(in ShareInfo shareInfo);
 }

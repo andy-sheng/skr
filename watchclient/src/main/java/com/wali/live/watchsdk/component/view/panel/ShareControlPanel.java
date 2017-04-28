@@ -12,10 +12,16 @@ import android.widget.RelativeLayout;
 import com.base.global.GlobalData;
 import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.component.ComponentController;
+import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.component.presenter.ComponentPresenter.IComponentController;
 import com.wali.live.component.view.panel.BaseBottomPanel;
+import com.wali.live.proto.ShareProto;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.presenter.SharePresenter;
 import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 import com.wali.live.watchsdk.component.presenter.adapter.ShareItemAdapter;
+import com.wali.live.watchsdk.component.view.IShareView;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.util.ArrayList;
@@ -39,13 +45,15 @@ import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WHATSAPP
  * Created by yangli on 16-5-11.
  */
 public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLayout>
-        implements View.OnClickListener {
+        implements View.OnClickListener, IShareView {
     private static final String TAG = "ShareControlPanel";
 
     private RecyclerView mShareGridView;
     private ShareItemAdapter mShareAdapter;
     @NonNull
     private RoomBaseDataModel mMyRoomData;
+    @NonNull
+    protected IComponentController mComponentController;
 
     public static final int[] SHARE_ID = new int[]{
             R.id.weixin_friend,
@@ -115,9 +123,13 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             BTN_WECHAT_MOMENT
     };
 
-    public ShareControlPanel(@NonNull RelativeLayout parentView, @NonNull RoomBaseDataModel roomBaseDataModel) {
+    public ShareControlPanel(@NonNull RelativeLayout parentView, @NonNull ComponentPresenter.IComponentController componentController,
+                             @NonNull RoomBaseDataModel roomBaseDataModel) {
         super(parentView);
+        this.mComponentController = componentController;
         this.mMyRoomData = roomBaseDataModel;
+        SharePresenter sharePresenter = new SharePresenter(this);
+        sharePresenter.getTagTailForShare(mMyRoomData.getUid(), ShareProto.PeriodType.LIVING);
     }
 
     @Override
@@ -157,8 +169,9 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             return;
         }
         int snsType = getShareType(v);
-        if (snsType != -1 && SnsShareHelper.getInstance().isInstallApp(snsType)) {
+        if (snsType != -1 && SnsShareHelper.isAppInstalled(snsType)) {
             SnsShareHelper.getInstance().shareToSns(snsType, mMyRoomData);
+            mComponentController.onEvent(ComponentController.MSG_HIDE_BOTTOM_PANEL);
         }
     }
 
@@ -231,5 +244,12 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
         }
         mShareGridView.setLayoutParams(layoutParams);
         mShareAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyShareControlPanel(List<ShareProto.TagTail> tagTail) {
+        if (tagTail != null) {
+            SnsShareHelper.getInstance().setShareTagTailMap(tagTail);
+        }
     }
 }

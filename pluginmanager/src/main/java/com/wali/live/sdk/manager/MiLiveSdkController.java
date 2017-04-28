@@ -58,6 +58,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
     private static final String ACTION_GET_CHANNEL_LIVES = "get_channel_lives";
     private static final String ACTION_GET_FOLLOWING_LIST = "get_following_list";
+    private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
 
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
@@ -95,6 +96,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_THIRD_PART_LOGIN, 205005);
         mMinVersionMap.put(ACTION_GET_CHANNEL_LIVES, 205008);
         mMinVersionMap.put(ACTION_GET_FOLLOWING_LIST, 205011);
+        mMinVersionMap.put(ACTION_NOTIFY_SHARE_SUC, 205014);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -406,11 +408,19 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp) {
+    public void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback) {
         if (!checkVersion(ACTION_GET_FOLLOWING_LIST, callback)) {
             return;
         }
-        MiLiveSdkServiceProxy.getInstance().getFollowingList(callback, isBothWay, timeStamp);
+        MiLiveSdkServiceProxy.getInstance().getFollowingList(isBothWay, timeStamp, callback);
+    }
+
+    @Override
+    public void notifyShareSuc(int type, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_NOTIFY_SHARE_SUC, callback)) {
+            return;
+        }
+        MiLiveSdkServiceProxy.getInstance().notifyShareSuc(type);
     }
 
     @Override

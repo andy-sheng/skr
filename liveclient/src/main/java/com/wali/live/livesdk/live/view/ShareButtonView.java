@@ -10,12 +10,11 @@ import android.widget.LinearLayout;
 
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
-import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.user.User;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.presenter.IShareView;
-import com.wali.live.livesdk.live.presenter.SharePresenter;
 import com.wali.live.proto.ShareProto;
+import com.wali.live.watchsdk.component.presenter.SharePresenter;
+import com.wali.live.watchsdk.component.view.IShareView;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.util.HashMap;
@@ -135,7 +134,7 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
             return;
         }
 
-        if (SnsShareHelper.getInstance().isInstallApp(type)) {
+        if (SnsShareHelper.isAppInstalled(type)) {
             SnsShareHelper.getInstance().shareToSns(type, mShareUrl, mLiveCoverUrl, mLocation, mLiveTitle, mOwner);
         }
     }
@@ -177,9 +176,7 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
 
     private void getShareDataFromServer() {
         mSharePresenter = new SharePresenter(this);
-        mSharePresenter.getTagTailForShare(mOwner.getUid(),
-                (mOwner.getUid() == UserAccountManager.getInstance().getUuidAsLong()) ? ShareProto.RoleType.ANCHOR : ShareProto.RoleType.VISITOR,
-                ShareProto.PeriodType.END_LIVE);
+        mSharePresenter.getTagTailForShare(mOwner.getUid(), ShareProto.PeriodType.END_LIVE);
     }
 
     public void setShareData(Activity activity, User owner, String shareUrl, String liveCoverUrl, String liveTitle, String location, long avatarTs, int liveType) {

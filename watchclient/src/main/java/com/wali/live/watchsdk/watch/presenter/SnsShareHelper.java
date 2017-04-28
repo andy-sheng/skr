@@ -133,7 +133,7 @@ public class SnsShareHelper {
         shareUrl += (shareUrl.contains("?") ? shareTagTailSeq : "");
 
         //通知上层分享
-        MiLiveSdkBinder.getInstance().onEventShareTrigger(HostChannelManager.getInstance().getChannelId(),
+        MiLiveSdkBinder.getInstance().onEventShare(HostChannelManager.getInstance().getChannelId(),
                 new ShareInfo(type, shareTitle, desText, imgUrl, shareUrl));
         MyLog.w(TAG, "shareInfo=" + (new ShareInfo(type, shareTitle, desText, imgUrl, shareUrl).toString()));
     }
@@ -208,49 +208,49 @@ public class SnsShareHelper {
         return new Pair<>(shareUrl, tagTail);
     }
 
-    public boolean isInstallApp(int type) {
+    public static boolean isAppInstalled(int type) {
         switch (type) {
             case BTN_WECHAT:
             case BTN_WECHAT_MOMENT:
-                if (!SnsShareHelper.isWechatInstalled()) {
+                if (!isWechatInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.weixin_friend)));
                     return false;
                 }
                 break;
             case BTN_QQ:
             case BTN_QZONE:
-                if (!SnsShareHelper.isQQInstalled()) {
+                if (!isQQInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.QQ)));
                     return false;
                 }
                 break;
             case BTN_WEIBO:
-                if (!SnsShareHelper.isWeiboInstalled()) {
+                if (!isWeiboInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.blog)));
                     return false;
                 }
                 break;
             case BTN_FACEBOOK:
-                if (!SnsShareHelper.isFacebookInstalled()) {
+                if (!isFacebookInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.facebook)));
                     return false;
                 }
                 break;
             case BTN_TWITTER:
-                if (!SnsShareHelper.isTwitterInstalled()) {
+                if (!isTwitterInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.twitter)));
                     return false;
                 }
                 break;
             case BTN_INSTAGRAM: {
-                if (!SnsShareHelper.isInstagramInstalled()) {
+                if (!isInstagramInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.instagram)));
                     return false;
                 }
             }
             break;
             case BTN_WHATSAPP: {
-                if (!SnsShareHelper.isWhatsappInstalled()) {
+                if (!isWhatsappInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.whatsapp)));
                     return false;
                 }
@@ -258,7 +258,7 @@ public class SnsShareHelper {
             break;
             case BTN_MILIAO:
             case BTN_MILIAO_FEEDS:
-                if (!SnsShareHelper.isMiliaoInstalled()) {
+                if (!isMiliaoInstalled()) {
                     ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.miliao)));
                     return false;
                 }
@@ -268,7 +268,6 @@ public class SnsShareHelper {
         }
         return true;
     }
-
 
     public static boolean isWechatInstalled() {
         return CommonUtils.isAppInstalled(GlobalData.app(), "com.tencent.mm");

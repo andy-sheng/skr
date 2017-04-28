@@ -139,7 +139,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
 
     private void showShareControlPanel() {
         if (shareControlPanel == null) {
-            shareControlPanel = new ShareControlPanel(mView, mMyRoomData);
+            shareControlPanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
         }
         showPanel(shareControlPanel, true);
     }
@@ -177,8 +177,6 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                     showShareControlPanel();
                     return true;
                 case LiveComponentController.MSG_HIDE_BOTTOM_PANEL:
-                    hidePanel(true);
-                    return true;
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
                     return hidePanel(true);
                 default:

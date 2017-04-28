@@ -155,6 +155,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void notifyWantShare(ShareInfo shareInfo) {
                 ToastUtils.showToast(" notifyWantShare" + ((shareInfo != null) ? shareInfo.toString() : ""));
+                MiLiveSdkController.getInstance().notifyShareSuc(shareInfo.getPlatForm(), new IMiLiveSdk.IAssistantCallback() {
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("notifyVersionLow");
+                    }
+
+                    @Override
+                    public void notifyNotInstall() {
+                        ToastUtils.showToast("notifyNotInstall");
+                    }
+                });
             }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);

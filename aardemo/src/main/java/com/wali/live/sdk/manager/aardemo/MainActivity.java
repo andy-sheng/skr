@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void notifyWantShare(ShareInfo shareInfo) {
                 ToastUtils.showToast("notifyWantShare " + ((shareInfo != null) ? shareInfo.toString() : ""));
+                if (shareInfo != null) {
+                    MiLiveSdkController.getInstance().notifyShareSuc(shareInfo.getPlatForm());
+                }
             }
         });
     }
