@@ -101,6 +101,7 @@ import com.wali.live.watchsdk.schema.SchemeActivity;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
+import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
@@ -173,6 +174,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private RoomTextMsgPresenter mRoomTextMsgPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
+    private RoomManagerPresenter mRoomManagerPresenter;
 
     protected BaseImageView mBlurIv; // 高斯蒙层
     protected ImageView mCloseBtn; // 关闭按钮
@@ -574,10 +576,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
         addPresent(mLiveRoomPresenter);
-        mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
-        addPresent(mRoomTextMsgPresenter);
-        mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
-        addPresent(mGiftPresenter);
 
         if (mIsGameLive) {
             int quality = bundle.getInt(PrepareLiveFragment.EXTRA_GAME_LIVE_QUALITY, PrepareLiveFragment.MEDIUM_CLARITY);
@@ -630,11 +628,17 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         orientCloseBtn(isDisplayLandscape());
 
         mGiftPresenter = new GiftPresenter(mRoomChatMsgManager, false);
+        addPresent(mGiftPresenter);
         addPushProcessor(mGiftPresenter);
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
+        addPresent(mRoomTextMsgPresenter);
         addPushProcessor(mRoomTextMsgPresenter);
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
+        addPresent(mRoomViewerPresenter);
         addPushProcessor(mRoomViewerPresenter);
+        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, false);
+        addPresent(mRoomManagerPresenter);
+        addPushProcessor(mRoomManagerPresenter);
 
         mTipsTv = $(R.id.tips_tv);
 
