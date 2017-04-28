@@ -667,20 +667,20 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(LiveEventClass.SystemEvent event) {
+    public void onEventMainThread(EventClass.PhoneStateEvent event) {
         if (event != null && mComponentController != null) {
-            MyLog.w(TAG, "onEventMainThread PhoneStateEvent");
+            MyLog.w(TAG, "onEventMainThread PhoneStateEvent type=" + event.type);
             switch (event.type) {
-                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_IDLE:
+                case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
                     resumeStream();
                     break;
-                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_RING:
+                case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_RING:
                     if (mPhoneInterruptDialog == null || !mPhoneInterruptDialog.isShowing()) {
                         mPhoneInterruptDialog = DialogUtils.showAlertDialog(this, getString(R.string.warm_prompt), getString(R.string.phone_interrupt), getString(R.string.i_know));
                     }
                     pauseStream();
                     break;
-                case LiveEventClass.SystemEvent.EVENT_TYPE_ACTION_NEW_OUTGOING_CALL:
+                case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_OFFHOOK:
                     pauseStream();
                     break;
                 default:
