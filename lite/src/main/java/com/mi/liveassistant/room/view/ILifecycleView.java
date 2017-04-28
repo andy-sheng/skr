@@ -9,4 +9,6 @@ public interface ILifecycleView extends IView {
     void pause();
 
     void resume();
+
+    void destroy();
 }

@@ -148,4 +148,9 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
         mIsPaused = false;
         mHeartbeatManager.resume();
     }
+
+    @Override
+    public void destroy() {
+        innerEndLive();
+    }
 }

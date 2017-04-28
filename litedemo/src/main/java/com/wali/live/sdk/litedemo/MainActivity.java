@@ -15,6 +15,7 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.room.callback.ICallback;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.wali.live.sdk.litedemo.account.LoginManager;
+import com.wali.live.sdk.litedemo.activity.NormalLiveActivity;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
@@ -29,6 +30,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
 
     private Button mLoginBtn;
     private Button mGameLiveBtn;
+    private Button mNormalLiveBtn;
 
     private GameLiveManager mLiveManager;
     private boolean mIsBegin;
@@ -50,6 +52,9 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
 
         mGameLiveBtn = $(R.id.game_live_btn);
         mGameLiveBtn.setOnClickListener(this);
+
+        mNormalLiveBtn = $(R.id.normal_live_btn);
+        mNormalLiveBtn.setOnClickListener(this);
     }
 
     private void initManager() {
@@ -62,6 +67,9 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.login_btn:
                 clickLoginBtn();
+                break;
+            case R.id.normal_live_btn:
+                clickNormalBtn();
                 break;
             case R.id.game_live_btn:
                 clickGameBtn();
@@ -94,6 +102,10 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
 
                     }
                 });
+    }
+
+    private void clickNormalBtn() {
+        NormalLiveActivity.openActivity(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

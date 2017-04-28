@@ -13,4 +13,6 @@ public class PreferenceKeys {
 
     // 是否开启媒体参数调节界面，boolean值
     public static final String KEY_DEBUG_MEDIA_INFO = "pref_debug_media_info";
+
+    public static final String PREF_KEY_VIDEO_RATE = "pref_key_video_rate";
 }
