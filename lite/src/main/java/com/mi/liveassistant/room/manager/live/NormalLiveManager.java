@@ -34,6 +34,7 @@ public class NormalLiveManager extends BaseLiveManager {
         mIsGameLive = false;
         mLivePresenter = new NormalLivePresenter(this);
         mCameraView = cameraView;
+        createStreamer();
     }
 
     @Override

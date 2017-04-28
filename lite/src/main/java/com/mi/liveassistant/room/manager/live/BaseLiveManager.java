@@ -36,6 +36,8 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     protected boolean mIsRecording;
 
     protected BaseLiveManager() {
+        mStreamerPresenter = new StreamerPresenter();
+        mHeartbeatManager = new HeartbeatManager(mLiveId, mIsGameLive);
     }
 
     protected String getTAG() {
@@ -68,17 +70,11 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
         // 开始推流
         if (!mIsRecording) {
             mIsRecording = true;
-
-            if (mStreamerPresenter == null) {
-                mStreamerPresenter = new StreamerPresenter();
-            }
             mStreamerPresenter.setOriginalStreamUrl(upStreamUrlList, udpUpStreamUrl);
-            createStreamer();
-            startLive();
-
-            if (mHeartbeatManager == null) {
-                mHeartbeatManager = new HeartbeatManager(mLiveId, mIsGameLive);
+            if (mIsGameLive) {
+                createStreamer();
             }
+            startLive();
             mHeartbeatManager.start(new HeartbeatManager.ICallback() {
                 @Override
                 public void notifyTimeout() {
