@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.mi.liveassistant.common.global.GlobalData;
+import com.wali.live.sdk.litedemo.global.GlobalData;
 
 /**
  * @author linjinbin

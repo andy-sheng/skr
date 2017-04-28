@@ -5,18 +5,18 @@ import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.mi.liveassistant.common.global.GlobalData;
-import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.login.LoginManager;
 import com.mi.liveassistant.room.callback.ICallback;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
-import com.wali.live.sdk.litedemo.account.LoginManager;
+import com.wali.live.sdk.litedemo.account.AccountManager;
 import com.wali.live.sdk.litedemo.activity.NormalLiveActivity;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
+import com.wali.live.sdk.litedemo.global.GlobalData;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 import rx.Observable;
@@ -82,7 +82,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
                 .map(new Func1<Integer, String>() {
                     @Override
                     public String call(Integer integer) {
-                        return LoginManager.getOAuthCode(MainActivity.this);
+                        return AccountManager.getOAuthCode(MainActivity.this);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -90,11 +90,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String code) {
-                        try {
-                            LoginManager.loginByMiAccountOAuth(50001, code);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
+                        LoginManager.loginByMiAccountOAuth(50001, code);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -159,7 +155,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MyLog.w(TAG, "onActivityResult " + requestCode + " resultCode=" + resultCode + "data =" + data);
+        Log.w(TAG, "onActivityResult " + requestCode + " resultCode=" + resultCode + "data =" + data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_MEDIA_PROJECTION:

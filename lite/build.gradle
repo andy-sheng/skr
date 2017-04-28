@@ -29,7 +29,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
     // 引擎相关
     compile files('libs/broadcaster.jar')
     compile files('libs/webrtc.jar')
@@ -42,11 +41,48 @@ dependencies {
 
     // eventbus
     compile files('libs/eventbus-3.0.0.jar')
-    // 将日志写入文件的库
-    compile files('slf4j-api-1.7.21.jar')
-    // rx
-    compile files('rxandroid-1.1.0.jar')
-    compile files('rxjava-1.0.14.jar')
-    compile files('rxlifecycle-0.4.0.jar')
+    // greendao
     compile files('libs/greendao-2.0.0.jar')
+
+    provided 'com.android.support:appcompat-v7:25.3.1'
+    // 将日志写入文件的库
+    provided 'org.slf4j:slf4j-api:1.7.21'
+    // rx
+    provided 'io.reactivex:rxandroid:1.1.0'
+    provided 'io.reactivex:rxjava:1.0.14'
+    provided 'com.trello:rxlifecycle:0.4.0'
+}
+
+task makeJar(type: Jar, dependsOn: build) {
+    delete('build/libs/livelite-noproguard.jar')
+    //指定生成的jar名
+    baseName 'livelite-noproguard'
+    //从哪里打包class文件 ,打的包可以在build/libs中找到
+    from('build/intermediates/classes/debug/', configurations.compile.collect {
+        it.isDirectory() ? it : zipTree(it)
+    })
+    exclude '**/R.class'
+    exclude '**/R$*.class'
+}
+
+task proguardJar(type: proguard.gradle.ProGuardTask, dependsOn: makeJar) {
+    delete('build/libs/livelite.jar')
+    // 依赖库
+    def sdkDir = android.getSdkDirectory().getAbsolutePath()
+    if (sdkDir == null) {
+        sdkDir = android.plugin.getSdkFolder().getAbsolutePath()
+    }
+    libraryjars sdkDir + '/platforms/' + android.compileSdkVersion.toString() + '/android.jar'
+    // 输入路径
+    injars 'build/libs/livelite-noproguard.jar'
+    // 输出路径
+    outjars 'build/libs/livelite.jar'
+    // 添加配置信息
+    configuration android.getDefaultProguardFile('proguard-android.txt')
+    configuration 'proguard-rules.pro'
+}
+
+task buildJar(type: Copy, dependsOn: proguardJar) {
+    from 'build/libs/livelite.jar'
+    into '../litedemo/libs'
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.mi.liveassistant.init.InitManager;
+import com.wali.live.sdk.litedemo.global.GlobalData;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        GlobalData.setApplication(this);
         int pid = android.os.Process.myPid();
         Log.d(TAG, "onCreate = " + pid);
 

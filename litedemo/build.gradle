@@ -24,7 +24,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.facebook.fresco:fresco:1.3.0'
 
-    compile files('libs/oauth.jar')
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'org.slf4j:slf4j-api:1.7.21'
 
-    compile project(':lite')
+    compile files('libs/oauth.jar')
+    compile files('libs/livelite.jar')
+//    compile project(':lite')
+
 }
