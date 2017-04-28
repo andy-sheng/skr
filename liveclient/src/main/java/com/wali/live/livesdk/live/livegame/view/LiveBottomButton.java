@@ -32,13 +32,16 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mMuteBtn;
     protected View mShareBtn;
 
+    private int mShareType;
+
     @Override
     protected String getTAG() {
         return TAG;
     }
 
-    public LiveBottomButton(@NonNull RelativeLayout contentContainer) {
+    public LiveBottomButton(@NonNull RelativeLayout contentContainer, int shareType) {
         super(contentContainer);
+        mShareType = shareType;
         initView();
     }
 
@@ -52,16 +55,23 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mMuteBtn = createImageView(R.drawable.live_icon_mute_btn);
         addCreatedView(mMuteBtn, R.id.mute_btn);
 
-        mShareBtn = createImageView(R.drawable.live_icon_share_btn);
-        addCreatedView(mShareBtn, R.id.share_btn);
-
         // 横竖屏时按钮排列顺序
         mRightBtnSetPort.add(mMuteBtn);
-        mRightBtnSetPort.add(mShareBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mCommentBtn);
 
+        addShareBtn();
+
         orientChild();
+    }
+
+    private void addShareBtn() {
+        if (mShareType != 0) {
+            mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+            addCreatedView(mShareBtn, R.id.share_btn);
+
+            mRightBtnSetPort.add(1, mShareBtn);
+        }
     }
 
     public void updateMuteAudio(boolean isMute) {
@@ -148,6 +158,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 显示分享面板
          */
         void showShareView();
+
+        /**
+         * 获取shareType
+         */
+        int getShareType();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

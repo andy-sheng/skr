@@ -4,11 +4,11 @@ import com.wali.live.watchsdk.ipc.service.IMiLiveSdkEventCallback;
 import com.wali.live.watchsdk.ipc.service.ThirdPartLoginData;
 
 interface IMiLiveSdkService {
-    void loginByMiAccountSso(int channelid, String packageName, String channelSecret, long miid, String serviceToken);
+    void loginByMiAccountSso(int channelId, String packageName, String channelSecret, long miid, String serviceToken);
 
-    void loginByMiAccountOAuth(int channelid, String packageName, String channelSecret, String code);
+    void loginByMiAccountOAuth(int channelId, String packageName, String channelSecret, String code);
 
-    void clearAccount(int channelid, String packageName, String channelSecret);
+    void clearAccount(int channelId, String packageName, String channelSecret);
 
     void setEventCallBack(int channelId, IMiLiveSdkEventCallback callback);
 

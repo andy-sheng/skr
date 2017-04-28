@@ -3,6 +3,8 @@ package com.wali.live.watchsdk.watch.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.wali.live.watchsdk.watch.presenter.ShareType;
+
 /**
  * Created by lan on 16/11/29.
  *
@@ -21,6 +23,9 @@ public class RoomInfo implements Parcelable {
 
     // 游戏直播相关的，表明对应的游戏
     private String mGameId;
+
+    // 分享类型
+    private int mShareType;
 
     // 以下与ui相关的信息
     private String mCoverUrl;
@@ -135,6 +140,14 @@ public class RoomInfo implements Parcelable {
         mGameId = gameId;
     }
 
+    public int getShareType() {
+        return mShareType;
+    }
+
+    public void setShareType(int shareType) {
+        mShareType = shareType & ShareType.TYPE_MASK;
+    }
+
     public static class Builder {
         private RoomInfo mRoomInfo;
 
@@ -169,6 +182,11 @@ public class RoomInfo implements Parcelable {
 
         public Builder setGameId(String gameId) {
             mRoomInfo.setGameId(gameId);
+            return this;
+        }
+
+        public Builder setShareType(int shareType) {
+            mRoomInfo.setShareType(shareType);
             return this;
         }
 

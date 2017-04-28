@@ -17,6 +17,7 @@ import java.util.List;
  *
  * @description 提供给第三方，只需要看这个文件
  */
+@Keep
 public interface IMiLiveSdk {
 
     /**
@@ -38,6 +39,11 @@ public interface IMiLiveSdk {
      * 获取上层传入的channelSecret
      */
     String getChannelSecret();
+
+    /**
+     * 上层应用设置支持的分享类型
+     */
+    void setShareType(int shareType);
 
     /**
      * OAuth登录

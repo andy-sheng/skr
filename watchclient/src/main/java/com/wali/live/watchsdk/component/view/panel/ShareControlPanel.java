@@ -141,10 +141,18 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
         mShareGridView = (RecyclerView) mContentView.findViewById(R.id.gv_share_button);
         mShareAdapter = new ShareItemAdapter(GlobalData.screenWidth / 5, GlobalData.screenWidth / 4);
         mShareAdapter.setOnClickListener(this);
+
         List<PlusItemAdapter.PlusItem> btnItems = new ArrayList<>();
+
+        int shareType = mMyRoomData.getShareType();
         for (int i = 0; i < SHARE_BTN_INDEX_DOMAIN.length; i++) {
+            // 使用位运算判断是否支持该项分享
+            if ((shareType & (1 << SHARE_BTN_INDEX_DOMAIN[i])) == 0) {
+                continue;
+            }
             btnItems.add(new PlusItemAdapter.PlusItem(SHARE_ID[i], SHARE_TV_ID[SHARE_BTN_INDEX_DOMAIN[i]], SHARE_DRAWABLE_ID[SHARE_BTN_INDEX_DOMAIN[i]]));
         }
+
         mShareAdapter.setPlusData(btnItems);
         mShareGridView.setAdapter(mShareAdapter);
     }
@@ -215,6 +223,7 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             LinearLayoutManager manager = new LinearLayoutManager(mShareGridView.getContext());
             manager.setOrientation(LinearLayoutManager.HORIZONTAL);
             mShareGridView.setLayoutManager(manager);
+
             layoutParams = new RelativeLayout.LayoutParams(gridWidth, (int) itemHeight);
             layoutParams.setMargins(margin, 0, 0, 0);
         } else {

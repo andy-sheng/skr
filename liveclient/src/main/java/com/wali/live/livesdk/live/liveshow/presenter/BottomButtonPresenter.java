@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.view.LiveBottomButton;
@@ -17,11 +18,15 @@ public class BottomButtonPresenter extends
         ComponentPresenter<LiveBottomButton.IView> implements LiveBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
+    private RoomBaseDataModel mMyRoomData;
+
     public BottomButtonPresenter(
-            @NonNull IComponentController componentController) {
+            @NonNull IComponentController componentController,
+            RoomBaseDataModel myRoomData) {
         super(componentController);
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        mMyRoomData = myRoomData;
     }
 
     @Override

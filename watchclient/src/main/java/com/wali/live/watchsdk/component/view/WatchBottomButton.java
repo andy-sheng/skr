@@ -37,6 +37,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     protected View mShareBtn;
 
     private boolean mIsGameMode = false;
+    private int mShareType;
 
     private Runnable mAnimatorRunnable;
     private ValueAnimator mShakeAnimator;
@@ -76,9 +77,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     public WatchBottomButton(
             @NonNull RelativeLayout contentContainer,
-            boolean isGameMode) {
+            boolean isGameMode, int shareType) {
         super(contentContainer);
         mIsGameMode = isGameMode;
+        mShareType = shareType;
         initView();
     }
 
@@ -92,20 +94,28 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 //        mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
 //        addCreatedView(mGiftBtn, R.id.rotate_btn);
 
-        mShareBtn = createImageView(R.drawable.live_icon_share_btn);
-        addCreatedView(mShareBtn, R.id.share_btn);
-
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mCommentBtn);
         mRightBtnSetPort.add(mGiftBtn);
-        mRightBtnSetPort.add(mShareBtn);
 
         mBottomBtnSetLand.add(mGiftBtn);
         mBottomBtnSetLand.add(mCommentBtn);
-        mBottomBtnSetLand.add(mShareBtn);
+
         //mBottomBtnSetLand.add(mRotateBtn);
 
+        addShareBtn();
+
         orientChild();
+    }
+
+    private void addShareBtn() {
+        if (mShareType != 0) {
+            mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+            addCreatedView(mShareBtn, R.id.share_btn);
+
+            mRightBtnSetPort.add(mShareBtn);
+            mBottomBtnSetLand.add(mShareBtn);
+        }
     }
 
     @Override

@@ -46,32 +46,32 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType);
 
     /**
      * 打开直播回放页面
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType);
 
     /**
      * 打开直播观看页面
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType);
 
     /**
      * 打开直播回放页面
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType);
 
     /**
      * 打开普通直播页面
      */
-    void openNormalLive(Activity activity, Location location);
+    void openNormalLive(Activity activity, Location location, int shareType);
 
     /**
      * 打开游戏直播页面
      */
-    void openGameLive(Activity activity, Location location);
+    void openGameLive(Activity activity, Location location, int shareType);
 
     /**
      * 测试接口，上线后删除

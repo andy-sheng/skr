@@ -340,10 +340,11 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
             mShareBtnStateSet[BTN_MILIAO_FEEDS] = SnsShareHelper.isMiliaoInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, false) : false;
         }
 
-        float mDensity = DisplayUtils.getDensity();
-        if (mDensity >= 3) {
+
+        float density = DisplayUtils.getDensity();
+        if (density >= 3) {
             mShareTipsMarginBottom = (int) getResources().getDimension(R.dimen.view_dimen_220);
-        } else if (mDensity >= 2.5) {
+        } else if (density >= 2.5) {
             mShareTipsMarginBottom = (int) getResources().getDimension(R.dimen.view_dimen_230);
         } else {
             mShareTipsMarginBottom = (int) getResources().getDimension(R.dimen.view_dimen_240);
@@ -352,6 +353,7 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
 
     private void initView() {
         boolean isLocalChina = CommonUtils.isLocalChina();
+
         final int defaultSelectBtnId = isLocalChina ? BTN_WECHAT_MOMENT : BTN_FACEBOOK;
         int defaultSelectBtn = BTN_WECHAT;
         int btnCnt = isLocalChina ? SHARE_BTN_INDEX_DOMESTIC.length : SHARE_BTN_INDEX_ABROAD.length;

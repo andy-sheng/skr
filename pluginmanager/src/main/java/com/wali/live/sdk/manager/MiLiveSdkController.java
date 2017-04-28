@@ -36,6 +36,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
     private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
+    private static final String EXTRA_SHARE_TYPE = "extra_share_type";
 
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
@@ -75,6 +76,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
     private int mChannelId = 0;
     private String mChannelSecret;
+
+    private int mShareType;
 
     private ICallback mCallback;
 
@@ -251,6 +254,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     @Override
     public void setChannelId(int channelId) {
         mChannelId = channelId;
+    }
+
+    @Override
+    public void setShareType(int shareType) {
+        mShareType = shareType & ShareType.TYPE_MASK;
     }
 
     @Override
@@ -444,6 +452,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putInt(EXTRA_CHANNEL_ID, mChannelId);
         bundle.putString(EXTRA_PACKAGE_NAME, GlobalData.app().getPackageName());
         bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
+        if (mShareType != 0) {
+            bundle.putInt(EXTRA_SHARE_TYPE, mShareType);
+        }
         return bundle;
     }
 

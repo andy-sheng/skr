@@ -148,20 +148,23 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mMiId, mServiceToken);
                 mServiceToken = "";
-            } else if (!TextUtils.isEmpty(mAuthCode)) {
+            }
+            if (!TextUtils.isEmpty(mAuthCode)) {
                 mRemoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mAuthCode);
                 mAuthCode = "";
-            } else if (mClearAccountFlag) {
+            }
+            if (mClearAccountFlag) {
                 mRemoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
                 mClearAccountFlag = false;
-            } else if (mThirdPartLoginData != null) {
+            }
+            if (mThirdPartLoginData != null) {
                 mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), mThirdPartLoginData);
                 mThirdPartLoginData = null;
             }

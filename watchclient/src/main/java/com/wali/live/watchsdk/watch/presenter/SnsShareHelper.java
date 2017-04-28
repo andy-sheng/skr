@@ -66,7 +66,7 @@ public class SnsShareHelper {
 
     private static SnsShareHelper sSnsShareHelper = new SnsShareHelper();
 
-    static public SnsShareHelper getInstance() {
+    public static SnsShareHelper getInstance() {
         return sSnsShareHelper;
     }
 

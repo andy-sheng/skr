@@ -139,7 +139,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
             @Override
             public void processFailure() {
-
             }
         });
     }
@@ -336,7 +335,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean needFinish) {
+                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final int shareType,
+                          final boolean needFinish) {
         MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -347,6 +347,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
                         .setGameId(gameId)
+                        .setShareType(shareType)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {
@@ -373,7 +374,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean needFinish) {
+                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final int shareType,
+                           final boolean needFinish) {
         MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
@@ -384,6 +386,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
                         .setGameId(gameId)
+                        .setShareType(shareType)
                         .build();
                 ReplaySdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {
@@ -839,6 +842,4 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         }
     }
-
-
 }

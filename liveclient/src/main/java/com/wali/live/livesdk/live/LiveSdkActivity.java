@@ -131,6 +131,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private static final String EXTRA_IS_GAME_LIVE = "extra_is_game_live";
     private static final String EXTRA_LOCATION = "extra_location";
+    private static final String EXTRA_SHARE_TYPE = "extra_share_type";
 
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
     public static final int REQUEST_PREPARE_LIVE = 1000;
@@ -167,6 +168,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private boolean mIsGameLive;
     private Location mLocation;
+    private int mShareType;
 
     private final MyUIHandler mUIHandler = new MyUIHandler(this);
 
@@ -248,6 +250,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (data != null) {
             mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
             mLocation = data.getParcelableExtra(EXTRA_LOCATION);
+            mShareType = data.getIntExtra(EXTRA_SHARE_TYPE, 0);
         }
     }
 
@@ -255,6 +258,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mLocation != null) {
             mMyRoomData.setCity(mLocation.getCity());
         }
+        mMyRoomData.setShareType(mShareType);
         if (UserAccountManager.getInstance().hasAccount()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -1362,14 +1366,17 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
      * 秀场直播
      */
     public static void openActivity(Activity activity, Location location) {
-        openActivity(activity, location, false);
+        openActivity(activity, location, 0, false);
     }
 
     /**
      * 区分是否是游戏直播还是秀场直播
      */
-    public static void openActivity(Activity activity, Location location, boolean isGameLive) {
+    public static void openActivity(Activity activity, Location location, int shareType, boolean isGameLive) {
         Intent intent = new Intent(activity, LiveSdkActivity.class);
+        if (shareType != 0) {
+            intent.putExtra(EXTRA_SHARE_TYPE, shareType);
+        }
         if (location != null) {
             intent.putExtra(EXTRA_LOCATION, location);
         }

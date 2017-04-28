@@ -33,13 +33,17 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mSettingBtn;
     protected View mShareBtn;
 
+    private int mShareType;
+
     @Override
     protected String getTAG() {
         return TAG;
     }
 
-    public LiveBottomButton(@NonNull RelativeLayout contentContainer) {
+    public LiveBottomButton(@NonNull RelativeLayout contentContainer,
+                            int shareType) {
         super(contentContainer);
+        mShareType = shareType;
         initView();
     }
 
@@ -53,22 +57,28 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mSettingBtn = createImageView(R.drawable.live_icon_set_btn);
         addCreatedView(mSettingBtn, R.id.setting_btn);
 
-        mShareBtn = createImageView(R.drawable.live_icon_share_btn);
-        addCreatedView(mShareBtn, R.id.share_btn);
-
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mPlusBtn);
-
-        mRightBtnSetPort.add(mShareBtn);
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mMagicBtn);
 
         mBottomBtnSetLand.add(mPlusBtn);
         mBottomBtnSetLand.add(mSettingBtn);
         mBottomBtnSetLand.add(mMagicBtn);
-        mBottomBtnSetLand.add(mShareBtn);
+
+        addShareBtn();
 
         orientChild();
+    }
+
+    private void addShareBtn() {
+        if (mShareType != 0) {
+            mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+            addCreatedView(mShareBtn, R.id.share_btn);
+
+            mRightBtnSetPort.add(0, mShareBtn);
+            mBottomBtnSetLand.add(mShareBtn);
+        }
     }
 
     @Override
