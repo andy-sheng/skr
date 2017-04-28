@@ -46,4 +46,25 @@
     <string name="ten_thousand_download">%d万次下载</string>
     <string name="download">下载</string>
     <string name="downloading">开始下载</string>
+    <string name="on_air">直播中</string>
+    <string name="rankTitle">星票榜单</string>
+    <string name="empty_tips">页面暂时为空</string>
+    <string name="refreshing">加载中...</string>
+    <plurals name="contribute_ticket_num">
+        <item quantity="other">贡献%1$s星票</item>
+    </plurals>
+    <string name="btn_share">分享到</string>
+    <string name="weixin_friend">微信</string>
+    <string name="moment">朋友圈</string>
+    <string name="QQ">QQ</string>
+    <string name="qzone">QQ空间</string>
+    <string name="blog">微博</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="miliao">米聊</string>
+    <string name="miliao_feeds">微广播</string>
+    <string name="feeds">动态</string>
+    <string name="uninstall_share_tips">未安装%1$s，请安装后分享</string>
 </resources>

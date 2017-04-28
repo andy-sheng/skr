@@ -6,6 +6,7 @@ import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
 
 import java.util.List;
@@ -45,32 +46,32 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType);
 
     /**
      * 打开直播回放页面
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType);
 
     /**
      * 打开直播观看页面
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType);
 
     /**
      * 打开直播回放页面
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType);
 
     /**
      * 打开普通直播页面
      */
-    void openNormalLive(Activity activity, Location location);
+    void openNormalLive(Activity activity, Location location, int shareType);
 
     /**
      * 打开游戏直播页面
      */
-    void openGameLive(Activity activity, Location location);
+    void openGameLive(Activity activity, Location location, int shareType);
 
     /**
      * 测试接口，上线后删除
@@ -103,7 +104,12 @@ public interface IMiLiveSdk {
     /**
      * 获取关注人信息列表
      */
-    void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp);
+    void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
+
+    /**
+     * 宿主app通知sdk分享成功接口
+     */
+    void notifyShareSuc(int type);
 
     /**
      * sdk 上层应用回调
@@ -140,6 +146,11 @@ public interface IMiLiveSdk {
          * 通知上层有其它的app在活跃状态
          */
         void notifyOtherAppActive();
+
+        /**
+         * 通知上层分享
+         */
+        void notifyWantShare(ShareInfo shareInfo);
     }
 
     @Keep

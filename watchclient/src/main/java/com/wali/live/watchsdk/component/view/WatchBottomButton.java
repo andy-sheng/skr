@@ -16,6 +16,7 @@ import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -33,8 +34,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     protected View mGiftBtn;
     //    protected View mRotateBtn;
     protected View mGameBtn;
+    protected View mShareBtn;
 
     private boolean mIsGameMode = false;
+    private int mShareType;
 
     private Runnable mAnimatorRunnable;
     private ValueAnimator mShakeAnimator;
@@ -60,6 +63,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mPresenter.rotateScreen();
         } else if (id == R.id.game_btn) {
             mPresenter.showGameDownloadView();
+        } else if (id == R.id.share_btn) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showShareView();
+            }
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -70,9 +77,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     public WatchBottomButton(
             @NonNull RelativeLayout contentContainer,
-            boolean isGameMode) {
+            boolean isGameMode, int shareType) {
         super(contentContainer);
         mIsGameMode = isGameMode;
+        mShareType = shareType;
         initView();
     }
 
@@ -92,9 +100,22 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
         mBottomBtnSetLand.add(mGiftBtn);
         mBottomBtnSetLand.add(mCommentBtn);
+
         //mBottomBtnSetLand.add(mRotateBtn);
 
+        addShareBtn();
+
         orientChild();
+    }
+
+    private void addShareBtn() {
+        if (mShareType != 0) {
+            mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+            addCreatedView(mShareBtn, R.id.share_btn);
+
+            mRightBtnSetPort.add(mShareBtn);
+            mBottomBtnSetLand.add(mShareBtn);
+        }
     }
 
     @Override
@@ -112,7 +133,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         addCreatedView(mGameBtn, R.id.game_btn);
 
         mRightBtnSetPort.add(mGameBtn);
-        mBottomBtnSetLand.add(1, mGameBtn);
+        mBottomBtnSetLand.add(mGameBtn);
         orientChild();
 
         if (mAnimatorRunnable == null) {
@@ -219,6 +240,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
          * 增加游戏下载
          */
         void showGameDownloadView();
+
+        /**
+         * 显示分享界面
+         */
+        void showShareView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

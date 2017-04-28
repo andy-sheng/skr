@@ -92,7 +92,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             PanelContainerPresenter presenter = new PanelContainerPresenter(
-                    mComponentController, mComponentController.mRoomChatMsgManager);
+                    mComponentController, mComponentController.mRoomChatMsgManager,
+                    mComponentController.mMyRoomData);
             presenter.setComponentView(relativeLayout);
             addComponentView(presenter);
         }
@@ -105,9 +106,12 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            LiveBottomButton view = new LiveBottomButton(relativeLayout);
+            LiveBottomButton view = new LiveBottomButton(relativeLayout,
+                    mComponentController.mMyRoomData.getShareType());
             BottomButtonPresenter presenter =
-                    new BottomButtonPresenter(mComponentController, mComponentController.mGameLivePresenter);
+                    new BottomButtonPresenter(mComponentController,
+                            mComponentController.mMyRoomData,
+                            mComponentController.mGameLivePresenter);
             addComponentView(view, presenter);
         }
 

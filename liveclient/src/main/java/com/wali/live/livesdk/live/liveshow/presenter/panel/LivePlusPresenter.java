@@ -8,7 +8,7 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
-import com.wali.live.livesdk.live.liveshow.presenter.adapter.PlusItemAdapter;
+import com.wali.live.watchsdk.component.presenter.adapter.PlusItemAdapter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 
 import java.util.ArrayList;

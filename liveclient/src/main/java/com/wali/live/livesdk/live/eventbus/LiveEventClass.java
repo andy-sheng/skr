@@ -9,22 +9,6 @@ import com.mi.live.data.query.model.MessageRule;
  */
 
 public class LiveEventClass {
-
-    public static class SystemEvent {
-        public int type;
-        public Object obj1;
-        public Object obj2;
-        public static final int EVENT_TYPE_ACTION_NEW_OUTGOING_CALL = 1; // 打电话
-        public static final int EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_RING = 2; // 来电了
-        public static final int EVENT_TYPE_ACTION_PHONE_STATE_CHANGED_IDLE = 3; // 来电了
-
-        public SystemEvent(int type, Object obj1, Object obj2) {
-            this.type = type;
-            this.obj1 = obj1;
-            this.obj2 = obj2;
-        }
-    }
-
     public static class ScreenStateEvent {
         public static final int ACTION_SCREEN_OFF = 1;          //屏幕熄灭
         public static final int ACTION_SCREEN_ON = 2;           //屏幕点亮

@@ -26,7 +26,15 @@
 -keep class com.wali.live.watchsdk.ipc.service.ThirdPartLoginData {*;}
 -keep class com.wali.live.watchsdk.ipc.service.LiveInfo {*;}
 -keep class com.wali.live.watchsdk.ipc.service.UserInfo {*;}
+<<<<<<< Updated upstream
 
+#log
+-keep public class ch.qos.logback.** { *; }
+-keep class org.slf4j.** { *; }
+
+=======
+-keep class com.wali.live.watchsdk.ipc.service.ShareInfo {*;}
+>>>>>>> Stashed changes
 #eventBus
 -keepattributes *Annotation*
 -keepclassmembers class ** {

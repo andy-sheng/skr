@@ -7,15 +7,17 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.base.presenter.Presenter;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
-import com.wali.live.livesdk.live.component.presenter.BaseContainerPresenter;
 import com.wali.live.livesdk.live.liveshow.LiveComponentController;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LiveMagicPresenter;
 import com.wali.live.livesdk.live.liveshow.presenter.panel.LivePlusPresenter;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
+import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
+import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
 
 import java.lang.ref.WeakReference;
 
@@ -27,11 +29,14 @@ import java.lang.ref.WeakReference;
 public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayout> {
     private static final String TAG = "PanelContainerPresenter";
 
+    private RoomBaseDataModel mMyRoomData;
     private StreamerPresenter mStreamerPresenter;
 
     private WeakReference<LiveSettingPanel> mSettingPanelRef;
     private WeakReference<LiveMagicPanel> mMagicPanelRef;
     private WeakReference<LivePlusPanel> mPlusPanelRef;
+
+    private ShareControlPanel shareControlPanel;
 
     private WeakReference<LivePlusPresenter> mPlusPresenterRef;
     private WeakReference<LiveMagicPresenter> mMagicPresenterRef;
@@ -43,9 +48,11 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
 
     public PanelContainerPresenter(
             @NonNull ComponentPresenter.IComponentController componentController,
-            @NonNull StreamerPresenter streamerPresenter) {
+            @NonNull StreamerPresenter streamerPresenter,
+            @NonNull RoomBaseDataModel myRoomData) {
         super(componentController);
         mStreamerPresenter = streamerPresenter;
+        mMyRoomData = myRoomData;
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(LiveComponentController.MSG_ON_BACK_PRESSED);
@@ -53,6 +60,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         registerAction(LiveComponentController.MSG_SHOW_PLUS_PANEL);
         registerAction(LiveComponentController.MSG_SHOW_MAGIC_PANEL);
         registerAction(LiveComponentController.MSG_HIDE_BOTTOM_PANEL);
+        registerAction(LiveComponentController.MSG_SHOW_SHARE_PANEL);
     }
 
     @Override
@@ -85,6 +93,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         }
         mMagicPresenterRef = null;
         mMagicPanelRef = null;
+
     }
 
     private void showSettingPanel() {
@@ -128,6 +137,13 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
         showPanel(panel, true);
     }
 
+    private void showShareControlPanel() {
+        if (shareControlPanel == null) {
+            shareControlPanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
+        }
+        showPanel(shareControlPanel, true);
+    }
+
     @Nullable
     @Override
     protected ComponentPresenter.IAction createAction() {
@@ -157,9 +173,10 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
                 case LiveComponentController.MSG_SHOW_MAGIC_PANEL:
                     showMagicPanel();
                     return true;
-                case LiveComponentController.MSG_HIDE_BOTTOM_PANEL:
-                    hidePanel(true);
+                case LiveComponentController.MSG_SHOW_SHARE_PANEL:
+                    showShareControlPanel();
                     return true;
+                case LiveComponentController.MSG_HIDE_BOTTOM_PANEL:
                 case LiveComponentController.MSG_ON_BACK_PRESSED:
                     return hidePanel(true);
                 default:

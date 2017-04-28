@@ -85,7 +85,6 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
                     }
                     mLastScreenOrientation = mScreenOrientation;
                     mScreenOrientation = currScreenOrientation;
-
                     if (!mOpenOrientation) {
                         return;
                     }
@@ -168,6 +167,9 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     @Override
     public void openOrientation() {
         mOpenOrientation = true;
+        if (isRotateOn()) {
+            rotateOrientationIfNeed();
+        }
     }
 
     public void closeOrientation() {

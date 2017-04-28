@@ -45,4 +45,27 @@
     <string name="ten_thousand_download">%d0 thousand downloaded</string>
     <string name="download">download</string>
     <string name="downloading">start downloading</string>
+    <string name="on_air">Live</string>
+    <string name="rankTitle">Coins rank</string>
+    <string name="empty_tips">Empty</string>
+    <string name="refreshing">Just a sec\u2026</string>
+    <plurals name="contribute_ticket_num">
+        <item quantity="one">Give %1$s coin</item>
+        <item quantity="other">Give %1$s coins</item>
+    </plurals>
+    <string name="btn_share">Share with</string>
+    <string name="weixin_friend">WeChat</string>
+    <string name="moment">Moments</string>
+    <string name="QQ">QQ</string>
+    <string name="qzone">Qzone</string>
+    <string name="blog">Weibo</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="miliao">Mi Talk</string>
+    <string name="miliao_feeds">Newsfeed</string>
+    <string name="feeds">My feed</string>
+
+    <string name="uninstall_share_tips">Install %1$s first</string>
 </resources>

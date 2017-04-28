@@ -3,8 +3,22 @@
     <!--底部按钮相关-->
     <item type="id" name="gift_btn"/>
     <item type="id" name="game_btn"/>
+    <item type="id" name="share_btn"/>
     <!--游戏直播输入相关-->
     <item type="id" name="game_input_view"/>
     <item type="id" name="game_barrage_view"/>
     <item type="id" name="game_download_view"/>
+    <!--分享相关-->
+    <item type="id" name="weixin_friend"/>
+    <item type="id" name="moment"/>
+    <item type="id" name="QQ"/>
+    <item type="id" name="qzone"/>
+    <item type="id" name="blog"/>
+    <item type="id" name="facebook"/>
+    <item type="id" name="twitter"/>
+    <item type="id" name="instagram"/>
+    <item type="id" name="whatsapp"/>
+    <item type="id" name="miliao"/>
+    <item type="id" name="miliao_feeds"/>
+    <item type="id" name="feeds"/>
 </resources>

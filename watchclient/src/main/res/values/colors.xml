@@ -2,4 +2,12 @@
 <resources>
     <color name="color_5fffd0">#5fffd0</color>
     <color name="color_ffd439_trans_30">#4Dffd439</color>
+    <color name="color_ff2966">#ff2966</color>
+    <color name="color_ffd439">#ffd439</color>
+    <color name="color_efeff4">#efeff4</color>
+
+    <!-- 主播排行榜-->
+    <color name="avatar_outer_bg_top1">#ffca02</color>
+    <color name="avatar_outer_bg_top2">#d2d2dd</color>
+    <color name="avatar_outer_bg_top3">#ebc69b</color>
 </resources>

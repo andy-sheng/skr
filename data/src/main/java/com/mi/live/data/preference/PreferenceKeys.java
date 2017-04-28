@@ -28,8 +28,8 @@ public class PreferenceKeys {
     public static final String PREFERENCE_OPEN_MESSAGE_NOTIFICATION = "preference_open_message_notification"; // 好友私信消息是否开启
 
     //地区列表
-     public static final String PREFERENCE_REGION_TIME = "preference_region_time";
-     public static final String PREFERENCE_GPSTIP_TIME = "preference_gpstip_time";
+    public static final String PREFERENCE_REGION_TIME = "preference_region_time";
+    public static final String PREFERENCE_GPSTIP_TIME = "preference_gpstip_time";
     public static final String PREFERENCE_GPSTIP_CODE = "preference_gpstip_code";
 
     //推送管理 直播信息提醒
@@ -65,6 +65,8 @@ public class PreferenceKeys {
     public static final String SHARE_TWITTER_SELECTED = "share_twitter_selected";
     public static final String SHARE_INSTAGRAM_SELECTED = "share_instagram_selected";
     public static final String SHARE_WHATSAPP_SELECTED = "share_whatsapp_selected";
+    public static final String SHARE_MILIAO_SELECTED = "share_miliao_selected";
+    public static final String SHARE_MILIAO_FEEDS_SELECTED = "share_miliao_feeds_selected";
     public static final String SHARE_FIRST_TIPS = "share_first_tips";
 
     public static final String FRIEND_LIVE_RED_ICON_VISIBILITY = "friend_live_red_icon_visibility";

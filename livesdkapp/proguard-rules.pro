@@ -100,6 +100,9 @@
 -keep public class com.novell.sasl.client.**
 -keep public class de.measite.smack.AndroidDebugger
 -keep public class com.google.code.microlog4android.**
+-keep public class ch.qos.logback.** { *; }
+-keep class org.slf4j.** { *; }
+
 -keepclasseswithmembernames class de.measite.smack.AndroidDebugger {
     public <init>(Connection,Writer,Reader);
 }

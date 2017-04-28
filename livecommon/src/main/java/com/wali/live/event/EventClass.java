@@ -1,5 +1,6 @@
 package com.wali.live.event;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.wali.live.common.model.CommentModel;
@@ -159,6 +160,7 @@ public abstract class EventClass {
 
     public static class LoadingEndEvent {
     }
+
     public static class GiftCardPush {
         public Object obj1;
 
@@ -210,10 +212,55 @@ public abstract class EventClass {
         }
     }
 
-    public static class ShowRechargeProgressEvent{
+    public static class ShowRechargeProgressEvent {
     }
 
-    public static class HideRechargeProgressEvent{
+    public static class HideRechargeProgressEvent {
+    }
+
+    public static class ChangeCancel {
+        public ChangeCancel(long userId) {
+            this.userId = userId;
+        }
+
+        public long userId;
+    }
+
+    public static class OnActivityResultEvent {
+        public int requestCode;
+        public int resultCode;
+        public Intent data;
+
+        public OnActivityResultEvent(int requestCode, int resultCode, Intent data) {
+            this.requestCode = requestCode;
+            this.resultCode = resultCode;
+            this.data = data;
+        }
+    }
+
+    public static class ChangeBootomInvitee {
+        public ChangeBootomInvitee(long userId, long avatar, boolean checked) {
+            this.userId = userId;
+            this.avatar = avatar;
+            this.checked = checked;
+        }
+
+        public final long userId;
+        public final long avatar;
+        public final boolean checked;
+    }
+
+    public static class ShareSucEvent {
+        public static final int TYPE_NONE = 0;
+        public int snsType = -1;
+
+        public ShareSucEvent(int type) {
+            this.snsType = type;
+        }
+
+        public int getSnsType() {
+            return snsType;
+        }
     }
 
 }

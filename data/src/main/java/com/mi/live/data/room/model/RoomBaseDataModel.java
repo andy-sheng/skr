@@ -32,15 +32,14 @@ public class RoomBaseDataModel implements Serializable {
     private int mViewCnt = 0;
     private int mInitTicket = -1;
 
-    private boolean mTicketFirstIn = true;       //票数据初始好时 判断是否第一次进入房间  第一次进入不显示本场动画
-    private boolean mIsTicketing = false;        //星票 是否是本场模式
+    private boolean mTicketFirstIn = true;      // 票数据初始好时 判断是否第一次进入房间  第一次进入不显示本场动画
+    private boolean mIsTicketing = false;       // 星票 是否是本场模式
     private String mCoverUrl;
     private String mLiveTitle;
     private boolean mIsShop;
     private boolean mHideGift;
-    private long mEnterRoomTime = 0;             //观众端进入直播房间的时间
+    private long mEnterRoomTime = 0;            // 观众端进入直播房间的时间
     private int mHideIcon = 0;
-
 
     /**
      * 后续这些可以当做房间状态用另外一个类存起来
@@ -123,6 +122,11 @@ public class RoomBaseDataModel implements Serializable {
      * 游戏id
      */
     private String mGameId;
+
+    /**
+     * 分享类型
+     */
+    private int mShareType = 0;
 
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
@@ -509,5 +513,13 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setGameId(String gameId) {
         mGameId = gameId;
+    }
+
+    public int getShareType() {
+        return mShareType;
+    }
+
+    public void setShareType(int shareType) {
+        mShareType = shareType;
     }
 }

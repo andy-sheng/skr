@@ -36,6 +36,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.watchtop.adapter.UserAvatarRecyclerAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -203,6 +204,9 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+                        if (!AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                            return;
+                        }
                         UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET,
                                 mMyRoomBaseDataModel.getUid(), mMyRoomBaseDataModel.getTicket(), mMyRoomBaseDataModel.getRoomId());
                     }
@@ -247,10 +251,10 @@ public abstract class WatchTopInfoBaseView extends RelativeLayout implements IBi
         String nickName = mMyRoomBaseDataModel.getNickName();
         if (!TextUtils.isEmpty(nickName)) {
 //            mShowerNameTv.setText(nickName);
-            CommonUtils.setMaxEcplise(mShowerNameTv, DisplayUtils.dip2px(75), nickName);
+            CommonUtils.setMaxEclipse(mShowerNameTv, DisplayUtils.dip2px(75), nickName);
         } else if (mMyRoomBaseDataModel.getUid() > 0) {
 //            mShowerNameTv.setText());
-            CommonUtils.setMaxEcplise(mShowerNameTv, DisplayUtils.dip2px(75), String.valueOf(mMyRoomBaseDataModel.getUid()));
+            CommonUtils.setMaxEclipse(mShowerNameTv, DisplayUtils.dip2px(75), String.valueOf(mMyRoomBaseDataModel.getUid()));
         } else {
             mShowerNameTv.setText(R.string.watch_owner_name_default);
         }

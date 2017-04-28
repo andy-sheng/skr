@@ -31,14 +31,19 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mPlusBtn;
     protected View mMagicBtn;
     protected View mSettingBtn;
+    protected View mShareBtn;
+
+    private int mShareType;
 
     @Override
     protected String getTAG() {
         return TAG;
     }
 
-    public LiveBottomButton(@NonNull RelativeLayout contentContainer) {
+    public LiveBottomButton(@NonNull RelativeLayout contentContainer,
+                            int shareType) {
         super(contentContainer);
+        mShareType = shareType;
         initView();
     }
 
@@ -54,7 +59,6 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
 
         // 横竖屏时按钮排列顺序
         mLeftBtnSetPort.add(mPlusBtn);
-
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mMagicBtn);
 
@@ -62,7 +66,19 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mBottomBtnSetLand.add(mSettingBtn);
         mBottomBtnSetLand.add(mMagicBtn);
 
+        addShareBtn();
+
         orientChild();
+    }
+
+    private void addShareBtn() {
+        if (mShareType != 0) {
+            mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+            addCreatedView(mShareBtn, R.id.share_btn);
+
+            mRightBtnSetPort.add(0, mShareBtn);
+            mBottomBtnSetLand.add(mShareBtn);
+        }
     }
 
     @Override
@@ -81,6 +97,8 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         } else if (id == R.id.magic_btn) {
             mPresenter.showMagicPanel();
             // TODO 增加打点
+        } else if (id == R.id.share_btn) {
+            mPresenter.showShareView();
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -124,6 +142,11 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 显示美妆面板
          */
         void showMagicPanel();
+
+        /**
+         * 显示分享面板
+         */
+        void showShareView();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

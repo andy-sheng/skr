@@ -52,11 +52,11 @@ import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.receiver.PhoneStateReceiver;
+import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
@@ -67,6 +67,7 @@ import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
+import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.schema.SchemeActivity;
 import com.wali.live.watchsdk.schema.SchemeConstants;
 import com.wali.live.watchsdk.task.IActionCallBack;
@@ -558,86 +559,20 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         if (CommonUtils.isFastDoubleClick()) {
             return;
         }
-//        TODO 打开注释
         switch (event.type) {
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET: {
-//                clearTop();
-//                long uid = (long) event.obj1;
-//                int ticket = (int) event.obj2;
-//                String liveId = (String) event.obj3;
-//                RankingFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId, mMyRoomData.isTicketing() ? RankingFragment.PARAM_FROM_CURRENT : RankingFragment.PARAM_FROM_TOTAL, true);
-//            }
-//            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_WANT_FOLLOW_USER: {
-//                clearTop();
-//                long uid = (long) event.obj1;
-//                int ticket = (int) event.obj2;
-//                String liveId = (String) event.obj3;
-//                RankingFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId, mMyRoomData.isTicketing() ? RankingFragment.PARAM_FROM_CURRENT : RankingFragment.PARAM_FROM_TOTAL, true);
-//            }
-//            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_TOUCH_DOWN_COMMENT_RC: {
-//                mLikePresenter.startOtherHeart();
-//                if (canSendLikeMsg()) {
-//                    mLastSendLikeTime = System.currentTimeMillis();
-//                    //按下屏幕的时候，发送弹幕消息
-//                    mRoomChatMsgManager.sendLikeBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mHeartView.getColorIndex(), mHeartView.getBitmapPath(mHeartView.getColorIndex() - 1));
-//                }
-//                if (mIsInputMode) {
-//                    if (mIsShowSmilyPicker) {
-//                        hideInputView("EVENT_TYPE_TOUCH_DOWN_COMMENT_RC");
-//                    } else {
-//                        KeyboardUtils.hideKeyboard(WatchActivity.this);
-//                    }
-//                }
-//            }
-//            break;
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET: {
+                long uid = (long) event.obj1;
+                int ticket = (int) event.obj2;
+                String liveId = (String) event.obj3;
+                RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
+                        mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
+                        true, isDisplayLandscape());
+            }
+            break;
             case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
-//                clearTop();
                 viewerTopFromServer((RoomBaseDataModel) event.obj1);
             }
             break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_OPEN_SUPPORT_SELECT_VIEW: {
-//                addSwitchAnchorViewIfNeed();
-//            }
-//            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_CLOSE_SUPPORT_SELECT_VIEW: {
-//                removeSwitchAnchorViewIfNeed();
-//            }
-//            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_SWITCH_OTHER_ANCHOR: {
-//                long uid = (long) event.obj1;
-//                // 切换主播
-//                if (uid == mPkRoomData.getUid()) {
-//                    switchAnchor(mPkRoomData.getUid(), mPkRoomData.getAvatarTs(), mPkRoomData.getNickName(),
-//                            mPkRoomData.getRoomId(), mPkRoomData.getVideoUrl(), mPkRoomData.getLocation(),
-//                            mStatisChannelId, mPkRoomData.getLiveType());
-//                }
-//                removeSwitchAnchorViewIfNeed();
-//            }
-//            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LINE_ACCEPT: {
-//                long uid = (long) event.obj1;
-//                int mode = (int) event.obj2;
-//                boolean isVideo = (boolean) event.obj3;
-//                popAllFragment();
-//                LineDataUtil.setInfoToVoip(mode, new LineDataUtil.Obj<>(LineDataUtil.KEY_LINE_FROM_ROOM_ID, mMyRoomData.getRoomId()));
-//                MakeCallController.acceptCall(isVideo);
-//            }
-//            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LINE_MIC_STOP: {
-//                DialogUtils.showNormalDialog(this, R.string.live_line_end, R.string.live_line_end_query, R.string.ok, R.string.cancel, (DialogInterface dialogInterface, int i) -> {
-//                    int mode = (int) event.obj2;
-//                    mWatchPanelOperator.cancelCall(mode);
-//                }, null);
-//            }
-//            break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_REQUEST_LINE_CANCEL: {
-//                int mode = (int) event.obj2;
-//                mWatchPanelOperator.cancelCall(mode);
-//            }
-//            break;
-//
             case UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT: {
                 String scheme = (String) event.obj1;
                 boolean isNeedParams = (Boolean) event.obj2;
@@ -680,20 +615,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 }
             }
             break;
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_CLICK_PUSH_IMG:
-//                long productID = (long) event.obj1;
-//                clearTop();
-//                LiveMallFragment.openFragment(this, false, MyUserInfoManager.getInstance().getUser().getUid(), mMyRoomData.getRoomId(), mMyRoomData.getUid(), "", LiveMallFragment.OPEN_PRODUCT_INFO, productID);
-//                break;
-//
-//            case BaseEvent.UserActionEvent.EVENT_TYPE_CLICK_SUPPORT_WIDGET:
-//
-//                Gift gift = GiftRepository.findGiftById((int) event.obj1);
-//
-//                BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getCatagory(),
-//                        gift.getSendDescribe(), 1, 0, System.currentTimeMillis(), -1, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "", "", 0, false);
-//                BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
-//                break;
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.ShareSucEvent event) {
+        MyLog.w(TAG, "EventClass.ShareSucEvent");
+        if (event != null) {
+            mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
+            //基类增长经验值 不要删掉
+            super.onEventMainThread(event);
         }
     }
 
@@ -742,9 +674,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 //        }
 //
 //        if (user.getUid() == mMyRoomData.getUid()) {
-//            RankingFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingFragment.PARAM_FROM_TOTAL, true);
+//            RankingPagerFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingPagerFragment.PARAM_FROM_TOTAL, true);
 //        } else {
-//            RankingFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingFragment.PARAM_FROM_TOTAL, false);
+//            RankingPagerFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingPagerFragment.PARAM_FROM_TOTAL, false);
 //        }
     }
 

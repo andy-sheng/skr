@@ -36,6 +36,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
     private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
+    private static final String EXTRA_SHARE_TYPE = "extra_share_type";
 
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
@@ -57,6 +58,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
     private static final String ACTION_GET_CHANNEL_LIVES = "get_channel_lives";
     private static final String ACTION_GET_FOLLOWING_LIST = "get_following_list";
+    private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
 
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
@@ -76,6 +78,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private int mChannelId = 0;
     private String mChannelSecret;
 
+    private int mShareType;
+
     private ICallback mCallback;
 
     private MiLiveSdkController() {
@@ -92,6 +96,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_THIRD_PART_LOGIN, 205005);
         mMinVersionMap.put(ACTION_GET_CHANNEL_LIVES, 205008);
         mMinVersionMap.put(ACTION_GET_FOLLOWING_LIST, 205011);
+        mMinVersionMap.put(ACTION_NOTIFY_SHARE_SUC, 205014);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -254,6 +259,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void setShareType(int shareType) {
+        mShareType = shareType & ShareType.TYPE_MASK;
+    }
+
+    @Override
     public int getChannelId() {
         return mChannelId;
     }
@@ -398,11 +408,19 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp) {
+    public void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback) {
         if (!checkVersion(ACTION_GET_FOLLOWING_LIST, callback)) {
             return;
         }
-        MiLiveSdkServiceProxy.getInstance().getFollowingList(callback, isBothWay, timeStamp);
+        MiLiveSdkServiceProxy.getInstance().getFollowingList(isBothWay, timeStamp, callback);
+    }
+
+    @Override
+    public void notifyShareSuc(int type, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_NOTIFY_SHARE_SUC, callback)) {
+            return;
+        }
+        MiLiveSdkServiceProxy.getInstance().notifyShareSuc(type);
     }
 
     @Override
@@ -444,6 +462,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putInt(EXTRA_CHANNEL_ID, mChannelId);
         bundle.putString(EXTRA_PACKAGE_NAME, GlobalData.app().getPackageName());
         bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
+        if (mShareType != 0) {
+            bundle.putInt(EXTRA_SHARE_TYPE, mShareType);
+        }
         return bundle;
     }
 

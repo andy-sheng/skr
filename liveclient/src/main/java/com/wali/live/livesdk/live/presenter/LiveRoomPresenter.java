@@ -7,6 +7,9 @@ import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.location.Location;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
+import com.mi.live.data.manager.UserInfoManager;
+import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.livesdk.live.api.BeginLiveRequest;
 import com.wali.live.livesdk.live.api.EndLiveRequest;
@@ -178,5 +181,35 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
     public void destroy() {
         super.destroy();
         mCallback = null;
+    }
+
+    public void initManager(long uuid){
+        LiveRoomCharacterManager.getInstance().clear();
+        Observable.just(uuid)
+                .map(new Func1<Long, List<LiveRoomManagerModel>>() {
+                    @Override
+                    public List<LiveRoomManagerModel> call(Long uuid) {
+                        return UserInfoManager.getMyManagerList(uuid);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .compose(bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(Schedulers.io())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object object) {
+                        if (object != null) {
+                            List<LiveRoomManagerModel> managerModelList = (List<LiveRoomManagerModel>)object;
+                            for (LiveRoomManagerModel managerModel : managerModelList) {
+                                LiveRoomCharacterManager.getInstance().setManager(managerModel,true);
+                            }
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG);
+                    }
+                });
     }
 }

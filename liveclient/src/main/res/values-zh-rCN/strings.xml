@@ -162,4 +162,35 @@
     <string name="has_add_manager_count">已添加%d个</string>
     <string name="has_add_manager_count_zero">未添加管理员</string>
     <string name="live_title_hint">好的标题更能吸引观众</string>
+
+    <!--share-->
+    <string name="qzone">QQ空间</string>
+    <string name="QQ">QQ</string>
+    <string name="blog">微博</string>
+    <string name="moment">朋友圈</string>
+    <string name="weixin_friend">微信</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="miliao">米聊</string>
+    <string name="miliao_feeds">微广播</string>
+    <string name="cancel_share_tips">%1$s分享已关</string>
+
+    <string name="admin_manager_tips_1">1：房间管理员为永久管理员，设置后这个管理员下次你再次直播仍旧是你的管理员，无须重新设置。</string>
+    <string name="admin_manager_tips_2">2：房间管理员最多5位，请合理安排这5个名额。</string>
+    <string name="admin_manager_tips_3">3：你的榜一也拥有禁言权限，无须将榜一设置管理员他就可以帮你管理房间。</string>
+    <string name="cancel_manage">取消管理</string>
+    <string name="search_txt">搜索</string>
+    <string name="match_hint">只有选中的好友会看到直播</string>
+    <string name="refreshing">加载中...</string>
+    <string name="match_ok_btn">确定(%1$d/%2$d)</string>
+    <string name="select_live_line_friends">选择连麦好友</string>
+    <string name="room_friends">本房间的关注好友</string>
+    <string name="sel_count_hint">最多选择%d人</string>
+    <string name="remove_manager_fail">取消管理失败</string>
+
+    <string name="prepare_live_share_tips">点击\"开始直播\"，把直播分享到%1$s</string>
+    <string name="uninstall_share_tips">未安装%1$s，请安装后分享</string>
+    <string name="live_end_share">分享到</string>
 </resources>

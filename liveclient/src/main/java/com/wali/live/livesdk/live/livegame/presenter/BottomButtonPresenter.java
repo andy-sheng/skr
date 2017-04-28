@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
@@ -20,14 +21,17 @@ public class BottomButtonPresenter extends
 
     @Nullable
     private GameLivePresenter mGameLivePresenter;
+    private RoomBaseDataModel mMyRoomData;
 
     public BottomButtonPresenter(
             @NonNull IComponentController componentController,
+            @NonNull RoomBaseDataModel myRoomData,
             @Nullable GameLivePresenter gameLivePresenter) {
         super(componentController);
         registerAction(LiveComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(LiveComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(LiveComponentController.MSG_ON_ACTIVITY_RESUMED);
+        mMyRoomData = myRoomData;
         mGameLivePresenter = gameLivePresenter;
     }
 
@@ -46,6 +50,16 @@ public class BottomButtonPresenter extends
         if (mGameLivePresenter != null) {
             mGameLivePresenter.muteMic(isMute);
         }
+    }
+
+    @Override
+    public void showShareView() {
+        mComponentController.onEvent(LiveComponentController.MSG_SHOW_SHARE_PANEL);
+    }
+
+    @Override
+    public int getShareType() {
+        return mMyRoomData != null ? mMyRoomData.getShareType() : 0;
     }
 
     @Nullable

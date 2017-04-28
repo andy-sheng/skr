@@ -8,7 +8,6 @@ import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.wali.live.sdk.manager.IMiLiveSdk;
 import com.wali.live.sdk.manager.MiLiveSdkController;
@@ -81,7 +80,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventGetRecommendLives(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
-            Log.w(TAG, "onEventGetRecommendLives");
+            Logger.d(TAG, "onEventGetRecommendLives");
             if (mChannelCallback != null) {
                 mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
                 mChannelCallback = null;
@@ -93,6 +92,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             if (mFollowingListCallback != null) {
                 mFollowingListCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
                 mFollowingListCallback = null;
+            }
+        }
+
+        @Override
+        public void onEventShare(ShareInfo shareInfo) throws RemoteException {
+            if (mCallback != null) {
+                mCallback.notifyWantShare(shareInfo);
             }
         }
     };
@@ -142,20 +148,23 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mMiId, mServiceToken);
                 mServiceToken = "";
-            } else if (!TextUtils.isEmpty(mAuthCode)) {
+            }
+            if (!TextUtils.isEmpty(mAuthCode)) {
                 mRemoteService.loginByMiAccountOAuth(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(),
                         mAuthCode);
                 mAuthCode = "";
-            } else if (mClearAccountFlag) {
+            }
+            if (mClearAccountFlag) {
                 mRemoteService.clearAccount(
                         MiLiveSdkController.getInstance().getChannelId(),
                         GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
                 mClearAccountFlag = false;
-            } else if (mThirdPartLoginData != null) {
+            }
+            if (mThirdPartLoginData != null) {
                 mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), mThirdPartLoginData);
                 mThirdPartLoginData = null;
             }
@@ -254,7 +263,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void getFollowingList(IMiLiveSdk.IFollowingListCallback followingListCallback, boolean isBothWay, long timeStamp) {
+    public void getFollowingList(boolean isBothWay, long timeStamp, IMiLiveSdk.IFollowingListCallback followingListCallback) {
         Logger.w(TAG, "getFollowingList");
         if (followingListCallback == null) {
             Logger.w(TAG, "getFollowingList callback is null");
@@ -272,6 +281,20 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             }
         }
     }
+
+    public void notifyShareSuc(int type) {
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+        } else {
+            try {
+                mRemoteService.notifyShareSuc(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(), type);
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+            }
+        }
+    }
+
 
     public void clearAccount() {
         Logger.w(TAG, "clearAccount");
@@ -330,6 +353,4 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             mCallback.notifyAidlFailure(aidlFlag);
         }
     }
-
-
 }

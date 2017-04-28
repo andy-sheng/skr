@@ -45,7 +45,7 @@ import com.mi.live.data.user.User;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.manager.WatchRoomCharactorManager;
-import com.wali.live.proto.Rank;
+import com.wali.live.proto.RankProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AsyncTaskUtils;
@@ -104,7 +104,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
     private int mFollowButtonClickTimes = 0;       //关注按钮的点击次数
 
     private FloatPersonInfoClickListener mFloatPersonInfoClickListener = null;      //点击事件
-    private Rank.RankUser mTopOneUser = null;           //排名第一的用户
+    private RankProto.RankUser mTopOneUser = null;           //排名第一的用户
     private boolean mFragAnimationEnd;
     //datas ends ************************************************
 
@@ -177,7 +177,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
                     }
 
                     if (fragment.mUserUuidFromBundle >= 0) {
-                        List<Rank.RankUser> rankUsers = RelationApi.getTicketListResponse(fragment.mUserUuidFromBundle, 1, 0);
+                        List<RankProto.RankUser> rankUsers = RelationApi.getTicketListResponse(fragment.mUserUuidFromBundle, 1, 0);
                         if (rankUsers != null && !rankUsers.isEmpty()) {
                             fragment.mTopOneUser = rankUsers.get(0);
                         }

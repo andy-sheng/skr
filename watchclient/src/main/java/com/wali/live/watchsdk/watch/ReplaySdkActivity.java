@@ -47,6 +47,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -78,11 +79,9 @@ import rx.functions.Action1;
  */
 
 public class ReplaySdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener, IActionCallBack {
-
     protected final static String TAG = "ReplaySdkActivity";
 
     private static final int MSG_ROOM_INFO = 108;               //主播拉取房间信息
-
     public static final int MSG_UPDATE_QOS = 200;               //金山云调试信息
 
     /**
@@ -498,8 +497,16 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         }
 
         switch (event.type) {
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET: {
+                long uid = (long) event.obj1;
+                int ticket = (int) event.obj2;
+                String liveId = (String) event.obj3;
+                RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
+                        mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
+                        true, isDisplayLandscape());
+            }
+            break;
             case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER: {
-//                clearTop();
                 viewerTopFromServer((RoomBaseDataModel) event.obj1);
             }
             break;

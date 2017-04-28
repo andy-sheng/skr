@@ -18,12 +18,14 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
+import com.wali.live.event.EventClass;
 import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.active.KeepActiveProcessor;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
+import com.wali.live.watchsdk.watch.presenter.ExpLevelPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -76,7 +78,6 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
      * 本房间相关信息
      */
     protected RoomBaseDataModel mMyRoomData = new RoomBaseDataModel("sdk_Myroominfo");
-
     /**
      * 房间弹幕管理
      */
@@ -252,6 +253,16 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         if (event != null && event.getEventType() == AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF) {
             MyLog.d(TAG, "log off channelId=" + event.getChannelId());
             tryClearData();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.ShareSucEvent event) {
+        if (event != null) {
+            //update experience
+            ExpLevelPresenter expLevelPresenter = new ExpLevelPresenter();
+            addPresent(expLevelPresenter);
+            expLevelPresenter.updateExperience(ExpLevelPresenter.SHARE_TYPE, event.getSnsType());
         }
     }
 

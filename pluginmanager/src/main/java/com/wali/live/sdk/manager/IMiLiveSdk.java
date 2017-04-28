@@ -7,6 +7,7 @@ import android.support.annotation.Keep;
 
 import com.mi.live.data.location.Location;
 import com.wali.live.watchsdk.ipc.service.LiveInfo;
+import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.ipc.service.UserInfo;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  *
  * @description 提供给第三方，只需要看这个文件
  */
+@Keep
 public interface IMiLiveSdk {
 
     /**
@@ -37,6 +39,11 @@ public interface IMiLiveSdk {
      * 获取上层传入的channelSecret
      */
     String getChannelSecret();
+
+    /**
+     * 上层应用设置支持的分享类型
+     */
+    void setShareType(int shareType);
 
     /**
      * OAuth登录
@@ -132,7 +139,14 @@ public interface IMiLiveSdk {
      *
      * @version 205011
      */
-    void getFollowingList(IFollowingListCallback callback, boolean isBothWay, long timeStamp);
+    void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
+
+    /**
+     * 宿主app通知sdk分享成功接口
+     *
+     * @version 205014
+     */
+    void notifyShareSuc(int type, IAssistantCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手
@@ -207,6 +221,11 @@ public interface IMiLiveSdk {
          * 通知上层有其它的app在活跃状态
          */
         void notifyOtherAppActive();
+
+        /**
+         * 通知上层分享
+         */
+        void notifyWantShare(ShareInfo shareInfo);
     }
 
     /**
@@ -313,6 +332,11 @@ public interface IMiLiveSdk {
 
         @Override
         public void notifyOtherAppActive() {
+        }
+
+        @Override
+        public void notifyWantShare(ShareInfo shareInfo) {
+
         }
     }
 }

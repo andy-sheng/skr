@@ -28,12 +28,13 @@ import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.presenter.TouchPresenter;
 import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
-import com.wali.live.watchsdk.component.view.GameDownloadPanel;
 import com.wali.live.watchsdk.component.view.GameInputView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.view.WidgetView;
+import com.wali.live.watchsdk.component.view.panel.GameDownloadPanel;
+import com.wali.live.watchsdk.watch.presenter.PanelContainerPresenter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -116,6 +117,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 GameDownloadPresenter presenter = new GameDownloadPresenter(mComponentController, mComponentController.mMyRoomData);
                 addComponentView(panel, presenter);
             }
+
         } else {
             if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
                 // 运营位
@@ -152,6 +154,18 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             mLiveCommentView = view;
         }
 
+        // 底部面板
+        {
+            RelativeLayout relativeLayout = $(R.id.bottom_panel_view);
+            if (relativeLayout == null) {
+                MyLog.e(TAG, "missing R.id.bottom_panel_view");
+                return;
+            }
+            PanelContainerPresenter presenter = new PanelContainerPresenter(mComponentController, mComponentController.mMyRoomData);
+            presenter.setComponentView(relativeLayout);
+            addComponentView(presenter);
+        }
+
         // 输入框
         {
             InputAreaView view = $(R.id.input_area_view);
@@ -170,9 +184,10 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 return;
             }
             relativeLayout.setVisibility(View.VISIBLE);
-            WatchBottomButton view = new WatchBottomButton(relativeLayout, mIsGameMode);
+            WatchBottomButton view = new WatchBottomButton(relativeLayout, mIsGameMode,
+                    mComponentController.mMyRoomData.getShareType());
             BottomButtonPresenter presenter =
-                    new BottomButtonPresenter(mComponentController);
+                    new BottomButtonPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
         }
 

@@ -13,6 +13,7 @@ import com.wali.live.component.view.IOrientationListener;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.livesdk.R;
 import com.wali.live.statistics.StatisticsKey;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -29,14 +30,18 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mCommentBtn;
     protected View mSettingBtn;
     protected View mMuteBtn;
+    protected View mShareBtn;
+
+    private int mShareType;
 
     @Override
     protected String getTAG() {
         return TAG;
     }
 
-    public LiveBottomButton(@NonNull RelativeLayout contentContainer) {
+    public LiveBottomButton(@NonNull RelativeLayout contentContainer, int shareType) {
         super(contentContainer);
+        mShareType = shareType;
         initView();
     }
 
@@ -55,7 +60,18 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         mRightBtnSetPort.add(mSettingBtn);
         mRightBtnSetPort.add(mCommentBtn);
 
+        addShareBtn();
+
         orientChild();
+    }
+
+    private void addShareBtn() {
+        if (mShareType != 0) {
+            mShareBtn = createImageView(R.drawable.live_icon_share_btn);
+            addCreatedView(mShareBtn, R.id.share_btn);
+
+            mRightBtnSetPort.add(1, mShareBtn);
+        }
     }
 
     public void updateMuteAudio(boolean isMute) {
@@ -85,6 +101,10 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
             view.setSelected(isSelected);
             mPresenter.muteAudio(isSelected);
             msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SILENT;
+        } else if (id == R.id.share_btn) {
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mPresenter.showShareView();
+            }
         }
         if (!TextUtils.isEmpty(msgType)) {
             StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
@@ -133,6 +153,16 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
          * 禁音/取消禁音
          */
         void muteAudio(boolean isMute);
+
+        /**
+         * 显示分享面板
+         */
+        void showShareView();
+
+        /**
+         * 获取shareType
+         */
+        int getShareType();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

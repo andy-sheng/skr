@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_ffd439">#ffd439</color>
     <color name="color_channel_tab_background">#FEFEFE</color>
     <color name="color_90_dcab42">#e5dcab42</color>
     <color name="color_line_e0dfde">#e0dfde</color>
     <color name="text_color_black_trans_90">#E5000000</color>
     <color name="colorPrimary">#FAFAFA</color>
     <color name="color_black_tran_70">#B2000000</color>
+    <color name="text_color_e5aa1e_trans_50">#80e5aa1e</color>
+    <color name="color_grey">#f8f8f8</color>
 </resources>

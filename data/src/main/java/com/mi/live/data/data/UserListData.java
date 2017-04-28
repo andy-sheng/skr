@@ -3,7 +3,7 @@ package com.mi.live.data.data;
 import com.mi.live.data.user.User;
 import com.wali.live.dao.Relation;
 import com.wali.live.proto.LiveManagerProto;
-import com.wali.live.proto.Rank.RankUser;
+import com.wali.live.proto.RankProto.RankUser;
 import com.wali.live.proto.RelationProto;
 
 import java.io.Serializable;
@@ -37,7 +37,8 @@ public class UserListData implements Serializable {
 
     public int mPosition = -1;           //列表中的pos 从0开始  星票排名用
 
-    public UserListData(){}
+    public UserListData() {
+    }
 
     public UserListData(RankUser userInfo) {
 
@@ -86,18 +87,18 @@ public class UserListData implements Serializable {
         if (userInfo.hasIsBothway()) {
             isBothway = userInfo.getIsBothway();
         }
-        if(userInfo.hasIsPking()){
+        if (userInfo.hasIsPking()) {
             mIsPking = userInfo.getIsPking();
         }
-        if(userInfo.hasIsShowing()){
+        if (userInfo.hasIsShowing()) {
             mIsShowing = userInfo.getIsShowing();
         }
-        if(userInfo.hasViewerCnt()) {
+        if (userInfo.hasViewerCnt()) {
             mViewerNum = userInfo.getViewerCnt();
         }
     }
 
-     public UserListData(LiveManagerProto.UserInfo userInfo) {
+    public UserListData(LiveManagerProto.UserInfo userInfo) {
         userId = userInfo.getZuid();
         avatar = userInfo.getAvatar();
         userNickname = userInfo.getNickname();
@@ -160,7 +161,7 @@ public class UserListData implements Serializable {
         List<Object> list = new ArrayList<>();
         for (RelationProto.UserInfo userInfo : response.getUsersList()) {
             UserListData item = new UserListData(userInfo);
-            if(item.mIsShowing) {
+            if (item.mIsShowing) {
                 list.add(item);
             }
         }
@@ -203,7 +204,7 @@ public class UserListData implements Serializable {
         return list;
     }
 
-    public User toUser(){
+    public User toUser() {
         User user = new User();
         user.setUid(userId);
         user.setAvatar(avatar);

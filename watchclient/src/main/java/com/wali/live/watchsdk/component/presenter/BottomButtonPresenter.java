@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.base.log.MyLog;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
@@ -22,14 +23,18 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
         implements WatchBottomButton.IPresenter {
     private static final String TAG = "BottomButtonPresenter";
 
+    private RoomBaseDataModel mMyRoomData;
+
     public BottomButtonPresenter(
-            @NonNull IComponentController componentController) {
+            @NonNull IComponentController componentController,
+            RoomBaseDataModel myRoomData) {
         super(componentController);
         registerAction(WatchComponentController.MSG_ON_ORIENT_PORTRAIT);
         registerAction(WatchComponentController.MSG_ON_ORIENT_LANDSCAPE);
         registerAction(WatchComponentController.MSG_BOTTOM_POPUP_SHOWED);
         registerAction(WatchComponentController.MSG_BOTTOM_POPUP_HIDDEN);
         registerAction(WatchComponentController.MSG_SHOE_GAME_ICON);
+        mMyRoomData = myRoomData;
     }
 
     @Override
@@ -54,6 +59,11 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
     @Override
     public void showGameDownloadView() {
         mComponentController.onEvent(WatchComponentController.MSG_SHOW_GAME_DOWNLOAD);
+    }
+
+    @Override
+    public void showShareView() {
+        mComponentController.onEvent(WatchComponentController.MSG_SHOW_SHARE_PANEL);
     }
 
     @Override
