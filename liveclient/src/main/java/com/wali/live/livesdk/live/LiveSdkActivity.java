@@ -283,6 +283,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mComponentController.registerAction(ComponentController.MSG_END_LIVE_UNEXPECTED, action);
         mComponentController.registerAction(ComponentController.MSG_END_LIVE_FOR_TIMEOUT, action);
         mComponentController.registerAction(ComponentController.MSG_OPEN_MIC_FAILED, action);
+        mComponentController.registerAction(ComponentController.MSG_ON_STREAM_RECONNECT, action);
+        mComponentController.registerAction(ComponentController.MSG_ON_STREAM_SUCCESS, action);
         if (!mIsGameLive) {
             mComponentController.registerAction(ComponentController.MSG_OPEN_CAMERA_FAILED, action);
         }
