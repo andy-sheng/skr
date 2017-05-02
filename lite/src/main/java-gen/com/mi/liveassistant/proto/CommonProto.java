@@ -8,10 +8,10 @@ public final class CommonProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface AttachmentOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AttachmentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.Attachment)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 type = 1;
     /**
      * <code>required uint32 type = 1;</code>
      *
@@ -29,7 +29,6 @@ public final class CommonProto {
      */
     int getType();
 
-    // optional string text = 2;
     /**
      * <code>optional string text = 2;</code>
      *
@@ -56,7 +55,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getTextBytes();
 
-    // optional string url = 3;
     /**
      * <code>optional string url = 3;</code>
      *
@@ -83,7 +81,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional uint32 duration = 4;
     /**
      * <code>optional uint32 duration = 4;</code>
      *
@@ -101,7 +98,6 @@ public final class CommonProto {
      */
     int getDuration();
 
-    // optional uint32 size = 5;
     /**
      * <code>optional uint32 size = 5;</code>
      *
@@ -119,7 +115,6 @@ public final class CommonProto {
      */
     int getSize();
 
-    // optional uint64 exttype = 6;
     /**
      * <code>optional uint64 exttype = 6;</code>
      *
@@ -137,7 +132,6 @@ public final class CommonProto {
      */
     long getExttype();
 
-    // optional bytes extdata = 7;
     /**
      * <code>optional bytes extdata = 7;</code>
      *
@@ -155,7 +149,6 @@ public final class CommonProto {
      */
     com.google.protobuf.ByteString getExtdata();
 
-    // optional uint32 width = 8;
     /**
      * <code>optional uint32 width = 8;</code>
      *
@@ -173,7 +166,6 @@ public final class CommonProto {
      */
     int getWidth();
 
-    // optional uint32 height = 9;
     /**
      * <code>optional uint32 height = 9;</code>
      *
@@ -195,8 +187,9 @@ public final class CommonProto {
    * Protobuf type {@code com.mi.liveassistant.proto.Attachment}
    */
   public static final class Attachment extends
-      com.google.protobuf.GeneratedMessage
-      implements AttachmentOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.Attachment)
+      AttachmentOrBuilder {
     // Use Attachment.newBuilder() to construct.
     private Attachment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -248,13 +241,15 @@ public final class CommonProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              text_ = input.readBytes();
+              text_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 32: {
@@ -327,7 +322,6 @@ public final class CommonProto {
     }
 
     private int bitField0_;
-    // required uint32 type = 1;
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -351,7 +345,6 @@ public final class CommonProto {
       return type_;
     }
 
-    // optional string text = 2;
     public static final int TEXT_FIELD_NUMBER = 2;
     private java.lang.Object text_;
     /**
@@ -406,7 +399,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string url = 3;
     public static final int URL_FIELD_NUMBER = 3;
     private java.lang.Object url_;
     /**
@@ -461,7 +453,6 @@ public final class CommonProto {
       }
     }
 
-    // optional uint32 duration = 4;
     public static final int DURATION_FIELD_NUMBER = 4;
     private int duration_;
     /**
@@ -485,7 +476,6 @@ public final class CommonProto {
       return duration_;
     }
 
-    // optional uint32 size = 5;
     public static final int SIZE_FIELD_NUMBER = 5;
     private int size_;
     /**
@@ -509,7 +499,6 @@ public final class CommonProto {
       return size_;
     }
 
-    // optional uint64 exttype = 6;
     public static final int EXTTYPE_FIELD_NUMBER = 6;
     private long exttype_;
     /**
@@ -533,7 +522,6 @@ public final class CommonProto {
       return exttype_;
     }
 
-    // optional bytes extdata = 7;
     public static final int EXTDATA_FIELD_NUMBER = 7;
     private com.google.protobuf.ByteString extdata_;
     /**
@@ -557,7 +545,6 @@ public final class CommonProto {
       return extdata_;
     }
 
-    // optional uint32 width = 8;
     public static final int WIDTH_FIELD_NUMBER = 8;
     private int width_;
     /**
@@ -581,7 +568,6 @@ public final class CommonProto {
       return width_;
     }
 
-    // optional uint32 height = 9;
     public static final int HEIGHT_FIELD_NUMBER = 9;
     private int height_;
     /**
@@ -619,7 +605,8 @@ public final class CommonProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasType()) {
         memoizedIsInitialized = 0;
@@ -786,8 +773,9 @@ public final class CommonProto {
      * Protobuf type {@code com.mi.liveassistant.proto.Attachment}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonProto.AttachmentOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.Attachment)
+        com.mi.liveassistant.proto.CommonProto.AttachmentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Attachment_descriptor;
@@ -980,7 +968,6 @@ public final class CommonProto {
       }
       private int bitField0_;
 
-      // required uint32 type = 1;
       private int type_ ;
       /**
        * <code>required uint32 type = 1;</code>
@@ -1029,7 +1016,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string text = 2;
       private java.lang.Object text_ = "";
       /**
        * <code>optional string text = 2;</code>
@@ -1051,9 +1037,12 @@ public final class CommonProto {
       public java.lang.String getText() {
         java.lang.Object ref = text_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1127,7 +1116,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string url = 3;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 3;</code>
@@ -1149,9 +1137,12 @@ public final class CommonProto {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1225,7 +1216,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional uint32 duration = 4;
       private int duration_ ;
       /**
        * <code>optional uint32 duration = 4;</code>
@@ -1274,7 +1264,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional uint32 size = 5;
       private int size_ ;
       /**
        * <code>optional uint32 size = 5;</code>
@@ -1323,7 +1312,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional uint64 exttype = 6;
       private long exttype_ ;
       /**
        * <code>optional uint64 exttype = 6;</code>
@@ -1372,7 +1360,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional bytes extdata = 7;
       private com.google.protobuf.ByteString extdata_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes extdata = 7;</code>
@@ -1424,7 +1411,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional uint32 width = 8;
       private int width_ ;
       /**
        * <code>optional uint32 width = 8;</code>
@@ -1473,7 +1459,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional uint32 height = 9;
       private int height_ ;
       /**
        * <code>optional uint32 height = 9;</code>
@@ -1533,10 +1518,10 @@ public final class CommonProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.Attachment)
   }
 
-  public interface LocationOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LocationOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.Location)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional double lon = 1;
     /**
      * <code>optional double lon = 1;</code>
      *
@@ -1554,7 +1539,6 @@ public final class CommonProto {
      */
     double getLon();
 
-    // optional double lat = 2;
     /**
      * <code>optional double lat = 2;</code>
      *
@@ -1572,7 +1556,6 @@ public final class CommonProto {
      */
     double getLat();
 
-    // optional string country = 3;
     /**
      * <code>optional string country = 3;</code>
      *
@@ -1599,7 +1582,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getCountryBytes();
 
-    // optional string province = 4;
     /**
      * <code>optional string province = 4;</code>
      *
@@ -1626,7 +1608,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getProvinceBytes();
 
-    // optional string city = 5;
     /**
      * <code>optional string city = 5;</code>
      *
@@ -1653,7 +1634,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getCityBytes();
 
-    // optional uint32 type = 6;
     /**
      * <code>optional uint32 type = 6;</code>
      *
@@ -1675,8 +1655,9 @@ public final class CommonProto {
    * Protobuf type {@code com.mi.liveassistant.proto.Location}
    */
   public static final class Location extends
-      com.google.protobuf.GeneratedMessage
-      implements LocationOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.Location)
+      LocationOrBuilder {
     // Use Location.newBuilder() to construct.
     private Location(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1733,18 +1714,21 @@ public final class CommonProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              country_ = input.readBytes();
+              country_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              province_ = input.readBytes();
+              province_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              city_ = input.readBytes();
+              city_ = bs;
               break;
             }
             case 48: {
@@ -1792,7 +1776,6 @@ public final class CommonProto {
     }
 
     private int bitField0_;
-    // optional double lon = 1;
     public static final int LON_FIELD_NUMBER = 1;
     private double lon_;
     /**
@@ -1816,7 +1799,6 @@ public final class CommonProto {
       return lon_;
     }
 
-    // optional double lat = 2;
     public static final int LAT_FIELD_NUMBER = 2;
     private double lat_;
     /**
@@ -1840,7 +1822,6 @@ public final class CommonProto {
       return lat_;
     }
 
-    // optional string country = 3;
     public static final int COUNTRY_FIELD_NUMBER = 3;
     private java.lang.Object country_;
     /**
@@ -1895,7 +1876,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string province = 4;
     public static final int PROVINCE_FIELD_NUMBER = 4;
     private java.lang.Object province_;
     /**
@@ -1950,7 +1930,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string city = 5;
     public static final int CITY_FIELD_NUMBER = 5;
     private java.lang.Object city_;
     /**
@@ -2005,7 +1984,6 @@ public final class CommonProto {
       }
     }
 
-    // optional uint32 type = 6;
     public static final int TYPE_FIELD_NUMBER = 6;
     private int type_;
     /**
@@ -2040,7 +2018,8 @@ public final class CommonProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -2182,8 +2161,9 @@ public final class CommonProto {
      * Protobuf type {@code com.mi.liveassistant.proto.Location}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonProto.LocationOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.Location)
+        com.mi.liveassistant.proto.CommonProto.LocationOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonProto.internal_static_com_mi_liveassistant_proto_Location_descriptor;
@@ -2347,7 +2327,6 @@ public final class CommonProto {
       }
       private int bitField0_;
 
-      // optional double lon = 1;
       private double lon_ ;
       /**
        * <code>optional double lon = 1;</code>
@@ -2396,7 +2375,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional double lat = 2;
       private double lat_ ;
       /**
        * <code>optional double lat = 2;</code>
@@ -2445,7 +2423,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string country = 3;
       private java.lang.Object country_ = "";
       /**
        * <code>optional string country = 3;</code>
@@ -2467,9 +2444,12 @@ public final class CommonProto {
       public java.lang.String getCountry() {
         java.lang.Object ref = country_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          country_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            country_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2543,7 +2523,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string province = 4;
       private java.lang.Object province_ = "";
       /**
        * <code>optional string province = 4;</code>
@@ -2565,9 +2544,12 @@ public final class CommonProto {
       public java.lang.String getProvince() {
         java.lang.Object ref = province_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          province_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            province_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2641,7 +2623,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string city = 5;
       private java.lang.Object city_ = "";
       /**
        * <code>optional string city = 5;</code>
@@ -2663,9 +2644,12 @@ public final class CommonProto {
       public java.lang.String getCity() {
         java.lang.Object ref = city_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          city_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            city_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2739,7 +2723,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional uint32 type = 6;
       private int type_ ;
       /**
        * <code>optional uint32 type = 6;</code>
@@ -2799,10 +2782,10 @@ public final class CommonProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.Location)
   }
 
-  public interface GetUpgradeInfoReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUpgradeInfoReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string app = 1;
     /**
      * <code>optional string app = 1;</code>
      *
@@ -2829,7 +2812,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getAppBytes();
 
-    // optional string platform = 2;
     /**
      * <code>optional string platform = 2;</code>
      *
@@ -2856,7 +2838,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getPlatformBytes();
 
-    // optional int32 system = 3;
     /**
      * <code>optional int32 system = 3;</code>
      *
@@ -2874,7 +2855,6 @@ public final class CommonProto {
      */
     int getSystem();
 
-    // required string channel = 4;
     /**
      * <code>required string channel = 4;</code>
      *
@@ -2901,7 +2881,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getChannelBytes();
 
-    // optional string device = 5;
     /**
      * <code>optional string device = 5;</code>
      *
@@ -2928,7 +2907,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getDeviceBytes();
 
-    // required int32 currentVersion = 6;
     /**
      * <code>required int32 currentVersion = 6;</code>
      *
@@ -2946,7 +2924,6 @@ public final class CommonProto {
      */
     int getCurrentVersion();
 
-    // optional string language = 7;
     /**
      * <code>optional string language = 7;</code>
      *
@@ -2973,7 +2950,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getLanguageBytes();
 
-    // optional int64 uid = 8;
     /**
      * <code>optional int64 uid = 8;</code>
      *
@@ -2991,7 +2967,6 @@ public final class CommonProto {
      */
     long getUid();
 
-    // optional string md5 = 9;
     /**
      * <code>optional string md5 = 9;</code>
      *
@@ -3018,7 +2993,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getMd5Bytes();
 
-    // optional string local = 10;
     /**
      * <code>optional string local = 10;</code>
      *
@@ -3053,8 +3027,9 @@ public final class CommonProto {
    * </pre>
    */
   public static final class GetUpgradeInfoReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUpgradeInfoReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+      GetUpgradeInfoReqOrBuilder {
     // Use GetUpgradeInfoReq.newBuilder() to construct.
     private GetUpgradeInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3101,13 +3076,15 @@ public final class CommonProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              app_ = input.readBytes();
+              app_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              platform_ = input.readBytes();
+              platform_ = bs;
               break;
             }
             case 24: {
@@ -3116,13 +3093,15 @@ public final class CommonProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              channel_ = input.readBytes();
+              channel_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              device_ = input.readBytes();
+              device_ = bs;
               break;
             }
             case 48: {
@@ -3131,8 +3110,9 @@ public final class CommonProto {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              language_ = input.readBytes();
+              language_ = bs;
               break;
             }
             case 64: {
@@ -3141,13 +3121,15 @@ public final class CommonProto {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              md5_ = input.readBytes();
+              md5_ = bs;
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              local_ = input.readBytes();
+              local_ = bs;
               break;
             }
           }
@@ -3190,7 +3172,6 @@ public final class CommonProto {
     }
 
     private int bitField0_;
-    // optional string app = 1;
     public static final int APP_FIELD_NUMBER = 1;
     private java.lang.Object app_;
     /**
@@ -3245,7 +3226,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private java.lang.Object platform_;
     /**
@@ -3300,7 +3280,6 @@ public final class CommonProto {
       }
     }
 
-    // optional int32 system = 3;
     public static final int SYSTEM_FIELD_NUMBER = 3;
     private int system_;
     /**
@@ -3324,7 +3303,6 @@ public final class CommonProto {
       return system_;
     }
 
-    // required string channel = 4;
     public static final int CHANNEL_FIELD_NUMBER = 4;
     private java.lang.Object channel_;
     /**
@@ -3379,7 +3357,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string device = 5;
     public static final int DEVICE_FIELD_NUMBER = 5;
     private java.lang.Object device_;
     /**
@@ -3434,7 +3411,6 @@ public final class CommonProto {
       }
     }
 
-    // required int32 currentVersion = 6;
     public static final int CURRENTVERSION_FIELD_NUMBER = 6;
     private int currentVersion_;
     /**
@@ -3458,7 +3434,6 @@ public final class CommonProto {
       return currentVersion_;
     }
 
-    // optional string language = 7;
     public static final int LANGUAGE_FIELD_NUMBER = 7;
     private java.lang.Object language_;
     /**
@@ -3513,7 +3488,6 @@ public final class CommonProto {
       }
     }
 
-    // optional int64 uid = 8;
     public static final int UID_FIELD_NUMBER = 8;
     private long uid_;
     /**
@@ -3537,7 +3511,6 @@ public final class CommonProto {
       return uid_;
     }
 
-    // optional string md5 = 9;
     public static final int MD5_FIELD_NUMBER = 9;
     private java.lang.Object md5_;
     /**
@@ -3592,7 +3565,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string local = 10;
     public static final int LOCAL_FIELD_NUMBER = 10;
     private java.lang.Object local_;
     /**
@@ -3662,7 +3634,8 @@ public final class CommonProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasChannel()) {
         memoizedIsInitialized = 0;
@@ -3844,8 +3817,9 @@ public final class CommonProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonProto.GetUpgradeInfoReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetUpgradeInfoReq)
+        com.mi.liveassistant.proto.CommonProto.GetUpgradeInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor;
@@ -4061,7 +4035,6 @@ public final class CommonProto {
       }
       private int bitField0_;
 
-      // optional string app = 1;
       private java.lang.Object app_ = "";
       /**
        * <code>optional string app = 1;</code>
@@ -4083,9 +4056,12 @@ public final class CommonProto {
       public java.lang.String getApp() {
         java.lang.Object ref = app_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          app_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            app_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4159,7 +4135,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string platform = 2;
       private java.lang.Object platform_ = "";
       /**
        * <code>optional string platform = 2;</code>
@@ -4181,9 +4156,12 @@ public final class CommonProto {
       public java.lang.String getPlatform() {
         java.lang.Object ref = platform_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          platform_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            platform_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4257,7 +4235,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional int32 system = 3;
       private int system_ ;
       /**
        * <code>optional int32 system = 3;</code>
@@ -4306,7 +4283,6 @@ public final class CommonProto {
         return this;
       }
 
-      // required string channel = 4;
       private java.lang.Object channel_ = "";
       /**
        * <code>required string channel = 4;</code>
@@ -4328,9 +4304,12 @@ public final class CommonProto {
       public java.lang.String getChannel() {
         java.lang.Object ref = channel_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          channel_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            channel_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4404,7 +4383,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string device = 5;
       private java.lang.Object device_ = "";
       /**
        * <code>optional string device = 5;</code>
@@ -4426,9 +4404,12 @@ public final class CommonProto {
       public java.lang.String getDevice() {
         java.lang.Object ref = device_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          device_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            device_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4502,7 +4483,6 @@ public final class CommonProto {
         return this;
       }
 
-      // required int32 currentVersion = 6;
       private int currentVersion_ ;
       /**
        * <code>required int32 currentVersion = 6;</code>
@@ -4551,7 +4531,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string language = 7;
       private java.lang.Object language_ = "";
       /**
        * <code>optional string language = 7;</code>
@@ -4573,9 +4552,12 @@ public final class CommonProto {
       public java.lang.String getLanguage() {
         java.lang.Object ref = language_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          language_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            language_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4649,7 +4631,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional int64 uid = 8;
       private long uid_ ;
       /**
        * <code>optional int64 uid = 8;</code>
@@ -4698,7 +4679,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string md5 = 9;
       private java.lang.Object md5_ = "";
       /**
        * <code>optional string md5 = 9;</code>
@@ -4720,9 +4700,12 @@ public final class CommonProto {
       public java.lang.String getMd5() {
         java.lang.Object ref = md5_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          md5_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            md5_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4796,7 +4779,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string local = 10;
       private java.lang.Object local_ = "";
       /**
        * <code>optional string local = 10;</code>
@@ -4818,9 +4800,12 @@ public final class CommonProto {
       public java.lang.String getLocal() {
         java.lang.Object ref = local_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          local_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            local_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4905,10 +4890,10 @@ public final class CommonProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetUpgradeInfoReq)
   }
 
-  public interface GetUpgradeInfoRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUpgradeInfoRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional int32 err_code = 1;
     /**
      * <code>optional int32 err_code = 1;</code>
      *
@@ -4924,7 +4909,6 @@ public final class CommonProto {
      */
     int getErrCode();
 
-    // optional string err_msg = 2;
     /**
      * <code>optional string err_msg = 2;</code>
      */
@@ -4939,7 +4923,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional bool hasUpdate = 3;
     /**
      * <code>optional bool hasUpdate = 3;</code>
      *
@@ -4957,7 +4940,6 @@ public final class CommonProto {
      */
     boolean getHasUpdate();
 
-    // optional int32 toVersion = 4;
     /**
      * <code>optional int32 toVersion = 4;</code>
      *
@@ -4975,7 +4957,6 @@ public final class CommonProto {
      */
     int getToVersion();
 
-    // optional string apkUrl = 5;
     /**
      * <code>optional string apkUrl = 5;</code>
      *
@@ -5002,7 +4983,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getApkUrlBytes();
 
-    // optional string remark = 6;
     /**
      * <code>optional string remark = 6;</code>
      *
@@ -5029,7 +5009,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getRemarkBytes();
 
-    // optional string additionalUrl = 7;
     /**
      * <code>optional string additionalUrl = 7;</code>
      *
@@ -5056,7 +5035,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getAdditionalUrlBytes();
 
-    // optional string additionalSize = 8;
     /**
      * <code>optional string additionalSize = 8;</code>
      *
@@ -5083,7 +5061,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getAdditionalSizeBytes();
 
-    // optional int32 fullSize = 9;
     /**
      * <code>optional int32 fullSize = 9;</code>
      *
@@ -5101,7 +5078,6 @@ public final class CommonProto {
      */
     int getFullSize();
 
-    // optional string fullHash = 10;
     /**
      * <code>optional string fullHash = 10;</code>
      *
@@ -5128,7 +5104,6 @@ public final class CommonProto {
     com.google.protobuf.ByteString
         getFullHashBytes();
 
-    // optional bool forced = 11;
     /**
      * <code>optional bool forced = 11;</code>
      *
@@ -5157,8 +5132,9 @@ public final class CommonProto {
    * </pre>
    */
   public static final class GetUpgradeInfoRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUpgradeInfoRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+      GetUpgradeInfoRspOrBuilder {
     // Use GetUpgradeInfoRsp.newBuilder() to construct.
     private GetUpgradeInfoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5210,8 +5186,9 @@ public final class CommonProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 24: {
@@ -5225,23 +5202,27 @@ public final class CommonProto {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              apkUrl_ = input.readBytes();
+              apkUrl_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              remark_ = input.readBytes();
+              remark_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              additionalUrl_ = input.readBytes();
+              additionalUrl_ = bs;
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              additionalSize_ = input.readBytes();
+              additionalSize_ = bs;
               break;
             }
             case 72: {
@@ -5250,8 +5231,9 @@ public final class CommonProto {
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              fullHash_ = input.readBytes();
+              fullHash_ = bs;
               break;
             }
             case 88: {
@@ -5299,7 +5281,6 @@ public final class CommonProto {
     }
 
     private int bitField0_;
-    // optional int32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -5321,7 +5302,6 @@ public final class CommonProto {
       return errCode_;
     }
 
-    // optional string err_msg = 2;
     public static final int ERR_MSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -5364,7 +5344,6 @@ public final class CommonProto {
       }
     }
 
-    // optional bool hasUpdate = 3;
     public static final int HASUPDATE_FIELD_NUMBER = 3;
     private boolean hasUpdate_;
     /**
@@ -5388,7 +5367,6 @@ public final class CommonProto {
       return hasUpdate_;
     }
 
-    // optional int32 toVersion = 4;
     public static final int TOVERSION_FIELD_NUMBER = 4;
     private int toVersion_;
     /**
@@ -5412,7 +5390,6 @@ public final class CommonProto {
       return toVersion_;
     }
 
-    // optional string apkUrl = 5;
     public static final int APKURL_FIELD_NUMBER = 5;
     private java.lang.Object apkUrl_;
     /**
@@ -5467,7 +5444,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string remark = 6;
     public static final int REMARK_FIELD_NUMBER = 6;
     private java.lang.Object remark_;
     /**
@@ -5522,7 +5498,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string additionalUrl = 7;
     public static final int ADDITIONALURL_FIELD_NUMBER = 7;
     private java.lang.Object additionalUrl_;
     /**
@@ -5577,7 +5552,6 @@ public final class CommonProto {
       }
     }
 
-    // optional string additionalSize = 8;
     public static final int ADDITIONALSIZE_FIELD_NUMBER = 8;
     private java.lang.Object additionalSize_;
     /**
@@ -5632,7 +5606,6 @@ public final class CommonProto {
       }
     }
 
-    // optional int32 fullSize = 9;
     public static final int FULLSIZE_FIELD_NUMBER = 9;
     private int fullSize_;
     /**
@@ -5656,7 +5629,6 @@ public final class CommonProto {
       return fullSize_;
     }
 
-    // optional string fullHash = 10;
     public static final int FULLHASH_FIELD_NUMBER = 10;
     private java.lang.Object fullHash_;
     /**
@@ -5711,7 +5683,6 @@ public final class CommonProto {
       }
     }
 
-    // optional bool forced = 11;
     public static final int FORCED_FIELD_NUMBER = 11;
     private boolean forced_;
     /**
@@ -5751,7 +5722,8 @@ public final class CommonProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -5935,8 +5907,9 @@ public final class CommonProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonProto.GetUpgradeInfoRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
+        com.mi.liveassistant.proto.CommonProto.GetUpgradeInfoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonProto.internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor;
@@ -6151,7 +6124,6 @@ public final class CommonProto {
       }
       private int bitField0_;
 
-      // optional int32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>optional int32 err_code = 1;</code>
@@ -6196,7 +6168,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string err_msg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 2;</code>
@@ -6210,9 +6181,12 @@ public final class CommonProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6270,7 +6244,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional bool hasUpdate = 3;
       private boolean hasUpdate_ ;
       /**
        * <code>optional bool hasUpdate = 3;</code>
@@ -6319,7 +6292,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional int32 toVersion = 4;
       private int toVersion_ ;
       /**
        * <code>optional int32 toVersion = 4;</code>
@@ -6368,7 +6340,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string apkUrl = 5;
       private java.lang.Object apkUrl_ = "";
       /**
        * <code>optional string apkUrl = 5;</code>
@@ -6390,9 +6361,12 @@ public final class CommonProto {
       public java.lang.String getApkUrl() {
         java.lang.Object ref = apkUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          apkUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            apkUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6466,7 +6440,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string remark = 6;
       private java.lang.Object remark_ = "";
       /**
        * <code>optional string remark = 6;</code>
@@ -6488,9 +6461,12 @@ public final class CommonProto {
       public java.lang.String getRemark() {
         java.lang.Object ref = remark_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          remark_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            remark_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6564,7 +6540,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string additionalUrl = 7;
       private java.lang.Object additionalUrl_ = "";
       /**
        * <code>optional string additionalUrl = 7;</code>
@@ -6586,9 +6561,12 @@ public final class CommonProto {
       public java.lang.String getAdditionalUrl() {
         java.lang.Object ref = additionalUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          additionalUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            additionalUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6662,7 +6640,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string additionalSize = 8;
       private java.lang.Object additionalSize_ = "";
       /**
        * <code>optional string additionalSize = 8;</code>
@@ -6684,9 +6661,12 @@ public final class CommonProto {
       public java.lang.String getAdditionalSize() {
         java.lang.Object ref = additionalSize_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          additionalSize_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            additionalSize_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6760,7 +6740,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional int32 fullSize = 9;
       private int fullSize_ ;
       /**
        * <code>optional int32 fullSize = 9;</code>
@@ -6809,7 +6788,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional string fullHash = 10;
       private java.lang.Object fullHash_ = "";
       /**
        * <code>optional string fullHash = 10;</code>
@@ -6831,9 +6809,12 @@ public final class CommonProto {
       public java.lang.String getFullHash() {
         java.lang.Object ref = fullHash_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          fullHash_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            fullHash_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6907,7 +6888,6 @@ public final class CommonProto {
         return this;
       }
 
-      // optional bool forced = 11;
       private boolean forced_ ;
       /**
        * <code>optional bool forced = 11;</code>
@@ -6967,22 +6947,22 @@ public final class CommonProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetUpgradeInfoRsp)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_Attachment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_Attachment_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_Location_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_Location_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -7017,41 +6997,41 @@ public final class CommonProto {
       "veassistant.protoB\013CommonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_com_mi_liveassistant_proto_Attachment_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_com_mi_liveassistant_proto_Attachment_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_Attachment_descriptor,
-              new java.lang.String[] { "Type", "Text", "Url", "Duration", "Size", "Exttype", "Extdata", "Width", "Height", });
-          internal_static_com_mi_liveassistant_proto_Location_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_com_mi_liveassistant_proto_Location_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_Location_descriptor,
-              new java.lang.String[] { "Lon", "Lat", "Country", "Province", "City", "Type", });
-          internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor,
-              new java.lang.String[] { "App", "Platform", "System", "Channel", "Device", "CurrentVersion", "Language", "Uid", "Md5", "Local", });
-          internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor,
-              new java.lang.String[] { "ErrCode", "ErrMsg", "HasUpdate", "ToVersion", "ApkUrl", "Remark", "AdditionalUrl", "AdditionalSize", "FullSize", "FullHash", "Forced", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_com_mi_liveassistant_proto_Attachment_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_com_mi_liveassistant_proto_Attachment_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_Attachment_descriptor,
+        new java.lang.String[] { "Type", "Text", "Url", "Duration", "Size", "Exttype", "Extdata", "Width", "Height", });
+    internal_static_com_mi_liveassistant_proto_Location_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_com_mi_liveassistant_proto_Location_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_Location_descriptor,
+        new java.lang.String[] { "Lon", "Lat", "Country", "Province", "City", "Type", });
+    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetUpgradeInfoReq_descriptor,
+        new java.lang.String[] { "App", "Platform", "System", "Channel", "Device", "CurrentVersion", "Language", "Uid", "Md5", "Local", });
+    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetUpgradeInfoRsp_descriptor,
+        new java.lang.String[] { "ErrCode", "ErrMsg", "HasUpdate", "ToVersion", "ApkUrl", "Remark", "AdditionalUrl", "AdditionalSize", "FullSize", "FullHash", "Forced", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

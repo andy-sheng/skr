@@ -1,6 +1,8 @@
 #!/bin/bash
 rm -rf ../main/java-gen/com/mi/liveassistant/proto/
 genPath=../main/java-gen/
+protoc --java_out=$genPath ./Common.proto
+protoc --java_out=$genPath ./Account.proto
 protoc --java_out=$genPath ./LiveCommon.proto
 protoc --java_out=$genPath ./Live.proto
-
+protoc --java_out=$genPath ./User.proto
