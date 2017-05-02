@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.base.activity.BaseActivity;
+import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
 import com.base.fragment.FragmentListener;
@@ -169,9 +170,30 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         initReceiver();
 
         //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
-        if (!check4GNet()) {
+        if (!isMyRoom() && !check4GNet()) {
             trySendDataWithServerOnce();
         }
+    }
+
+    public boolean isMyRoom() {
+        //自己进入自己房间服务器会返回 CODE_PARAM_ERROR = 5004; //参数错误这个错误码，会有toast房间不存在弹出。在这里拦截比较好。
+        if (mMyRoomData.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+            //自己不能进自己房间
+            DialogUtils.showCancelableDialog(this,
+                    "",
+                    com.base.global.GlobalData.app().getResources().getString(R.string.can_not_enter_room_use_myself),
+                    R.string.i_know,
+                    0,
+                    new DialogUtils.IDialogCallback() {
+                        @Override
+                        public void process(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    },
+                    null);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -378,7 +400,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     protected void leaveLiveToServer() {
-        mLiveTaskPresenter.leaveLive();
+        if (mLiveTaskPresenter != null) {
+            mLiveTaskPresenter.leaveLive();
+        }
     }
 
     @Override
@@ -389,6 +413,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Override
     protected void onResume() {
         super.onResume();
+        KeyboardUtils.hideKeyboard(this);
     }
 
     @Override
