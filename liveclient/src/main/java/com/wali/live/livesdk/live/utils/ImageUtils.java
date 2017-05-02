@@ -52,7 +52,7 @@ public class ImageUtils {
                 return true;
             }
         } catch (Exception e) {
-            MyLog.e("ImageUtils", "saveToFile e=" + e);
+            MyLog.e("ImageUtils", "path=" + path + "saveToFile e=" + e);
         }
         return false;
     }

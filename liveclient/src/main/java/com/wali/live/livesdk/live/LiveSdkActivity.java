@@ -304,6 +304,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mMyRoomData.getUid() == 0) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
+
+            AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
+                    AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         }
     }
 
