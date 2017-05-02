@@ -128,7 +128,7 @@ message GetHomepageReq{
  optional bool getLiveInfo=2 [default=true];//是否拉取直播回放数、直播URL、直播roomid等直播房间信息，在一些用不到房间信息的调用入口请传false
 }
 
-message GetHomepageResp{
+message GetHomepageRsp{
  required uint32 retCode=1;
  optional PersonalInfo personalInfo=2;
  optional PersonalData personalData=3;

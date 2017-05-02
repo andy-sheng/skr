@@ -8,10 +8,10 @@ public final class AccountProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface LoginReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LoginReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LoginReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 accountType = 1;
     /**
      * <code>required uint32 accountType = 1;</code>
      *
@@ -29,7 +29,6 @@ public final class AccountProto {
      */
     int getAccountType();
 
-    // optional string code = 2;
     /**
      * <code>optional string code = 2;</code>
      *
@@ -56,7 +55,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getCodeBytes();
 
-    // optional string openid = 3;
     /**
      * <code>optional string openid = 3;</code>
      *
@@ -83,7 +81,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
-    // optional string accessToken = 4;
     /**
      * <code>optional string accessToken = 4;</code>
      *
@@ -110,7 +107,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getAccessTokenBytes();
 
-    // optional uint32 expires_in = 5;
     /**
      * <code>optional uint32 expires_in = 5;</code>
      *
@@ -128,7 +124,6 @@ public final class AccountProto {
      */
     int getExpiresIn();
 
-    // optional string refreshToken = 6;
     /**
      * <code>optional string refreshToken = 6;</code>
      *
@@ -164,8 +159,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class LoginReq extends
-      com.google.protobuf.GeneratedMessage
-      implements LoginReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LoginReq)
+      LoginReqOrBuilder {
     // Use LoginReq.newBuilder() to construct.
     private LoginReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -217,18 +213,21 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              code_ = input.readBytes();
+              code_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              openid_ = input.readBytes();
+              openid_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              accessToken_ = input.readBytes();
+              accessToken_ = bs;
               break;
             }
             case 40: {
@@ -237,8 +236,9 @@ public final class AccountProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              refreshToken_ = input.readBytes();
+              refreshToken_ = bs;
               break;
             }
           }
@@ -281,7 +281,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 accountType = 1;
     public static final int ACCOUNTTYPE_FIELD_NUMBER = 1;
     private int accountType_;
     /**
@@ -305,7 +304,6 @@ public final class AccountProto {
       return accountType_;
     }
 
-    // optional string code = 2;
     public static final int CODE_FIELD_NUMBER = 2;
     private java.lang.Object code_;
     /**
@@ -360,7 +358,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string openid = 3;
     public static final int OPENID_FIELD_NUMBER = 3;
     private java.lang.Object openid_;
     /**
@@ -415,7 +412,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string accessToken = 4;
     public static final int ACCESSTOKEN_FIELD_NUMBER = 4;
     private java.lang.Object accessToken_;
     /**
@@ -470,7 +466,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 expires_in = 5;
     public static final int EXPIRES_IN_FIELD_NUMBER = 5;
     private int expiresIn_;
     /**
@@ -494,7 +489,6 @@ public final class AccountProto {
       return expiresIn_;
     }
 
-    // optional string refreshToken = 6;
     public static final int REFRESHTOKEN_FIELD_NUMBER = 6;
     private java.lang.Object refreshToken_;
     /**
@@ -560,7 +554,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasAccountType()) {
         memoizedIsInitialized = 0;
@@ -711,8 +706,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.LoginReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LoginReq)
+        com.mi.liveassistant.proto.AccountProto.LoginReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_LoginReq_descriptor;
@@ -882,7 +878,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 accountType = 1;
       private int accountType_ ;
       /**
        * <code>required uint32 accountType = 1;</code>
@@ -931,7 +926,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string code = 2;
       private java.lang.Object code_ = "";
       /**
        * <code>optional string code = 2;</code>
@@ -953,9 +947,12 @@ public final class AccountProto {
       public java.lang.String getCode() {
         java.lang.Object ref = code_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          code_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            code_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1029,7 +1026,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string openid = 3;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 3;</code>
@@ -1051,9 +1047,12 @@ public final class AccountProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          openid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            openid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1127,7 +1126,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string accessToken = 4;
       private java.lang.Object accessToken_ = "";
       /**
        * <code>optional string accessToken = 4;</code>
@@ -1149,9 +1147,12 @@ public final class AccountProto {
       public java.lang.String getAccessToken() {
         java.lang.Object ref = accessToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          accessToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            accessToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1225,7 +1226,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 expires_in = 5;
       private int expiresIn_ ;
       /**
        * <code>optional uint32 expires_in = 5;</code>
@@ -1274,7 +1274,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string refreshToken = 6;
       private java.lang.Object refreshToken_ = "";
       /**
        * <code>optional string refreshToken = 6;</code>
@@ -1296,9 +1295,12 @@ public final class AccountProto {
       public java.lang.String getRefreshToken() {
         java.lang.Object ref = refreshToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          refreshToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            refreshToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1383,10 +1385,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:LoginReq)
   }
 
-  public interface LoginRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LoginRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LoginRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -1404,7 +1406,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -1422,7 +1423,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -1449,7 +1449,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -1476,7 +1475,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -1503,7 +1501,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -1530,7 +1527,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string headimgurl = 7;
     /**
      * <code>optional string headimgurl = 7;</code>
      *
@@ -1557,7 +1553,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadimgurlBytes();
 
-    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -1575,7 +1570,6 @@ public final class AccountProto {
      */
     int getSex();
 
-    // optional uint32 loginStatus = 9;
     /**
      * <code>optional uint32 loginStatus = 9;</code>
      *
@@ -1593,7 +1587,6 @@ public final class AccountProto {
      */
     int getLoginStatus();
 
-    // optional bool hasInnerAvatar = 10;
     /**
      * <code>optional bool hasInnerAvatar = 10;</code>
      *
@@ -1611,7 +1604,6 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
-    // optional bool hasInnerNickname = 11;
     /**
      * <code>optional bool hasInnerNickname = 11;</code>
      *
@@ -1629,7 +1621,6 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
-    // optional bool hasInnerSex = 12;
     /**
      * <code>optional bool hasInnerSex = 12;</code>
      *
@@ -1647,7 +1638,6 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
-    // optional bool isSetGuide = 13 [default = false];
     /**
      * <code>optional bool isSetGuide = 13 [default = false];</code>
      *
@@ -1669,8 +1659,9 @@ public final class AccountProto {
    * Protobuf type {@code LoginRsp}
    */
   public static final class LoginRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements LoginRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LoginRsp)
+      LoginRspOrBuilder {
     // Use LoginRsp.newBuilder() to construct.
     private LoginRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1727,28 +1718,33 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headimgurl_ = input.readBytes();
+              headimgurl_ = bs;
               break;
             }
             case 64: {
@@ -1821,7 +1817,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -1845,7 +1840,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -1869,7 +1863,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -1924,7 +1917,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -1979,7 +1971,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -2034,7 +2025,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -2089,7 +2079,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string headimgurl = 7;
     public static final int HEADIMGURL_FIELD_NUMBER = 7;
     private java.lang.Object headimgurl_;
     /**
@@ -2144,7 +2133,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -2168,7 +2156,6 @@ public final class AccountProto {
       return sex_;
     }
 
-    // optional uint32 loginStatus = 9;
     public static final int LOGINSTATUS_FIELD_NUMBER = 9;
     private int loginStatus_;
     /**
@@ -2192,7 +2179,6 @@ public final class AccountProto {
       return loginStatus_;
     }
 
-    // optional bool hasInnerAvatar = 10;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 10;
     private boolean hasInnerAvatar_;
     /**
@@ -2216,7 +2202,6 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
-    // optional bool hasInnerNickname = 11;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 11;
     private boolean hasInnerNickname_;
     /**
@@ -2240,7 +2225,6 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
-    // optional bool hasInnerSex = 12;
     public static final int HASINNERSEX_FIELD_NUMBER = 12;
     private boolean hasInnerSex_;
     /**
@@ -2264,7 +2248,6 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
-    // optional bool isSetGuide = 13 [default = false];
     public static final int ISSETGUIDE_FIELD_NUMBER = 13;
     private boolean isSetGuide_;
     /**
@@ -2306,7 +2289,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -2501,8 +2485,9 @@ public final class AccountProto {
      * Protobuf type {@code LoginRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.LoginRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LoginRsp)
+        com.mi.liveassistant.proto.AccountProto.LoginRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_LoginRsp_descriptor;
@@ -2737,7 +2722,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -2786,7 +2770,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -2835,7 +2818,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -2857,9 +2839,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2933,7 +2918,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -2955,9 +2939,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3031,7 +3018,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -3053,9 +3039,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3129,7 +3118,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -3151,9 +3139,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3227,7 +3218,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string headimgurl = 7;
       private java.lang.Object headimgurl_ = "";
       /**
        * <code>optional string headimgurl = 7;</code>
@@ -3249,9 +3239,12 @@ public final class AccountProto {
       public java.lang.String getHeadimgurl() {
         java.lang.Object ref = headimgurl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headimgurl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headimgurl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3325,7 +3318,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -3374,7 +3366,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 loginStatus = 9;
       private int loginStatus_ ;
       /**
        * <code>optional uint32 loginStatus = 9;</code>
@@ -3423,7 +3414,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerAvatar = 10;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 10;</code>
@@ -3472,7 +3462,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerNickname = 11;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 11;</code>
@@ -3521,7 +3510,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerSex = 12;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 12;</code>
@@ -3570,7 +3558,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool isSetGuide = 13 [default = false];
       private boolean isSetGuide_ ;
       /**
        * <code>optional bool isSetGuide = 13 [default = false];</code>
@@ -3630,10 +3617,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:LoginRsp)
   }
 
-  public interface GetServiceTokenReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetServiceTokenReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetServiceTokenReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string passToken = 1;
     /**
      * <code>required string passToken = 1;</code>
      *
@@ -3660,7 +3647,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // required uint64 uuid = 2;
     /**
      * <code>required uint64 uuid = 2;</code>
      *
@@ -3687,8 +3673,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetServiceTokenReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetServiceTokenReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetServiceTokenReq)
+      GetServiceTokenReqOrBuilder {
     // Use GetServiceTokenReq.newBuilder() to construct.
     private GetServiceTokenReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3735,8 +3722,9 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 16: {
@@ -3784,7 +3772,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required string passToken = 1;
     public static final int PASSTOKEN_FIELD_NUMBER = 1;
     private java.lang.Object passToken_;
     /**
@@ -3839,7 +3826,6 @@ public final class AccountProto {
       }
     }
 
-    // required uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -3870,7 +3856,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPassToken()) {
         memoizedIsInitialized = 0;
@@ -3997,8 +3984,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetServiceTokenReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetServiceTokenReq)
+        com.mi.liveassistant.proto.AccountProto.GetServiceTokenReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetServiceTokenReq_descriptor;
@@ -4130,7 +4118,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required string passToken = 1;
       private java.lang.Object passToken_ = "";
       /**
        * <code>required string passToken = 1;</code>
@@ -4152,9 +4139,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4228,7 +4218,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 2;</code>
@@ -4288,10 +4277,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetServiceTokenReq)
   }
 
-  public interface GetServiceTokenRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetServiceTokenRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetServiceTokenRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -4309,7 +4298,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional string passToken = 2;
     /**
      * <code>optional string passToken = 2;</code>
      *
@@ -4336,7 +4324,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -4363,7 +4350,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -4394,8 +4380,9 @@ public final class AccountProto {
    * Protobuf type {@code GetServiceTokenRsp}
    */
   public static final class GetServiceTokenRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetServiceTokenRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetServiceTokenRsp)
+      GetServiceTokenRspOrBuilder {
     // Use GetServiceTokenRsp.newBuilder() to construct.
     private GetServiceTokenRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -4447,18 +4434,21 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
           }
@@ -4501,7 +4491,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -4525,7 +4514,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional string passToken = 2;
     public static final int PASSTOKEN_FIELD_NUMBER = 2;
     private java.lang.Object passToken_;
     /**
@@ -4580,7 +4568,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -4635,7 +4622,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -4699,7 +4685,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -4831,8 +4818,9 @@ public final class AccountProto {
      * Protobuf type {@code GetServiceTokenRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetServiceTokenRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetServiceTokenRsp)
+        com.mi.liveassistant.proto.AccountProto.GetServiceTokenRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetServiceTokenRsp_descriptor;
@@ -4982,7 +4970,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -5031,7 +5018,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 2;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 2;</code>
@@ -5053,9 +5039,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5129,7 +5118,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -5151,9 +5139,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5227,7 +5218,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -5249,9 +5239,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5336,10 +5329,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetServiceTokenRsp)
   }
 
-  public interface CertificateReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CertificateReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CertificateReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -5357,7 +5350,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string openid = 2;
     /**
      * <code>optional string openid = 2;</code>
      *
@@ -5384,7 +5376,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
-    // optional string accessToken = 3;
     /**
      * <code>optional string accessToken = 3;</code>
      *
@@ -5419,8 +5410,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class CertificateReq extends
-      com.google.protobuf.GeneratedMessage
-      implements CertificateReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CertificateReq)
+      CertificateReqOrBuilder {
     // Use CertificateReq.newBuilder() to construct.
     private CertificateReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5472,13 +5464,15 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              openid_ = input.readBytes();
+              openid_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              accessToken_ = input.readBytes();
+              accessToken_ = bs;
               break;
             }
           }
@@ -5521,7 +5515,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -5545,7 +5538,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string openid = 2;
     public static final int OPENID_FIELD_NUMBER = 2;
     private java.lang.Object openid_;
     /**
@@ -5600,7 +5592,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string accessToken = 3;
     public static final int ACCESSTOKEN_FIELD_NUMBER = 3;
     private java.lang.Object accessToken_;
     /**
@@ -5663,7 +5654,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -5792,8 +5784,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.CertificateReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CertificateReq)
+        com.mi.liveassistant.proto.AccountProto.CertificateReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_CertificateReq_descriptor;
@@ -5932,7 +5925,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -5981,7 +5973,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string openid = 2;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 2;</code>
@@ -6003,9 +5994,12 @@ public final class AccountProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          openid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            openid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6079,7 +6073,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string accessToken = 3;
       private java.lang.Object accessToken_ = "";
       /**
        * <code>optional string accessToken = 3;</code>
@@ -6101,9 +6094,12 @@ public final class AccountProto {
       public java.lang.String getAccessToken() {
         java.lang.Object ref = accessToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          accessToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            accessToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6188,10 +6184,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:CertificateReq)
   }
 
-  public interface CertificateRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CertificateRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CertificateRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -6209,7 +6205,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint32 certificationType = 2;
     /**
      * <code>optional uint32 certificationType = 2;</code>
      *
@@ -6227,7 +6222,6 @@ public final class AccountProto {
      */
     int getCertificationType();
 
-    // optional string certification = 3;
     /**
      * <code>optional string certification = 3;</code>
      *
@@ -6258,8 +6252,9 @@ public final class AccountProto {
    * Protobuf type {@code CertificateRsp}
    */
   public static final class CertificateRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements CertificateRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CertificateRsp)
+      CertificateRspOrBuilder {
     // Use CertificateRsp.newBuilder() to construct.
     private CertificateRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -6316,8 +6311,9 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              certification_ = input.readBytes();
+              certification_ = bs;
               break;
             }
           }
@@ -6360,7 +6356,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -6384,7 +6379,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint32 certificationType = 2;
     public static final int CERTIFICATIONTYPE_FIELD_NUMBER = 2;
     private int certificationType_;
     /**
@@ -6408,7 +6402,6 @@ public final class AccountProto {
       return certificationType_;
     }
 
-    // optional string certification = 3;
     public static final int CERTIFICATION_FIELD_NUMBER = 3;
     private java.lang.Object certification_;
     /**
@@ -6471,7 +6464,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -6596,8 +6590,9 @@ public final class AccountProto {
      * Protobuf type {@code CertificateRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.CertificateRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CertificateRsp)
+        com.mi.liveassistant.proto.AccountProto.CertificateRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_CertificateRsp_descriptor;
@@ -6734,7 +6729,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -6783,7 +6777,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 certificationType = 2;
       private int certificationType_ ;
       /**
        * <code>optional uint32 certificationType = 2;</code>
@@ -6832,7 +6825,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string certification = 3;
       private java.lang.Object certification_ = "";
       /**
        * <code>optional string certification = 3;</code>
@@ -6854,9 +6846,12 @@ public final class AccountProto {
       public java.lang.String getCertification() {
         java.lang.Object ref = certification_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          certification_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certification_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6941,10 +6936,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:CertificateRsp)
   }
 
-  public interface GetCaptchaReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCaptchaReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetCaptchaReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -6971,7 +6966,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // required uint32 type = 2;
     /**
      * <code>required uint32 type = 2;</code>
      *
@@ -6989,7 +6983,6 @@ public final class AccountProto {
      */
     int getType();
 
-    // optional string lang = 3;
     /**
      * <code>optional string lang = 3;</code>
      *
@@ -7025,8 +7018,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetCaptchaReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCaptchaReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetCaptchaReq)
+      GetCaptchaReqOrBuilder {
     // Use GetCaptchaReq.newBuilder() to construct.
     private GetCaptchaReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7073,8 +7067,9 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 16: {
@@ -7083,8 +7078,9 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              lang_ = input.readBytes();
+              lang_ = bs;
               break;
             }
           }
@@ -7127,7 +7123,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -7182,7 +7177,6 @@ public final class AccountProto {
       }
     }
 
-    // required uint32 type = 2;
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -7206,7 +7200,6 @@ public final class AccountProto {
       return type_;
     }
 
-    // optional string lang = 3;
     public static final int LANG_FIELD_NUMBER = 3;
     private java.lang.Object lang_;
     /**
@@ -7269,7 +7262,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -7403,8 +7397,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetCaptchaReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetCaptchaReq)
+        com.mi.liveassistant.proto.AccountProto.GetCaptchaReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetCaptchaReq_descriptor;
@@ -7547,7 +7542,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -7569,9 +7563,12 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7645,7 +7642,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required uint32 type = 2;
       private int type_ ;
       /**
        * <code>required uint32 type = 2;</code>
@@ -7694,7 +7690,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string lang = 3;
       private java.lang.Object lang_ = "";
       /**
        * <code>optional string lang = 3;</code>
@@ -7716,9 +7711,12 @@ public final class AccountProto {
       public java.lang.String getLang() {
         java.lang.Object ref = lang_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          lang_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            lang_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7803,10 +7801,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetCaptchaReq)
   }
 
-  public interface GetCaptchaRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCaptchaRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetCaptchaRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -7828,8 +7826,9 @@ public final class AccountProto {
    * Protobuf type {@code GetCaptchaRsp}
    */
   public static final class GetCaptchaRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCaptchaRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetCaptchaRsp)
+      GetCaptchaRspOrBuilder {
     // Use GetCaptchaRsp.newBuilder() to construct.
     private GetCaptchaRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7920,7 +7919,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -7950,7 +7948,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -8061,8 +8060,9 @@ public final class AccountProto {
      * Protobuf type {@code GetCaptchaRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetCaptchaRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetCaptchaRsp)
+        com.mi.liveassistant.proto.AccountProto.GetCaptchaRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetCaptchaRsp_descriptor;
@@ -8179,7 +8179,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -8239,10 +8238,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetCaptchaRsp)
   }
 
-  public interface RegisterByPhoneReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RegisterByPhoneReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RegisterByPhoneReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -8269,7 +8268,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -8296,7 +8294,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPwdBytes();
 
-    // required string captcha = 3;
     /**
      * <code>required string captcha = 3;</code>
      *
@@ -8332,8 +8329,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class RegisterByPhoneReq extends
-      com.google.protobuf.GeneratedMessage
-      implements RegisterByPhoneReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RegisterByPhoneReq)
+      RegisterByPhoneReqOrBuilder {
     // Use RegisterByPhoneReq.newBuilder() to construct.
     private RegisterByPhoneReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -8380,18 +8378,21 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = input.readBytes();
+              pwd_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              captcha_ = input.readBytes();
+              captcha_ = bs;
               break;
             }
           }
@@ -8434,7 +8435,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -8489,7 +8489,6 @@ public final class AccountProto {
       }
     }
 
-    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -8544,7 +8543,6 @@ public final class AccountProto {
       }
     }
 
-    // required string captcha = 3;
     public static final int CAPTCHA_FIELD_NUMBER = 3;
     private java.lang.Object captcha_;
     /**
@@ -8607,7 +8605,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -8745,8 +8744,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.RegisterByPhoneReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RegisterByPhoneReq)
+        com.mi.liveassistant.proto.AccountProto.RegisterByPhoneReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_RegisterByPhoneReq_descriptor;
@@ -8895,7 +8895,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -8917,9 +8916,12 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8993,7 +8995,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -9015,9 +9016,12 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          pwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9091,7 +9095,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string captcha = 3;
       private java.lang.Object captcha_ = "";
       /**
        * <code>required string captcha = 3;</code>
@@ -9113,9 +9116,12 @@ public final class AccountProto {
       public java.lang.String getCaptcha() {
         java.lang.Object ref = captcha_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          captcha_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            captcha_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9200,10 +9206,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:RegisterByPhoneReq)
   }
 
-  public interface RegisterByPhoneRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RegisterByPhoneRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RegisterByPhoneRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -9221,7 +9227,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -9239,7 +9244,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -9266,7 +9270,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -9293,7 +9296,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -9324,8 +9326,9 @@ public final class AccountProto {
    * Protobuf type {@code RegisterByPhoneRsp}
    */
   public static final class RegisterByPhoneRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements RegisterByPhoneRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RegisterByPhoneRsp)
+      RegisterByPhoneRspOrBuilder {
     // Use RegisterByPhoneRsp.newBuilder() to construct.
     private RegisterByPhoneRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9382,18 +9385,21 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
           }
@@ -9436,7 +9442,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -9460,7 +9465,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -9484,7 +9488,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -9539,7 +9542,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -9594,7 +9596,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -9659,7 +9660,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -9798,8 +9800,9 @@ public final class AccountProto {
      * Protobuf type {@code RegisterByPhoneRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.RegisterByPhoneRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RegisterByPhoneRsp)
+        com.mi.liveassistant.proto.AccountProto.RegisterByPhoneRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_RegisterByPhoneRsp_descriptor;
@@ -9958,7 +9961,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -10007,7 +10009,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -10056,7 +10057,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -10078,9 +10078,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10154,7 +10157,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -10176,9 +10178,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10252,7 +10257,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -10274,9 +10278,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10361,10 +10368,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:RegisterByPhoneRsp)
   }
 
-  public interface LoginByPhoneReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LoginByPhoneReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LoginByPhoneReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -10391,7 +10398,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -10427,8 +10433,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class LoginByPhoneReq extends
-      com.google.protobuf.GeneratedMessage
-      implements LoginByPhoneReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LoginByPhoneReq)
+      LoginByPhoneReqOrBuilder {
     // Use LoginByPhoneReq.newBuilder() to construct.
     private LoginByPhoneReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -10475,13 +10482,15 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = input.readBytes();
+              pwd_ = bs;
               break;
             }
           }
@@ -10524,7 +10533,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -10579,7 +10587,6 @@ public final class AccountProto {
       }
     }
 
-    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -10641,7 +10648,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -10768,8 +10776,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.LoginByPhoneReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LoginByPhoneReq)
+        com.mi.liveassistant.proto.AccountProto.LoginByPhoneReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_LoginByPhoneReq_descriptor;
@@ -10903,7 +10912,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -10925,9 +10933,12 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11001,7 +11012,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -11023,9 +11033,12 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          pwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11110,10 +11123,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:LoginByPhoneReq)
   }
 
-  public interface LoginByPhoneRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LoginByPhoneRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LoginByPhoneRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -11131,7 +11144,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -11149,7 +11161,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -11176,7 +11187,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -11203,7 +11213,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -11230,7 +11239,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -11257,7 +11265,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -11284,7 +11291,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
-    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -11302,7 +11308,6 @@ public final class AccountProto {
      */
     int getSex();
 
-    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -11320,7 +11325,6 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
-    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -11338,7 +11342,6 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
-    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -11360,8 +11363,9 @@ public final class AccountProto {
    * Protobuf type {@code LoginByPhoneRsp}
    */
   public static final class LoginByPhoneRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements LoginByPhoneRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LoginByPhoneRsp)
+      LoginByPhoneRspOrBuilder {
     // Use LoginByPhoneRsp.newBuilder() to construct.
     private LoginByPhoneRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11418,28 +11422,33 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = input.readBytes();
+              headinfo_ = bs;
               break;
             }
             case 64: {
@@ -11502,7 +11511,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -11526,7 +11534,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -11550,7 +11557,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -11605,7 +11611,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -11660,7 +11665,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -11715,7 +11719,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -11770,7 +11773,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -11825,7 +11827,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -11849,7 +11850,6 @@ public final class AccountProto {
       return sex_;
     }
 
-    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -11873,7 +11873,6 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
-    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -11897,7 +11896,6 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
-    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -11937,7 +11935,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -12118,8 +12117,9 @@ public final class AccountProto {
      * Protobuf type {@code LoginByPhoneRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.LoginByPhoneRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LoginByPhoneRsp)
+        com.mi.liveassistant.proto.AccountProto.LoginByPhoneRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_LoginByPhoneRsp_descriptor;
@@ -12336,7 +12336,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -12385,7 +12384,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -12434,7 +12432,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -12456,9 +12453,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12532,7 +12532,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -12554,9 +12553,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12630,7 +12632,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -12652,9 +12653,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12728,7 +12732,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -12750,9 +12753,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12826,7 +12832,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -12848,9 +12853,12 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headinfo_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headinfo_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12924,7 +12932,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -12973,7 +12980,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -13022,7 +13028,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -13071,7 +13076,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -13131,10 +13135,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:LoginByPhoneRsp)
   }
 
-  public interface NewPwdReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface NewPwdReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:NewPwdReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -13161,7 +13165,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -13188,7 +13191,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPwdBytes();
 
-    // required string captcha = 3;
     /**
      * <code>required string captcha = 3;</code>
      *
@@ -13224,8 +13226,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class NewPwdReq extends
-      com.google.protobuf.GeneratedMessage
-      implements NewPwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:NewPwdReq)
+      NewPwdReqOrBuilder {
     // Use NewPwdReq.newBuilder() to construct.
     private NewPwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13272,18 +13275,21 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = input.readBytes();
+              pwd_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              captcha_ = input.readBytes();
+              captcha_ = bs;
               break;
             }
           }
@@ -13326,7 +13332,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -13381,7 +13386,6 @@ public final class AccountProto {
       }
     }
 
-    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -13436,7 +13440,6 @@ public final class AccountProto {
       }
     }
 
-    // required string captcha = 3;
     public static final int CAPTCHA_FIELD_NUMBER = 3;
     private java.lang.Object captcha_;
     /**
@@ -13499,7 +13502,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -13637,8 +13641,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.NewPwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:NewPwdReq)
+        com.mi.liveassistant.proto.AccountProto.NewPwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_NewPwdReq_descriptor;
@@ -13787,7 +13792,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -13809,9 +13813,12 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13885,7 +13892,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -13907,9 +13913,12 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          pwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13983,7 +13992,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string captcha = 3;
       private java.lang.Object captcha_ = "";
       /**
        * <code>required string captcha = 3;</code>
@@ -14005,9 +14013,12 @@ public final class AccountProto {
       public java.lang.String getCaptcha() {
         java.lang.Object ref = captcha_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          captcha_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            captcha_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14092,10 +14103,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:NewPwdReq)
   }
 
-  public interface NewPwdRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface NewPwdRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:NewPwdRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -14117,8 +14128,9 @@ public final class AccountProto {
    * Protobuf type {@code NewPwdRsp}
    */
   public static final class NewPwdRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements NewPwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:NewPwdRsp)
+      NewPwdRspOrBuilder {
     // Use NewPwdRsp.newBuilder() to construct.
     private NewPwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -14209,7 +14221,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -14239,7 +14250,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -14350,8 +14362,9 @@ public final class AccountProto {
      * Protobuf type {@code NewPwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.NewPwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:NewPwdRsp)
+        com.mi.liveassistant.proto.AccountProto.NewPwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_NewPwdRsp_descriptor;
@@ -14468,7 +14481,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -14528,10 +14540,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:NewPwdRsp)
   }
 
-  public interface ForgetPwdReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ForgetPwdReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -14558,7 +14570,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -14585,7 +14596,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPwdBytes();
 
-    // required string captcha = 3;
     /**
      * <code>required string captcha = 3;</code>
      *
@@ -14621,8 +14631,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class ForgetPwdReq extends
-      com.google.protobuf.GeneratedMessage
-      implements ForgetPwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ForgetPwdReq)
+      ForgetPwdReqOrBuilder {
     // Use ForgetPwdReq.newBuilder() to construct.
     private ForgetPwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -14669,18 +14680,21 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = input.readBytes();
+              pwd_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              captcha_ = input.readBytes();
+              captcha_ = bs;
               break;
             }
           }
@@ -14723,7 +14737,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -14778,7 +14791,6 @@ public final class AccountProto {
       }
     }
 
-    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -14833,7 +14845,6 @@ public final class AccountProto {
       }
     }
 
-    // required string captcha = 3;
     public static final int CAPTCHA_FIELD_NUMBER = 3;
     private java.lang.Object captcha_;
     /**
@@ -14896,7 +14907,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -15034,8 +15046,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ForgetPwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ForgetPwdReq)
+        com.mi.liveassistant.proto.AccountProto.ForgetPwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ForgetPwdReq_descriptor;
@@ -15184,7 +15197,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -15206,9 +15218,12 @@ public final class AccountProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15282,7 +15297,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -15304,9 +15318,12 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          pwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15380,7 +15397,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string captcha = 3;
       private java.lang.Object captcha_ = "";
       /**
        * <code>required string captcha = 3;</code>
@@ -15402,9 +15418,12 @@ public final class AccountProto {
       public java.lang.String getCaptcha() {
         java.lang.Object ref = captcha_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          captcha_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            captcha_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15489,10 +15508,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ForgetPwdReq)
   }
 
-  public interface ForgetPwdRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ForgetPwdRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -15510,7 +15529,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -15528,7 +15546,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -15555,7 +15572,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -15582,7 +15598,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -15609,7 +15624,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -15636,7 +15650,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -15663,7 +15676,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
-    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -15681,7 +15693,6 @@ public final class AccountProto {
      */
     int getSex();
 
-    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -15699,7 +15710,6 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
-    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -15717,7 +15727,6 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
-    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -15739,8 +15748,9 @@ public final class AccountProto {
    * Protobuf type {@code ForgetPwdRsp}
    */
   public static final class ForgetPwdRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements ForgetPwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ForgetPwdRsp)
+      ForgetPwdRspOrBuilder {
     // Use ForgetPwdRsp.newBuilder() to construct.
     private ForgetPwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -15797,28 +15807,33 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = input.readBytes();
+              headinfo_ = bs;
               break;
             }
             case 64: {
@@ -15881,7 +15896,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -15905,7 +15919,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -15929,7 +15942,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -15984,7 +15996,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -16039,7 +16050,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -16094,7 +16104,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -16149,7 +16158,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -16204,7 +16212,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -16228,7 +16235,6 @@ public final class AccountProto {
       return sex_;
     }
 
-    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -16252,7 +16258,6 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
-    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -16276,7 +16281,6 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
-    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -16316,7 +16320,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -16497,8 +16502,9 @@ public final class AccountProto {
      * Protobuf type {@code ForgetPwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ForgetPwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ForgetPwdRsp)
+        com.mi.liveassistant.proto.AccountProto.ForgetPwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ForgetPwdRsp_descriptor;
@@ -16715,7 +16721,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -16764,7 +16769,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -16813,7 +16817,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -16835,9 +16838,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16911,7 +16917,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -16933,9 +16938,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17009,7 +17017,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -17031,9 +17038,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17107,7 +17117,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -17129,9 +17138,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17205,7 +17217,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -17227,9 +17238,12 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headinfo_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headinfo_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17303,7 +17317,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -17352,7 +17365,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -17401,7 +17413,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -17450,7 +17461,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -17510,10 +17520,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ForgetPwdRsp)
   }
 
-  public interface LoginByUuidReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LoginByUuidReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LoginByUuidReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -17531,7 +17541,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -17566,8 +17575,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class LoginByUuidReq extends
-      com.google.protobuf.GeneratedMessage
-      implements LoginByUuidReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LoginByUuidReq)
+      LoginByUuidReqOrBuilder {
     // Use LoginByUuidReq.newBuilder() to construct.
     private LoginByUuidReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -17619,8 +17629,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = input.readBytes();
+              pwd_ = bs;
               break;
             }
           }
@@ -17663,7 +17674,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -17687,7 +17697,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -17749,7 +17758,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -17875,8 +17885,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.LoginByUuidReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LoginByUuidReq)
+        com.mi.liveassistant.proto.AccountProto.LoginByUuidReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_LoginByUuidReq_descriptor;
@@ -18008,7 +18019,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -18057,7 +18067,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -18079,9 +18088,12 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          pwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -18166,10 +18178,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:LoginByUuidReq)
   }
 
-  public interface LoginByUuidRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LoginByUuidRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LoginByUuidRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -18187,7 +18199,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -18205,7 +18216,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -18232,7 +18242,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -18259,7 +18268,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -18286,7 +18294,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -18313,7 +18320,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -18340,7 +18346,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
-    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -18358,7 +18363,6 @@ public final class AccountProto {
      */
     int getSex();
 
-    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -18376,7 +18380,6 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
-    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -18394,7 +18397,6 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
-    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -18412,7 +18414,6 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
-    // optional string errMsg = 12;
     /**
      * <code>optional string errMsg = 12;</code>
      */
@@ -18431,8 +18432,9 @@ public final class AccountProto {
    * Protobuf type {@code LoginByUuidRsp}
    */
   public static final class LoginByUuidRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements LoginByUuidRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LoginByUuidRsp)
+      LoginByUuidRspOrBuilder {
     // Use LoginByUuidRsp.newBuilder() to construct.
     private LoginByUuidRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -18489,28 +18491,33 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = input.readBytes();
+              headinfo_ = bs;
               break;
             }
             case 64: {
@@ -18534,8 +18541,9 @@ public final class AccountProto {
               break;
             }
             case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -18578,7 +18586,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -18602,7 +18609,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -18626,7 +18632,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -18681,7 +18686,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -18736,7 +18740,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -18791,7 +18794,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -18846,7 +18848,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -18901,7 +18902,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -18925,7 +18925,6 @@ public final class AccountProto {
       return sex_;
     }
 
-    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -18949,7 +18948,6 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
-    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -18973,7 +18971,6 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
-    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -18997,7 +18994,6 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
-    // optional string errMsg = 12;
     public static final int ERRMSG_FIELD_NUMBER = 12;
     private java.lang.Object errMsg_;
     /**
@@ -19057,7 +19053,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -19245,8 +19242,9 @@ public final class AccountProto {
      * Protobuf type {@code LoginByUuidRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.LoginByUuidRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LoginByUuidRsp)
+        com.mi.liveassistant.proto.AccountProto.LoginByUuidRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_LoginByUuidRsp_descriptor;
@@ -19474,7 +19472,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -19523,7 +19520,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -19572,7 +19568,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -19594,9 +19589,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19670,7 +19668,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -19692,9 +19689,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19768,7 +19768,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -19790,9 +19789,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19866,7 +19868,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -19888,9 +19889,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19964,7 +19968,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -19986,9 +19989,12 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headinfo_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headinfo_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20062,7 +20068,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -20111,7 +20116,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -20160,7 +20164,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -20209,7 +20212,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -20258,7 +20260,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 12;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 12;</code>
@@ -20272,9 +20273,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20343,10 +20347,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:LoginByUuidRsp)
   }
 
-  public interface SetPwdReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface SetPwdReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:SetPwdReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -20364,7 +20368,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // required string pwd = 2;
     /**
      * <code>required string pwd = 2;</code>
      *
@@ -20400,8 +20403,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class SetPwdReq extends
-      com.google.protobuf.GeneratedMessage
-      implements SetPwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:SetPwdReq)
+      SetPwdReqOrBuilder {
     // Use SetPwdReq.newBuilder() to construct.
     private SetPwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -20453,8 +20457,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              pwd_ = input.readBytes();
+              pwd_ = bs;
               break;
             }
           }
@@ -20497,7 +20502,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -20521,7 +20525,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // required string pwd = 2;
     public static final int PWD_FIELD_NUMBER = 2;
     private java.lang.Object pwd_;
     /**
@@ -20583,7 +20586,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -20710,8 +20714,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.SetPwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:SetPwdReq)
+        com.mi.liveassistant.proto.AccountProto.SetPwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_SetPwdReq_descriptor;
@@ -20843,7 +20848,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -20892,7 +20896,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string pwd = 2;
       private java.lang.Object pwd_ = "";
       /**
        * <code>required string pwd = 2;</code>
@@ -20914,9 +20917,12 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          pwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21001,10 +21007,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:SetPwdReq)
   }
 
-  public interface SetPwdRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface SetPwdRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:SetPwdRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -21022,7 +21028,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -21041,8 +21046,9 @@ public final class AccountProto {
    * Protobuf type {@code SetPwdRsp}
    */
   public static final class SetPwdRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements SetPwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:SetPwdRsp)
+      SetPwdRspOrBuilder {
     // Use SetPwdRsp.newBuilder() to construct.
     private SetPwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -21094,8 +21100,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -21138,7 +21145,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -21162,7 +21168,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -21212,7 +21217,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -21330,8 +21336,9 @@ public final class AccountProto {
      * Protobuf type {@code SetPwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.SetPwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:SetPwdRsp)
+        com.mi.liveassistant.proto.AccountProto.SetPwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_SetPwdRsp_descriptor;
@@ -21459,7 +21466,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -21508,7 +21514,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -21522,9 +21527,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21593,10 +21601,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:SetPwdRsp)
   }
 
-  public interface UpdatePwdReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UpdatePwdReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:UpdatePwdReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -21614,7 +21622,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // required string oldpwd = 2;
     /**
      * <code>required string oldpwd = 2;</code>
      *
@@ -21641,7 +21648,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOldpwdBytes();
 
-    // required string newpwd = 3;
     /**
      * <code>required string newpwd = 3;</code>
      *
@@ -21677,8 +21683,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class UpdatePwdReq extends
-      com.google.protobuf.GeneratedMessage
-      implements UpdatePwdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:UpdatePwdReq)
+      UpdatePwdReqOrBuilder {
     // Use UpdatePwdReq.newBuilder() to construct.
     private UpdatePwdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -21730,13 +21737,15 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              oldpwd_ = input.readBytes();
+              oldpwd_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              newpwd_ = input.readBytes();
+              newpwd_ = bs;
               break;
             }
           }
@@ -21779,7 +21788,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -21803,7 +21811,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // required string oldpwd = 2;
     public static final int OLDPWD_FIELD_NUMBER = 2;
     private java.lang.Object oldpwd_;
     /**
@@ -21858,7 +21865,6 @@ public final class AccountProto {
       }
     }
 
-    // required string newpwd = 3;
     public static final int NEWPWD_FIELD_NUMBER = 3;
     private java.lang.Object newpwd_;
     /**
@@ -21921,7 +21927,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -22059,8 +22066,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.UpdatePwdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:UpdatePwdReq)
+        com.mi.liveassistant.proto.AccountProto.UpdatePwdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_UpdatePwdReq_descriptor;
@@ -22207,7 +22215,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -22256,7 +22263,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string oldpwd = 2;
       private java.lang.Object oldpwd_ = "";
       /**
        * <code>required string oldpwd = 2;</code>
@@ -22278,9 +22284,12 @@ public final class AccountProto {
       public java.lang.String getOldpwd() {
         java.lang.Object ref = oldpwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          oldpwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            oldpwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22354,7 +22363,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string newpwd = 3;
       private java.lang.Object newpwd_ = "";
       /**
        * <code>required string newpwd = 3;</code>
@@ -22376,9 +22384,12 @@ public final class AccountProto {
       public java.lang.String getNewpwd() {
         java.lang.Object ref = newpwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          newpwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            newpwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22463,10 +22474,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:UpdatePwdReq)
   }
 
-  public interface UpdatePwdRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UpdatePwdRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:UpdatePwdRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -22484,7 +22495,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -22503,8 +22513,9 @@ public final class AccountProto {
    * Protobuf type {@code UpdatePwdRsp}
    */
   public static final class UpdatePwdRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements UpdatePwdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:UpdatePwdRsp)
+      UpdatePwdRspOrBuilder {
     // Use UpdatePwdRsp.newBuilder() to construct.
     private UpdatePwdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -22556,8 +22567,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -22600,7 +22612,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -22624,7 +22635,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -22674,7 +22684,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -22792,8 +22803,9 @@ public final class AccountProto {
      * Protobuf type {@code UpdatePwdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.UpdatePwdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:UpdatePwdRsp)
+        com.mi.liveassistant.proto.AccountProto.UpdatePwdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_UpdatePwdRsp_descriptor;
@@ -22921,7 +22933,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -22970,7 +22981,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -22984,9 +22994,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -23055,10 +23068,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:UpdatePwdRsp)
   }
 
-  public interface GetAccountPwdInfoReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetAccountPwdInfoReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetAccountPwdInfoReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      *
@@ -23085,8 +23098,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetAccountPwdInfoReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetAccountPwdInfoReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetAccountPwdInfoReq)
+      GetAccountPwdInfoReqOrBuilder {
     // Use GetAccountPwdInfoReq.newBuilder() to construct.
     private GetAccountPwdInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23177,7 +23191,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -23207,7 +23220,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -23323,8 +23337,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetAccountPwdInfoReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetAccountPwdInfoReq)
+        com.mi.liveassistant.proto.AccountProto.GetAccountPwdInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetAccountPwdInfoReq_descriptor;
@@ -23441,7 +23456,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -23501,10 +23515,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetAccountPwdInfoReq)
   }
 
-  public interface GetAccountPwdInfoRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetAccountPwdInfoRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetAccountPwdInfoRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -23514,7 +23528,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint32 create_account_type = 2;
     /**
      * <code>optional uint32 create_account_type = 2;</code>
      *
@@ -23532,7 +23545,6 @@ public final class AccountProto {
      */
     int getCreateAccountType();
 
-    // optional bool haspwd = 3;
     /**
      * <code>optional bool haspwd = 3;</code>
      *
@@ -23550,7 +23562,6 @@ public final class AccountProto {
      */
     boolean getHaspwd();
 
-    // optional string errMsg = 4;
     /**
      * <code>optional string errMsg = 4;</code>
      */
@@ -23569,8 +23580,9 @@ public final class AccountProto {
    * Protobuf type {@code GetAccountPwdInfoRsp}
    */
   public static final class GetAccountPwdInfoRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetAccountPwdInfoRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetAccountPwdInfoRsp)
+      GetAccountPwdInfoRspOrBuilder {
     // Use GetAccountPwdInfoRsp.newBuilder() to construct.
     private GetAccountPwdInfoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23632,8 +23644,9 @@ public final class AccountProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -23676,7 +23689,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -23692,7 +23704,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint32 create_account_type = 2;
     public static final int CREATE_ACCOUNT_TYPE_FIELD_NUMBER = 2;
     private int createAccountType_;
     /**
@@ -23716,7 +23727,6 @@ public final class AccountProto {
       return createAccountType_;
     }
 
-    // optional bool haspwd = 3;
     public static final int HASPWD_FIELD_NUMBER = 3;
     private boolean haspwd_;
     /**
@@ -23740,7 +23750,6 @@ public final class AccountProto {
       return haspwd_;
     }
 
-    // optional string errMsg = 4;
     public static final int ERRMSG_FIELD_NUMBER = 4;
     private java.lang.Object errMsg_;
     /**
@@ -23792,7 +23801,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -23924,8 +23934,9 @@ public final class AccountProto {
      * Protobuf type {@code GetAccountPwdInfoRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetAccountPwdInfoRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetAccountPwdInfoRsp)
+        com.mi.liveassistant.proto.AccountProto.GetAccountPwdInfoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetAccountPwdInfoRsp_descriptor;
@@ -24071,7 +24082,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -24104,7 +24114,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 create_account_type = 2;
       private int createAccountType_ ;
       /**
        * <code>optional uint32 create_account_type = 2;</code>
@@ -24153,7 +24162,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool haspwd = 3;
       private boolean haspwd_ ;
       /**
        * <code>optional bool haspwd = 3;</code>
@@ -24202,7 +24210,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 4;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 4;</code>
@@ -24216,9 +24223,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24287,10 +24297,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetAccountPwdInfoRsp)
   }
 
-  public interface ForgetPwdUuidReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdUuidReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ForgetPwdUuidReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 accountType = 1;
     /**
      * <code>required uint32 accountType = 1;</code>
      *
@@ -24308,7 +24318,6 @@ public final class AccountProto {
      */
     int getAccountType();
 
-    // optional string code = 2;
     /**
      * <code>optional string code = 2;</code>
      *
@@ -24335,7 +24344,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getCodeBytes();
 
-    // optional string openid = 3;
     /**
      * <code>optional string openid = 3;</code>
      *
@@ -24362,7 +24370,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getOpenidBytes();
 
-    // optional string accessToken = 4;
     /**
      * <code>optional string accessToken = 4;</code>
      *
@@ -24389,7 +24396,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getAccessTokenBytes();
 
-    // optional uint32 expires_in = 5;
     /**
      * <code>optional uint32 expires_in = 5;</code>
      *
@@ -24407,7 +24413,6 @@ public final class AccountProto {
      */
     int getExpiresIn();
 
-    // optional string refreshToken = 6;
     /**
      * <code>optional string refreshToken = 6;</code>
      *
@@ -24434,7 +24439,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getRefreshTokenBytes();
 
-    // optional uint64 uuid = 7;
     /**
      * <code>optional uint64 uuid = 7;</code>
      *
@@ -24452,7 +24456,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string pwd = 8;
     /**
      * <code>optional string pwd = 8;</code>
      *
@@ -24487,8 +24490,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class ForgetPwdUuidReq extends
-      com.google.protobuf.GeneratedMessage
-      implements ForgetPwdUuidReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ForgetPwdUuidReq)
+      ForgetPwdUuidReqOrBuilder {
     // Use ForgetPwdUuidReq.newBuilder() to construct.
     private ForgetPwdUuidReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -24540,18 +24544,21 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              code_ = input.readBytes();
+              code_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              openid_ = input.readBytes();
+              openid_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              accessToken_ = input.readBytes();
+              accessToken_ = bs;
               break;
             }
             case 40: {
@@ -24560,8 +24567,9 @@ public final class AccountProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              refreshToken_ = input.readBytes();
+              refreshToken_ = bs;
               break;
             }
             case 56: {
@@ -24570,8 +24578,9 @@ public final class AccountProto {
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              pwd_ = input.readBytes();
+              pwd_ = bs;
               break;
             }
           }
@@ -24614,7 +24623,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 accountType = 1;
     public static final int ACCOUNTTYPE_FIELD_NUMBER = 1;
     private int accountType_;
     /**
@@ -24638,7 +24646,6 @@ public final class AccountProto {
       return accountType_;
     }
 
-    // optional string code = 2;
     public static final int CODE_FIELD_NUMBER = 2;
     private java.lang.Object code_;
     /**
@@ -24693,7 +24700,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string openid = 3;
     public static final int OPENID_FIELD_NUMBER = 3;
     private java.lang.Object openid_;
     /**
@@ -24748,7 +24754,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string accessToken = 4;
     public static final int ACCESSTOKEN_FIELD_NUMBER = 4;
     private java.lang.Object accessToken_;
     /**
@@ -24803,7 +24808,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 expires_in = 5;
     public static final int EXPIRES_IN_FIELD_NUMBER = 5;
     private int expiresIn_;
     /**
@@ -24827,7 +24831,6 @@ public final class AccountProto {
       return expiresIn_;
     }
 
-    // optional string refreshToken = 6;
     public static final int REFRESHTOKEN_FIELD_NUMBER = 6;
     private java.lang.Object refreshToken_;
     /**
@@ -24882,7 +24885,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint64 uuid = 7;
     public static final int UUID_FIELD_NUMBER = 7;
     private long uuid_;
     /**
@@ -24906,7 +24908,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string pwd = 8;
     public static final int PWD_FIELD_NUMBER = 8;
     private java.lang.Object pwd_;
     /**
@@ -24974,7 +24975,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasAccountType()) {
         memoizedIsInitialized = 0;
@@ -25138,8 +25140,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ForgetPwdUuidReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ForgetPwdUuidReq)
+        com.mi.liveassistant.proto.AccountProto.ForgetPwdUuidReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ForgetPwdUuidReq_descriptor;
@@ -25329,7 +25332,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 accountType = 1;
       private int accountType_ ;
       /**
        * <code>required uint32 accountType = 1;</code>
@@ -25378,7 +25380,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string code = 2;
       private java.lang.Object code_ = "";
       /**
        * <code>optional string code = 2;</code>
@@ -25400,9 +25401,12 @@ public final class AccountProto {
       public java.lang.String getCode() {
         java.lang.Object ref = code_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          code_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            code_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25476,7 +25480,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string openid = 3;
       private java.lang.Object openid_ = "";
       /**
        * <code>optional string openid = 3;</code>
@@ -25498,9 +25501,12 @@ public final class AccountProto {
       public java.lang.String getOpenid() {
         java.lang.Object ref = openid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          openid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            openid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25574,7 +25580,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string accessToken = 4;
       private java.lang.Object accessToken_ = "";
       /**
        * <code>optional string accessToken = 4;</code>
@@ -25596,9 +25601,12 @@ public final class AccountProto {
       public java.lang.String getAccessToken() {
         java.lang.Object ref = accessToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          accessToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            accessToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25672,7 +25680,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 expires_in = 5;
       private int expiresIn_ ;
       /**
        * <code>optional uint32 expires_in = 5;</code>
@@ -25721,7 +25728,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string refreshToken = 6;
       private java.lang.Object refreshToken_ = "";
       /**
        * <code>optional string refreshToken = 6;</code>
@@ -25743,9 +25749,12 @@ public final class AccountProto {
       public java.lang.String getRefreshToken() {
         java.lang.Object ref = refreshToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          refreshToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            refreshToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25819,7 +25828,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 7;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 7;</code>
@@ -25868,7 +25876,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string pwd = 8;
       private java.lang.Object pwd_ = "";
       /**
        * <code>optional string pwd = 8;</code>
@@ -25890,9 +25897,12 @@ public final class AccountProto {
       public java.lang.String getPwd() {
         java.lang.Object ref = pwd_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          pwd_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            pwd_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25977,10 +25987,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ForgetPwdUuidReq)
   }
 
-  public interface ForgetPwdUuidRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ForgetPwdUuidRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ForgetPwdUuidRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -25998,7 +26008,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -26016,7 +26025,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -26043,7 +26051,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -26070,7 +26077,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -26097,7 +26103,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -26124,7 +26129,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string headinfo = 7;
     /**
      * <code>optional string headinfo = 7;</code>
      *
@@ -26151,7 +26155,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadinfoBytes();
 
-    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -26169,7 +26172,6 @@ public final class AccountProto {
      */
     int getSex();
 
-    // optional bool hasInnerAvatar = 9;
     /**
      * <code>optional bool hasInnerAvatar = 9;</code>
      *
@@ -26187,7 +26189,6 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
-    // optional bool hasInnerNickname = 10;
     /**
      * <code>optional bool hasInnerNickname = 10;</code>
      *
@@ -26205,7 +26206,6 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
-    // optional bool hasInnerSex = 11;
     /**
      * <code>optional bool hasInnerSex = 11;</code>
      *
@@ -26223,7 +26223,6 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
-    // optional string errMsg = 12;
     /**
      * <code>optional string errMsg = 12;</code>
      */
@@ -26242,8 +26241,9 @@ public final class AccountProto {
    * Protobuf type {@code ForgetPwdUuidRsp}
    */
   public static final class ForgetPwdUuidRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements ForgetPwdUuidRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ForgetPwdUuidRsp)
+      ForgetPwdUuidRspOrBuilder {
     // Use ForgetPwdUuidRsp.newBuilder() to construct.
     private ForgetPwdUuidRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -26300,28 +26300,33 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headinfo_ = input.readBytes();
+              headinfo_ = bs;
               break;
             }
             case 64: {
@@ -26345,8 +26350,9 @@ public final class AccountProto {
               break;
             }
             case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -26389,7 +26395,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -26413,7 +26418,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -26437,7 +26441,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -26492,7 +26495,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -26547,7 +26549,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -26602,7 +26603,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -26657,7 +26657,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string headinfo = 7;
     public static final int HEADINFO_FIELD_NUMBER = 7;
     private java.lang.Object headinfo_;
     /**
@@ -26712,7 +26711,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -26736,7 +26734,6 @@ public final class AccountProto {
       return sex_;
     }
 
-    // optional bool hasInnerAvatar = 9;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 9;
     private boolean hasInnerAvatar_;
     /**
@@ -26760,7 +26757,6 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
-    // optional bool hasInnerNickname = 10;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 10;
     private boolean hasInnerNickname_;
     /**
@@ -26784,7 +26780,6 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
-    // optional bool hasInnerSex = 11;
     public static final int HASINNERSEX_FIELD_NUMBER = 11;
     private boolean hasInnerSex_;
     /**
@@ -26808,7 +26803,6 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
-    // optional string errMsg = 12;
     public static final int ERRMSG_FIELD_NUMBER = 12;
     private java.lang.Object errMsg_;
     /**
@@ -26868,7 +26862,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -27056,8 +27051,9 @@ public final class AccountProto {
      * Protobuf type {@code ForgetPwdUuidRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ForgetPwdUuidRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ForgetPwdUuidRsp)
+        com.mi.liveassistant.proto.AccountProto.ForgetPwdUuidRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ForgetPwdUuidRsp_descriptor;
@@ -27285,7 +27281,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -27334,7 +27329,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -27383,7 +27377,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -27405,9 +27398,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27481,7 +27477,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -27503,9 +27498,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27579,7 +27577,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -27601,9 +27598,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27677,7 +27677,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -27699,9 +27698,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27775,7 +27777,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string headinfo = 7;
       private java.lang.Object headinfo_ = "";
       /**
        * <code>optional string headinfo = 7;</code>
@@ -27797,9 +27798,12 @@ public final class AccountProto {
       public java.lang.String getHeadinfo() {
         java.lang.Object ref = headinfo_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headinfo_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headinfo_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27873,7 +27877,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -27922,7 +27925,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerAvatar = 9;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 9;</code>
@@ -27971,7 +27973,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerNickname = 10;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 10;</code>
@@ -28020,7 +28021,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerSex = 11;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 11;</code>
@@ -28069,7 +28069,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 12;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 12;</code>
@@ -28083,9 +28082,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -28154,10 +28156,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ForgetPwdUuidRsp)
   }
 
-  public interface ScanQrCodeReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ScanQrCodeReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ScanQrCodeReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -28167,7 +28169,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // required string qr_code = 2;
     /**
      * <code>required string qr_code = 2;</code>
      */
@@ -28190,8 +28191,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class ScanQrCodeReq extends
-      com.google.protobuf.GeneratedMessage
-      implements ScanQrCodeReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ScanQrCodeReq)
+      ScanQrCodeReqOrBuilder {
     // Use ScanQrCodeReq.newBuilder() to construct.
     private ScanQrCodeReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -28243,8 +28245,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              qrCode_ = input.readBytes();
+              qrCode_ = bs;
               break;
             }
           }
@@ -28287,7 +28290,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -28303,7 +28305,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // required string qr_code = 2;
     public static final int QR_CODE_FIELD_NUMBER = 2;
     private java.lang.Object qrCode_;
     /**
@@ -28353,7 +28354,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -28479,8 +28481,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ScanQrCodeReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ScanQrCodeReq)
+        com.mi.liveassistant.proto.AccountProto.ScanQrCodeReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ScanQrCodeReq_descriptor;
@@ -28612,7 +28615,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -28645,7 +28647,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string qr_code = 2;
       private java.lang.Object qrCode_ = "";
       /**
        * <code>required string qr_code = 2;</code>
@@ -28659,9 +28660,12 @@ public final class AccountProto {
       public java.lang.String getQrCode() {
         java.lang.Object ref = qrCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          qrCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            qrCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -28730,10 +28734,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ScanQrCodeReq)
   }
 
-  public interface ScanQrCodeRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ScanQrCodeRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ScanQrCodeRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -28743,7 +28747,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -28762,8 +28765,9 @@ public final class AccountProto {
    * Protobuf type {@code ScanQrCodeRsp}
    */
   public static final class ScanQrCodeRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements ScanQrCodeRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ScanQrCodeRsp)
+      ScanQrCodeRspOrBuilder {
     // Use ScanQrCodeRsp.newBuilder() to construct.
     private ScanQrCodeRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -28815,8 +28819,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -28859,7 +28864,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -28875,7 +28879,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -28925,7 +28928,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -29043,8 +29047,9 @@ public final class AccountProto {
      * Protobuf type {@code ScanQrCodeRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ScanQrCodeRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ScanQrCodeRsp)
+        com.mi.liveassistant.proto.AccountProto.ScanQrCodeRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ScanQrCodeRsp_descriptor;
@@ -29172,7 +29177,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -29205,7 +29209,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -29219,9 +29222,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29290,10 +29296,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ScanQrCodeRsp)
   }
 
-  public interface ConfirmLoginByQrCodeReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ConfirmLoginByQrCodeReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ConfirmLoginByQrCodeReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -29303,7 +29309,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // required string qr_code = 2;
     /**
      * <code>required string qr_code = 2;</code>
      */
@@ -29326,8 +29331,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class ConfirmLoginByQrCodeReq extends
-      com.google.protobuf.GeneratedMessage
-      implements ConfirmLoginByQrCodeReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ConfirmLoginByQrCodeReq)
+      ConfirmLoginByQrCodeReqOrBuilder {
     // Use ConfirmLoginByQrCodeReq.newBuilder() to construct.
     private ConfirmLoginByQrCodeReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -29379,8 +29385,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              qrCode_ = input.readBytes();
+              qrCode_ = bs;
               break;
             }
           }
@@ -29423,7 +29430,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -29439,7 +29445,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // required string qr_code = 2;
     public static final int QR_CODE_FIELD_NUMBER = 2;
     private java.lang.Object qrCode_;
     /**
@@ -29489,7 +29494,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -29615,8 +29621,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ConfirmLoginByQrCodeReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ConfirmLoginByQrCodeReq)
+        com.mi.liveassistant.proto.AccountProto.ConfirmLoginByQrCodeReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ConfirmLoginByQrCodeReq_descriptor;
@@ -29748,7 +29755,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -29781,7 +29787,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string qr_code = 2;
       private java.lang.Object qrCode_ = "";
       /**
        * <code>required string qr_code = 2;</code>
@@ -29795,9 +29800,12 @@ public final class AccountProto {
       public java.lang.String getQrCode() {
         java.lang.Object ref = qrCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          qrCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            qrCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29866,10 +29874,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ConfirmLoginByQrCodeReq)
   }
 
-  public interface ConfirmLoginByQrCodeRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ConfirmLoginByQrCodeRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ConfirmLoginByQrCodeRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -29879,7 +29887,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -29898,8 +29905,9 @@ public final class AccountProto {
    * Protobuf type {@code ConfirmLoginByQrCodeRsp}
    */
   public static final class ConfirmLoginByQrCodeRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements ConfirmLoginByQrCodeRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ConfirmLoginByQrCodeRsp)
+      ConfirmLoginByQrCodeRspOrBuilder {
     // Use ConfirmLoginByQrCodeRsp.newBuilder() to construct.
     private ConfirmLoginByQrCodeRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -29951,8 +29959,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -29995,7 +30004,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -30011,7 +30019,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -30061,7 +30068,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -30179,8 +30187,9 @@ public final class AccountProto {
      * Protobuf type {@code ConfirmLoginByQrCodeRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ConfirmLoginByQrCodeRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ConfirmLoginByQrCodeRsp)
+        com.mi.liveassistant.proto.AccountProto.ConfirmLoginByQrCodeRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ConfirmLoginByQrCodeRsp_descriptor;
@@ -30308,7 +30317,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -30341,7 +30349,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -30355,9 +30362,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -30426,10 +30436,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ConfirmLoginByQrCodeRsp)
   }
 
-  public interface MiSsoLoginReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface MiSsoLoginReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:MiSsoLoginReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 accountType = 1 [default = 4];
     /**
      * <code>required uint32 accountType = 1 [default = 4];</code>
      *
@@ -30447,7 +30457,6 @@ public final class AccountProto {
      */
     int getAccountType();
 
-    // required uint64 mid = 2;
     /**
      * <code>required uint64 mid = 2;</code>
      *
@@ -30465,7 +30474,6 @@ public final class AccountProto {
      */
     long getMid();
 
-    // required string miservicetoken = 3;
     /**
      * <code>required string miservicetoken = 3;</code>
      *
@@ -30500,8 +30508,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class MiSsoLoginReq extends
-      com.google.protobuf.GeneratedMessage
-      implements MiSsoLoginReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:MiSsoLoginReq)
+      MiSsoLoginReqOrBuilder {
     // Use MiSsoLoginReq.newBuilder() to construct.
     private MiSsoLoginReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -30558,8 +30567,9 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              miservicetoken_ = input.readBytes();
+              miservicetoken_ = bs;
               break;
             }
           }
@@ -30602,7 +30612,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 accountType = 1 [default = 4];
     public static final int ACCOUNTTYPE_FIELD_NUMBER = 1;
     private int accountType_;
     /**
@@ -30626,7 +30635,6 @@ public final class AccountProto {
       return accountType_;
     }
 
-    // required uint64 mid = 2;
     public static final int MID_FIELD_NUMBER = 2;
     private long mid_;
     /**
@@ -30650,7 +30658,6 @@ public final class AccountProto {
       return mid_;
     }
 
-    // required string miservicetoken = 3;
     public static final int MISERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object miservicetoken_;
     /**
@@ -30713,7 +30720,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasAccountType()) {
         memoizedIsInitialized = 0;
@@ -30850,8 +30858,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.MiSsoLoginReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:MiSsoLoginReq)
+        com.mi.liveassistant.proto.AccountProto.MiSsoLoginReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_MiSsoLoginReq_descriptor;
@@ -30996,7 +31005,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 accountType = 1 [default = 4];
       private int accountType_ = 4;
       /**
        * <code>required uint32 accountType = 1 [default = 4];</code>
@@ -31045,7 +31053,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required uint64 mid = 2;
       private long mid_ ;
       /**
        * <code>required uint64 mid = 2;</code>
@@ -31094,7 +31101,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string miservicetoken = 3;
       private java.lang.Object miservicetoken_ = "";
       /**
        * <code>required string miservicetoken = 3;</code>
@@ -31116,9 +31122,12 @@ public final class AccountProto {
       public java.lang.String getMiservicetoken() {
         java.lang.Object ref = miservicetoken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          miservicetoken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            miservicetoken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -31203,10 +31212,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:MiSsoLoginReq)
   }
 
-  public interface MiSsoLoginRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface MiSsoLoginRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:MiSsoLoginRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -31224,7 +31233,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -31242,7 +31250,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -31269,7 +31276,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 4;
     /**
      * <code>optional string securityKey = 4;</code>
      *
@@ -31296,7 +31302,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string passToken = 5;
     /**
      * <code>optional string passToken = 5;</code>
      *
@@ -31323,7 +31328,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string nickname = 6;
     /**
      * <code>optional string nickname = 6;</code>
      *
@@ -31350,7 +31354,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string headimgurl = 7;
     /**
      * <code>optional string headimgurl = 7;</code>
      *
@@ -31377,7 +31380,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadimgurlBytes();
 
-    // optional uint32 sex = 8;
     /**
      * <code>optional uint32 sex = 8;</code>
      *
@@ -31395,7 +31397,6 @@ public final class AccountProto {
      */
     int getSex();
 
-    // optional uint32 loginStatus = 9;
     /**
      * <code>optional uint32 loginStatus = 9;</code>
      *
@@ -31413,7 +31414,6 @@ public final class AccountProto {
      */
     int getLoginStatus();
 
-    // optional bool hasInnerAvatar = 10;
     /**
      * <code>optional bool hasInnerAvatar = 10;</code>
      *
@@ -31431,7 +31431,6 @@ public final class AccountProto {
      */
     boolean getHasInnerAvatar();
 
-    // optional bool hasInnerNickname = 11;
     /**
      * <code>optional bool hasInnerNickname = 11;</code>
      *
@@ -31449,7 +31448,6 @@ public final class AccountProto {
      */
     boolean getHasInnerNickname();
 
-    // optional bool hasInnerSex = 12;
     /**
      * <code>optional bool hasInnerSex = 12;</code>
      *
@@ -31467,7 +31465,6 @@ public final class AccountProto {
      */
     boolean getHasInnerSex();
 
-    // optional bool isSetGuide = 13 [default = false];
     /**
      * <code>optional bool isSetGuide = 13 [default = false];</code>
      *
@@ -31485,7 +31482,6 @@ public final class AccountProto {
      */
     boolean getIsSetGuide();
 
-    // optional string errMsg = 14;
     /**
      * <code>optional string errMsg = 14;</code>
      *
@@ -31516,8 +31512,9 @@ public final class AccountProto {
    * Protobuf type {@code MiSsoLoginRsp}
    */
   public static final class MiSsoLoginRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements MiSsoLoginRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:MiSsoLoginRsp)
+      MiSsoLoginRspOrBuilder {
     // Use MiSsoLoginRsp.newBuilder() to construct.
     private MiSsoLoginRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -31574,28 +31571,33 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              headimgurl_ = input.readBytes();
+              headimgurl_ = bs;
               break;
             }
             case 64: {
@@ -31629,8 +31631,9 @@ public final class AccountProto {
               break;
             }
             case 114: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00002000;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -31673,7 +31676,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -31697,7 +31699,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -31721,7 +31722,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -31776,7 +31776,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 4;
     public static final int SECURITYKEY_FIELD_NUMBER = 4;
     private java.lang.Object securityKey_;
     /**
@@ -31831,7 +31830,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 5;
     public static final int PASSTOKEN_FIELD_NUMBER = 5;
     private java.lang.Object passToken_;
     /**
@@ -31886,7 +31884,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string nickname = 6;
     public static final int NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object nickname_;
     /**
@@ -31941,7 +31938,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string headimgurl = 7;
     public static final int HEADIMGURL_FIELD_NUMBER = 7;
     private java.lang.Object headimgurl_;
     /**
@@ -31996,7 +31992,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 sex = 8;
     public static final int SEX_FIELD_NUMBER = 8;
     private int sex_;
     /**
@@ -32020,7 +32015,6 @@ public final class AccountProto {
       return sex_;
     }
 
-    // optional uint32 loginStatus = 9;
     public static final int LOGINSTATUS_FIELD_NUMBER = 9;
     private int loginStatus_;
     /**
@@ -32044,7 +32038,6 @@ public final class AccountProto {
       return loginStatus_;
     }
 
-    // optional bool hasInnerAvatar = 10;
     public static final int HASINNERAVATAR_FIELD_NUMBER = 10;
     private boolean hasInnerAvatar_;
     /**
@@ -32068,7 +32061,6 @@ public final class AccountProto {
       return hasInnerAvatar_;
     }
 
-    // optional bool hasInnerNickname = 11;
     public static final int HASINNERNICKNAME_FIELD_NUMBER = 11;
     private boolean hasInnerNickname_;
     /**
@@ -32092,7 +32084,6 @@ public final class AccountProto {
       return hasInnerNickname_;
     }
 
-    // optional bool hasInnerSex = 12;
     public static final int HASINNERSEX_FIELD_NUMBER = 12;
     private boolean hasInnerSex_;
     /**
@@ -32116,7 +32107,6 @@ public final class AccountProto {
       return hasInnerSex_;
     }
 
-    // optional bool isSetGuide = 13 [default = false];
     public static final int ISSETGUIDE_FIELD_NUMBER = 13;
     private boolean isSetGuide_;
     /**
@@ -32140,7 +32130,6 @@ public final class AccountProto {
       return isSetGuide_;
     }
 
-    // optional string errMsg = 14;
     public static final int ERRMSG_FIELD_NUMBER = 14;
     private java.lang.Object errMsg_;
     /**
@@ -32214,7 +32203,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -32416,8 +32406,9 @@ public final class AccountProto {
      * Protobuf type {@code MiSsoLoginRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.MiSsoLoginRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:MiSsoLoginRsp)
+        com.mi.liveassistant.proto.AccountProto.MiSsoLoginRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_MiSsoLoginRsp_descriptor;
@@ -32663,7 +32654,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -32712,7 +32702,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -32761,7 +32750,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -32783,9 +32771,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32859,7 +32850,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 4;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 4;</code>
@@ -32881,9 +32871,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32957,7 +32950,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 5;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 5;</code>
@@ -32979,9 +32971,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33055,7 +33050,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string nickname = 6;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 6;</code>
@@ -33077,9 +33071,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33153,7 +33150,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string headimgurl = 7;
       private java.lang.Object headimgurl_ = "";
       /**
        * <code>optional string headimgurl = 7;</code>
@@ -33175,9 +33171,12 @@ public final class AccountProto {
       public java.lang.String getHeadimgurl() {
         java.lang.Object ref = headimgurl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headimgurl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headimgurl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33251,7 +33250,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 sex = 8;
       private int sex_ ;
       /**
        * <code>optional uint32 sex = 8;</code>
@@ -33300,7 +33298,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 loginStatus = 9;
       private int loginStatus_ ;
       /**
        * <code>optional uint32 loginStatus = 9;</code>
@@ -33349,7 +33346,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerAvatar = 10;
       private boolean hasInnerAvatar_ ;
       /**
        * <code>optional bool hasInnerAvatar = 10;</code>
@@ -33398,7 +33394,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerNickname = 11;
       private boolean hasInnerNickname_ ;
       /**
        * <code>optional bool hasInnerNickname = 11;</code>
@@ -33447,7 +33442,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool hasInnerSex = 12;
       private boolean hasInnerSex_ ;
       /**
        * <code>optional bool hasInnerSex = 12;</code>
@@ -33496,7 +33490,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool isSetGuide = 13 [default = false];
       private boolean isSetGuide_ ;
       /**
        * <code>optional bool isSetGuide = 13 [default = false];</code>
@@ -33545,7 +33538,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 14;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 14;</code>
@@ -33567,9 +33559,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33654,10 +33649,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:MiSsoLoginRsp)
   }
 
-  public interface AppInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AppInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AppInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string appId = 1;
     /**
      * <code>optional string appId = 1;</code>
      */
@@ -33672,7 +33667,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getAppIdBytes();
 
-    // optional string appKey = 2;
     /**
      * <code>optional string appKey = 2;</code>
      */
@@ -33695,8 +33689,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class AppInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements AppInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:AppInfo)
+      AppInfoOrBuilder {
     // Use AppInfo.newBuilder() to construct.
     private AppInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -33743,13 +33738,15 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              appId_ = input.readBytes();
+              appId_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              appKey_ = input.readBytes();
+              appKey_ = bs;
               break;
             }
           }
@@ -33792,7 +33789,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // optional string appId = 1;
     public static final int APPID_FIELD_NUMBER = 1;
     private java.lang.Object appId_;
     /**
@@ -33835,7 +33831,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string appKey = 2;
     public static final int APPKEY_FIELD_NUMBER = 2;
     private java.lang.Object appKey_;
     /**
@@ -33885,7 +33880,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -34003,8 +33999,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.AppInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AppInfo)
+        com.mi.liveassistant.proto.AccountProto.AppInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_AppInfo_descriptor;
@@ -34130,7 +34127,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // optional string appId = 1;
       private java.lang.Object appId_ = "";
       /**
        * <code>optional string appId = 1;</code>
@@ -34144,9 +34140,12 @@ public final class AccountProto {
       public java.lang.String getAppId() {
         java.lang.Object ref = appId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          appId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            appId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34204,7 +34203,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string appKey = 2;
       private java.lang.Object appKey_ = "";
       /**
        * <code>optional string appKey = 2;</code>
@@ -34218,9 +34216,12 @@ public final class AccountProto {
       public java.lang.String getAppKey() {
         java.lang.Object ref = appKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          appKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            appKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34289,10 +34290,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:AppInfo)
   }
 
-  public interface UserInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:UserInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -34302,7 +34303,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional uint64 avatar = 2;
     /**
      * <code>optional uint64 avatar = 2;</code>
      *
@@ -34320,7 +34320,6 @@ public final class AccountProto {
      */
     long getAvatar();
 
-    // optional string nickname = 3;
     /**
      * <code>optional string nickname = 3;</code>
      *
@@ -34347,7 +34346,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string sign = 4;
     /**
      * <code>optional string sign = 4;</code>
      *
@@ -34374,7 +34372,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSignBytes();
 
-    // optional uint32 gender = 5;
     /**
      * <code>optional uint32 gender = 5;</code>
      *
@@ -34392,7 +34389,6 @@ public final class AccountProto {
      */
     int getGender();
 
-    // optional uint32 level = 6;
     /**
      * <code>optional uint32 level = 6;</code>
      *
@@ -34410,7 +34406,6 @@ public final class AccountProto {
      */
     int getLevel();
 
-    // optional uint32 badge = 7;
     /**
      * <code>optional uint32 badge = 7;</code>
      *
@@ -34428,7 +34423,6 @@ public final class AccountProto {
      */
     int getBadge();
 
-    // optional uint64 updateTime = 8;
     /**
      * <code>optional uint64 updateTime = 8;</code>
      *
@@ -34450,8 +34444,9 @@ public final class AccountProto {
    * Protobuf type {@code UserInfo}
    */
   public static final class UserInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements UserInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:UserInfo)
+      UserInfoOrBuilder {
     // Use UserInfo.newBuilder() to construct.
     private UserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -34508,13 +34503,15 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              sign_ = input.readBytes();
+              sign_ = bs;
               break;
             }
             case 40: {
@@ -34577,7 +34574,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -34593,7 +34589,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional uint64 avatar = 2;
     public static final int AVATAR_FIELD_NUMBER = 2;
     private long avatar_;
     /**
@@ -34617,7 +34612,6 @@ public final class AccountProto {
       return avatar_;
     }
 
-    // optional string nickname = 3;
     public static final int NICKNAME_FIELD_NUMBER = 3;
     private java.lang.Object nickname_;
     /**
@@ -34672,7 +34666,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string sign = 4;
     public static final int SIGN_FIELD_NUMBER = 4;
     private java.lang.Object sign_;
     /**
@@ -34727,7 +34720,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 gender = 5;
     public static final int GENDER_FIELD_NUMBER = 5;
     private int gender_;
     /**
@@ -34751,7 +34743,6 @@ public final class AccountProto {
       return gender_;
     }
 
-    // optional uint32 level = 6;
     public static final int LEVEL_FIELD_NUMBER = 6;
     private int level_;
     /**
@@ -34775,7 +34766,6 @@ public final class AccountProto {
       return level_;
     }
 
-    // optional uint32 badge = 7;
     public static final int BADGE_FIELD_NUMBER = 7;
     private int badge_;
     /**
@@ -34799,7 +34789,6 @@ public final class AccountProto {
       return badge_;
     }
 
-    // optional uint64 updateTime = 8;
     public static final int UPDATETIME_FIELD_NUMBER = 8;
     private long updateTime_;
     /**
@@ -34836,7 +34825,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -34996,8 +34986,9 @@ public final class AccountProto {
      * Protobuf type {@code UserInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.UserInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:UserInfo)
+        com.mi.liveassistant.proto.AccountProto.UserInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_UserInfo_descriptor;
@@ -35181,7 +35172,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -35214,7 +35204,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 avatar = 2;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 2;</code>
@@ -35263,7 +35252,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string nickname = 3;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 3;</code>
@@ -35285,9 +35273,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35361,7 +35352,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string sign = 4;
       private java.lang.Object sign_ = "";
       /**
        * <code>optional string sign = 4;</code>
@@ -35383,9 +35373,12 @@ public final class AccountProto {
       public java.lang.String getSign() {
         java.lang.Object ref = sign_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          sign_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sign_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35459,7 +35452,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 gender = 5;
       private int gender_ ;
       /**
        * <code>optional uint32 gender = 5;</code>
@@ -35508,7 +35500,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 level = 6;
       private int level_ ;
       /**
        * <code>optional uint32 level = 6;</code>
@@ -35557,7 +35548,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 badge = 7;
       private int badge_ ;
       /**
        * <code>optional uint32 badge = 7;</code>
@@ -35606,7 +35596,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 updateTime = 8;
       private long updateTime_ ;
       /**
        * <code>optional uint64 updateTime = 8;</code>
@@ -35666,10 +35655,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:UserInfo)
   }
 
-  public interface GetAccessTokenReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetAccessTokenReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetAccessTokenReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 appid = 1;
     /**
      * <code>required uint32 appid = 1;</code>
      *
@@ -35687,7 +35676,6 @@ public final class AccountProto {
      */
     int getAppid();
 
-    // required uint64 uuid = 2;
     /**
      * <code>required uint64 uuid = 2;</code>
      *
@@ -35714,8 +35702,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetAccessTokenReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetAccessTokenReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetAccessTokenReq)
+      GetAccessTokenReqOrBuilder {
     // Use GetAccessTokenReq.newBuilder() to construct.
     private GetAccessTokenReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -35811,7 +35800,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 appid = 1;
     public static final int APPID_FIELD_NUMBER = 1;
     private int appid_;
     /**
@@ -35835,7 +35823,6 @@ public final class AccountProto {
       return appid_;
     }
 
-    // required uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -35866,7 +35853,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasAppid()) {
         memoizedIsInitialized = 0;
@@ -35993,8 +35981,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetAccessTokenReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetAccessTokenReq)
+        com.mi.liveassistant.proto.AccountProto.GetAccessTokenReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetAccessTokenReq_descriptor;
@@ -36124,7 +36113,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 appid = 1;
       private int appid_ ;
       /**
        * <code>required uint32 appid = 1;</code>
@@ -36173,7 +36161,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 2;</code>
@@ -36233,10 +36220,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetAccessTokenReq)
   }
 
-  public interface GetAccessTokenRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetAccessTokenRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetAccessTokenRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -36254,7 +36241,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional string serviceToken = 2;
     /**
      * <code>optional string serviceToken = 2;</code>
      *
@@ -36281,7 +36267,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string securityKey = 3;
     /**
      * <code>optional string securityKey = 3;</code>
      *
@@ -36308,7 +36293,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional string errmsg = 4;
     /**
      * <code>optional string errmsg = 4;</code>
      */
@@ -36327,8 +36311,9 @@ public final class AccountProto {
    * Protobuf type {@code GetAccessTokenRsp}
    */
   public static final class GetAccessTokenRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetAccessTokenRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetAccessTokenRsp)
+      GetAccessTokenRspOrBuilder {
     // Use GetAccessTokenRsp.newBuilder() to construct.
     private GetAccessTokenRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -36380,18 +36365,21 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              errmsg_ = input.readBytes();
+              errmsg_ = bs;
               break;
             }
           }
@@ -36434,7 +36422,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -36458,7 +36445,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional string serviceToken = 2;
     public static final int SERVICETOKEN_FIELD_NUMBER = 2;
     private java.lang.Object serviceToken_;
     /**
@@ -36513,7 +36499,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 3;
     public static final int SECURITYKEY_FIELD_NUMBER = 3;
     private java.lang.Object securityKey_;
     /**
@@ -36568,7 +36553,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string errmsg = 4;
     public static final int ERRMSG_FIELD_NUMBER = 4;
     private java.lang.Object errmsg_;
     /**
@@ -36620,7 +36604,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -36752,8 +36737,9 @@ public final class AccountProto {
      * Protobuf type {@code GetAccessTokenRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetAccessTokenRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetAccessTokenRsp)
+        com.mi.liveassistant.proto.AccountProto.GetAccessTokenRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetAccessTokenRsp_descriptor;
@@ -36903,7 +36889,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -36952,7 +36937,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 2;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 2;</code>
@@ -36974,9 +36958,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37050,7 +37037,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 3;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 3;</code>
@@ -37072,9 +37058,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37148,7 +37137,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errmsg = 4;
       private java.lang.Object errmsg_ = "";
       /**
        * <code>optional string errmsg = 4;</code>
@@ -37162,9 +37150,12 @@ public final class AccountProto {
       public java.lang.String getErrmsg() {
         java.lang.Object ref = errmsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errmsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errmsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -37233,10 +37224,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetAccessTokenRsp)
   }
 
-  public interface GetGuideFlagReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetGuideFlagReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetGuideFlagReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -37254,8 +37245,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class GetGuideFlagReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetGuideFlagReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetGuideFlagReq)
+      GetGuideFlagReqOrBuilder {
     // Use GetGuideFlagReq.newBuilder() to construct.
     private GetGuideFlagReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -37346,7 +37338,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -37368,7 +37359,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -37483,8 +37475,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetGuideFlagReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetGuideFlagReq)
+        com.mi.liveassistant.proto.AccountProto.GetGuideFlagReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetGuideFlagReq_descriptor;
@@ -37601,7 +37594,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -37645,10 +37637,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetGuideFlagReq)
   }
 
-  public interface GetGuideFlagRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetGuideFlagRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetGuideFlagRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -37658,7 +37650,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional bool isGuide = 2;
     /**
      * <code>optional bool isGuide = 2;</code>
      *
@@ -37676,7 +37667,6 @@ public final class AccountProto {
      */
     boolean getIsGuide();
 
-    // optional string reminderMsg = 3;
     /**
      * <code>optional string reminderMsg = 3;</code>
      *
@@ -37703,7 +37693,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getReminderMsgBytes();
 
-    // optional uint32 diamondsCnt = 4;
     /**
      * <code>optional uint32 diamondsCnt = 4;</code>
      *
@@ -37721,7 +37710,6 @@ public final class AccountProto {
      */
     int getDiamondsCnt();
 
-    // optional bool isGuideNoMore = 5;
     /**
      * <code>optional bool isGuideNoMore = 5;</code>
      *
@@ -37739,7 +37727,6 @@ public final class AccountProto {
      */
     boolean getIsGuideNoMore();
 
-    // optional string errMsg = 6;
     /**
      * <code>optional string errMsg = 6;</code>
      */
@@ -37758,8 +37745,9 @@ public final class AccountProto {
    * Protobuf type {@code GetGuideFlagRsp}
    */
   public static final class GetGuideFlagRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetGuideFlagRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetGuideFlagRsp)
+      GetGuideFlagRspOrBuilder {
     // Use GetGuideFlagRsp.newBuilder() to construct.
     private GetGuideFlagRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -37816,8 +37804,9 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              reminderMsg_ = input.readBytes();
+              reminderMsg_ = bs;
               break;
             }
             case 32: {
@@ -37831,8 +37820,9 @@ public final class AccountProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -37875,7 +37865,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -37891,7 +37880,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional bool isGuide = 2;
     public static final int ISGUIDE_FIELD_NUMBER = 2;
     private boolean isGuide_;
     /**
@@ -37915,7 +37903,6 @@ public final class AccountProto {
       return isGuide_;
     }
 
-    // optional string reminderMsg = 3;
     public static final int REMINDERMSG_FIELD_NUMBER = 3;
     private java.lang.Object reminderMsg_;
     /**
@@ -37970,7 +37957,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 diamondsCnt = 4;
     public static final int DIAMONDSCNT_FIELD_NUMBER = 4;
     private int diamondsCnt_;
     /**
@@ -37994,7 +37980,6 @@ public final class AccountProto {
       return diamondsCnt_;
     }
 
-    // optional bool isGuideNoMore = 5;
     public static final int ISGUIDENOMORE_FIELD_NUMBER = 5;
     private boolean isGuideNoMore_;
     /**
@@ -38018,7 +38003,6 @@ public final class AccountProto {
       return isGuideNoMore_;
     }
 
-    // optional string errMsg = 6;
     public static final int ERRMSG_FIELD_NUMBER = 6;
     private java.lang.Object errMsg_;
     /**
@@ -38072,7 +38056,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -38218,8 +38203,9 @@ public final class AccountProto {
      * Protobuf type {@code GetGuideFlagRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.GetGuideFlagRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetGuideFlagRsp)
+        com.mi.liveassistant.proto.AccountProto.GetGuideFlagRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_GetGuideFlagRsp_descriptor;
@@ -38385,7 +38371,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -38418,7 +38403,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool isGuide = 2;
       private boolean isGuide_ ;
       /**
        * <code>optional bool isGuide = 2;</code>
@@ -38467,7 +38451,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string reminderMsg = 3;
       private java.lang.Object reminderMsg_ = "";
       /**
        * <code>optional string reminderMsg = 3;</code>
@@ -38489,9 +38472,12 @@ public final class AccountProto {
       public java.lang.String getReminderMsg() {
         java.lang.Object ref = reminderMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          reminderMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            reminderMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38565,7 +38551,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 diamondsCnt = 4;
       private int diamondsCnt_ ;
       /**
        * <code>optional uint32 diamondsCnt = 4;</code>
@@ -38614,7 +38599,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional bool isGuideNoMore = 5;
       private boolean isGuideNoMore_ ;
       /**
        * <code>optional bool isGuideNoMore = 5;</code>
@@ -38663,7 +38647,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 6;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 6;</code>
@@ -38677,9 +38660,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38748,10 +38734,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:GetGuideFlagRsp)
   }
 
-  public interface FillUnionidReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FillUnionidReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:FillUnionidReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uuid = 1;
     /**
      * <code>required uint64 uuid = 1;</code>
      */
@@ -38761,7 +38747,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string code = 2;
     /**
      * <code>optional string code = 2;</code>
      */
@@ -38784,8 +38769,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class FillUnionidReq extends
-      com.google.protobuf.GeneratedMessage
-      implements FillUnionidReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:FillUnionidReq)
+      FillUnionidReqOrBuilder {
     // Use FillUnionidReq.newBuilder() to construct.
     private FillUnionidReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -38837,8 +38823,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              code_ = input.readBytes();
+              code_ = bs;
               break;
             }
           }
@@ -38881,7 +38868,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -38897,7 +38883,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string code = 2;
     public static final int CODE_FIELD_NUMBER = 2;
     private java.lang.Object code_;
     /**
@@ -38947,7 +38932,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUuid()) {
         memoizedIsInitialized = 0;
@@ -39069,8 +39055,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.FillUnionidReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:FillUnionidReq)
+        com.mi.liveassistant.proto.AccountProto.FillUnionidReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_FillUnionidReq_descriptor;
@@ -39198,7 +39185,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>required uint64 uuid = 1;</code>
@@ -39231,7 +39217,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string code = 2;
       private java.lang.Object code_ = "";
       /**
        * <code>optional string code = 2;</code>
@@ -39245,9 +39230,12 @@ public final class AccountProto {
       public java.lang.String getCode() {
         java.lang.Object ref = code_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          code_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            code_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -39316,10 +39304,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:FillUnionidReq)
   }
 
-  public interface FillUnionidRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FillUnionidRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:FillUnionidRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -39329,7 +39317,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -39348,8 +39335,9 @@ public final class AccountProto {
    * Protobuf type {@code FillUnionidRsp}
    */
   public static final class FillUnionidRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements FillUnionidRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:FillUnionidRsp)
+      FillUnionidRspOrBuilder {
     // Use FillUnionidRsp.newBuilder() to construct.
     private FillUnionidRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -39401,8 +39389,9 @@ public final class AccountProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -39445,7 +39434,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -39461,7 +39449,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -39511,7 +39498,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -39629,8 +39617,9 @@ public final class AccountProto {
      * Protobuf type {@code FillUnionidRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.FillUnionidRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:FillUnionidRsp)
+        com.mi.liveassistant.proto.AccountProto.FillUnionidRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_FillUnionidRsp_descriptor;
@@ -39758,7 +39747,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -39791,7 +39779,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -39805,9 +39792,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -39876,10 +39866,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:FillUnionidRsp)
   }
 
-  public interface ThirdPartSignLoginReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ThirdPartSignLoginReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ThirdPartSignLoginReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string channelId = 1;
     /**
      * <code>required string channelId = 1;</code>
      *
@@ -39906,7 +39896,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getChannelIdBytes();
 
-    // required string xuid = 2;
     /**
      * <code>required string xuid = 2;</code>
      *
@@ -39933,7 +39922,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getXuidBytes();
 
-    // required uint32 sex = 3;
     /**
      * <code>required uint32 sex = 3;</code>
      *
@@ -39951,7 +39939,6 @@ public final class AccountProto {
      */
     int getSex();
 
-    // required string nickname = 4;
     /**
      * <code>required string nickname = 4;</code>
      *
@@ -39978,7 +39965,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // required string headUrl = 5;
     /**
      * <code>required string headUrl = 5;</code>
      *
@@ -40005,7 +39991,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getHeadUrlBytes();
 
-    // required string sign = 6;
     /**
      * <code>required string sign = 6;</code>
      *
@@ -40041,8 +40026,9 @@ public final class AccountProto {
    * </pre>
    */
   public static final class ThirdPartSignLoginReq extends
-      com.google.protobuf.GeneratedMessage
-      implements ThirdPartSignLoginReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ThirdPartSignLoginReq)
+      ThirdPartSignLoginReqOrBuilder {
     // Use ThirdPartSignLoginReq.newBuilder() to construct.
     private ThirdPartSignLoginReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -40089,13 +40075,15 @@ public final class AccountProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              channelId_ = input.readBytes();
+              channelId_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              xuid_ = input.readBytes();
+              xuid_ = bs;
               break;
             }
             case 24: {
@@ -40104,18 +40092,21 @@ public final class AccountProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              headUrl_ = input.readBytes();
+              headUrl_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              sign_ = input.readBytes();
+              sign_ = bs;
               break;
             }
           }
@@ -40158,7 +40149,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required string channelId = 1;
     public static final int CHANNELID_FIELD_NUMBER = 1;
     private java.lang.Object channelId_;
     /**
@@ -40213,7 +40203,6 @@ public final class AccountProto {
       }
     }
 
-    // required string xuid = 2;
     public static final int XUID_FIELD_NUMBER = 2;
     private java.lang.Object xuid_;
     /**
@@ -40268,7 +40257,6 @@ public final class AccountProto {
       }
     }
 
-    // required uint32 sex = 3;
     public static final int SEX_FIELD_NUMBER = 3;
     private int sex_;
     /**
@@ -40292,7 +40280,6 @@ public final class AccountProto {
       return sex_;
     }
 
-    // required string nickname = 4;
     public static final int NICKNAME_FIELD_NUMBER = 4;
     private java.lang.Object nickname_;
     /**
@@ -40347,7 +40334,6 @@ public final class AccountProto {
       }
     }
 
-    // required string headUrl = 5;
     public static final int HEADURL_FIELD_NUMBER = 5;
     private java.lang.Object headUrl_;
     /**
@@ -40402,7 +40388,6 @@ public final class AccountProto {
       }
     }
 
-    // required string sign = 6;
     public static final int SIGN_FIELD_NUMBER = 6;
     private java.lang.Object sign_;
     /**
@@ -40468,7 +40453,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasChannelId()) {
         memoizedIsInitialized = 0;
@@ -40639,8 +40625,9 @@ public final class AccountProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ThirdPartSignLoginReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ThirdPartSignLoginReq)
+        com.mi.liveassistant.proto.AccountProto.ThirdPartSignLoginReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ThirdPartSignLoginReq_descriptor;
@@ -40832,7 +40819,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required string channelId = 1;
       private java.lang.Object channelId_ = "";
       /**
        * <code>required string channelId = 1;</code>
@@ -40854,9 +40840,12 @@ public final class AccountProto {
       public java.lang.String getChannelId() {
         java.lang.Object ref = channelId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          channelId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            channelId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -40930,7 +40919,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string xuid = 2;
       private java.lang.Object xuid_ = "";
       /**
        * <code>required string xuid = 2;</code>
@@ -40952,9 +40940,12 @@ public final class AccountProto {
       public java.lang.String getXuid() {
         java.lang.Object ref = xuid_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          xuid_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            xuid_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41028,7 +41019,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required uint32 sex = 3;
       private int sex_ ;
       /**
        * <code>required uint32 sex = 3;</code>
@@ -41077,7 +41067,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string nickname = 4;
       private java.lang.Object nickname_ = "";
       /**
        * <code>required string nickname = 4;</code>
@@ -41099,9 +41088,12 @@ public final class AccountProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41175,7 +41167,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string headUrl = 5;
       private java.lang.Object headUrl_ = "";
       /**
        * <code>required string headUrl = 5;</code>
@@ -41197,9 +41188,12 @@ public final class AccountProto {
       public java.lang.String getHeadUrl() {
         java.lang.Object ref = headUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41273,7 +41267,6 @@ public final class AccountProto {
         return this;
       }
 
-      // required string sign = 6;
       private java.lang.Object sign_ = "";
       /**
        * <code>required string sign = 6;</code>
@@ -41295,9 +41288,12 @@ public final class AccountProto {
       public java.lang.String getSign() {
         java.lang.Object ref = sign_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          sign_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sign_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41382,10 +41378,10 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ThirdPartSignLoginReq)
   }
 
-  public interface ThirdPartSignLoginRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ThirdPartSignLoginRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ThirdPartSignLoginRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -41403,7 +41399,6 @@ public final class AccountProto {
      */
     int getRetCode();
 
-    // optional uint64 uuid = 2;
     /**
      * <code>optional uint64 uuid = 2;</code>
      *
@@ -41421,7 +41416,6 @@ public final class AccountProto {
      */
     long getUuid();
 
-    // optional string serviceToken = 3;
     /**
      * <code>optional string serviceToken = 3;</code>
      *
@@ -41448,7 +41442,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getServiceTokenBytes();
 
-    // optional string passToken = 4;
     /**
      * <code>optional string passToken = 4;</code>
      *
@@ -41475,7 +41468,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getPassTokenBytes();
 
-    // optional string securityKey = 5;
     /**
      * <code>optional string securityKey = 5;</code>
      *
@@ -41502,7 +41494,6 @@ public final class AccountProto {
     com.google.protobuf.ByteString
         getSecurityKeyBytes();
 
-    // optional uint32 loginStatus = 6;
     /**
      * <code>optional uint32 loginStatus = 6;</code>
      *
@@ -41520,7 +41511,6 @@ public final class AccountProto {
      */
     int getLoginStatus();
 
-    // optional string errMsg = 7;
     /**
      * <code>optional string errMsg = 7;</code>
      *
@@ -41551,8 +41541,9 @@ public final class AccountProto {
    * Protobuf type {@code ThirdPartSignLoginRsp}
    */
   public static final class ThirdPartSignLoginRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements ThirdPartSignLoginRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ThirdPartSignLoginRsp)
+      ThirdPartSignLoginRspOrBuilder {
     // Use ThirdPartSignLoginRsp.newBuilder() to construct.
     private ThirdPartSignLoginRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -41609,18 +41600,21 @@ public final class AccountProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              serviceToken_ = input.readBytes();
+              serviceToken_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              passToken_ = input.readBytes();
+              passToken_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              securityKey_ = input.readBytes();
+              securityKey_ = bs;
               break;
             }
             case 48: {
@@ -41629,8 +41623,9 @@ public final class AccountProto {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -41673,7 +41668,6 @@ public final class AccountProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -41697,7 +41691,6 @@ public final class AccountProto {
       return retCode_;
     }
 
-    // optional uint64 uuid = 2;
     public static final int UUID_FIELD_NUMBER = 2;
     private long uuid_;
     /**
@@ -41721,7 +41714,6 @@ public final class AccountProto {
       return uuid_;
     }
 
-    // optional string serviceToken = 3;
     public static final int SERVICETOKEN_FIELD_NUMBER = 3;
     private java.lang.Object serviceToken_;
     /**
@@ -41776,7 +41768,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string passToken = 4;
     public static final int PASSTOKEN_FIELD_NUMBER = 4;
     private java.lang.Object passToken_;
     /**
@@ -41831,7 +41822,6 @@ public final class AccountProto {
       }
     }
 
-    // optional string securityKey = 5;
     public static final int SECURITYKEY_FIELD_NUMBER = 5;
     private java.lang.Object securityKey_;
     /**
@@ -41886,7 +41876,6 @@ public final class AccountProto {
       }
     }
 
-    // optional uint32 loginStatus = 6;
     public static final int LOGINSTATUS_FIELD_NUMBER = 6;
     private int loginStatus_;
     /**
@@ -41910,7 +41899,6 @@ public final class AccountProto {
       return loginStatus_;
     }
 
-    // optional string errMsg = 7;
     public static final int ERRMSG_FIELD_NUMBER = 7;
     private java.lang.Object errMsg_;
     /**
@@ -41977,7 +41965,8 @@ public final class AccountProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -42130,8 +42119,9 @@ public final class AccountProto {
      * Protobuf type {@code ThirdPartSignLoginRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.AccountProto.ThirdPartSignLoginRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ThirdPartSignLoginRsp)
+        com.mi.liveassistant.proto.AccountProto.ThirdPartSignLoginRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.AccountProto.internal_static_ThirdPartSignLoginRsp_descriptor;
@@ -42310,7 +42300,6 @@ public final class AccountProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -42359,7 +42348,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint64 uuid = 2;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 2;</code>
@@ -42408,7 +42396,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string serviceToken = 3;
       private java.lang.Object serviceToken_ = "";
       /**
        * <code>optional string serviceToken = 3;</code>
@@ -42430,9 +42417,12 @@ public final class AccountProto {
       public java.lang.String getServiceToken() {
         java.lang.Object ref = serviceToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          serviceToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            serviceToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -42506,7 +42496,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string passToken = 4;
       private java.lang.Object passToken_ = "";
       /**
        * <code>optional string passToken = 4;</code>
@@ -42528,9 +42517,12 @@ public final class AccountProto {
       public java.lang.String getPassToken() {
         java.lang.Object ref = passToken_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          passToken_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            passToken_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -42604,7 +42596,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string securityKey = 5;
       private java.lang.Object securityKey_ = "";
       /**
        * <code>optional string securityKey = 5;</code>
@@ -42626,9 +42617,12 @@ public final class AccountProto {
       public java.lang.String getSecurityKey() {
         java.lang.Object ref = securityKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          securityKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            securityKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -42702,7 +42696,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional uint32 loginStatus = 6;
       private int loginStatus_ ;
       /**
        * <code>optional uint32 loginStatus = 6;</code>
@@ -42751,7 +42744,6 @@ public final class AccountProto {
         return this;
       }
 
-      // optional string errMsg = 7;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 7;</code>
@@ -42773,9 +42765,12 @@ public final class AccountProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -42860,212 +42855,212 @@ public final class AccountProto {
     // @@protoc_insertion_point(class_scope:ThirdPartSignLoginRsp)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LoginReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LoginRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetServiceTokenReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetServiceTokenReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetServiceTokenRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetServiceTokenRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CertificateReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CertificateReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CertificateRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CertificateRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetCaptchaReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetCaptchaReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetCaptchaRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetCaptchaRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RegisterByPhoneReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RegisterByPhoneReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RegisterByPhoneRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RegisterByPhoneRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginByPhoneReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LoginByPhoneReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginByPhoneRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LoginByPhoneRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_NewPwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_NewPwdReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_NewPwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_NewPwdRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ForgetPwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ForgetPwdReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ForgetPwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ForgetPwdRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginByUuidReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LoginByUuidReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LoginByUuidRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_LoginByUuidRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_SetPwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_SetPwdReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_SetPwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_SetPwdRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_UpdatePwdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_UpdatePwdReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_UpdatePwdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_UpdatePwdRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetAccountPwdInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetAccountPwdInfoReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetAccountPwdInfoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetAccountPwdInfoRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ForgetPwdUuidReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ForgetPwdUuidReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ForgetPwdUuidRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ForgetPwdUuidRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ScanQrCodeReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ScanQrCodeReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ScanQrCodeRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ScanQrCodeRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ConfirmLoginByQrCodeReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ConfirmLoginByQrCodeReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ConfirmLoginByQrCodeRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ConfirmLoginByQrCodeRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_MiSsoLoginReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_MiSsoLoginReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_MiSsoLoginRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_MiSsoLoginRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AppInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_AppInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_UserInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_UserInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetAccessTokenReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetAccessTokenReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetAccessTokenRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetAccessTokenRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetGuideFlagReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetGuideFlagReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetGuideFlagRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetGuideFlagRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_FillUnionidReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_FillUnionidReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_FillUnionidRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_FillUnionidRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ThirdPartSignLoginReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ThirdPartSignLoginReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ThirdPartSignLoginRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -43187,269 +43182,269 @@ public final class AccountProto {
       "stant.protoB\014AccountProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_LoginReq_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_LoginReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_LoginReq_descriptor,
-              new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", });
-          internal_static_LoginRsp_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_LoginRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_LoginRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", });
-          internal_static_GetServiceTokenReq_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_GetServiceTokenReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetServiceTokenReq_descriptor,
-              new java.lang.String[] { "PassToken", "Uuid", });
-          internal_static_GetServiceTokenRsp_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_GetServiceTokenRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetServiceTokenRsp_descriptor,
-              new java.lang.String[] { "RetCode", "PassToken", "ServiceToken", "SecurityKey", });
-          internal_static_CertificateReq_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_CertificateReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CertificateReq_descriptor,
-              new java.lang.String[] { "Uuid", "Openid", "AccessToken", });
-          internal_static_CertificateRsp_descriptor =
-            getDescriptor().getMessageTypes().get(5);
-          internal_static_CertificateRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CertificateRsp_descriptor,
-              new java.lang.String[] { "RetCode", "CertificationType", "Certification", });
-          internal_static_GetCaptchaReq_descriptor =
-            getDescriptor().getMessageTypes().get(6);
-          internal_static_GetCaptchaReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetCaptchaReq_descriptor,
-              new java.lang.String[] { "PhoneNum", "Type", "Lang", });
-          internal_static_GetCaptchaRsp_descriptor =
-            getDescriptor().getMessageTypes().get(7);
-          internal_static_GetCaptchaRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetCaptchaRsp_descriptor,
-              new java.lang.String[] { "RetCode", });
-          internal_static_RegisterByPhoneReq_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_RegisterByPhoneReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RegisterByPhoneReq_descriptor,
-              new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
-          internal_static_RegisterByPhoneRsp_descriptor =
-            getDescriptor().getMessageTypes().get(9);
-          internal_static_RegisterByPhoneRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RegisterByPhoneRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", });
-          internal_static_LoginByPhoneReq_descriptor =
-            getDescriptor().getMessageTypes().get(10);
-          internal_static_LoginByPhoneReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_LoginByPhoneReq_descriptor,
-              new java.lang.String[] { "PhoneNum", "Pwd", });
-          internal_static_LoginByPhoneRsp_descriptor =
-            getDescriptor().getMessageTypes().get(11);
-          internal_static_LoginByPhoneRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_LoginByPhoneRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
-          internal_static_NewPwdReq_descriptor =
-            getDescriptor().getMessageTypes().get(12);
-          internal_static_NewPwdReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_NewPwdReq_descriptor,
-              new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
-          internal_static_NewPwdRsp_descriptor =
-            getDescriptor().getMessageTypes().get(13);
-          internal_static_NewPwdRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_NewPwdRsp_descriptor,
-              new java.lang.String[] { "RetCode", });
-          internal_static_ForgetPwdReq_descriptor =
-            getDescriptor().getMessageTypes().get(14);
-          internal_static_ForgetPwdReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ForgetPwdReq_descriptor,
-              new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
-          internal_static_ForgetPwdRsp_descriptor =
-            getDescriptor().getMessageTypes().get(15);
-          internal_static_ForgetPwdRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ForgetPwdRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
-          internal_static_LoginByUuidReq_descriptor =
-            getDescriptor().getMessageTypes().get(16);
-          internal_static_LoginByUuidReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_LoginByUuidReq_descriptor,
-              new java.lang.String[] { "Uuid", "Pwd", });
-          internal_static_LoginByUuidRsp_descriptor =
-            getDescriptor().getMessageTypes().get(17);
-          internal_static_LoginByUuidRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_LoginByUuidRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
-          internal_static_SetPwdReq_descriptor =
-            getDescriptor().getMessageTypes().get(18);
-          internal_static_SetPwdReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_SetPwdReq_descriptor,
-              new java.lang.String[] { "Uuid", "Pwd", });
-          internal_static_SetPwdRsp_descriptor =
-            getDescriptor().getMessageTypes().get(19);
-          internal_static_SetPwdRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_SetPwdRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", });
-          internal_static_UpdatePwdReq_descriptor =
-            getDescriptor().getMessageTypes().get(20);
-          internal_static_UpdatePwdReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_UpdatePwdReq_descriptor,
-              new java.lang.String[] { "Uuid", "Oldpwd", "Newpwd", });
-          internal_static_UpdatePwdRsp_descriptor =
-            getDescriptor().getMessageTypes().get(21);
-          internal_static_UpdatePwdRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_UpdatePwdRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", });
-          internal_static_GetAccountPwdInfoReq_descriptor =
-            getDescriptor().getMessageTypes().get(22);
-          internal_static_GetAccountPwdInfoReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetAccountPwdInfoReq_descriptor,
-              new java.lang.String[] { "Uuid", });
-          internal_static_GetAccountPwdInfoRsp_descriptor =
-            getDescriptor().getMessageTypes().get(23);
-          internal_static_GetAccountPwdInfoRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetAccountPwdInfoRsp_descriptor,
-              new java.lang.String[] { "RetCode", "CreateAccountType", "Haspwd", "ErrMsg", });
-          internal_static_ForgetPwdUuidReq_descriptor =
-            getDescriptor().getMessageTypes().get(24);
-          internal_static_ForgetPwdUuidReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ForgetPwdUuidReq_descriptor,
-              new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", "Uuid", "Pwd", });
-          internal_static_ForgetPwdUuidRsp_descriptor =
-            getDescriptor().getMessageTypes().get(25);
-          internal_static_ForgetPwdUuidRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ForgetPwdUuidRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
-          internal_static_ScanQrCodeReq_descriptor =
-            getDescriptor().getMessageTypes().get(26);
-          internal_static_ScanQrCodeReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ScanQrCodeReq_descriptor,
-              new java.lang.String[] { "Uuid", "QrCode", });
-          internal_static_ScanQrCodeRsp_descriptor =
-            getDescriptor().getMessageTypes().get(27);
-          internal_static_ScanQrCodeRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ScanQrCodeRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", });
-          internal_static_ConfirmLoginByQrCodeReq_descriptor =
-            getDescriptor().getMessageTypes().get(28);
-          internal_static_ConfirmLoginByQrCodeReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ConfirmLoginByQrCodeReq_descriptor,
-              new java.lang.String[] { "Uuid", "QrCode", });
-          internal_static_ConfirmLoginByQrCodeRsp_descriptor =
-            getDescriptor().getMessageTypes().get(29);
-          internal_static_ConfirmLoginByQrCodeRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ConfirmLoginByQrCodeRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", });
-          internal_static_MiSsoLoginReq_descriptor =
-            getDescriptor().getMessageTypes().get(30);
-          internal_static_MiSsoLoginReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_MiSsoLoginReq_descriptor,
-              new java.lang.String[] { "AccountType", "Mid", "Miservicetoken", });
-          internal_static_MiSsoLoginRsp_descriptor =
-            getDescriptor().getMessageTypes().get(31);
-          internal_static_MiSsoLoginRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_MiSsoLoginRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", "ErrMsg", });
-          internal_static_AppInfo_descriptor =
-            getDescriptor().getMessageTypes().get(32);
-          internal_static_AppInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_AppInfo_descriptor,
-              new java.lang.String[] { "AppId", "AppKey", });
-          internal_static_UserInfo_descriptor =
-            getDescriptor().getMessageTypes().get(33);
-          internal_static_UserInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_UserInfo_descriptor,
-              new java.lang.String[] { "Uuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", });
-          internal_static_GetAccessTokenReq_descriptor =
-            getDescriptor().getMessageTypes().get(34);
-          internal_static_GetAccessTokenReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetAccessTokenReq_descriptor,
-              new java.lang.String[] { "Appid", "Uuid", });
-          internal_static_GetAccessTokenRsp_descriptor =
-            getDescriptor().getMessageTypes().get(35);
-          internal_static_GetAccessTokenRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetAccessTokenRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ServiceToken", "SecurityKey", "Errmsg", });
-          internal_static_GetGuideFlagReq_descriptor =
-            getDescriptor().getMessageTypes().get(36);
-          internal_static_GetGuideFlagReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetGuideFlagReq_descriptor,
-              new java.lang.String[] { "Uuid", });
-          internal_static_GetGuideFlagRsp_descriptor =
-            getDescriptor().getMessageTypes().get(37);
-          internal_static_GetGuideFlagRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetGuideFlagRsp_descriptor,
-              new java.lang.String[] { "RetCode", "IsGuide", "ReminderMsg", "DiamondsCnt", "IsGuideNoMore", "ErrMsg", });
-          internal_static_FillUnionidReq_descriptor =
-            getDescriptor().getMessageTypes().get(38);
-          internal_static_FillUnionidReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_FillUnionidReq_descriptor,
-              new java.lang.String[] { "Uuid", "Code", });
-          internal_static_FillUnionidRsp_descriptor =
-            getDescriptor().getMessageTypes().get(39);
-          internal_static_FillUnionidRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_FillUnionidRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", });
-          internal_static_ThirdPartSignLoginReq_descriptor =
-            getDescriptor().getMessageTypes().get(40);
-          internal_static_ThirdPartSignLoginReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ThirdPartSignLoginReq_descriptor,
-              new java.lang.String[] { "ChannelId", "Xuid", "Sex", "Nickname", "HeadUrl", "Sign", });
-          internal_static_ThirdPartSignLoginRsp_descriptor =
-            getDescriptor().getMessageTypes().get(41);
-          internal_static_ThirdPartSignLoginRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ThirdPartSignLoginRsp_descriptor,
-              new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "PassToken", "SecurityKey", "LoginStatus", "ErrMsg", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_LoginReq_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_LoginReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LoginReq_descriptor,
+        new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", });
+    internal_static_LoginRsp_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_LoginRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LoginRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", });
+    internal_static_GetServiceTokenReq_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_GetServiceTokenReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetServiceTokenReq_descriptor,
+        new java.lang.String[] { "PassToken", "Uuid", });
+    internal_static_GetServiceTokenRsp_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_GetServiceTokenRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetServiceTokenRsp_descriptor,
+        new java.lang.String[] { "RetCode", "PassToken", "ServiceToken", "SecurityKey", });
+    internal_static_CertificateReq_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_CertificateReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CertificateReq_descriptor,
+        new java.lang.String[] { "Uuid", "Openid", "AccessToken", });
+    internal_static_CertificateRsp_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_CertificateRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CertificateRsp_descriptor,
+        new java.lang.String[] { "RetCode", "CertificationType", "Certification", });
+    internal_static_GetCaptchaReq_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_GetCaptchaReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetCaptchaReq_descriptor,
+        new java.lang.String[] { "PhoneNum", "Type", "Lang", });
+    internal_static_GetCaptchaRsp_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_GetCaptchaRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetCaptchaRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_RegisterByPhoneReq_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_RegisterByPhoneReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RegisterByPhoneReq_descriptor,
+        new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
+    internal_static_RegisterByPhoneRsp_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_RegisterByPhoneRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RegisterByPhoneRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", });
+    internal_static_LoginByPhoneReq_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_LoginByPhoneReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LoginByPhoneReq_descriptor,
+        new java.lang.String[] { "PhoneNum", "Pwd", });
+    internal_static_LoginByPhoneRsp_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_LoginByPhoneRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LoginByPhoneRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
+    internal_static_NewPwdReq_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_NewPwdReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_NewPwdReq_descriptor,
+        new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
+    internal_static_NewPwdRsp_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_NewPwdRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_NewPwdRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_ForgetPwdReq_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_ForgetPwdReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ForgetPwdReq_descriptor,
+        new java.lang.String[] { "PhoneNum", "Pwd", "Captcha", });
+    internal_static_ForgetPwdRsp_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_ForgetPwdRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ForgetPwdRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", });
+    internal_static_LoginByUuidReq_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_LoginByUuidReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LoginByUuidReq_descriptor,
+        new java.lang.String[] { "Uuid", "Pwd", });
+    internal_static_LoginByUuidRsp_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_LoginByUuidRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LoginByUuidRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
+    internal_static_SetPwdReq_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_SetPwdReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_SetPwdReq_descriptor,
+        new java.lang.String[] { "Uuid", "Pwd", });
+    internal_static_SetPwdRsp_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_SetPwdRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_SetPwdRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", });
+    internal_static_UpdatePwdReq_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_UpdatePwdReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_UpdatePwdReq_descriptor,
+        new java.lang.String[] { "Uuid", "Oldpwd", "Newpwd", });
+    internal_static_UpdatePwdRsp_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_UpdatePwdRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_UpdatePwdRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", });
+    internal_static_GetAccountPwdInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(22);
+    internal_static_GetAccountPwdInfoReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetAccountPwdInfoReq_descriptor,
+        new java.lang.String[] { "Uuid", });
+    internal_static_GetAccountPwdInfoRsp_descriptor =
+      getDescriptor().getMessageTypes().get(23);
+    internal_static_GetAccountPwdInfoRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetAccountPwdInfoRsp_descriptor,
+        new java.lang.String[] { "RetCode", "CreateAccountType", "Haspwd", "ErrMsg", });
+    internal_static_ForgetPwdUuidReq_descriptor =
+      getDescriptor().getMessageTypes().get(24);
+    internal_static_ForgetPwdUuidReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ForgetPwdUuidReq_descriptor,
+        new java.lang.String[] { "AccountType", "Code", "Openid", "AccessToken", "ExpiresIn", "RefreshToken", "Uuid", "Pwd", });
+    internal_static_ForgetPwdUuidRsp_descriptor =
+      getDescriptor().getMessageTypes().get(25);
+    internal_static_ForgetPwdUuidRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ForgetPwdUuidRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headinfo", "Sex", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "ErrMsg", });
+    internal_static_ScanQrCodeReq_descriptor =
+      getDescriptor().getMessageTypes().get(26);
+    internal_static_ScanQrCodeReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ScanQrCodeReq_descriptor,
+        new java.lang.String[] { "Uuid", "QrCode", });
+    internal_static_ScanQrCodeRsp_descriptor =
+      getDescriptor().getMessageTypes().get(27);
+    internal_static_ScanQrCodeRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ScanQrCodeRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", });
+    internal_static_ConfirmLoginByQrCodeReq_descriptor =
+      getDescriptor().getMessageTypes().get(28);
+    internal_static_ConfirmLoginByQrCodeReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ConfirmLoginByQrCodeReq_descriptor,
+        new java.lang.String[] { "Uuid", "QrCode", });
+    internal_static_ConfirmLoginByQrCodeRsp_descriptor =
+      getDescriptor().getMessageTypes().get(29);
+    internal_static_ConfirmLoginByQrCodeRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ConfirmLoginByQrCodeRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", });
+    internal_static_MiSsoLoginReq_descriptor =
+      getDescriptor().getMessageTypes().get(30);
+    internal_static_MiSsoLoginReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_MiSsoLoginReq_descriptor,
+        new java.lang.String[] { "AccountType", "Mid", "Miservicetoken", });
+    internal_static_MiSsoLoginRsp_descriptor =
+      getDescriptor().getMessageTypes().get(31);
+    internal_static_MiSsoLoginRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_MiSsoLoginRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "SecurityKey", "PassToken", "Nickname", "Headimgurl", "Sex", "LoginStatus", "HasInnerAvatar", "HasInnerNickname", "HasInnerSex", "IsSetGuide", "ErrMsg", });
+    internal_static_AppInfo_descriptor =
+      getDescriptor().getMessageTypes().get(32);
+    internal_static_AppInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_AppInfo_descriptor,
+        new java.lang.String[] { "AppId", "AppKey", });
+    internal_static_UserInfo_descriptor =
+      getDescriptor().getMessageTypes().get(33);
+    internal_static_UserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_UserInfo_descriptor,
+        new java.lang.String[] { "Uuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", });
+    internal_static_GetAccessTokenReq_descriptor =
+      getDescriptor().getMessageTypes().get(34);
+    internal_static_GetAccessTokenReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetAccessTokenReq_descriptor,
+        new java.lang.String[] { "Appid", "Uuid", });
+    internal_static_GetAccessTokenRsp_descriptor =
+      getDescriptor().getMessageTypes().get(35);
+    internal_static_GetAccessTokenRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetAccessTokenRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ServiceToken", "SecurityKey", "Errmsg", });
+    internal_static_GetGuideFlagReq_descriptor =
+      getDescriptor().getMessageTypes().get(36);
+    internal_static_GetGuideFlagReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetGuideFlagReq_descriptor,
+        new java.lang.String[] { "Uuid", });
+    internal_static_GetGuideFlagRsp_descriptor =
+      getDescriptor().getMessageTypes().get(37);
+    internal_static_GetGuideFlagRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetGuideFlagRsp_descriptor,
+        new java.lang.String[] { "RetCode", "IsGuide", "ReminderMsg", "DiamondsCnt", "IsGuideNoMore", "ErrMsg", });
+    internal_static_FillUnionidReq_descriptor =
+      getDescriptor().getMessageTypes().get(38);
+    internal_static_FillUnionidReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_FillUnionidReq_descriptor,
+        new java.lang.String[] { "Uuid", "Code", });
+    internal_static_FillUnionidRsp_descriptor =
+      getDescriptor().getMessageTypes().get(39);
+    internal_static_FillUnionidRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_FillUnionidRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", });
+    internal_static_ThirdPartSignLoginReq_descriptor =
+      getDescriptor().getMessageTypes().get(40);
+    internal_static_ThirdPartSignLoginReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ThirdPartSignLoginReq_descriptor,
+        new java.lang.String[] { "ChannelId", "Xuid", "Sex", "Nickname", "HeadUrl", "Sign", });
+    internal_static_ThirdPartSignLoginRsp_descriptor =
+      getDescriptor().getMessageTypes().get(41);
+    internal_static_ThirdPartSignLoginRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ThirdPartSignLoginRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Uuid", "ServiceToken", "PassToken", "SecurityKey", "LoginStatus", "ErrMsg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

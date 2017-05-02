@@ -8,10 +8,10 @@ public final class UserProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface BusinessUserInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface BusinessUserInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.BusinessUserInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated string service_phone = 1;
     /**
      * <code>repeated string service_phone = 1;</code>
      *
@@ -19,8 +19,8 @@ public final class UserProto {
      *电话0
      * </pre>
      */
-    java.util.List<java.lang.String>
-    getServicePhoneList();
+    com.google.protobuf.ProtocolStringList
+        getServicePhoneList();
     /**
      * <code>repeated string service_phone = 1;</code>
      *
@@ -47,7 +47,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getServicePhoneBytes(int index);
 
-    // optional string address = 2;
     /**
      * <code>optional string address = 2;</code>
      *
@@ -74,7 +73,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getAddressBytes();
 
-    // optional string business_hours = 3;
     /**
      * <code>optional string business_hours = 3;</code>
      *
@@ -101,7 +99,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getBusinessHoursBytes();
 
-    // optional string intro = 4;
     /**
      * <code>optional string intro = 4;</code>
      *
@@ -136,8 +133,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class BusinessUserInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements BusinessUserInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.BusinessUserInfo)
+      BusinessUserInfoOrBuilder {
     // Use BusinessUserInfo.newBuilder() to construct.
     private BusinessUserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -184,26 +182,30 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
                 servicePhone_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000001;
               }
-              servicePhone_.add(input.readBytes());
+              servicePhone_.add(bs);
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              address_ = input.readBytes();
+              address_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              businessHours_ = input.readBytes();
+              businessHours_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              intro_ = input.readBytes();
+              intro_ = bs;
               break;
             }
           }
@@ -215,7 +217,7 @@ public final class UserProto {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          servicePhone_ = new com.google.protobuf.UnmodifiableLazyStringList(servicePhone_);
+          servicePhone_ = servicePhone_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -249,7 +251,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // repeated string service_phone = 1;
     public static final int SERVICE_PHONE_FIELD_NUMBER = 1;
     private com.google.protobuf.LazyStringList servicePhone_;
     /**
@@ -259,7 +260,7 @@ public final class UserProto {
      *电话0
      * </pre>
      */
-    public java.util.List<java.lang.String>
+    public com.google.protobuf.ProtocolStringList
         getServicePhoneList() {
       return servicePhone_;
     }
@@ -295,7 +296,6 @@ public final class UserProto {
       return servicePhone_.getByteString(index);
     }
 
-    // optional string address = 2;
     public static final int ADDRESS_FIELD_NUMBER = 2;
     private java.lang.Object address_;
     /**
@@ -350,7 +350,6 @@ public final class UserProto {
       }
     }
 
-    // optional string business_hours = 3;
     public static final int BUSINESS_HOURS_FIELD_NUMBER = 3;
     private java.lang.Object businessHours_;
     /**
@@ -405,7 +404,6 @@ public final class UserProto {
       }
     }
 
-    // optional string intro = 4;
     public static final int INTRO_FIELD_NUMBER = 4;
     private java.lang.Object intro_;
     /**
@@ -469,7 +467,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -606,8 +605,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.BusinessUserInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.BusinessUserInfo)
+        com.mi.liveassistant.proto.UserProto.BusinessUserInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_BusinessUserInfo_descriptor;
@@ -677,8 +677,7 @@ public final class UserProto {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          servicePhone_ = new com.google.protobuf.UnmodifiableLazyStringList(
-              servicePhone_);
+          servicePhone_ = servicePhone_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.servicePhone_ = servicePhone_;
@@ -762,7 +761,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // repeated string service_phone = 1;
       private com.google.protobuf.LazyStringList servicePhone_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureServicePhoneIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -777,9 +775,9 @@ public final class UserProto {
        *电话0
        * </pre>
        */
-      public java.util.List<java.lang.String>
+      public com.google.protobuf.ProtocolStringList
           getServicePhoneList() {
-        return java.util.Collections.unmodifiableList(servicePhone_);
+        return servicePhone_.getUnmodifiableView();
       }
       /**
        * <code>repeated string service_phone = 1;</code>
@@ -856,7 +854,8 @@ public final class UserProto {
       public Builder addAllServicePhone(
           java.lang.Iterable<java.lang.String> values) {
         ensureServicePhoneIsMutable();
-        super.addAll(values, servicePhone_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, servicePhone_);
         onChanged();
         return this;
       }
@@ -891,7 +890,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string address = 2;
       private java.lang.Object address_ = "";
       /**
        * <code>optional string address = 2;</code>
@@ -913,9 +911,12 @@ public final class UserProto {
       public java.lang.String getAddress() {
         java.lang.Object ref = address_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          address_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            address_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -989,7 +990,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string business_hours = 3;
       private java.lang.Object businessHours_ = "";
       /**
        * <code>optional string business_hours = 3;</code>
@@ -1011,9 +1011,12 @@ public final class UserProto {
       public java.lang.String getBusinessHours() {
         java.lang.Object ref = businessHours_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          businessHours_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            businessHours_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1087,7 +1090,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string intro = 4;
       private java.lang.Object intro_ = "";
       /**
        * <code>optional string intro = 4;</code>
@@ -1109,9 +1111,12 @@ public final class UserProto {
       public java.lang.String getIntro() {
         java.lang.Object ref = intro_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          intro_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            intro_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1196,10 +1201,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.BusinessUserInfo)
   }
 
-  public interface PersonalInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface PersonalInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.PersonalInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -1209,7 +1214,6 @@ public final class UserProto {
      */
     long getZuid();
 
-    // optional uint64 avatar = 2;
     /**
      * <code>optional uint64 avatar = 2;</code>
      *
@@ -1227,7 +1231,6 @@ public final class UserProto {
      */
     long getAvatar();
 
-    // optional string nickname = 3;
     /**
      * <code>optional string nickname = 3;</code>
      *
@@ -1254,7 +1257,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string sign = 4;
     /**
      * <code>optional string sign = 4;</code>
      *
@@ -1281,7 +1283,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getSignBytes();
 
-    // optional uint32 gender = 5;
     /**
      * <code>optional uint32 gender = 5;</code>
      *
@@ -1299,7 +1300,6 @@ public final class UserProto {
      */
     int getGender();
 
-    // optional uint32 level = 6;
     /**
      * <code>optional uint32 level = 6;</code>
      *
@@ -1317,7 +1317,6 @@ public final class UserProto {
      */
     int getLevel();
 
-    // optional uint32 badge = 7;
     /**
      * <code>optional uint32 badge = 7;</code>
      *
@@ -1335,7 +1334,6 @@ public final class UserProto {
      */
     int getBadge();
 
-    // optional uint64 updateTime = 8;
     /**
      * <code>optional uint64 updateTime = 8;</code>
      *
@@ -1353,7 +1351,6 @@ public final class UserProto {
      */
     long getUpdateTime();
 
-    // optional bool isFocused = 9;
     /**
      * <code>optional bool isFocused = 9;</code>
      *
@@ -1371,7 +1368,6 @@ public final class UserProto {
      */
     boolean getIsFocused();
 
-    // optional string certification = 10;
     /**
      * <code>optional string certification = 10;</code>
      *
@@ -1398,7 +1394,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCertificationBytes();
 
-    // optional bool isBothwayFollowing = 11;
     /**
      * <code>optional bool isBothwayFollowing = 11;</code>
      *
@@ -1416,7 +1411,6 @@ public final class UserProto {
      */
     boolean getIsBothwayFollowing();
 
-    // optional uint32 certificationType = 12;
     /**
      * <code>optional uint32 certificationType = 12;</code>
      *
@@ -1434,7 +1428,6 @@ public final class UserProto {
      */
     int getCertificationType();
 
-    // optional bool isBlocked = 13;
     /**
      * <code>optional bool isBlocked = 13;</code>
      *
@@ -1452,7 +1445,6 @@ public final class UserProto {
      */
     boolean getIsBlocked();
 
-    // optional bool isInspector = 14;
     /**
      * <code>optional bool isInspector = 14;</code>
      *
@@ -1470,7 +1462,6 @@ public final class UserProto {
      */
     boolean getIsInspector();
 
-    // repeated uint64 adminUids = 15;
     /**
      * <code>repeated uint64 adminUids = 15;</code>
      *
@@ -1496,7 +1487,6 @@ public final class UserProto {
      */
     long getAdminUids(int index);
 
-    // optional uint32 waiting_certification_type = 16;
     /**
      * <code>optional uint32 waiting_certification_type = 16;</code>
      *
@@ -1514,7 +1504,6 @@ public final class UserProto {
      */
     int getWaitingCertificationType();
 
-    // optional string certification_id = 17;
     /**
      * <code>optional string certification_id = 17;</code>
      *
@@ -1541,7 +1530,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCertificationIdBytes();
 
-    // optional uint32 real_name_certification_status = 18;
     /**
      * <code>optional uint32 real_name_certification_status = 18;</code>
      *
@@ -1559,7 +1547,6 @@ public final class UserProto {
      */
     int getRealNameCertificationStatus();
 
-    // optional string cover_photo = 19;
     /**
      * <code>optional string cover_photo = 19;</code>
      *
@@ -1586,7 +1573,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCoverPhotoBytes();
 
-    // optional uint32 user_type = 20;
     /**
      * <code>optional uint32 user_type = 20;</code>
      *
@@ -1604,7 +1590,6 @@ public final class UserProto {
      */
     int getUserType();
 
-    // optional .com.mi.liveassistant.proto.BusinessUserInfo business_user_info = 21;
     /**
      * <code>optional .com.mi.liveassistant.proto.BusinessUserInfo business_user_info = 21;</code>
      *
@@ -1630,7 +1615,6 @@ public final class UserProto {
      */
     com.mi.liveassistant.proto.UserProto.BusinessUserInfoOrBuilder getBusinessUserInfoOrBuilder();
 
-    // optional uint32 seller_status = 22;
     /**
      * <code>optional uint32 seller_status = 22;</code>
      *
@@ -1648,7 +1632,6 @@ public final class UserProto {
      */
     int getSellerStatus();
 
-    // optional bool isFirstAudit = 23;
     /**
      * <code>optional bool isFirstAudit = 23;</code>
      *
@@ -1666,7 +1649,6 @@ public final class UserProto {
      */
     boolean getIsFirstAudit();
 
-    // optional bool isRedname = 24;
     /**
      * <code>optional bool isRedname = 24;</code>
      *
@@ -1684,7 +1666,6 @@ public final class UserProto {
      */
     boolean getIsRedname();
 
-    // optional .com.mi.liveassistant.proto.Region region = 25;
     /**
      * <code>optional .com.mi.liveassistant.proto.Region region = 25;</code>
      *
@@ -1714,8 +1695,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.PersonalInfo}
    */
   public static final class PersonalInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements PersonalInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.PersonalInfo)
+      PersonalInfoOrBuilder {
     // Use PersonalInfo.newBuilder() to construct.
     private PersonalInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1772,13 +1754,15 @@ public final class UserProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              sign_ = input.readBytes();
+              sign_ = bs;
               break;
             }
             case 40: {
@@ -1807,8 +1791,9 @@ public final class UserProto {
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              certification_ = input.readBytes();
+              certification_ = bs;
               break;
             }
             case 88: {
@@ -1858,8 +1843,9 @@ public final class UserProto {
               break;
             }
             case 138: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00008000;
-              certificationId_ = input.readBytes();
+              certificationId_ = bs;
               break;
             }
             case 144: {
@@ -1868,8 +1854,9 @@ public final class UserProto {
               break;
             }
             case 154: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00020000;
-              coverPhoto_ = input.readBytes();
+              coverPhoto_ = bs;
               break;
             }
             case 160: {
@@ -1961,7 +1948,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -1977,7 +1963,6 @@ public final class UserProto {
       return zuid_;
     }
 
-    // optional uint64 avatar = 2;
     public static final int AVATAR_FIELD_NUMBER = 2;
     private long avatar_;
     /**
@@ -2001,7 +1986,6 @@ public final class UserProto {
       return avatar_;
     }
 
-    // optional string nickname = 3;
     public static final int NICKNAME_FIELD_NUMBER = 3;
     private java.lang.Object nickname_;
     /**
@@ -2056,7 +2040,6 @@ public final class UserProto {
       }
     }
 
-    // optional string sign = 4;
     public static final int SIGN_FIELD_NUMBER = 4;
     private java.lang.Object sign_;
     /**
@@ -2111,7 +2094,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 gender = 5;
     public static final int GENDER_FIELD_NUMBER = 5;
     private int gender_;
     /**
@@ -2135,7 +2117,6 @@ public final class UserProto {
       return gender_;
     }
 
-    // optional uint32 level = 6;
     public static final int LEVEL_FIELD_NUMBER = 6;
     private int level_;
     /**
@@ -2159,7 +2140,6 @@ public final class UserProto {
       return level_;
     }
 
-    // optional uint32 badge = 7;
     public static final int BADGE_FIELD_NUMBER = 7;
     private int badge_;
     /**
@@ -2183,7 +2163,6 @@ public final class UserProto {
       return badge_;
     }
 
-    // optional uint64 updateTime = 8;
     public static final int UPDATETIME_FIELD_NUMBER = 8;
     private long updateTime_;
     /**
@@ -2207,7 +2186,6 @@ public final class UserProto {
       return updateTime_;
     }
 
-    // optional bool isFocused = 9;
     public static final int ISFOCUSED_FIELD_NUMBER = 9;
     private boolean isFocused_;
     /**
@@ -2231,7 +2209,6 @@ public final class UserProto {
       return isFocused_;
     }
 
-    // optional string certification = 10;
     public static final int CERTIFICATION_FIELD_NUMBER = 10;
     private java.lang.Object certification_;
     /**
@@ -2286,7 +2263,6 @@ public final class UserProto {
       }
     }
 
-    // optional bool isBothwayFollowing = 11;
     public static final int ISBOTHWAYFOLLOWING_FIELD_NUMBER = 11;
     private boolean isBothwayFollowing_;
     /**
@@ -2310,7 +2286,6 @@ public final class UserProto {
       return isBothwayFollowing_;
     }
 
-    // optional uint32 certificationType = 12;
     public static final int CERTIFICATIONTYPE_FIELD_NUMBER = 12;
     private int certificationType_;
     /**
@@ -2334,7 +2309,6 @@ public final class UserProto {
       return certificationType_;
     }
 
-    // optional bool isBlocked = 13;
     public static final int ISBLOCKED_FIELD_NUMBER = 13;
     private boolean isBlocked_;
     /**
@@ -2358,7 +2332,6 @@ public final class UserProto {
       return isBlocked_;
     }
 
-    // optional bool isInspector = 14;
     public static final int ISINSPECTOR_FIELD_NUMBER = 14;
     private boolean isInspector_;
     /**
@@ -2382,7 +2355,6 @@ public final class UserProto {
       return isInspector_;
     }
 
-    // repeated uint64 adminUids = 15;
     public static final int ADMINUIDS_FIELD_NUMBER = 15;
     private java.util.List<java.lang.Long> adminUids_;
     /**
@@ -2417,7 +2389,6 @@ public final class UserProto {
       return adminUids_.get(index);
     }
 
-    // optional uint32 waiting_certification_type = 16;
     public static final int WAITING_CERTIFICATION_TYPE_FIELD_NUMBER = 16;
     private int waitingCertificationType_;
     /**
@@ -2441,7 +2412,6 @@ public final class UserProto {
       return waitingCertificationType_;
     }
 
-    // optional string certification_id = 17;
     public static final int CERTIFICATION_ID_FIELD_NUMBER = 17;
     private java.lang.Object certificationId_;
     /**
@@ -2496,7 +2466,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 real_name_certification_status = 18;
     public static final int REAL_NAME_CERTIFICATION_STATUS_FIELD_NUMBER = 18;
     private int realNameCertificationStatus_;
     /**
@@ -2520,7 +2489,6 @@ public final class UserProto {
       return realNameCertificationStatus_;
     }
 
-    // optional string cover_photo = 19;
     public static final int COVER_PHOTO_FIELD_NUMBER = 19;
     private java.lang.Object coverPhoto_;
     /**
@@ -2575,7 +2543,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 user_type = 20;
     public static final int USER_TYPE_FIELD_NUMBER = 20;
     private int userType_;
     /**
@@ -2599,7 +2566,6 @@ public final class UserProto {
       return userType_;
     }
 
-    // optional .com.mi.liveassistant.proto.BusinessUserInfo business_user_info = 21;
     public static final int BUSINESS_USER_INFO_FIELD_NUMBER = 21;
     private com.mi.liveassistant.proto.UserProto.BusinessUserInfo businessUserInfo_;
     /**
@@ -2633,7 +2599,6 @@ public final class UserProto {
       return businessUserInfo_;
     }
 
-    // optional uint32 seller_status = 22;
     public static final int SELLER_STATUS_FIELD_NUMBER = 22;
     private int sellerStatus_;
     /**
@@ -2657,7 +2622,6 @@ public final class UserProto {
       return sellerStatus_;
     }
 
-    // optional bool isFirstAudit = 23;
     public static final int ISFIRSTAUDIT_FIELD_NUMBER = 23;
     private boolean isFirstAudit_;
     /**
@@ -2681,7 +2645,6 @@ public final class UserProto {
       return isFirstAudit_;
     }
 
-    // optional bool isRedname = 24;
     public static final int ISREDNAME_FIELD_NUMBER = 24;
     private boolean isRedname_;
     /**
@@ -2705,7 +2668,6 @@ public final class UserProto {
       return isRedname_;
     }
 
-    // optional .com.mi.liveassistant.proto.Region region = 25;
     public static final int REGION_FIELD_NUMBER = 25;
     private com.mi.liveassistant.proto.UserProto.Region region_;
     /**
@@ -2769,7 +2731,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -3053,8 +3016,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.PersonalInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.PersonalInfo)
+        com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_PersonalInfo_descriptor;
@@ -3423,7 +3387,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -3456,7 +3419,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint64 avatar = 2;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 2;</code>
@@ -3505,7 +3467,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string nickname = 3;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 3;</code>
@@ -3527,9 +3488,12 @@ public final class UserProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3603,7 +3567,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string sign = 4;
       private java.lang.Object sign_ = "";
       /**
        * <code>optional string sign = 4;</code>
@@ -3625,9 +3588,12 @@ public final class UserProto {
       public java.lang.String getSign() {
         java.lang.Object ref = sign_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          sign_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sign_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3701,7 +3667,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 gender = 5;
       private int gender_ ;
       /**
        * <code>optional uint32 gender = 5;</code>
@@ -3750,7 +3715,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 level = 6;
       private int level_ ;
       /**
        * <code>optional uint32 level = 6;</code>
@@ -3799,7 +3763,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 badge = 7;
       private int badge_ ;
       /**
        * <code>optional uint32 badge = 7;</code>
@@ -3848,7 +3811,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint64 updateTime = 8;
       private long updateTime_ ;
       /**
        * <code>optional uint64 updateTime = 8;</code>
@@ -3897,7 +3859,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isFocused = 9;
       private boolean isFocused_ ;
       /**
        * <code>optional bool isFocused = 9;</code>
@@ -3946,7 +3907,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string certification = 10;
       private java.lang.Object certification_ = "";
       /**
        * <code>optional string certification = 10;</code>
@@ -3968,9 +3928,12 @@ public final class UserProto {
       public java.lang.String getCertification() {
         java.lang.Object ref = certification_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          certification_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certification_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4044,7 +4007,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isBothwayFollowing = 11;
       private boolean isBothwayFollowing_ ;
       /**
        * <code>optional bool isBothwayFollowing = 11;</code>
@@ -4093,7 +4055,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 certificationType = 12;
       private int certificationType_ ;
       /**
        * <code>optional uint32 certificationType = 12;</code>
@@ -4142,7 +4103,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isBlocked = 13;
       private boolean isBlocked_ ;
       /**
        * <code>optional bool isBlocked = 13;</code>
@@ -4191,7 +4151,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isInspector = 14;
       private boolean isInspector_ ;
       /**
        * <code>optional bool isInspector = 14;</code>
@@ -4240,7 +4199,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated uint64 adminUids = 15;
       private java.util.List<java.lang.Long> adminUids_ = java.util.Collections.emptyList();
       private void ensureAdminUidsIsMutable() {
         if (!((bitField0_ & 0x00004000) == 0x00004000)) {
@@ -4316,7 +4274,8 @@ public final class UserProto {
       public Builder addAllAdminUids(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureAdminUidsIsMutable();
-        super.addAll(values, adminUids_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, adminUids_);
         onChanged();
         return this;
       }
@@ -4334,7 +4293,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 waiting_certification_type = 16;
       private int waitingCertificationType_ ;
       /**
        * <code>optional uint32 waiting_certification_type = 16;</code>
@@ -4383,7 +4341,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string certification_id = 17;
       private java.lang.Object certificationId_ = "";
       /**
        * <code>optional string certification_id = 17;</code>
@@ -4405,9 +4362,12 @@ public final class UserProto {
       public java.lang.String getCertificationId() {
         java.lang.Object ref = certificationId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          certificationId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certificationId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4481,7 +4441,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 real_name_certification_status = 18;
       private int realNameCertificationStatus_ ;
       /**
        * <code>optional uint32 real_name_certification_status = 18;</code>
@@ -4530,7 +4489,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string cover_photo = 19;
       private java.lang.Object coverPhoto_ = "";
       /**
        * <code>optional string cover_photo = 19;</code>
@@ -4552,9 +4510,12 @@ public final class UserProto {
       public java.lang.String getCoverPhoto() {
         java.lang.Object ref = coverPhoto_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverPhoto_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverPhoto_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -4628,7 +4589,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 user_type = 20;
       private int userType_ ;
       /**
        * <code>optional uint32 user_type = 20;</code>
@@ -4677,7 +4637,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.BusinessUserInfo business_user_info = 21;
       private com.mi.liveassistant.proto.UserProto.BusinessUserInfo businessUserInfo_ = com.mi.liveassistant.proto.UserProto.BusinessUserInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.BusinessUserInfo, com.mi.liveassistant.proto.UserProto.BusinessUserInfo.Builder, com.mi.liveassistant.proto.UserProto.BusinessUserInfoOrBuilder> businessUserInfoBuilder_;
@@ -4822,7 +4781,7 @@ public final class UserProto {
         if (businessUserInfoBuilder_ == null) {
           businessUserInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.BusinessUserInfo, com.mi.liveassistant.proto.UserProto.BusinessUserInfo.Builder, com.mi.liveassistant.proto.UserProto.BusinessUserInfoOrBuilder>(
-                  businessUserInfo_,
+                  getBusinessUserInfo(),
                   getParentForChildren(),
                   isClean());
           businessUserInfo_ = null;
@@ -4830,7 +4789,6 @@ public final class UserProto {
         return businessUserInfoBuilder_;
       }
 
-      // optional uint32 seller_status = 22;
       private int sellerStatus_ ;
       /**
        * <code>optional uint32 seller_status = 22;</code>
@@ -4879,7 +4837,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isFirstAudit = 23;
       private boolean isFirstAudit_ ;
       /**
        * <code>optional bool isFirstAudit = 23;</code>
@@ -4928,7 +4885,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isRedname = 24;
       private boolean isRedname_ ;
       /**
        * <code>optional bool isRedname = 24;</code>
@@ -4977,7 +4933,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.Region region = 25;
       private com.mi.liveassistant.proto.UserProto.Region region_ = com.mi.liveassistant.proto.UserProto.Region.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.Region, com.mi.liveassistant.proto.UserProto.Region.Builder, com.mi.liveassistant.proto.UserProto.RegionOrBuilder> regionBuilder_;
@@ -5122,7 +5077,7 @@ public final class UserProto {
         if (regionBuilder_ == null) {
           regionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.Region, com.mi.liveassistant.proto.UserProto.Region.Builder, com.mi.liveassistant.proto.UserProto.RegionOrBuilder>(
-                  region_,
+                  getRegion(),
                   getParentForChildren(),
                   isClean());
           region_ = null;
@@ -5141,10 +5096,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.PersonalInfo)
   }
 
-  public interface PersonalDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface PersonalDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.PersonalData)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -5154,7 +5109,6 @@ public final class UserProto {
      */
     long getZuid();
 
-    // optional uint32 mliveTicketNum = 9;
     /**
      * <code>optional uint32 mliveTicketNum = 9;</code>
      *
@@ -5172,7 +5126,6 @@ public final class UserProto {
      */
     int getMliveTicketNum();
 
-    // optional uint32 fansNum = 10;
     /**
      * <code>optional uint32 fansNum = 10;</code>
      *
@@ -5190,7 +5143,6 @@ public final class UserProto {
      */
     int getFansNum();
 
-    // optional uint32 followNum = 11;
     /**
      * <code>optional uint32 followNum = 11;</code>
      *
@@ -5208,7 +5160,6 @@ public final class UserProto {
      */
     int getFollowNum();
 
-    // optional uint32 sendDiamondNum = 12;
     /**
      * <code>optional uint32 sendDiamondNum = 12;</code>
      *
@@ -5226,7 +5177,6 @@ public final class UserProto {
      */
     int getSendDiamondNum();
 
-    // optional uint32 vodNum = 13;
     /**
      * <code>optional uint32 vodNum = 13;</code>
      *
@@ -5244,7 +5194,6 @@ public final class UserProto {
      */
     int getVodNum();
 
-    // optional uint32 earnNum = 14;
     /**
      * <code>optional uint32 earnNum = 14;</code>
      *
@@ -5262,7 +5211,6 @@ public final class UserProto {
      */
     int getEarnNum();
 
-    // optional uint32 diamondNum = 15;
     /**
      * <code>optional uint32 diamondNum = 15;</code>
      *
@@ -5280,7 +5228,6 @@ public final class UserProto {
      */
     int getDiamondNum();
 
-    // optional bytes user_eco_attr = 16;
     /**
      * <code>optional bytes user_eco_attr = 16;</code>
      *
@@ -5298,7 +5245,6 @@ public final class UserProto {
      */
     com.google.protobuf.ByteString getUserEcoAttr();
 
-    // optional uint32 usable_mibi_ticket_cnt = 17;
     /**
      * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
      *
@@ -5320,8 +5266,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.PersonalData}
    */
   public static final class PersonalData extends
-      com.google.protobuf.GeneratedMessage
-      implements PersonalDataOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.PersonalData)
+      PersonalDataOrBuilder {
     // Use PersonalData.newBuilder() to construct.
     private PersonalData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5457,7 +5404,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -5473,7 +5419,6 @@ public final class UserProto {
       return zuid_;
     }
 
-    // optional uint32 mliveTicketNum = 9;
     public static final int MLIVETICKETNUM_FIELD_NUMBER = 9;
     private int mliveTicketNum_;
     /**
@@ -5497,7 +5442,6 @@ public final class UserProto {
       return mliveTicketNum_;
     }
 
-    // optional uint32 fansNum = 10;
     public static final int FANSNUM_FIELD_NUMBER = 10;
     private int fansNum_;
     /**
@@ -5521,7 +5465,6 @@ public final class UserProto {
       return fansNum_;
     }
 
-    // optional uint32 followNum = 11;
     public static final int FOLLOWNUM_FIELD_NUMBER = 11;
     private int followNum_;
     /**
@@ -5545,7 +5488,6 @@ public final class UserProto {
       return followNum_;
     }
 
-    // optional uint32 sendDiamondNum = 12;
     public static final int SENDDIAMONDNUM_FIELD_NUMBER = 12;
     private int sendDiamondNum_;
     /**
@@ -5569,7 +5511,6 @@ public final class UserProto {
       return sendDiamondNum_;
     }
 
-    // optional uint32 vodNum = 13;
     public static final int VODNUM_FIELD_NUMBER = 13;
     private int vodNum_;
     /**
@@ -5593,7 +5534,6 @@ public final class UserProto {
       return vodNum_;
     }
 
-    // optional uint32 earnNum = 14;
     public static final int EARNNUM_FIELD_NUMBER = 14;
     private int earnNum_;
     /**
@@ -5617,7 +5557,6 @@ public final class UserProto {
       return earnNum_;
     }
 
-    // optional uint32 diamondNum = 15;
     public static final int DIAMONDNUM_FIELD_NUMBER = 15;
     private int diamondNum_;
     /**
@@ -5641,7 +5580,6 @@ public final class UserProto {
       return diamondNum_;
     }
 
-    // optional bytes user_eco_attr = 16;
     public static final int USER_ECO_ATTR_FIELD_NUMBER = 16;
     private com.google.protobuf.ByteString userEcoAttr_;
     /**
@@ -5665,7 +5603,6 @@ public final class UserProto {
       return userEcoAttr_;
     }
 
-    // optional uint32 usable_mibi_ticket_cnt = 17;
     public static final int USABLE_MIBI_TICKET_CNT_FIELD_NUMBER = 17;
     private int usableMibiTicketCnt_;
     /**
@@ -5704,7 +5641,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -5878,8 +5816,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.PersonalData}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.PersonalData)
+        com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_PersonalData_descriptor;
@@ -6077,7 +6016,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -6110,7 +6048,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 mliveTicketNum = 9;
       private int mliveTicketNum_ ;
       /**
        * <code>optional uint32 mliveTicketNum = 9;</code>
@@ -6159,7 +6096,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 fansNum = 10;
       private int fansNum_ ;
       /**
        * <code>optional uint32 fansNum = 10;</code>
@@ -6208,7 +6144,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 followNum = 11;
       private int followNum_ ;
       /**
        * <code>optional uint32 followNum = 11;</code>
@@ -6257,7 +6192,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 sendDiamondNum = 12;
       private int sendDiamondNum_ ;
       /**
        * <code>optional uint32 sendDiamondNum = 12;</code>
@@ -6306,7 +6240,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 vodNum = 13;
       private int vodNum_ ;
       /**
        * <code>optional uint32 vodNum = 13;</code>
@@ -6355,7 +6288,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 earnNum = 14;
       private int earnNum_ ;
       /**
        * <code>optional uint32 earnNum = 14;</code>
@@ -6404,7 +6336,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 diamondNum = 15;
       private int diamondNum_ ;
       /**
        * <code>optional uint32 diamondNum = 15;</code>
@@ -6453,7 +6384,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bytes user_eco_attr = 16;
       private com.google.protobuf.ByteString userEcoAttr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes user_eco_attr = 16;</code>
@@ -6505,7 +6435,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 usable_mibi_ticket_cnt = 17;
       private int usableMibiTicketCnt_ ;
       /**
        * <code>optional uint32 usable_mibi_ticket_cnt = 17;</code>
@@ -6565,10 +6494,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.PersonalData)
   }
 
-  public interface UserEcoAttrOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserEcoAttrOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UserEcoAttr)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 bullet_gift_id = 1;
     /**
      * <code>optional uint32 bullet_gift_id = 1;</code>
      *
@@ -6586,7 +6515,6 @@ public final class UserProto {
      */
     int getBulletGiftId();
 
-    // optional uint32 bullet_gem_cnt = 2;
     /**
      * <code>optional uint32 bullet_gem_cnt = 2;</code>
      *
@@ -6604,7 +6532,6 @@ public final class UserProto {
      */
     int getBulletGemCnt();
 
-    // optional uint32 consum_virtual_gem_cnt = 3;
     /**
      * <code>optional uint32 consum_virtual_gem_cnt = 3;</code>
      *
@@ -6622,7 +6549,6 @@ public final class UserProto {
      */
     int getConsumVirtualGemCnt();
 
-    // optional uint32 usable_virtual_gem_cnt = 4;
     /**
      * <code>optional uint32 usable_virtual_gem_cnt = 4;</code>
      *
@@ -6644,8 +6570,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.UserEcoAttr}
    */
   public static final class UserEcoAttr extends
-      com.google.protobuf.GeneratedMessage
-      implements UserEcoAttrOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UserEcoAttr)
+      UserEcoAttrOrBuilder {
     // Use UserEcoAttr.newBuilder() to construct.
     private UserEcoAttr(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -6751,7 +6678,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // optional uint32 bullet_gift_id = 1;
     public static final int BULLET_GIFT_ID_FIELD_NUMBER = 1;
     private int bulletGiftId_;
     /**
@@ -6775,7 +6701,6 @@ public final class UserProto {
       return bulletGiftId_;
     }
 
-    // optional uint32 bullet_gem_cnt = 2;
     public static final int BULLET_GEM_CNT_FIELD_NUMBER = 2;
     private int bulletGemCnt_;
     /**
@@ -6799,7 +6724,6 @@ public final class UserProto {
       return bulletGemCnt_;
     }
 
-    // optional uint32 consum_virtual_gem_cnt = 3;
     public static final int CONSUM_VIRTUAL_GEM_CNT_FIELD_NUMBER = 3;
     private int consumVirtualGemCnt_;
     /**
@@ -6823,7 +6747,6 @@ public final class UserProto {
       return consumVirtualGemCnt_;
     }
 
-    // optional uint32 usable_virtual_gem_cnt = 4;
     public static final int USABLE_VIRTUAL_GEM_CNT_FIELD_NUMBER = 4;
     private int usableVirtualGemCnt_;
     /**
@@ -6856,7 +6779,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -6984,8 +6908,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.UserEcoAttr}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.UserEcoAttrOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UserEcoAttr)
+        com.mi.liveassistant.proto.UserProto.UserEcoAttrOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_UserEcoAttr_descriptor;
@@ -7125,7 +7050,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // optional uint32 bullet_gift_id = 1;
       private int bulletGiftId_ ;
       /**
        * <code>optional uint32 bullet_gift_id = 1;</code>
@@ -7174,7 +7098,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 bullet_gem_cnt = 2;
       private int bulletGemCnt_ ;
       /**
        * <code>optional uint32 bullet_gem_cnt = 2;</code>
@@ -7223,7 +7146,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 consum_virtual_gem_cnt = 3;
       private int consumVirtualGemCnt_ ;
       /**
        * <code>optional uint32 consum_virtual_gem_cnt = 3;</code>
@@ -7272,7 +7194,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 usable_virtual_gem_cnt = 4;
       private int usableVirtualGemCnt_ ;
       /**
        * <code>optional uint32 usable_virtual_gem_cnt = 4;</code>
@@ -7332,10 +7253,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UserEcoAttr)
   }
 
-  public interface GetUserInfoByIdReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUserInfoByIdReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetUserInfoByIdReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -7354,8 +7275,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetUserInfoByIdReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUserInfoByIdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetUserInfoByIdReq)
+      GetUserInfoByIdReqOrBuilder {
     // Use GetUserInfoByIdReq.newBuilder() to construct.
     private GetUserInfoByIdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7446,7 +7368,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -7468,7 +7389,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -7584,8 +7506,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetUserInfoByIdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetUserInfoByIdReq)
+        com.mi.liveassistant.proto.UserProto.GetUserInfoByIdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_descriptor;
@@ -7702,7 +7625,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -7746,10 +7668,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetUserInfoByIdReq)
   }
 
-  public interface GetUserInfoByIdRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUserInfoByIdRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetUserInfoByIdRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 errorCode = 1;
     /**
      * <code>required uint32 errorCode = 1;</code>
      */
@@ -7759,7 +7681,6 @@ public final class UserProto {
      */
     int getErrorCode();
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     /**
      * <code>optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;</code>
      */
@@ -7777,8 +7698,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.GetUserInfoByIdRsp}
    */
   public static final class GetUserInfoByIdRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUserInfoByIdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetUserInfoByIdRsp)
+      GetUserInfoByIdRspOrBuilder {
     // Use GetUserInfoByIdRsp.newBuilder() to construct.
     private GetUserInfoByIdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7882,7 +7804,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 errorCode = 1;
     public static final int ERRORCODE_FIELD_NUMBER = 1;
     private int errorCode_;
     /**
@@ -7898,7 +7819,6 @@ public final class UserProto {
       return errorCode_;
     }
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     public static final int PERSONALINFO_FIELD_NUMBER = 2;
     private com.mi.liveassistant.proto.UserProto.PersonalInfo personalInfo_;
     /**
@@ -7927,7 +7847,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrorCode()) {
         memoizedIsInitialized = 0;
@@ -8051,8 +7972,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.GetUserInfoByIdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetUserInfoByIdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetUserInfoByIdRsp)
+        com.mi.liveassistant.proto.UserProto.GetUserInfoByIdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_descriptor;
@@ -8193,7 +8115,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 errorCode = 1;
       private int errorCode_ ;
       /**
        * <code>required uint32 errorCode = 1;</code>
@@ -8226,7 +8147,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
       private com.mi.liveassistant.proto.UserProto.PersonalInfo personalInfo_ = com.mi.liveassistant.proto.UserProto.PersonalInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder> personalInfoBuilder_;
@@ -8335,7 +8255,7 @@ public final class UserProto {
         if (personalInfoBuilder_ == null) {
           personalInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder>(
-                  personalInfo_,
+                  getPersonalInfo(),
                   getParentForChildren(),
                   isClean());
           personalInfo_ = null;
@@ -8354,10 +8274,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetUserInfoByIdRsp)
   }
 
-  public interface GetOwnInfoReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetOwnInfoReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetOwnInfoReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -8367,7 +8287,6 @@ public final class UserProto {
      */
     long getZuid();
 
-    // optional bool getLiveInfo = 2 [default = true];
     /**
      * <code>optional bool getLiveInfo = 2 [default = true];</code>
      *
@@ -8394,8 +8313,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetOwnInfoReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetOwnInfoReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetOwnInfoReq)
+      GetOwnInfoReqOrBuilder {
     // Use GetOwnInfoReq.newBuilder() to construct.
     private GetOwnInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -8491,7 +8411,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -8507,7 +8426,6 @@ public final class UserProto {
       return zuid_;
     }
 
-    // optional bool getLiveInfo = 2 [default = true];
     public static final int GETLIVEINFO_FIELD_NUMBER = 2;
     private boolean getLiveInfo_;
     /**
@@ -8538,7 +8456,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -8661,8 +8580,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetOwnInfoReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetOwnInfoReq)
+        com.mi.liveassistant.proto.UserProto.GetOwnInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_descriptor;
@@ -8788,7 +8708,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -8821,7 +8740,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool getLiveInfo = 2 [default = true];
       private boolean getLiveInfo_ = true;
       /**
        * <code>optional bool getLiveInfo = 2 [default = true];</code>
@@ -8881,10 +8799,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetOwnInfoReq)
   }
 
-  public interface GetOwnInfoRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetOwnInfoRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetOwnInfoRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 errorCode = 1;
     /**
      * <code>required uint32 errorCode = 1;</code>
      */
@@ -8894,7 +8812,6 @@ public final class UserProto {
      */
     int getErrorCode();
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     /**
      * <code>optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;</code>
      */
@@ -8908,7 +8825,6 @@ public final class UserProto {
      */
     com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder getPersonalInfoOrBuilder();
 
-    // optional .com.mi.liveassistant.proto.PersonalData personalData = 3;
     /**
      * <code>optional .com.mi.liveassistant.proto.PersonalData personalData = 3;</code>
      */
@@ -8922,7 +8838,6 @@ public final class UserProto {
      */
     com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder getPersonalDataOrBuilder();
 
-    // repeated uint64 rank_top_three_list = 6;
     /**
      * <code>repeated uint64 rank_top_three_list = 6;</code>
      *
@@ -8948,7 +8863,6 @@ public final class UserProto {
      */
     long getRankTopThreeList(int index);
 
-    // repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 8;
     /**
      * <code>repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 8;</code>
      */
@@ -8973,7 +8887,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
         int index);
 
-    // repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 9;
     /**
      * <code>repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 9;</code>
      */
@@ -8998,7 +8911,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
         int index);
 
-    // repeated .com.mi.liveassistant.proto.Medal user_card_medal = 10;
     /**
      * <code>repeated .com.mi.liveassistant.proto.Medal user_card_medal = 10;</code>
      */
@@ -9027,8 +8939,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.GetOwnInfoRsp}
    */
   public static final class GetOwnInfoRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetOwnInfoRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetOwnInfoRsp)
+      GetOwnInfoRspOrBuilder {
     // Use GetOwnInfoRsp.newBuilder() to construct.
     private GetOwnInfoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9202,7 +9115,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 errorCode = 1;
     public static final int ERRORCODE_FIELD_NUMBER = 1;
     private int errorCode_;
     /**
@@ -9218,7 +9130,6 @@ public final class UserProto {
       return errorCode_;
     }
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     public static final int PERSONALINFO_FIELD_NUMBER = 2;
     private com.mi.liveassistant.proto.UserProto.PersonalInfo personalInfo_;
     /**
@@ -9240,7 +9151,6 @@ public final class UserProto {
       return personalInfo_;
     }
 
-    // optional .com.mi.liveassistant.proto.PersonalData personalData = 3;
     public static final int PERSONALDATA_FIELD_NUMBER = 3;
     private com.mi.liveassistant.proto.UserProto.PersonalData personalData_;
     /**
@@ -9262,7 +9172,6 @@ public final class UserProto {
       return personalData_;
     }
 
-    // repeated uint64 rank_top_three_list = 6;
     public static final int RANK_TOP_THREE_LIST_FIELD_NUMBER = 6;
     private java.util.List<java.lang.Long> rankTopThreeList_;
     /**
@@ -9297,7 +9206,6 @@ public final class UserProto {
       return rankTopThreeList_.get(index);
     }
 
-    // repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 8;
     public static final int BEFORE_NICKNAME_MEDAL_FIELD_NUMBER = 8;
     private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> beforeNicknameMedal_;
     /**
@@ -9333,7 +9241,6 @@ public final class UserProto {
       return beforeNicknameMedal_.get(index);
     }
 
-    // repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 9;
     public static final int AFTER_NICKNAME_MEDAL_FIELD_NUMBER = 9;
     private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> afterNicknameMedal_;
     /**
@@ -9369,7 +9276,6 @@ public final class UserProto {
       return afterNicknameMedal_.get(index);
     }
 
-    // repeated .com.mi.liveassistant.proto.Medal user_card_medal = 10;
     public static final int USER_CARD_MEDAL_FIELD_NUMBER = 10;
     private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> userCardMedal_;
     /**
@@ -9417,7 +9323,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrorCode()) {
         memoizedIsInitialized = 0;
@@ -9587,8 +9494,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.GetOwnInfoRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetOwnInfoRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetOwnInfoRsp)
+        com.mi.liveassistant.proto.UserProto.GetOwnInfoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_descriptor;
@@ -9896,7 +9804,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 errorCode = 1;
       private int errorCode_ ;
       /**
        * <code>required uint32 errorCode = 1;</code>
@@ -9929,7 +9836,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
       private com.mi.liveassistant.proto.UserProto.PersonalInfo personalInfo_ = com.mi.liveassistant.proto.UserProto.PersonalInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder> personalInfoBuilder_;
@@ -10038,7 +9944,7 @@ public final class UserProto {
         if (personalInfoBuilder_ == null) {
           personalInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder>(
-                  personalInfo_,
+                  getPersonalInfo(),
                   getParentForChildren(),
                   isClean());
           personalInfo_ = null;
@@ -10046,7 +9952,6 @@ public final class UserProto {
         return personalInfoBuilder_;
       }
 
-      // optional .com.mi.liveassistant.proto.PersonalData personalData = 3;
       private com.mi.liveassistant.proto.UserProto.PersonalData personalData_ = com.mi.liveassistant.proto.UserProto.PersonalData.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.PersonalData, com.mi.liveassistant.proto.UserProto.PersonalData.Builder, com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder> personalDataBuilder_;
@@ -10155,7 +10060,7 @@ public final class UserProto {
         if (personalDataBuilder_ == null) {
           personalDataBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.PersonalData, com.mi.liveassistant.proto.UserProto.PersonalData.Builder, com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder>(
-                  personalData_,
+                  getPersonalData(),
                   getParentForChildren(),
                   isClean());
           personalData_ = null;
@@ -10163,7 +10068,6 @@ public final class UserProto {
         return personalDataBuilder_;
       }
 
-      // repeated uint64 rank_top_three_list = 6;
       private java.util.List<java.lang.Long> rankTopThreeList_ = java.util.Collections.emptyList();
       private void ensureRankTopThreeListIsMutable() {
         if (!((bitField0_ & 0x00000008) == 0x00000008)) {
@@ -10239,7 +10143,8 @@ public final class UserProto {
       public Builder addAllRankTopThreeList(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureRankTopThreeListIsMutable();
-        super.addAll(values, rankTopThreeList_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, rankTopThreeList_);
         onChanged();
         return this;
       }
@@ -10257,7 +10162,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 8;
       private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> beforeNicknameMedal_ =
         java.util.Collections.emptyList();
       private void ensureBeforeNicknameMedalIsMutable() {
@@ -10399,7 +10303,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.Medal> values) {
         if (beforeNicknameMedalBuilder_ == null) {
           ensureBeforeNicknameMedalIsMutable();
-          super.addAll(values, beforeNicknameMedal_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, beforeNicknameMedal_);
           onChanged();
         } else {
           beforeNicknameMedalBuilder_.addAllMessages(values);
@@ -10497,7 +10402,6 @@ public final class UserProto {
         return beforeNicknameMedalBuilder_;
       }
 
-      // repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 9;
       private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> afterNicknameMedal_ =
         java.util.Collections.emptyList();
       private void ensureAfterNicknameMedalIsMutable() {
@@ -10639,7 +10543,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.Medal> values) {
         if (afterNicknameMedalBuilder_ == null) {
           ensureAfterNicknameMedalIsMutable();
-          super.addAll(values, afterNicknameMedal_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, afterNicknameMedal_);
           onChanged();
         } else {
           afterNicknameMedalBuilder_.addAllMessages(values);
@@ -10737,7 +10642,6 @@ public final class UserProto {
         return afterNicknameMedalBuilder_;
       }
 
-      // repeated .com.mi.liveassistant.proto.Medal user_card_medal = 10;
       private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> userCardMedal_ =
         java.util.Collections.emptyList();
       private void ensureUserCardMedalIsMutable() {
@@ -10879,7 +10783,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.Medal> values) {
         if (userCardMedalBuilder_ == null) {
           ensureUserCardMedalIsMutable();
-          super.addAll(values, userCardMedal_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, userCardMedal_);
           onChanged();
         } else {
           userCardMedalBuilder_.addAllMessages(values);
@@ -10988,10 +10893,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetOwnInfoRsp)
   }
 
-  public interface MedalOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface MedalOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.Medal)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string pic_id = 1;
     /**
      * <code>optional string pic_id = 1;</code>
      */
@@ -11010,8 +10915,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.Medal}
    */
   public static final class Medal extends
-      com.google.protobuf.GeneratedMessage
-      implements MedalOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.Medal)
+      MedalOrBuilder {
     // Use Medal.newBuilder() to construct.
     private Medal(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11058,8 +10964,9 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              picId_ = input.readBytes();
+              picId_ = bs;
               break;
             }
           }
@@ -11102,7 +11009,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // optional string pic_id = 1;
     public static final int PIC_ID_FIELD_NUMBER = 1;
     private java.lang.Object picId_;
     /**
@@ -11151,7 +11057,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -11258,8 +11165,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.Medal}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.MedalOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.Medal)
+        com.mi.liveassistant.proto.UserProto.MedalOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_Medal_descriptor;
@@ -11374,7 +11282,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // optional string pic_id = 1;
       private java.lang.Object picId_ = "";
       /**
        * <code>optional string pic_id = 1;</code>
@@ -11388,9 +11295,12 @@ public final class UserProto {
       public java.lang.String getPicId() {
         java.lang.Object ref = picId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          picId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            picId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11459,10 +11369,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.Medal)
   }
 
-  public interface GetPersonalDataByIdReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetPersonalDataByIdReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetPersonalDataByIdReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -11480,8 +11390,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetPersonalDataByIdReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetPersonalDataByIdReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetPersonalDataByIdReq)
+      GetPersonalDataByIdReqOrBuilder {
     // Use GetPersonalDataByIdReq.newBuilder() to construct.
     private GetPersonalDataByIdReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11572,7 +11483,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -11594,7 +11504,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -11709,8 +11620,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetPersonalDataByIdReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetPersonalDataByIdReq)
+        com.mi.liveassistant.proto.UserProto.GetPersonalDataByIdReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_descriptor;
@@ -11827,7 +11739,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -11871,10 +11782,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetPersonalDataByIdReq)
   }
 
-  public interface GetPersonalDataByIdRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetPersonalDataByIdRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetPersonalDataByIdRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 errorCode = 1;
     /**
      * <code>required uint32 errorCode = 1;</code>
      */
@@ -11884,7 +11795,6 @@ public final class UserProto {
      */
     int getErrorCode();
 
-    // optional .com.mi.liveassistant.proto.PersonalData personalData = 2;
     /**
      * <code>optional .com.mi.liveassistant.proto.PersonalData personalData = 2;</code>
      */
@@ -11902,8 +11812,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.GetPersonalDataByIdRsp}
    */
   public static final class GetPersonalDataByIdRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetPersonalDataByIdRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetPersonalDataByIdRsp)
+      GetPersonalDataByIdRspOrBuilder {
     // Use GetPersonalDataByIdRsp.newBuilder() to construct.
     private GetPersonalDataByIdRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -12007,7 +11918,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 errorCode = 1;
     public static final int ERRORCODE_FIELD_NUMBER = 1;
     private int errorCode_;
     /**
@@ -12023,7 +11933,6 @@ public final class UserProto {
       return errorCode_;
     }
 
-    // optional .com.mi.liveassistant.proto.PersonalData personalData = 2;
     public static final int PERSONALDATA_FIELD_NUMBER = 2;
     private com.mi.liveassistant.proto.UserProto.PersonalData personalData_;
     /**
@@ -12052,7 +11961,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrorCode()) {
         memoizedIsInitialized = 0;
@@ -12176,8 +12086,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.GetPersonalDataByIdRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetPersonalDataByIdRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetPersonalDataByIdRsp)
+        com.mi.liveassistant.proto.UserProto.GetPersonalDataByIdRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_descriptor;
@@ -12318,7 +12229,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 errorCode = 1;
       private int errorCode_ ;
       /**
        * <code>required uint32 errorCode = 1;</code>
@@ -12351,7 +12261,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.PersonalData personalData = 2;
       private com.mi.liveassistant.proto.UserProto.PersonalData personalData_ = com.mi.liveassistant.proto.UserProto.PersonalData.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.PersonalData, com.mi.liveassistant.proto.UserProto.PersonalData.Builder, com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder> personalDataBuilder_;
@@ -12460,7 +12369,7 @@ public final class UserProto {
         if (personalDataBuilder_ == null) {
           personalDataBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.PersonalData, com.mi.liveassistant.proto.UserProto.PersonalData.Builder, com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder>(
-                  personalData_,
+                  getPersonalData(),
                   getParentForChildren(),
                   isClean());
           personalData_ = null;
@@ -12479,10 +12388,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetPersonalDataByIdRsp)
   }
 
-  public interface GetHomepageReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetHomepageReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetHomepageReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -12492,7 +12401,6 @@ public final class UserProto {
      */
     long getZuid();
 
-    // optional bool getLiveInfo = 2 [default = true];
     /**
      * <code>optional bool getLiveInfo = 2 [default = true];</code>
      *
@@ -12519,8 +12427,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetHomepageReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetHomepageReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetHomepageReq)
+      GetHomepageReqOrBuilder {
     // Use GetHomepageReq.newBuilder() to construct.
     private GetHomepageReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -12616,7 +12525,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -12632,7 +12540,6 @@ public final class UserProto {
       return zuid_;
     }
 
-    // optional bool getLiveInfo = 2 [default = true];
     public static final int GETLIVEINFO_FIELD_NUMBER = 2;
     private boolean getLiveInfo_;
     /**
@@ -12663,7 +12570,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -12786,8 +12694,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetHomepageReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetHomepageReq)
+        com.mi.liveassistant.proto.UserProto.GetHomepageReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageReq_descriptor;
@@ -12913,7 +12822,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -12946,7 +12854,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool getLiveInfo = 2 [default = true];
       private boolean getLiveInfo_ = true;
       /**
        * <code>optional bool getLiveInfo = 2 [default = true];</code>
@@ -13006,10 +12913,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetHomepageReq)
   }
 
-  public interface GetHomepageRespOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetHomepageRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetHomepageRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -13019,7 +12926,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     /**
      * <code>optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;</code>
      */
@@ -13033,7 +12939,6 @@ public final class UserProto {
      */
     com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder getPersonalInfoOrBuilder();
 
-    // optional .com.mi.liveassistant.proto.PersonalData personalData = 3;
     /**
      * <code>optional .com.mi.liveassistant.proto.PersonalData personalData = 3;</code>
      */
@@ -13047,7 +12952,6 @@ public final class UserProto {
      */
     com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder getPersonalDataOrBuilder();
 
-    // optional string viewUrl = 4;
     /**
      * <code>optional string viewUrl = 4;</code>
      *
@@ -13074,7 +12978,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getViewUrlBytes();
 
-    // repeated uint64 rank_top_three_list = 6;
     /**
      * <code>repeated uint64 rank_top_three_list = 6;</code>
      *
@@ -13100,7 +13003,6 @@ public final class UserProto {
      */
     long getRankTopThreeList(int index);
 
-    // optional string roomId = 7;
     /**
      * <code>optional string roomId = 7;</code>
      *
@@ -13127,7 +13029,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getRoomIdBytes();
 
-    // optional bytes roomInfo = 8;
     /**
      * <code>optional bytes roomInfo = 8;</code>
      *
@@ -13145,7 +13046,6 @@ public final class UserProto {
      */
     com.google.protobuf.ByteString getRoomInfo();
 
-    // repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 9;
     /**
      * <code>repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 9;</code>
      */
@@ -13170,7 +13070,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.MedalOrBuilder getBeforeNicknameMedalOrBuilder(
         int index);
 
-    // repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 10;
     /**
      * <code>repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 10;</code>
      */
@@ -13195,7 +13094,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.MedalOrBuilder getAfterNicknameMedalOrBuilder(
         int index);
 
-    // repeated .com.mi.liveassistant.proto.Medal user_card_medal = 11;
     /**
      * <code>repeated .com.mi.liveassistant.proto.Medal user_card_medal = 11;</code>
      */
@@ -13221,24 +13119,25 @@ public final class UserProto {
         int index);
   }
   /**
-   * Protobuf type {@code com.mi.liveassistant.proto.GetHomepageResp}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetHomepageRsp}
    */
-  public static final class GetHomepageResp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetHomepageRespOrBuilder {
-    // Use GetHomepageResp.newBuilder() to construct.
-    private GetHomepageResp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  public static final class GetHomepageRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetHomepageRsp)
+      GetHomepageRspOrBuilder {
+    // Use GetHomepageRsp.newBuilder() to construct.
+    private GetHomepageRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private GetHomepageResp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private GetHomepageRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final GetHomepageResp defaultInstance;
-    public static GetHomepageResp getDefaultInstance() {
+    private static final GetHomepageRsp defaultInstance;
+    public static GetHomepageRsp getDefaultInstance() {
       return defaultInstance;
     }
 
-    public GetHomepageResp getDefaultInstanceForType() {
+    public GetHomepageRsp getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -13248,7 +13147,7 @@ public final class UserProto {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private GetHomepageResp(
+    private GetHomepageRsp(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -13303,8 +13202,9 @@ public final class UserProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              viewUrl_ = input.readBytes();
+              viewUrl_ = bs;
               break;
             }
             case 48: {
@@ -13329,8 +13229,9 @@ public final class UserProto {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              roomId_ = input.readBytes();
+              roomId_ = bs;
               break;
             }
             case 66: {
@@ -13388,33 +13289,32 @@ public final class UserProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageResp_descriptor;
+      return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageResp_fieldAccessorTable
+      return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.UserProto.GetHomepageResp.class, com.mi.liveassistant.proto.UserProto.GetHomepageResp.Builder.class);
+              com.mi.liveassistant.proto.UserProto.GetHomepageRsp.class, com.mi.liveassistant.proto.UserProto.GetHomepageRsp.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<GetHomepageResp> PARSER =
-        new com.google.protobuf.AbstractParser<GetHomepageResp>() {
-      public GetHomepageResp parsePartialFrom(
+    public static com.google.protobuf.Parser<GetHomepageRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetHomepageRsp>() {
+      public GetHomepageRsp parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new GetHomepageResp(input, extensionRegistry);
+        return new GetHomepageRsp(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<GetHomepageResp> getParserForType() {
+    public com.google.protobuf.Parser<GetHomepageRsp> getParserForType() {
       return PARSER;
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -13430,7 +13330,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     public static final int PERSONALINFO_FIELD_NUMBER = 2;
     private com.mi.liveassistant.proto.UserProto.PersonalInfo personalInfo_;
     /**
@@ -13452,7 +13351,6 @@ public final class UserProto {
       return personalInfo_;
     }
 
-    // optional .com.mi.liveassistant.proto.PersonalData personalData = 3;
     public static final int PERSONALDATA_FIELD_NUMBER = 3;
     private com.mi.liveassistant.proto.UserProto.PersonalData personalData_;
     /**
@@ -13474,7 +13372,6 @@ public final class UserProto {
       return personalData_;
     }
 
-    // optional string viewUrl = 4;
     public static final int VIEWURL_FIELD_NUMBER = 4;
     private java.lang.Object viewUrl_;
     /**
@@ -13529,7 +13426,6 @@ public final class UserProto {
       }
     }
 
-    // repeated uint64 rank_top_three_list = 6;
     public static final int RANK_TOP_THREE_LIST_FIELD_NUMBER = 6;
     private java.util.List<java.lang.Long> rankTopThreeList_;
     /**
@@ -13564,7 +13460,6 @@ public final class UserProto {
       return rankTopThreeList_.get(index);
     }
 
-    // optional string roomId = 7;
     public static final int ROOMID_FIELD_NUMBER = 7;
     private java.lang.Object roomId_;
     /**
@@ -13619,7 +13514,6 @@ public final class UserProto {
       }
     }
 
-    // optional bytes roomInfo = 8;
     public static final int ROOMINFO_FIELD_NUMBER = 8;
     private com.google.protobuf.ByteString roomInfo_;
     /**
@@ -13643,7 +13537,6 @@ public final class UserProto {
       return roomInfo_;
     }
 
-    // repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 9;
     public static final int BEFORE_NICKNAME_MEDAL_FIELD_NUMBER = 9;
     private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> beforeNicknameMedal_;
     /**
@@ -13679,7 +13572,6 @@ public final class UserProto {
       return beforeNicknameMedal_.get(index);
     }
 
-    // repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 10;
     public static final int AFTER_NICKNAME_MEDAL_FIELD_NUMBER = 10;
     private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> afterNicknameMedal_;
     /**
@@ -13715,7 +13607,6 @@ public final class UserProto {
       return afterNicknameMedal_.get(index);
     }
 
-    // repeated .com.mi.liveassistant.proto.Medal user_card_medal = 11;
     public static final int USER_CARD_MEDAL_FIELD_NUMBER = 11;
     private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> userCardMedal_;
     /**
@@ -13766,7 +13657,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -13887,53 +13779,53 @@ public final class UserProto {
       return super.writeReplace();
     }
 
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(byte[] data)
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(java.io.InputStream input)
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseDelimitedFrom(java.io.InputStream input)
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseDelimitedFrom(
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mi.liveassistant.proto.UserProto.GetHomepageResp parseFrom(
+    public static com.mi.liveassistant.proto.UserProto.GetHomepageRsp parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -13942,7 +13834,7 @@ public final class UserProto {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.UserProto.GetHomepageResp prototype) {
+    public static Builder newBuilder(com.mi.liveassistant.proto.UserProto.GetHomepageRsp prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -13954,24 +13846,25 @@ public final class UserProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.mi.liveassistant.proto.GetHomepageResp}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetHomepageRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetHomepageRespOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetHomepageRsp)
+        com.mi.liveassistant.proto.UserProto.GetHomepageRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageResp_descriptor;
+        return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageResp_fieldAccessorTable
+        return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.UserProto.GetHomepageResp.class, com.mi.liveassistant.proto.UserProto.GetHomepageResp.Builder.class);
+                com.mi.liveassistant.proto.UserProto.GetHomepageRsp.class, com.mi.liveassistant.proto.UserProto.GetHomepageRsp.Builder.class);
       }
 
-      // Construct using com.mi.liveassistant.proto.UserProto.GetHomepageResp.newBuilder()
+      // Construct using com.mi.liveassistant.proto.UserProto.GetHomepageRsp.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -14045,23 +13938,23 @@ public final class UserProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageResp_descriptor;
+        return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetHomepageRsp_descriptor;
       }
 
-      public com.mi.liveassistant.proto.UserProto.GetHomepageResp getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.UserProto.GetHomepageResp.getDefaultInstance();
+      public com.mi.liveassistant.proto.UserProto.GetHomepageRsp getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.UserProto.GetHomepageRsp.getDefaultInstance();
       }
 
-      public com.mi.liveassistant.proto.UserProto.GetHomepageResp build() {
-        com.mi.liveassistant.proto.UserProto.GetHomepageResp result = buildPartial();
+      public com.mi.liveassistant.proto.UserProto.GetHomepageRsp build() {
+        com.mi.liveassistant.proto.UserProto.GetHomepageRsp result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.mi.liveassistant.proto.UserProto.GetHomepageResp buildPartial() {
-        com.mi.liveassistant.proto.UserProto.GetHomepageResp result = new com.mi.liveassistant.proto.UserProto.GetHomepageResp(this);
+      public com.mi.liveassistant.proto.UserProto.GetHomepageRsp buildPartial() {
+        com.mi.liveassistant.proto.UserProto.GetHomepageRsp result = new com.mi.liveassistant.proto.UserProto.GetHomepageRsp(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -14134,16 +14027,16 @@ public final class UserProto {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.UserProto.GetHomepageResp) {
-          return mergeFrom((com.mi.liveassistant.proto.UserProto.GetHomepageResp)other);
+        if (other instanceof com.mi.liveassistant.proto.UserProto.GetHomepageRsp) {
+          return mergeFrom((com.mi.liveassistant.proto.UserProto.GetHomepageRsp)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.mi.liveassistant.proto.UserProto.GetHomepageResp other) {
-        if (other == com.mi.liveassistant.proto.UserProto.GetHomepageResp.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.mi.liveassistant.proto.UserProto.GetHomepageRsp other) {
+        if (other == com.mi.liveassistant.proto.UserProto.GetHomepageRsp.getDefaultInstance()) return this;
         if (other.hasRetCode()) {
           setRetCode(other.getRetCode());
         }
@@ -14282,11 +14175,11 @@ public final class UserProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.mi.liveassistant.proto.UserProto.GetHomepageResp parsedMessage = null;
+        com.mi.liveassistant.proto.UserProto.GetHomepageRsp parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.UserProto.GetHomepageResp) e.getUnfinishedMessage();
+          parsedMessage = (com.mi.liveassistant.proto.UserProto.GetHomepageRsp) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -14297,7 +14190,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -14330,7 +14222,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
       private com.mi.liveassistant.proto.UserProto.PersonalInfo personalInfo_ = com.mi.liveassistant.proto.UserProto.PersonalInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder> personalInfoBuilder_;
@@ -14439,7 +14330,7 @@ public final class UserProto {
         if (personalInfoBuilder_ == null) {
           personalInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder>(
-                  personalInfo_,
+                  getPersonalInfo(),
                   getParentForChildren(),
                   isClean());
           personalInfo_ = null;
@@ -14447,7 +14338,6 @@ public final class UserProto {
         return personalInfoBuilder_;
       }
 
-      // optional .com.mi.liveassistant.proto.PersonalData personalData = 3;
       private com.mi.liveassistant.proto.UserProto.PersonalData personalData_ = com.mi.liveassistant.proto.UserProto.PersonalData.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.PersonalData, com.mi.liveassistant.proto.UserProto.PersonalData.Builder, com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder> personalDataBuilder_;
@@ -14556,7 +14446,7 @@ public final class UserProto {
         if (personalDataBuilder_ == null) {
           personalDataBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.PersonalData, com.mi.liveassistant.proto.UserProto.PersonalData.Builder, com.mi.liveassistant.proto.UserProto.PersonalDataOrBuilder>(
-                  personalData_,
+                  getPersonalData(),
                   getParentForChildren(),
                   isClean());
           personalData_ = null;
@@ -14564,7 +14454,6 @@ public final class UserProto {
         return personalDataBuilder_;
       }
 
-      // optional string viewUrl = 4;
       private java.lang.Object viewUrl_ = "";
       /**
        * <code>optional string viewUrl = 4;</code>
@@ -14586,9 +14475,12 @@ public final class UserProto {
       public java.lang.String getViewUrl() {
         java.lang.Object ref = viewUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          viewUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            viewUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14662,7 +14554,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated uint64 rank_top_three_list = 6;
       private java.util.List<java.lang.Long> rankTopThreeList_ = java.util.Collections.emptyList();
       private void ensureRankTopThreeListIsMutable() {
         if (!((bitField0_ & 0x00000010) == 0x00000010)) {
@@ -14738,7 +14629,8 @@ public final class UserProto {
       public Builder addAllRankTopThreeList(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureRankTopThreeListIsMutable();
-        super.addAll(values, rankTopThreeList_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, rankTopThreeList_);
         onChanged();
         return this;
       }
@@ -14756,7 +14648,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string roomId = 7;
       private java.lang.Object roomId_ = "";
       /**
        * <code>optional string roomId = 7;</code>
@@ -14778,9 +14669,12 @@ public final class UserProto {
       public java.lang.String getRoomId() {
         java.lang.Object ref = roomId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14854,7 +14748,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bytes roomInfo = 8;
       private com.google.protobuf.ByteString roomInfo_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes roomInfo = 8;</code>
@@ -14906,7 +14799,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.Medal before_nickname_medal = 9;
       private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> beforeNicknameMedal_ =
         java.util.Collections.emptyList();
       private void ensureBeforeNicknameMedalIsMutable() {
@@ -15048,7 +14940,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.Medal> values) {
         if (beforeNicknameMedalBuilder_ == null) {
           ensureBeforeNicknameMedalIsMutable();
-          super.addAll(values, beforeNicknameMedal_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, beforeNicknameMedal_);
           onChanged();
         } else {
           beforeNicknameMedalBuilder_.addAllMessages(values);
@@ -15146,7 +15039,6 @@ public final class UserProto {
         return beforeNicknameMedalBuilder_;
       }
 
-      // repeated .com.mi.liveassistant.proto.Medal after_nickname_medal = 10;
       private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> afterNicknameMedal_ =
         java.util.Collections.emptyList();
       private void ensureAfterNicknameMedalIsMutable() {
@@ -15288,7 +15180,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.Medal> values) {
         if (afterNicknameMedalBuilder_ == null) {
           ensureAfterNicknameMedalIsMutable();
-          super.addAll(values, afterNicknameMedal_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, afterNicknameMedal_);
           onChanged();
         } else {
           afterNicknameMedalBuilder_.addAllMessages(values);
@@ -15386,7 +15279,6 @@ public final class UserProto {
         return afterNicknameMedalBuilder_;
       }
 
-      // repeated .com.mi.liveassistant.proto.Medal user_card_medal = 11;
       private java.util.List<com.mi.liveassistant.proto.UserProto.Medal> userCardMedal_ =
         java.util.Collections.emptyList();
       private void ensureUserCardMedalIsMutable() {
@@ -15528,7 +15420,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.Medal> values) {
         if (userCardMedalBuilder_ == null) {
           ensureUserCardMedalIsMutable();
-          super.addAll(values, userCardMedal_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, userCardMedal_);
           onChanged();
         } else {
           userCardMedalBuilder_.addAllMessages(values);
@@ -15626,21 +15519,21 @@ public final class UserProto {
         return userCardMedalBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetHomepageResp)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetHomepageRsp)
     }
 
     static {
-      defaultInstance = new GetHomepageResp(true);
+      defaultInstance = new GetHomepageRsp(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetHomepageResp)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetHomepageRsp)
   }
 
-  public interface UploadUserSettingReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UploadUserSettingReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UploadUserSettingReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -15650,7 +15543,6 @@ public final class UserProto {
      */
     long getZuid();
 
-    // optional bool isPushable = 2;
     /**
      * <code>optional bool isPushable = 2;</code>
      *
@@ -15668,7 +15560,6 @@ public final class UserProto {
      */
     boolean getIsPushable();
 
-    // optional bool isNotifyNoDisturb = 3;
     /**
      * <code>optional bool isNotifyNoDisturb = 3;</code>
      *
@@ -15686,7 +15577,6 @@ public final class UserProto {
      */
     boolean getIsNotifyNoDisturb();
 
-    // optional bool isNotifyNoSound = 4;
     /**
      * <code>optional bool isNotifyNoSound = 4;</code>
      *
@@ -15704,7 +15594,6 @@ public final class UserProto {
      */
     boolean getIsNotifyNoSound();
 
-    // optional bool isNotifyNoShake = 5;
     /**
      * <code>optional bool isNotifyNoShake = 5;</code>
      *
@@ -15731,8 +15620,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class UploadUserSettingReq extends
-      com.google.protobuf.GeneratedMessage
-      implements UploadUserSettingReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UploadUserSettingReq)
+      UploadUserSettingReqOrBuilder {
     // Use UploadUserSettingReq.newBuilder() to construct.
     private UploadUserSettingReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -15843,7 +15733,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -15859,7 +15748,6 @@ public final class UserProto {
       return zuid_;
     }
 
-    // optional bool isPushable = 2;
     public static final int ISPUSHABLE_FIELD_NUMBER = 2;
     private boolean isPushable_;
     /**
@@ -15883,7 +15771,6 @@ public final class UserProto {
       return isPushable_;
     }
 
-    // optional bool isNotifyNoDisturb = 3;
     public static final int ISNOTIFYNODISTURB_FIELD_NUMBER = 3;
     private boolean isNotifyNoDisturb_;
     /**
@@ -15907,7 +15794,6 @@ public final class UserProto {
       return isNotifyNoDisturb_;
     }
 
-    // optional bool isNotifyNoSound = 4;
     public static final int ISNOTIFYNOSOUND_FIELD_NUMBER = 4;
     private boolean isNotifyNoSound_;
     /**
@@ -15931,7 +15817,6 @@ public final class UserProto {
       return isNotifyNoSound_;
     }
 
-    // optional bool isNotifyNoShake = 5;
     public static final int ISNOTIFYNOSHAKE_FIELD_NUMBER = 5;
     private boolean isNotifyNoShake_;
     /**
@@ -15965,7 +15850,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -16109,8 +15995,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.UploadUserSettingReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UploadUserSettingReq)
+        com.mi.liveassistant.proto.UserProto.UploadUserSettingReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_descriptor;
@@ -16263,7 +16150,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -16296,7 +16182,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isPushable = 2;
       private boolean isPushable_ ;
       /**
        * <code>optional bool isPushable = 2;</code>
@@ -16345,7 +16230,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isNotifyNoDisturb = 3;
       private boolean isNotifyNoDisturb_ ;
       /**
        * <code>optional bool isNotifyNoDisturb = 3;</code>
@@ -16394,7 +16278,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isNotifyNoSound = 4;
       private boolean isNotifyNoSound_ ;
       /**
        * <code>optional bool isNotifyNoSound = 4;</code>
@@ -16443,7 +16326,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isNotifyNoShake = 5;
       private boolean isNotifyNoShake_ ;
       /**
        * <code>optional bool isNotifyNoShake = 5;</code>
@@ -16503,10 +16385,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UploadUserSettingReq)
   }
 
-  public interface UploadUserSettingRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UploadUserSettingRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UploadUserSettingRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 errorCode = 1;
     /**
      * <code>required uint32 errorCode = 1;</code>
      */
@@ -16520,8 +16402,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.UploadUserSettingRsp}
    */
   public static final class UploadUserSettingRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements UploadUserSettingRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UploadUserSettingRsp)
+      UploadUserSettingRspOrBuilder {
     // Use UploadUserSettingRsp.newBuilder() to construct.
     private UploadUserSettingRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -16612,7 +16495,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 errorCode = 1;
     public static final int ERRORCODE_FIELD_NUMBER = 1;
     private int errorCode_;
     /**
@@ -16634,7 +16516,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrorCode()) {
         memoizedIsInitialized = 0;
@@ -16745,8 +16628,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.UploadUserSettingRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.UploadUserSettingRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UploadUserSettingRsp)
+        com.mi.liveassistant.proto.UserProto.UploadUserSettingRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_descriptor;
@@ -16863,7 +16747,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 errorCode = 1;
       private int errorCode_ ;
       /**
        * <code>required uint32 errorCode = 1;</code>
@@ -16907,10 +16790,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UploadUserSettingRsp)
   }
 
-  public interface SearchUserInfoReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface SearchUserInfoReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.SearchUserInfoReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string keyword = 1;
     /**
      * <code>required string keyword = 1;</code>
      */
@@ -16925,7 +16808,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getKeywordBytes();
 
-    // required uint32 offset = 2;
     /**
      * <code>required uint32 offset = 2;</code>
      */
@@ -16935,7 +16817,6 @@ public final class UserProto {
      */
     int getOffset();
 
-    // required uint32 limit = 3;
     /**
      * <code>required uint32 limit = 3;</code>
      */
@@ -16954,8 +16835,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class SearchUserInfoReq extends
-      com.google.protobuf.GeneratedMessage
-      implements SearchUserInfoReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.SearchUserInfoReq)
+      SearchUserInfoReqOrBuilder {
     // Use SearchUserInfoReq.newBuilder() to construct.
     private SearchUserInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -17002,8 +16884,9 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              keyword_ = input.readBytes();
+              keyword_ = bs;
               break;
             }
             case 16: {
@@ -17056,7 +16939,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required string keyword = 1;
     public static final int KEYWORD_FIELD_NUMBER = 1;
     private java.lang.Object keyword_;
     /**
@@ -17099,7 +16981,6 @@ public final class UserProto {
       }
     }
 
-    // required uint32 offset = 2;
     public static final int OFFSET_FIELD_NUMBER = 2;
     private int offset_;
     /**
@@ -17115,7 +16996,6 @@ public final class UserProto {
       return offset_;
     }
 
-    // required uint32 limit = 3;
     public static final int LIMIT_FIELD_NUMBER = 3;
     private int limit_;
     /**
@@ -17139,7 +17019,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasKeyword()) {
         memoizedIsInitialized = 0;
@@ -17277,8 +17158,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.SearchUserInfoReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.SearchUserInfoReq)
+        com.mi.liveassistant.proto.UserProto.SearchUserInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_descriptor;
@@ -17423,7 +17305,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required string keyword = 1;
       private java.lang.Object keyword_ = "";
       /**
        * <code>required string keyword = 1;</code>
@@ -17437,9 +17318,12 @@ public final class UserProto {
       public java.lang.String getKeyword() {
         java.lang.Object ref = keyword_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          keyword_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            keyword_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17497,7 +17381,6 @@ public final class UserProto {
         return this;
       }
 
-      // required uint32 offset = 2;
       private int offset_ ;
       /**
        * <code>required uint32 offset = 2;</code>
@@ -17530,7 +17413,6 @@ public final class UserProto {
         return this;
       }
 
-      // required uint32 limit = 3;
       private int limit_ ;
       /**
        * <code>required uint32 limit = 3;</code>
@@ -17574,10 +17456,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.SearchUserInfoReq)
   }
 
-  public interface SearchUserInfoRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface SearchUserInfoRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.SearchUserInfoRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 errorCode = 1;
     /**
      * <code>required uint32 errorCode = 1;</code>
      */
@@ -17587,7 +17469,6 @@ public final class UserProto {
      */
     int getErrorCode();
 
-    // optional uint32 totalNum = 2;
     /**
      * <code>optional uint32 totalNum = 2;</code>
      */
@@ -17597,7 +17478,6 @@ public final class UserProto {
      */
     int getTotalNum();
 
-    // repeated .com.mi.liveassistant.proto.PersonalInfo personalInfos = 3;
     /**
      * <code>repeated .com.mi.liveassistant.proto.PersonalInfo personalInfos = 3;</code>
      */
@@ -17626,8 +17506,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.SearchUserInfoRsp}
    */
   public static final class SearchUserInfoRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements SearchUserInfoRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.SearchUserInfoRsp)
+      SearchUserInfoRspOrBuilder {
     // Use SearchUserInfoRsp.newBuilder() to construct.
     private SearchUserInfoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -17734,7 +17615,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 errorCode = 1;
     public static final int ERRORCODE_FIELD_NUMBER = 1;
     private int errorCode_;
     /**
@@ -17750,7 +17630,6 @@ public final class UserProto {
       return errorCode_;
     }
 
-    // optional uint32 totalNum = 2;
     public static final int TOTALNUM_FIELD_NUMBER = 2;
     private int totalNum_;
     /**
@@ -17766,7 +17645,6 @@ public final class UserProto {
       return totalNum_;
     }
 
-    // repeated .com.mi.liveassistant.proto.PersonalInfo personalInfos = 3;
     public static final int PERSONALINFOS_FIELD_NUMBER = 3;
     private java.util.List<com.mi.liveassistant.proto.UserProto.PersonalInfo> personalInfos_;
     /**
@@ -17810,7 +17688,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrorCode()) {
         memoizedIsInitialized = 0;
@@ -17941,8 +17820,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.SearchUserInfoRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.SearchUserInfoRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.SearchUserInfoRsp)
+        com.mi.liveassistant.proto.UserProto.SearchUserInfoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_descriptor;
@@ -18116,7 +17996,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 errorCode = 1;
       private int errorCode_ ;
       /**
        * <code>required uint32 errorCode = 1;</code>
@@ -18149,7 +18028,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 totalNum = 2;
       private int totalNum_ ;
       /**
        * <code>optional uint32 totalNum = 2;</code>
@@ -18182,7 +18060,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.PersonalInfo personalInfos = 3;
       private java.util.List<com.mi.liveassistant.proto.UserProto.PersonalInfo> personalInfos_ =
         java.util.Collections.emptyList();
       private void ensurePersonalInfosIsMutable() {
@@ -18324,7 +18201,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.PersonalInfo> values) {
         if (personalInfosBuilder_ == null) {
           ensurePersonalInfosIsMutable();
-          super.addAll(values, personalInfos_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, personalInfos_);
           onChanged();
         } else {
           personalInfosBuilder_.addAllMessages(values);
@@ -18433,10 +18311,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.SearchUserInfoRsp)
   }
 
-  public interface UploadUserPropertiesReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UploadUserPropertiesReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UploadUserPropertiesReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -18446,7 +18324,6 @@ public final class UserProto {
      */
     long getZuid();
 
-    // optional uint64 avatar = 2;
     /**
      * <code>optional uint64 avatar = 2;</code>
      *
@@ -18464,7 +18341,6 @@ public final class UserProto {
      */
     long getAvatar();
 
-    // optional string nickname = 3;
     /**
      * <code>optional string nickname = 3;</code>
      *
@@ -18491,7 +18367,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string sign = 4;
     /**
      * <code>optional string sign = 4;</code>
      *
@@ -18518,7 +18393,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getSignBytes();
 
-    // optional uint32 gender = 5;
     /**
      * <code>optional uint32 gender = 5;</code>
      *
@@ -18536,7 +18410,6 @@ public final class UserProto {
      */
     int getGender();
 
-    // optional string certification = 6;
     /**
      * <code>optional string certification = 6;</code>
      *
@@ -18563,7 +18436,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCertificationBytes();
 
-    // optional uint32 certificationType = 7;
     /**
      * <code>optional uint32 certificationType = 7;</code>
      *
@@ -18581,7 +18453,6 @@ public final class UserProto {
      */
     int getCertificationType();
 
-    // optional bool is_manual = 10 [default = false];
     /**
      * <code>optional bool is_manual = 10 [default = false];</code>
      */
@@ -18591,7 +18462,6 @@ public final class UserProto {
      */
     boolean getIsManual();
 
-    // optional string cover_photo = 11;
     /**
      * <code>optional string cover_photo = 11;</code>
      *
@@ -18618,7 +18488,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCoverPhotoBytes();
 
-    // optional string address = 12;
     /**
      * <code>optional string address = 12;</code>
      *
@@ -18645,7 +18514,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getAddressBytes();
 
-    // optional string avatar_md5 = 13;
     /**
      * <code>optional string avatar_md5 = 13;</code>
      *
@@ -18672,7 +18540,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getAvatarMd5Bytes();
 
-    // optional .com.mi.liveassistant.proto.Region region = 14;
     /**
      * <code>optional .com.mi.liveassistant.proto.Region region = 14;</code>
      *
@@ -18707,8 +18574,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class UploadUserPropertiesReq extends
-      com.google.protobuf.GeneratedMessage
-      implements UploadUserPropertiesReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UploadUserPropertiesReq)
+      UploadUserPropertiesReqOrBuilder {
     // Use UploadUserPropertiesReq.newBuilder() to construct.
     private UploadUserPropertiesReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -18765,13 +18633,15 @@ public final class UserProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              sign_ = input.readBytes();
+              sign_ = bs;
               break;
             }
             case 40: {
@@ -18780,8 +18650,9 @@ public final class UserProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              certification_ = input.readBytes();
+              certification_ = bs;
               break;
             }
             case 56: {
@@ -18795,18 +18666,21 @@ public final class UserProto {
               break;
             }
             case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              coverPhoto_ = input.readBytes();
+              coverPhoto_ = bs;
               break;
             }
             case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              address_ = input.readBytes();
+              address_ = bs;
               break;
             }
             case 106: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000400;
-              avatarMd5_ = input.readBytes();
+              avatarMd5_ = bs;
               break;
             }
             case 114: {
@@ -18862,7 +18736,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -18878,7 +18751,6 @@ public final class UserProto {
       return zuid_;
     }
 
-    // optional uint64 avatar = 2;
     public static final int AVATAR_FIELD_NUMBER = 2;
     private long avatar_;
     /**
@@ -18902,7 +18774,6 @@ public final class UserProto {
       return avatar_;
     }
 
-    // optional string nickname = 3;
     public static final int NICKNAME_FIELD_NUMBER = 3;
     private java.lang.Object nickname_;
     /**
@@ -18957,7 +18828,6 @@ public final class UserProto {
       }
     }
 
-    // optional string sign = 4;
     public static final int SIGN_FIELD_NUMBER = 4;
     private java.lang.Object sign_;
     /**
@@ -19012,7 +18882,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 gender = 5;
     public static final int GENDER_FIELD_NUMBER = 5;
     private int gender_;
     /**
@@ -19036,7 +18905,6 @@ public final class UserProto {
       return gender_;
     }
 
-    // optional string certification = 6;
     public static final int CERTIFICATION_FIELD_NUMBER = 6;
     private java.lang.Object certification_;
     /**
@@ -19091,7 +18959,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 certificationType = 7;
     public static final int CERTIFICATIONTYPE_FIELD_NUMBER = 7;
     private int certificationType_;
     /**
@@ -19115,7 +18982,6 @@ public final class UserProto {
       return certificationType_;
     }
 
-    // optional bool is_manual = 10 [default = false];
     public static final int IS_MANUAL_FIELD_NUMBER = 10;
     private boolean isManual_;
     /**
@@ -19131,7 +18997,6 @@ public final class UserProto {
       return isManual_;
     }
 
-    // optional string cover_photo = 11;
     public static final int COVER_PHOTO_FIELD_NUMBER = 11;
     private java.lang.Object coverPhoto_;
     /**
@@ -19186,7 +19051,6 @@ public final class UserProto {
       }
     }
 
-    // optional string address = 12;
     public static final int ADDRESS_FIELD_NUMBER = 12;
     private java.lang.Object address_;
     /**
@@ -19241,7 +19105,6 @@ public final class UserProto {
       }
     }
 
-    // optional string avatar_md5 = 13;
     public static final int AVATAR_MD5_FIELD_NUMBER = 13;
     private java.lang.Object avatarMd5_;
     /**
@@ -19296,7 +19159,6 @@ public final class UserProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.Region region = 14;
     public static final int REGION_FIELD_NUMBER = 14;
     private com.mi.liveassistant.proto.UserProto.Region region_;
     /**
@@ -19347,7 +19209,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -19540,8 +19403,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.UploadUserPropertiesReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UploadUserPropertiesReq)
+        com.mi.liveassistant.proto.UserProto.UploadUserPropertiesReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_descriptor;
@@ -19778,7 +19642,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -19811,7 +19674,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint64 avatar = 2;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 2;</code>
@@ -19860,7 +19722,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string nickname = 3;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 3;</code>
@@ -19882,9 +19743,12 @@ public final class UserProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19958,7 +19822,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string sign = 4;
       private java.lang.Object sign_ = "";
       /**
        * <code>optional string sign = 4;</code>
@@ -19980,9 +19843,12 @@ public final class UserProto {
       public java.lang.String getSign() {
         java.lang.Object ref = sign_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          sign_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sign_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20056,7 +19922,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 gender = 5;
       private int gender_ ;
       /**
        * <code>optional uint32 gender = 5;</code>
@@ -20105,7 +19970,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string certification = 6;
       private java.lang.Object certification_ = "";
       /**
        * <code>optional string certification = 6;</code>
@@ -20127,9 +19991,12 @@ public final class UserProto {
       public java.lang.String getCertification() {
         java.lang.Object ref = certification_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          certification_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certification_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20203,7 +20070,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 certificationType = 7;
       private int certificationType_ ;
       /**
        * <code>optional uint32 certificationType = 7;</code>
@@ -20252,7 +20118,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool is_manual = 10 [default = false];
       private boolean isManual_ ;
       /**
        * <code>optional bool is_manual = 10 [default = false];</code>
@@ -20285,7 +20150,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string cover_photo = 11;
       private java.lang.Object coverPhoto_ = "";
       /**
        * <code>optional string cover_photo = 11;</code>
@@ -20307,9 +20171,12 @@ public final class UserProto {
       public java.lang.String getCoverPhoto() {
         java.lang.Object ref = coverPhoto_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverPhoto_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverPhoto_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20383,7 +20250,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string address = 12;
       private java.lang.Object address_ = "";
       /**
        * <code>optional string address = 12;</code>
@@ -20405,9 +20271,12 @@ public final class UserProto {
       public java.lang.String getAddress() {
         java.lang.Object ref = address_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          address_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            address_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20481,7 +20350,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string avatar_md5 = 13;
       private java.lang.Object avatarMd5_ = "";
       /**
        * <code>optional string avatar_md5 = 13;</code>
@@ -20503,9 +20371,12 @@ public final class UserProto {
       public java.lang.String getAvatarMd5() {
         java.lang.Object ref = avatarMd5_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          avatarMd5_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            avatarMd5_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20579,7 +20450,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.Region region = 14;
       private com.mi.liveassistant.proto.UserProto.Region region_ = com.mi.liveassistant.proto.UserProto.Region.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.Region, com.mi.liveassistant.proto.UserProto.Region.Builder, com.mi.liveassistant.proto.UserProto.RegionOrBuilder> regionBuilder_;
@@ -20724,7 +20594,7 @@ public final class UserProto {
         if (regionBuilder_ == null) {
           regionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.Region, com.mi.liveassistant.proto.UserProto.Region.Builder, com.mi.liveassistant.proto.UserProto.RegionOrBuilder>(
-                  region_,
+                  getRegion(),
                   getParentForChildren(),
                   isClean());
           region_ = null;
@@ -20743,10 +20613,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UploadUserPropertiesReq)
   }
 
-  public interface UploadUserPropertiesRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UploadUserPropertiesRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UploadUserPropertiesRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -20756,7 +20626,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // optional string err_msg = 2;
     /**
      * <code>optional string err_msg = 2;</code>
      *
@@ -20783,7 +20652,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional string nickname = 3;
     /**
      * <code>optional string nickname = 3;</code>
      *
@@ -20814,8 +20682,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.UploadUserPropertiesRsp}
    */
   public static final class UploadUserPropertiesRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements UploadUserPropertiesRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UploadUserPropertiesRsp)
+      UploadUserPropertiesRspOrBuilder {
     // Use UploadUserPropertiesRsp.newBuilder() to construct.
     private UploadUserPropertiesRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -20867,13 +20736,15 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
           }
@@ -20916,7 +20787,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -20932,7 +20802,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // optional string err_msg = 2;
     public static final int ERR_MSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -20987,7 +20856,6 @@ public final class UserProto {
       }
     }
 
-    // optional string nickname = 3;
     public static final int NICKNAME_FIELD_NUMBER = 3;
     private java.lang.Object nickname_;
     /**
@@ -21050,7 +20918,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -21175,8 +21044,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.UploadUserPropertiesRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.UploadUserPropertiesRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UploadUserPropertiesRsp)
+        com.mi.liveassistant.proto.UserProto.UploadUserPropertiesRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_descriptor;
@@ -21315,7 +21185,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -21348,7 +21217,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string err_msg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 2;</code>
@@ -21370,9 +21238,12 @@ public final class UserProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21446,7 +21317,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string nickname = 3;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 3;</code>
@@ -21468,9 +21338,12 @@ public final class UserProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21555,10 +21428,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UploadUserPropertiesRsp)
   }
 
-  public interface AdminSettingReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AdminSettingReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.AdminSettingReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 adminUid = 1;
     /**
      * <code>required uint64 adminUid = 1;</code>
      */
@@ -21568,7 +21441,6 @@ public final class UserProto {
      */
     long getAdminUid();
 
-    // required uint32 operation = 2;
     /**
      * <code>required uint32 operation = 2;</code>
      *
@@ -21586,7 +21458,6 @@ public final class UserProto {
      */
     int getOperation();
 
-    // optional string roomId = 3;
     /**
      * <code>optional string roomId = 3;</code>
      *
@@ -21622,8 +21493,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class AdminSettingReq extends
-      com.google.protobuf.GeneratedMessage
-      implements AdminSettingReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.AdminSettingReq)
+      AdminSettingReqOrBuilder {
     // Use AdminSettingReq.newBuilder() to construct.
     private AdminSettingReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -21680,8 +21552,9 @@ public final class UserProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              roomId_ = input.readBytes();
+              roomId_ = bs;
               break;
             }
           }
@@ -21724,7 +21597,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 adminUid = 1;
     public static final int ADMINUID_FIELD_NUMBER = 1;
     private long adminUid_;
     /**
@@ -21740,7 +21612,6 @@ public final class UserProto {
       return adminUid_;
     }
 
-    // required uint32 operation = 2;
     public static final int OPERATION_FIELD_NUMBER = 2;
     private int operation_;
     /**
@@ -21764,7 +21635,6 @@ public final class UserProto {
       return operation_;
     }
 
-    // optional string roomId = 3;
     public static final int ROOMID_FIELD_NUMBER = 3;
     private java.lang.Object roomId_;
     /**
@@ -21827,7 +21697,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasAdminUid()) {
         memoizedIsInitialized = 0;
@@ -21961,8 +21832,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.AdminSettingReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.AdminSettingReq)
+        com.mi.liveassistant.proto.UserProto.AdminSettingReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_AdminSettingReq_descriptor;
@@ -22103,7 +21975,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 adminUid = 1;
       private long adminUid_ ;
       /**
        * <code>required uint64 adminUid = 1;</code>
@@ -22136,7 +22007,6 @@ public final class UserProto {
         return this;
       }
 
-      // required uint32 operation = 2;
       private int operation_ ;
       /**
        * <code>required uint32 operation = 2;</code>
@@ -22185,7 +22055,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string roomId = 3;
       private java.lang.Object roomId_ = "";
       /**
        * <code>optional string roomId = 3;</code>
@@ -22207,9 +22076,12 @@ public final class UserProto {
       public java.lang.String getRoomId() {
         java.lang.Object ref = roomId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22294,10 +22166,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.AdminSettingReq)
   }
 
-  public interface AdminSettingRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AdminSettingRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.AdminSettingRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -22311,8 +22183,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.AdminSettingRsp}
    */
   public static final class AdminSettingRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements AdminSettingRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.AdminSettingRsp)
+      AdminSettingRspOrBuilder {
     // Use AdminSettingRsp.newBuilder() to construct.
     private AdminSettingRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -22403,7 +22276,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -22425,7 +22297,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -22536,8 +22409,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.AdminSettingRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.AdminSettingRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.AdminSettingRsp)
+        com.mi.liveassistant.proto.UserProto.AdminSettingRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_AdminSettingRsp_descriptor;
@@ -22654,7 +22528,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -22698,10 +22571,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.AdminSettingRsp)
   }
 
-  public interface AdminListReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AdminListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.AdminListReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -22719,8 +22592,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class AdminListReq extends
-      com.google.protobuf.GeneratedMessage
-      implements AdminListReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.AdminListReq)
+      AdminListReqOrBuilder {
     // Use AdminListReq.newBuilder() to construct.
     private AdminListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -22811,7 +22685,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -22833,7 +22706,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -22948,8 +22822,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.AdminListReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.AdminListReq)
+        com.mi.liveassistant.proto.UserProto.AdminListReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_AdminListReq_descriptor;
@@ -23066,7 +22941,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -23110,10 +22984,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.AdminListReq)
   }
 
-  public interface AdminListRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface AdminListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.AdminListRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -23123,7 +22997,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // repeated .com.mi.liveassistant.proto.PersonalInfo userInfos = 2;
     /**
      * <code>repeated .com.mi.liveassistant.proto.PersonalInfo userInfos = 2;</code>
      *
@@ -23172,8 +23045,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.AdminListRsp}
    */
   public static final class AdminListRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements AdminListRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.AdminListRsp)
+      AdminListRspOrBuilder {
     // Use AdminListRsp.newBuilder() to construct.
     private AdminListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23275,7 +23149,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -23291,7 +23164,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // repeated .com.mi.liveassistant.proto.PersonalInfo userInfos = 2;
     public static final int USERINFOS_FIELD_NUMBER = 2;
     private java.util.List<com.mi.liveassistant.proto.UserProto.PersonalInfo> userInfos_;
     /**
@@ -23354,7 +23226,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -23478,8 +23351,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.AdminListRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.AdminListRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.AdminListRsp)
+        com.mi.liveassistant.proto.UserProto.AdminListRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_AdminListRsp_descriptor;
@@ -23644,7 +23518,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -23677,7 +23550,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.PersonalInfo userInfos = 2;
       private java.util.List<com.mi.liveassistant.proto.UserProto.PersonalInfo> userInfos_ =
         java.util.Collections.emptyList();
       private void ensureUserInfosIsMutable() {
@@ -23859,7 +23731,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.PersonalInfo> values) {
         if (userInfosBuilder_ == null) {
           ensureUserInfosIsMutable();
-          super.addAll(values, userInfos_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, userInfos_);
           onChanged();
         } else {
           userInfosBuilder_.addAllMessages(values);
@@ -24000,10 +23873,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.AdminListRsp)
   }
 
-  public interface GetOwnSettingReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetOwnSettingReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetOwnSettingReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -24022,8 +23895,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetOwnSettingReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetOwnSettingReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetOwnSettingReq)
+      GetOwnSettingReqOrBuilder {
     // Use GetOwnSettingReq.newBuilder() to construct.
     private GetOwnSettingReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -24114,7 +23988,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -24136,7 +24009,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -24252,8 +24126,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetOwnSettingReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetOwnSettingReq)
+        com.mi.liveassistant.proto.UserProto.GetOwnSettingReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_descriptor;
@@ -24370,7 +24245,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -24414,10 +24288,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetOwnSettingReq)
   }
 
-  public interface GetOwnSettingRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetOwnSettingRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetOwnSettingRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -24427,7 +24301,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // optional bool isPushable = 2;
     /**
      * <code>optional bool isPushable = 2;</code>
      *
@@ -24445,7 +24318,6 @@ public final class UserProto {
      */
     boolean getIsPushable();
 
-    // optional bool isNotifyNoDisturb = 3;
     /**
      * <code>optional bool isNotifyNoDisturb = 3;</code>
      *
@@ -24463,7 +24335,6 @@ public final class UserProto {
      */
     boolean getIsNotifyNoDisturb();
 
-    // optional bool isNotifyNoSound = 4;
     /**
      * <code>optional bool isNotifyNoSound = 4;</code>
      *
@@ -24481,7 +24352,6 @@ public final class UserProto {
      */
     boolean getIsNotifyNoSound();
 
-    // optional bool isNotifyNoShake = 5;
     /**
      * <code>optional bool isNotifyNoShake = 5;</code>
      *
@@ -24503,8 +24373,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.GetOwnSettingRsp}
    */
   public static final class GetOwnSettingRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetOwnSettingRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetOwnSettingRsp)
+      GetOwnSettingRspOrBuilder {
     // Use GetOwnSettingRsp.newBuilder() to construct.
     private GetOwnSettingRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -24615,7 +24486,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -24631,7 +24501,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // optional bool isPushable = 2;
     public static final int ISPUSHABLE_FIELD_NUMBER = 2;
     private boolean isPushable_;
     /**
@@ -24655,7 +24524,6 @@ public final class UserProto {
       return isPushable_;
     }
 
-    // optional bool isNotifyNoDisturb = 3;
     public static final int ISNOTIFYNODISTURB_FIELD_NUMBER = 3;
     private boolean isNotifyNoDisturb_;
     /**
@@ -24679,7 +24547,6 @@ public final class UserProto {
       return isNotifyNoDisturb_;
     }
 
-    // optional bool isNotifyNoSound = 4;
     public static final int ISNOTIFYNOSOUND_FIELD_NUMBER = 4;
     private boolean isNotifyNoSound_;
     /**
@@ -24703,7 +24570,6 @@ public final class UserProto {
       return isNotifyNoSound_;
     }
 
-    // optional bool isNotifyNoShake = 5;
     public static final int ISNOTIFYNOSHAKE_FIELD_NUMBER = 5;
     private boolean isNotifyNoShake_;
     /**
@@ -24737,7 +24603,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -24876,8 +24743,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.GetOwnSettingRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetOwnSettingRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetOwnSettingRsp)
+        com.mi.liveassistant.proto.UserProto.GetOwnSettingRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_descriptor;
@@ -25030,7 +24898,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -25063,7 +24930,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isPushable = 2;
       private boolean isPushable_ ;
       /**
        * <code>optional bool isPushable = 2;</code>
@@ -25112,7 +24978,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isNotifyNoDisturb = 3;
       private boolean isNotifyNoDisturb_ ;
       /**
        * <code>optional bool isNotifyNoDisturb = 3;</code>
@@ -25161,7 +25026,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isNotifyNoSound = 4;
       private boolean isNotifyNoSound_ ;
       /**
        * <code>optional bool isNotifyNoSound = 4;</code>
@@ -25210,7 +25074,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional bool isNotifyNoShake = 5;
       private boolean isNotifyNoShake_ ;
       /**
        * <code>optional bool isNotifyNoShake = 5;</code>
@@ -25270,10 +25133,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetOwnSettingRsp)
   }
 
-  public interface HisRoomReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface HisRoomReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.HisRoomReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      *
@@ -25300,8 +25163,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class HisRoomReq extends
-      com.google.protobuf.GeneratedMessage
-      implements HisRoomReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.HisRoomReq)
+      HisRoomReqOrBuilder {
     // Use HisRoomReq.newBuilder() to construct.
     private HisRoomReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -25392,7 +25256,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -25422,7 +25285,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -25538,8 +25402,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.HisRoomReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.HisRoomReq)
+        com.mi.liveassistant.proto.UserProto.HisRoomReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_HisRoomReq_descriptor;
@@ -25656,7 +25521,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -25716,10 +25580,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.HisRoomReq)
   }
 
-  public interface HisRoomRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface HisRoomRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.HisRoomRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -25737,7 +25601,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // optional string liveId = 2;
     /**
      * <code>optional string liveId = 2;</code>
      *
@@ -25764,7 +25627,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getLiveIdBytes();
 
-    // optional string shareUrl = 3;
     /**
      * <code>optional string shareUrl = 3;</code>
      *
@@ -25791,7 +25653,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getShareUrlBytes();
 
-    // optional string viewUrl = 4;
     /**
      * <code>optional string viewUrl = 4;</code>
      *
@@ -25818,7 +25679,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getViewUrlBytes();
 
-    // optional uint32 type = 5;
     /**
      * <code>optional uint32 type = 5;</code>
      *
@@ -25840,8 +25700,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.HisRoomRsp}
    */
   public static final class HisRoomRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements HisRoomRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.HisRoomRsp)
+      HisRoomRspOrBuilder {
     // Use HisRoomRsp.newBuilder() to construct.
     private HisRoomRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -25893,18 +25754,21 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              liveId_ = input.readBytes();
+              liveId_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              shareUrl_ = input.readBytes();
+              shareUrl_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              viewUrl_ = input.readBytes();
+              viewUrl_ = bs;
               break;
             }
             case 40: {
@@ -25952,7 +25816,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -25976,7 +25839,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // optional string liveId = 2;
     public static final int LIVEID_FIELD_NUMBER = 2;
     private java.lang.Object liveId_;
     /**
@@ -26031,7 +25893,6 @@ public final class UserProto {
       }
     }
 
-    // optional string shareUrl = 3;
     public static final int SHAREURL_FIELD_NUMBER = 3;
     private java.lang.Object shareUrl_;
     /**
@@ -26086,7 +25947,6 @@ public final class UserProto {
       }
     }
 
-    // optional string viewUrl = 4;
     public static final int VIEWURL_FIELD_NUMBER = 4;
     private java.lang.Object viewUrl_;
     /**
@@ -26141,7 +26001,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 type = 5;
     public static final int TYPE_FIELD_NUMBER = 5;
     private int type_;
     /**
@@ -26175,7 +26034,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -26314,8 +26174,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.HisRoomRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.HisRoomRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.HisRoomRsp)
+        com.mi.liveassistant.proto.UserProto.HisRoomRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_HisRoomRsp_descriptor;
@@ -26474,7 +26335,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -26523,7 +26383,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string liveId = 2;
       private java.lang.Object liveId_ = "";
       /**
        * <code>optional string liveId = 2;</code>
@@ -26545,9 +26404,12 @@ public final class UserProto {
       public java.lang.String getLiveId() {
         java.lang.Object ref = liveId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liveId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26621,7 +26483,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string shareUrl = 3;
       private java.lang.Object shareUrl_ = "";
       /**
        * <code>optional string shareUrl = 3;</code>
@@ -26643,9 +26504,12 @@ public final class UserProto {
       public java.lang.String getShareUrl() {
         java.lang.Object ref = shareUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26719,7 +26583,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string viewUrl = 4;
       private java.lang.Object viewUrl_ = "";
       /**
        * <code>optional string viewUrl = 4;</code>
@@ -26741,9 +26604,12 @@ public final class UserProto {
       public java.lang.String getViewUrl() {
         java.lang.Object ref = viewUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          viewUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            viewUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26817,7 +26683,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 type = 5;
       private int type_ ;
       /**
        * <code>optional uint32 type = 5;</code>
@@ -26877,10 +26742,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.HisRoomRsp)
   }
 
-  public interface MutiGetUserInfoReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface MutiGetUserInfoReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.MutiGetUserInfoReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated uint64 zuid = 1;
     /**
      * <code>repeated uint64 zuid = 1;</code>
      */
@@ -26903,8 +26768,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class MutiGetUserInfoReq extends
-      com.google.protobuf.GeneratedMessage
-      implements MutiGetUserInfoReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.MutiGetUserInfoReq)
+      MutiGetUserInfoReqOrBuilder {
     // Use MutiGetUserInfoReq.newBuilder() to construct.
     private MutiGetUserInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -27013,7 +26879,6 @@ public final class UserProto {
       return PARSER;
     }
 
-    // repeated uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private java.util.List<java.lang.Long> zuid_;
     /**
@@ -27042,7 +26907,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -27159,8 +27025,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.MutiGetUserInfoReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.MutiGetUserInfoReq)
+        com.mi.liveassistant.proto.UserProto.MutiGetUserInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_descriptor;
@@ -27279,7 +27146,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // repeated uint64 zuid = 1;
       private java.util.List<java.lang.Long> zuid_ = java.util.Collections.emptyList();
       private void ensureZuidIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -27331,7 +27197,8 @@ public final class UserProto {
       public Builder addAllZuid(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureZuidIsMutable();
-        super.addAll(values, zuid_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, zuid_);
         onChanged();
         return this;
       }
@@ -27356,10 +27223,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.MutiGetUserInfoReq)
   }
 
-  public interface MutiGetUserInfoRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface MutiGetUserInfoRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.MutiGetUserInfoRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -27369,7 +27236,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // repeated .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     /**
      * <code>repeated .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;</code>
      */
@@ -27398,8 +27264,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.MutiGetUserInfoRsp}
    */
   public static final class MutiGetUserInfoRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements MutiGetUserInfoRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.MutiGetUserInfoRsp)
+      MutiGetUserInfoRspOrBuilder {
     // Use MutiGetUserInfoRsp.newBuilder() to construct.
     private MutiGetUserInfoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -27501,7 +27368,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -27517,7 +27383,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // repeated .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
     public static final int PERSONALINFO_FIELD_NUMBER = 2;
     private java.util.List<com.mi.liveassistant.proto.UserProto.PersonalInfo> personalInfo_;
     /**
@@ -27560,7 +27425,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -27684,8 +27550,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.MutiGetUserInfoRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.MutiGetUserInfoRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.MutiGetUserInfoRsp)
+        com.mi.liveassistant.proto.UserProto.MutiGetUserInfoRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_descriptor;
@@ -27850,7 +27717,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -27883,7 +27749,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.PersonalInfo personalInfo = 2;
       private java.util.List<com.mi.liveassistant.proto.UserProto.PersonalInfo> personalInfo_ =
         java.util.Collections.emptyList();
       private void ensurePersonalInfoIsMutable() {
@@ -28025,7 +27890,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.PersonalInfo> values) {
         if (personalInfoBuilder_ == null) {
           ensurePersonalInfoIsMutable();
-          super.addAll(values, personalInfo_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, personalInfo_);
           onChanged();
         } else {
           personalInfoBuilder_.addAllMessages(values);
@@ -28134,10 +28000,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.MutiGetUserInfoRsp)
   }
 
-  public interface GetCaptchaReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCaptchaReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetCaptchaReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -28164,7 +28030,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // required uint32 type = 2;
     /**
      * <code>required uint32 type = 2;</code>
      *
@@ -28182,7 +28047,6 @@ public final class UserProto {
      */
     int getType();
 
-    // optional string lang = 3;
     /**
      * <code>optional string lang = 3;</code>
      *
@@ -28218,8 +28082,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetCaptchaReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCaptchaReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetCaptchaReq)
+      GetCaptchaReqOrBuilder {
     // Use GetCaptchaReq.newBuilder() to construct.
     private GetCaptchaReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -28266,8 +28131,9 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 16: {
@@ -28276,8 +28142,9 @@ public final class UserProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              lang_ = input.readBytes();
+              lang_ = bs;
               break;
             }
           }
@@ -28320,7 +28187,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -28375,7 +28241,6 @@ public final class UserProto {
       }
     }
 
-    // required uint32 type = 2;
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -28399,7 +28264,6 @@ public final class UserProto {
       return type_;
     }
 
-    // optional string lang = 3;
     public static final int LANG_FIELD_NUMBER = 3;
     private java.lang.Object lang_;
     /**
@@ -28462,7 +28326,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -28596,8 +28461,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetCaptchaReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetCaptchaReq)
+        com.mi.liveassistant.proto.UserProto.GetCaptchaReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetCaptchaReq_descriptor;
@@ -28740,7 +28606,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -28762,9 +28627,12 @@ public final class UserProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -28838,7 +28706,6 @@ public final class UserProto {
         return this;
       }
 
-      // required uint32 type = 2;
       private int type_ ;
       /**
        * <code>required uint32 type = 2;</code>
@@ -28887,7 +28754,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string lang = 3;
       private java.lang.Object lang_ = "";
       /**
        * <code>optional string lang = 3;</code>
@@ -28909,9 +28775,12 @@ public final class UserProto {
       public java.lang.String getLang() {
         java.lang.Object ref = lang_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          lang_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            lang_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -28996,10 +28865,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetCaptchaReq)
   }
 
-  public interface GetCaptchaRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCaptchaRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetCaptchaRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -29021,8 +28890,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.GetCaptchaRsp}
    */
   public static final class GetCaptchaRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCaptchaRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetCaptchaRsp)
+      GetCaptchaRspOrBuilder {
     // Use GetCaptchaRsp.newBuilder() to construct.
     private GetCaptchaRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -29113,7 +28983,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -29143,7 +29012,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -29254,8 +29124,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.GetCaptchaRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetCaptchaRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetCaptchaRsp)
+        com.mi.liveassistant.proto.UserProto.GetCaptchaRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_descriptor;
@@ -29372,7 +29243,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -29432,10 +29302,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetCaptchaRsp)
   }
 
-  public interface VerifyCaptchaReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface VerifyCaptchaReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.VerifyCaptchaReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string phoneNum = 1;
     /**
      * <code>required string phoneNum = 1;</code>
      *
@@ -29462,7 +29332,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // required uint32 type = 2;
     /**
      * <code>required uint32 type = 2;</code>
      *
@@ -29480,7 +29349,6 @@ public final class UserProto {
      */
     int getType();
 
-    // required string captcha = 3;
     /**
      * <code>required string captcha = 3;</code>
      *
@@ -29507,7 +29375,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCaptchaBytes();
 
-    // optional string idCardNum = 4;
     /**
      * <code>optional string idCardNum = 4;</code>
      *
@@ -29543,8 +29410,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class VerifyCaptchaReq extends
-      com.google.protobuf.GeneratedMessage
-      implements VerifyCaptchaReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.VerifyCaptchaReq)
+      VerifyCaptchaReqOrBuilder {
     // Use VerifyCaptchaReq.newBuilder() to construct.
     private VerifyCaptchaReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -29591,8 +29459,9 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 16: {
@@ -29601,13 +29470,15 @@ public final class UserProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              captcha_ = input.readBytes();
+              captcha_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              idCardNum_ = input.readBytes();
+              idCardNum_ = bs;
               break;
             }
           }
@@ -29650,7 +29521,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required string phoneNum = 1;
     public static final int PHONENUM_FIELD_NUMBER = 1;
     private java.lang.Object phoneNum_;
     /**
@@ -29705,7 +29575,6 @@ public final class UserProto {
       }
     }
 
-    // required uint32 type = 2;
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -29729,7 +29598,6 @@ public final class UserProto {
       return type_;
     }
 
-    // required string captcha = 3;
     public static final int CAPTCHA_FIELD_NUMBER = 3;
     private java.lang.Object captcha_;
     /**
@@ -29784,7 +29652,6 @@ public final class UserProto {
       }
     }
 
-    // optional string idCardNum = 4;
     public static final int IDCARDNUM_FIELD_NUMBER = 4;
     private java.lang.Object idCardNum_;
     /**
@@ -29848,7 +29715,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPhoneNum()) {
         memoizedIsInitialized = 0;
@@ -29993,8 +29861,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.VerifyCaptchaReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.VerifyCaptchaReq)
+        com.mi.liveassistant.proto.UserProto.VerifyCaptchaReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_descriptor;
@@ -30152,7 +30021,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required string phoneNum = 1;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>required string phoneNum = 1;</code>
@@ -30174,9 +30042,12 @@ public final class UserProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -30250,7 +30121,6 @@ public final class UserProto {
         return this;
       }
 
-      // required uint32 type = 2;
       private int type_ ;
       /**
        * <code>required uint32 type = 2;</code>
@@ -30299,7 +30169,6 @@ public final class UserProto {
         return this;
       }
 
-      // required string captcha = 3;
       private java.lang.Object captcha_ = "";
       /**
        * <code>required string captcha = 3;</code>
@@ -30321,9 +30190,12 @@ public final class UserProto {
       public java.lang.String getCaptcha() {
         java.lang.Object ref = captcha_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          captcha_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            captcha_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -30397,7 +30269,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string idCardNum = 4;
       private java.lang.Object idCardNum_ = "";
       /**
        * <code>optional string idCardNum = 4;</code>
@@ -30419,9 +30290,12 @@ public final class UserProto {
       public java.lang.String getIdCardNum() {
         java.lang.Object ref = idCardNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          idCardNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            idCardNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -30506,10 +30380,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.VerifyCaptchaReq)
   }
 
-  public interface VerifyCaptchaRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface VerifyCaptchaRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.VerifyCaptchaRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -30531,8 +30405,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.VerifyCaptchaRsp}
    */
   public static final class VerifyCaptchaRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements VerifyCaptchaRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.VerifyCaptchaRsp)
+      VerifyCaptchaRspOrBuilder {
     // Use VerifyCaptchaRsp.newBuilder() to construct.
     private VerifyCaptchaRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -30623,7 +30498,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -30653,7 +30527,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -30764,8 +30639,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.VerifyCaptchaRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.VerifyCaptchaRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.VerifyCaptchaRsp)
+        com.mi.liveassistant.proto.UserProto.VerifyCaptchaRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_descriptor;
@@ -30882,7 +30758,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -30942,15 +30817,15 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.VerifyCaptchaRsp)
   }
 
-  public interface ApplyCertificationReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ApplyCertificationReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ApplyCertificationReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required bytes certificationInfo = 1;
     /**
      * <code>required bytes certificationInfo = 1;</code>
      *
      * <pre>
-     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
      * </pre>
      */
     boolean hasCertificationInfo();
@@ -30958,12 +30833,11 @@ public final class UserProto {
      * <code>required bytes certificationInfo = 1;</code>
      *
      * <pre>
-     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
      * </pre>
      */
     com.google.protobuf.ByteString getCertificationInfo();
 
-    // optional uint32 type = 2 [default = 1];
     /**
      * <code>optional uint32 type = 2 [default = 1];</code>
      *
@@ -30990,8 +30864,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class ApplyCertificationReq extends
-      com.google.protobuf.GeneratedMessage
-      implements ApplyCertificationReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ApplyCertificationReq)
+      ApplyCertificationReqOrBuilder {
     // Use ApplyCertificationReq.newBuilder() to construct.
     private ApplyCertificationReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -31087,14 +30962,13 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required bytes certificationInfo = 1;
     public static final int CERTIFICATIONINFO_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString certificationInfo_;
     /**
      * <code>required bytes certificationInfo = 1;</code>
      *
      * <pre>
-     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
      * </pre>
      */
     public boolean hasCertificationInfo() {
@@ -31104,14 +30978,13 @@ public final class UserProto {
      * <code>required bytes certificationInfo = 1;</code>
      *
      * <pre>
-     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+     *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
      * </pre>
      */
     public com.google.protobuf.ByteString getCertificationInfo() {
       return certificationInfo_;
     }
 
-    // optional uint32 type = 2 [default = 1];
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -31142,7 +31015,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasCertificationInfo()) {
         memoizedIsInitialized = 0;
@@ -31265,8 +31139,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.ApplyCertificationReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ApplyCertificationReq)
+        com.mi.liveassistant.proto.UserProto.ApplyCertificationReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_descriptor;
@@ -31392,13 +31267,12 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required bytes certificationInfo = 1;
       private com.google.protobuf.ByteString certificationInfo_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>required bytes certificationInfo = 1;</code>
        *
        * <pre>
-       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
        * </pre>
        */
       public boolean hasCertificationInfo() {
@@ -31408,7 +31282,7 @@ public final class UserProto {
        * <code>required bytes certificationInfo = 1;</code>
        *
        * <pre>
-       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
        * </pre>
        */
       public com.google.protobuf.ByteString getCertificationInfo() {
@@ -31418,7 +31292,7 @@ public final class UserProto {
        * <code>required bytes certificationInfo = 1;</code>
        *
        * <pre>
-       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
        * </pre>
        */
       public Builder setCertificationInfo(com.google.protobuf.ByteString value) {
@@ -31434,7 +31308,7 @@ public final class UserProto {
        * <code>required bytes certificationInfo = 1;</code>
        *
        * <pre>
-       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+       *认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
        * </pre>
        */
       public Builder clearCertificationInfo() {
@@ -31444,7 +31318,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 type = 2 [default = 1];
       private int type_ = 1;
       /**
        * <code>optional uint32 type = 2 [default = 1];</code>
@@ -31504,10 +31377,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ApplyCertificationReq)
   }
 
-  public interface ApplyCertificationRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ApplyCertificationRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ApplyCertificationRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -31521,8 +31394,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.ApplyCertificationRsp}
    */
   public static final class ApplyCertificationRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements ApplyCertificationRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ApplyCertificationRsp)
+      ApplyCertificationRspOrBuilder {
     // Use ApplyCertificationRsp.newBuilder() to construct.
     private ApplyCertificationRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -31613,7 +31487,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -31635,7 +31508,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -31746,8 +31620,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.ApplyCertificationRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.ApplyCertificationRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ApplyCertificationRsp)
+        com.mi.liveassistant.proto.UserProto.ApplyCertificationRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_descriptor;
@@ -31864,7 +31739,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -31908,10 +31782,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ApplyCertificationRsp)
   }
 
-  public interface CertificationInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CertificationInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.CertificationInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint64 uuid = 1;
     /**
      * <code>optional uint64 uuid = 1;</code>
      *
@@ -31929,7 +31803,6 @@ public final class UserProto {
      */
     long getUuid();
 
-    // optional string name = 2;
     /**
      * <code>optional string name = 2;</code>
      *
@@ -31956,7 +31829,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getNameBytes();
 
-    // optional string phoneNum = 3;
     /**
      * <code>optional string phoneNum = 3;</code>
      *
@@ -31983,7 +31855,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getPhoneNumBytes();
 
-    // repeated .com.mi.liveassistant.proto.PrivateImg idcard = 4;
     /**
      * <code>repeated .com.mi.liveassistant.proto.PrivateImg idcard = 4;</code>
      *
@@ -32028,7 +31899,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.PrivateImgOrBuilder getIdcardOrBuilder(
         int index);
 
-    // optional string certification = 5;
     /**
      * <code>optional string certification = 5;</code>
      *
@@ -32055,7 +31925,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCertificationBytes();
 
-    // optional string companyName = 6;
     /**
      * <code>optional string companyName = 6;</code>
      *
@@ -32082,7 +31951,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCompanyNameBytes();
 
-    // optional string profession = 7;
     /**
      * <code>optional string profession = 7;</code>
      *
@@ -32109,7 +31977,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getProfessionBytes();
 
-    // repeated .com.mi.liveassistant.proto.PrivateImg proofJobs = 8;
     /**
      * <code>repeated .com.mi.liveassistant.proto.PrivateImg proofJobs = 8;</code>
      *
@@ -32154,7 +32021,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.PrivateImgOrBuilder getProofJobsOrBuilder(
         int index);
 
-    // repeated .com.mi.liveassistant.proto.PrivateImg otherIdCard = 9;
     /**
      * <code>repeated .com.mi.liveassistant.proto.PrivateImg otherIdCard = 9;</code>
      *
@@ -32199,7 +32065,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.PrivateImgOrBuilder getOtherIdCardOrBuilder(
         int index);
 
-    // optional string works = 10;
     /**
      * <code>optional string works = 10;</code>
      *
@@ -32226,7 +32091,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getWorksBytes();
 
-    // optional string idCardNum = 11;
     /**
      * <code>optional string idCardNum = 11;</code>
      *
@@ -32253,7 +32117,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getIdCardNumBytes();
 
-    // optional string birthday = 12;
     /**
      * <code>optional string birthday = 12;</code>
      *
@@ -32280,7 +32143,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getBirthdayBytes();
 
-    // optional uint32 type = 13 [default = 1];
     /**
      * <code>optional uint32 type = 13 [default = 1];</code>
      *
@@ -32298,7 +32160,6 @@ public final class UserProto {
      */
     int getType();
 
-    // optional uint32 cardType = 14 [default = 1];
     /**
      * <code>optional uint32 cardType = 14 [default = 1];</code>
      *
@@ -32320,12 +32181,13 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.CertificationInfo}
    *
    * <pre>
-   *认证申请资料信息,用户模块透传CertificationInfo的二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+   *认证申请资料信息,用户模块透传CertificationInfo的二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
    * </pre>
    */
   public static final class CertificationInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements CertificationInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.CertificationInfo)
+      CertificationInfoOrBuilder {
     // Use CertificationInfo.newBuilder() to construct.
     private CertificationInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -32377,13 +32239,15 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              name_ = input.readBytes();
+              name_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              phoneNum_ = input.readBytes();
+              phoneNum_ = bs;
               break;
             }
             case 34: {
@@ -32395,18 +32259,21 @@ public final class UserProto {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              certification_ = input.readBytes();
+              certification_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              companyName_ = input.readBytes();
+              companyName_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              profession_ = input.readBytes();
+              profession_ = bs;
               break;
             }
             case 66: {
@@ -32426,18 +32293,21 @@ public final class UserProto {
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              works_ = input.readBytes();
+              works_ = bs;
               break;
             }
             case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              idCardNum_ = input.readBytes();
+              idCardNum_ = bs;
               break;
             }
             case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              birthday_ = input.readBytes();
+              birthday_ = bs;
               break;
             }
             case 104: {
@@ -32499,7 +32369,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // optional uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -32523,7 +32392,6 @@ public final class UserProto {
       return uuid_;
     }
 
-    // optional string name = 2;
     public static final int NAME_FIELD_NUMBER = 2;
     private java.lang.Object name_;
     /**
@@ -32578,7 +32446,6 @@ public final class UserProto {
       }
     }
 
-    // optional string phoneNum = 3;
     public static final int PHONENUM_FIELD_NUMBER = 3;
     private java.lang.Object phoneNum_;
     /**
@@ -32633,7 +32500,6 @@ public final class UserProto {
       }
     }
 
-    // repeated .com.mi.liveassistant.proto.PrivateImg idcard = 4;
     public static final int IDCARD_FIELD_NUMBER = 4;
     private java.util.List<com.mi.liveassistant.proto.UserProto.PrivateImg> idcard_;
     /**
@@ -32689,7 +32555,6 @@ public final class UserProto {
       return idcard_.get(index);
     }
 
-    // optional string certification = 5;
     public static final int CERTIFICATION_FIELD_NUMBER = 5;
     private java.lang.Object certification_;
     /**
@@ -32744,7 +32609,6 @@ public final class UserProto {
       }
     }
 
-    // optional string companyName = 6;
     public static final int COMPANYNAME_FIELD_NUMBER = 6;
     private java.lang.Object companyName_;
     /**
@@ -32799,7 +32663,6 @@ public final class UserProto {
       }
     }
 
-    // optional string profession = 7;
     public static final int PROFESSION_FIELD_NUMBER = 7;
     private java.lang.Object profession_;
     /**
@@ -32854,7 +32717,6 @@ public final class UserProto {
       }
     }
 
-    // repeated .com.mi.liveassistant.proto.PrivateImg proofJobs = 8;
     public static final int PROOFJOBS_FIELD_NUMBER = 8;
     private java.util.List<com.mi.liveassistant.proto.UserProto.PrivateImg> proofJobs_;
     /**
@@ -32910,7 +32772,6 @@ public final class UserProto {
       return proofJobs_.get(index);
     }
 
-    // repeated .com.mi.liveassistant.proto.PrivateImg otherIdCard = 9;
     public static final int OTHERIDCARD_FIELD_NUMBER = 9;
     private java.util.List<com.mi.liveassistant.proto.UserProto.PrivateImg> otherIdCard_;
     /**
@@ -32966,7 +32827,6 @@ public final class UserProto {
       return otherIdCard_.get(index);
     }
 
-    // optional string works = 10;
     public static final int WORKS_FIELD_NUMBER = 10;
     private java.lang.Object works_;
     /**
@@ -33021,7 +32881,6 @@ public final class UserProto {
       }
     }
 
-    // optional string idCardNum = 11;
     public static final int IDCARDNUM_FIELD_NUMBER = 11;
     private java.lang.Object idCardNum_;
     /**
@@ -33076,7 +32935,6 @@ public final class UserProto {
       }
     }
 
-    // optional string birthday = 12;
     public static final int BIRTHDAY_FIELD_NUMBER = 12;
     private java.lang.Object birthday_;
     /**
@@ -33131,7 +32989,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 type = 13 [default = 1];
     public static final int TYPE_FIELD_NUMBER = 13;
     private int type_;
     /**
@@ -33155,7 +33012,6 @@ public final class UserProto {
       return type_;
     }
 
-    // optional uint32 cardType = 14 [default = 1];
     public static final int CARDTYPE_FIELD_NUMBER = 14;
     private int cardType_;
     /**
@@ -33198,7 +33054,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -33396,12 +33253,13 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.CertificationInfo}
      *
      * <pre>
-     *认证申请资料信息,用户模块透传CertificationInfo的二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+     *认证申请资料信息,用户模块透传CertificationInfo的二进制给管理后台，管理后台&#64;小山和客户端约定CertificationInfo的字段内容
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.CertificationInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.CertificationInfo)
+        com.mi.liveassistant.proto.UserProto.CertificationInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_CertificationInfo_descriptor;
@@ -33746,7 +33604,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // optional uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 1;</code>
@@ -33795,7 +33652,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string name = 2;
       private java.lang.Object name_ = "";
       /**
        * <code>optional string name = 2;</code>
@@ -33817,9 +33673,12 @@ public final class UserProto {
       public java.lang.String getName() {
         java.lang.Object ref = name_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          name_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33893,7 +33752,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string phoneNum = 3;
       private java.lang.Object phoneNum_ = "";
       /**
        * <code>optional string phoneNum = 3;</code>
@@ -33915,9 +33773,12 @@ public final class UserProto {
       public java.lang.String getPhoneNum() {
         java.lang.Object ref = phoneNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          phoneNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            phoneNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33991,7 +33852,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.PrivateImg idcard = 4;
       private java.util.List<com.mi.liveassistant.proto.UserProto.PrivateImg> idcard_ =
         java.util.Collections.emptyList();
       private void ensureIdcardIsMutable() {
@@ -34173,7 +34033,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.PrivateImg> values) {
         if (idcardBuilder_ == null) {
           ensureIdcardIsMutable();
-          super.addAll(values, idcard_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, idcard_);
           onChanged();
         } else {
           idcardBuilder_.addAllMessages(values);
@@ -34303,7 +34164,6 @@ public final class UserProto {
         return idcardBuilder_;
       }
 
-      // optional string certification = 5;
       private java.lang.Object certification_ = "";
       /**
        * <code>optional string certification = 5;</code>
@@ -34325,9 +34185,12 @@ public final class UserProto {
       public java.lang.String getCertification() {
         java.lang.Object ref = certification_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          certification_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certification_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34401,7 +34264,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string companyName = 6;
       private java.lang.Object companyName_ = "";
       /**
        * <code>optional string companyName = 6;</code>
@@ -34423,9 +34285,12 @@ public final class UserProto {
       public java.lang.String getCompanyName() {
         java.lang.Object ref = companyName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          companyName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            companyName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34499,7 +34364,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string profession = 7;
       private java.lang.Object profession_ = "";
       /**
        * <code>optional string profession = 7;</code>
@@ -34521,9 +34385,12 @@ public final class UserProto {
       public java.lang.String getProfession() {
         java.lang.Object ref = profession_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          profession_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            profession_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34597,7 +34464,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.PrivateImg proofJobs = 8;
       private java.util.List<com.mi.liveassistant.proto.UserProto.PrivateImg> proofJobs_ =
         java.util.Collections.emptyList();
       private void ensureProofJobsIsMutable() {
@@ -34779,7 +34645,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.PrivateImg> values) {
         if (proofJobsBuilder_ == null) {
           ensureProofJobsIsMutable();
-          super.addAll(values, proofJobs_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, proofJobs_);
           onChanged();
         } else {
           proofJobsBuilder_.addAllMessages(values);
@@ -34909,7 +34776,6 @@ public final class UserProto {
         return proofJobsBuilder_;
       }
 
-      // repeated .com.mi.liveassistant.proto.PrivateImg otherIdCard = 9;
       private java.util.List<com.mi.liveassistant.proto.UserProto.PrivateImg> otherIdCard_ =
         java.util.Collections.emptyList();
       private void ensureOtherIdCardIsMutable() {
@@ -35091,7 +34957,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.PrivateImg> values) {
         if (otherIdCardBuilder_ == null) {
           ensureOtherIdCardIsMutable();
-          super.addAll(values, otherIdCard_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, otherIdCard_);
           onChanged();
         } else {
           otherIdCardBuilder_.addAllMessages(values);
@@ -35221,7 +35088,6 @@ public final class UserProto {
         return otherIdCardBuilder_;
       }
 
-      // optional string works = 10;
       private java.lang.Object works_ = "";
       /**
        * <code>optional string works = 10;</code>
@@ -35243,9 +35109,12 @@ public final class UserProto {
       public java.lang.String getWorks() {
         java.lang.Object ref = works_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          works_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            works_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35319,7 +35188,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string idCardNum = 11;
       private java.lang.Object idCardNum_ = "";
       /**
        * <code>optional string idCardNum = 11;</code>
@@ -35341,9 +35209,12 @@ public final class UserProto {
       public java.lang.String getIdCardNum() {
         java.lang.Object ref = idCardNum_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          idCardNum_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            idCardNum_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35417,7 +35288,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string birthday = 12;
       private java.lang.Object birthday_ = "";
       /**
        * <code>optional string birthday = 12;</code>
@@ -35439,9 +35309,12 @@ public final class UserProto {
       public java.lang.String getBirthday() {
         java.lang.Object ref = birthday_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          birthday_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            birthday_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -35515,7 +35388,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 type = 13 [default = 1];
       private int type_ = 1;
       /**
        * <code>optional uint32 type = 13 [default = 1];</code>
@@ -35564,7 +35436,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 cardType = 14 [default = 1];
       private int cardType_ = 1;
       /**
        * <code>optional uint32 cardType = 14 [default = 1];</code>
@@ -35624,10 +35495,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.CertificationInfo)
   }
 
-  public interface PrivateImgOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface PrivateImgOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.PrivateImg)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string bucket = 1;
     /**
      * <code>optional string bucket = 1;</code>
      */
@@ -35642,7 +35513,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getBucketBytes();
 
-    // optional string objectKey = 2;
     /**
      * <code>optional string objectKey = 2;</code>
      */
@@ -35661,8 +35531,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.PrivateImg}
    */
   public static final class PrivateImg extends
-      com.google.protobuf.GeneratedMessage
-      implements PrivateImgOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.PrivateImg)
+      PrivateImgOrBuilder {
     // Use PrivateImg.newBuilder() to construct.
     private PrivateImg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -35709,13 +35580,15 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              bucket_ = input.readBytes();
+              bucket_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              objectKey_ = input.readBytes();
+              objectKey_ = bs;
               break;
             }
           }
@@ -35758,7 +35631,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // optional string bucket = 1;
     public static final int BUCKET_FIELD_NUMBER = 1;
     private java.lang.Object bucket_;
     /**
@@ -35801,7 +35673,6 @@ public final class UserProto {
       }
     }
 
-    // optional string objectKey = 2;
     public static final int OBJECTKEY_FIELD_NUMBER = 2;
     private java.lang.Object objectKey_;
     /**
@@ -35851,7 +35722,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -35965,8 +35837,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.PrivateImg}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.PrivateImgOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.PrivateImg)
+        com.mi.liveassistant.proto.UserProto.PrivateImgOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_PrivateImg_descriptor;
@@ -36092,7 +35965,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // optional string bucket = 1;
       private java.lang.Object bucket_ = "";
       /**
        * <code>optional string bucket = 1;</code>
@@ -36106,9 +35978,12 @@ public final class UserProto {
       public java.lang.String getBucket() {
         java.lang.Object ref = bucket_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          bucket_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bucket_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -36166,7 +36041,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string objectKey = 2;
       private java.lang.Object objectKey_ = "";
       /**
        * <code>optional string objectKey = 2;</code>
@@ -36180,9 +36054,12 @@ public final class UserProto {
       public java.lang.String getObjectKey() {
         java.lang.Object ref = objectKey_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          objectKey_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            objectKey_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -36251,10 +36128,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.PrivateImg)
   }
 
-  public interface LiveCoverOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LiveCoverOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveCover)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string coverUrl = 1;
     /**
      * <code>optional string coverUrl = 1;</code>
      *
@@ -36285,8 +36162,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.LiveCover}
    */
   public static final class LiveCover extends
-      com.google.protobuf.GeneratedMessage
-      implements LiveCoverOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveCover)
+      LiveCoverOrBuilder {
     // Use LiveCover.newBuilder() to construct.
     private LiveCover(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -36333,8 +36211,9 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              coverUrl_ = input.readBytes();
+              coverUrl_ = bs;
               break;
             }
           }
@@ -36377,7 +36256,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // optional string coverUrl = 1;
     public static final int COVERURL_FIELD_NUMBER = 1;
     private java.lang.Object coverUrl_;
     /**
@@ -36438,7 +36316,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -36545,8 +36424,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.LiveCover}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.LiveCoverOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveCover)
+        com.mi.liveassistant.proto.UserProto.LiveCoverOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_LiveCover_descriptor;
@@ -36661,7 +36541,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // optional string coverUrl = 1;
       private java.lang.Object coverUrl_ = "";
       /**
        * <code>optional string coverUrl = 1;</code>
@@ -36683,9 +36562,12 @@ public final class UserProto {
       public java.lang.String getCoverUrl() {
         java.lang.Object ref = coverUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -36770,10 +36652,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveCover)
   }
 
-  public interface HisLiveOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface HisLiveOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.HisLive)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string liveId = 1;
     /**
      * <code>required string liveId = 1;</code>
      *
@@ -36800,7 +36682,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getLiveIdBytes();
 
-    // optional uint32 viewerCnt = 2;
     /**
      * <code>optional uint32 viewerCnt = 2;</code>
      *
@@ -36818,7 +36699,6 @@ public final class UserProto {
      */
     int getViewerCnt();
 
-    // optional string url = 3;
     /**
      * <code>optional string url = 3;</code>
      *
@@ -36845,7 +36725,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional uint64 startTime = 4;
     /**
      * <code>optional uint64 startTime = 4;</code>
      *
@@ -36863,7 +36742,6 @@ public final class UserProto {
      */
     long getStartTime();
 
-    // optional uint64 endTime = 5;
     /**
      * <code>optional uint64 endTime = 5;</code>
      *
@@ -36881,7 +36759,6 @@ public final class UserProto {
      */
     long getEndTime();
 
-    // optional string liveTitle = 6;
     /**
      * <code>optional string liveTitle = 6;</code>
      *
@@ -36908,7 +36785,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getLiveTitleBytes();
 
-    // optional string shareUrl = 7;
     /**
      * <code>optional string shareUrl = 7;</code>
      *
@@ -36935,7 +36811,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getShareUrlBytes();
 
-    // optional .com.mi.liveassistant.proto.LiveCover liveCover = 8;
     /**
      * <code>optional .com.mi.liveassistant.proto.LiveCover liveCover = 8;</code>
      *
@@ -36961,7 +36836,6 @@ public final class UserProto {
      */
     com.mi.liveassistant.proto.UserProto.LiveCoverOrBuilder getLiveCoverOrBuilder();
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo user = 9;
     /**
      * <code>optional .com.mi.liveassistant.proto.PersonalInfo user = 9;</code>
      *
@@ -36987,7 +36861,6 @@ public final class UserProto {
      */
     com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder getUserOrBuilder();
 
-    // optional uint32 type = 10;
     /**
      * <code>optional uint32 type = 10;</code>
      *
@@ -37009,8 +36882,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.HisLive}
    */
   public static final class HisLive extends
-      com.google.protobuf.GeneratedMessage
-      implements HisLiveOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.HisLive)
+      HisLiveOrBuilder {
     // Use HisLive.newBuilder() to construct.
     private HisLive(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -37057,8 +36931,9 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              liveId_ = input.readBytes();
+              liveId_ = bs;
               break;
             }
             case 16: {
@@ -37067,8 +36942,9 @@ public final class UserProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 32: {
@@ -37082,13 +36958,15 @@ public final class UserProto {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              liveTitle_ = input.readBytes();
+              liveTitle_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              shareUrl_ = input.readBytes();
+              shareUrl_ = bs;
               break;
             }
             case 66: {
@@ -37162,7 +37040,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required string liveId = 1;
     public static final int LIVEID_FIELD_NUMBER = 1;
     private java.lang.Object liveId_;
     /**
@@ -37217,7 +37094,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 viewerCnt = 2;
     public static final int VIEWERCNT_FIELD_NUMBER = 2;
     private int viewerCnt_;
     /**
@@ -37241,7 +37117,6 @@ public final class UserProto {
       return viewerCnt_;
     }
 
-    // optional string url = 3;
     public static final int URL_FIELD_NUMBER = 3;
     private java.lang.Object url_;
     /**
@@ -37296,7 +37171,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint64 startTime = 4;
     public static final int STARTTIME_FIELD_NUMBER = 4;
     private long startTime_;
     /**
@@ -37320,7 +37194,6 @@ public final class UserProto {
       return startTime_;
     }
 
-    // optional uint64 endTime = 5;
     public static final int ENDTIME_FIELD_NUMBER = 5;
     private long endTime_;
     /**
@@ -37344,7 +37217,6 @@ public final class UserProto {
       return endTime_;
     }
 
-    // optional string liveTitle = 6;
     public static final int LIVETITLE_FIELD_NUMBER = 6;
     private java.lang.Object liveTitle_;
     /**
@@ -37399,7 +37271,6 @@ public final class UserProto {
       }
     }
 
-    // optional string shareUrl = 7;
     public static final int SHAREURL_FIELD_NUMBER = 7;
     private java.lang.Object shareUrl_;
     /**
@@ -37454,7 +37325,6 @@ public final class UserProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.LiveCover liveCover = 8;
     public static final int LIVECOVER_FIELD_NUMBER = 8;
     private com.mi.liveassistant.proto.UserProto.LiveCover liveCover_;
     /**
@@ -37488,7 +37358,6 @@ public final class UserProto {
       return liveCover_;
     }
 
-    // optional .com.mi.liveassistant.proto.PersonalInfo user = 9;
     public static final int USER_FIELD_NUMBER = 9;
     private com.mi.liveassistant.proto.UserProto.PersonalInfo user_;
     /**
@@ -37522,7 +37391,6 @@ public final class UserProto {
       return user_;
     }
 
-    // optional uint32 type = 10;
     public static final int TYPE_FIELD_NUMBER = 10;
     private int type_;
     /**
@@ -37561,7 +37429,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasLiveId()) {
         memoizedIsInitialized = 0;
@@ -37741,8 +37610,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.HisLive}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.HisLiveOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.HisLive)
+        com.mi.liveassistant.proto.UserProto.HisLiveOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_HisLive_descriptor;
@@ -37972,7 +37842,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required string liveId = 1;
       private java.lang.Object liveId_ = "";
       /**
        * <code>required string liveId = 1;</code>
@@ -37994,9 +37863,12 @@ public final class UserProto {
       public java.lang.String getLiveId() {
         java.lang.Object ref = liveId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liveId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38070,7 +37942,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 viewerCnt = 2;
       private int viewerCnt_ ;
       /**
        * <code>optional uint32 viewerCnt = 2;</code>
@@ -38119,7 +37990,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string url = 3;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 3;</code>
@@ -38141,9 +38011,12 @@ public final class UserProto {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38217,7 +38090,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint64 startTime = 4;
       private long startTime_ ;
       /**
        * <code>optional uint64 startTime = 4;</code>
@@ -38266,7 +38138,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint64 endTime = 5;
       private long endTime_ ;
       /**
        * <code>optional uint64 endTime = 5;</code>
@@ -38315,7 +38186,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string liveTitle = 6;
       private java.lang.Object liveTitle_ = "";
       /**
        * <code>optional string liveTitle = 6;</code>
@@ -38337,9 +38207,12 @@ public final class UserProto {
       public java.lang.String getLiveTitle() {
         java.lang.Object ref = liveTitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liveTitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveTitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38413,7 +38286,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string shareUrl = 7;
       private java.lang.Object shareUrl_ = "";
       /**
        * <code>optional string shareUrl = 7;</code>
@@ -38435,9 +38307,12 @@ public final class UserProto {
       public java.lang.String getShareUrl() {
         java.lang.Object ref = shareUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38511,7 +38386,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.LiveCover liveCover = 8;
       private com.mi.liveassistant.proto.UserProto.LiveCover liveCover_ = com.mi.liveassistant.proto.UserProto.LiveCover.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.LiveCover, com.mi.liveassistant.proto.UserProto.LiveCover.Builder, com.mi.liveassistant.proto.UserProto.LiveCoverOrBuilder> liveCoverBuilder_;
@@ -38656,7 +38530,7 @@ public final class UserProto {
         if (liveCoverBuilder_ == null) {
           liveCoverBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.LiveCover, com.mi.liveassistant.proto.UserProto.LiveCover.Builder, com.mi.liveassistant.proto.UserProto.LiveCoverOrBuilder>(
-                  liveCover_,
+                  getLiveCover(),
                   getParentForChildren(),
                   isClean());
           liveCover_ = null;
@@ -38664,7 +38538,6 @@ public final class UserProto {
         return liveCoverBuilder_;
       }
 
-      // optional .com.mi.liveassistant.proto.PersonalInfo user = 9;
       private com.mi.liveassistant.proto.UserProto.PersonalInfo user_ = com.mi.liveassistant.proto.UserProto.PersonalInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder> userBuilder_;
@@ -38809,7 +38682,7 @@ public final class UserProto {
         if (userBuilder_ == null) {
           userBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.UserProto.PersonalInfo, com.mi.liveassistant.proto.UserProto.PersonalInfo.Builder, com.mi.liveassistant.proto.UserProto.PersonalInfoOrBuilder>(
-                  user_,
+                  getUser(),
                   getParentForChildren(),
                   isClean());
           user_ = null;
@@ -38817,7 +38690,6 @@ public final class UserProto {
         return userBuilder_;
       }
 
-      // optional uint32 type = 10;
       private int type_ ;
       /**
        * <code>optional uint32 type = 10;</code>
@@ -38877,10 +38749,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.HisLive)
   }
 
-  public interface FirstAudit4ProReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FirstAudit4ProReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.FirstAudit4ProReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -38890,7 +38762,6 @@ public final class UserProto {
      */
     long getZuid();
 
-    // optional string headurl = 2;
     /**
      * <code>optional string headurl = 2;</code>
      *
@@ -38917,7 +38788,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getHeadurlBytes();
 
-    // optional string nickname = 3;
     /**
      * <code>optional string nickname = 3;</code>
      *
@@ -38953,8 +38823,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class FirstAudit4ProReq extends
-      com.google.protobuf.GeneratedMessage
-      implements FirstAudit4ProReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.FirstAudit4ProReq)
+      FirstAudit4ProReqOrBuilder {
     // Use FirstAudit4ProReq.newBuilder() to construct.
     private FirstAudit4ProReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -39006,13 +38877,15 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              headurl_ = input.readBytes();
+              headurl_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
           }
@@ -39055,7 +38928,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -39071,7 +38943,6 @@ public final class UserProto {
       return zuid_;
     }
 
-    // optional string headurl = 2;
     public static final int HEADURL_FIELD_NUMBER = 2;
     private java.lang.Object headurl_;
     /**
@@ -39126,7 +38997,6 @@ public final class UserProto {
       }
     }
 
-    // optional string nickname = 3;
     public static final int NICKNAME_FIELD_NUMBER = 3;
     private java.lang.Object nickname_;
     /**
@@ -39189,7 +39059,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -39319,8 +39190,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.FirstAudit4ProReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.FirstAudit4ProReq)
+        com.mi.liveassistant.proto.UserProto.FirstAudit4ProReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_descriptor;
@@ -39459,7 +39331,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -39492,7 +39363,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string headurl = 2;
       private java.lang.Object headurl_ = "";
       /**
        * <code>optional string headurl = 2;</code>
@@ -39514,9 +39384,12 @@ public final class UserProto {
       public java.lang.String getHeadurl() {
         java.lang.Object ref = headurl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headurl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headurl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -39590,7 +39463,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string nickname = 3;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 3;</code>
@@ -39612,9 +39484,12 @@ public final class UserProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -39699,10 +39574,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.FirstAudit4ProReq)
   }
 
-  public interface FirstAudit4ProRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FirstAudit4ProRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.FirstAudit4ProRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -39720,7 +39595,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // optional string err_msg = 2;
     /**
      * <code>optional string err_msg = 2;</code>
      *
@@ -39751,8 +39625,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.FirstAudit4ProRsp}
    */
   public static final class FirstAudit4ProRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements FirstAudit4ProRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.FirstAudit4ProRsp)
+      FirstAudit4ProRspOrBuilder {
     // Use FirstAudit4ProRsp.newBuilder() to construct.
     private FirstAudit4ProRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -39804,8 +39679,9 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -39848,7 +39724,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -39872,7 +39747,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // optional string err_msg = 2;
     public static final int ERR_MSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -39934,7 +39808,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -40052,8 +39927,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.FirstAudit4ProRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.FirstAudit4ProRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.FirstAudit4ProRsp)
+        com.mi.liveassistant.proto.UserProto.FirstAudit4ProRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_descriptor;
@@ -40181,7 +40057,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -40230,7 +40105,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string err_msg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 2;</code>
@@ -40252,9 +40126,12 @@ public final class UserProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -40339,10 +40216,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.FirstAudit4ProRsp)
   }
 
-  public interface GetCountryListReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCountryListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetCountryListReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 lang_type = 1;
     /**
      * <code>required uint32 lang_type = 1;</code>
      *
@@ -40369,8 +40246,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetCountryListReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCountryListReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetCountryListReq)
+      GetCountryListReqOrBuilder {
     // Use GetCountryListReq.newBuilder() to construct.
     private GetCountryListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -40461,7 +40339,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 lang_type = 1;
     public static final int LANG_TYPE_FIELD_NUMBER = 1;
     private int langType_;
     /**
@@ -40491,7 +40368,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasLangType()) {
         memoizedIsInitialized = 0;
@@ -40607,8 +40485,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetCountryListReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetCountryListReq)
+        com.mi.liveassistant.proto.UserProto.GetCountryListReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetCountryListReq_descriptor;
@@ -40725,7 +40604,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 lang_type = 1;
       private int langType_ ;
       /**
        * <code>required uint32 lang_type = 1;</code>
@@ -40785,10 +40663,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetCountryListReq)
   }
 
-  public interface GetCountryListRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCountryListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetCountryListRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -40798,7 +40676,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // optional string err_msg = 2;
     /**
      * <code>optional string err_msg = 2;</code>
      *
@@ -40825,7 +40702,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // repeated .com.mi.liveassistant.proto.CountryInfo countryinfo = 3;
     /**
      * <code>repeated .com.mi.liveassistant.proto.CountryInfo countryinfo = 3;</code>
      *
@@ -40870,7 +40746,6 @@ public final class UserProto {
     com.mi.liveassistant.proto.UserProto.CountryInfoOrBuilder getCountryinfoOrBuilder(
         int index);
 
-    // repeated .com.mi.liveassistant.proto.CountryInfo hotcountryinfo = 4;
     /**
      * <code>repeated .com.mi.liveassistant.proto.CountryInfo hotcountryinfo = 4;</code>
      *
@@ -40919,8 +40794,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.GetCountryListRsp}
    */
   public static final class GetCountryListRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCountryListRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetCountryListRsp)
+      GetCountryListRspOrBuilder {
     // Use GetCountryListRsp.newBuilder() to construct.
     private GetCountryListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -40972,8 +40848,9 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 26: {
@@ -41038,7 +40915,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -41054,7 +40930,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // optional string err_msg = 2;
     public static final int ERR_MSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -41109,7 +40984,6 @@ public final class UserProto {
       }
     }
 
-    // repeated .com.mi.liveassistant.proto.CountryInfo countryinfo = 3;
     public static final int COUNTRYINFO_FIELD_NUMBER = 3;
     private java.util.List<com.mi.liveassistant.proto.UserProto.CountryInfo> countryinfo_;
     /**
@@ -41165,7 +41039,6 @@ public final class UserProto {
       return countryinfo_.get(index);
     }
 
-    // repeated .com.mi.liveassistant.proto.CountryInfo hotcountryinfo = 4;
     public static final int HOTCOUNTRYINFO_FIELD_NUMBER = 4;
     private java.util.List<com.mi.liveassistant.proto.UserProto.CountryInfo> hotcountryinfo_;
     /**
@@ -41230,7 +41103,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -41374,8 +41248,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.GetCountryListRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetCountryListRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetCountryListRsp)
+        com.mi.liveassistant.proto.UserProto.GetCountryListRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetCountryListRsp_descriptor;
@@ -41599,7 +41474,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -41632,7 +41506,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string err_msg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 2;</code>
@@ -41654,9 +41527,12 @@ public final class UserProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41730,7 +41606,6 @@ public final class UserProto {
         return this;
       }
 
-      // repeated .com.mi.liveassistant.proto.CountryInfo countryinfo = 3;
       private java.util.List<com.mi.liveassistant.proto.UserProto.CountryInfo> countryinfo_ =
         java.util.Collections.emptyList();
       private void ensureCountryinfoIsMutable() {
@@ -41912,7 +41787,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.CountryInfo> values) {
         if (countryinfoBuilder_ == null) {
           ensureCountryinfoIsMutable();
-          super.addAll(values, countryinfo_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, countryinfo_);
           onChanged();
         } else {
           countryinfoBuilder_.addAllMessages(values);
@@ -42042,7 +41918,6 @@ public final class UserProto {
         return countryinfoBuilder_;
       }
 
-      // repeated .com.mi.liveassistant.proto.CountryInfo hotcountryinfo = 4;
       private java.util.List<com.mi.liveassistant.proto.UserProto.CountryInfo> hotcountryinfo_ =
         java.util.Collections.emptyList();
       private void ensureHotcountryinfoIsMutable() {
@@ -42224,7 +42099,8 @@ public final class UserProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.UserProto.CountryInfo> values) {
         if (hotcountryinfoBuilder_ == null) {
           ensureHotcountryinfoIsMutable();
-          super.addAll(values, hotcountryinfo_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, hotcountryinfo_);
           onChanged();
         } else {
           hotcountryinfoBuilder_.addAllMessages(values);
@@ -42365,10 +42241,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetCountryListRsp)
   }
 
-  public interface RegionOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RegionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.Region)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 source_type = 1;
     /**
      * <code>optional uint32 source_type = 1;</code>
      *
@@ -42386,7 +42262,6 @@ public final class UserProto {
      */
     int getSourceType();
 
-    // optional string country = 2;
     /**
      * <code>optional string country = 2;</code>
      *
@@ -42413,7 +42288,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCountryBytes();
 
-    // optional string country_code = 3;
     /**
      * <code>optional string country_code = 3;</code>
      *
@@ -42448,8 +42322,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class Region extends
-      com.google.protobuf.GeneratedMessage
-      implements RegionOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.Region)
+      RegionOrBuilder {
     // Use Region.newBuilder() to construct.
     private Region(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -42501,13 +42376,15 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              country_ = input.readBytes();
+              country_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              countryCode_ = input.readBytes();
+              countryCode_ = bs;
               break;
             }
           }
@@ -42550,7 +42427,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // optional uint32 source_type = 1;
     public static final int SOURCE_TYPE_FIELD_NUMBER = 1;
     private int sourceType_;
     /**
@@ -42574,7 +42450,6 @@ public final class UserProto {
       return sourceType_;
     }
 
-    // optional string country = 2;
     public static final int COUNTRY_FIELD_NUMBER = 2;
     private java.lang.Object country_;
     /**
@@ -42629,7 +42504,6 @@ public final class UserProto {
       }
     }
 
-    // optional string country_code = 3;
     public static final int COUNTRY_CODE_FIELD_NUMBER = 3;
     private java.lang.Object countryCode_;
     /**
@@ -42692,7 +42566,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -42817,8 +42692,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.RegionOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.Region)
+        com.mi.liveassistant.proto.UserProto.RegionOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_Region_descriptor;
@@ -42953,7 +42829,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // optional uint32 source_type = 1;
       private int sourceType_ ;
       /**
        * <code>optional uint32 source_type = 1;</code>
@@ -43002,7 +42877,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string country = 2;
       private java.lang.Object country_ = "";
       /**
        * <code>optional string country = 2;</code>
@@ -43024,9 +42898,12 @@ public final class UserProto {
       public java.lang.String getCountry() {
         java.lang.Object ref = country_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          country_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            country_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -43100,7 +42977,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string country_code = 3;
       private java.lang.Object countryCode_ = "";
       /**
        * <code>optional string country_code = 3;</code>
@@ -43122,9 +42998,12 @@ public final class UserProto {
       public java.lang.String getCountryCode() {
         java.lang.Object ref = countryCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          countryCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            countryCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -43209,10 +43088,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.Region)
   }
 
-  public interface CountryInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CountryInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.CountryInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string country = 1;
     /**
      * <code>required string country = 1;</code>
      *
@@ -43239,7 +43118,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getCountryBytes();
 
-    // required string country_code = 2;
     /**
      * <code>required string country_code = 2;</code>
      *
@@ -43270,8 +43148,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.CountryInfo}
    */
   public static final class CountryInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements CountryInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.CountryInfo)
+      CountryInfoOrBuilder {
     // Use CountryInfo.newBuilder() to construct.
     private CountryInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -43318,13 +43197,15 @@ public final class UserProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              country_ = input.readBytes();
+              country_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              countryCode_ = input.readBytes();
+              countryCode_ = bs;
               break;
             }
           }
@@ -43367,7 +43248,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required string country = 1;
     public static final int COUNTRY_FIELD_NUMBER = 1;
     private java.lang.Object country_;
     /**
@@ -43422,7 +43302,6 @@ public final class UserProto {
       }
     }
 
-    // required string country_code = 2;
     public static final int COUNTRY_CODE_FIELD_NUMBER = 2;
     private java.lang.Object countryCode_;
     /**
@@ -43484,7 +43363,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasCountry()) {
         memoizedIsInitialized = 0;
@@ -43606,8 +43486,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.CountryInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.CountryInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.CountryInfo)
+        com.mi.liveassistant.proto.UserProto.CountryInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_CountryInfo_descriptor;
@@ -43741,7 +43622,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required string country = 1;
       private java.lang.Object country_ = "";
       /**
        * <code>required string country = 1;</code>
@@ -43763,9 +43643,12 @@ public final class UserProto {
       public java.lang.String getCountry() {
         java.lang.Object ref = country_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          country_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            country_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -43839,7 +43722,6 @@ public final class UserProto {
         return this;
       }
 
-      // required string country_code = 2;
       private java.lang.Object countryCode_ = "";
       /**
        * <code>required string country_code = 2;</code>
@@ -43861,9 +43743,12 @@ public final class UserProto {
       public java.lang.String getCountryCode() {
         java.lang.Object ref = countryCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          countryCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            countryCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -43948,10 +43833,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.CountryInfo)
   }
 
-  public interface GetCountryCodeReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCountryCodeReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetCountryCodeReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional double gps_lon = 1;
     /**
      * <code>optional double gps_lon = 1;</code>
      *
@@ -43969,7 +43854,6 @@ public final class UserProto {
      */
     double getGpsLon();
 
-    // optional double gps_lat = 2;
     /**
      * <code>optional double gps_lat = 2;</code>
      *
@@ -43987,7 +43871,6 @@ public final class UserProto {
      */
     double getGpsLat();
 
-    // optional string gps_country = 3;
     /**
      * <code>optional string gps_country = 3;</code>
      *
@@ -44014,7 +43897,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getGpsCountryBytes();
 
-    // optional string gps_country_code = 4;
     /**
      * <code>optional string gps_country_code = 4;</code>
      *
@@ -44041,7 +43923,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getGpsCountryCodeBytes();
 
-    // optional string gps_province = 5;
     /**
      * <code>optional string gps_province = 5;</code>
      *
@@ -44068,7 +43949,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getGpsProvinceBytes();
 
-    // optional string gps_city = 6;
     /**
      * <code>optional string gps_city = 6;</code>
      *
@@ -44095,7 +43975,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getGpsCityBytes();
 
-    // optional uint32 gps_type = 7;
     /**
      * <code>optional uint32 gps_type = 7;</code>
      *
@@ -44113,7 +43992,6 @@ public final class UserProto {
      */
     int getGpsType();
 
-    // optional uint32 gps_lang_type = 8;
     /**
      * <code>optional uint32 gps_lang_type = 8;</code>
      *
@@ -44140,8 +44018,9 @@ public final class UserProto {
    * </pre>
    */
   public static final class GetCountryCodeReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCountryCodeReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetCountryCodeReq)
+      GetCountryCodeReqOrBuilder {
     // Use GetCountryCodeReq.newBuilder() to construct.
     private GetCountryCodeReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -44198,23 +44077,27 @@ public final class UserProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              gpsCountry_ = input.readBytes();
+              gpsCountry_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              gpsCountryCode_ = input.readBytes();
+              gpsCountryCode_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              gpsProvince_ = input.readBytes();
+              gpsProvince_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              gpsCity_ = input.readBytes();
+              gpsCity_ = bs;
               break;
             }
             case 56: {
@@ -44267,7 +44150,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // optional double gps_lon = 1;
     public static final int GPS_LON_FIELD_NUMBER = 1;
     private double gpsLon_;
     /**
@@ -44291,7 +44173,6 @@ public final class UserProto {
       return gpsLon_;
     }
 
-    // optional double gps_lat = 2;
     public static final int GPS_LAT_FIELD_NUMBER = 2;
     private double gpsLat_;
     /**
@@ -44315,7 +44196,6 @@ public final class UserProto {
       return gpsLat_;
     }
 
-    // optional string gps_country = 3;
     public static final int GPS_COUNTRY_FIELD_NUMBER = 3;
     private java.lang.Object gpsCountry_;
     /**
@@ -44370,7 +44250,6 @@ public final class UserProto {
       }
     }
 
-    // optional string gps_country_code = 4;
     public static final int GPS_COUNTRY_CODE_FIELD_NUMBER = 4;
     private java.lang.Object gpsCountryCode_;
     /**
@@ -44425,7 +44304,6 @@ public final class UserProto {
       }
     }
 
-    // optional string gps_province = 5;
     public static final int GPS_PROVINCE_FIELD_NUMBER = 5;
     private java.lang.Object gpsProvince_;
     /**
@@ -44480,7 +44358,6 @@ public final class UserProto {
       }
     }
 
-    // optional string gps_city = 6;
     public static final int GPS_CITY_FIELD_NUMBER = 6;
     private java.lang.Object gpsCity_;
     /**
@@ -44535,7 +44412,6 @@ public final class UserProto {
       }
     }
 
-    // optional uint32 gps_type = 7;
     public static final int GPS_TYPE_FIELD_NUMBER = 7;
     private int gpsType_;
     /**
@@ -44559,7 +44435,6 @@ public final class UserProto {
       return gpsType_;
     }
 
-    // optional uint32 gps_lang_type = 8;
     public static final int GPS_LANG_TYPE_FIELD_NUMBER = 8;
     private int gpsLangType_;
     /**
@@ -44596,7 +44471,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -44757,8 +44633,9 @@ public final class UserProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetCountryCodeReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetCountryCodeReq)
+        com.mi.liveassistant.proto.UserProto.GetCountryCodeReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_descriptor;
@@ -44942,7 +44819,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // optional double gps_lon = 1;
       private double gpsLon_ ;
       /**
        * <code>optional double gps_lon = 1;</code>
@@ -44991,7 +44867,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional double gps_lat = 2;
       private double gpsLat_ ;
       /**
        * <code>optional double gps_lat = 2;</code>
@@ -45040,7 +44915,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string gps_country = 3;
       private java.lang.Object gpsCountry_ = "";
       /**
        * <code>optional string gps_country = 3;</code>
@@ -45062,9 +44936,12 @@ public final class UserProto {
       public java.lang.String getGpsCountry() {
         java.lang.Object ref = gpsCountry_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          gpsCountry_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gpsCountry_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -45138,7 +45015,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string gps_country_code = 4;
       private java.lang.Object gpsCountryCode_ = "";
       /**
        * <code>optional string gps_country_code = 4;</code>
@@ -45160,9 +45036,12 @@ public final class UserProto {
       public java.lang.String getGpsCountryCode() {
         java.lang.Object ref = gpsCountryCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          gpsCountryCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gpsCountryCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -45236,7 +45115,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string gps_province = 5;
       private java.lang.Object gpsProvince_ = "";
       /**
        * <code>optional string gps_province = 5;</code>
@@ -45258,9 +45136,12 @@ public final class UserProto {
       public java.lang.String getGpsProvince() {
         java.lang.Object ref = gpsProvince_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          gpsProvince_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gpsProvince_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -45334,7 +45215,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string gps_city = 6;
       private java.lang.Object gpsCity_ = "";
       /**
        * <code>optional string gps_city = 6;</code>
@@ -45356,9 +45236,12 @@ public final class UserProto {
       public java.lang.String getGpsCity() {
         java.lang.Object ref = gpsCity_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          gpsCity_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gpsCity_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -45432,7 +45315,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 gps_type = 7;
       private int gpsType_ ;
       /**
        * <code>optional uint32 gps_type = 7;</code>
@@ -45481,7 +45363,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional uint32 gps_lang_type = 8;
       private int gpsLangType_ ;
       /**
        * <code>optional uint32 gps_lang_type = 8;</code>
@@ -45541,10 +45422,10 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetCountryCodeReq)
   }
 
-  public interface GetCountryCodeRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetCountryCodeRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetCountryCodeRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      */
@@ -45554,7 +45435,6 @@ public final class UserProto {
      */
     int getRetCode();
 
-    // optional string err_msg = 2;
     /**
      * <code>optional string err_msg = 2;</code>
      *
@@ -45581,7 +45461,6 @@ public final class UserProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional string country_code = 3;
     /**
      * <code>optional string country_code = 3;</code>
      *
@@ -45612,8 +45491,9 @@ public final class UserProto {
    * Protobuf type {@code com.mi.liveassistant.proto.GetCountryCodeRsp}
    */
   public static final class GetCountryCodeRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetCountryCodeRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetCountryCodeRsp)
+      GetCountryCodeRspOrBuilder {
     // Use GetCountryCodeRsp.newBuilder() to construct.
     private GetCountryCodeRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -45665,13 +45545,15 @@ public final class UserProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              countryCode_ = input.readBytes();
+              countryCode_ = bs;
               break;
             }
           }
@@ -45714,7 +45596,6 @@ public final class UserProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -45730,7 +45611,6 @@ public final class UserProto {
       return retCode_;
     }
 
-    // optional string err_msg = 2;
     public static final int ERR_MSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -45785,7 +45665,6 @@ public final class UserProto {
       }
     }
 
-    // optional string country_code = 3;
     public static final int COUNTRY_CODE_FIELD_NUMBER = 3;
     private java.lang.Object countryCode_;
     /**
@@ -45848,7 +45727,8 @@ public final class UserProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -45973,8 +45853,9 @@ public final class UserProto {
      * Protobuf type {@code com.mi.liveassistant.proto.GetCountryCodeRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.UserProto.GetCountryCodeRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetCountryCodeRsp)
+        com.mi.liveassistant.proto.UserProto.GetCountryCodeRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.UserProto.internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_descriptor;
@@ -46113,7 +45994,6 @@ public final class UserProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -46146,7 +46026,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string err_msg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 2;</code>
@@ -46168,9 +46047,12 @@ public final class UserProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -46244,7 +46126,6 @@ public final class UserProto {
         return this;
       }
 
-      // optional string country_code = 3;
       private java.lang.Object countryCode_ = "";
       /**
        * <code>optional string country_code = 3;</code>
@@ -46266,9 +46147,12 @@ public final class UserProto {
       public java.lang.String getCountryCode() {
         java.lang.Object ref = countryCode_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          countryCode_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            countryCode_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -46353,237 +46237,237 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetCountryCodeRsp)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_BusinessUserInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_BusinessUserInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_PersonalInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_PersonalInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_PersonalData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_PersonalData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UserEcoAttr_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UserEcoAttr_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_Medal_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_Medal_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetHomepageReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetHomepageReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_GetHomepageResp_descriptor;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_liveassistant_proto_GetHomepageRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_GetHomepageResp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+      internal_static_com_mi_liveassistant_proto_GetHomepageRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_AdminSettingReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_AdminSettingReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_AdminSettingRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_AdminSettingRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_AdminListReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_AdminListReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_AdminListRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_AdminListRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_HisRoomReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_HisRoomReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_HisRoomRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_HisRoomRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetCaptchaReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetCaptchaReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_CertificationInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_CertificationInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_PrivateImg_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_PrivateImg_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_LiveCover_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_LiveCover_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_HisLive_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_HisLive_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetCountryListReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetCountryListReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetCountryListRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetCountryListRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_Region_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_Region_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_CountryInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_CountryInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -46645,394 +46529,394 @@ public final class UserProto {
       "\terrorCode\030\001 \002(\r\022>\n\014personalData\030\002 \001(\0132(" +
       ".com.mi.liveassistant.proto.PersonalData" +
       "\"9\n\016GetHomepageReq\022\014\n\004zuid\030\001 \002(\004\022\031\n\013getL" +
-      "iveInfo\030\002 \001(\010:\004true\"\261\003\n\017GetHomepageResp\022" +
-      "\017\n\007retCode\030\001 \002(\r\022>\n\014personalInfo\030\002 \001(\0132(",
-      ".com.mi.liveassistant.proto.PersonalInfo" +
-      "\022>\n\014personalData\030\003 \001(\0132(.com.mi.liveassi" +
-      "stant.proto.PersonalData\022\017\n\007viewUrl\030\004 \001(" +
-      "\t\022\033\n\023rank_top_three_list\030\006 \003(\004\022\016\n\006roomId" +
-      "\030\007 \001(\t\022\020\n\010roomInfo\030\010 \001(\014\022@\n\025before_nickn" +
-      "ame_medal\030\t \003(\0132!.com.mi.liveassistant.p" +
-      "roto.Medal\022?\n\024after_nickname_medal\030\n \003(\013" +
-      "2!.com.mi.liveassistant.proto.Medal\022:\n\017u" +
-      "ser_card_medal\030\013 \003(\0132!.com.mi.liveassist" +
-      "ant.proto.Medal\"\205\001\n\024UploadUserSettingReq",
-      "\022\014\n\004zuid\030\001 \002(\004\022\022\n\nisPushable\030\002 \001(\010\022\031\n\021is" +
-      "NotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNoSound" +
-      "\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\")\n\024Uploa" +
-      "dUserSettingRsp\022\021\n\terrorCode\030\001 \002(\r\"C\n\021Se" +
-      "archUserInfoReq\022\017\n\007keyword\030\001 \002(\t\022\016\n\006offs" +
-      "et\030\002 \002(\r\022\r\n\005limit\030\003 \002(\r\"y\n\021SearchUserInf" +
-      "oRsp\022\021\n\terrorCode\030\001 \002(\r\022\020\n\010totalNum\030\002 \001(" +
-      "\r\022?\n\rpersonalInfos\030\003 \003(\0132(.com.mi.liveas" +
-      "sistant.proto.PersonalInfo\"\241\002\n\027UploadUse" +
-      "rPropertiesReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006avatar\030\002",
-      " \001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004sign\030\004 \001(\t\022\016\n\006" +
-      "gender\030\005 \001(\r\022\025\n\rcertification\030\006 \001(\t\022\031\n\021c" +
-      "ertificationType\030\007 \001(\r\022\030\n\tis_manual\030\n \001(" +
-      "\010:\005false\022\023\n\013cover_photo\030\013 \001(\t\022\017\n\007address" +
-      "\030\014 \001(\t\022\022\n\navatar_md5\030\r \001(\t\0222\n\006region\030\016 \001" +
-      "(\0132\".com.mi.liveassistant.proto.Region\"M" +
-      "\n\027UploadUserPropertiesRsp\022\017\n\007retCode\030\001 \002" +
-      "(\r\022\017\n\007err_msg\030\002 \001(\t\022\020\n\010nickname\030\003 \001(\t\"F\n" +
-      "\017AdminSettingReq\022\020\n\010adminUid\030\001 \002(\004\022\021\n\top" +
-      "eration\030\002 \002(\r\022\016\n\006roomId\030\003 \001(\t\"\"\n\017AdminSe",
-      "ttingRsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014AdminListRe" +
-      "q\022\014\n\004zuid\030\001 \002(\004\"\\\n\014AdminListRsp\022\017\n\007retCo" +
-      "de\030\001 \002(\r\022;\n\tuserInfos\030\002 \003(\0132(.com.mi.liv" +
-      "eassistant.proto.PersonalInfo\" \n\020GetOwnS" +
-      "ettingReq\022\014\n\004zuid\030\001 \002(\004\"\204\001\n\020GetOwnSettin" +
-      "gRsp\022\017\n\007retCode\030\001 \002(\r\022\022\n\nisPushable\030\002 \001(" +
-      "\010\022\031\n\021isNotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotify" +
-      "NoSound\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\"\032" +
-      "\n\nHisRoomReq\022\014\n\004zuid\030\001 \002(\004\"^\n\nHisRoomRsp" +
-      "\022\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010sha",
-      "reUrl\030\003 \001(\t\022\017\n\007viewUrl\030\004 \001(\t\022\014\n\004type\030\005 \001" +
-      "(\r\"\"\n\022MutiGetUserInfoReq\022\014\n\004zuid\030\001 \003(\004\"e" +
-      "\n\022MutiGetUserInfoRsp\022\017\n\007retCode\030\001 \002(\r\022>\n" +
-      "\014personalInfo\030\002 \003(\0132(.com.mi.liveassista" +
-      "nt.proto.PersonalInfo\"=\n\rGetCaptchaReq\022\020" +
-      "\n\010phoneNum\030\001 \002(\t\022\014\n\004type\030\002 \002(\r\022\014\n\004lang\030\003" +
-      " \001(\t\" \n\rGetCaptchaRsp\022\017\n\007retCode\030\001 \002(\r\"V" +
-      "\n\020VerifyCaptchaReq\022\020\n\010phoneNum\030\001 \002(\t\022\014\n\004" +
-      "type\030\002 \002(\r\022\017\n\007captcha\030\003 \002(\t\022\021\n\tidCardNum" +
-      "\030\004 \001(\t\"#\n\020VerifyCaptchaRsp\022\017\n\007retCode\030\001 ",
-      "\002(\r\"C\n\025ApplyCertificationReq\022\031\n\021certific" +
-      "ationInfo\030\001 \002(\014\022\017\n\004type\030\002 \001(\r:\0011\"(\n\025Appl" +
-      "yCertificationRsp\022\017\n\007retCode\030\001 \002(\r\"\213\003\n\021C" +
-      "ertificationInfo\022\014\n\004uuid\030\001 \001(\004\022\014\n\004name\030\002" +
-      " \001(\t\022\020\n\010phoneNum\030\003 \001(\t\0226\n\006idcard\030\004 \003(\0132&" +
-      ".com.mi.liveassistant.proto.PrivateImg\022\025" +
-      "\n\rcertification\030\005 \001(\t\022\023\n\013companyName\030\006 \001" +
-      "(\t\022\022\n\nprofession\030\007 \001(\t\0229\n\tproofJobs\030\010 \003(" +
-      "\0132&.com.mi.liveassistant.proto.PrivateIm" +
-      "g\022;\n\013otherIdCard\030\t \003(\0132&.com.mi.liveassi",
-      "stant.proto.PrivateImg\022\r\n\005works\030\n \001(\t\022\021\n" +
-      "\tidCardNum\030\013 \001(\t\022\020\n\010birthday\030\014 \001(\t\022\017\n\004ty" +
-      "pe\030\r \001(\r:\0011\022\023\n\010cardType\030\016 \001(\r:\0011\"/\n\nPriv" +
-      "ateImg\022\016\n\006bucket\030\001 \001(\t\022\021\n\tobjectKey\030\002 \001(" +
-      "\t\"\035\n\tLiveCover\022\020\n\010coverUrl\030\001 \001(\t\"\202\002\n\007His" +
-      "Live\022\016\n\006liveId\030\001 \002(\t\022\021\n\tviewerCnt\030\002 \001(\r\022" +
-      "\013\n\003url\030\003 \001(\t\022\021\n\tstartTime\030\004 \001(\004\022\017\n\007endTi" +
-      "me\030\005 \001(\004\022\021\n\tliveTitle\030\006 \001(\t\022\020\n\010shareUrl\030" +
-      "\007 \001(\t\0228\n\tliveCover\030\010 \001(\0132%.com.mi.liveas" +
-      "sistant.proto.LiveCover\0226\n\004user\030\t \001(\0132(.",
+      "iveInfo\030\002 \001(\010:\004true\"\260\003\n\016GetHomepageRsp\022\017" +
+      "\n\007retCode\030\001 \002(\r\022>\n\014personalInfo\030\002 \001(\0132(.",
       "com.mi.liveassistant.proto.PersonalInfo\022" +
-      "\014\n\004type\030\n \001(\r\"D\n\021FirstAudit4ProReq\022\014\n\004zu" +
-      "id\030\001 \002(\004\022\017\n\007headurl\030\002 \001(\t\022\020\n\010nickname\030\003 " +
-      "\001(\t\"5\n\021FirstAudit4ProRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\022\017\n\007err_msg\030\002 \001(\t\"&\n\021GetCountryListReq\022" +
-      "\021\n\tlang_type\030\001 \002(\r\"\264\001\n\021GetCountryListRsp" +
-      "\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022<\n\013co" +
-      "untryinfo\030\003 \003(\0132\'.com.mi.liveassistant.p" +
-      "roto.CountryInfo\022?\n\016hotcountryinfo\030\004 \003(\013" +
-      "2\'.com.mi.liveassistant.proto.CountryInf",
-      "o\"D\n\006Region\022\023\n\013source_type\030\001 \001(\r\022\017\n\007coun" +
-      "try\030\002 \001(\t\022\024\n\014country_code\030\003 \001(\t\"4\n\013Count" +
-      "ryInfo\022\017\n\007country\030\001 \002(\t\022\024\n\014country_code\030" +
-      "\002 \002(\t\"\265\001\n\021GetCountryCodeReq\022\017\n\007gps_lon\030\001" +
-      " \001(\001\022\017\n\007gps_lat\030\002 \001(\001\022\023\n\013gps_country\030\003 \001" +
-      "(\t\022\030\n\020gps_country_code\030\004 \001(\t\022\024\n\014gps_prov" +
-      "ince\030\005 \001(\t\022\020\n\010gps_city\030\006 \001(\t\022\020\n\010gps_type" +
-      "\030\007 \001(\r\022\025\n\rgps_lang_type\030\010 \001(\r\"K\n\021GetCoun" +
-      "tryCodeRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002" +
-      " \001(\t\022\024\n\014country_code\030\003 \001(\tB\'\n\032com.mi.liv",
-      "eassistant.protoB\tUserProto"
+      ">\n\014personalData\030\003 \001(\0132(.com.mi.liveassis" +
+      "tant.proto.PersonalData\022\017\n\007viewUrl\030\004 \001(\t" +
+      "\022\033\n\023rank_top_three_list\030\006 \003(\004\022\016\n\006roomId\030" +
+      "\007 \001(\t\022\020\n\010roomInfo\030\010 \001(\014\022@\n\025before_nickna" +
+      "me_medal\030\t \003(\0132!.com.mi.liveassistant.pr" +
+      "oto.Medal\022?\n\024after_nickname_medal\030\n \003(\0132" +
+      "!.com.mi.liveassistant.proto.Medal\022:\n\017us" +
+      "er_card_medal\030\013 \003(\0132!.com.mi.liveassista" +
+      "nt.proto.Medal\"\205\001\n\024UploadUserSettingReq\022",
+      "\014\n\004zuid\030\001 \002(\004\022\022\n\nisPushable\030\002 \001(\010\022\031\n\021isN" +
+      "otifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNoSound\030" +
+      "\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\")\n\024Upload" +
+      "UserSettingRsp\022\021\n\terrorCode\030\001 \002(\r\"C\n\021Sea" +
+      "rchUserInfoReq\022\017\n\007keyword\030\001 \002(\t\022\016\n\006offse" +
+      "t\030\002 \002(\r\022\r\n\005limit\030\003 \002(\r\"y\n\021SearchUserInfo" +
+      "Rsp\022\021\n\terrorCode\030\001 \002(\r\022\020\n\010totalNum\030\002 \001(\r" +
+      "\022?\n\rpersonalInfos\030\003 \003(\0132(.com.mi.liveass" +
+      "istant.proto.PersonalInfo\"\241\002\n\027UploadUser" +
+      "PropertiesReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006avatar\030\002 ",
+      "\001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004sign\030\004 \001(\t\022\016\n\006g" +
+      "ender\030\005 \001(\r\022\025\n\rcertification\030\006 \001(\t\022\031\n\021ce" +
+      "rtificationType\030\007 \001(\r\022\030\n\tis_manual\030\n \001(\010" +
+      ":\005false\022\023\n\013cover_photo\030\013 \001(\t\022\017\n\007address\030" +
+      "\014 \001(\t\022\022\n\navatar_md5\030\r \001(\t\0222\n\006region\030\016 \001(" +
+      "\0132\".com.mi.liveassistant.proto.Region\"M\n" +
+      "\027UploadUserPropertiesRsp\022\017\n\007retCode\030\001 \002(" +
+      "\r\022\017\n\007err_msg\030\002 \001(\t\022\020\n\010nickname\030\003 \001(\t\"F\n\017" +
+      "AdminSettingReq\022\020\n\010adminUid\030\001 \002(\004\022\021\n\tope" +
+      "ration\030\002 \002(\r\022\016\n\006roomId\030\003 \001(\t\"\"\n\017AdminSet",
+      "tingRsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014AdminListReq" +
+      "\022\014\n\004zuid\030\001 \002(\004\"\\\n\014AdminListRsp\022\017\n\007retCod" +
+      "e\030\001 \002(\r\022;\n\tuserInfos\030\002 \003(\0132(.com.mi.live" +
+      "assistant.proto.PersonalInfo\" \n\020GetOwnSe" +
+      "ttingReq\022\014\n\004zuid\030\001 \002(\004\"\204\001\n\020GetOwnSetting" +
+      "Rsp\022\017\n\007retCode\030\001 \002(\r\022\022\n\nisPushable\030\002 \001(\010" +
+      "\022\031\n\021isNotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyN" +
+      "oSound\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\"\032\n" +
+      "\nHisRoomReq\022\014\n\004zuid\030\001 \002(\004\"^\n\nHisRoomRsp\022" +
+      "\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 \001(\t\022\020\n\010shar",
+      "eUrl\030\003 \001(\t\022\017\n\007viewUrl\030\004 \001(\t\022\014\n\004type\030\005 \001(" +
+      "\r\"\"\n\022MutiGetUserInfoReq\022\014\n\004zuid\030\001 \003(\004\"e\n" +
+      "\022MutiGetUserInfoRsp\022\017\n\007retCode\030\001 \002(\r\022>\n\014" +
+      "personalInfo\030\002 \003(\0132(.com.mi.liveassistan" +
+      "t.proto.PersonalInfo\"=\n\rGetCaptchaReq\022\020\n" +
+      "\010phoneNum\030\001 \002(\t\022\014\n\004type\030\002 \002(\r\022\014\n\004lang\030\003 " +
+      "\001(\t\" \n\rGetCaptchaRsp\022\017\n\007retCode\030\001 \002(\r\"V\n" +
+      "\020VerifyCaptchaReq\022\020\n\010phoneNum\030\001 \002(\t\022\014\n\004t" +
+      "ype\030\002 \002(\r\022\017\n\007captcha\030\003 \002(\t\022\021\n\tidCardNum\030" +
+      "\004 \001(\t\"#\n\020VerifyCaptchaRsp\022\017\n\007retCode\030\001 \002",
+      "(\r\"C\n\025ApplyCertificationReq\022\031\n\021certifica" +
+      "tionInfo\030\001 \002(\014\022\017\n\004type\030\002 \001(\r:\0011\"(\n\025Apply" +
+      "CertificationRsp\022\017\n\007retCode\030\001 \002(\r\"\213\003\n\021Ce" +
+      "rtificationInfo\022\014\n\004uuid\030\001 \001(\004\022\014\n\004name\030\002 " +
+      "\001(\t\022\020\n\010phoneNum\030\003 \001(\t\0226\n\006idcard\030\004 \003(\0132&." +
+      "com.mi.liveassistant.proto.PrivateImg\022\025\n" +
+      "\rcertification\030\005 \001(\t\022\023\n\013companyName\030\006 \001(" +
+      "\t\022\022\n\nprofession\030\007 \001(\t\0229\n\tproofJobs\030\010 \003(\013" +
+      "2&.com.mi.liveassistant.proto.PrivateImg" +
+      "\022;\n\013otherIdCard\030\t \003(\0132&.com.mi.liveassis",
+      "tant.proto.PrivateImg\022\r\n\005works\030\n \001(\t\022\021\n\t" +
+      "idCardNum\030\013 \001(\t\022\020\n\010birthday\030\014 \001(\t\022\017\n\004typ" +
+      "e\030\r \001(\r:\0011\022\023\n\010cardType\030\016 \001(\r:\0011\"/\n\nPriva" +
+      "teImg\022\016\n\006bucket\030\001 \001(\t\022\021\n\tobjectKey\030\002 \001(\t" +
+      "\"\035\n\tLiveCover\022\020\n\010coverUrl\030\001 \001(\t\"\202\002\n\007HisL" +
+      "ive\022\016\n\006liveId\030\001 \002(\t\022\021\n\tviewerCnt\030\002 \001(\r\022\013" +
+      "\n\003url\030\003 \001(\t\022\021\n\tstartTime\030\004 \001(\004\022\017\n\007endTim" +
+      "e\030\005 \001(\004\022\021\n\tliveTitle\030\006 \001(\t\022\020\n\010shareUrl\030\007" +
+      " \001(\t\0228\n\tliveCover\030\010 \001(\0132%.com.mi.liveass" +
+      "istant.proto.LiveCover\0226\n\004user\030\t \001(\0132(.c",
+      "om.mi.liveassistant.proto.PersonalInfo\022\014" +
+      "\n\004type\030\n \001(\r\"D\n\021FirstAudit4ProReq\022\014\n\004zui" +
+      "d\030\001 \002(\004\022\017\n\007headurl\030\002 \001(\t\022\020\n\010nickname\030\003 \001" +
+      "(\t\"5\n\021FirstAudit4ProRsp\022\017\n\007retCode\030\001 \002(\r" +
+      "\022\017\n\007err_msg\030\002 \001(\t\"&\n\021GetCountryListReq\022\021" +
+      "\n\tlang_type\030\001 \002(\r\"\264\001\n\021GetCountryListRsp\022" +
+      "\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022<\n\013cou" +
+      "ntryinfo\030\003 \003(\0132\'.com.mi.liveassistant.pr" +
+      "oto.CountryInfo\022?\n\016hotcountryinfo\030\004 \003(\0132" +
+      "\'.com.mi.liveassistant.proto.CountryInfo",
+      "\"D\n\006Region\022\023\n\013source_type\030\001 \001(\r\022\017\n\007count" +
+      "ry\030\002 \001(\t\022\024\n\014country_code\030\003 \001(\t\"4\n\013Countr" +
+      "yInfo\022\017\n\007country\030\001 \002(\t\022\024\n\014country_code\030\002" +
+      " \002(\t\"\265\001\n\021GetCountryCodeReq\022\017\n\007gps_lon\030\001 " +
+      "\001(\001\022\017\n\007gps_lat\030\002 \001(\001\022\023\n\013gps_country\030\003 \001(" +
+      "\t\022\030\n\020gps_country_code\030\004 \001(\t\022\024\n\014gps_provi" +
+      "nce\030\005 \001(\t\022\020\n\010gps_city\030\006 \001(\t\022\020\n\010gps_type\030" +
+      "\007 \001(\r\022\025\n\rgps_lang_type\030\010 \001(\r\"K\n\021GetCount" +
+      "ryCodeRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 " +
+      "\001(\t\022\024\n\014country_code\030\003 \001(\tB\'\n\032com.mi.live",
+      "assistant.protoB\tUserProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_com_mi_liveassistant_proto_BusinessUserInfo_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_com_mi_liveassistant_proto_BusinessUserInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_BusinessUserInfo_descriptor,
-              new java.lang.String[] { "ServicePhone", "Address", "BusinessHours", "Intro", });
-          internal_static_com_mi_liveassistant_proto_PersonalInfo_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_com_mi_liveassistant_proto_PersonalInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_PersonalInfo_descriptor,
-              new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "IsFocused", "Certification", "IsBothwayFollowing", "CertificationType", "IsBlocked", "IsInspector", "AdminUids", "WaitingCertificationType", "CertificationId", "RealNameCertificationStatus", "CoverPhoto", "UserType", "BusinessUserInfo", "SellerStatus", "IsFirstAudit", "IsRedname", "Region", });
-          internal_static_com_mi_liveassistant_proto_PersonalData_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_com_mi_liveassistant_proto_PersonalData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_PersonalData_descriptor,
-              new java.lang.String[] { "Zuid", "MliveTicketNum", "FansNum", "FollowNum", "SendDiamondNum", "VodNum", "EarnNum", "DiamondNum", "UserEcoAttr", "UsableMibiTicketCnt", });
-          internal_static_com_mi_liveassistant_proto_UserEcoAttr_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_com_mi_liveassistant_proto_UserEcoAttr_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UserEcoAttr_descriptor,
-              new java.lang.String[] { "BulletGiftId", "BulletGemCnt", "ConsumVirtualGemCnt", "UsableVirtualGemCnt", });
-          internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_descriptor,
-              new java.lang.String[] { "Zuid", });
-          internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_descriptor =
-            getDescriptor().getMessageTypes().get(5);
-          internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_descriptor,
-              new java.lang.String[] { "ErrorCode", "PersonalInfo", });
-          internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_descriptor =
-            getDescriptor().getMessageTypes().get(6);
-          internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_descriptor,
-              new java.lang.String[] { "Zuid", "GetLiveInfo", });
-          internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_descriptor =
-            getDescriptor().getMessageTypes().get(7);
-          internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_descriptor,
-              new java.lang.String[] { "ErrorCode", "PersonalInfo", "PersonalData", "RankTopThreeList", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", });
-          internal_static_com_mi_liveassistant_proto_Medal_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_com_mi_liveassistant_proto_Medal_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_Medal_descriptor,
-              new java.lang.String[] { "PicId", });
-          internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_descriptor =
-            getDescriptor().getMessageTypes().get(9);
-          internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_descriptor,
-              new java.lang.String[] { "Zuid", });
-          internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_descriptor =
-            getDescriptor().getMessageTypes().get(10);
-          internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_descriptor,
-              new java.lang.String[] { "ErrorCode", "PersonalData", });
-          internal_static_com_mi_liveassistant_proto_GetHomepageReq_descriptor =
-            getDescriptor().getMessageTypes().get(11);
-          internal_static_com_mi_liveassistant_proto_GetHomepageReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetHomepageReq_descriptor,
-              new java.lang.String[] { "Zuid", "GetLiveInfo", });
-          internal_static_com_mi_liveassistant_proto_GetHomepageResp_descriptor =
-            getDescriptor().getMessageTypes().get(12);
-          internal_static_com_mi_liveassistant_proto_GetHomepageResp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetHomepageResp_descriptor,
-              new java.lang.String[] { "RetCode", "PersonalInfo", "PersonalData", "ViewUrl", "RankTopThreeList", "RoomId", "RoomInfo", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", });
-          internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_descriptor =
-            getDescriptor().getMessageTypes().get(13);
-          internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_descriptor,
-              new java.lang.String[] { "Zuid", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", });
-          internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_descriptor =
-            getDescriptor().getMessageTypes().get(14);
-          internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_descriptor,
-              new java.lang.String[] { "ErrorCode", });
-          internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_descriptor =
-            getDescriptor().getMessageTypes().get(15);
-          internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_descriptor,
-              new java.lang.String[] { "Keyword", "Offset", "Limit", });
-          internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_descriptor =
-            getDescriptor().getMessageTypes().get(16);
-          internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_descriptor,
-              new java.lang.String[] { "ErrorCode", "TotalNum", "PersonalInfos", });
-          internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_descriptor =
-            getDescriptor().getMessageTypes().get(17);
-          internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_descriptor,
-              new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Certification", "CertificationType", "IsManual", "CoverPhoto", "Address", "AvatarMd5", "Region", });
-          internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_descriptor =
-            getDescriptor().getMessageTypes().get(18);
-          internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", "Nickname", });
-          internal_static_com_mi_liveassistant_proto_AdminSettingReq_descriptor =
-            getDescriptor().getMessageTypes().get(19);
-          internal_static_com_mi_liveassistant_proto_AdminSettingReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_AdminSettingReq_descriptor,
-              new java.lang.String[] { "AdminUid", "Operation", "RoomId", });
-          internal_static_com_mi_liveassistant_proto_AdminSettingRsp_descriptor =
-            getDescriptor().getMessageTypes().get(20);
-          internal_static_com_mi_liveassistant_proto_AdminSettingRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_AdminSettingRsp_descriptor,
-              new java.lang.String[] { "RetCode", });
-          internal_static_com_mi_liveassistant_proto_AdminListReq_descriptor =
-            getDescriptor().getMessageTypes().get(21);
-          internal_static_com_mi_liveassistant_proto_AdminListReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_AdminListReq_descriptor,
-              new java.lang.String[] { "Zuid", });
-          internal_static_com_mi_liveassistant_proto_AdminListRsp_descriptor =
-            getDescriptor().getMessageTypes().get(22);
-          internal_static_com_mi_liveassistant_proto_AdminListRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_AdminListRsp_descriptor,
-              new java.lang.String[] { "RetCode", "UserInfos", });
-          internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_descriptor =
-            getDescriptor().getMessageTypes().get(23);
-          internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_descriptor,
-              new java.lang.String[] { "Zuid", });
-          internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_descriptor =
-            getDescriptor().getMessageTypes().get(24);
-          internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_descriptor,
-              new java.lang.String[] { "RetCode", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", });
-          internal_static_com_mi_liveassistant_proto_HisRoomReq_descriptor =
-            getDescriptor().getMessageTypes().get(25);
-          internal_static_com_mi_liveassistant_proto_HisRoomReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_HisRoomReq_descriptor,
-              new java.lang.String[] { "Zuid", });
-          internal_static_com_mi_liveassistant_proto_HisRoomRsp_descriptor =
-            getDescriptor().getMessageTypes().get(26);
-          internal_static_com_mi_liveassistant_proto_HisRoomRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_HisRoomRsp_descriptor,
-              new java.lang.String[] { "RetCode", "LiveId", "ShareUrl", "ViewUrl", "Type", });
-          internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_descriptor =
-            getDescriptor().getMessageTypes().get(27);
-          internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_descriptor,
-              new java.lang.String[] { "Zuid", });
-          internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_descriptor =
-            getDescriptor().getMessageTypes().get(28);
-          internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_descriptor,
-              new java.lang.String[] { "RetCode", "PersonalInfo", });
-          internal_static_com_mi_liveassistant_proto_GetCaptchaReq_descriptor =
-            getDescriptor().getMessageTypes().get(29);
-          internal_static_com_mi_liveassistant_proto_GetCaptchaReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetCaptchaReq_descriptor,
-              new java.lang.String[] { "PhoneNum", "Type", "Lang", });
-          internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_descriptor =
-            getDescriptor().getMessageTypes().get(30);
-          internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_descriptor,
-              new java.lang.String[] { "RetCode", });
-          internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_descriptor =
-            getDescriptor().getMessageTypes().get(31);
-          internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_descriptor,
-              new java.lang.String[] { "PhoneNum", "Type", "Captcha", "IdCardNum", });
-          internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_descriptor =
-            getDescriptor().getMessageTypes().get(32);
-          internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_descriptor,
-              new java.lang.String[] { "RetCode", });
-          internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_descriptor =
-            getDescriptor().getMessageTypes().get(33);
-          internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_descriptor,
-              new java.lang.String[] { "CertificationInfo", "Type", });
-          internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_descriptor =
-            getDescriptor().getMessageTypes().get(34);
-          internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_descriptor,
-              new java.lang.String[] { "RetCode", });
-          internal_static_com_mi_liveassistant_proto_CertificationInfo_descriptor =
-            getDescriptor().getMessageTypes().get(35);
-          internal_static_com_mi_liveassistant_proto_CertificationInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_CertificationInfo_descriptor,
-              new java.lang.String[] { "Uuid", "Name", "PhoneNum", "Idcard", "Certification", "CompanyName", "Profession", "ProofJobs", "OtherIdCard", "Works", "IdCardNum", "Birthday", "Type", "CardType", });
-          internal_static_com_mi_liveassistant_proto_PrivateImg_descriptor =
-            getDescriptor().getMessageTypes().get(36);
-          internal_static_com_mi_liveassistant_proto_PrivateImg_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_PrivateImg_descriptor,
-              new java.lang.String[] { "Bucket", "ObjectKey", });
-          internal_static_com_mi_liveassistant_proto_LiveCover_descriptor =
-            getDescriptor().getMessageTypes().get(37);
-          internal_static_com_mi_liveassistant_proto_LiveCover_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LiveCover_descriptor,
-              new java.lang.String[] { "CoverUrl", });
-          internal_static_com_mi_liveassistant_proto_HisLive_descriptor =
-            getDescriptor().getMessageTypes().get(38);
-          internal_static_com_mi_liveassistant_proto_HisLive_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_HisLive_descriptor,
-              new java.lang.String[] { "LiveId", "ViewerCnt", "Url", "StartTime", "EndTime", "LiveTitle", "ShareUrl", "LiveCover", "User", "Type", });
-          internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_descriptor =
-            getDescriptor().getMessageTypes().get(39);
-          internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_descriptor,
-              new java.lang.String[] { "Zuid", "Headurl", "Nickname", });
-          internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_descriptor =
-            getDescriptor().getMessageTypes().get(40);
-          internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", });
-          internal_static_com_mi_liveassistant_proto_GetCountryListReq_descriptor =
-            getDescriptor().getMessageTypes().get(41);
-          internal_static_com_mi_liveassistant_proto_GetCountryListReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetCountryListReq_descriptor,
-              new java.lang.String[] { "LangType", });
-          internal_static_com_mi_liveassistant_proto_GetCountryListRsp_descriptor =
-            getDescriptor().getMessageTypes().get(42);
-          internal_static_com_mi_liveassistant_proto_GetCountryListRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetCountryListRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", "Countryinfo", "Hotcountryinfo", });
-          internal_static_com_mi_liveassistant_proto_Region_descriptor =
-            getDescriptor().getMessageTypes().get(43);
-          internal_static_com_mi_liveassistant_proto_Region_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_Region_descriptor,
-              new java.lang.String[] { "SourceType", "Country", "CountryCode", });
-          internal_static_com_mi_liveassistant_proto_CountryInfo_descriptor =
-            getDescriptor().getMessageTypes().get(44);
-          internal_static_com_mi_liveassistant_proto_CountryInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_CountryInfo_descriptor,
-              new java.lang.String[] { "Country", "CountryCode", });
-          internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_descriptor =
-            getDescriptor().getMessageTypes().get(45);
-          internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_descriptor,
-              new java.lang.String[] { "GpsLon", "GpsLat", "GpsCountry", "GpsCountryCode", "GpsProvince", "GpsCity", "GpsType", "GpsLangType", });
-          internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_descriptor =
-            getDescriptor().getMessageTypes().get(46);
-          internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", "CountryCode", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_com_mi_liveassistant_proto_BusinessUserInfo_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_com_mi_liveassistant_proto_BusinessUserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_BusinessUserInfo_descriptor,
+        new java.lang.String[] { "ServicePhone", "Address", "BusinessHours", "Intro", });
+    internal_static_com_mi_liveassistant_proto_PersonalInfo_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_com_mi_liveassistant_proto_PersonalInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_PersonalInfo_descriptor,
+        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "IsFocused", "Certification", "IsBothwayFollowing", "CertificationType", "IsBlocked", "IsInspector", "AdminUids", "WaitingCertificationType", "CertificationId", "RealNameCertificationStatus", "CoverPhoto", "UserType", "BusinessUserInfo", "SellerStatus", "IsFirstAudit", "IsRedname", "Region", });
+    internal_static_com_mi_liveassistant_proto_PersonalData_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_com_mi_liveassistant_proto_PersonalData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_PersonalData_descriptor,
+        new java.lang.String[] { "Zuid", "MliveTicketNum", "FansNum", "FollowNum", "SendDiamondNum", "VodNum", "EarnNum", "DiamondNum", "UserEcoAttr", "UsableMibiTicketCnt", });
+    internal_static_com_mi_liveassistant_proto_UserEcoAttr_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_mi_liveassistant_proto_UserEcoAttr_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UserEcoAttr_descriptor,
+        new java.lang.String[] { "BulletGiftId", "BulletGemCnt", "ConsumVirtualGemCnt", "UsableVirtualGemCnt", });
+    internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetUserInfoByIdReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetUserInfoByIdRsp_descriptor,
+        new java.lang.String[] { "ErrorCode", "PersonalInfo", });
+    internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetOwnInfoReq_descriptor,
+        new java.lang.String[] { "Zuid", "GetLiveInfo", });
+    internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetOwnInfoRsp_descriptor,
+        new java.lang.String[] { "ErrorCode", "PersonalInfo", "PersonalData", "RankTopThreeList", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", });
+    internal_static_com_mi_liveassistant_proto_Medal_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_com_mi_liveassistant_proto_Medal_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_Medal_descriptor,
+        new java.lang.String[] { "PicId", });
+    internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetPersonalDataByIdRsp_descriptor,
+        new java.lang.String[] { "ErrorCode", "PersonalData", });
+    internal_static_com_mi_liveassistant_proto_GetHomepageReq_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_com_mi_liveassistant_proto_GetHomepageReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetHomepageReq_descriptor,
+        new java.lang.String[] { "Zuid", "GetLiveInfo", });
+    internal_static_com_mi_liveassistant_proto_GetHomepageRsp_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_com_mi_liveassistant_proto_GetHomepageRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetHomepageRsp_descriptor,
+        new java.lang.String[] { "RetCode", "PersonalInfo", "PersonalData", "ViewUrl", "RankTopThreeList", "RoomId", "RoomInfo", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", });
+    internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UploadUserSettingReq_descriptor,
+        new java.lang.String[] { "Zuid", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", });
+    internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UploadUserSettingRsp_descriptor,
+        new java.lang.String[] { "ErrorCode", });
+    internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_SearchUserInfoReq_descriptor,
+        new java.lang.String[] { "Keyword", "Offset", "Limit", });
+    internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_SearchUserInfoRsp_descriptor,
+        new java.lang.String[] { "ErrorCode", "TotalNum", "PersonalInfos", });
+    internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UploadUserPropertiesReq_descriptor,
+        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Certification", "CertificationType", "IsManual", "CoverPhoto", "Address", "AvatarMd5", "Region", });
+    internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UploadUserPropertiesRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "Nickname", });
+    internal_static_com_mi_liveassistant_proto_AdminSettingReq_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_com_mi_liveassistant_proto_AdminSettingReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_AdminSettingReq_descriptor,
+        new java.lang.String[] { "AdminUid", "Operation", "RoomId", });
+    internal_static_com_mi_liveassistant_proto_AdminSettingRsp_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_com_mi_liveassistant_proto_AdminSettingRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_AdminSettingRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_com_mi_liveassistant_proto_AdminListReq_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_com_mi_liveassistant_proto_AdminListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_AdminListReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_mi_liveassistant_proto_AdminListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(22);
+    internal_static_com_mi_liveassistant_proto_AdminListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_AdminListRsp_descriptor,
+        new java.lang.String[] { "RetCode", "UserInfos", });
+    internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_descriptor =
+      getDescriptor().getMessageTypes().get(23);
+    internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetOwnSettingReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_descriptor =
+      getDescriptor().getMessageTypes().get(24);
+    internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetOwnSettingRsp_descriptor,
+        new java.lang.String[] { "RetCode", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", });
+    internal_static_com_mi_liveassistant_proto_HisRoomReq_descriptor =
+      getDescriptor().getMessageTypes().get(25);
+    internal_static_com_mi_liveassistant_proto_HisRoomReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_HisRoomReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_mi_liveassistant_proto_HisRoomRsp_descriptor =
+      getDescriptor().getMessageTypes().get(26);
+    internal_static_com_mi_liveassistant_proto_HisRoomRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_HisRoomRsp_descriptor,
+        new java.lang.String[] { "RetCode", "LiveId", "ShareUrl", "ViewUrl", "Type", });
+    internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(27);
+    internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_MutiGetUserInfoReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_descriptor =
+      getDescriptor().getMessageTypes().get(28);
+    internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_MutiGetUserInfoRsp_descriptor,
+        new java.lang.String[] { "RetCode", "PersonalInfo", });
+    internal_static_com_mi_liveassistant_proto_GetCaptchaReq_descriptor =
+      getDescriptor().getMessageTypes().get(29);
+    internal_static_com_mi_liveassistant_proto_GetCaptchaReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetCaptchaReq_descriptor,
+        new java.lang.String[] { "PhoneNum", "Type", "Lang", });
+    internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_descriptor =
+      getDescriptor().getMessageTypes().get(30);
+    internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetCaptchaRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_descriptor =
+      getDescriptor().getMessageTypes().get(31);
+    internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_VerifyCaptchaReq_descriptor,
+        new java.lang.String[] { "PhoneNum", "Type", "Captcha", "IdCardNum", });
+    internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_descriptor =
+      getDescriptor().getMessageTypes().get(32);
+    internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_VerifyCaptchaRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_descriptor =
+      getDescriptor().getMessageTypes().get(33);
+    internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_ApplyCertificationReq_descriptor,
+        new java.lang.String[] { "CertificationInfo", "Type", });
+    internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_descriptor =
+      getDescriptor().getMessageTypes().get(34);
+    internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_ApplyCertificationRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_com_mi_liveassistant_proto_CertificationInfo_descriptor =
+      getDescriptor().getMessageTypes().get(35);
+    internal_static_com_mi_liveassistant_proto_CertificationInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_CertificationInfo_descriptor,
+        new java.lang.String[] { "Uuid", "Name", "PhoneNum", "Idcard", "Certification", "CompanyName", "Profession", "ProofJobs", "OtherIdCard", "Works", "IdCardNum", "Birthday", "Type", "CardType", });
+    internal_static_com_mi_liveassistant_proto_PrivateImg_descriptor =
+      getDescriptor().getMessageTypes().get(36);
+    internal_static_com_mi_liveassistant_proto_PrivateImg_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_PrivateImg_descriptor,
+        new java.lang.String[] { "Bucket", "ObjectKey", });
+    internal_static_com_mi_liveassistant_proto_LiveCover_descriptor =
+      getDescriptor().getMessageTypes().get(37);
+    internal_static_com_mi_liveassistant_proto_LiveCover_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_LiveCover_descriptor,
+        new java.lang.String[] { "CoverUrl", });
+    internal_static_com_mi_liveassistant_proto_HisLive_descriptor =
+      getDescriptor().getMessageTypes().get(38);
+    internal_static_com_mi_liveassistant_proto_HisLive_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_HisLive_descriptor,
+        new java.lang.String[] { "LiveId", "ViewerCnt", "Url", "StartTime", "EndTime", "LiveTitle", "ShareUrl", "LiveCover", "User", "Type", });
+    internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_descriptor =
+      getDescriptor().getMessageTypes().get(39);
+    internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_FirstAudit4ProReq_descriptor,
+        new java.lang.String[] { "Zuid", "Headurl", "Nickname", });
+    internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_descriptor =
+      getDescriptor().getMessageTypes().get(40);
+    internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_FirstAudit4ProRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", });
+    internal_static_com_mi_liveassistant_proto_GetCountryListReq_descriptor =
+      getDescriptor().getMessageTypes().get(41);
+    internal_static_com_mi_liveassistant_proto_GetCountryListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetCountryListReq_descriptor,
+        new java.lang.String[] { "LangType", });
+    internal_static_com_mi_liveassistant_proto_GetCountryListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(42);
+    internal_static_com_mi_liveassistant_proto_GetCountryListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetCountryListRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "Countryinfo", "Hotcountryinfo", });
+    internal_static_com_mi_liveassistant_proto_Region_descriptor =
+      getDescriptor().getMessageTypes().get(43);
+    internal_static_com_mi_liveassistant_proto_Region_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_Region_descriptor,
+        new java.lang.String[] { "SourceType", "Country", "CountryCode", });
+    internal_static_com_mi_liveassistant_proto_CountryInfo_descriptor =
+      getDescriptor().getMessageTypes().get(44);
+    internal_static_com_mi_liveassistant_proto_CountryInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_CountryInfo_descriptor,
+        new java.lang.String[] { "Country", "CountryCode", });
+    internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_descriptor =
+      getDescriptor().getMessageTypes().get(45);
+    internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetCountryCodeReq_descriptor,
+        new java.lang.String[] { "GpsLon", "GpsLat", "GpsCountry", "GpsCountryCode", "GpsProvince", "GpsCity", "GpsType", "GpsLangType", });
+    internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_descriptor =
+      getDescriptor().getMessageTypes().get(46);
+    internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetCountryCodeRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "CountryCode", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -4,8 +4,7 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.Relation;
-import com.mi.liveassistant.proto.AccountProto;
-import com.mi.liveassistant.proto.CommonChannelProto;
+import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.proto.UserProto;
 
 import java.io.Serializable;
@@ -86,28 +85,30 @@ public class User implements Serializable {
     private int sentVirtualDiamondNum;//送出虚拟钻石数
     private int virtualDiamondNum;  //虚拟钻数
 
-    /* 这个用户对应的付费弹幕礼物id，确定这个用户开的直播的付费弹幕价格*/
+    /*这个用户对应的付费弹幕礼物id，确定这个用户开的直播的付费弹幕价格*/
     private int payBarrageGiftId = -1;
 
     private List<Long> mRankTopThreeList = new ArrayList<>();      //排行前三名用户
     private String mViewUrl;            //直播地址
+
+    /*房间信息*/
     private String mRoomId = null;           //正在直播的id, 房间号
     private String mTVRoomId = null;         //正在播放的电视台房间id
     private int mRoomType;
 
-    public int getmAppType() {
+    public int getAppType() {
         return mAppType;
     }
 
-    public void setmAppType(int mAppType) {
+    public void setAppType(int mAppType) {
         this.mAppType = mAppType;
     }
 
-    public void setTVRoomId(String tvRoomId){
+    public void setTVRoomId(String tvRoomId) {
         mTVRoomId = tvRoomId;
     }
 
-    public String getTVRoomId(){
+    public String getTVRoomId() {
         return mTVRoomId;
     }
 
@@ -121,11 +122,6 @@ public class User implements Serializable {
             return mRegion;
         } else {
             return null;
-            /*if (LocaleUtil.getSelectedLanguageIndexFromPreference() == LocaleUtil.INDEX_ENGLISH) {
-                return UserProto.Region.newBuilder().setCountry("China").setCountryCode("en").build();
-            } else {
-                return UserProto.Region.newBuilder().setCountry("中国").setCountryCode("cn").build();
-            }*/
         }
     }
 
@@ -153,31 +149,8 @@ public class User implements Serializable {
         this.nickname = nickname;
     }
 
-    public User(AccountProto.UserInfo protoUser) {
-        parse(protoUser);
-    }
-
     public User(UserProto.PersonalInfo protoUser) {
         parse(protoUser);
-    }
-
-    public User(CommonChannelProto.UserInfo protoUser) {
-        parse(protoUser);
-    }
-
-    public User(CommonChannelProto.UserBrief protoUser) {
-        parse(protoUser);
-    }
-
-    public void parse(AccountProto.UserInfo protoUser) {
-        this.uid = protoUser.getUuid();
-        this.avatar = protoUser.getAvatar();
-        this.nickname = protoUser.getNickname();
-        this.sign = protoUser.getSign();
-        this.gender = protoUser.getGender();
-        this.level = protoUser.getLevel();
-        this.badge = protoUser.getBadge();
-        this.updateTime = protoUser.getUpdateTime();
     }
 
     public void parse(UserProto.PersonalInfo protoUser) {
@@ -246,32 +219,10 @@ public class User implements Serializable {
         }
     }
 
-    public void parse(CommonChannelProto.UserInfo protoUser) {
-        if (protoUser == null) {
-            return;
-        }
-        this.uid = protoUser.getZuid();
-        this.avatar = protoUser.getAvatar();
-        this.nickname = protoUser.getNickname();
-        this.sign = protoUser.getSign();
-        this.gender = protoUser.getGender();
-        this.level = protoUser.getLevel();
-        this.badge = protoUser.getBadge();
-        this.updateTime = protoUser.getUpdateTime();
-        this.certification = protoUser.getCertification();
-        this.certificationType = protoUser.getCertificationType();
-        this.fansNum = protoUser.getFansCount();
-    }
-
-    public void parse(CommonChannelProto.UserBrief protoUser) {
-        if (protoUser == null) {
-            return;
-        }
-        this.uid = protoUser.getUId();
-        this.avatar = protoUser.getAvatar();
-        this.nickname = protoUser.getNickname();
-        this.level = protoUser.getLevel();
-        this.certificationType = protoUser.getCertType();
+    public void parse(LiveCommonProto.UserRoomInfo protoRoom) {
+        mTVRoomId = protoRoom.getTvRoomid();
+        mRoomType = protoRoom.getType();
+        mAppType = protoRoom.getAppType();
     }
 
     @Override
@@ -376,6 +327,7 @@ public class User implements Serializable {
 
     /**
      * Live.proto里的UserRoomInfo.type 对应我们的LiveManager里定义的常量
+     *
      * @return
      */
     public int getRoomType() {
