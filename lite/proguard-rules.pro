@@ -60,7 +60,7 @@
 }
 
 #proto
--keep public class com.wali.live.proto.** { *; }
+-keep public class com.mi.liveassistant.proto.** { *; }
 
 #galileo
 -keep class com.xiaomi.conferencemanager.**{ *; }

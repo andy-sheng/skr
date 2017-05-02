@@ -33,7 +33,10 @@ public class HeartbeatManager {
 
     private ICallback mOutCallback;
 
-    public HeartbeatManager(String liveId, boolean isGameLive) {
+    public HeartbeatManager() {
+    }
+
+    public void setParam(String liveId, boolean isGameLive) {
         mLiveId = liveId;
         mIsGameLive = isGameLive;
     }

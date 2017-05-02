@@ -37,7 +37,8 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
 
     protected BaseLiveManager() {
         mStreamerPresenter = new StreamerPresenter();
-        mHeartbeatManager = new HeartbeatManager(mLiveId, mIsGameLive);
+        // TODO 还是觉的放在startLive初始化比较好
+        mHeartbeatManager = new HeartbeatManager();
     }
 
     protected String getTAG() {
@@ -75,6 +76,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
                 createStreamer();
             }
             startLive();
+            mHeartbeatManager.setParam(liveId, mIsGameLive);
             mHeartbeatManager.start(new HeartbeatManager.ICallback() {
                 @Override
                 public void notifyTimeout() {

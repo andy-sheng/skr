@@ -27,5 +27,4 @@ dependencies {
     compile files('libs/oauth.jar')
     compile files('libs/livelite.jar')
 //    compile project(':lite')
-
 }

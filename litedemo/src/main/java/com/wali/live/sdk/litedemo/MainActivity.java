@@ -1,23 +1,14 @@
 package com.wali.live.sdk.litedemo;
 
-import android.content.Context;
-import android.content.Intent;
-import android.media.projection.MediaProjectionManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.mi.liveassistant.login.LoginManager;
-import com.mi.liveassistant.room.callback.ICallback;
-import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.wali.live.sdk.litedemo.account.AccountManager;
+import com.wali.live.sdk.litedemo.activity.GameLiveActivity;
 import com.wali.live.sdk.litedemo.activity.NormalLiveActivity;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
-import com.wali.live.sdk.litedemo.global.GlobalData;
-import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,10 +23,6 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
     private Button mGameLiveBtn;
     private Button mNormalLiveBtn;
 
-    private GameLiveManager mLiveManager;
-    private boolean mIsBegin;
-
-    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +30,6 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         initView();
-        initManager();
     }
 
     private void initView() {
@@ -57,11 +43,6 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
         mNormalLiveBtn.setOnClickListener(this);
     }
 
-    private void initManager() {
-        mLiveManager = new GameLiveManager();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -104,69 +85,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener {
         NormalLiveActivity.openActivity(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void clickGameBtn() {
-        if (mIsBegin) {
-            ToastUtils.showToast("end game live ...");
-            mLiveManager.endLive(new ICallback() {
-                @Override
-                public void notifyFail(int errCode) {
-                    ToastUtils.showToast("end game live fail=" + errCode);
-                }
-
-                @Override
-                public void notifySuccess() {
-                    ToastUtils.showToast("end game live success");
-                    mIsBegin = false;
-                    mGameLiveBtn.setText("begin game live");
-                }
-            });
-        } else {
-            if (mIntent == null) {
-                ToastUtils.showToast("begin game live intent is null");
-                startActivityForResult(
-                        ((MediaProjectionManager) GlobalData.app()
-                                .getSystemService(Context.MEDIA_PROJECTION_SERVICE)).createScreenCaptureIntent(),
-                        REQUEST_MEDIA_PROJECTION);
-                return;
-            }
-            beginLive();
-        }
-    }
-
-    private void beginLive() {
-        mLiveManager.setCaptureIntent(mIntent);
-        ToastUtils.showToast("begin game live ...");
-        mLiveManager.beginLive(null, "TEST", null, new ICallback() {
-            @Override
-            public void notifyFail(int errCode) {
-                ToastUtils.showToast("begin game live fail=" + errCode);
-            }
-
-            @Override
-            public void notifySuccess() {
-                ToastUtils.showToast("begin game live success");
-                mIsBegin = true;
-                mGameLiveBtn.setText("end game live");
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.w(TAG, "onActivityResult " + requestCode + " resultCode=" + resultCode + "data =" + data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_MEDIA_PROJECTION:
-                    mIntent = data;
-                    beginLive();
-                    break;
-                default:
-                    break;
-            }
-        } else if (requestCode == REQUEST_MEDIA_PROJECTION) {
-            ToastUtils.showToast("media projection forbidden");
-        }
+        GameLiveActivity.openActivity(this);
     }
 }

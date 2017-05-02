@@ -15,11 +15,11 @@
         android:id="@+id/normal_live_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="begin normal live"/>
+        android:text="enter normal live activity"/>
 
     <Button
         android:id="@+id/game_live_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="begin game live"/>
+        android:text="enter game live activity"/>
 </LinearLayout>

@@ -15,9 +15,6 @@ import com.wali.live.sdk.litedemo.base.activity.RxActivity;
  */
 
 public class NormalLiveActivity extends RxActivity {
-
-    private static final String TAG = "NormalLiveActivity";
-
     private NormalLiveManager mLiveManager;
     private CameraView mCameraView;
 
@@ -25,6 +22,7 @@ public class NormalLiveActivity extends RxActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_live);
+
         initView();
         initManager();
     }
