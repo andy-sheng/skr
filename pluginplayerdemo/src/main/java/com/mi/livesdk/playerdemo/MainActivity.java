@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayerWrapperView.play("http://v2.pandora.zb.mi.com/live/20348178_1489630909.flv?playui=1");
+                mPlayerWrapperView.play("http://v2.zb.mi.com/live/12886020_1493803428.flv?playui=0");
             }
         });
     }
