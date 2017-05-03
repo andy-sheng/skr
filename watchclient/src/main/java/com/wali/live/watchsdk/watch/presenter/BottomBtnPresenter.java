@@ -5,8 +5,8 @@
 //import android.widget.RelativeLayout;
 //
 //import com.base.activity.assist.IBindActivityLIfeCycle;
-//import com.base.log.MyLog;
-//import com.base.utils.display.DisplayUtils;
+//import com.com.base.log.MyLog;
+//import com.com.base.utils.display.DisplayUtils;
 //import com.wali.live.watchsdk.R;
 //
 ///**

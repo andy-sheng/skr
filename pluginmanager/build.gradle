@@ -33,7 +33,6 @@ android {
 
 dependencies {
     provided 'com.android.support:appcompat-v7:24.2.1'
-    provided files('libs/EventBus-2.4.0.jar')
 }
 
 task makeJar(type: Jar, dependsOn: build) {
@@ -57,7 +56,6 @@ task proguardJar(type: proguard.gradle.ProGuardTask, dependsOn: makeJar) {
         sdkDir = android.plugin.getSdkFolder().getAbsolutePath()
     }
     libraryjars sdkDir + '/platforms/' + android.compileSdkVersion.toString() + '/android.jar'
-    libraryjars files('libs/EventBus-2.4.0.jar')
     // 输入路径
     injars 'build/libs/liveplugin-noproguard.jar'
     // 输出路径
