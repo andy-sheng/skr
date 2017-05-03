@@ -179,6 +179,10 @@
     public *;
 }
 
+-keep class com.mi.liveassistant.room.manager.watch.WatchManager{
+    public *;
+}
+
 -keep class com.mi.liveassistant.camera.CameraView{
     public *;
 }
@@ -188,6 +192,10 @@
 }
 
 -keep class com.mi.liveassistant.room.manager.live.callback.ILiveCallback{
+    public *;
+}
+
+-keep class com.mi.liveassistant.room.manager.watch.callback.IWatchCallback{
     public *;
 }
 

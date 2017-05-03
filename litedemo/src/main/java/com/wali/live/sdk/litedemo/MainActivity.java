@@ -12,6 +12,7 @@ import com.mi.liveassistant.michannel.IChannelView;
 import com.wali.live.sdk.litedemo.account.AccountManager;
 import com.wali.live.sdk.litedemo.activity.GameLiveActivity;
 import com.wali.live.sdk.litedemo.activity.NormalLiveActivity;
+import com.wali.live.sdk.litedemo.activity.WatchActivity;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
@@ -117,7 +118,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
             mChannelPresenter.start();
             return;
         }
-        ToastUtils.showToast(mLiveItem.getUser().getUid() + ":" + mLiveItem.getId());
+        WatchActivity.openActivity(this, mLiveItem.getUser().getUid(), mLiveItem.getId());
     }
 
     @Override

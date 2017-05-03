@@ -44,6 +44,7 @@
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
+            android:theme="@style/FullTheme"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
 
         <activity
@@ -51,6 +52,15 @@
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
+            android:theme="@style/FullTheme"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+
+        <activity
+            android:name=".activity.WatchActivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullTheme"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
 
         <service
