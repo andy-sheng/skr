@@ -11,8 +11,7 @@ import android.widget.FrameLayout;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerPresenter;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerView;
-
-import java.util.ArrayList;
+import com.mi.liveassistant.room.presenter.streamer.PullStreamerPresenter;
 
 /**
  * Created by yangli on 2017/4/22.
@@ -28,6 +27,7 @@ public class MiLiveForUnity {
     protected VideoPlayerView mSurfaceView;
 
     protected VideoPlayerPresenter mVideoPlayerPresenter;
+    protected PullStreamerPresenter mStreamerPresenter;
 
     @Keep
     public MiLiveForUnity(Activity activity) {
@@ -37,6 +37,7 @@ public class MiLiveForUnity {
             @Override
             public void run() {
                 MyLog.w(TAG, "MiLiveForUnity addContentView");
+                mStreamerPresenter = new PullStreamerPresenter();
 
                 LayoutInflater inflater = mActivity.getLayoutInflater();
                 Resources resources = mActivity.getResources();
@@ -56,23 +57,15 @@ public class MiLiveForUnity {
 
                 mVideoPlayerPresenter = mSurfaceView.getVideoPlayerPresenter();
                 mVideoPlayerPresenter.setRealTime(true);
+                mVideoPlayerPresenter.setVideoStreamBufferTime(2);
 
                 FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mActivity.addContentView(view, param);
 
-                listView(mActivity.getWindow().getDecorView(), "");
+                mStreamerPresenter.setStreamer(mVideoPlayerPresenter);
             }
         });
-    }
-
-    private void listView(View view, String depth) {
-        MyLog.e(TAG, depth + "|-" + view);
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); ++i) {
-                listView(((ViewGroup) view).getChildAt(i), depth + "| ");
-            }
-        }
     }
 
     @Keep
@@ -81,9 +74,8 @@ public class MiLiveForUnity {
             @Override
             public void run() {
                 String videoUrl = "http://v2.zb.mi.com/live/3243571_1493702092.flv?playui=0";
-                mVideoPlayerPresenter.setVideoPath(videoUrl, "");
-                mVideoPlayerPresenter.setIpList(new ArrayList<String>(), new ArrayList<String>());
-                mVideoPlayerPresenter.setVideoStreamBufferTime(2);
+                mStreamerPresenter.setOriginalStreamUrl(videoUrl);
+                mStreamerPresenter.startLive();
                 MyLog.w(TAG, "startLive done");
             }
         });
@@ -94,7 +86,8 @@ public class MiLiveForUnity {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mVideoPlayerPresenter.pause();
+                mStreamerPresenter.stopLive();
+                MyLog.w(TAG, "stopLive done");
             }
         });
     }
@@ -104,6 +97,8 @@ public class MiLiveForUnity {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mStreamerPresenter.destroy();
+                mStreamerPresenter = null;
                 mVideoPlayerPresenter.destroy();
                 mVideoPlayerPresenter = null;
             }

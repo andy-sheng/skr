@@ -29,6 +29,8 @@ public abstract class BaseStreamerPresenter<R extends BaseStreamerPresenter.Reco
 
     protected abstract String getTAG();
 
+    public abstract void destroy();
+
     public final void setStreamer(STREAM streamer) {
         mStreamer = streamer;
     }
