@@ -8,3 +8,4 @@ protoc --java_out=$genPath ./Live.proto
 protoc --java_out=$genPath ./User.proto
 protoc --java_out=$genPath ./CommonChannel.proto
 protoc --java_out=$genPath ./HotChannel.proto
+protoc --java_out=$genPath ./Config.proto

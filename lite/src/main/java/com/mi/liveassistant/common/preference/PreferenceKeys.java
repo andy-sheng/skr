@@ -15,4 +15,7 @@ public class PreferenceKeys {
     public static final String KEY_DEBUG_MEDIA_INFO = "pref_debug_media_info";
 
     public static final String PREF_KEY_VIDEO_RATE = "pref_key_video_rate";
+
+    public static final String PREF_KEY_CONFIG_TIMESTAMP = "pref_key_config_timestamp";
+    public static final String PREF_KEY_CONFIG_JSON = "pref_key_config_json";
 }

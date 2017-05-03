@@ -89,6 +89,7 @@ public class InitManager {
 
     // TODO
     public static void registerAllEventBus() {
+        EventBus.getDefault().register(InitDaemon.INSTANCE);
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
     }
 
