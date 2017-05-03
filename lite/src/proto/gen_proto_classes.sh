@@ -6,3 +6,5 @@ protoc --java_out=$genPath ./Account.proto
 protoc --java_out=$genPath ./LiveCommon.proto
 protoc --java_out=$genPath ./Live.proto
 protoc --java_out=$genPath ./User.proto
+protoc --java_out=$genPath ./CommonChannel.proto
+protoc --java_out=$genPath ./HotChannel.proto

@@ -8,10 +8,10 @@ public final class CommonChannelProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface ChannelBannerOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ChannelBannerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ChannelBanner)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string bg_url = 1;
     /**
      * <code>required string bg_url = 1;</code>
      *
@@ -38,7 +38,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getBgUrlBytes();
 
-    // required string link_url = 2;
     /**
      * <code>required string link_url = 2;</code>
      *
@@ -65,7 +64,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getLinkUrlBytes();
 
-    // optional string desc = 3;
     /**
      * <code>optional string desc = 3;</code>
      *
@@ -96,8 +94,9 @@ public final class CommonChannelProto {
    * Protobuf type {@code com.mi.liveassistant.proto.ChannelBanner}
    */
   public static final class ChannelBanner extends
-      com.google.protobuf.GeneratedMessage
-      implements ChannelBannerOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ChannelBanner)
+      ChannelBannerOrBuilder {
     // Use ChannelBanner.newBuilder() to construct.
     private ChannelBanner(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -144,18 +143,21 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              bgUrl_ = input.readBytes();
+              bgUrl_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              linkUrl_ = input.readBytes();
+              linkUrl_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
           }
@@ -198,7 +200,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required string bg_url = 1;
     public static final int BG_URL_FIELD_NUMBER = 1;
     private java.lang.Object bgUrl_;
     /**
@@ -253,7 +254,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // required string link_url = 2;
     public static final int LINK_URL_FIELD_NUMBER = 2;
     private java.lang.Object linkUrl_;
     /**
@@ -308,7 +308,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string desc = 3;
     public static final int DESC_FIELD_NUMBER = 3;
     private java.lang.Object desc_;
     /**
@@ -371,7 +370,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasBgUrl()) {
         memoizedIsInitialized = 0;
@@ -500,8 +500,9 @@ public final class CommonChannelProto {
      * Protobuf type {@code com.mi.liveassistant.proto.ChannelBanner}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.ChannelBannerOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ChannelBanner)
+        com.mi.liveassistant.proto.CommonChannelProto.ChannelBannerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor;
@@ -646,7 +647,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required string bg_url = 1;
       private java.lang.Object bgUrl_ = "";
       /**
        * <code>required string bg_url = 1;</code>
@@ -668,9 +668,12 @@ public final class CommonChannelProto {
       public java.lang.String getBgUrl() {
         java.lang.Object ref = bgUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          bgUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bgUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -744,7 +747,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // required string link_url = 2;
       private java.lang.Object linkUrl_ = "";
       /**
        * <code>required string link_url = 2;</code>
@@ -766,9 +768,12 @@ public final class CommonChannelProto {
       public java.lang.String getLinkUrl() {
         java.lang.Object ref = linkUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          linkUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            linkUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -842,7 +847,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string desc = 3;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 3;</code>
@@ -864,9 +868,12 @@ public final class CommonChannelProto {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -951,10 +958,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ChannelBanner)
   }
 
-  public interface ChannelItemOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ChannelItemOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ChannelItem)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 uiType = 1;
     /**
      * <code>required uint32 uiType = 1;</code>
      */
@@ -964,7 +971,6 @@ public final class CommonChannelProto {
      */
     int getUiType();
 
-    // required bytes uiData = 2;
     /**
      * <code>required bytes uiData = 2;</code>
      */
@@ -974,7 +980,6 @@ public final class CommonChannelProto {
      */
     com.google.protobuf.ByteString getUiData();
 
-    // optional bool fullColumn = 3;
     /**
      * <code>optional bool fullColumn = 3;</code>
      */
@@ -984,7 +989,6 @@ public final class CommonChannelProto {
      */
     boolean getFullColumn();
 
-    // optional uint32 sectionId = 4;
     /**
      * <code>optional uint32 sectionId = 4;</code>
      */
@@ -1002,8 +1006,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class ChannelItem extends
-      com.google.protobuf.GeneratedMessage
-      implements ChannelItemOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ChannelItem)
+      ChannelItemOrBuilder {
     // Use ChannelItem.newBuilder() to construct.
     private ChannelItem(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1109,7 +1114,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required uint32 uiType = 1;
     public static final int UITYPE_FIELD_NUMBER = 1;
     private int uiType_;
     /**
@@ -1125,7 +1129,6 @@ public final class CommonChannelProto {
       return uiType_;
     }
 
-    // required bytes uiData = 2;
     public static final int UIDATA_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString uiData_;
     /**
@@ -1141,7 +1144,6 @@ public final class CommonChannelProto {
       return uiData_;
     }
 
-    // optional bool fullColumn = 3;
     public static final int FULLCOLUMN_FIELD_NUMBER = 3;
     private boolean fullColumn_;
     /**
@@ -1157,7 +1159,6 @@ public final class CommonChannelProto {
       return fullColumn_;
     }
 
-    // optional uint32 sectionId = 4;
     public static final int SECTIONID_FIELD_NUMBER = 4;
     private int sectionId_;
     /**
@@ -1182,7 +1183,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUiType()) {
         memoizedIsInitialized = 0;
@@ -1322,8 +1324,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.ChannelItemOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ChannelItem)
+        com.mi.liveassistant.proto.CommonChannelProto.ChannelItemOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor;
@@ -1471,7 +1474,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required uint32 uiType = 1;
       private int uiType_ ;
       /**
        * <code>required uint32 uiType = 1;</code>
@@ -1504,7 +1506,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // required bytes uiData = 2;
       private com.google.protobuf.ByteString uiData_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>required bytes uiData = 2;</code>
@@ -1540,7 +1541,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional bool fullColumn = 3;
       private boolean fullColumn_ ;
       /**
        * <code>optional bool fullColumn = 3;</code>
@@ -1573,7 +1573,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 sectionId = 4;
       private int sectionId_ ;
       /**
        * <code>optional uint32 sectionId = 4;</code>
@@ -1617,10 +1616,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ChannelItem)
   }
 
-  public interface UiTemplateOneTextOneImgOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UiTemplateOneTextOneImgOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;
     /**
      * <code>repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;</code>
      *
@@ -1665,7 +1664,6 @@ public final class CommonChannelProto {
     com.mi.liveassistant.proto.CommonChannelProto.OneTextOneImgItemDataOrBuilder getItemDatasOrBuilder(
         int index);
 
-    // optional string headerName = 2;
     /**
      * <code>optional string headerName = 2;</code>
      *
@@ -1692,7 +1690,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getHeaderNameBytes();
 
-    // optional string headerViewAllUri = 3;
     /**
      * <code>optional string headerViewAllUri = 3;</code>
      *
@@ -1727,8 +1724,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class UiTemplateOneTextOneImg extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateOneTextOneImgOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
+      UiTemplateOneTextOneImgOrBuilder {
     // Use UiTemplateOneTextOneImg.newBuilder() to construct.
     private UiTemplateOneTextOneImg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1783,13 +1781,15 @@ public final class CommonChannelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              headerName_ = input.readBytes();
+              headerName_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              headerViewAllUri_ = input.readBytes();
+              headerViewAllUri_ = bs;
               break;
             }
           }
@@ -1835,7 +1835,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.OneTextOneImgItemData> itemDatas_;
     /**
@@ -1891,7 +1890,6 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
 
-    // optional string headerName = 2;
     public static final int HEADERNAME_FIELD_NUMBER = 2;
     private java.lang.Object headerName_;
     /**
@@ -1946,7 +1944,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string headerViewAllUri = 3;
     public static final int HEADERVIEWALLURI_FIELD_NUMBER = 3;
     private java.lang.Object headerViewAllUri_;
     /**
@@ -2009,7 +2006,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getItemDatasCount(); i++) {
         if (!getItemDatas(i).isInitialized()) {
@@ -2140,8 +2138,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateOneTextOneImgOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
+        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateOneTextOneImgOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor;
@@ -2315,7 +2314,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // repeated .com.mi.liveassistant.proto.OneTextOneImgItemData itemDatas = 1;
       private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.OneTextOneImgItemData> itemDatas_ =
         java.util.Collections.emptyList();
       private void ensureItemDatasIsMutable() {
@@ -2497,7 +2495,8 @@ public final class CommonChannelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.OneTextOneImgItemData> values) {
         if (itemDatasBuilder_ == null) {
           ensureItemDatasIsMutable();
-          super.addAll(values, itemDatas_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, itemDatas_);
           onChanged();
         } else {
           itemDatasBuilder_.addAllMessages(values);
@@ -2627,7 +2626,6 @@ public final class CommonChannelProto {
         return itemDatasBuilder_;
       }
 
-      // optional string headerName = 2;
       private java.lang.Object headerName_ = "";
       /**
        * <code>optional string headerName = 2;</code>
@@ -2649,9 +2647,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderName() {
         java.lang.Object ref = headerName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2725,7 +2726,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string headerViewAllUri = 3;
       private java.lang.Object headerViewAllUri_ = "";
       /**
        * <code>optional string headerViewAllUri = 3;</code>
@@ -2747,9 +2747,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderViewAllUri() {
         java.lang.Object ref = headerViewAllUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerViewAllUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerViewAllUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2834,10 +2837,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateOneTextOneImg)
   }
 
-  public interface OneTextOneImgItemDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface OneTextOneImgItemDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.OneTextOneImgItemData)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string text = 1;
     /**
      * <code>optional string text = 1;</code>
      *
@@ -2864,7 +2867,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getTextBytes();
 
-    // optional string imgUrl = 2;
     /**
      * <code>optional string imgUrl = 2;</code>
      *
@@ -2891,7 +2893,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getImgUrlBytes();
 
-    // optional string jumpSchemeUri = 3;
     /**
      * <code>optional string jumpSchemeUri = 3;</code>
      *
@@ -2918,7 +2919,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getJumpSchemeUriBytes();
 
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;
     /**
      * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;</code>
      *
@@ -2948,8 +2948,9 @@ public final class CommonChannelProto {
    * Protobuf type {@code com.mi.liveassistant.proto.OneTextOneImgItemData}
    */
   public static final class OneTextOneImgItemData extends
-      com.google.protobuf.GeneratedMessage
-      implements OneTextOneImgItemDataOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.OneTextOneImgItemData)
+      OneTextOneImgItemDataOrBuilder {
     // Use OneTextOneImgItemData.newBuilder() to construct.
     private OneTextOneImgItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -2996,18 +2997,21 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              text_ = input.readBytes();
+              text_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              imgUrl_ = input.readBytes();
+              imgUrl_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              jumpSchemeUri_ = input.readBytes();
+              jumpSchemeUri_ = bs;
               break;
             }
             case 34: {
@@ -3063,7 +3067,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional string text = 1;
     public static final int TEXT_FIELD_NUMBER = 1;
     private java.lang.Object text_;
     /**
@@ -3118,7 +3121,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string imgUrl = 2;
     public static final int IMGURL_FIELD_NUMBER = 2;
     private java.lang.Object imgUrl_;
     /**
@@ -3173,7 +3175,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string jumpSchemeUri = 3;
     public static final int JUMPSCHEMEURI_FIELD_NUMBER = 3;
     private java.lang.Object jumpSchemeUri_;
     /**
@@ -3228,7 +3229,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;
     public static final int USERINFO_FIELD_NUMBER = 4;
     private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_;
     /**
@@ -3271,7 +3271,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (hasUserInfo()) {
         if (!getUserInfo().isInitialized()) {
@@ -3405,8 +3406,9 @@ public final class CommonChannelProto {
      * Protobuf type {@code com.mi.liveassistant.proto.OneTextOneImgItemData}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.OneTextOneImgItemDataOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.OneTextOneImgItemData)
+        com.mi.liveassistant.proto.CommonChannelProto.OneTextOneImgItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor;
@@ -3567,7 +3569,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional string text = 1;
       private java.lang.Object text_ = "";
       /**
        * <code>optional string text = 1;</code>
@@ -3589,9 +3590,12 @@ public final class CommonChannelProto {
       public java.lang.String getText() {
         java.lang.Object ref = text_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3665,7 +3669,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string imgUrl = 2;
       private java.lang.Object imgUrl_ = "";
       /**
        * <code>optional string imgUrl = 2;</code>
@@ -3687,9 +3690,12 @@ public final class CommonChannelProto {
       public java.lang.String getImgUrl() {
         java.lang.Object ref = imgUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          imgUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            imgUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3763,7 +3769,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string jumpSchemeUri = 3;
       private java.lang.Object jumpSchemeUri_ = "";
       /**
        * <code>optional string jumpSchemeUri = 3;</code>
@@ -3785,9 +3790,12 @@ public final class CommonChannelProto {
       public java.lang.String getJumpSchemeUri() {
         java.lang.Object ref = jumpSchemeUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3861,7 +3869,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.UserInfo userInfo = 4;
       private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
@@ -4006,7 +4013,7 @@ public final class CommonChannelProto {
         if (userInfoBuilder_ == null) {
           userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder>(
-                  userInfo_,
+                  getUserInfo(),
                   getParentForChildren(),
                   isClean());
           userInfo_ = null;
@@ -4025,10 +4032,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.OneTextOneImgItemData)
   }
 
-  public interface UiTemplateUserInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UiTemplateUserInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateUserInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;
     /**
      * <code>repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;</code>
      *
@@ -4073,7 +4080,6 @@ public final class CommonChannelProto {
     com.mi.liveassistant.proto.CommonChannelProto.UserInfoItemDataOrBuilder getItemDatasOrBuilder(
         int index);
 
-    // optional string headerName = 2;
     /**
      * <code>optional string headerName = 2;</code>
      *
@@ -4100,7 +4106,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getHeaderNameBytes();
 
-    // optional string headerViewAllUri = 3;
     /**
      * <code>optional string headerViewAllUri = 3;</code>
      *
@@ -4127,7 +4132,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getHeaderViewAllUriBytes();
 
-    // optional string subHeaderName = 4;
     /**
      * <code>optional string subHeaderName = 4;</code>
      *
@@ -4162,8 +4166,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class UiTemplateUserInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateUserInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateUserInfo)
+      UiTemplateUserInfoOrBuilder {
     // Use UiTemplateUserInfo.newBuilder() to construct.
     private UiTemplateUserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -4218,18 +4223,21 @@ public final class CommonChannelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              headerName_ = input.readBytes();
+              headerName_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              headerViewAllUri_ = input.readBytes();
+              headerViewAllUri_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              subHeaderName_ = input.readBytes();
+              subHeaderName_ = bs;
               break;
             }
           }
@@ -4275,7 +4283,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.UserInfoItemData> itemDatas_;
     /**
@@ -4331,7 +4338,6 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
 
-    // optional string headerName = 2;
     public static final int HEADERNAME_FIELD_NUMBER = 2;
     private java.lang.Object headerName_;
     /**
@@ -4386,7 +4392,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string headerViewAllUri = 3;
     public static final int HEADERVIEWALLURI_FIELD_NUMBER = 3;
     private java.lang.Object headerViewAllUri_;
     /**
@@ -4441,7 +4446,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string subHeaderName = 4;
     public static final int SUBHEADERNAME_FIELD_NUMBER = 4;
     private java.lang.Object subHeaderName_;
     /**
@@ -4505,7 +4509,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getItemDatasCount(); i++) {
         if (!getItemDatas(i).isInitialized()) {
@@ -4643,8 +4648,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateUserInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateUserInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateUserInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor;
@@ -4829,7 +4835,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // repeated .com.mi.liveassistant.proto.UserInfoItemData itemDatas = 1;
       private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.UserInfoItemData> itemDatas_ =
         java.util.Collections.emptyList();
       private void ensureItemDatasIsMutable() {
@@ -5011,7 +5016,8 @@ public final class CommonChannelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.UserInfoItemData> values) {
         if (itemDatasBuilder_ == null) {
           ensureItemDatasIsMutable();
-          super.addAll(values, itemDatas_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, itemDatas_);
           onChanged();
         } else {
           itemDatasBuilder_.addAllMessages(values);
@@ -5141,7 +5147,6 @@ public final class CommonChannelProto {
         return itemDatasBuilder_;
       }
 
-      // optional string headerName = 2;
       private java.lang.Object headerName_ = "";
       /**
        * <code>optional string headerName = 2;</code>
@@ -5163,9 +5168,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderName() {
         java.lang.Object ref = headerName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5239,7 +5247,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string headerViewAllUri = 3;
       private java.lang.Object headerViewAllUri_ = "";
       /**
        * <code>optional string headerViewAllUri = 3;</code>
@@ -5261,9 +5268,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderViewAllUri() {
         java.lang.Object ref = headerViewAllUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerViewAllUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerViewAllUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5337,7 +5347,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string subHeaderName = 4;
       private java.lang.Object subHeaderName_ = "";
       /**
        * <code>optional string subHeaderName = 4;</code>
@@ -5359,9 +5368,12 @@ public final class CommonChannelProto {
       public java.lang.String getSubHeaderName() {
         java.lang.Object ref = subHeaderName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          subHeaderName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            subHeaderName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5446,10 +5458,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateUserInfo)
   }
 
-  public interface UserInfoItemDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserInfoItemDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UserInfoItemData)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;
     /**
      * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
      *
@@ -5475,7 +5487,6 @@ public final class CommonChannelProto {
      */
     com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
 
-    // optional string jumpSchemeUri = 2;
     /**
      * <code>optional string jumpSchemeUri = 2;</code>
      *
@@ -5506,8 +5517,9 @@ public final class CommonChannelProto {
    * Protobuf type {@code com.mi.liveassistant.proto.UserInfoItemData}
    */
   public static final class UserInfoItemData extends
-      com.google.protobuf.GeneratedMessage
-      implements UserInfoItemDataOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UserInfoItemData)
+      UserInfoItemDataOrBuilder {
     // Use UserInfoItemData.newBuilder() to construct.
     private UserInfoItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5567,8 +5579,9 @@ public final class CommonChannelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              jumpSchemeUri_ = input.readBytes();
+              jumpSchemeUri_ = bs;
               break;
             }
           }
@@ -5611,7 +5624,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;
     public static final int USERINFO_FIELD_NUMBER = 1;
     private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_;
     /**
@@ -5645,7 +5657,6 @@ public final class CommonChannelProto {
       return userInfo_;
     }
 
-    // optional string jumpSchemeUri = 2;
     public static final int JUMPSCHEMEURI_FIELD_NUMBER = 2;
     private java.lang.Object jumpSchemeUri_;
     /**
@@ -5707,7 +5718,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (hasUserInfo()) {
         if (!getUserInfo().isInitialized()) {
@@ -5827,8 +5839,9 @@ public final class CommonChannelProto {
      * Protobuf type {@code com.mi.liveassistant.proto.UserInfoItemData}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UserInfoItemDataOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UserInfoItemData)
+        com.mi.liveassistant.proto.CommonChannelProto.UserInfoItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor;
@@ -5967,7 +5980,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;
       private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
@@ -6112,7 +6124,7 @@ public final class CommonChannelProto {
         if (userInfoBuilder_ == null) {
           userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder>(
-                  userInfo_,
+                  getUserInfo(),
                   getParentForChildren(),
                   isClean());
           userInfo_ = null;
@@ -6120,7 +6132,6 @@ public final class CommonChannelProto {
         return userInfoBuilder_;
       }
 
-      // optional string jumpSchemeUri = 2;
       private java.lang.Object jumpSchemeUri_ = "";
       /**
        * <code>optional string jumpSchemeUri = 2;</code>
@@ -6142,9 +6153,12 @@ public final class CommonChannelProto {
       public java.lang.String getJumpSchemeUri() {
         java.lang.Object ref = jumpSchemeUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6229,10 +6243,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UserInfoItemData)
   }
 
-  public interface UserInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UserInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      */
@@ -6242,7 +6256,6 @@ public final class CommonChannelProto {
      */
     long getZuid();
 
-    // optional uint64 avatar = 2;
     /**
      * <code>optional uint64 avatar = 2;</code>
      *
@@ -6260,7 +6273,6 @@ public final class CommonChannelProto {
      */
     long getAvatar();
 
-    // optional string nickname = 3;
     /**
      * <code>optional string nickname = 3;</code>
      *
@@ -6287,7 +6299,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional string sign = 4;
     /**
      * <code>optional string sign = 4;</code>
      *
@@ -6314,7 +6325,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getSignBytes();
 
-    // optional uint32 gender = 5;
     /**
      * <code>optional uint32 gender = 5;</code>
      *
@@ -6332,7 +6342,6 @@ public final class CommonChannelProto {
      */
     int getGender();
 
-    // optional uint32 level = 6;
     /**
      * <code>optional uint32 level = 6;</code>
      *
@@ -6350,7 +6359,6 @@ public final class CommonChannelProto {
      */
     int getLevel();
 
-    // optional uint32 badge = 7;
     /**
      * <code>optional uint32 badge = 7;</code>
      *
@@ -6368,7 +6376,6 @@ public final class CommonChannelProto {
      */
     int getBadge();
 
-    // optional uint64 updateTime = 8;
     /**
      * <code>optional uint64 updateTime = 8;</code>
      *
@@ -6386,7 +6393,6 @@ public final class CommonChannelProto {
      */
     long getUpdateTime();
 
-    // repeated uint64 adminUids = 9;
     /**
      * <code>repeated uint64 adminUids = 9;</code>
      *
@@ -6412,7 +6418,6 @@ public final class CommonChannelProto {
      */
     long getAdminUids(int index);
 
-    // optional string certification = 10;
     /**
      * <code>optional string certification = 10;</code>
      *
@@ -6439,7 +6444,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getCertificationBytes();
 
-    // optional uint32 certification_type = 11;
     /**
      * <code>optional uint32 certification_type = 11;</code>
      *
@@ -6457,7 +6461,6 @@ public final class CommonChannelProto {
      */
     int getCertificationType();
 
-    // optional uint32 fansCount = 12;
     /**
      * <code>optional uint32 fansCount = 12;</code>
      *
@@ -6479,8 +6482,9 @@ public final class CommonChannelProto {
    * Protobuf type {@code com.mi.liveassistant.proto.UserInfo}
    */
   public static final class UserInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements UserInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UserInfo)
+      UserInfoOrBuilder {
     // Use UserInfo.newBuilder() to construct.
     private UserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -6537,13 +6541,15 @@ public final class CommonChannelProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              sign_ = input.readBytes();
+              sign_ = bs;
               break;
             }
             case 40: {
@@ -6588,8 +6594,9 @@ public final class CommonChannelProto {
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              certification_ = input.readBytes();
+              certification_ = bs;
               break;
             }
             case 88: {
@@ -6645,7 +6652,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -6661,7 +6667,6 @@ public final class CommonChannelProto {
       return zuid_;
     }
 
-    // optional uint64 avatar = 2;
     public static final int AVATAR_FIELD_NUMBER = 2;
     private long avatar_;
     /**
@@ -6685,7 +6690,6 @@ public final class CommonChannelProto {
       return avatar_;
     }
 
-    // optional string nickname = 3;
     public static final int NICKNAME_FIELD_NUMBER = 3;
     private java.lang.Object nickname_;
     /**
@@ -6740,7 +6744,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string sign = 4;
     public static final int SIGN_FIELD_NUMBER = 4;
     private java.lang.Object sign_;
     /**
@@ -6795,7 +6798,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint32 gender = 5;
     public static final int GENDER_FIELD_NUMBER = 5;
     private int gender_;
     /**
@@ -6819,7 +6821,6 @@ public final class CommonChannelProto {
       return gender_;
     }
 
-    // optional uint32 level = 6;
     public static final int LEVEL_FIELD_NUMBER = 6;
     private int level_;
     /**
@@ -6843,7 +6844,6 @@ public final class CommonChannelProto {
       return level_;
     }
 
-    // optional uint32 badge = 7;
     public static final int BADGE_FIELD_NUMBER = 7;
     private int badge_;
     /**
@@ -6867,7 +6867,6 @@ public final class CommonChannelProto {
       return badge_;
     }
 
-    // optional uint64 updateTime = 8;
     public static final int UPDATETIME_FIELD_NUMBER = 8;
     private long updateTime_;
     /**
@@ -6891,7 +6890,6 @@ public final class CommonChannelProto {
       return updateTime_;
     }
 
-    // repeated uint64 adminUids = 9;
     public static final int ADMINUIDS_FIELD_NUMBER = 9;
     private java.util.List<java.lang.Long> adminUids_;
     /**
@@ -6926,7 +6924,6 @@ public final class CommonChannelProto {
       return adminUids_.get(index);
     }
 
-    // optional string certification = 10;
     public static final int CERTIFICATION_FIELD_NUMBER = 10;
     private java.lang.Object certification_;
     /**
@@ -6981,7 +6978,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint32 certification_type = 11;
     public static final int CERTIFICATION_TYPE_FIELD_NUMBER = 11;
     private int certificationType_;
     /**
@@ -7005,7 +7001,6 @@ public final class CommonChannelProto {
       return certificationType_;
     }
 
-    // optional uint32 fansCount = 12;
     public static final int FANSCOUNT_FIELD_NUMBER = 12;
     private int fansCount_;
     /**
@@ -7046,7 +7041,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -7239,8 +7235,9 @@ public final class CommonChannelProto {
      * Protobuf type {@code com.mi.liveassistant.proto.UserInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UserInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserInfo_descriptor;
@@ -7470,7 +7467,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -7503,7 +7499,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint64 avatar = 2;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 2;</code>
@@ -7552,7 +7547,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string nickname = 3;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 3;</code>
@@ -7574,9 +7568,12 @@ public final class CommonChannelProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7650,7 +7647,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string sign = 4;
       private java.lang.Object sign_ = "";
       /**
        * <code>optional string sign = 4;</code>
@@ -7672,9 +7668,12 @@ public final class CommonChannelProto {
       public java.lang.String getSign() {
         java.lang.Object ref = sign_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          sign_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sign_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7748,7 +7747,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 gender = 5;
       private int gender_ ;
       /**
        * <code>optional uint32 gender = 5;</code>
@@ -7797,7 +7795,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 level = 6;
       private int level_ ;
       /**
        * <code>optional uint32 level = 6;</code>
@@ -7846,7 +7843,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 badge = 7;
       private int badge_ ;
       /**
        * <code>optional uint32 badge = 7;</code>
@@ -7895,7 +7891,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint64 updateTime = 8;
       private long updateTime_ ;
       /**
        * <code>optional uint64 updateTime = 8;</code>
@@ -7944,7 +7939,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // repeated uint64 adminUids = 9;
       private java.util.List<java.lang.Long> adminUids_ = java.util.Collections.emptyList();
       private void ensureAdminUidsIsMutable() {
         if (!((bitField0_ & 0x00000100) == 0x00000100)) {
@@ -8020,7 +8014,8 @@ public final class CommonChannelProto {
       public Builder addAllAdminUids(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureAdminUidsIsMutable();
-        super.addAll(values, adminUids_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, adminUids_);
         onChanged();
         return this;
       }
@@ -8038,7 +8033,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string certification = 10;
       private java.lang.Object certification_ = "";
       /**
        * <code>optional string certification = 10;</code>
@@ -8060,9 +8054,12 @@ public final class CommonChannelProto {
       public java.lang.String getCertification() {
         java.lang.Object ref = certification_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          certification_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certification_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8136,7 +8133,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 certification_type = 11;
       private int certificationType_ ;
       /**
        * <code>optional uint32 certification_type = 11;</code>
@@ -8185,7 +8181,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 fansCount = 12;
       private int fansCount_ ;
       /**
        * <code>optional uint32 fansCount = 12;</code>
@@ -8245,10 +8240,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UserInfo)
   }
 
-  public interface BannerItemDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface BannerItemDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.BannerItemData)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string picUrl = 1;
     /**
      * <code>required string picUrl = 1;</code>
      *
@@ -8275,7 +8270,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getPicUrlBytes();
 
-    // required string skipUrl = 2 [default = ""];
     /**
      * <code>required string skipUrl = 2 [default = ""];</code>
      *
@@ -8302,7 +8296,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getSkipUrlBytes();
 
-    // required uint64 lastUpdateTs = 3;
     /**
      * <code>required uint64 lastUpdateTs = 3;</code>
      *
@@ -8320,7 +8313,6 @@ public final class CommonChannelProto {
      */
     long getLastUpdateTs();
 
-    // optional uint32 bannerId = 4;
     /**
      * <code>optional uint32 bannerId = 4;</code>
      *
@@ -8338,7 +8330,6 @@ public final class CommonChannelProto {
      */
     int getBannerId();
 
-    // optional string shareIconUrl = 5;
     /**
      * <code>optional string shareIconUrl = 5;</code>
      *
@@ -8365,7 +8356,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getShareIconUrlBytes();
 
-    // optional string shareTitle = 6;
     /**
      * <code>optional string shareTitle = 6;</code>
      *
@@ -8392,7 +8382,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getShareTitleBytes();
 
-    // optional string shareDesc = 7;
     /**
      * <code>optional string shareDesc = 7;</code>
      *
@@ -8419,7 +8408,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getShareDescBytes();
 
-    // optional uint32 channelId = 8 [default = 1];
     /**
      * <code>optional uint32 channelId = 8 [default = 1];</code>
      *
@@ -8437,7 +8425,6 @@ public final class CommonChannelProto {
      */
     int getChannelId();
 
-    // optional uint32 lang = 9 [default = 1];
     /**
      * <code>optional uint32 lang = 9 [default = 1];</code>
      *
@@ -8463,8 +8450,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class BannerItemData extends
-      com.google.protobuf.GeneratedMessage
-      implements BannerItemDataOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.BannerItemData)
+      BannerItemDataOrBuilder {
     // Use BannerItemData.newBuilder() to construct.
     private BannerItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -8511,13 +8499,15 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              picUrl_ = input.readBytes();
+              picUrl_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              skipUrl_ = input.readBytes();
+              skipUrl_ = bs;
               break;
             }
             case 24: {
@@ -8531,18 +8521,21 @@ public final class CommonChannelProto {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              shareIconUrl_ = input.readBytes();
+              shareIconUrl_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              shareTitle_ = input.readBytes();
+              shareTitle_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              shareDesc_ = input.readBytes();
+              shareDesc_ = bs;
               break;
             }
             case 64: {
@@ -8595,7 +8588,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required string picUrl = 1;
     public static final int PICURL_FIELD_NUMBER = 1;
     private java.lang.Object picUrl_;
     /**
@@ -8650,7 +8642,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // required string skipUrl = 2 [default = ""];
     public static final int SKIPURL_FIELD_NUMBER = 2;
     private java.lang.Object skipUrl_;
     /**
@@ -8705,7 +8696,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // required uint64 lastUpdateTs = 3;
     public static final int LASTUPDATETS_FIELD_NUMBER = 3;
     private long lastUpdateTs_;
     /**
@@ -8729,7 +8719,6 @@ public final class CommonChannelProto {
       return lastUpdateTs_;
     }
 
-    // optional uint32 bannerId = 4;
     public static final int BANNERID_FIELD_NUMBER = 4;
     private int bannerId_;
     /**
@@ -8753,7 +8742,6 @@ public final class CommonChannelProto {
       return bannerId_;
     }
 
-    // optional string shareIconUrl = 5;
     public static final int SHAREICONURL_FIELD_NUMBER = 5;
     private java.lang.Object shareIconUrl_;
     /**
@@ -8808,7 +8796,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string shareTitle = 6;
     public static final int SHARETITLE_FIELD_NUMBER = 6;
     private java.lang.Object shareTitle_;
     /**
@@ -8863,7 +8850,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string shareDesc = 7;
     public static final int SHAREDESC_FIELD_NUMBER = 7;
     private java.lang.Object shareDesc_;
     /**
@@ -8918,7 +8904,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint32 channelId = 8 [default = 1];
     public static final int CHANNELID_FIELD_NUMBER = 8;
     private int channelId_;
     /**
@@ -8942,7 +8927,6 @@ public final class CommonChannelProto {
       return channelId_;
     }
 
-    // optional uint32 lang = 9 [default = 1];
     public static final int LANG_FIELD_NUMBER = 9;
     private int lang_;
     /**
@@ -8980,7 +8964,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasPicUrl()) {
         memoizedIsInitialized = 0;
@@ -9159,8 +9144,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.BannerItemDataOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.BannerItemData)
+        com.mi.liveassistant.proto.CommonChannelProto.BannerItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor;
@@ -9367,7 +9353,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required string picUrl = 1;
       private java.lang.Object picUrl_ = "";
       /**
        * <code>required string picUrl = 1;</code>
@@ -9389,9 +9374,12 @@ public final class CommonChannelProto {
       public java.lang.String getPicUrl() {
         java.lang.Object ref = picUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          picUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            picUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9465,7 +9453,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // required string skipUrl = 2 [default = ""];
       private java.lang.Object skipUrl_ = "";
       /**
        * <code>required string skipUrl = 2 [default = ""];</code>
@@ -9487,9 +9474,12 @@ public final class CommonChannelProto {
       public java.lang.String getSkipUrl() {
         java.lang.Object ref = skipUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          skipUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            skipUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9563,7 +9553,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // required uint64 lastUpdateTs = 3;
       private long lastUpdateTs_ ;
       /**
        * <code>required uint64 lastUpdateTs = 3;</code>
@@ -9612,7 +9601,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 bannerId = 4;
       private int bannerId_ ;
       /**
        * <code>optional uint32 bannerId = 4;</code>
@@ -9661,7 +9649,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string shareIconUrl = 5;
       private java.lang.Object shareIconUrl_ = "";
       /**
        * <code>optional string shareIconUrl = 5;</code>
@@ -9683,9 +9670,12 @@ public final class CommonChannelProto {
       public java.lang.String getShareIconUrl() {
         java.lang.Object ref = shareIconUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareIconUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareIconUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9759,7 +9749,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string shareTitle = 6;
       private java.lang.Object shareTitle_ = "";
       /**
        * <code>optional string shareTitle = 6;</code>
@@ -9781,9 +9770,12 @@ public final class CommonChannelProto {
       public java.lang.String getShareTitle() {
         java.lang.Object ref = shareTitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareTitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareTitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9857,7 +9849,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string shareDesc = 7;
       private java.lang.Object shareDesc_ = "";
       /**
        * <code>optional string shareDesc = 7;</code>
@@ -9879,9 +9870,12 @@ public final class CommonChannelProto {
       public java.lang.String getShareDesc() {
         java.lang.Object ref = shareDesc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareDesc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareDesc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9955,7 +9949,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 channelId = 8 [default = 1];
       private int channelId_ = 1;
       /**
        * <code>optional uint32 channelId = 8 [default = 1];</code>
@@ -10004,7 +9997,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 lang = 9 [default = 1];
       private int lang_ = 1;
       /**
        * <code>optional uint32 lang = 9 [default = 1];</code>
@@ -10064,10 +10056,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.BannerItemData)
   }
 
-  public interface UiTemplateBannerOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UiTemplateBannerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateBanner)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;
     /**
      * <code>repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;</code>
      */
@@ -10092,7 +10084,6 @@ public final class CommonChannelProto {
     com.mi.liveassistant.proto.CommonChannelProto.BannerItemDataOrBuilder getItemDatasOrBuilder(
         int index);
 
-    // optional uint32 type = 2;
     /**
      * <code>optional uint32 type = 2;</code>
      *
@@ -10114,8 +10105,9 @@ public final class CommonChannelProto {
    * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateBanner}
    */
   public static final class UiTemplateBanner extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateBannerOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateBanner)
+      UiTemplateBannerOrBuilder {
     // Use UiTemplateBanner.newBuilder() to construct.
     private UiTemplateBanner(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -10217,7 +10209,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.BannerItemData> itemDatas_;
     /**
@@ -10253,7 +10244,6 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
 
-    // optional uint32 type = 2;
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -10284,7 +10274,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getItemDatasCount(); i++) {
         if (!getItemDatas(i).isInitialized()) {
@@ -10404,8 +10395,9 @@ public final class CommonChannelProto {
      * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateBanner}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateBannerOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateBanner)
+        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateBannerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor;
@@ -10566,7 +10558,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // repeated .com.mi.liveassistant.proto.BannerItemData itemDatas = 1;
       private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.BannerItemData> itemDatas_ =
         java.util.Collections.emptyList();
       private void ensureItemDatasIsMutable() {
@@ -10708,7 +10699,8 @@ public final class CommonChannelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.BannerItemData> values) {
         if (itemDatasBuilder_ == null) {
           ensureItemDatasIsMutable();
-          super.addAll(values, itemDatas_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, itemDatas_);
           onChanged();
         } else {
           itemDatasBuilder_.addAllMessages(values);
@@ -10806,7 +10798,6 @@ public final class CommonChannelProto {
         return itemDatasBuilder_;
       }
 
-      // optional uint32 type = 2;
       private int type_ ;
       /**
        * <code>optional uint32 type = 2;</code>
@@ -10866,10 +10857,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateBanner)
   }
 
-  public interface UiTemplateTwoTextOneImgOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UiTemplateTwoTextOneImgOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;
     /**
      * <code>repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;</code>
      *
@@ -10914,7 +10905,6 @@ public final class CommonChannelProto {
     com.mi.liveassistant.proto.CommonChannelProto.TwoTextOneImgItemDataOrBuilder getItemDatasOrBuilder(
         int index);
 
-    // optional string headerName = 2;
     /**
      * <code>optional string headerName = 2;</code>
      *
@@ -10941,7 +10931,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getHeaderNameBytes();
 
-    // optional string headerViewAllUri = 3;
     /**
      * <code>optional string headerViewAllUri = 3;</code>
      *
@@ -10976,8 +10965,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class UiTemplateTwoTextOneImg extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateTwoTextOneImgOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
+      UiTemplateTwoTextOneImgOrBuilder {
     // Use UiTemplateTwoTextOneImg.newBuilder() to construct.
     private UiTemplateTwoTextOneImg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11032,13 +11022,15 @@ public final class CommonChannelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              headerName_ = input.readBytes();
+              headerName_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              headerViewAllUri_ = input.readBytes();
+              headerViewAllUri_ = bs;
               break;
             }
           }
@@ -11084,7 +11076,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;
     public static final int ITEMDATAS_FIELD_NUMBER = 1;
     private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.TwoTextOneImgItemData> itemDatas_;
     /**
@@ -11140,7 +11131,6 @@ public final class CommonChannelProto {
       return itemDatas_.get(index);
     }
 
-    // optional string headerName = 2;
     public static final int HEADERNAME_FIELD_NUMBER = 2;
     private java.lang.Object headerName_;
     /**
@@ -11195,7 +11185,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string headerViewAllUri = 3;
     public static final int HEADERVIEWALLURI_FIELD_NUMBER = 3;
     private java.lang.Object headerViewAllUri_;
     /**
@@ -11258,7 +11247,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getItemDatasCount(); i++) {
         if (!getItemDatas(i).isInitialized()) {
@@ -11389,8 +11379,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateTwoTextOneImgOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
+        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateTwoTextOneImgOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor;
@@ -11564,7 +11555,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // repeated .com.mi.liveassistant.proto.TwoTextOneImgItemData itemDatas = 1;
       private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.TwoTextOneImgItemData> itemDatas_ =
         java.util.Collections.emptyList();
       private void ensureItemDatasIsMutable() {
@@ -11746,7 +11736,8 @@ public final class CommonChannelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.TwoTextOneImgItemData> values) {
         if (itemDatasBuilder_ == null) {
           ensureItemDatasIsMutable();
-          super.addAll(values, itemDatas_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, itemDatas_);
           onChanged();
         } else {
           itemDatasBuilder_.addAllMessages(values);
@@ -11876,7 +11867,6 @@ public final class CommonChannelProto {
         return itemDatasBuilder_;
       }
 
-      // optional string headerName = 2;
       private java.lang.Object headerName_ = "";
       /**
        * <code>optional string headerName = 2;</code>
@@ -11898,9 +11888,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderName() {
         java.lang.Object ref = headerName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11974,7 +11967,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string headerViewAllUri = 3;
       private java.lang.Object headerViewAllUri_ = "";
       /**
        * <code>optional string headerViewAllUri = 3;</code>
@@ -11996,9 +11988,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderViewAllUri() {
         java.lang.Object ref = headerViewAllUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerViewAllUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerViewAllUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12083,10 +12078,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateTwoTextOneImg)
   }
 
-  public interface TwoTextOneImgItemDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface TwoTextOneImgItemDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.TwoTextOneImgItemData)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string name = 1;
     /**
      * <code>optional string name = 1;</code>
      *
@@ -12113,7 +12108,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getNameBytes();
 
-    // optional string desc = 2;
     /**
      * <code>optional string desc = 2;</code>
      *
@@ -12140,7 +12134,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getDescBytes();
 
-    // optional string imgUrl = 3;
     /**
      * <code>optional string imgUrl = 3;</code>
      *
@@ -12167,7 +12160,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getImgUrlBytes();
 
-    // optional string jumpSchemeUri = 4;
     /**
      * <code>optional string jumpSchemeUri = 4;</code>
      *
@@ -12194,7 +12186,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getJumpSchemeUriBytes();
 
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;
     /**
      * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;</code>
      *
@@ -12224,8 +12215,9 @@ public final class CommonChannelProto {
    * Protobuf type {@code com.mi.liveassistant.proto.TwoTextOneImgItemData}
    */
   public static final class TwoTextOneImgItemData extends
-      com.google.protobuf.GeneratedMessage
-      implements TwoTextOneImgItemDataOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.TwoTextOneImgItemData)
+      TwoTextOneImgItemDataOrBuilder {
     // Use TwoTextOneImgItemData.newBuilder() to construct.
     private TwoTextOneImgItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -12272,23 +12264,27 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              name_ = input.readBytes();
+              name_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              imgUrl_ = input.readBytes();
+              imgUrl_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              jumpSchemeUri_ = input.readBytes();
+              jumpSchemeUri_ = bs;
               break;
             }
             case 42: {
@@ -12344,7 +12340,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional string name = 1;
     public static final int NAME_FIELD_NUMBER = 1;
     private java.lang.Object name_;
     /**
@@ -12399,7 +12394,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string desc = 2;
     public static final int DESC_FIELD_NUMBER = 2;
     private java.lang.Object desc_;
     /**
@@ -12454,7 +12448,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string imgUrl = 3;
     public static final int IMGURL_FIELD_NUMBER = 3;
     private java.lang.Object imgUrl_;
     /**
@@ -12509,7 +12502,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string jumpSchemeUri = 4;
     public static final int JUMPSCHEMEURI_FIELD_NUMBER = 4;
     private java.lang.Object jumpSchemeUri_;
     /**
@@ -12564,7 +12556,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;
     public static final int USERINFO_FIELD_NUMBER = 5;
     private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_;
     /**
@@ -12608,7 +12599,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (hasUserInfo()) {
         if (!getUserInfo().isInitialized()) {
@@ -12749,8 +12741,9 @@ public final class CommonChannelProto {
      * Protobuf type {@code com.mi.liveassistant.proto.TwoTextOneImgItemData}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.TwoTextOneImgItemDataOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.TwoTextOneImgItemData)
+        com.mi.liveassistant.proto.CommonChannelProto.TwoTextOneImgItemDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor;
@@ -12922,7 +12915,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional string name = 1;
       private java.lang.Object name_ = "";
       /**
        * <code>optional string name = 1;</code>
@@ -12944,9 +12936,12 @@ public final class CommonChannelProto {
       public java.lang.String getName() {
         java.lang.Object ref = name_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          name_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13020,7 +13015,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string desc = 2;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 2;</code>
@@ -13042,9 +13036,12 @@ public final class CommonChannelProto {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13118,7 +13115,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string imgUrl = 3;
       private java.lang.Object imgUrl_ = "";
       /**
        * <code>optional string imgUrl = 3;</code>
@@ -13140,9 +13136,12 @@ public final class CommonChannelProto {
       public java.lang.String getImgUrl() {
         java.lang.Object ref = imgUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          imgUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            imgUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13216,7 +13215,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string jumpSchemeUri = 4;
       private java.lang.Object jumpSchemeUri_ = "";
       /**
        * <code>optional string jumpSchemeUri = 4;</code>
@@ -13238,9 +13236,12 @@ public final class CommonChannelProto {
       public java.lang.String getJumpSchemeUri() {
         java.lang.Object ref = jumpSchemeUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13314,7 +13315,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.UserInfo userInfo = 5;
       private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
@@ -13459,7 +13459,7 @@ public final class CommonChannelProto {
         if (userInfoBuilder_ == null) {
           userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder>(
-                  userInfo_,
+                  getUserInfo(),
                   getParentForChildren(),
                   isClean());
           userInfo_ = null;
@@ -13478,10 +13478,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.TwoTextOneImgItemData)
   }
 
-  public interface UiTemplateLiveOrReplayInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UiTemplateLiveOrReplayInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;
     /**
      * <code>repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;</code>
      */
@@ -13506,7 +13506,6 @@ public final class CommonChannelProto {
     com.mi.liveassistant.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder getItemsOrBuilder(
         int index);
 
-    // optional string headerName = 2;
     /**
      * <code>optional string headerName = 2;</code>
      *
@@ -13533,7 +13532,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getHeaderNameBytes();
 
-    // optional string headerViewAllUri = 3;
     /**
      * <code>optional string headerViewAllUri = 3;</code>
      *
@@ -13560,7 +13558,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getHeaderViewAllUriBytes();
 
-    // optional string subHeaderName = 4;
     /**
      * <code>optional string subHeaderName = 4;</code>
      *
@@ -13587,7 +13584,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getSubHeaderNameBytes();
 
-    // optional uint32 headerUiType = 5;
     /**
      * <code>optional uint32 headerUiType = 5;</code>
      *
@@ -13613,8 +13609,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class UiTemplateLiveOrReplayInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateLiveOrReplayInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
+      UiTemplateLiveOrReplayInfoOrBuilder {
     // Use UiTemplateLiveOrReplayInfo.newBuilder() to construct.
     private UiTemplateLiveOrReplayInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13669,18 +13666,21 @@ public final class CommonChannelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              headerName_ = input.readBytes();
+              headerName_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              headerViewAllUri_ = input.readBytes();
+              headerViewAllUri_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              subHeaderName_ = input.readBytes();
+              subHeaderName_ = bs;
               break;
             }
             case 40: {
@@ -13731,7 +13731,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;
     public static final int ITEMS_FIELD_NUMBER = 1;
     private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveOrReplayItemInfo> items_;
     /**
@@ -13767,7 +13766,6 @@ public final class CommonChannelProto {
       return items_.get(index);
     }
 
-    // optional string headerName = 2;
     public static final int HEADERNAME_FIELD_NUMBER = 2;
     private java.lang.Object headerName_;
     /**
@@ -13822,7 +13820,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string headerViewAllUri = 3;
     public static final int HEADERVIEWALLURI_FIELD_NUMBER = 3;
     private java.lang.Object headerViewAllUri_;
     /**
@@ -13877,7 +13874,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string subHeaderName = 4;
     public static final int SUBHEADERNAME_FIELD_NUMBER = 4;
     private java.lang.Object subHeaderName_;
     /**
@@ -13932,7 +13928,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint32 headerUiType = 5;
     public static final int HEADERUITYPE_FIELD_NUMBER = 5;
     private int headerUiType_;
     /**
@@ -13966,7 +13961,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getItemsCount(); i++) {
         if (!getItems(i).isInitialized()) {
@@ -14111,8 +14107,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateLiveOrReplayInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateLiveOrReplayInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor;
@@ -14306,7 +14303,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // repeated .com.mi.liveassistant.proto.LiveOrReplayItemInfo items = 1;
       private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveOrReplayItemInfo> items_ =
         java.util.Collections.emptyList();
       private void ensureItemsIsMutable() {
@@ -14448,7 +14444,8 @@ public final class CommonChannelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.LiveOrReplayItemInfo> values) {
         if (itemsBuilder_ == null) {
           ensureItemsIsMutable();
-          super.addAll(values, items_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, items_);
           onChanged();
         } else {
           itemsBuilder_.addAllMessages(values);
@@ -14546,7 +14543,6 @@ public final class CommonChannelProto {
         return itemsBuilder_;
       }
 
-      // optional string headerName = 2;
       private java.lang.Object headerName_ = "";
       /**
        * <code>optional string headerName = 2;</code>
@@ -14568,9 +14564,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderName() {
         java.lang.Object ref = headerName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14644,7 +14643,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string headerViewAllUri = 3;
       private java.lang.Object headerViewAllUri_ = "";
       /**
        * <code>optional string headerViewAllUri = 3;</code>
@@ -14666,9 +14664,12 @@ public final class CommonChannelProto {
       public java.lang.String getHeaderViewAllUri() {
         java.lang.Object ref = headerViewAllUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerViewAllUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerViewAllUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14742,7 +14743,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string subHeaderName = 4;
       private java.lang.Object subHeaderName_ = "";
       /**
        * <code>optional string subHeaderName = 4;</code>
@@ -14764,9 +14764,12 @@ public final class CommonChannelProto {
       public java.lang.String getSubHeaderName() {
         java.lang.Object ref = subHeaderName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          subHeaderName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            subHeaderName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14840,7 +14843,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 headerUiType = 5;
       private int headerUiType_ ;
       /**
        * <code>optional uint32 headerUiType = 5;</code>
@@ -14900,10 +14902,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateLiveOrReplayInfo)
   }
 
-  public interface LiveOrReplayItemInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LiveOrReplayItemInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 type = 1;
     /**
      * <code>required uint32 type = 1;</code>
      *
@@ -14921,7 +14923,6 @@ public final class CommonChannelProto {
      */
     int getType();
 
-    // required bytes items = 2;
     /**
      * <code>required bytes items = 2;</code>
      *
@@ -14939,7 +14940,6 @@ public final class CommonChannelProto {
      */
     com.google.protobuf.ByteString getItems();
 
-    // optional string jumpSchemeUri = 3;
     /**
      * <code>optional string jumpSchemeUri = 3;</code>
      *
@@ -14966,7 +14966,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getJumpSchemeUriBytes();
 
-    // optional string upRightText = 4;
     /**
      * <code>optional string upRightText = 4;</code>
      *
@@ -14993,7 +14992,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getUpRightTextBytes();
 
-    // optional string downText1 = 5;
     /**
      * <code>optional string downText1 = 5;</code>
      *
@@ -15020,7 +15018,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getDownText1Bytes();
 
-    // optional string downText2 = 6;
     /**
      * <code>optional string downText2 = 6;</code>
      *
@@ -15047,7 +15044,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getDownText2Bytes();
 
-    // optional string imgUrl = 7;
     /**
      * <code>optional string imgUrl = 7;</code>
      *
@@ -15074,7 +15070,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getImgUrlBytes();
 
-    // optional uint64 publishTime = 8;
     /**
      * <code>optional uint64 publishTime = 8;</code>
      *
@@ -15092,7 +15087,6 @@ public final class CommonChannelProto {
      */
     long getPublishTime();
 
-    // optional string upLeftText = 9;
     /**
      * <code>optional string upLeftText = 9;</code>
      *
@@ -15119,7 +15113,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getUpLeftTextBytes();
 
-    // optional string imgUrl2 = 10;
     /**
      * <code>optional string imgUrl2 = 10;</code>
      *
@@ -15146,7 +15139,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getImgUrl2Bytes();
 
-    // optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;
     /**
      * <code>optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;</code>
      *
@@ -15172,7 +15164,6 @@ public final class CommonChannelProto {
      */
     com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfoOrBuilder getWidgetOrBuilder();
 
-    // optional .com.mi.liveassistant.proto.RichText topLeft = 12;
     /**
      * <code>optional .com.mi.liveassistant.proto.RichText topLeft = 12;</code>
      *
@@ -15198,7 +15189,6 @@ public final class CommonChannelProto {
      */
     com.mi.liveassistant.proto.CommonChannelProto.RichTextOrBuilder getTopLeftOrBuilder();
 
-    // optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;
     /**
      * <code>optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;</code>
      *
@@ -15224,7 +15214,6 @@ public final class CommonChannelProto {
      */
     com.mi.liveassistant.proto.CommonChannelProto.MiddleInfoOrBuilder getMiddleOrBuilder();
 
-    // repeated .com.mi.liveassistant.proto.RichText label = 14;
     /**
      * <code>repeated .com.mi.liveassistant.proto.RichText label = 14;</code>
      *
@@ -15273,8 +15262,9 @@ public final class CommonChannelProto {
    * Protobuf type {@code com.mi.liveassistant.proto.LiveOrReplayItemInfo}
    */
   public static final class LiveOrReplayItemInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements LiveOrReplayItemInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
+      LiveOrReplayItemInfoOrBuilder {
     // Use LiveOrReplayItemInfo.newBuilder() to construct.
     private LiveOrReplayItemInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -15331,28 +15321,33 @@ public final class CommonChannelProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              jumpSchemeUri_ = input.readBytes();
+              jumpSchemeUri_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              upRightText_ = input.readBytes();
+              upRightText_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              downText1_ = input.readBytes();
+              downText1_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              downText2_ = input.readBytes();
+              downText2_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              imgUrl_ = input.readBytes();
+              imgUrl_ = bs;
               break;
             }
             case 64: {
@@ -15361,13 +15356,15 @@ public final class CommonChannelProto {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              upLeftText_ = input.readBytes();
+              upLeftText_ = bs;
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              imgUrl2_ = input.readBytes();
+              imgUrl2_ = bs;
               break;
             }
             case 90: {
@@ -15460,7 +15457,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required uint32 type = 1;
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -15484,7 +15480,6 @@ public final class CommonChannelProto {
       return type_;
     }
 
-    // required bytes items = 2;
     public static final int ITEMS_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString items_;
     /**
@@ -15508,7 +15503,6 @@ public final class CommonChannelProto {
       return items_;
     }
 
-    // optional string jumpSchemeUri = 3;
     public static final int JUMPSCHEMEURI_FIELD_NUMBER = 3;
     private java.lang.Object jumpSchemeUri_;
     /**
@@ -15563,7 +15557,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string upRightText = 4;
     public static final int UPRIGHTTEXT_FIELD_NUMBER = 4;
     private java.lang.Object upRightText_;
     /**
@@ -15618,7 +15611,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string downText1 = 5;
     public static final int DOWNTEXT1_FIELD_NUMBER = 5;
     private java.lang.Object downText1_;
     /**
@@ -15673,7 +15665,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string downText2 = 6;
     public static final int DOWNTEXT2_FIELD_NUMBER = 6;
     private java.lang.Object downText2_;
     /**
@@ -15728,7 +15719,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string imgUrl = 7;
     public static final int IMGURL_FIELD_NUMBER = 7;
     private java.lang.Object imgUrl_;
     /**
@@ -15783,7 +15773,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint64 publishTime = 8;
     public static final int PUBLISHTIME_FIELD_NUMBER = 8;
     private long publishTime_;
     /**
@@ -15807,7 +15796,6 @@ public final class CommonChannelProto {
       return publishTime_;
     }
 
-    // optional string upLeftText = 9;
     public static final int UPLEFTTEXT_FIELD_NUMBER = 9;
     private java.lang.Object upLeftText_;
     /**
@@ -15862,7 +15850,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string imgUrl2 = 10;
     public static final int IMGURL2_FIELD_NUMBER = 10;
     private java.lang.Object imgUrl2_;
     /**
@@ -15917,7 +15904,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;
     public static final int WIDGET_FIELD_NUMBER = 11;
     private com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfo widget_;
     /**
@@ -15951,7 +15937,6 @@ public final class CommonChannelProto {
       return widget_;
     }
 
-    // optional .com.mi.liveassistant.proto.RichText topLeft = 12;
     public static final int TOPLEFT_FIELD_NUMBER = 12;
     private com.mi.liveassistant.proto.CommonChannelProto.RichText topLeft_;
     /**
@@ -15985,7 +15970,6 @@ public final class CommonChannelProto {
       return topLeft_;
     }
 
-    // optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;
     public static final int MIDDLE_FIELD_NUMBER = 13;
     private com.mi.liveassistant.proto.CommonChannelProto.MiddleInfo middle_;
     /**
@@ -16019,7 +16003,6 @@ public final class CommonChannelProto {
       return middle_;
     }
 
-    // repeated .com.mi.liveassistant.proto.RichText label = 14;
     public static final int LABEL_FIELD_NUMBER = 14;
     private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RichText> label_;
     /**
@@ -16094,7 +16077,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasType()) {
         memoizedIsInitialized = 0;
@@ -16300,8 +16284,9 @@ public final class CommonChannelProto {
      * Protobuf type {@code com.mi.liveassistant.proto.LiveOrReplayItemInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.LiveOrReplayItemInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor;
@@ -16613,7 +16598,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required uint32 type = 1;
       private int type_ ;
       /**
        * <code>required uint32 type = 1;</code>
@@ -16662,7 +16646,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // required bytes items = 2;
       private com.google.protobuf.ByteString items_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>required bytes items = 2;</code>
@@ -16714,7 +16697,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string jumpSchemeUri = 3;
       private java.lang.Object jumpSchemeUri_ = "";
       /**
        * <code>optional string jumpSchemeUri = 3;</code>
@@ -16736,9 +16718,12 @@ public final class CommonChannelProto {
       public java.lang.String getJumpSchemeUri() {
         java.lang.Object ref = jumpSchemeUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16812,7 +16797,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string upRightText = 4;
       private java.lang.Object upRightText_ = "";
       /**
        * <code>optional string upRightText = 4;</code>
@@ -16834,9 +16818,12 @@ public final class CommonChannelProto {
       public java.lang.String getUpRightText() {
         java.lang.Object ref = upRightText_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          upRightText_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            upRightText_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16910,7 +16897,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string downText1 = 5;
       private java.lang.Object downText1_ = "";
       /**
        * <code>optional string downText1 = 5;</code>
@@ -16932,9 +16918,12 @@ public final class CommonChannelProto {
       public java.lang.String getDownText1() {
         java.lang.Object ref = downText1_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          downText1_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            downText1_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17008,7 +16997,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string downText2 = 6;
       private java.lang.Object downText2_ = "";
       /**
        * <code>optional string downText2 = 6;</code>
@@ -17030,9 +17018,12 @@ public final class CommonChannelProto {
       public java.lang.String getDownText2() {
         java.lang.Object ref = downText2_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          downText2_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            downText2_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17106,7 +17097,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string imgUrl = 7;
       private java.lang.Object imgUrl_ = "";
       /**
        * <code>optional string imgUrl = 7;</code>
@@ -17128,9 +17118,12 @@ public final class CommonChannelProto {
       public java.lang.String getImgUrl() {
         java.lang.Object ref = imgUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          imgUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            imgUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17204,7 +17197,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint64 publishTime = 8;
       private long publishTime_ ;
       /**
        * <code>optional uint64 publishTime = 8;</code>
@@ -17253,7 +17245,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string upLeftText = 9;
       private java.lang.Object upLeftText_ = "";
       /**
        * <code>optional string upLeftText = 9;</code>
@@ -17275,9 +17266,12 @@ public final class CommonChannelProto {
       public java.lang.String getUpLeftText() {
         java.lang.Object ref = upLeftText_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          upLeftText_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            upLeftText_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17351,7 +17345,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string imgUrl2 = 10;
       private java.lang.Object imgUrl2_ = "";
       /**
        * <code>optional string imgUrl2 = 10;</code>
@@ -17373,9 +17366,12 @@ public final class CommonChannelProto {
       public java.lang.String getImgUrl2() {
         java.lang.Object ref = imgUrl2_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          imgUrl2_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            imgUrl2_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17449,7 +17445,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.ListWidgetInfo widget = 11;
       private com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfo widget_ = com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfo, com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfoOrBuilder> widgetBuilder_;
@@ -17594,7 +17589,7 @@ public final class CommonChannelProto {
         if (widgetBuilder_ == null) {
           widgetBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfo, com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfoOrBuilder>(
-                  widget_,
+                  getWidget(),
                   getParentForChildren(),
                   isClean());
           widget_ = null;
@@ -17602,7 +17597,6 @@ public final class CommonChannelProto {
         return widgetBuilder_;
       }
 
-      // optional .com.mi.liveassistant.proto.RichText topLeft = 12;
       private com.mi.liveassistant.proto.CommonChannelProto.RichText topLeft_ = com.mi.liveassistant.proto.CommonChannelProto.RichText.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.RichText, com.mi.liveassistant.proto.CommonChannelProto.RichText.Builder, com.mi.liveassistant.proto.CommonChannelProto.RichTextOrBuilder> topLeftBuilder_;
@@ -17747,7 +17741,7 @@ public final class CommonChannelProto {
         if (topLeftBuilder_ == null) {
           topLeftBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.RichText, com.mi.liveassistant.proto.CommonChannelProto.RichText.Builder, com.mi.liveassistant.proto.CommonChannelProto.RichTextOrBuilder>(
-                  topLeft_,
+                  getTopLeft(),
                   getParentForChildren(),
                   isClean());
           topLeft_ = null;
@@ -17755,7 +17749,6 @@ public final class CommonChannelProto {
         return topLeftBuilder_;
       }
 
-      // optional .com.mi.liveassistant.proto.MiddleInfo middle = 13;
       private com.mi.liveassistant.proto.CommonChannelProto.MiddleInfo middle_ = com.mi.liveassistant.proto.CommonChannelProto.MiddleInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.MiddleInfo, com.mi.liveassistant.proto.CommonChannelProto.MiddleInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.MiddleInfoOrBuilder> middleBuilder_;
@@ -17900,7 +17893,7 @@ public final class CommonChannelProto {
         if (middleBuilder_ == null) {
           middleBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.MiddleInfo, com.mi.liveassistant.proto.CommonChannelProto.MiddleInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.MiddleInfoOrBuilder>(
-                  middle_,
+                  getMiddle(),
                   getParentForChildren(),
                   isClean());
           middle_ = null;
@@ -17908,7 +17901,6 @@ public final class CommonChannelProto {
         return middleBuilder_;
       }
 
-      // repeated .com.mi.liveassistant.proto.RichText label = 14;
       private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RichText> label_ =
         java.util.Collections.emptyList();
       private void ensureLabelIsMutable() {
@@ -18090,7 +18082,8 @@ public final class CommonChannelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.RichText> values) {
         if (labelBuilder_ == null) {
           ensureLabelIsMutable();
-          super.addAll(values, label_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, label_);
           onChanged();
         } else {
           labelBuilder_.addAllMessages(values);
@@ -18231,10 +18224,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveOrReplayItemInfo)
   }
 
-  public interface RichTextOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RichTextOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.RichText)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string text = 1;
     /**
      * <code>optional string text = 1;</code>
      *
@@ -18261,7 +18254,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getTextBytes();
 
-    // optional string jumpSchemeUri = 2;
     /**
      * <code>optional string jumpSchemeUri = 2;</code>
      *
@@ -18288,7 +18280,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getJumpSchemeUriBytes();
 
-    // optional uint32 bgImageID = 3;
     /**
      * <code>optional uint32 bgImageID = 3;</code>
      *
@@ -18314,8 +18305,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class RichText extends
-      com.google.protobuf.GeneratedMessage
-      implements RichTextOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.RichText)
+      RichTextOrBuilder {
     // Use RichText.newBuilder() to construct.
     private RichText(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -18362,13 +18354,15 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              text_ = input.readBytes();
+              text_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              jumpSchemeUri_ = input.readBytes();
+              jumpSchemeUri_ = bs;
               break;
             }
             case 24: {
@@ -18416,7 +18410,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional string text = 1;
     public static final int TEXT_FIELD_NUMBER = 1;
     private java.lang.Object text_;
     /**
@@ -18471,7 +18464,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string jumpSchemeUri = 2;
     public static final int JUMPSCHEMEURI_FIELD_NUMBER = 2;
     private java.lang.Object jumpSchemeUri_;
     /**
@@ -18526,7 +18518,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint32 bgImageID = 3;
     public static final int BGIMAGEID_FIELD_NUMBER = 3;
     private int bgImageID_;
     /**
@@ -18558,7 +18549,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -18683,8 +18675,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.RichTextOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.RichText)
+        com.mi.liveassistant.proto.CommonChannelProto.RichTextOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RichText_descriptor;
@@ -18819,7 +18812,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional string text = 1;
       private java.lang.Object text_ = "";
       /**
        * <code>optional string text = 1;</code>
@@ -18841,9 +18833,12 @@ public final class CommonChannelProto {
       public java.lang.String getText() {
         java.lang.Object ref = text_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -18917,7 +18912,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string jumpSchemeUri = 2;
       private java.lang.Object jumpSchemeUri_ = "";
       /**
        * <code>optional string jumpSchemeUri = 2;</code>
@@ -18939,9 +18933,12 @@ public final class CommonChannelProto {
       public java.lang.String getJumpSchemeUri() {
         java.lang.Object ref = jumpSchemeUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19015,7 +19012,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 bgImageID = 3;
       private int bgImageID_ ;
       /**
        * <code>optional uint32 bgImageID = 3;</code>
@@ -19075,10 +19071,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.RichText)
   }
 
-  public interface MiddleInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface MiddleInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.MiddleInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string text1 = 1;
     /**
      * <code>optional string text1 = 1;</code>
      *
@@ -19105,7 +19101,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getText1Bytes();
 
-    // optional string text2 = 2;
     /**
      * <code>optional string text2 = 2;</code>
      *
@@ -19140,8 +19135,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class MiddleInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements MiddleInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.MiddleInfo)
+      MiddleInfoOrBuilder {
     // Use MiddleInfo.newBuilder() to construct.
     private MiddleInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -19188,13 +19184,15 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              text1_ = input.readBytes();
+              text1_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              text2_ = input.readBytes();
+              text2_ = bs;
               break;
             }
           }
@@ -19237,7 +19235,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional string text1 = 1;
     public static final int TEXT1_FIELD_NUMBER = 1;
     private java.lang.Object text1_;
     /**
@@ -19292,7 +19289,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string text2 = 2;
     public static final int TEXT2_FIELD_NUMBER = 2;
     private java.lang.Object text2_;
     /**
@@ -19354,7 +19350,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -19472,8 +19469,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.MiddleInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.MiddleInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.MiddleInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor;
@@ -19599,7 +19597,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional string text1 = 1;
       private java.lang.Object text1_ = "";
       /**
        * <code>optional string text1 = 1;</code>
@@ -19621,9 +19618,12 @@ public final class CommonChannelProto {
       public java.lang.String getText1() {
         java.lang.Object ref = text1_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text1_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text1_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19697,7 +19697,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string text2 = 2;
       private java.lang.Object text2_ = "";
       /**
        * <code>optional string text2 = 2;</code>
@@ -19719,9 +19718,12 @@ public final class CommonChannelProto {
       public java.lang.String getText2() {
         java.lang.Object ref = text2_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text2_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text2_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19806,10 +19808,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.MiddleInfo)
   }
 
-  public interface ListWidgetInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ListWidgetInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ListWidgetInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string jumpSchemeUri = 1;
     /**
      * <code>optional string jumpSchemeUri = 1;</code>
      *
@@ -19836,7 +19838,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getJumpSchemeUriBytes();
 
-    // optional string iconUrl = 2;
     /**
      * <code>optional string iconUrl = 2;</code>
      *
@@ -19871,8 +19872,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class ListWidgetInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements ListWidgetInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ListWidgetInfo)
+      ListWidgetInfoOrBuilder {
     // Use ListWidgetInfo.newBuilder() to construct.
     private ListWidgetInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -19919,13 +19921,15 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              jumpSchemeUri_ = input.readBytes();
+              jumpSchemeUri_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              iconUrl_ = input.readBytes();
+              iconUrl_ = bs;
               break;
             }
           }
@@ -19968,7 +19972,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional string jumpSchemeUri = 1;
     public static final int JUMPSCHEMEURI_FIELD_NUMBER = 1;
     private java.lang.Object jumpSchemeUri_;
     /**
@@ -20023,7 +20026,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string iconUrl = 2;
     public static final int ICONURL_FIELD_NUMBER = 2;
     private java.lang.Object iconUrl_;
     /**
@@ -20085,7 +20087,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -20203,8 +20206,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ListWidgetInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.ListWidgetInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor;
@@ -20330,7 +20334,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional string jumpSchemeUri = 1;
       private java.lang.Object jumpSchemeUri_ = "";
       /**
        * <code>optional string jumpSchemeUri = 1;</code>
@@ -20352,9 +20355,12 @@ public final class CommonChannelProto {
       public java.lang.String getJumpSchemeUri() {
         java.lang.Object ref = jumpSchemeUri_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20428,7 +20434,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string iconUrl = 2;
       private java.lang.Object iconUrl_ = "";
       /**
        * <code>optional string iconUrl = 2;</code>
@@ -20450,9 +20455,12 @@ public final class CommonChannelProto {
       public java.lang.String getIconUrl() {
         java.lang.Object ref = iconUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          iconUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            iconUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20537,10 +20545,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ListWidgetInfo)
   }
 
-  public interface UiTemplateSeparatorOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UiTemplateSeparatorOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UiTemplateSeparator)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 color = 1;
     /**
      * <code>optional uint32 color = 1;</code>
      *
@@ -20558,7 +20566,6 @@ public final class CommonChannelProto {
      */
     int getColor();
 
-    // optional uint32 height = 2;
     /**
      * <code>optional uint32 height = 2;</code>
      *
@@ -20576,7 +20583,6 @@ public final class CommonChannelProto {
      */
     int getHeight();
 
-    // optional string title = 3;
     /**
      * <code>optional string title = 3;</code>
      */
@@ -20599,8 +20605,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class UiTemplateSeparator extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateSeparatorOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UiTemplateSeparator)
+      UiTemplateSeparatorOrBuilder {
     // Use UiTemplateSeparator.newBuilder() to construct.
     private UiTemplateSeparator(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -20657,8 +20664,9 @@ public final class CommonChannelProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              title_ = input.readBytes();
+              title_ = bs;
               break;
             }
           }
@@ -20701,7 +20709,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional uint32 color = 1;
     public static final int COLOR_FIELD_NUMBER = 1;
     private int color_;
     /**
@@ -20725,7 +20732,6 @@ public final class CommonChannelProto {
       return color_;
     }
 
-    // optional uint32 height = 2;
     public static final int HEIGHT_FIELD_NUMBER = 2;
     private int height_;
     /**
@@ -20749,7 +20755,6 @@ public final class CommonChannelProto {
       return height_;
     }
 
-    // optional string title = 3;
     public static final int TITLE_FIELD_NUMBER = 3;
     private java.lang.Object title_;
     /**
@@ -20800,7 +20805,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -20925,8 +20931,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateSeparatorOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UiTemplateSeparator)
+        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateSeparatorOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor;
@@ -21059,7 +21066,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional uint32 color = 1;
       private int color_ ;
       /**
        * <code>optional uint32 color = 1;</code>
@@ -21108,7 +21114,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 height = 2;
       private int height_ ;
       /**
        * <code>optional uint32 height = 2;</code>
@@ -21157,7 +21162,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string title = 3;
       private java.lang.Object title_ = "";
       /**
        * <code>optional string title = 3;</code>
@@ -21171,9 +21175,12 @@ public final class CommonChannelProto {
       public java.lang.String getTitle() {
         java.lang.Object ref = title_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          title_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21242,10 +21249,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateSeparator)
   }
 
-  public interface UserBriefOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserBriefOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.UserBrief)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uId = 1;
     /**
      * <code>required uint64 uId = 1;</code>
      *
@@ -21263,7 +21270,6 @@ public final class CommonChannelProto {
      */
     long getUId();
 
-    // optional string nickname = 2;
     /**
      * <code>optional string nickname = 2;</code>
      *
@@ -21290,7 +21296,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional uint64 avatar = 3;
     /**
      * <code>optional uint64 avatar = 3;</code>
      *
@@ -21308,7 +21313,6 @@ public final class CommonChannelProto {
      */
     long getAvatar();
 
-    // optional uint32 level = 4;
     /**
      * <code>optional uint32 level = 4;</code>
      *
@@ -21326,7 +21330,6 @@ public final class CommonChannelProto {
      */
     int getLevel();
 
-    // optional uint32 certType = 5;
     /**
      * <code>optional uint32 certType = 5;</code>
      *
@@ -21352,8 +21355,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class UserBrief extends
-      com.google.protobuf.GeneratedMessage
-      implements UserBriefOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.UserBrief)
+      UserBriefOrBuilder {
     // Use UserBrief.newBuilder() to construct.
     private UserBrief(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -21405,8 +21409,9 @@ public final class CommonChannelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 24: {
@@ -21464,7 +21469,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required uint64 uId = 1;
     public static final int UID_FIELD_NUMBER = 1;
     private long uId_;
     /**
@@ -21488,7 +21492,6 @@ public final class CommonChannelProto {
       return uId_;
     }
 
-    // optional string nickname = 2;
     public static final int NICKNAME_FIELD_NUMBER = 2;
     private java.lang.Object nickname_;
     /**
@@ -21543,7 +21546,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint64 avatar = 3;
     public static final int AVATAR_FIELD_NUMBER = 3;
     private long avatar_;
     /**
@@ -21567,7 +21569,6 @@ public final class CommonChannelProto {
       return avatar_;
     }
 
-    // optional uint32 level = 4;
     public static final int LEVEL_FIELD_NUMBER = 4;
     private int level_;
     /**
@@ -21591,7 +21592,6 @@ public final class CommonChannelProto {
       return level_;
     }
 
-    // optional uint32 certType = 5;
     public static final int CERTTYPE_FIELD_NUMBER = 5;
     private int certType_;
     /**
@@ -21625,7 +21625,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUId()) {
         memoizedIsInitialized = 0;
@@ -21768,8 +21769,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.UserBrief)
+        com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UserBrief_descriptor;
@@ -21924,7 +21926,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required uint64 uId = 1;
       private long uId_ ;
       /**
        * <code>required uint64 uId = 1;</code>
@@ -21973,7 +21974,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string nickname = 2;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 2;</code>
@@ -21995,9 +21995,12 @@ public final class CommonChannelProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22071,7 +22074,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint64 avatar = 3;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 3;</code>
@@ -22120,7 +22122,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 level = 4;
       private int level_ ;
       /**
        * <code>optional uint32 level = 4;</code>
@@ -22169,7 +22170,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 certType = 5;
       private int certType_ ;
       /**
        * <code>optional uint32 certType = 5;</code>
@@ -22229,10 +22229,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UserBrief)
   }
 
-  public interface ShopBriefOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ShopBriefOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.ShopBrief)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional bool hideGoods = 1;
     /**
      * <code>optional bool hideGoods = 1;</code>
      *
@@ -22250,7 +22250,6 @@ public final class CommonChannelProto {
      */
     boolean getHideGoods();
 
-    // optional uint32 desiredCnt = 2;
     /**
      * <code>optional uint32 desiredCnt = 2;</code>
      *
@@ -22276,8 +22275,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class ShopBrief extends
-      com.google.protobuf.GeneratedMessage
-      implements ShopBriefOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.ShopBrief)
+      ShopBriefOrBuilder {
     // Use ShopBrief.newBuilder() to construct.
     private ShopBrief(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -22373,7 +22373,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // optional bool hideGoods = 1;
     public static final int HIDEGOODS_FIELD_NUMBER = 1;
     private boolean hideGoods_;
     /**
@@ -22397,7 +22396,6 @@ public final class CommonChannelProto {
       return hideGoods_;
     }
 
-    // optional uint32 desiredCnt = 2;
     public static final int DESIREDCNT_FIELD_NUMBER = 2;
     private int desiredCnt_;
     /**
@@ -22428,7 +22426,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -22546,8 +22545,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.ShopBriefOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.ShopBrief)
+        com.mi.liveassistant.proto.CommonChannelProto.ShopBriefOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor;
@@ -22669,7 +22669,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // optional bool hideGoods = 1;
       private boolean hideGoods_ ;
       /**
        * <code>optional bool hideGoods = 1;</code>
@@ -22718,7 +22717,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 desiredCnt = 2;
       private int desiredCnt_ ;
       /**
        * <code>optional uint32 desiredCnt = 2;</code>
@@ -22778,10 +22776,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.ShopBrief)
   }
 
-  public interface LiveInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LiveInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.LiveInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string liveId = 1;
     /**
      * <code>required string liveId = 1;</code>
      *
@@ -22808,7 +22806,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getLiveIdBytes();
 
-    // optional .com.mi.liveassistant.proto.UserBrief user = 2;
     /**
      * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
@@ -22834,7 +22831,6 @@ public final class CommonChannelProto {
      */
     com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder getUserOrBuilder();
 
-    // optional string location = 3;
     /**
      * <code>optional string location = 3;</code>
      *
@@ -22861,7 +22857,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getLocationBytes();
 
-    // optional uint32 viewerCnt = 4;
     /**
      * <code>optional uint32 viewerCnt = 4;</code>
      *
@@ -22879,7 +22874,6 @@ public final class CommonChannelProto {
      */
     int getViewerCnt();
 
-    // optional string url = 5;
     /**
      * <code>optional string url = 5;</code>
      *
@@ -22906,7 +22900,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional string coverUrl = 6;
     /**
      * <code>optional string coverUrl = 6;</code>
      *
@@ -22933,7 +22926,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getCoverUrlBytes();
 
-    // optional string liTitle = 7;
     /**
      * <code>optional string liTitle = 7;</code>
      *
@@ -22960,7 +22952,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getLiTitleBytes();
 
-    // optional uint64 startTime = 8;
     /**
      * <code>optional uint64 startTime = 8;</code>
      *
@@ -22978,7 +22969,6 @@ public final class CommonChannelProto {
      */
     long getStartTime();
 
-    // optional string tag = 9;
     /**
      * <code>optional string tag = 9;</code>
      *
@@ -23005,7 +22995,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getTagBytes();
 
-    // optional .com.mi.liveassistant.proto.ShopBrief shop = 10;
     /**
      * <code>optional .com.mi.liveassistant.proto.ShopBrief shop = 10;</code>
      *
@@ -23031,7 +23020,6 @@ public final class CommonChannelProto {
      */
     com.mi.liveassistant.proto.CommonChannelProto.ShopBriefOrBuilder getShopOrBuilder();
 
-    // optional uint32 appType = 11;
     /**
      * <code>optional uint32 appType = 11;</code>
      *
@@ -23049,7 +23037,6 @@ public final class CommonChannelProto {
      */
     int getAppType();
 
-    // optional uint32 liveType = 12;
     /**
      * <code>optional uint32 liveType = 12;</code>
      *
@@ -23075,8 +23062,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class LiveInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements LiveInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.LiveInfo)
+      LiveInfoOrBuilder {
     // Use LiveInfo.newBuilder() to construct.
     private LiveInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23123,8 +23111,9 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              liveId_ = input.readBytes();
+              liveId_ = bs;
               break;
             }
             case 18: {
@@ -23141,8 +23130,9 @@ public final class CommonChannelProto {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              location_ = input.readBytes();
+              location_ = bs;
               break;
             }
             case 32: {
@@ -23151,18 +23141,21 @@ public final class CommonChannelProto {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              coverUrl_ = input.readBytes();
+              coverUrl_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              liTitle_ = input.readBytes();
+              liTitle_ = bs;
               break;
             }
             case 64: {
@@ -23171,8 +23164,9 @@ public final class CommonChannelProto {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              tag_ = input.readBytes();
+              tag_ = bs;
               break;
             }
             case 82: {
@@ -23238,7 +23232,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required string liveId = 1;
     public static final int LIVEID_FIELD_NUMBER = 1;
     private java.lang.Object liveId_;
     /**
@@ -23293,7 +23286,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.UserBrief user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private com.mi.liveassistant.proto.CommonChannelProto.UserBrief user_;
     /**
@@ -23327,7 +23319,6 @@ public final class CommonChannelProto {
       return user_;
     }
 
-    // optional string location = 3;
     public static final int LOCATION_FIELD_NUMBER = 3;
     private java.lang.Object location_;
     /**
@@ -23382,7 +23373,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint32 viewerCnt = 4;
     public static final int VIEWERCNT_FIELD_NUMBER = 4;
     private int viewerCnt_;
     /**
@@ -23406,7 +23396,6 @@ public final class CommonChannelProto {
       return viewerCnt_;
     }
 
-    // optional string url = 5;
     public static final int URL_FIELD_NUMBER = 5;
     private java.lang.Object url_;
     /**
@@ -23461,7 +23450,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string coverUrl = 6;
     public static final int COVERURL_FIELD_NUMBER = 6;
     private java.lang.Object coverUrl_;
     /**
@@ -23516,7 +23504,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string liTitle = 7;
     public static final int LITITLE_FIELD_NUMBER = 7;
     private java.lang.Object liTitle_;
     /**
@@ -23571,7 +23558,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint64 startTime = 8;
     public static final int STARTTIME_FIELD_NUMBER = 8;
     private long startTime_;
     /**
@@ -23595,7 +23581,6 @@ public final class CommonChannelProto {
       return startTime_;
     }
 
-    // optional string tag = 9;
     public static final int TAG_FIELD_NUMBER = 9;
     private java.lang.Object tag_;
     /**
@@ -23650,7 +23635,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.ShopBrief shop = 10;
     public static final int SHOP_FIELD_NUMBER = 10;
     private com.mi.liveassistant.proto.CommonChannelProto.ShopBrief shop_;
     /**
@@ -23684,7 +23668,6 @@ public final class CommonChannelProto {
       return shop_;
     }
 
-    // optional uint32 appType = 11;
     public static final int APPTYPE_FIELD_NUMBER = 11;
     private int appType_;
     /**
@@ -23708,7 +23691,6 @@ public final class CommonChannelProto {
       return appType_;
     }
 
-    // optional uint32 liveType = 12;
     public static final int LIVETYPE_FIELD_NUMBER = 12;
     private int liveType_;
     /**
@@ -23749,7 +23731,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasLiveId()) {
         memoizedIsInitialized = 0;
@@ -23947,8 +23930,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.LiveInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.LiveInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.LiveInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor;
@@ -24200,7 +24184,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required string liveId = 1;
       private java.lang.Object liveId_ = "";
       /**
        * <code>required string liveId = 1;</code>
@@ -24222,9 +24205,12 @@ public final class CommonChannelProto {
       public java.lang.String getLiveId() {
         java.lang.Object ref = liveId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liveId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24298,7 +24284,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.UserBrief user = 2;
       private com.mi.liveassistant.proto.CommonChannelProto.UserBrief user_ = com.mi.liveassistant.proto.CommonChannelProto.UserBrief.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.UserBrief, com.mi.liveassistant.proto.CommonChannelProto.UserBrief.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder> userBuilder_;
@@ -24443,7 +24428,7 @@ public final class CommonChannelProto {
         if (userBuilder_ == null) {
           userBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.UserBrief, com.mi.liveassistant.proto.CommonChannelProto.UserBrief.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder>(
-                  user_,
+                  getUser(),
                   getParentForChildren(),
                   isClean());
           user_ = null;
@@ -24451,7 +24436,6 @@ public final class CommonChannelProto {
         return userBuilder_;
       }
 
-      // optional string location = 3;
       private java.lang.Object location_ = "";
       /**
        * <code>optional string location = 3;</code>
@@ -24473,9 +24457,12 @@ public final class CommonChannelProto {
       public java.lang.String getLocation() {
         java.lang.Object ref = location_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          location_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            location_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24549,7 +24536,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 viewerCnt = 4;
       private int viewerCnt_ ;
       /**
        * <code>optional uint32 viewerCnt = 4;</code>
@@ -24598,7 +24584,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string url = 5;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 5;</code>
@@ -24620,9 +24605,12 @@ public final class CommonChannelProto {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24696,7 +24684,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string coverUrl = 6;
       private java.lang.Object coverUrl_ = "";
       /**
        * <code>optional string coverUrl = 6;</code>
@@ -24718,9 +24705,12 @@ public final class CommonChannelProto {
       public java.lang.String getCoverUrl() {
         java.lang.Object ref = coverUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24794,7 +24784,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string liTitle = 7;
       private java.lang.Object liTitle_ = "";
       /**
        * <code>optional string liTitle = 7;</code>
@@ -24816,9 +24805,12 @@ public final class CommonChannelProto {
       public java.lang.String getLiTitle() {
         java.lang.Object ref = liTitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liTitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liTitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24892,7 +24884,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint64 startTime = 8;
       private long startTime_ ;
       /**
        * <code>optional uint64 startTime = 8;</code>
@@ -24941,7 +24932,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string tag = 9;
       private java.lang.Object tag_ = "";
       /**
        * <code>optional string tag = 9;</code>
@@ -24963,9 +24953,12 @@ public final class CommonChannelProto {
       public java.lang.String getTag() {
         java.lang.Object ref = tag_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          tag_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            tag_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25039,7 +25032,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.ShopBrief shop = 10;
       private com.mi.liveassistant.proto.CommonChannelProto.ShopBrief shop_ = com.mi.liveassistant.proto.CommonChannelProto.ShopBrief.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.ShopBrief, com.mi.liveassistant.proto.CommonChannelProto.ShopBrief.Builder, com.mi.liveassistant.proto.CommonChannelProto.ShopBriefOrBuilder> shopBuilder_;
@@ -25184,7 +25176,7 @@ public final class CommonChannelProto {
         if (shopBuilder_ == null) {
           shopBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.ShopBrief, com.mi.liveassistant.proto.CommonChannelProto.ShopBrief.Builder, com.mi.liveassistant.proto.CommonChannelProto.ShopBriefOrBuilder>(
-                  shop_,
+                  getShop(),
                   getParentForChildren(),
                   isClean());
           shop_ = null;
@@ -25192,7 +25184,6 @@ public final class CommonChannelProto {
         return shopBuilder_;
       }
 
-      // optional uint32 appType = 11;
       private int appType_ ;
       /**
        * <code>optional uint32 appType = 11;</code>
@@ -25241,7 +25232,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint32 liveType = 12;
       private int liveType_ ;
       /**
        * <code>optional uint32 liveType = 12;</code>
@@ -25301,10 +25291,10 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveInfo)
   }
 
-  public interface BackInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface BackInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.BackInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string backId = 1;
     /**
      * <code>required string backId = 1;</code>
      *
@@ -25331,7 +25321,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getBackIdBytes();
 
-    // optional .com.mi.liveassistant.proto.UserBrief user = 2;
     /**
      * <code>optional .com.mi.liveassistant.proto.UserBrief user = 2;</code>
      *
@@ -25357,7 +25346,6 @@ public final class CommonChannelProto {
      */
     com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder getUserOrBuilder();
 
-    // optional uint32 viewerCnt = 3;
     /**
      * <code>optional uint32 viewerCnt = 3;</code>
      *
@@ -25375,7 +25363,6 @@ public final class CommonChannelProto {
      */
     int getViewerCnt();
 
-    // optional string url = 4;
     /**
      * <code>optional string url = 4;</code>
      *
@@ -25402,7 +25389,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional uint64 startTime = 5;
     /**
      * <code>optional uint64 startTime = 5;</code>
      *
@@ -25420,7 +25406,6 @@ public final class CommonChannelProto {
      */
     long getStartTime();
 
-    // optional uint64 endTime = 6;
     /**
      * <code>optional uint64 endTime = 6;</code>
      *
@@ -25438,7 +25423,6 @@ public final class CommonChannelProto {
      */
     long getEndTime();
 
-    // optional string backTitle = 7;
     /**
      * <code>optional string backTitle = 7;</code>
      *
@@ -25465,7 +25449,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getBackTitleBytes();
 
-    // optional string coverUrl = 8;
     /**
      * <code>optional string coverUrl = 8;</code>
      *
@@ -25492,7 +25475,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getCoverUrlBytes();
 
-    // optional string shareUrl = 9;
     /**
      * <code>optional string shareUrl = 9;</code>
      *
@@ -25519,7 +25501,6 @@ public final class CommonChannelProto {
     com.google.protobuf.ByteString
         getShareUrlBytes();
 
-    // optional string location = 10;
     /**
      * <code>optional string location = 10;</code>
      *
@@ -25554,8 +25535,9 @@ public final class CommonChannelProto {
    * </pre>
    */
   public static final class BackInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements BackInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.BackInfo)
+      BackInfoOrBuilder {
     // Use BackInfo.newBuilder() to construct.
     private BackInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -25602,8 +25584,9 @@ public final class CommonChannelProto {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              backId_ = input.readBytes();
+              backId_ = bs;
               break;
             }
             case 18: {
@@ -25625,8 +25608,9 @@ public final class CommonChannelProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 40: {
@@ -25640,23 +25624,27 @@ public final class CommonChannelProto {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              backTitle_ = input.readBytes();
+              backTitle_ = bs;
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              coverUrl_ = input.readBytes();
+              coverUrl_ = bs;
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              shareUrl_ = input.readBytes();
+              shareUrl_ = bs;
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              location_ = input.readBytes();
+              location_ = bs;
               break;
             }
           }
@@ -25699,7 +25687,6 @@ public final class CommonChannelProto {
     }
 
     private int bitField0_;
-    // required string backId = 1;
     public static final int BACKID_FIELD_NUMBER = 1;
     private java.lang.Object backId_;
     /**
@@ -25754,7 +25741,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional .com.mi.liveassistant.proto.UserBrief user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private com.mi.liveassistant.proto.CommonChannelProto.UserBrief user_;
     /**
@@ -25788,7 +25774,6 @@ public final class CommonChannelProto {
       return user_;
     }
 
-    // optional uint32 viewerCnt = 3;
     public static final int VIEWERCNT_FIELD_NUMBER = 3;
     private int viewerCnt_;
     /**
@@ -25812,7 +25797,6 @@ public final class CommonChannelProto {
       return viewerCnt_;
     }
 
-    // optional string url = 4;
     public static final int URL_FIELD_NUMBER = 4;
     private java.lang.Object url_;
     /**
@@ -25867,7 +25851,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional uint64 startTime = 5;
     public static final int STARTTIME_FIELD_NUMBER = 5;
     private long startTime_;
     /**
@@ -25891,7 +25874,6 @@ public final class CommonChannelProto {
       return startTime_;
     }
 
-    // optional uint64 endTime = 6;
     public static final int ENDTIME_FIELD_NUMBER = 6;
     private long endTime_;
     /**
@@ -25915,7 +25897,6 @@ public final class CommonChannelProto {
       return endTime_;
     }
 
-    // optional string backTitle = 7;
     public static final int BACKTITLE_FIELD_NUMBER = 7;
     private java.lang.Object backTitle_;
     /**
@@ -25970,7 +25951,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string coverUrl = 8;
     public static final int COVERURL_FIELD_NUMBER = 8;
     private java.lang.Object coverUrl_;
     /**
@@ -26025,7 +26005,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string shareUrl = 9;
     public static final int SHAREURL_FIELD_NUMBER = 9;
     private java.lang.Object shareUrl_;
     /**
@@ -26080,7 +26059,6 @@ public final class CommonChannelProto {
       }
     }
 
-    // optional string location = 10;
     public static final int LOCATION_FIELD_NUMBER = 10;
     private java.lang.Object location_;
     /**
@@ -26150,7 +26128,8 @@ public final class CommonChannelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasBackId()) {
         memoizedIsInitialized = 0;
@@ -26334,8 +26313,9 @@ public final class CommonChannelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.BackInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.BackInfo)
+        com.mi.liveassistant.proto.CommonChannelProto.BackInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_BackInfo_descriptor;
@@ -26560,7 +26540,6 @@ public final class CommonChannelProto {
       }
       private int bitField0_;
 
-      // required string backId = 1;
       private java.lang.Object backId_ = "";
       /**
        * <code>required string backId = 1;</code>
@@ -26582,9 +26561,12 @@ public final class CommonChannelProto {
       public java.lang.String getBackId() {
         java.lang.Object ref = backId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          backId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            backId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26658,7 +26640,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional .com.mi.liveassistant.proto.UserBrief user = 2;
       private com.mi.liveassistant.proto.CommonChannelProto.UserBrief user_ = com.mi.liveassistant.proto.CommonChannelProto.UserBrief.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mi.liveassistant.proto.CommonChannelProto.UserBrief, com.mi.liveassistant.proto.CommonChannelProto.UserBrief.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder> userBuilder_;
@@ -26803,7 +26784,7 @@ public final class CommonChannelProto {
         if (userBuilder_ == null) {
           userBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mi.liveassistant.proto.CommonChannelProto.UserBrief, com.mi.liveassistant.proto.CommonChannelProto.UserBrief.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserBriefOrBuilder>(
-                  user_,
+                  getUser(),
                   getParentForChildren(),
                   isClean());
           user_ = null;
@@ -26811,7 +26792,6 @@ public final class CommonChannelProto {
         return userBuilder_;
       }
 
-      // optional uint32 viewerCnt = 3;
       private int viewerCnt_ ;
       /**
        * <code>optional uint32 viewerCnt = 3;</code>
@@ -26860,7 +26840,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string url = 4;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 4;</code>
@@ -26882,9 +26861,12 @@ public final class CommonChannelProto {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26958,7 +26940,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint64 startTime = 5;
       private long startTime_ ;
       /**
        * <code>optional uint64 startTime = 5;</code>
@@ -27007,7 +26988,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional uint64 endTime = 6;
       private long endTime_ ;
       /**
        * <code>optional uint64 endTime = 6;</code>
@@ -27056,7 +27036,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string backTitle = 7;
       private java.lang.Object backTitle_ = "";
       /**
        * <code>optional string backTitle = 7;</code>
@@ -27078,9 +27057,12 @@ public final class CommonChannelProto {
       public java.lang.String getBackTitle() {
         java.lang.Object ref = backTitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          backTitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            backTitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27154,7 +27136,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string coverUrl = 8;
       private java.lang.Object coverUrl_ = "";
       /**
        * <code>optional string coverUrl = 8;</code>
@@ -27176,9 +27157,12 @@ public final class CommonChannelProto {
       public java.lang.String getCoverUrl() {
         java.lang.Object ref = coverUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27252,7 +27236,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string shareUrl = 9;
       private java.lang.Object shareUrl_ = "";
       /**
        * <code>optional string shareUrl = 9;</code>
@@ -27274,9 +27257,12 @@ public final class CommonChannelProto {
       public java.lang.String getShareUrl() {
         java.lang.Object ref = shareUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27350,7 +27336,6 @@ public final class CommonChannelProto {
         return this;
       }
 
-      // optional string location = 10;
       private java.lang.Object location_ = "";
       /**
        * <code>optional string location = 10;</code>
@@ -27372,9 +27357,12 @@ public final class CommonChannelProto {
       public java.lang.String getLocation() {
         java.lang.Object ref = location_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          location_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            location_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27459,11752 +27447,111 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.BackInfo)
   }
 
-  public interface VideoInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // required string id = 1;
-    /**
-     * <code>required string id = 1;</code>
-     *
-     * <pre>
-     *小视频id
-     * </pre>
-     */
-    boolean hasId();
-    /**
-     * <code>required string id = 1;</code>
-     *
-     * <pre>
-     *小视频id
-     * </pre>
-     */
-    java.lang.String getId();
-    /**
-     * <code>required string id = 1;</code>
-     *
-     * <pre>
-     *小视频id
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getIdBytes();
-
-    // optional uint64 view_count = 2;
-    /**
-     * <code>optional uint64 view_count = 2;</code>
-     *
-     * <pre>
-     *小视频观看次数
-     * </pre>
-     */
-    boolean hasViewCount();
-    /**
-     * <code>optional uint64 view_count = 2;</code>
-     *
-     * <pre>
-     *小视频观看次数
-     * </pre>
-     */
-    long getViewCount();
-
-    // optional .com.mi.liveassistant.proto.UserInfo user_info = 3;
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    boolean hasUserInfo();
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.UserInfo getUserInfo();
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.VideoInfo}
-   *
-   * <pre>
-   *小视频信息
-   * </pre>
-   */
-  public static final class VideoInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements VideoInfoOrBuilder {
-    // Use VideoInfo.newBuilder() to construct.
-    private VideoInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private VideoInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final VideoInfo defaultInstance;
-    public static VideoInfo getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public VideoInfo getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private VideoInfo(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              bitField0_ |= 0x00000001;
-              id_ = input.readBytes();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              viewCount_ = input.readUInt64();
-              break;
-            }
-            case 26: {
-              com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                subBuilder = userInfo_.toBuilder();
-              }
-              userInfo_ = input.readMessage(com.mi.liveassistant.proto.CommonChannelProto.UserInfo.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(userInfo_);
-                userInfo_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000004;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.VideoInfo.class, com.mi.liveassistant.proto.CommonChannelProto.VideoInfo.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<VideoInfo> PARSER =
-        new com.google.protobuf.AbstractParser<VideoInfo>() {
-      public VideoInfo parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new VideoInfo(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<VideoInfo> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // required string id = 1;
-    public static final int ID_FIELD_NUMBER = 1;
-    private java.lang.Object id_;
-    /**
-     * <code>required string id = 1;</code>
-     *
-     * <pre>
-     *小视频id
-     * </pre>
-     */
-    public boolean hasId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string id = 1;</code>
-     *
-     * <pre>
-     *小视频id
-     * </pre>
-     */
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          id_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string id = 1;</code>
-     *
-     * <pre>
-     *小视频id
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional uint64 view_count = 2;
-    public static final int VIEW_COUNT_FIELD_NUMBER = 2;
-    private long viewCount_;
-    /**
-     * <code>optional uint64 view_count = 2;</code>
-     *
-     * <pre>
-     *小视频观看次数
-     * </pre>
-     */
-    public boolean hasViewCount() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional uint64 view_count = 2;</code>
-     *
-     * <pre>
-     *小视频观看次数
-     * </pre>
-     */
-    public long getViewCount() {
-      return viewCount_;
-    }
-
-    // optional .com.mi.liveassistant.proto.UserInfo user_info = 3;
-    public static final int USER_INFO_FIELD_NUMBER = 3;
-    private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_;
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    public boolean hasUserInfo() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.UserInfo getUserInfo() {
-      return userInfo_;
-    }
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
-      return userInfo_;
-    }
-
-    private void initFields() {
-      id_ = "";
-      viewCount_ = 0L;
-      userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      if (!hasId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (hasUserInfo()) {
-        if (!getUserInfo().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt64(2, viewCount_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, userInfo_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, viewCount_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, userInfo_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.VideoInfo prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.VideoInfo}
-     *
-     * <pre>
-     *小视频信息
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.VideoInfoOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.VideoInfo.class, com.mi.liveassistant.proto.CommonChannelProto.VideoInfo.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.VideoInfo.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getUserInfoFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        id_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        viewCount_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (userInfoBuilder_ == null) {
-          userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-        } else {
-          userInfoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.VideoInfo getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.VideoInfo.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.VideoInfo build() {
-        com.mi.liveassistant.proto.CommonChannelProto.VideoInfo result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.VideoInfo buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.VideoInfo result = new com.mi.liveassistant.proto.CommonChannelProto.VideoInfo(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.id_ = id_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.viewCount_ = viewCount_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        if (userInfoBuilder_ == null) {
-          result.userInfo_ = userInfo_;
-        } else {
-          result.userInfo_ = userInfoBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.VideoInfo) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.VideoInfo)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.VideoInfo other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.VideoInfo.getDefaultInstance()) return this;
-        if (other.hasId()) {
-          bitField0_ |= 0x00000001;
-          id_ = other.id_;
-          onChanged();
-        }
-        if (other.hasViewCount()) {
-          setViewCount(other.getViewCount());
-        }
-        if (other.hasUserInfo()) {
-          mergeUserInfo(other.getUserInfo());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasId()) {
-          
-          return false;
-        }
-        if (hasUserInfo()) {
-          if (!getUserInfo().isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.VideoInfo parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.VideoInfo) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // required string id = 1;
-      private java.lang.Object id_ = "";
-      /**
-       * <code>required string id = 1;</code>
-       *
-       * <pre>
-       *小视频id
-       * </pre>
-       */
-      public boolean hasId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string id = 1;</code>
-       *
-       * <pre>
-       *小视频id
-       * </pre>
-       */
-      public java.lang.String getId() {
-        java.lang.Object ref = id_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          id_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string id = 1;</code>
-       *
-       * <pre>
-       *小视频id
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getIdBytes() {
-        java.lang.Object ref = id_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          id_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string id = 1;</code>
-       *
-       * <pre>
-       *小视频id
-       * </pre>
-       */
-      public Builder setId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string id = 1;</code>
-       *
-       * <pre>
-       *小视频id
-       * </pre>
-       */
-      public Builder clearId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        id_ = getDefaultInstance().getId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string id = 1;</code>
-       *
-       * <pre>
-       *小视频id
-       * </pre>
-       */
-      public Builder setIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        id_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional uint64 view_count = 2;
-      private long viewCount_ ;
-      /**
-       * <code>optional uint64 view_count = 2;</code>
-       *
-       * <pre>
-       *小视频观看次数
-       * </pre>
-       */
-      public boolean hasViewCount() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint64 view_count = 2;</code>
-       *
-       * <pre>
-       *小视频观看次数
-       * </pre>
-       */
-      public long getViewCount() {
-        return viewCount_;
-      }
-      /**
-       * <code>optional uint64 view_count = 2;</code>
-       *
-       * <pre>
-       *小视频观看次数
-       * </pre>
-       */
-      public Builder setViewCount(long value) {
-        bitField0_ |= 0x00000002;
-        viewCount_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 view_count = 2;</code>
-       *
-       * <pre>
-       *小视频观看次数
-       * </pre>
-       */
-      public Builder clearViewCount() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        viewCount_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // optional .com.mi.liveassistant.proto.UserInfo user_info = 3;
-      private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public boolean hasUserInfo() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.UserInfo getUserInfo() {
-        if (userInfoBuilder_ == null) {
-          return userInfo_;
-        } else {
-          return userInfoBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder setUserInfo(com.mi.liveassistant.proto.CommonChannelProto.UserInfo value) {
-        if (userInfoBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          userInfo_ = value;
-          onChanged();
-        } else {
-          userInfoBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder setUserInfo(
-          com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder builderForValue) {
-        if (userInfoBuilder_ == null) {
-          userInfo_ = builderForValue.build();
-          onChanged();
-        } else {
-          userInfoBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder mergeUserInfo(com.mi.liveassistant.proto.CommonChannelProto.UserInfo value) {
-        if (userInfoBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              userInfo_ != com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance()) {
-            userInfo_ =
-              com.mi.liveassistant.proto.CommonChannelProto.UserInfo.newBuilder(userInfo_).mergeFrom(value).buildPartial();
-          } else {
-            userInfo_ = value;
-          }
-          onChanged();
-        } else {
-          userInfoBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder clearUserInfo() {
-        if (userInfoBuilder_ == null) {
-          userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-          onChanged();
-        } else {
-          userInfoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder getUserInfoBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getUserInfoFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
-        if (userInfoBuilder_ != null) {
-          return userInfoBuilder_.getMessageOrBuilder();
-        } else {
-          return userInfo_;
-        }
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo user_info = 3;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder> 
-          getUserInfoFieldBuilder() {
-        if (userInfoBuilder_ == null) {
-          userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder>(
-                  userInfo_,
-                  getParentForChildren(),
-                  isClean());
-          userInfo_ = null;
-        }
-        return userInfoBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.VideoInfo)
-    }
-
-    static {
-      defaultInstance = new VideoInfo(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.VideoInfo)
-  }
-
-  public interface NavigationDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional string name = 1;
-    /**
-     * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *导航标签名 话题
-     * </pre>
-     */
-    boolean hasName();
-    /**
-     * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *导航标签名 话题
-     * </pre>
-     */
-    java.lang.String getName();
-    /**
-     * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *导航标签名 话题
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getNameBytes();
-
-    // optional string bgImgUrl = 2;
-    /**
-     * <code>optional string bgImgUrl = 2;</code>
-     *
-     * <pre>
-     *背景图
-     * </pre>
-     */
-    boolean hasBgImgUrl();
-    /**
-     * <code>optional string bgImgUrl = 2;</code>
-     *
-     * <pre>
-     *背景图
-     * </pre>
-     */
-    java.lang.String getBgImgUrl();
-    /**
-     * <code>optional string bgImgUrl = 2;</code>
-     *
-     * <pre>
-     *背景图
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getBgImgUrlBytes();
-
-    // optional string iconUrl = 3;
-    /**
-     * <code>optional string iconUrl = 3;</code>
-     *
-     * <pre>
-     *小图标
-     * </pre>
-     */
-    boolean hasIconUrl();
-    /**
-     * <code>optional string iconUrl = 3;</code>
-     *
-     * <pre>
-     *小图标
-     * </pre>
-     */
-    java.lang.String getIconUrl();
-    /**
-     * <code>optional string iconUrl = 3;</code>
-     *
-     * <pre>
-     *小图标
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getIconUrlBytes();
-
-    // optional string jumpSchemeUri = 4;
-    /**
-     * <code>optional string jumpSchemeUri = 4;</code>
-     *
-     * <pre>
-     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-     * </pre>
-     */
-    boolean hasJumpSchemeUri();
-    /**
-     * <code>optional string jumpSchemeUri = 4;</code>
-     *
-     * <pre>
-     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-     * </pre>
-     */
-    java.lang.String getJumpSchemeUri();
-    /**
-     * <code>optional string jumpSchemeUri = 4;</code>
-     *
-     * <pre>
-     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getJumpSchemeUriBytes();
-
-    // optional uint32 textColor = 5;
-    /**
-     * <code>optional uint32 textColor = 5;</code>
-     *
-     * <pre>
-     *文本颜色[话题用到],0=客户端默认颜色,1=金色
-     * </pre>
-     */
-    boolean hasTextColor();
-    /**
-     * <code>optional uint32 textColor = 5;</code>
-     *
-     * <pre>
-     *文本颜色[话题用到],0=客户端默认颜色,1=金色
-     * </pre>
-     */
-    int getTextColor();
-
-    // optional string hexColorCode = 6;
-    /**
-     * <code>optional string hexColorCode = 6;</code>
-     *
-     * <pre>
-     *十六进制颜色码，如#FFFFFF
-     * </pre>
-     */
-    boolean hasHexColorCode();
-    /**
-     * <code>optional string hexColorCode = 6;</code>
-     *
-     * <pre>
-     *十六进制颜色码，如#FFFFFF
-     * </pre>
-     */
-    java.lang.String getHexColorCode();
-    /**
-     * <code>optional string hexColorCode = 6;</code>
-     *
-     * <pre>
-     *十六进制颜色码，如#FFFFFF
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getHexColorCodeBytes();
-
-    // optional string text1 = 7;
-    /**
-     * <code>optional string text1 = 7;</code>
-     *
-     * <pre>
-     *导航新增text1
-     * </pre>
-     */
-    boolean hasText1();
-    /**
-     * <code>optional string text1 = 7;</code>
-     *
-     * <pre>
-     *导航新增text1
-     * </pre>
-     */
-    java.lang.String getText1();
-    /**
-     * <code>optional string text1 = 7;</code>
-     *
-     * <pre>
-     *导航新增text1
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getText1Bytes();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.NavigationData}
-   *
-   * <pre>
-   *type=20, 27, 30（圈子新增）
-   * </pre>
-   */
-  public static final class NavigationData extends
-      com.google.protobuf.GeneratedMessage
-      implements NavigationDataOrBuilder {
-    // Use NavigationData.newBuilder() to construct.
-    private NavigationData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private NavigationData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final NavigationData defaultInstance;
-    public static NavigationData getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public NavigationData getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private NavigationData(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              bitField0_ |= 0x00000001;
-              name_ = input.readBytes();
-              break;
-            }
-            case 18: {
-              bitField0_ |= 0x00000002;
-              bgImgUrl_ = input.readBytes();
-              break;
-            }
-            case 26: {
-              bitField0_ |= 0x00000004;
-              iconUrl_ = input.readBytes();
-              break;
-            }
-            case 34: {
-              bitField0_ |= 0x00000008;
-              jumpSchemeUri_ = input.readBytes();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              textColor_ = input.readUInt32();
-              break;
-            }
-            case 50: {
-              bitField0_ |= 0x00000020;
-              hexColorCode_ = input.readBytes();
-              break;
-            }
-            case 58: {
-              bitField0_ |= 0x00000040;
-              text1_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.NavigationData.class, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<NavigationData> PARSER =
-        new com.google.protobuf.AbstractParser<NavigationData>() {
-      public NavigationData parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new NavigationData(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<NavigationData> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional string name = 1;
-    public static final int NAME_FIELD_NUMBER = 1;
-    private java.lang.Object name_;
-    /**
-     * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *导航标签名 话题
-     * </pre>
-     */
-    public boolean hasName() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *导航标签名 话题
-     * </pre>
-     */
-    public java.lang.String getName() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          name_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *导航标签名 话题
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getNameBytes() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        name_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional string bgImgUrl = 2;
-    public static final int BGIMGURL_FIELD_NUMBER = 2;
-    private java.lang.Object bgImgUrl_;
-    /**
-     * <code>optional string bgImgUrl = 2;</code>
-     *
-     * <pre>
-     *背景图
-     * </pre>
-     */
-    public boolean hasBgImgUrl() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string bgImgUrl = 2;</code>
-     *
-     * <pre>
-     *背景图
-     * </pre>
-     */
-    public java.lang.String getBgImgUrl() {
-      java.lang.Object ref = bgImgUrl_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          bgImgUrl_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string bgImgUrl = 2;</code>
-     *
-     * <pre>
-     *背景图
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getBgImgUrlBytes() {
-      java.lang.Object ref = bgImgUrl_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        bgImgUrl_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional string iconUrl = 3;
-    public static final int ICONURL_FIELD_NUMBER = 3;
-    private java.lang.Object iconUrl_;
-    /**
-     * <code>optional string iconUrl = 3;</code>
-     *
-     * <pre>
-     *小图标
-     * </pre>
-     */
-    public boolean hasIconUrl() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional string iconUrl = 3;</code>
-     *
-     * <pre>
-     *小图标
-     * </pre>
-     */
-    public java.lang.String getIconUrl() {
-      java.lang.Object ref = iconUrl_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          iconUrl_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string iconUrl = 3;</code>
-     *
-     * <pre>
-     *小图标
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getIconUrlBytes() {
-      java.lang.Object ref = iconUrl_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        iconUrl_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional string jumpSchemeUri = 4;
-    public static final int JUMPSCHEMEURI_FIELD_NUMBER = 4;
-    private java.lang.Object jumpSchemeUri_;
-    /**
-     * <code>optional string jumpSchemeUri = 4;</code>
-     *
-     * <pre>
-     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-     * </pre>
-     */
-    public boolean hasJumpSchemeUri() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional string jumpSchemeUri = 4;</code>
-     *
-     * <pre>
-     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-     * </pre>
-     */
-    public java.lang.String getJumpSchemeUri() {
-      java.lang.Object ref = jumpSchemeUri_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          jumpSchemeUri_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string jumpSchemeUri = 4;</code>
-     *
-     * <pre>
-     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getJumpSchemeUriBytes() {
-      java.lang.Object ref = jumpSchemeUri_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        jumpSchemeUri_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional uint32 textColor = 5;
-    public static final int TEXTCOLOR_FIELD_NUMBER = 5;
-    private int textColor_;
-    /**
-     * <code>optional uint32 textColor = 5;</code>
-     *
-     * <pre>
-     *文本颜色[话题用到],0=客户端默认颜色,1=金色
-     * </pre>
-     */
-    public boolean hasTextColor() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional uint32 textColor = 5;</code>
-     *
-     * <pre>
-     *文本颜色[话题用到],0=客户端默认颜色,1=金色
-     * </pre>
-     */
-    public int getTextColor() {
-      return textColor_;
-    }
-
-    // optional string hexColorCode = 6;
-    public static final int HEXCOLORCODE_FIELD_NUMBER = 6;
-    private java.lang.Object hexColorCode_;
-    /**
-     * <code>optional string hexColorCode = 6;</code>
-     *
-     * <pre>
-     *十六进制颜色码，如#FFFFFF
-     * </pre>
-     */
-    public boolean hasHexColorCode() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>optional string hexColorCode = 6;</code>
-     *
-     * <pre>
-     *十六进制颜色码，如#FFFFFF
-     * </pre>
-     */
-    public java.lang.String getHexColorCode() {
-      java.lang.Object ref = hexColorCode_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          hexColorCode_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string hexColorCode = 6;</code>
-     *
-     * <pre>
-     *十六进制颜色码，如#FFFFFF
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getHexColorCodeBytes() {
-      java.lang.Object ref = hexColorCode_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        hexColorCode_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional string text1 = 7;
-    public static final int TEXT1_FIELD_NUMBER = 7;
-    private java.lang.Object text1_;
-    /**
-     * <code>optional string text1 = 7;</code>
-     *
-     * <pre>
-     *导航新增text1
-     * </pre>
-     */
-    public boolean hasText1() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional string text1 = 7;</code>
-     *
-     * <pre>
-     *导航新增text1
-     * </pre>
-     */
-    public java.lang.String getText1() {
-      java.lang.Object ref = text1_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          text1_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string text1 = 7;</code>
-     *
-     * <pre>
-     *导航新增text1
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getText1Bytes() {
-      java.lang.Object ref = text1_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        text1_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      name_ = "";
-      bgImgUrl_ = "";
-      iconUrl_ = "";
-      jumpSchemeUri_ = "";
-      textColor_ = 0;
-      hexColorCode_ = "";
-      text1_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getNameBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getBgImgUrlBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getIconUrlBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getJumpSchemeUriBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeUInt32(5, textColor_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(6, getHexColorCodeBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeBytes(7, getText1Bytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getNameBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getBgImgUrlBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getIconUrlBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getJumpSchemeUriBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(5, textColor_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, getHexColorCodeBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(7, getText1Bytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NavigationData parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.NavigationData prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.NavigationData}
-     *
-     * <pre>
-     *type=20, 27, 30（圈子新增）
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.NavigationData.class, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.NavigationData.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        name_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        bgImgUrl_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        iconUrl_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        jumpSchemeUri_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        textColor_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        hexColorCode_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
-        text1_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationData getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.NavigationData.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationData build() {
-        com.mi.liveassistant.proto.CommonChannelProto.NavigationData result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationData buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.NavigationData result = new com.mi.liveassistant.proto.CommonChannelProto.NavigationData(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.name_ = name_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.bgImgUrl_ = bgImgUrl_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.iconUrl_ = iconUrl_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.jumpSchemeUri_ = jumpSchemeUri_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.textColor_ = textColor_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.hexColorCode_ = hexColorCode_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.text1_ = text1_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.NavigationData) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.NavigationData)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.NavigationData other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.NavigationData.getDefaultInstance()) return this;
-        if (other.hasName()) {
-          bitField0_ |= 0x00000001;
-          name_ = other.name_;
-          onChanged();
-        }
-        if (other.hasBgImgUrl()) {
-          bitField0_ |= 0x00000002;
-          bgImgUrl_ = other.bgImgUrl_;
-          onChanged();
-        }
-        if (other.hasIconUrl()) {
-          bitField0_ |= 0x00000004;
-          iconUrl_ = other.iconUrl_;
-          onChanged();
-        }
-        if (other.hasJumpSchemeUri()) {
-          bitField0_ |= 0x00000008;
-          jumpSchemeUri_ = other.jumpSchemeUri_;
-          onChanged();
-        }
-        if (other.hasTextColor()) {
-          setTextColor(other.getTextColor());
-        }
-        if (other.hasHexColorCode()) {
-          bitField0_ |= 0x00000020;
-          hexColorCode_ = other.hexColorCode_;
-          onChanged();
-        }
-        if (other.hasText1()) {
-          bitField0_ |= 0x00000040;
-          text1_ = other.text1_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.NavigationData parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.NavigationData) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional string name = 1;
-      private java.lang.Object name_ = "";
-      /**
-       * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *导航标签名 话题
-       * </pre>
-       */
-      public boolean hasName() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *导航标签名 话题
-       * </pre>
-       */
-      public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          name_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *导航标签名 话题
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getNameBytes() {
-        java.lang.Object ref = name_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          name_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *导航标签名 话题
-       * </pre>
-       */
-      public Builder setName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        name_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *导航标签名 话题
-       * </pre>
-       */
-      public Builder clearName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        name_ = getDefaultInstance().getName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *导航标签名 话题
-       * </pre>
-       */
-      public Builder setNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        name_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional string bgImgUrl = 2;
-      private java.lang.Object bgImgUrl_ = "";
-      /**
-       * <code>optional string bgImgUrl = 2;</code>
-       *
-       * <pre>
-       *背景图
-       * </pre>
-       */
-      public boolean hasBgImgUrl() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string bgImgUrl = 2;</code>
-       *
-       * <pre>
-       *背景图
-       * </pre>
-       */
-      public java.lang.String getBgImgUrl() {
-        java.lang.Object ref = bgImgUrl_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          bgImgUrl_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string bgImgUrl = 2;</code>
-       *
-       * <pre>
-       *背景图
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getBgImgUrlBytes() {
-        java.lang.Object ref = bgImgUrl_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          bgImgUrl_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string bgImgUrl = 2;</code>
-       *
-       * <pre>
-       *背景图
-       * </pre>
-       */
-      public Builder setBgImgUrl(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        bgImgUrl_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string bgImgUrl = 2;</code>
-       *
-       * <pre>
-       *背景图
-       * </pre>
-       */
-      public Builder clearBgImgUrl() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        bgImgUrl_ = getDefaultInstance().getBgImgUrl();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string bgImgUrl = 2;</code>
-       *
-       * <pre>
-       *背景图
-       * </pre>
-       */
-      public Builder setBgImgUrlBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        bgImgUrl_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional string iconUrl = 3;
-      private java.lang.Object iconUrl_ = "";
-      /**
-       * <code>optional string iconUrl = 3;</code>
-       *
-       * <pre>
-       *小图标
-       * </pre>
-       */
-      public boolean hasIconUrl() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string iconUrl = 3;</code>
-       *
-       * <pre>
-       *小图标
-       * </pre>
-       */
-      public java.lang.String getIconUrl() {
-        java.lang.Object ref = iconUrl_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          iconUrl_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string iconUrl = 3;</code>
-       *
-       * <pre>
-       *小图标
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getIconUrlBytes() {
-        java.lang.Object ref = iconUrl_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          iconUrl_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string iconUrl = 3;</code>
-       *
-       * <pre>
-       *小图标
-       * </pre>
-       */
-      public Builder setIconUrl(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        iconUrl_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string iconUrl = 3;</code>
-       *
-       * <pre>
-       *小图标
-       * </pre>
-       */
-      public Builder clearIconUrl() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        iconUrl_ = getDefaultInstance().getIconUrl();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string iconUrl = 3;</code>
-       *
-       * <pre>
-       *小图标
-       * </pre>
-       */
-      public Builder setIconUrlBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        iconUrl_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional string jumpSchemeUri = 4;
-      private java.lang.Object jumpSchemeUri_ = "";
-      /**
-       * <code>optional string jumpSchemeUri = 4;</code>
-       *
-       * <pre>
-       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-       * </pre>
-       */
-      public boolean hasJumpSchemeUri() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 4;</code>
-       *
-       * <pre>
-       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-       * </pre>
-       */
-      public java.lang.String getJumpSchemeUri() {
-        java.lang.Object ref = jumpSchemeUri_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 4;</code>
-       *
-       * <pre>
-       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getJumpSchemeUriBytes() {
-        java.lang.Object ref = jumpSchemeUri_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          jumpSchemeUri_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 4;</code>
-       *
-       * <pre>
-       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-       * </pre>
-       */
-      public Builder setJumpSchemeUri(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        jumpSchemeUri_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 4;</code>
-       *
-       * <pre>
-       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-       * </pre>
-       */
-      public Builder clearJumpSchemeUri() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        jumpSchemeUri_ = getDefaultInstance().getJumpSchemeUri();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 4;</code>
-       *
-       * <pre>
-       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
-       * </pre>
-       */
-      public Builder setJumpSchemeUriBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        jumpSchemeUri_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional uint32 textColor = 5;
-      private int textColor_ ;
-      /**
-       * <code>optional uint32 textColor = 5;</code>
-       *
-       * <pre>
-       *文本颜色[话题用到],0=客户端默认颜色,1=金色
-       * </pre>
-       */
-      public boolean hasTextColor() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional uint32 textColor = 5;</code>
-       *
-       * <pre>
-       *文本颜色[话题用到],0=客户端默认颜色,1=金色
-       * </pre>
-       */
-      public int getTextColor() {
-        return textColor_;
-      }
-      /**
-       * <code>optional uint32 textColor = 5;</code>
-       *
-       * <pre>
-       *文本颜色[话题用到],0=客户端默认颜色,1=金色
-       * </pre>
-       */
-      public Builder setTextColor(int value) {
-        bitField0_ |= 0x00000010;
-        textColor_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 textColor = 5;</code>
-       *
-       * <pre>
-       *文本颜色[话题用到],0=客户端默认颜色,1=金色
-       * </pre>
-       */
-      public Builder clearTextColor() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        textColor_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // optional string hexColorCode = 6;
-      private java.lang.Object hexColorCode_ = "";
-      /**
-       * <code>optional string hexColorCode = 6;</code>
-       *
-       * <pre>
-       *十六进制颜色码，如#FFFFFF
-       * </pre>
-       */
-      public boolean hasHexColorCode() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional string hexColorCode = 6;</code>
-       *
-       * <pre>
-       *十六进制颜色码，如#FFFFFF
-       * </pre>
-       */
-      public java.lang.String getHexColorCode() {
-        java.lang.Object ref = hexColorCode_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          hexColorCode_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string hexColorCode = 6;</code>
-       *
-       * <pre>
-       *十六进制颜色码，如#FFFFFF
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getHexColorCodeBytes() {
-        java.lang.Object ref = hexColorCode_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          hexColorCode_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string hexColorCode = 6;</code>
-       *
-       * <pre>
-       *十六进制颜色码，如#FFFFFF
-       * </pre>
-       */
-      public Builder setHexColorCode(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        hexColorCode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string hexColorCode = 6;</code>
-       *
-       * <pre>
-       *十六进制颜色码，如#FFFFFF
-       * </pre>
-       */
-      public Builder clearHexColorCode() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        hexColorCode_ = getDefaultInstance().getHexColorCode();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string hexColorCode = 6;</code>
-       *
-       * <pre>
-       *十六进制颜色码，如#FFFFFF
-       * </pre>
-       */
-      public Builder setHexColorCodeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        hexColorCode_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional string text1 = 7;
-      private java.lang.Object text1_ = "";
-      /**
-       * <code>optional string text1 = 7;</code>
-       *
-       * <pre>
-       *导航新增text1
-       * </pre>
-       */
-      public boolean hasText1() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional string text1 = 7;</code>
-       *
-       * <pre>
-       *导航新增text1
-       * </pre>
-       */
-      public java.lang.String getText1() {
-        java.lang.Object ref = text1_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text1_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string text1 = 7;</code>
-       *
-       * <pre>
-       *导航新增text1
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getText1Bytes() {
-        java.lang.Object ref = text1_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          text1_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string text1 = 7;</code>
-       *
-       * <pre>
-       *导航新增text1
-       * </pre>
-       */
-      public Builder setText1(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        text1_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string text1 = 7;</code>
-       *
-       * <pre>
-       *导航新增text1
-       * </pre>
-       */
-      public Builder clearText1() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        text1_ = getDefaultInstance().getText1();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string text1 = 7;</code>
-       *
-       * <pre>
-       *导航新增text1
-       * </pre>
-       */
-      public Builder setText1Bytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        text1_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.NavigationData)
-    }
-
-    static {
-      defaultInstance = new NavigationData(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.NavigationData)
-  }
-
-  public interface UiTemplateNavigationOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NavigationData> 
-        getItemDatasList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.NavigationData getItemDatas(int index);
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    int getItemDatasCount();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder> 
-        getItemDatasOrBuilderList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder getItemDatasOrBuilder(
-        int index);
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNavigation}
-   */
-  public static final class UiTemplateNavigation extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateNavigationOrBuilder {
-    // Use UiTemplateNavigation.newBuilder() to construct.
-    private UiTemplateNavigation(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private UiTemplateNavigation(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final UiTemplateNavigation defaultInstance;
-    public static UiTemplateNavigation getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public UiTemplateNavigation getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private UiTemplateNavigation(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                itemDatas_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.NavigationData>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              itemDatas_.add(input.readMessage(com.mi.liveassistant.proto.CommonChannelProto.NavigationData.PARSER, extensionRegistry));
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation.class, com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<UiTemplateNavigation> PARSER =
-        new com.google.protobuf.AbstractParser<UiTemplateNavigation>() {
-      public UiTemplateNavigation parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new UiTemplateNavigation(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<UiTemplateNavigation> getParserForType() {
-      return PARSER;
-    }
-
-    // repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;
-    public static final int ITEMDATAS_FIELD_NUMBER = 1;
-    private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NavigationData> itemDatas_;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NavigationData> getItemDatasList() {
-      return itemDatas_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder> 
-        getItemDatasOrBuilderList() {
-      return itemDatas_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    public int getItemDatasCount() {
-      return itemDatas_.size();
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.NavigationData getItemDatas(int index) {
-      return itemDatas_.get(index);
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-     *
-     * <pre>
-     *导航数据
-     * </pre>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder getItemDatasOrBuilder(
-        int index) {
-      return itemDatas_.get(index);
-    }
-
-    private void initFields() {
-      itemDatas_ = java.util.Collections.emptyList();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      for (int i = 0; i < itemDatas_.size(); i++) {
-        output.writeMessage(1, itemDatas_.get(i));
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < itemDatas_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, itemDatas_.get(i));
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNavigation}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigationOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation.class, com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getItemDatasFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (itemDatasBuilder_ == null) {
-          itemDatas_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          itemDatasBuilder_.clear();
-        }
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation build() {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation result = new com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation(this);
-        int from_bitField0_ = bitField0_;
-        if (itemDatasBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.itemDatas_ = itemDatas_;
-        } else {
-          result.itemDatas_ = itemDatasBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation.getDefaultInstance()) return this;
-        if (itemDatasBuilder_ == null) {
-          if (!other.itemDatas_.isEmpty()) {
-            if (itemDatas_.isEmpty()) {
-              itemDatas_ = other.itemDatas_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureItemDatasIsMutable();
-              itemDatas_.addAll(other.itemDatas_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.itemDatas_.isEmpty()) {
-            if (itemDatasBuilder_.isEmpty()) {
-              itemDatasBuilder_.dispose();
-              itemDatasBuilder_ = null;
-              itemDatas_ = other.itemDatas_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              itemDatasBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getItemDatasFieldBuilder() : null;
-            } else {
-              itemDatasBuilder_.addAllMessages(other.itemDatas_);
-            }
-          }
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNavigation) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;
-      private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NavigationData> itemDatas_ =
-        java.util.Collections.emptyList();
-      private void ensureItemDatasIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          itemDatas_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.NavigationData>(itemDatas_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.NavigationData, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder, com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder> itemDatasBuilder_;
-
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NavigationData> getItemDatasList() {
-        if (itemDatasBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(itemDatas_);
-        } else {
-          return itemDatasBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public int getItemDatasCount() {
-        if (itemDatasBuilder_ == null) {
-          return itemDatas_.size();
-        } else {
-          return itemDatasBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationData getItemDatas(int index) {
-        if (itemDatasBuilder_ == null) {
-          return itemDatas_.get(index);
-        } else {
-          return itemDatasBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder setItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NavigationData value) {
-        if (itemDatasBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemDatasIsMutable();
-          itemDatas_.set(index, value);
-          onChanged();
-        } else {
-          itemDatasBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder setItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder builderForValue) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          itemDatasBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder addItemDatas(com.mi.liveassistant.proto.CommonChannelProto.NavigationData value) {
-        if (itemDatasBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemDatasIsMutable();
-          itemDatas_.add(value);
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder addItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NavigationData value) {
-        if (itemDatasBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemDatasIsMutable();
-          itemDatas_.add(index, value);
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder addItemDatas(
-          com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder builderForValue) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.add(builderForValue.build());
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder addItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder builderForValue) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder addAllItemDatas(
-          java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.NavigationData> values) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          super.addAll(values, itemDatas_);
-          onChanged();
-        } else {
-          itemDatasBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder clearItemDatas() {
-        if (itemDatasBuilder_ == null) {
-          itemDatas_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          itemDatasBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public Builder removeItemDatas(int index) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.remove(index);
-          onChanged();
-        } else {
-          itemDatasBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder getItemDatasBuilder(
-          int index) {
-        return getItemDatasFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder getItemDatasOrBuilder(
-          int index) {
-        if (itemDatasBuilder_ == null) {
-          return itemDatas_.get(index);  } else {
-          return itemDatasBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder> 
-           getItemDatasOrBuilderList() {
-        if (itemDatasBuilder_ != null) {
-          return itemDatasBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(itemDatas_);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder addItemDatasBuilder() {
-        return getItemDatasFieldBuilder().addBuilder(
-            com.mi.liveassistant.proto.CommonChannelProto.NavigationData.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder addItemDatasBuilder(
-          int index) {
-        return getItemDatasFieldBuilder().addBuilder(
-            index, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NavigationData itemDatas = 1;</code>
-       *
-       * <pre>
-       *导航数据
-       * </pre>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder> 
-           getItemDatasBuilderList() {
-        return getItemDatasFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.NavigationData, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder, com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder> 
-          getItemDatasFieldBuilder() {
-        if (itemDatasBuilder_ == null) {
-          itemDatasBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mi.liveassistant.proto.CommonChannelProto.NavigationData, com.mi.liveassistant.proto.CommonChannelProto.NavigationData.Builder, com.mi.liveassistant.proto.CommonChannelProto.NavigationDataOrBuilder>(
-                  itemDatas_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          itemDatas_ = null;
-        }
-        return itemDatasBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateNavigation)
-    }
-
-    static {
-      defaultInstance = new UiTemplateNavigation(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateNavigation)
-  }
-
-  public interface UiTemplateNoticeOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NoticeData> 
-        getNoticeItemsList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.NoticeData getNoticeItems(int index);
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    int getNoticeItemsCount();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder> 
-        getNoticeItemsOrBuilderList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
-        int index);
-
-    // optional string headerViewAllUri = 2;
-    /**
-     * <code>optional string headerViewAllUri = 2;</code>
-     *
-     * <pre>
-     *查看全部的uri，如果没有这个字段不展示查看全部
-     * </pre>
-     */
-    boolean hasHeaderViewAllUri();
-    /**
-     * <code>optional string headerViewAllUri = 2;</code>
-     *
-     * <pre>
-     *查看全部的uri，如果没有这个字段不展示查看全部
-     * </pre>
-     */
-    java.lang.String getHeaderViewAllUri();
-    /**
-     * <code>optional string headerViewAllUri = 2;</code>
-     *
-     * <pre>
-     *查看全部的uri，如果没有这个字段不展示查看全部
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getHeaderViewAllUriBytes();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNotice}
-   *
-   * <pre>
-   *type=23
-   * </pre>
-   */
-  public static final class UiTemplateNotice extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateNoticeOrBuilder {
-    // Use UiTemplateNotice.newBuilder() to construct.
-    private UiTemplateNotice(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private UiTemplateNotice(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final UiTemplateNotice defaultInstance;
-    public static UiTemplateNotice getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public UiTemplateNotice getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private UiTemplateNotice(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                noticeItems_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.NoticeData>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              noticeItems_.add(input.readMessage(com.mi.liveassistant.proto.CommonChannelProto.NoticeData.PARSER, extensionRegistry));
-              break;
-            }
-            case 18: {
-              bitField0_ |= 0x00000001;
-              headerViewAllUri_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          noticeItems_ = java.util.Collections.unmodifiableList(noticeItems_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice.class, com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<UiTemplateNotice> PARSER =
-        new com.google.protobuf.AbstractParser<UiTemplateNotice>() {
-      public UiTemplateNotice parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new UiTemplateNotice(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<UiTemplateNotice> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;
-    public static final int NOTICEITEMS_FIELD_NUMBER = 1;
-    private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NoticeData> noticeItems_;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NoticeData> getNoticeItemsList() {
-      return noticeItems_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder> 
-        getNoticeItemsOrBuilderList() {
-      return noticeItems_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    public int getNoticeItemsCount() {
-      return noticeItems_.size();
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.NoticeData getNoticeItems(int index) {
-      return noticeItems_.get(index);
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
-        int index) {
-      return noticeItems_.get(index);
-    }
-
-    // optional string headerViewAllUri = 2;
-    public static final int HEADERVIEWALLURI_FIELD_NUMBER = 2;
-    private java.lang.Object headerViewAllUri_;
-    /**
-     * <code>optional string headerViewAllUri = 2;</code>
-     *
-     * <pre>
-     *查看全部的uri，如果没有这个字段不展示查看全部
-     * </pre>
-     */
-    public boolean hasHeaderViewAllUri() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional string headerViewAllUri = 2;</code>
-     *
-     * <pre>
-     *查看全部的uri，如果没有这个字段不展示查看全部
-     * </pre>
-     */
-    public java.lang.String getHeaderViewAllUri() {
-      java.lang.Object ref = headerViewAllUri_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          headerViewAllUri_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string headerViewAllUri = 2;</code>
-     *
-     * <pre>
-     *查看全部的uri，如果没有这个字段不展示查看全部
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getHeaderViewAllUriBytes() {
-      java.lang.Object ref = headerViewAllUri_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        headerViewAllUri_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      noticeItems_ = java.util.Collections.emptyList();
-      headerViewAllUri_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      for (int i = 0; i < noticeItems_.size(); i++) {
-        output.writeMessage(1, noticeItems_.get(i));
-      }
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(2, getHeaderViewAllUriBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < noticeItems_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, noticeItems_.get(i));
-      }
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getHeaderViewAllUriBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateNotice}
-     *
-     * <pre>
-     *type=23
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNoticeOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice.class, com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getNoticeItemsFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (noticeItemsBuilder_ == null) {
-          noticeItems_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          noticeItemsBuilder_.clear();
-        }
-        headerViewAllUri_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice build() {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice result = new com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (noticeItemsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            noticeItems_ = java.util.Collections.unmodifiableList(noticeItems_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.noticeItems_ = noticeItems_;
-        } else {
-          result.noticeItems_ = noticeItemsBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.headerViewAllUri_ = headerViewAllUri_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice.getDefaultInstance()) return this;
-        if (noticeItemsBuilder_ == null) {
-          if (!other.noticeItems_.isEmpty()) {
-            if (noticeItems_.isEmpty()) {
-              noticeItems_ = other.noticeItems_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureNoticeItemsIsMutable();
-              noticeItems_.addAll(other.noticeItems_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.noticeItems_.isEmpty()) {
-            if (noticeItemsBuilder_.isEmpty()) {
-              noticeItemsBuilder_.dispose();
-              noticeItemsBuilder_ = null;
-              noticeItems_ = other.noticeItems_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              noticeItemsBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getNoticeItemsFieldBuilder() : null;
-            } else {
-              noticeItemsBuilder_.addAllMessages(other.noticeItems_);
-            }
-          }
-        }
-        if (other.hasHeaderViewAllUri()) {
-          bitField0_ |= 0x00000002;
-          headerViewAllUri_ = other.headerViewAllUri_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.UiTemplateNotice) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;
-      private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NoticeData> noticeItems_ =
-        java.util.Collections.emptyList();
-      private void ensureNoticeItemsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          noticeItems_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.NoticeData>(noticeItems_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.NoticeData, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder, com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder> noticeItemsBuilder_;
-
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NoticeData> getNoticeItemsList() {
-        if (noticeItemsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(noticeItems_);
-        } else {
-          return noticeItemsBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public int getNoticeItemsCount() {
-        if (noticeItemsBuilder_ == null) {
-          return noticeItems_.size();
-        } else {
-          return noticeItemsBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeData getNoticeItems(int index) {
-        if (noticeItemsBuilder_ == null) {
-          return noticeItems_.get(index);
-        } else {
-          return noticeItemsBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder setNoticeItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NoticeData value) {
-        if (noticeItemsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureNoticeItemsIsMutable();
-          noticeItems_.set(index, value);
-          onChanged();
-        } else {
-          noticeItemsBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder setNoticeItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
-        if (noticeItemsBuilder_ == null) {
-          ensureNoticeItemsIsMutable();
-          noticeItems_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          noticeItemsBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder addNoticeItems(com.mi.liveassistant.proto.CommonChannelProto.NoticeData value) {
-        if (noticeItemsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureNoticeItemsIsMutable();
-          noticeItems_.add(value);
-          onChanged();
-        } else {
-          noticeItemsBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder addNoticeItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NoticeData value) {
-        if (noticeItemsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureNoticeItemsIsMutable();
-          noticeItems_.add(index, value);
-          onChanged();
-        } else {
-          noticeItemsBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder addNoticeItems(
-          com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
-        if (noticeItemsBuilder_ == null) {
-          ensureNoticeItemsIsMutable();
-          noticeItems_.add(builderForValue.build());
-          onChanged();
-        } else {
-          noticeItemsBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder addNoticeItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
-        if (noticeItemsBuilder_ == null) {
-          ensureNoticeItemsIsMutable();
-          noticeItems_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          noticeItemsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder addAllNoticeItems(
-          java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.NoticeData> values) {
-        if (noticeItemsBuilder_ == null) {
-          ensureNoticeItemsIsMutable();
-          super.addAll(values, noticeItems_);
-          onChanged();
-        } else {
-          noticeItemsBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder clearNoticeItems() {
-        if (noticeItemsBuilder_ == null) {
-          noticeItems_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          noticeItemsBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public Builder removeNoticeItems(int index) {
-        if (noticeItemsBuilder_ == null) {
-          ensureNoticeItemsIsMutable();
-          noticeItems_.remove(index);
-          onChanged();
-        } else {
-          noticeItemsBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder getNoticeItemsBuilder(
-          int index) {
-        return getNoticeItemsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
-          int index) {
-        if (noticeItemsBuilder_ == null) {
-          return noticeItems_.get(index);  } else {
-          return noticeItemsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder> 
-           getNoticeItemsOrBuilderList() {
-        if (noticeItemsBuilder_ != null) {
-          return noticeItemsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(noticeItems_);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder addNoticeItemsBuilder() {
-        return getNoticeItemsFieldBuilder().addBuilder(
-            com.mi.liveassistant.proto.CommonChannelProto.NoticeData.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder addNoticeItemsBuilder(
-          int index) {
-        return getNoticeItemsFieldBuilder().addBuilder(
-            index, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.NoticeData noticeItems = 1;</code>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder> 
-           getNoticeItemsBuilderList() {
-        return getNoticeItemsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.NoticeData, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder, com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder> 
-          getNoticeItemsFieldBuilder() {
-        if (noticeItemsBuilder_ == null) {
-          noticeItemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mi.liveassistant.proto.CommonChannelProto.NoticeData, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder, com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder>(
-                  noticeItems_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          noticeItems_ = null;
-        }
-        return noticeItemsBuilder_;
-      }
-
-      // optional string headerViewAllUri = 2;
-      private java.lang.Object headerViewAllUri_ = "";
-      /**
-       * <code>optional string headerViewAllUri = 2;</code>
-       *
-       * <pre>
-       *查看全部的uri，如果没有这个字段不展示查看全部
-       * </pre>
-       */
-      public boolean hasHeaderViewAllUri() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string headerViewAllUri = 2;</code>
-       *
-       * <pre>
-       *查看全部的uri，如果没有这个字段不展示查看全部
-       * </pre>
-       */
-      public java.lang.String getHeaderViewAllUri() {
-        java.lang.Object ref = headerViewAllUri_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          headerViewAllUri_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string headerViewAllUri = 2;</code>
-       *
-       * <pre>
-       *查看全部的uri，如果没有这个字段不展示查看全部
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getHeaderViewAllUriBytes() {
-        java.lang.Object ref = headerViewAllUri_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          headerViewAllUri_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string headerViewAllUri = 2;</code>
-       *
-       * <pre>
-       *查看全部的uri，如果没有这个字段不展示查看全部
-       * </pre>
-       */
-      public Builder setHeaderViewAllUri(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        headerViewAllUri_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string headerViewAllUri = 2;</code>
-       *
-       * <pre>
-       *查看全部的uri，如果没有这个字段不展示查看全部
-       * </pre>
-       */
-      public Builder clearHeaderViewAllUri() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        headerViewAllUri_ = getDefaultInstance().getHeaderViewAllUri();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string headerViewAllUri = 2;</code>
-       *
-       * <pre>
-       *查看全部的uri，如果没有这个字段不展示查看全部
-       * </pre>
-       */
-      public Builder setHeaderViewAllUriBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        headerViewAllUri_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateNotice)
-    }
-
-    static {
-      defaultInstance = new UiTemplateNotice(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateNotice)
-  }
-
-  public interface NoticeDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional string noticeId = 1;
-    /**
-     * <code>optional string noticeId = 1;</code>
-     *
-     * <pre>
-     *预告ID
-     * </pre>
-     */
-    boolean hasNoticeId();
-    /**
-     * <code>optional string noticeId = 1;</code>
-     *
-     * <pre>
-     *预告ID
-     * </pre>
-     */
-    java.lang.String getNoticeId();
-    /**
-     * <code>optional string noticeId = 1;</code>
-     *
-     * <pre>
-     *预告ID
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getNoticeIdBytes();
-
-    // optional uint64 zuid = 2;
-    /**
-     * <code>optional uint64 zuid = 2;</code>
-     *
-     * <pre>
-     *主播ID
-     * </pre>
-     */
-    boolean hasZuid();
-    /**
-     * <code>optional uint64 zuid = 2;</code>
-     *
-     * <pre>
-     *主播ID
-     * </pre>
-     */
-    long getZuid();
-
-    // optional uint64 beginTime = 3;
-    /**
-     * <code>optional uint64 beginTime = 3;</code>
-     *
-     * <pre>
-     *预告开始时间
-     * </pre>
-     */
-    boolean hasBeginTime();
-    /**
-     * <code>optional uint64 beginTime = 3;</code>
-     *
-     * <pre>
-     *预告开始时间
-     * </pre>
-     */
-    long getBeginTime();
-
-    // optional string title = 4;
-    /**
-     * <code>optional string title = 4;</code>
-     *
-     * <pre>
-     *标题
-     * </pre>
-     */
-    boolean hasTitle();
-    /**
-     * <code>optional string title = 4;</code>
-     *
-     * <pre>
-     *标题
-     * </pre>
-     */
-    java.lang.String getTitle();
-    /**
-     * <code>optional string title = 4;</code>
-     *
-     * <pre>
-     *标题
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getTitleBytes();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.NoticeData}
-   */
-  public static final class NoticeData extends
-      com.google.protobuf.GeneratedMessage
-      implements NoticeDataOrBuilder {
-    // Use NoticeData.newBuilder() to construct.
-    private NoticeData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private NoticeData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final NoticeData defaultInstance;
-    public static NoticeData getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public NoticeData getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private NoticeData(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              bitField0_ |= 0x00000001;
-              noticeId_ = input.readBytes();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              zuid_ = input.readUInt64();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              beginTime_ = input.readUInt64();
-              break;
-            }
-            case 34: {
-              bitField0_ |= 0x00000008;
-              title_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.NoticeData.class, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<NoticeData> PARSER =
-        new com.google.protobuf.AbstractParser<NoticeData>() {
-      public NoticeData parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new NoticeData(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<NoticeData> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional string noticeId = 1;
-    public static final int NOTICEID_FIELD_NUMBER = 1;
-    private java.lang.Object noticeId_;
-    /**
-     * <code>optional string noticeId = 1;</code>
-     *
-     * <pre>
-     *预告ID
-     * </pre>
-     */
-    public boolean hasNoticeId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional string noticeId = 1;</code>
-     *
-     * <pre>
-     *预告ID
-     * </pre>
-     */
-    public java.lang.String getNoticeId() {
-      java.lang.Object ref = noticeId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          noticeId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string noticeId = 1;</code>
-     *
-     * <pre>
-     *预告ID
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getNoticeIdBytes() {
-      java.lang.Object ref = noticeId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        noticeId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional uint64 zuid = 2;
-    public static final int ZUID_FIELD_NUMBER = 2;
-    private long zuid_;
-    /**
-     * <code>optional uint64 zuid = 2;</code>
-     *
-     * <pre>
-     *主播ID
-     * </pre>
-     */
-    public boolean hasZuid() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional uint64 zuid = 2;</code>
-     *
-     * <pre>
-     *主播ID
-     * </pre>
-     */
-    public long getZuid() {
-      return zuid_;
-    }
-
-    // optional uint64 beginTime = 3;
-    public static final int BEGINTIME_FIELD_NUMBER = 3;
-    private long beginTime_;
-    /**
-     * <code>optional uint64 beginTime = 3;</code>
-     *
-     * <pre>
-     *预告开始时间
-     * </pre>
-     */
-    public boolean hasBeginTime() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional uint64 beginTime = 3;</code>
-     *
-     * <pre>
-     *预告开始时间
-     * </pre>
-     */
-    public long getBeginTime() {
-      return beginTime_;
-    }
-
-    // optional string title = 4;
-    public static final int TITLE_FIELD_NUMBER = 4;
-    private java.lang.Object title_;
-    /**
-     * <code>optional string title = 4;</code>
-     *
-     * <pre>
-     *标题
-     * </pre>
-     */
-    public boolean hasTitle() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional string title = 4;</code>
-     *
-     * <pre>
-     *标题
-     * </pre>
-     */
-    public java.lang.String getTitle() {
-      java.lang.Object ref = title_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          title_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string title = 4;</code>
-     *
-     * <pre>
-     *标题
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getTitleBytes() {
-      java.lang.Object ref = title_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        title_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      noticeId_ = "";
-      zuid_ = 0L;
-      beginTime_ = 0L;
-      title_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getNoticeIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt64(2, zuid_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeUInt64(3, beginTime_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getTitleBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getNoticeIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, zuid_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(3, beginTime_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getTitleBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.NoticeData parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.NoticeData prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.NoticeData}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.NoticeDataOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.NoticeData.class, com.mi.liveassistant.proto.CommonChannelProto.NoticeData.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.NoticeData.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        noticeId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        zuid_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        beginTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        title_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeData getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.NoticeData.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeData build() {
-        com.mi.liveassistant.proto.CommonChannelProto.NoticeData result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.NoticeData buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.NoticeData result = new com.mi.liveassistant.proto.CommonChannelProto.NoticeData(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.noticeId_ = noticeId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.zuid_ = zuid_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.beginTime_ = beginTime_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.title_ = title_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.NoticeData) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.NoticeData)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.NoticeData other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.NoticeData.getDefaultInstance()) return this;
-        if (other.hasNoticeId()) {
-          bitField0_ |= 0x00000001;
-          noticeId_ = other.noticeId_;
-          onChanged();
-        }
-        if (other.hasZuid()) {
-          setZuid(other.getZuid());
-        }
-        if (other.hasBeginTime()) {
-          setBeginTime(other.getBeginTime());
-        }
-        if (other.hasTitle()) {
-          bitField0_ |= 0x00000008;
-          title_ = other.title_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.NoticeData parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.NoticeData) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional string noticeId = 1;
-      private java.lang.Object noticeId_ = "";
-      /**
-       * <code>optional string noticeId = 1;</code>
-       *
-       * <pre>
-       *预告ID
-       * </pre>
-       */
-      public boolean hasNoticeId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional string noticeId = 1;</code>
-       *
-       * <pre>
-       *预告ID
-       * </pre>
-       */
-      public java.lang.String getNoticeId() {
-        java.lang.Object ref = noticeId_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          noticeId_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string noticeId = 1;</code>
-       *
-       * <pre>
-       *预告ID
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getNoticeIdBytes() {
-        java.lang.Object ref = noticeId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          noticeId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string noticeId = 1;</code>
-       *
-       * <pre>
-       *预告ID
-       * </pre>
-       */
-      public Builder setNoticeId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        noticeId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string noticeId = 1;</code>
-       *
-       * <pre>
-       *预告ID
-       * </pre>
-       */
-      public Builder clearNoticeId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        noticeId_ = getDefaultInstance().getNoticeId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string noticeId = 1;</code>
-       *
-       * <pre>
-       *预告ID
-       * </pre>
-       */
-      public Builder setNoticeIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        noticeId_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional uint64 zuid = 2;
-      private long zuid_ ;
-      /**
-       * <code>optional uint64 zuid = 2;</code>
-       *
-       * <pre>
-       *主播ID
-       * </pre>
-       */
-      public boolean hasZuid() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint64 zuid = 2;</code>
-       *
-       * <pre>
-       *主播ID
-       * </pre>
-       */
-      public long getZuid() {
-        return zuid_;
-      }
-      /**
-       * <code>optional uint64 zuid = 2;</code>
-       *
-       * <pre>
-       *主播ID
-       * </pre>
-       */
-      public Builder setZuid(long value) {
-        bitField0_ |= 0x00000002;
-        zuid_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 zuid = 2;</code>
-       *
-       * <pre>
-       *主播ID
-       * </pre>
-       */
-      public Builder clearZuid() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        zuid_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // optional uint64 beginTime = 3;
-      private long beginTime_ ;
-      /**
-       * <code>optional uint64 beginTime = 3;</code>
-       *
-       * <pre>
-       *预告开始时间
-       * </pre>
-       */
-      public boolean hasBeginTime() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional uint64 beginTime = 3;</code>
-       *
-       * <pre>
-       *预告开始时间
-       * </pre>
-       */
-      public long getBeginTime() {
-        return beginTime_;
-      }
-      /**
-       * <code>optional uint64 beginTime = 3;</code>
-       *
-       * <pre>
-       *预告开始时间
-       * </pre>
-       */
-      public Builder setBeginTime(long value) {
-        bitField0_ |= 0x00000004;
-        beginTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 beginTime = 3;</code>
-       *
-       * <pre>
-       *预告开始时间
-       * </pre>
-       */
-      public Builder clearBeginTime() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        beginTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // optional string title = 4;
-      private java.lang.Object title_ = "";
-      /**
-       * <code>optional string title = 4;</code>
-       *
-       * <pre>
-       *标题
-       * </pre>
-       */
-      public boolean hasTitle() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string title = 4;</code>
-       *
-       * <pre>
-       *标题
-       * </pre>
-       */
-      public java.lang.String getTitle() {
-        java.lang.Object ref = title_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          title_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string title = 4;</code>
-       *
-       * <pre>
-       *标题
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getTitleBytes() {
-        java.lang.Object ref = title_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          title_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string title = 4;</code>
-       *
-       * <pre>
-       *标题
-       * </pre>
-       */
-      public Builder setTitle(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        title_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string title = 4;</code>
-       *
-       * <pre>
-       *标题
-       * </pre>
-       */
-      public Builder clearTitle() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        title_ = getDefaultInstance().getTitle();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string title = 4;</code>
-       *
-       * <pre>
-       *标题
-       * </pre>
-       */
-      public Builder setTitleBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        title_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.NoticeData)
-    }
-
-    static {
-      defaultInstance = new NoticeData(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.NoticeData)
-  }
-
-  public interface UiTemplateRankingOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData> 
-        getItemDatasList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.RankingItemData getItemDatas(int index);
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    int getItemDatasCount();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder> 
-        getItemDatasOrBuilderList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
-        int index);
-
-    // optional string jumpSchemeUri = 2;
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *uitemplate跳转schemaUri
-     * </pre>
-     */
-    boolean hasJumpSchemeUri();
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *uitemplate跳转schemaUri
-     * </pre>
-     */
-    java.lang.String getJumpSchemeUri();
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *uitemplate跳转schemaUri
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getJumpSchemeUriBytes();
-
-    // optional string text1 = 3;
-    /**
-     * <code>optional string text1 = 3;</code>
-     */
-    boolean hasText1();
-    /**
-     * <code>optional string text1 = 3;</code>
-     */
-    java.lang.String getText1();
-    /**
-     * <code>optional string text1 = 3;</code>
-     */
-    com.google.protobuf.ByteString
-        getText1Bytes();
-
-    // optional string text2 = 4;
-    /**
-     * <code>optional string text2 = 4;</code>
-     */
-    boolean hasText2();
-    /**
-     * <code>optional string text2 = 4;</code>
-     */
-    java.lang.String getText2();
-    /**
-     * <code>optional string text2 = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getText2Bytes();
-
-    // optional uint32 iconStyle = 5;
-    /**
-     * <code>optional uint32 iconStyle = 5;</code>
-     *
-     * <pre>
-     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-     * </pre>
-     */
-    boolean hasIconStyle();
-    /**
-     * <code>optional uint32 iconStyle = 5;</code>
-     *
-     * <pre>
-     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-     * </pre>
-     */
-    int getIconStyle();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateRanking}
-   *
-   * <pre>
-   *uitype=29
-   * </pre>
-   */
-  public static final class UiTemplateRanking extends
-      com.google.protobuf.GeneratedMessage
-      implements UiTemplateRankingOrBuilder {
-    // Use UiTemplateRanking.newBuilder() to construct.
-    private UiTemplateRanking(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private UiTemplateRanking(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final UiTemplateRanking defaultInstance;
-    public static UiTemplateRanking getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public UiTemplateRanking getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private UiTemplateRanking(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                itemDatas_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              itemDatas_.add(input.readMessage(com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.PARSER, extensionRegistry));
-              break;
-            }
-            case 18: {
-              bitField0_ |= 0x00000001;
-              jumpSchemeUri_ = input.readBytes();
-              break;
-            }
-            case 26: {
-              bitField0_ |= 0x00000002;
-              text1_ = input.readBytes();
-              break;
-            }
-            case 34: {
-              bitField0_ |= 0x00000004;
-              text2_ = input.readBytes();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000008;
-              iconStyle_ = input.readUInt32();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking.class, com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<UiTemplateRanking> PARSER =
-        new com.google.protobuf.AbstractParser<UiTemplateRanking>() {
-      public UiTemplateRanking parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new UiTemplateRanking(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<UiTemplateRanking> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;
-    public static final int ITEMDATAS_FIELD_NUMBER = 1;
-    private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData> itemDatas_;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData> getItemDatasList() {
-      return itemDatas_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder> 
-        getItemDatasOrBuilderList() {
-      return itemDatas_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    public int getItemDatasCount() {
-      return itemDatas_.size();
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData getItemDatas(int index) {
-      return itemDatas_.get(index);
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
-        int index) {
-      return itemDatas_.get(index);
-    }
-
-    // optional string jumpSchemeUri = 2;
-    public static final int JUMPSCHEMEURI_FIELD_NUMBER = 2;
-    private java.lang.Object jumpSchemeUri_;
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *uitemplate跳转schemaUri
-     * </pre>
-     */
-    public boolean hasJumpSchemeUri() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *uitemplate跳转schemaUri
-     * </pre>
-     */
-    public java.lang.String getJumpSchemeUri() {
-      java.lang.Object ref = jumpSchemeUri_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          jumpSchemeUri_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *uitemplate跳转schemaUri
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getJumpSchemeUriBytes() {
-      java.lang.Object ref = jumpSchemeUri_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        jumpSchemeUri_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional string text1 = 3;
-    public static final int TEXT1_FIELD_NUMBER = 3;
-    private java.lang.Object text1_;
-    /**
-     * <code>optional string text1 = 3;</code>
-     */
-    public boolean hasText1() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string text1 = 3;</code>
-     */
-    public java.lang.String getText1() {
-      java.lang.Object ref = text1_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          text1_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string text1 = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getText1Bytes() {
-      java.lang.Object ref = text1_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        text1_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional string text2 = 4;
-    public static final int TEXT2_FIELD_NUMBER = 4;
-    private java.lang.Object text2_;
-    /**
-     * <code>optional string text2 = 4;</code>
-     */
-    public boolean hasText2() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional string text2 = 4;</code>
-     */
-    public java.lang.String getText2() {
-      java.lang.Object ref = text2_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          text2_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string text2 = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getText2Bytes() {
-      java.lang.Object ref = text2_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        text2_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    // optional uint32 iconStyle = 5;
-    public static final int ICONSTYLE_FIELD_NUMBER = 5;
-    private int iconStyle_;
-    /**
-     * <code>optional uint32 iconStyle = 5;</code>
-     *
-     * <pre>
-     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-     * </pre>
-     */
-    public boolean hasIconStyle() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional uint32 iconStyle = 5;</code>
-     *
-     * <pre>
-     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-     * </pre>
-     */
-    public int getIconStyle() {
-      return iconStyle_;
-    }
-
-    private void initFields() {
-      itemDatas_ = java.util.Collections.emptyList();
-      jumpSchemeUri_ = "";
-      text1_ = "";
-      text2_ = "";
-      iconStyle_ = 0;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      for (int i = 0; i < getItemDatasCount(); i++) {
-        if (!getItemDatas(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      for (int i = 0; i < itemDatas_.size(); i++) {
-        output.writeMessage(1, itemDatas_.get(i));
-      }
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(2, getJumpSchemeUriBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(3, getText1Bytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(4, getText2Bytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeUInt32(5, iconStyle_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < itemDatas_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, itemDatas_.get(i));
-      }
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getJumpSchemeUriBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getText1Bytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getText2Bytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(5, iconStyle_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.UiTemplateRanking}
-     *
-     * <pre>
-     *uitype=29
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRankingOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking.class, com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getItemDatasFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (itemDatasBuilder_ == null) {
-          itemDatas_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          itemDatasBuilder_.clear();
-        }
-        jumpSchemeUri_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        text1_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        text2_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        iconStyle_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking build() {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking result = new com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (itemDatasBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.itemDatas_ = itemDatas_;
-        } else {
-          result.itemDatas_ = itemDatasBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.jumpSchemeUri_ = jumpSchemeUri_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.text1_ = text1_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.text2_ = text2_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.iconStyle_ = iconStyle_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking.getDefaultInstance()) return this;
-        if (itemDatasBuilder_ == null) {
-          if (!other.itemDatas_.isEmpty()) {
-            if (itemDatas_.isEmpty()) {
-              itemDatas_ = other.itemDatas_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureItemDatasIsMutable();
-              itemDatas_.addAll(other.itemDatas_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.itemDatas_.isEmpty()) {
-            if (itemDatasBuilder_.isEmpty()) {
-              itemDatasBuilder_.dispose();
-              itemDatasBuilder_ = null;
-              itemDatas_ = other.itemDatas_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              itemDatasBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getItemDatasFieldBuilder() : null;
-            } else {
-              itemDatasBuilder_.addAllMessages(other.itemDatas_);
-            }
-          }
-        }
-        if (other.hasJumpSchemeUri()) {
-          bitField0_ |= 0x00000002;
-          jumpSchemeUri_ = other.jumpSchemeUri_;
-          onChanged();
-        }
-        if (other.hasText1()) {
-          bitField0_ |= 0x00000004;
-          text1_ = other.text1_;
-          onChanged();
-        }
-        if (other.hasText2()) {
-          bitField0_ |= 0x00000008;
-          text2_ = other.text2_;
-          onChanged();
-        }
-        if (other.hasIconStyle()) {
-          setIconStyle(other.getIconStyle());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        for (int i = 0; i < getItemDatasCount(); i++) {
-          if (!getItemDatas(i).isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.UiTemplateRanking) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;
-      private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData> itemDatas_ =
-        java.util.Collections.emptyList();
-      private void ensureItemDatasIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          itemDatas_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData>(itemDatas_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.RankingItemData, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder, com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder> itemDatasBuilder_;
-
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData> getItemDatasList() {
-        if (itemDatasBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(itemDatas_);
-        } else {
-          return itemDatasBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public int getItemDatasCount() {
-        if (itemDatasBuilder_ == null) {
-          return itemDatas_.size();
-        } else {
-          return itemDatasBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData getItemDatas(int index) {
-        if (itemDatasBuilder_ == null) {
-          return itemDatas_.get(index);
-        } else {
-          return itemDatasBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder setItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData value) {
-        if (itemDatasBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemDatasIsMutable();
-          itemDatas_.set(index, value);
-          onChanged();
-        } else {
-          itemDatasBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder setItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          itemDatasBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder addItemDatas(com.mi.liveassistant.proto.CommonChannelProto.RankingItemData value) {
-        if (itemDatasBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemDatasIsMutable();
-          itemDatas_.add(value);
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder addItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData value) {
-        if (itemDatasBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemDatasIsMutable();
-          itemDatas_.add(index, value);
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder addItemDatas(
-          com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.add(builderForValue.build());
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder addItemDatas(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          itemDatasBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder addAllItemDatas(
-          java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.RankingItemData> values) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          super.addAll(values, itemDatas_);
-          onChanged();
-        } else {
-          itemDatasBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder clearItemDatas() {
-        if (itemDatasBuilder_ == null) {
-          itemDatas_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          itemDatasBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public Builder removeItemDatas(int index) {
-        if (itemDatasBuilder_ == null) {
-          ensureItemDatasIsMutable();
-          itemDatas_.remove(index);
-          onChanged();
-        } else {
-          itemDatasBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder getItemDatasBuilder(
-          int index) {
-        return getItemDatasFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
-          int index) {
-        if (itemDatasBuilder_ == null) {
-          return itemDatas_.get(index);  } else {
-          return itemDatasBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder> 
-           getItemDatasOrBuilderList() {
-        if (itemDatasBuilder_ != null) {
-          return itemDatasBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(itemDatas_);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder addItemDatasBuilder() {
-        return getItemDatasFieldBuilder().addBuilder(
-            com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder addItemDatasBuilder(
-          int index) {
-        return getItemDatasFieldBuilder().addBuilder(
-            index, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.RankingItemData itemDatas = 1;</code>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder> 
-           getItemDatasBuilderList() {
-        return getItemDatasFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.RankingItemData, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder, com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder> 
-          getItemDatasFieldBuilder() {
-        if (itemDatasBuilder_ == null) {
-          itemDatasBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mi.liveassistant.proto.CommonChannelProto.RankingItemData, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder, com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder>(
-                  itemDatas_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          itemDatas_ = null;
-        }
-        return itemDatasBuilder_;
-      }
-
-      // optional string jumpSchemeUri = 2;
-      private java.lang.Object jumpSchemeUri_ = "";
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *uitemplate跳转schemaUri
-       * </pre>
-       */
-      public boolean hasJumpSchemeUri() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *uitemplate跳转schemaUri
-       * </pre>
-       */
-      public java.lang.String getJumpSchemeUri() {
-        java.lang.Object ref = jumpSchemeUri_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *uitemplate跳转schemaUri
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getJumpSchemeUriBytes() {
-        java.lang.Object ref = jumpSchemeUri_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          jumpSchemeUri_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *uitemplate跳转schemaUri
-       * </pre>
-       */
-      public Builder setJumpSchemeUri(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        jumpSchemeUri_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *uitemplate跳转schemaUri
-       * </pre>
-       */
-      public Builder clearJumpSchemeUri() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        jumpSchemeUri_ = getDefaultInstance().getJumpSchemeUri();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *uitemplate跳转schemaUri
-       * </pre>
-       */
-      public Builder setJumpSchemeUriBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        jumpSchemeUri_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional string text1 = 3;
-      private java.lang.Object text1_ = "";
-      /**
-       * <code>optional string text1 = 3;</code>
-       */
-      public boolean hasText1() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string text1 = 3;</code>
-       */
-      public java.lang.String getText1() {
-        java.lang.Object ref = text1_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text1_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string text1 = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getText1Bytes() {
-        java.lang.Object ref = text1_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          text1_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string text1 = 3;</code>
-       */
-      public Builder setText1(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        text1_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string text1 = 3;</code>
-       */
-      public Builder clearText1() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        text1_ = getDefaultInstance().getText1();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string text1 = 3;</code>
-       */
-      public Builder setText1Bytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        text1_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional string text2 = 4;
-      private java.lang.Object text2_ = "";
-      /**
-       * <code>optional string text2 = 4;</code>
-       */
-      public boolean hasText2() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string text2 = 4;</code>
-       */
-      public java.lang.String getText2() {
-        java.lang.Object ref = text2_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          text2_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string text2 = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getText2Bytes() {
-        java.lang.Object ref = text2_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          text2_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string text2 = 4;</code>
-       */
-      public Builder setText2(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        text2_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string text2 = 4;</code>
-       */
-      public Builder clearText2() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        text2_ = getDefaultInstance().getText2();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string text2 = 4;</code>
-       */
-      public Builder setText2Bytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        text2_ = value;
-        onChanged();
-        return this;
-      }
-
-      // optional uint32 iconStyle = 5;
-      private int iconStyle_ ;
-      /**
-       * <code>optional uint32 iconStyle = 5;</code>
-       *
-       * <pre>
-       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-       * </pre>
-       */
-      public boolean hasIconStyle() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional uint32 iconStyle = 5;</code>
-       *
-       * <pre>
-       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-       * </pre>
-       */
-      public int getIconStyle() {
-        return iconStyle_;
-      }
-      /**
-       * <code>optional uint32 iconStyle = 5;</code>
-       *
-       * <pre>
-       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-       * </pre>
-       */
-      public Builder setIconStyle(int value) {
-        bitField0_ |= 0x00000010;
-        iconStyle_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 iconStyle = 5;</code>
-       *
-       * <pre>
-       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
-       * </pre>
-       */
-      public Builder clearIconStyle() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        iconStyle_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.UiTemplateRanking)
-    }
-
-    static {
-      defaultInstance = new UiTemplateRanking(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.UiTemplateRanking)
-  }
-
-  public interface RankingItemDataOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    boolean hasUserInfo();
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.UserInfo getUserInfo();
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
-
-    // optional string jumpSchemeUri = 2;
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *item跳转schemeUri
-     * </pre>
-     */
-    boolean hasJumpSchemeUri();
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *item跳转schemeUri
-     * </pre>
-     */
-    java.lang.String getJumpSchemeUri();
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *item跳转schemeUri
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getJumpSchemeUriBytes();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.RankingItemData}
-   */
-  public static final class RankingItemData extends
-      com.google.protobuf.GeneratedMessage
-      implements RankingItemDataOrBuilder {
-    // Use RankingItemData.newBuilder() to construct.
-    private RankingItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private RankingItemData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final RankingItemData defaultInstance;
-    public static RankingItemData getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public RankingItemData getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private RankingItemData(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = userInfo_.toBuilder();
-              }
-              userInfo_ = input.readMessage(com.mi.liveassistant.proto.CommonChannelProto.UserInfo.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(userInfo_);
-                userInfo_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 18: {
-              bitField0_ |= 0x00000002;
-              jumpSchemeUri_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.class, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<RankingItemData> PARSER =
-        new com.google.protobuf.AbstractParser<RankingItemData>() {
-      public RankingItemData parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RankingItemData(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<RankingItemData> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;
-    public static final int USERINFO_FIELD_NUMBER = 1;
-    private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_;
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    public boolean hasUserInfo() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.UserInfo getUserInfo() {
-      return userInfo_;
-    }
-    /**
-     * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-     *
-     * <pre>
-     *用户资料
-     * </pre>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
-      return userInfo_;
-    }
-
-    // optional string jumpSchemeUri = 2;
-    public static final int JUMPSCHEMEURI_FIELD_NUMBER = 2;
-    private java.lang.Object jumpSchemeUri_;
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *item跳转schemeUri
-     * </pre>
-     */
-    public boolean hasJumpSchemeUri() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *item跳转schemeUri
-     * </pre>
-     */
-    public java.lang.String getJumpSchemeUri() {
-      java.lang.Object ref = jumpSchemeUri_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          jumpSchemeUri_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string jumpSchemeUri = 2;</code>
-     *
-     * <pre>
-     *item跳转schemeUri
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getJumpSchemeUriBytes() {
-      java.lang.Object ref = jumpSchemeUri_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        jumpSchemeUri_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-      jumpSchemeUri_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      if (hasUserInfo()) {
-        if (!getUserInfo().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, userInfo_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getJumpSchemeUriBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, userInfo_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getJumpSchemeUriBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.RankingItemData prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.RankingItemData}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.RankingItemDataOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.class, com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getUserInfoFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (userInfoBuilder_ == null) {
-          userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-        } else {
-          userInfoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        jumpSchemeUri_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData build() {
-        com.mi.liveassistant.proto.CommonChannelProto.RankingItemData result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.RankingItemData buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.RankingItemData result = new com.mi.liveassistant.proto.CommonChannelProto.RankingItemData(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (userInfoBuilder_ == null) {
-          result.userInfo_ = userInfo_;
-        } else {
-          result.userInfo_ = userInfoBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.jumpSchemeUri_ = jumpSchemeUri_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.RankingItemData) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.RankingItemData)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.RankingItemData other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.RankingItemData.getDefaultInstance()) return this;
-        if (other.hasUserInfo()) {
-          mergeUserInfo(other.getUserInfo());
-        }
-        if (other.hasJumpSchemeUri()) {
-          bitField0_ |= 0x00000002;
-          jumpSchemeUri_ = other.jumpSchemeUri_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (hasUserInfo()) {
-          if (!getUserInfo().isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.RankingItemData parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.RankingItemData) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;
-      private com.mi.liveassistant.proto.CommonChannelProto.UserInfo userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public boolean hasUserInfo() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.UserInfo getUserInfo() {
-        if (userInfoBuilder_ == null) {
-          return userInfo_;
-        } else {
-          return userInfoBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder setUserInfo(com.mi.liveassistant.proto.CommonChannelProto.UserInfo value) {
-        if (userInfoBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          userInfo_ = value;
-          onChanged();
-        } else {
-          userInfoBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder setUserInfo(
-          com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder builderForValue) {
-        if (userInfoBuilder_ == null) {
-          userInfo_ = builderForValue.build();
-          onChanged();
-        } else {
-          userInfoBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder mergeUserInfo(com.mi.liveassistant.proto.CommonChannelProto.UserInfo value) {
-        if (userInfoBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              userInfo_ != com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance()) {
-            userInfo_ =
-              com.mi.liveassistant.proto.CommonChannelProto.UserInfo.newBuilder(userInfo_).mergeFrom(value).buildPartial();
-          } else {
-            userInfo_ = value;
-          }
-          onChanged();
-        } else {
-          userInfoBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public Builder clearUserInfo() {
-        if (userInfoBuilder_ == null) {
-          userInfo_ = com.mi.liveassistant.proto.CommonChannelProto.UserInfo.getDefaultInstance();
-          onChanged();
-        } else {
-          userInfoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder getUserInfoBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getUserInfoFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
-        if (userInfoBuilder_ != null) {
-          return userInfoBuilder_.getMessageOrBuilder();
-        } else {
-          return userInfo_;
-        }
-      }
-      /**
-       * <code>optional .com.mi.liveassistant.proto.UserInfo userInfo = 1;</code>
-       *
-       * <pre>
-       *用户资料
-       * </pre>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder> 
-          getUserInfoFieldBuilder() {
-        if (userInfoBuilder_ == null) {
-          userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mi.liveassistant.proto.CommonChannelProto.UserInfo, com.mi.liveassistant.proto.CommonChannelProto.UserInfo.Builder, com.mi.liveassistant.proto.CommonChannelProto.UserInfoOrBuilder>(
-                  userInfo_,
-                  getParentForChildren(),
-                  isClean());
-          userInfo_ = null;
-        }
-        return userInfoBuilder_;
-      }
-
-      // optional string jumpSchemeUri = 2;
-      private java.lang.Object jumpSchemeUri_ = "";
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *item跳转schemeUri
-       * </pre>
-       */
-      public boolean hasJumpSchemeUri() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *item跳转schemeUri
-       * </pre>
-       */
-      public java.lang.String getJumpSchemeUri() {
-        java.lang.Object ref = jumpSchemeUri_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jumpSchemeUri_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *item跳转schemeUri
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getJumpSchemeUriBytes() {
-        java.lang.Object ref = jumpSchemeUri_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          jumpSchemeUri_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *item跳转schemeUri
-       * </pre>
-       */
-      public Builder setJumpSchemeUri(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        jumpSchemeUri_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *item跳转schemeUri
-       * </pre>
-       */
-      public Builder clearJumpSchemeUri() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        jumpSchemeUri_ = getDefaultInstance().getJumpSchemeUri();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string jumpSchemeUri = 2;</code>
-       *
-       * <pre>
-       *item跳转schemeUri
-       * </pre>
-       */
-      public Builder setJumpSchemeUriBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        jumpSchemeUri_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.RankingItemData)
-    }
-
-    static {
-      defaultInstance = new RankingItemData(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.RankingItemData)
-  }
-
-  public interface LiveRecvFlagReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem> 
-        getItemsList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index);
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    int getItemsCount();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
-        getItemsOrBuilderList();
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
-        int index);
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagReq}
-   *
-   * <pre>
-   * ======== recommendflag milink 打点 =======
-   * </pre>
-   */
-  public static final class LiveRecvFlagReq extends
-      com.google.protobuf.GeneratedMessage
-      implements LiveRecvFlagReqOrBuilder {
-    // Use LiveRecvFlagReq.newBuilder() to construct.
-    private LiveRecvFlagReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private LiveRecvFlagReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final LiveRecvFlagReq defaultInstance;
-    public static LiveRecvFlagReq getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public LiveRecvFlagReq getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private LiveRecvFlagReq(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                items_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              items_.add(input.readMessage(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.PARSER, extensionRegistry));
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          items_ = java.util.Collections.unmodifiableList(items_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq.class, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<LiveRecvFlagReq> PARSER =
-        new com.google.protobuf.AbstractParser<LiveRecvFlagReq>() {
-      public LiveRecvFlagReq parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LiveRecvFlagReq(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<LiveRecvFlagReq> getParserForType() {
-      return PARSER;
-    }
-
-    // repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;
-    public static final int ITEMS_FIELD_NUMBER = 1;
-    private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem> items_;
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem> getItemsList() {
-      return items_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
-        getItemsOrBuilderList() {
-      return items_;
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    public int getItemsCount() {
-      return items_.size();
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index) {
-      return items_.get(index);
-    }
-    /**
-     * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-     */
-    public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
-        int index) {
-      return items_.get(index);
-    }
-
-    private void initFields() {
-      items_ = java.util.Collections.emptyList();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      for (int i = 0; i < items_.size(); i++) {
-        output.writeMessage(1, items_.get(i));
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < items_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, items_.get(i));
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagReq}
-     *
-     * <pre>
-     * ======== recommendflag milink 打点 =======
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReqOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq.class, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getItemsFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (itemsBuilder_ == null) {
-          items_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          itemsBuilder_.clear();
-        }
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq build() {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq result = new com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq(this);
-        int from_bitField0_ = bitField0_;
-        if (itemsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            items_ = java.util.Collections.unmodifiableList(items_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.items_ = items_;
-        } else {
-          result.items_ = itemsBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq.getDefaultInstance()) return this;
-        if (itemsBuilder_ == null) {
-          if (!other.items_.isEmpty()) {
-            if (items_.isEmpty()) {
-              items_ = other.items_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureItemsIsMutable();
-              items_.addAll(other.items_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.items_.isEmpty()) {
-            if (itemsBuilder_.isEmpty()) {
-              itemsBuilder_.dispose();
-              itemsBuilder_ = null;
-              items_ = other.items_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              itemsBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getItemsFieldBuilder() : null;
-            } else {
-              itemsBuilder_.addAllMessages(other.items_);
-            }
-          }
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagReq) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;
-      private java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem> items_ =
-        java.util.Collections.emptyList();
-      private void ensureItemsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          items_ = new java.util.ArrayList<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem>(items_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> itemsBuilder_;
-
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem> getItemsList() {
-        if (itemsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(items_);
-        } else {
-          return itemsBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public int getItemsCount() {
-        if (itemsBuilder_ == null) {
-          return items_.size();
-        } else {
-          return itemsBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index) {
-        if (itemsBuilder_ == null) {
-          return items_.get(index);
-        } else {
-          return itemsBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder setItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem value) {
-        if (itemsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemsIsMutable();
-          items_.set(index, value);
-          onChanged();
-        } else {
-          itemsBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder setItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
-        if (itemsBuilder_ == null) {
-          ensureItemsIsMutable();
-          items_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          itemsBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder addItems(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem value) {
-        if (itemsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemsIsMutable();
-          items_.add(value);
-          onChanged();
-        } else {
-          itemsBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder addItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem value) {
-        if (itemsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureItemsIsMutable();
-          items_.add(index, value);
-          onChanged();
-        } else {
-          itemsBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder addItems(
-          com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
-        if (itemsBuilder_ == null) {
-          ensureItemsIsMutable();
-          items_.add(builderForValue.build());
-          onChanged();
-        } else {
-          itemsBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder addItems(
-          int index, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
-        if (itemsBuilder_ == null) {
-          ensureItemsIsMutable();
-          items_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          itemsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder addAllItems(
-          java.lang.Iterable<? extends com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem> values) {
-        if (itemsBuilder_ == null) {
-          ensureItemsIsMutable();
-          super.addAll(values, items_);
-          onChanged();
-        } else {
-          itemsBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder clearItems() {
-        if (itemsBuilder_ == null) {
-          items_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          itemsBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public Builder removeItems(int index) {
-        if (itemsBuilder_ == null) {
-          ensureItemsIsMutable();
-          items_.remove(index);
-          onChanged();
-        } else {
-          itemsBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder getItemsBuilder(
-          int index) {
-        return getItemsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
-          int index) {
-        if (itemsBuilder_ == null) {
-          return items_.get(index);  } else {
-          return itemsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public java.util.List<? extends com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
-           getItemsOrBuilderList() {
-        if (itemsBuilder_ != null) {
-          return itemsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(items_);
-        }
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder addItemsBuilder() {
-        return getItemsFieldBuilder().addBuilder(
-            com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder addItemsBuilder(
-          int index) {
-        return getItemsFieldBuilder().addBuilder(
-            index, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .com.mi.liveassistant.proto.LiveRecvFlagItem items = 1;</code>
-       */
-      public java.util.List<com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder> 
-           getItemsBuilderList() {
-        return getItemsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
-          getItemsFieldBuilder() {
-        if (itemsBuilder_ == null) {
-          itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder>(
-                  items_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          items_ = null;
-        }
-        return itemsBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveRecvFlagReq)
-    }
-
-    static {
-      defaultInstance = new LiveRecvFlagReq(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveRecvFlagReq)
-  }
-
-  public interface LiveRecvFlagItemOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional uint64 date = 1;
-    /**
-     * <code>optional uint64 date = 1;</code>
-     *
-     * <pre>
-     *用户产生行为的时间（毫秒）
-     * </pre>
-     */
-    boolean hasDate();
-    /**
-     * <code>optional uint64 date = 1;</code>
-     *
-     * <pre>
-     *用户产生行为的时间（毫秒）
-     * </pre>
-     */
-    long getDate();
-
-    // optional uint32 type = 2;
-    /**
-     * <code>optional uint32 type = 2;</code>
-     *
-     * <pre>
-     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-     * </pre>
-     */
-    boolean hasType();
-    /**
-     * <code>optional uint32 type = 2;</code>
-     *
-     * <pre>
-     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-     * </pre>
-     */
-    int getType();
-
-    // optional bytes extData = 3;
-    /**
-     * <code>optional bytes extData = 3;</code>
-     *
-     * <pre>
-     *对应打点类型的扩展信息
-     * </pre>
-     */
-    boolean hasExtData();
-    /**
-     * <code>optional bytes extData = 3;</code>
-     *
-     * <pre>
-     *对应打点类型的扩展信息
-     * </pre>
-     */
-    com.google.protobuf.ByteString getExtData();
-
-    // optional string recommend = 4;
-    /**
-     * <code>optional string recommend = 4;</code>
-     *
-     * <pre>
-     *服务器下发的打点字串
-     * </pre>
-     */
-    boolean hasRecommend();
-    /**
-     * <code>optional string recommend = 4;</code>
-     *
-     * <pre>
-     *服务器下发的打点字串
-     * </pre>
-     */
-    java.lang.String getRecommend();
-    /**
-     * <code>optional string recommend = 4;</code>
-     *
-     * <pre>
-     *服务器下发的打点字串
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getRecommendBytes();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagItem}
-   */
-  public static final class LiveRecvFlagItem extends
-      com.google.protobuf.GeneratedMessage
-      implements LiveRecvFlagItemOrBuilder {
-    // Use LiveRecvFlagItem.newBuilder() to construct.
-    private LiveRecvFlagItem(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private LiveRecvFlagItem(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final LiveRecvFlagItem defaultInstance;
-    public static LiveRecvFlagItem getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public LiveRecvFlagItem getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private LiveRecvFlagItem(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              date_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              type_ = input.readUInt32();
-              break;
-            }
-            case 26: {
-              bitField0_ |= 0x00000004;
-              extData_ = input.readBytes();
-              break;
-            }
-            case 34: {
-              bitField0_ |= 0x00000008;
-              recommend_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.class, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<LiveRecvFlagItem> PARSER =
-        new com.google.protobuf.AbstractParser<LiveRecvFlagItem>() {
-      public LiveRecvFlagItem parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LiveRecvFlagItem(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<LiveRecvFlagItem> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional uint64 date = 1;
-    public static final int DATE_FIELD_NUMBER = 1;
-    private long date_;
-    /**
-     * <code>optional uint64 date = 1;</code>
-     *
-     * <pre>
-     *用户产生行为的时间（毫秒）
-     * </pre>
-     */
-    public boolean hasDate() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional uint64 date = 1;</code>
-     *
-     * <pre>
-     *用户产生行为的时间（毫秒）
-     * </pre>
-     */
-    public long getDate() {
-      return date_;
-    }
-
-    // optional uint32 type = 2;
-    public static final int TYPE_FIELD_NUMBER = 2;
-    private int type_;
-    /**
-     * <code>optional uint32 type = 2;</code>
-     *
-     * <pre>
-     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-     * </pre>
-     */
-    public boolean hasType() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional uint32 type = 2;</code>
-     *
-     * <pre>
-     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-     * </pre>
-     */
-    public int getType() {
-      return type_;
-    }
-
-    // optional bytes extData = 3;
-    public static final int EXTDATA_FIELD_NUMBER = 3;
-    private com.google.protobuf.ByteString extData_;
-    /**
-     * <code>optional bytes extData = 3;</code>
-     *
-     * <pre>
-     *对应打点类型的扩展信息
-     * </pre>
-     */
-    public boolean hasExtData() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional bytes extData = 3;</code>
-     *
-     * <pre>
-     *对应打点类型的扩展信息
-     * </pre>
-     */
-    public com.google.protobuf.ByteString getExtData() {
-      return extData_;
-    }
-
-    // optional string recommend = 4;
-    public static final int RECOMMEND_FIELD_NUMBER = 4;
-    private java.lang.Object recommend_;
-    /**
-     * <code>optional string recommend = 4;</code>
-     *
-     * <pre>
-     *服务器下发的打点字串
-     * </pre>
-     */
-    public boolean hasRecommend() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional string recommend = 4;</code>
-     *
-     * <pre>
-     *服务器下发的打点字串
-     * </pre>
-     */
-    public java.lang.String getRecommend() {
-      java.lang.Object ref = recommend_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          recommend_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string recommend = 4;</code>
-     *
-     * <pre>
-     *服务器下发的打点字串
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getRecommendBytes() {
-      java.lang.Object ref = recommend_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        recommend_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      date_ = 0L;
-      type_ = 0;
-      extData_ = com.google.protobuf.ByteString.EMPTY;
-      recommend_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, date_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt32(2, type_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, extData_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getRecommendBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, date_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, type_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, extData_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getRecommendBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagItem}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.class, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        date_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        type_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        extData_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        recommend_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem build() {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem result = new com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.date_ = date_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.type_ = type_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.extData_ = extData_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.recommend_ = recommend_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance()) return this;
-        if (other.hasDate()) {
-          setDate(other.getDate());
-        }
-        if (other.hasType()) {
-          setType(other.getType());
-        }
-        if (other.hasExtData()) {
-          setExtData(other.getExtData());
-        }
-        if (other.hasRecommend()) {
-          bitField0_ |= 0x00000008;
-          recommend_ = other.recommend_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagItem) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional uint64 date = 1;
-      private long date_ ;
-      /**
-       * <code>optional uint64 date = 1;</code>
-       *
-       * <pre>
-       *用户产生行为的时间（毫秒）
-       * </pre>
-       */
-      public boolean hasDate() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional uint64 date = 1;</code>
-       *
-       * <pre>
-       *用户产生行为的时间（毫秒）
-       * </pre>
-       */
-      public long getDate() {
-        return date_;
-      }
-      /**
-       * <code>optional uint64 date = 1;</code>
-       *
-       * <pre>
-       *用户产生行为的时间（毫秒）
-       * </pre>
-       */
-      public Builder setDate(long value) {
-        bitField0_ |= 0x00000001;
-        date_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 date = 1;</code>
-       *
-       * <pre>
-       *用户产生行为的时间（毫秒）
-       * </pre>
-       */
-      public Builder clearDate() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        date_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // optional uint32 type = 2;
-      private int type_ ;
-      /**
-       * <code>optional uint32 type = 2;</code>
-       *
-       * <pre>
-       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-       * </pre>
-       */
-      public boolean hasType() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint32 type = 2;</code>
-       *
-       * <pre>
-       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-       * </pre>
-       */
-      public int getType() {
-        return type_;
-      }
-      /**
-       * <code>optional uint32 type = 2;</code>
-       *
-       * <pre>
-       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-       * </pre>
-       */
-      public Builder setType(int value) {
-        bitField0_ |= 0x00000002;
-        type_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 type = 2;</code>
-       *
-       * <pre>
-       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈
-       * </pre>
-       */
-      public Builder clearType() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        type_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // optional bytes extData = 3;
-      private com.google.protobuf.ByteString extData_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>optional bytes extData = 3;</code>
-       *
-       * <pre>
-       *对应打点类型的扩展信息
-       * </pre>
-       */
-      public boolean hasExtData() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional bytes extData = 3;</code>
-       *
-       * <pre>
-       *对应打点类型的扩展信息
-       * </pre>
-       */
-      public com.google.protobuf.ByteString getExtData() {
-        return extData_;
-      }
-      /**
-       * <code>optional bytes extData = 3;</code>
-       *
-       * <pre>
-       *对应打点类型的扩展信息
-       * </pre>
-       */
-      public Builder setExtData(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        extData_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bytes extData = 3;</code>
-       *
-       * <pre>
-       *对应打点类型的扩展信息
-       * </pre>
-       */
-      public Builder clearExtData() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        extData_ = getDefaultInstance().getExtData();
-        onChanged();
-        return this;
-      }
-
-      // optional string recommend = 4;
-      private java.lang.Object recommend_ = "";
-      /**
-       * <code>optional string recommend = 4;</code>
-       *
-       * <pre>
-       *服务器下发的打点字串
-       * </pre>
-       */
-      public boolean hasRecommend() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string recommend = 4;</code>
-       *
-       * <pre>
-       *服务器下发的打点字串
-       * </pre>
-       */
-      public java.lang.String getRecommend() {
-        java.lang.Object ref = recommend_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          recommend_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string recommend = 4;</code>
-       *
-       * <pre>
-       *服务器下发的打点字串
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getRecommendBytes() {
-        java.lang.Object ref = recommend_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          recommend_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string recommend = 4;</code>
-       *
-       * <pre>
-       *服务器下发的打点字串
-       * </pre>
-       */
-      public Builder setRecommend(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        recommend_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string recommend = 4;</code>
-       *
-       * <pre>
-       *服务器下发的打点字串
-       * </pre>
-       */
-      public Builder clearRecommend() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        recommend_ = getDefaultInstance().getRecommend();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string recommend = 4;</code>
-       *
-       * <pre>
-       *服务器下发的打点字串
-       * </pre>
-       */
-      public Builder setRecommendBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        recommend_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveRecvFlagItem)
-    }
-
-    static {
-      defaultInstance = new LiveRecvFlagItem(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveRecvFlagItem)
-  }
-
-  public interface GiftDetailOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional uint32 giftId = 1;
-    /**
-     * <code>optional uint32 giftId = 1;</code>
-     *
-     * <pre>
-     *礼物id
-     * </pre>
-     */
-    boolean hasGiftId();
-    /**
-     * <code>optional uint32 giftId = 1;</code>
-     *
-     * <pre>
-     *礼物id
-     * </pre>
-     */
-    int getGiftId();
-
-    // optional uint32 giftWorth = 2;
-    /**
-     * <code>optional uint32 giftWorth = 2;</code>
-     *
-     * <pre>
-     *礼物价值
-     * </pre>
-     */
-    boolean hasGiftWorth();
-    /**
-     * <code>optional uint32 giftWorth = 2;</code>
-     *
-     * <pre>
-     *礼物价值
-     * </pre>
-     */
-    int getGiftWorth();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.GiftDetail}
-   *
-   * <pre>
-   *type=3 extData填充内容
-   * </pre>
-   */
-  public static final class GiftDetail extends
-      com.google.protobuf.GeneratedMessage
-      implements GiftDetailOrBuilder {
-    // Use GiftDetail.newBuilder() to construct.
-    private GiftDetail(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private GiftDetail(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final GiftDetail defaultInstance;
-    public static GiftDetail getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public GiftDetail getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private GiftDetail(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              giftId_ = input.readUInt32();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              giftWorth_ = input.readUInt32();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.GiftDetail.class, com.mi.liveassistant.proto.CommonChannelProto.GiftDetail.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<GiftDetail> PARSER =
-        new com.google.protobuf.AbstractParser<GiftDetail>() {
-      public GiftDetail parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new GiftDetail(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<GiftDetail> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional uint32 giftId = 1;
-    public static final int GIFTID_FIELD_NUMBER = 1;
-    private int giftId_;
-    /**
-     * <code>optional uint32 giftId = 1;</code>
-     *
-     * <pre>
-     *礼物id
-     * </pre>
-     */
-    public boolean hasGiftId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional uint32 giftId = 1;</code>
-     *
-     * <pre>
-     *礼物id
-     * </pre>
-     */
-    public int getGiftId() {
-      return giftId_;
-    }
-
-    // optional uint32 giftWorth = 2;
-    public static final int GIFTWORTH_FIELD_NUMBER = 2;
-    private int giftWorth_;
-    /**
-     * <code>optional uint32 giftWorth = 2;</code>
-     *
-     * <pre>
-     *礼物价值
-     * </pre>
-     */
-    public boolean hasGiftWorth() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional uint32 giftWorth = 2;</code>
-     *
-     * <pre>
-     *礼物价值
-     * </pre>
-     */
-    public int getGiftWorth() {
-      return giftWorth_;
-    }
-
-    private void initFields() {
-      giftId_ = 0;
-      giftWorth_ = 0;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt32(1, giftId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt32(2, giftWorth_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, giftId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, giftWorth_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.GiftDetail prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.GiftDetail}
-     *
-     * <pre>
-     *type=3 extData填充内容
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.GiftDetailOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.GiftDetail.class, com.mi.liveassistant.proto.CommonChannelProto.GiftDetail.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.GiftDetail.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        giftId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        giftWorth_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.GiftDetail getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.GiftDetail.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.GiftDetail build() {
-        com.mi.liveassistant.proto.CommonChannelProto.GiftDetail result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.GiftDetail buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.GiftDetail result = new com.mi.liveassistant.proto.CommonChannelProto.GiftDetail(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.giftId_ = giftId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.giftWorth_ = giftWorth_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.GiftDetail) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.GiftDetail)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.GiftDetail other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.GiftDetail.getDefaultInstance()) return this;
-        if (other.hasGiftId()) {
-          setGiftId(other.getGiftId());
-        }
-        if (other.hasGiftWorth()) {
-          setGiftWorth(other.getGiftWorth());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.GiftDetail parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.GiftDetail) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional uint32 giftId = 1;
-      private int giftId_ ;
-      /**
-       * <code>optional uint32 giftId = 1;</code>
-       *
-       * <pre>
-       *礼物id
-       * </pre>
-       */
-      public boolean hasGiftId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional uint32 giftId = 1;</code>
-       *
-       * <pre>
-       *礼物id
-       * </pre>
-       */
-      public int getGiftId() {
-        return giftId_;
-      }
-      /**
-       * <code>optional uint32 giftId = 1;</code>
-       *
-       * <pre>
-       *礼物id
-       * </pre>
-       */
-      public Builder setGiftId(int value) {
-        bitField0_ |= 0x00000001;
-        giftId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 giftId = 1;</code>
-       *
-       * <pre>
-       *礼物id
-       * </pre>
-       */
-      public Builder clearGiftId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        giftId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // optional uint32 giftWorth = 2;
-      private int giftWorth_ ;
-      /**
-       * <code>optional uint32 giftWorth = 2;</code>
-       *
-       * <pre>
-       *礼物价值
-       * </pre>
-       */
-      public boolean hasGiftWorth() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint32 giftWorth = 2;</code>
-       *
-       * <pre>
-       *礼物价值
-       * </pre>
-       */
-      public int getGiftWorth() {
-        return giftWorth_;
-      }
-      /**
-       * <code>optional uint32 giftWorth = 2;</code>
-       *
-       * <pre>
-       *礼物价值
-       * </pre>
-       */
-      public Builder setGiftWorth(int value) {
-        bitField0_ |= 0x00000002;
-        giftWorth_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 giftWorth = 2;</code>
-       *
-       * <pre>
-       *礼物价值
-       * </pre>
-       */
-      public Builder clearGiftWorth() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        giftWorth_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GiftDetail)
-    }
-
-    static {
-      defaultInstance = new GiftDetail(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GiftDetail)
-  }
-
-  public interface LeaveRoomOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional uint64 enterTime = 1;
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    boolean hasEnterTime();
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    long getEnterTime();
-
-    // optional uint64 leaveTime = 2;
-    /**
-     * <code>optional uint64 leaveTime = 2;</code>
-     *
-     * <pre>
-     *离开房间时间
-     * </pre>
-     */
-    boolean hasLeaveTime();
-    /**
-     * <code>optional uint64 leaveTime = 2;</code>
-     *
-     * <pre>
-     *离开房间时间
-     * </pre>
-     */
-    long getLeaveTime();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.LeaveRoom}
-   *
-   * <pre>
-   *type=4 extData填充内容
-   * </pre>
-   */
-  public static final class LeaveRoom extends
-      com.google.protobuf.GeneratedMessage
-      implements LeaveRoomOrBuilder {
-    // Use LeaveRoom.newBuilder() to construct.
-    private LeaveRoom(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private LeaveRoom(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final LeaveRoom defaultInstance;
-    public static LeaveRoom getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public LeaveRoom getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private LeaveRoom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              enterTime_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              leaveTime_ = input.readUInt64();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom.class, com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<LeaveRoom> PARSER =
-        new com.google.protobuf.AbstractParser<LeaveRoom>() {
-      public LeaveRoom parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LeaveRoom(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<LeaveRoom> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional uint64 enterTime = 1;
-    public static final int ENTERTIME_FIELD_NUMBER = 1;
-    private long enterTime_;
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    public boolean hasEnterTime() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    public long getEnterTime() {
-      return enterTime_;
-    }
-
-    // optional uint64 leaveTime = 2;
-    public static final int LEAVETIME_FIELD_NUMBER = 2;
-    private long leaveTime_;
-    /**
-     * <code>optional uint64 leaveTime = 2;</code>
-     *
-     * <pre>
-     *离开房间时间
-     * </pre>
-     */
-    public boolean hasLeaveTime() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional uint64 leaveTime = 2;</code>
-     *
-     * <pre>
-     *离开房间时间
-     * </pre>
-     */
-    public long getLeaveTime() {
-      return leaveTime_;
-    }
-
-    private void initFields() {
-      enterTime_ = 0L;
-      leaveTime_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, enterTime_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt64(2, leaveTime_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, enterTime_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, leaveTime_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.LeaveRoom}
-     *
-     * <pre>
-     *type=4 extData填充内容
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.LeaveRoomOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom.class, com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        enterTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        leaveTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom build() {
-        com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom result = new com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.enterTime_ = enterTime_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.leaveTime_ = leaveTime_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom.getDefaultInstance()) return this;
-        if (other.hasEnterTime()) {
-          setEnterTime(other.getEnterTime());
-        }
-        if (other.hasLeaveTime()) {
-          setLeaveTime(other.getLeaveTime());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.LeaveRoom) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional uint64 enterTime = 1;
-      private long enterTime_ ;
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public boolean hasEnterTime() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public long getEnterTime() {
-        return enterTime_;
-      }
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public Builder setEnterTime(long value) {
-        bitField0_ |= 0x00000001;
-        enterTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public Builder clearEnterTime() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        enterTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // optional uint64 leaveTime = 2;
-      private long leaveTime_ ;
-      /**
-       * <code>optional uint64 leaveTime = 2;</code>
-       *
-       * <pre>
-       *离开房间时间
-       * </pre>
-       */
-      public boolean hasLeaveTime() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint64 leaveTime = 2;</code>
-       *
-       * <pre>
-       *离开房间时间
-       * </pre>
-       */
-      public long getLeaveTime() {
-        return leaveTime_;
-      }
-      /**
-       * <code>optional uint64 leaveTime = 2;</code>
-       *
-       * <pre>
-       *离开房间时间
-       * </pre>
-       */
-      public Builder setLeaveTime(long value) {
-        bitField0_ |= 0x00000002;
-        leaveTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 leaveTime = 2;</code>
-       *
-       * <pre>
-       *离开房间时间
-       * </pre>
-       */
-      public Builder clearLeaveTime() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        leaveTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LeaveRoom)
-    }
-
-    static {
-      defaultInstance = new LeaveRoom(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LeaveRoom)
-  }
-
-  public interface FollowRoomOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional uint64 enterTime = 1;
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    boolean hasEnterTime();
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    long getEnterTime();
-
-    // optional uint64 followTime = 2;
-    /**
-     * <code>optional uint64 followTime = 2;</code>
-     *
-     * <pre>
-     *关注主播时间
-     * </pre>
-     */
-    boolean hasFollowTime();
-    /**
-     * <code>optional uint64 followTime = 2;</code>
-     *
-     * <pre>
-     *关注主播时间
-     * </pre>
-     */
-    long getFollowTime();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.FollowRoom}
-   *
-   * <pre>
-   *type=5 extData填充内容
-   * </pre>
-   */
-  public static final class FollowRoom extends
-      com.google.protobuf.GeneratedMessage
-      implements FollowRoomOrBuilder {
-    // Use FollowRoom.newBuilder() to construct.
-    private FollowRoom(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private FollowRoom(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final FollowRoom defaultInstance;
-    public static FollowRoom getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public FollowRoom getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private FollowRoom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              enterTime_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              followTime_ = input.readUInt64();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.FollowRoom.class, com.mi.liveassistant.proto.CommonChannelProto.FollowRoom.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<FollowRoom> PARSER =
-        new com.google.protobuf.AbstractParser<FollowRoom>() {
-      public FollowRoom parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new FollowRoom(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<FollowRoom> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional uint64 enterTime = 1;
-    public static final int ENTERTIME_FIELD_NUMBER = 1;
-    private long enterTime_;
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    public boolean hasEnterTime() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional uint64 enterTime = 1;</code>
-     *
-     * <pre>
-     *进入房间时间
-     * </pre>
-     */
-    public long getEnterTime() {
-      return enterTime_;
-    }
-
-    // optional uint64 followTime = 2;
-    public static final int FOLLOWTIME_FIELD_NUMBER = 2;
-    private long followTime_;
-    /**
-     * <code>optional uint64 followTime = 2;</code>
-     *
-     * <pre>
-     *关注主播时间
-     * </pre>
-     */
-    public boolean hasFollowTime() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional uint64 followTime = 2;</code>
-     *
-     * <pre>
-     *关注主播时间
-     * </pre>
-     */
-    public long getFollowTime() {
-      return followTime_;
-    }
-
-    private void initFields() {
-      enterTime_ = 0L;
-      followTime_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, enterTime_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt64(2, followTime_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, enterTime_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, followTime_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.FollowRoom prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.FollowRoom}
-     *
-     * <pre>
-     *type=5 extData填充内容
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.FollowRoomOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.FollowRoom.class, com.mi.liveassistant.proto.CommonChannelProto.FollowRoom.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.FollowRoom.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        enterTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        followTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.FollowRoom getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.FollowRoom.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.FollowRoom build() {
-        com.mi.liveassistant.proto.CommonChannelProto.FollowRoom result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.FollowRoom buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.FollowRoom result = new com.mi.liveassistant.proto.CommonChannelProto.FollowRoom(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.enterTime_ = enterTime_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.followTime_ = followTime_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.FollowRoom) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.FollowRoom)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.FollowRoom other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.FollowRoom.getDefaultInstance()) return this;
-        if (other.hasEnterTime()) {
-          setEnterTime(other.getEnterTime());
-        }
-        if (other.hasFollowTime()) {
-          setFollowTime(other.getFollowTime());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.FollowRoom parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.FollowRoom) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional uint64 enterTime = 1;
-      private long enterTime_ ;
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public boolean hasEnterTime() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public long getEnterTime() {
-        return enterTime_;
-      }
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public Builder setEnterTime(long value) {
-        bitField0_ |= 0x00000001;
-        enterTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 enterTime = 1;</code>
-       *
-       * <pre>
-       *进入房间时间
-       * </pre>
-       */
-      public Builder clearEnterTime() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        enterTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // optional uint64 followTime = 2;
-      private long followTime_ ;
-      /**
-       * <code>optional uint64 followTime = 2;</code>
-       *
-       * <pre>
-       *关注主播时间
-       * </pre>
-       */
-      public boolean hasFollowTime() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint64 followTime = 2;</code>
-       *
-       * <pre>
-       *关注主播时间
-       * </pre>
-       */
-      public long getFollowTime() {
-        return followTime_;
-      }
-      /**
-       * <code>optional uint64 followTime = 2;</code>
-       *
-       * <pre>
-       *关注主播时间
-       * </pre>
-       */
-      public Builder setFollowTime(long value) {
-        bitField0_ |= 0x00000002;
-        followTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 followTime = 2;</code>
-       *
-       * <pre>
-       *关注主播时间
-       * </pre>
-       */
-      public Builder clearFollowTime() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        followTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.FollowRoom)
-    }
-
-    static {
-      defaultInstance = new FollowRoom(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.FollowRoom)
-  }
-
-  public interface LikeFeedbackOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // optional uint64 zuid = 1;
-    /**
-     * <code>optional uint64 zuid = 1;</code>
-     *
-     * <pre>
-     *不喜欢主播的id
-     * </pre>
-     */
-    boolean hasZuid();
-    /**
-     * <code>optional uint64 zuid = 1;</code>
-     *
-     * <pre>
-     *不喜欢主播的id
-     * </pre>
-     */
-    long getZuid();
-
-    // optional string roomId = 2;
-    /**
-     * <code>optional string roomId = 2;</code>
-     *
-     * <pre>
-     *不喜欢直播的房间id
-     * </pre>
-     */
-    boolean hasRoomId();
-    /**
-     * <code>optional string roomId = 2;</code>
-     *
-     * <pre>
-     *不喜欢直播的房间id
-     * </pre>
-     */
-    java.lang.String getRoomId();
-    /**
-     * <code>optional string roomId = 2;</code>
-     *
-     * <pre>
-     *不喜欢直播的房间id
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getRoomIdBytes();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.LikeFeedback}
-   *
-   * <pre>
-   *type=6 extData填充内容
-   * </pre>
-   */
-  public static final class LikeFeedback extends
-      com.google.protobuf.GeneratedMessage
-      implements LikeFeedbackOrBuilder {
-    // Use LikeFeedback.newBuilder() to construct.
-    private LikeFeedback(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private LikeFeedback(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final LikeFeedback defaultInstance;
-    public static LikeFeedback getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public LikeFeedback getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private LikeFeedback(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              zuid_ = input.readUInt64();
-              break;
-            }
-            case 18: {
-              bitField0_ |= 0x00000002;
-              roomId_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback.class, com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<LikeFeedback> PARSER =
-        new com.google.protobuf.AbstractParser<LikeFeedback>() {
-      public LikeFeedback parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LikeFeedback(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<LikeFeedback> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // optional uint64 zuid = 1;
-    public static final int ZUID_FIELD_NUMBER = 1;
-    private long zuid_;
-    /**
-     * <code>optional uint64 zuid = 1;</code>
-     *
-     * <pre>
-     *不喜欢主播的id
-     * </pre>
-     */
-    public boolean hasZuid() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional uint64 zuid = 1;</code>
-     *
-     * <pre>
-     *不喜欢主播的id
-     * </pre>
-     */
-    public long getZuid() {
-      return zuid_;
-    }
-
-    // optional string roomId = 2;
-    public static final int ROOMID_FIELD_NUMBER = 2;
-    private java.lang.Object roomId_;
-    /**
-     * <code>optional string roomId = 2;</code>
-     *
-     * <pre>
-     *不喜欢直播的房间id
-     * </pre>
-     */
-    public boolean hasRoomId() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string roomId = 2;</code>
-     *
-     * <pre>
-     *不喜欢直播的房间id
-     * </pre>
-     */
-    public java.lang.String getRoomId() {
-      java.lang.Object ref = roomId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          roomId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string roomId = 2;</code>
-     *
-     * <pre>
-     *不喜欢直播的房间id
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getRoomIdBytes() {
-      java.lang.Object ref = roomId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        roomId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      zuid_ = 0L;
-      roomId_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, zuid_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getRoomIdBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, zuid_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getRoomIdBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.LikeFeedback}
-     *
-     * <pre>
-     *type=6 extData填充内容
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.LikeFeedbackOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback.class, com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        zuid_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        roomId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback build() {
-        com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback result = new com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.zuid_ = zuid_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.roomId_ = roomId_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback.getDefaultInstance()) return this;
-        if (other.hasZuid()) {
-          setZuid(other.getZuid());
-        }
-        if (other.hasRoomId()) {
-          bitField0_ |= 0x00000002;
-          roomId_ = other.roomId_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.LikeFeedback) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // optional uint64 zuid = 1;
-      private long zuid_ ;
-      /**
-       * <code>optional uint64 zuid = 1;</code>
-       *
-       * <pre>
-       *不喜欢主播的id
-       * </pre>
-       */
-      public boolean hasZuid() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional uint64 zuid = 1;</code>
-       *
-       * <pre>
-       *不喜欢主播的id
-       * </pre>
-       */
-      public long getZuid() {
-        return zuid_;
-      }
-      /**
-       * <code>optional uint64 zuid = 1;</code>
-       *
-       * <pre>
-       *不喜欢主播的id
-       * </pre>
-       */
-      public Builder setZuid(long value) {
-        bitField0_ |= 0x00000001;
-        zuid_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 zuid = 1;</code>
-       *
-       * <pre>
-       *不喜欢主播的id
-       * </pre>
-       */
-      public Builder clearZuid() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        zuid_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // optional string roomId = 2;
-      private java.lang.Object roomId_ = "";
-      /**
-       * <code>optional string roomId = 2;</code>
-       *
-       * <pre>
-       *不喜欢直播的房间id
-       * </pre>
-       */
-      public boolean hasRoomId() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string roomId = 2;</code>
-       *
-       * <pre>
-       *不喜欢直播的房间id
-       * </pre>
-       */
-      public java.lang.String getRoomId() {
-        java.lang.Object ref = roomId_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string roomId = 2;</code>
-       *
-       * <pre>
-       *不喜欢直播的房间id
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getRoomIdBytes() {
-        java.lang.Object ref = roomId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          roomId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string roomId = 2;</code>
-       *
-       * <pre>
-       *不喜欢直播的房间id
-       * </pre>
-       */
-      public Builder setRoomId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string roomId = 2;</code>
-       *
-       * <pre>
-       *不喜欢直播的房间id
-       * </pre>
-       */
-      public Builder clearRoomId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        roomId_ = getDefaultInstance().getRoomId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string roomId = 2;</code>
-       *
-       * <pre>
-       *不喜欢直播的房间id
-       * </pre>
-       */
-      public Builder setRoomIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomId_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LikeFeedback)
-    }
-
-    static {
-      defaultInstance = new LikeFeedback(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LikeFeedback)
-  }
-
-  public interface LiveRecvFlagRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // required uint32 retCode = 1;
-    /**
-     * <code>required uint32 retCode = 1;</code>
-     *
-     * <pre>
-     *0=成功
-     * </pre>
-     */
-    boolean hasRetCode();
-    /**
-     * <code>required uint32 retCode = 1;</code>
-     *
-     * <pre>
-     *0=成功
-     * </pre>
-     */
-    int getRetCode();
-  }
-  /**
-   * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagRsp}
-   */
-  public static final class LiveRecvFlagRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements LiveRecvFlagRspOrBuilder {
-    // Use LiveRecvFlagRsp.newBuilder() to construct.
-    private LiveRecvFlagRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private LiveRecvFlagRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final LiveRecvFlagRsp defaultInstance;
-    public static LiveRecvFlagRsp getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public LiveRecvFlagRsp getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private LiveRecvFlagRsp(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              retCode_ = input.readUInt32();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp.class, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<LiveRecvFlagRsp> PARSER =
-        new com.google.protobuf.AbstractParser<LiveRecvFlagRsp>() {
-      public LiveRecvFlagRsp parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LiveRecvFlagRsp(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<LiveRecvFlagRsp> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    // required uint32 retCode = 1;
-    public static final int RETCODE_FIELD_NUMBER = 1;
-    private int retCode_;
-    /**
-     * <code>required uint32 retCode = 1;</code>
-     *
-     * <pre>
-     *0=成功
-     * </pre>
-     */
-    public boolean hasRetCode() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required uint32 retCode = 1;</code>
-     *
-     * <pre>
-     *0=成功
-     * </pre>
-     */
-    public int getRetCode() {
-      return retCode_;
-    }
-
-    private void initFields() {
-      retCode_ = 0;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      if (!hasRetCode()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt32(1, retCode_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, retCode_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.liveassistant.proto.LiveRecvFlagRsp}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRspOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp.class, com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp.Builder.class);
-      }
-
-      // Construct using com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        retCode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp getDefaultInstanceForType() {
-        return com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp.getDefaultInstance();
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp build() {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp buildPartial() {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp result = new com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.retCode_ = retCode_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp) {
-          return mergeFrom((com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp other) {
-        if (other == com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp.getDefaultInstance()) return this;
-        if (other.hasRetCode()) {
-          setRetCode(other.getRetCode());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasRetCode()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mi.liveassistant.proto.CommonChannelProto.LiveRecvFlagRsp) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // required uint32 retCode = 1;
-      private int retCode_ ;
-      /**
-       * <code>required uint32 retCode = 1;</code>
-       *
-       * <pre>
-       *0=成功
-       * </pre>
-       */
-      public boolean hasRetCode() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required uint32 retCode = 1;</code>
-       *
-       * <pre>
-       *0=成功
-       * </pre>
-       */
-      public int getRetCode() {
-        return retCode_;
-      }
-      /**
-       * <code>required uint32 retCode = 1;</code>
-       *
-       * <pre>
-       *0=成功
-       * </pre>
-       */
-      public Builder setRetCode(int value) {
-        bitField0_ |= 0x00000001;
-        retCode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required uint32 retCode = 1;</code>
-       *
-       * <pre>
-       *0=成功
-       * </pre>
-       */
-      public Builder clearRetCode() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        retCode_ = 0;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.LiveRecvFlagRsp)
-    }
-
-    static {
-      defaultInstance = new LiveRecvFlagRsp(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.LiveRecvFlagRsp)
-  }
-
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_ChannelBanner_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_ChannelItem_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UserInfoItemData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UserInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UserInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_BannerItemData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UiTemplateBanner_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_RichText_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_RichText_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_MiddleInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_ListWidgetInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_UserBrief_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_UserBrief_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_ShopBrief_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_LiveInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_liveassistant_proto_BackInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_liveassistant_proto_BackInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_NavigationData_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_NoticeData_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -39290,261 +27637,147 @@ public final class CommonChannelProto {
       "ief\022\021\n\tviewerCnt\030\003 \001(\r\022\013\n\003url\030\004 \001(\t\022\021\n\ts" +
       "tartTime\030\005 \001(\004\022\017\n\007endTime\030\006 \001(\004\022\021\n\tbackT" +
       "itle\030\007 \001(\t\022\020\n\010coverUrl\030\010 \001(\t\022\020\n\010shareUrl" +
-      "\030\t \001(\t\022\020\n\010location\030\n \001(\t\"d\n\tVideoInfo\022\n\n" +
-      "\002id\030\001 \002(\t\022\022\n\nview_count\030\002 \001(\004\0227\n\tuser_in" +
-      "fo\030\003 \001(\0132$.com.mi.liveassistant.proto.Us" +
-      "erInfo\"\220\001\n\016NavigationData\022\014\n\004name\030\001 \001(\t\022",
-      "\020\n\010bgImgUrl\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001(\t\022\025\n\rju" +
-      "mpSchemeUri\030\004 \001(\t\022\021\n\ttextColor\030\005 \001(\r\022\024\n\014" +
-      "hexColorCode\030\006 \001(\t\022\r\n\005text1\030\007 \001(\t\"U\n\024UiT" +
-      "emplateNavigation\022=\n\titemDatas\030\001 \003(\0132*.c" +
-      "om.mi.liveassistant.proto.NavigationData" +
-      "\"i\n\020UiTemplateNotice\022;\n\013noticeItems\030\001 \003(" +
-      "\0132&.com.mi.liveassistant.proto.NoticeDat" +
-      "a\022\030\n\020headerViewAllUri\030\002 \001(\t\"N\n\nNoticeDat" +
-      "a\022\020\n\010noticeId\030\001 \001(\t\022\014\n\004zuid\030\002 \001(\004\022\021\n\tbeg" +
-      "inTime\030\003 \001(\004\022\r\n\005title\030\004 \001(\t\"\233\001\n\021UiTempla",
-      "teRanking\022>\n\titemDatas\030\001 \003(\0132+.com.mi.li" +
-      "veassistant.proto.RankingItemData\022\025\n\rjum" +
-      "pSchemeUri\030\002 \001(\t\022\r\n\005text1\030\003 \001(\t\022\r\n\005text2" +
-      "\030\004 \001(\t\022\021\n\ticonStyle\030\005 \001(\r\"`\n\017RankingItem" +
-      "Data\0226\n\010userInfo\030\001 \001(\0132$.com.mi.liveassi" +
-      "stant.proto.UserInfo\022\025\n\rjumpSchemeUri\030\002 " +
-      "\001(\t\"N\n\017LiveRecvFlagReq\022;\n\005items\030\001 \003(\0132,." +
-      "com.mi.liveassistant.proto.LiveRecvFlagI" +
-      "tem\"R\n\020LiveRecvFlagItem\022\014\n\004date\030\001 \001(\004\022\014\n" +
-      "\004type\030\002 \001(\r\022\017\n\007extData\030\003 \001(\014\022\021\n\trecommen",
-      "d\030\004 \001(\t\"/\n\nGiftDetail\022\016\n\006giftId\030\001 \001(\r\022\021\n" +
-      "\tgiftWorth\030\002 \001(\r\"1\n\tLeaveRoom\022\021\n\tenterTi" +
-      "me\030\001 \001(\004\022\021\n\tleaveTime\030\002 \001(\004\"3\n\nFollowRoo" +
-      "m\022\021\n\tenterTime\030\001 \001(\004\022\022\n\nfollowTime\030\002 \001(\004" +
-      "\",\n\014LikeFeedback\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roomId" +
-      "\030\002 \001(\t\"\"\n\017LiveRecvFlagRsp\022\017\n\007retCode\030\001 \002" +
-      "(\rB0\n\032com.mi.liveassistant.protoB\022Common" +
-      "ChannelProto"
+      "\030\t \001(\t\022\020\n\010location\030\n \001(\tB0\n\032com.mi.livea" +
+      "ssistant.protoB\022CommonChannelProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_com_mi_liveassistant_proto_ChannelBanner_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor,
-              new java.lang.String[] { "BgUrl", "LinkUrl", "Desc", });
-          internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_com_mi_liveassistant_proto_ChannelItem_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor,
-              new java.lang.String[] { "UiType", "UiData", "FullColumn", "SectionId", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor,
-              new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", });
-          internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor,
-              new java.lang.String[] { "Text", "ImgUrl", "JumpSchemeUri", "UserInfo", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor,
-              new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", "SubHeaderName", });
-          internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor =
-            getDescriptor().getMessageTypes().get(5);
-          internal_static_com_mi_liveassistant_proto_UserInfoItemData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor,
-              new java.lang.String[] { "UserInfo", "JumpSchemeUri", });
-          internal_static_com_mi_liveassistant_proto_UserInfo_descriptor =
-            getDescriptor().getMessageTypes().get(6);
-          internal_static_com_mi_liveassistant_proto_UserInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UserInfo_descriptor,
-              new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "AdminUids", "Certification", "CertificationType", "FansCount", });
-          internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor =
-            getDescriptor().getMessageTypes().get(7);
-          internal_static_com_mi_liveassistant_proto_BannerItemData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor,
-              new java.lang.String[] { "PicUrl", "SkipUrl", "LastUpdateTs", "BannerId", "ShareIconUrl", "ShareTitle", "ShareDesc", "ChannelId", "Lang", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_com_mi_liveassistant_proto_UiTemplateBanner_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor,
-              new java.lang.String[] { "ItemDatas", "Type", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor =
-            getDescriptor().getMessageTypes().get(9);
-          internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor,
-              new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", });
-          internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor =
-            getDescriptor().getMessageTypes().get(10);
-          internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor,
-              new java.lang.String[] { "Name", "Desc", "ImgUrl", "JumpSchemeUri", "UserInfo", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor =
-            getDescriptor().getMessageTypes().get(11);
-          internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor,
-              new java.lang.String[] { "Items", "HeaderName", "HeaderViewAllUri", "SubHeaderName", "HeaderUiType", });
-          internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor =
-            getDescriptor().getMessageTypes().get(12);
-          internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor,
-              new java.lang.String[] { "Type", "Items", "JumpSchemeUri", "UpRightText", "DownText1", "DownText2", "ImgUrl", "PublishTime", "UpLeftText", "ImgUrl2", "Widget", "TopLeft", "Middle", "Label", });
-          internal_static_com_mi_liveassistant_proto_RichText_descriptor =
-            getDescriptor().getMessageTypes().get(13);
-          internal_static_com_mi_liveassistant_proto_RichText_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_RichText_descriptor,
-              new java.lang.String[] { "Text", "JumpSchemeUri", "BgImageID", });
-          internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor =
-            getDescriptor().getMessageTypes().get(14);
-          internal_static_com_mi_liveassistant_proto_MiddleInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor,
-              new java.lang.String[] { "Text1", "Text2", });
-          internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor =
-            getDescriptor().getMessageTypes().get(15);
-          internal_static_com_mi_liveassistant_proto_ListWidgetInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor,
-              new java.lang.String[] { "JumpSchemeUri", "IconUrl", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor =
-            getDescriptor().getMessageTypes().get(16);
-          internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor,
-              new java.lang.String[] { "Color", "Height", "Title", });
-          internal_static_com_mi_liveassistant_proto_UserBrief_descriptor =
-            getDescriptor().getMessageTypes().get(17);
-          internal_static_com_mi_liveassistant_proto_UserBrief_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UserBrief_descriptor,
-              new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", });
-          internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor =
-            getDescriptor().getMessageTypes().get(18);
-          internal_static_com_mi_liveassistant_proto_ShopBrief_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor,
-              new java.lang.String[] { "HideGoods", "DesiredCnt", });
-          internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor =
-            getDescriptor().getMessageTypes().get(19);
-          internal_static_com_mi_liveassistant_proto_LiveInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor,
-              new java.lang.String[] { "LiveId", "User", "Location", "ViewerCnt", "Url", "CoverUrl", "LiTitle", "StartTime", "Tag", "Shop", "AppType", "LiveType", });
-          internal_static_com_mi_liveassistant_proto_BackInfo_descriptor =
-            getDescriptor().getMessageTypes().get(20);
-          internal_static_com_mi_liveassistant_proto_BackInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_BackInfo_descriptor,
-              new java.lang.String[] { "BackId", "User", "ViewerCnt", "Url", "StartTime", "EndTime", "BackTitle", "CoverUrl", "ShareUrl", "Location", });
-          internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor =
-            getDescriptor().getMessageTypes().get(21);
-          internal_static_com_mi_liveassistant_proto_VideoInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_VideoInfo_descriptor,
-              new java.lang.String[] { "Id", "ViewCount", "UserInfo", });
-          internal_static_com_mi_liveassistant_proto_NavigationData_descriptor =
-            getDescriptor().getMessageTypes().get(22);
-          internal_static_com_mi_liveassistant_proto_NavigationData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_NavigationData_descriptor,
-              new java.lang.String[] { "Name", "BgImgUrl", "IconUrl", "JumpSchemeUri", "TextColor", "HexColorCode", "Text1", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor =
-            getDescriptor().getMessageTypes().get(23);
-          internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateNavigation_descriptor,
-              new java.lang.String[] { "ItemDatas", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor =
-            getDescriptor().getMessageTypes().get(24);
-          internal_static_com_mi_liveassistant_proto_UiTemplateNotice_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateNotice_descriptor,
-              new java.lang.String[] { "NoticeItems", "HeaderViewAllUri", });
-          internal_static_com_mi_liveassistant_proto_NoticeData_descriptor =
-            getDescriptor().getMessageTypes().get(25);
-          internal_static_com_mi_liveassistant_proto_NoticeData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_NoticeData_descriptor,
-              new java.lang.String[] { "NoticeId", "Zuid", "BeginTime", "Title", });
-          internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor =
-            getDescriptor().getMessageTypes().get(26);
-          internal_static_com_mi_liveassistant_proto_UiTemplateRanking_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_UiTemplateRanking_descriptor,
-              new java.lang.String[] { "ItemDatas", "JumpSchemeUri", "Text1", "Text2", "IconStyle", });
-          internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor =
-            getDescriptor().getMessageTypes().get(27);
-          internal_static_com_mi_liveassistant_proto_RankingItemData_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_RankingItemData_descriptor,
-              new java.lang.String[] { "UserInfo", "JumpSchemeUri", });
-          internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor =
-            getDescriptor().getMessageTypes().get(28);
-          internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LiveRecvFlagReq_descriptor,
-              new java.lang.String[] { "Items", });
-          internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor =
-            getDescriptor().getMessageTypes().get(29);
-          internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LiveRecvFlagItem_descriptor,
-              new java.lang.String[] { "Date", "Type", "ExtData", "Recommend", });
-          internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor =
-            getDescriptor().getMessageTypes().get(30);
-          internal_static_com_mi_liveassistant_proto_GiftDetail_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_GiftDetail_descriptor,
-              new java.lang.String[] { "GiftId", "GiftWorth", });
-          internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor =
-            getDescriptor().getMessageTypes().get(31);
-          internal_static_com_mi_liveassistant_proto_LeaveRoom_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LeaveRoom_descriptor,
-              new java.lang.String[] { "EnterTime", "LeaveTime", });
-          internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor =
-            getDescriptor().getMessageTypes().get(32);
-          internal_static_com_mi_liveassistant_proto_FollowRoom_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_FollowRoom_descriptor,
-              new java.lang.String[] { "EnterTime", "FollowTime", });
-          internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor =
-            getDescriptor().getMessageTypes().get(33);
-          internal_static_com_mi_liveassistant_proto_LikeFeedback_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LikeFeedback_descriptor,
-              new java.lang.String[] { "Zuid", "RoomId", });
-          internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor =
-            getDescriptor().getMessageTypes().get(34);
-          internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mi_liveassistant_proto_LiveRecvFlagRsp_descriptor,
-              new java.lang.String[] { "RetCode", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_com_mi_liveassistant_proto_ChannelBanner_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_ChannelBanner_descriptor,
+        new java.lang.String[] { "BgUrl", "LinkUrl", "Desc", });
+    internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_com_mi_liveassistant_proto_ChannelItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_ChannelItem_descriptor,
+        new java.lang.String[] { "UiType", "UiData", "FullColumn", "SectionId", });
+    internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UiTemplateOneTextOneImg_descriptor,
+        new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", });
+    internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_OneTextOneImgItemData_descriptor,
+        new java.lang.String[] { "Text", "ImgUrl", "JumpSchemeUri", "UserInfo", });
+    internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UiTemplateUserInfo_descriptor,
+        new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", "SubHeaderName", });
+    internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_com_mi_liveassistant_proto_UserInfoItemData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UserInfoItemData_descriptor,
+        new java.lang.String[] { "UserInfo", "JumpSchemeUri", });
+    internal_static_com_mi_liveassistant_proto_UserInfo_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_mi_liveassistant_proto_UserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UserInfo_descriptor,
+        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "AdminUids", "Certification", "CertificationType", "FansCount", });
+    internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_mi_liveassistant_proto_BannerItemData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_BannerItemData_descriptor,
+        new java.lang.String[] { "PicUrl", "SkipUrl", "LastUpdateTs", "BannerId", "ShareIconUrl", "ShareTitle", "ShareDesc", "ChannelId", "Lang", });
+    internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_com_mi_liveassistant_proto_UiTemplateBanner_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UiTemplateBanner_descriptor,
+        new java.lang.String[] { "ItemDatas", "Type", });
+    internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UiTemplateTwoTextOneImg_descriptor,
+        new java.lang.String[] { "ItemDatas", "HeaderName", "HeaderViewAllUri", });
+    internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_TwoTextOneImgItemData_descriptor,
+        new java.lang.String[] { "Name", "Desc", "ImgUrl", "JumpSchemeUri", "UserInfo", });
+    internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UiTemplateLiveOrReplayInfo_descriptor,
+        new java.lang.String[] { "Items", "HeaderName", "HeaderViewAllUri", "SubHeaderName", "HeaderUiType", });
+    internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_LiveOrReplayItemInfo_descriptor,
+        new java.lang.String[] { "Type", "Items", "JumpSchemeUri", "UpRightText", "DownText1", "DownText2", "ImgUrl", "PublishTime", "UpLeftText", "ImgUrl2", "Widget", "TopLeft", "Middle", "Label", });
+    internal_static_com_mi_liveassistant_proto_RichText_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_com_mi_liveassistant_proto_RichText_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_RichText_descriptor,
+        new java.lang.String[] { "Text", "JumpSchemeUri", "BgImageID", });
+    internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_com_mi_liveassistant_proto_MiddleInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_MiddleInfo_descriptor,
+        new java.lang.String[] { "Text1", "Text2", });
+    internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_com_mi_liveassistant_proto_ListWidgetInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_ListWidgetInfo_descriptor,
+        new java.lang.String[] { "JumpSchemeUri", "IconUrl", });
+    internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UiTemplateSeparator_descriptor,
+        new java.lang.String[] { "Color", "Height", "Title", });
+    internal_static_com_mi_liveassistant_proto_UserBrief_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_com_mi_liveassistant_proto_UserBrief_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_UserBrief_descriptor,
+        new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", });
+    internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_com_mi_liveassistant_proto_ShopBrief_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_ShopBrief_descriptor,
+        new java.lang.String[] { "HideGoods", "DesiredCnt", });
+    internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_com_mi_liveassistant_proto_LiveInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_LiveInfo_descriptor,
+        new java.lang.String[] { "LiveId", "User", "Location", "ViewerCnt", "Url", "CoverUrl", "LiTitle", "StartTime", "Tag", "Shop", "AppType", "LiveType", });
+    internal_static_com_mi_liveassistant_proto_BackInfo_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_com_mi_liveassistant_proto_BackInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_BackInfo_descriptor,
+        new java.lang.String[] { "BackId", "User", "ViewerCnt", "Url", "StartTime", "EndTime", "BackTitle", "CoverUrl", "ShareUrl", "Location", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -4,6 +4,7 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.Relation;
+import com.mi.liveassistant.proto.CommonChannelProto;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.proto.UserProto;
 
@@ -223,6 +224,34 @@ public class User implements Serializable {
         mTVRoomId = protoRoom.getTvRoomid();
         mRoomType = protoRoom.getType();
         mAppType = protoRoom.getAppType();
+    }
+
+    public void parse(CommonChannelProto.UserInfo protoUser) {
+        if (protoUser == null) {
+            return;
+        }
+        this.uid = protoUser.getZuid();
+        this.avatar = protoUser.getAvatar();
+        this.nickname = protoUser.getNickname();
+        this.sign = protoUser.getSign();
+        this.gender = protoUser.getGender();
+        this.level = protoUser.getLevel();
+        this.badge = protoUser.getBadge();
+        this.updateTime = protoUser.getUpdateTime();
+        this.certification = protoUser.getCertification();
+        this.certificationType = protoUser.getCertificationType();
+        this.fansNum = protoUser.getFansCount();
+    }
+
+    public void parse(CommonChannelProto.UserBrief protoUser) {
+        if (protoUser == null) {
+            return;
+        }
+        this.uid = protoUser.getUId();
+        this.avatar = protoUser.getAvatar();
+        this.nickname = protoUser.getNickname();
+        this.level = protoUser.getLevel();
+        this.certificationType = protoUser.getCertType();
     }
 
     @Override
