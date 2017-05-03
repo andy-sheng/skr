@@ -61,6 +61,7 @@ task makeJar(type: Jar, dependsOn: build) {
     from('build/intermediates/classes/debug/', configurations.compile.collect {
         it.isDirectory() ? it : zipTree(it)
     })
+    exclude '**/BuildConfig.class'
     exclude '**/R.class'
     exclude '**/R$*.class'
 }

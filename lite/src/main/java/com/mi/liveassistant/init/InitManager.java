@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.mi.liveassistant.BuildConfig;
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.filesystem.SDCardUtils;
 import com.mi.liveassistant.common.global.GlobalData;
@@ -111,8 +110,7 @@ public class InitManager {
     }
 
     public static void initLogger() {
-        if (BuildConfig.DEBUG
-                || Constants.isTestBuild
+        if (Constants.isTestBuild
                 || Constants.isDailyBuild
                 || Constants.isDebugBuild) {
             setAppAndMilinkLogLevel(TraceLevel.ALL);
