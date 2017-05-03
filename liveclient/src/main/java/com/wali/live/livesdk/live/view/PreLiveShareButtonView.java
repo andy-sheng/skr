@@ -117,7 +117,6 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
     private int mShareToastWidth;
     private CustomToast mCustomToast;
     private SharePresenter mSharePresenter;
-
     private int mAllowShareType;
 
     //这里index是显示的实际button的下标, shareBtnIndex是对应SHARE_DRAWABLE_ID，SHARE_TV_ID的下标索引。
@@ -132,6 +131,7 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
             mBtnSet[index].setOnClickListener(this);
         } else {
             mBtnSet[index].setVisibility(GONE);
+            mShareBtnStateSet[shareBtnIndex] = false;
         }
     }
 
@@ -356,7 +356,6 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
             mShareBtnStateSet[BTN_MILIAO] = SnsShareHelper.isMiliaoInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_SELECTED, false) : false;
             mShareBtnStateSet[BTN_MILIAO_FEEDS] = SnsShareHelper.isMiliaoInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, false) : false;
         }
-
 
         float density = DisplayUtils.getDensity();
         if (density >= 3) {

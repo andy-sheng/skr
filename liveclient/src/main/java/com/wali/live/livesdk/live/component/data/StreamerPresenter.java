@@ -160,7 +160,7 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
 
     // 开启闪光灯
     public void enableFlashLight(boolean enable) {
-        if (mStreamer != null && mFlashLight != enable) {
+        if (mStreamer != null) {
             mFlashLight = enable;
             mStreamer.toggleTorch(mFlashLight);
         }

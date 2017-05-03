@@ -68,4 +68,6 @@
     <string name="feeds">My feed</string>
 
     <string name="uninstall_share_tips">Install %1$s first</string>
+    <string name="can_not_enter_room_use_myself">Use another Mi Live ID to enter your room</string>
+
 </resources>

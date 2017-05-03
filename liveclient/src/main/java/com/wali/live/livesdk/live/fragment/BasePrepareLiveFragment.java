@@ -379,43 +379,46 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     protected int getSnsType() {
         int snsType = 0;
-        if (!CommonUtils.isLocalChina()) {
-            if (mShareBtnView.isInstagramSelected()) {
-                snsType |= INSTAGRAM;
+        if (mShareBtnView.getVisibility() == View.VISIBLE) {
+            if (!CommonUtils.isLocalChina()) {
+                if (mShareBtnView.isInstagramSelected()) {
+                    snsType |= INSTAGRAM;
+                }
+                if (mShareBtnView.isWhatsAppSelected()) {
+                    snsType |= WHATSAPP;
+                }
+                if (mShareBtnView.isFacebookSelected()) {
+                    snsType |= FACEBOOK;
+                }
+                if (mShareBtnView.isTwitterSelected()) {
+                    snsType |= TWITTER;
+                }
+            } else {
+                if (mShareBtnView.isQQSelected()) {
+                    snsType |= QQ;
+                }
+                if (mShareBtnView.isQzoneSelected()) {
+                    snsType |= QZONE;
+                }
+                if (mShareBtnView.isWeiboSelected()) {
+                    snsType |= WEIBO;
+                }
+                if (mShareBtnView.isMiliaoSelected()) {
+                    snsType |= MILIAO;
+                }
+                if (mShareBtnView.isMiliaoFeedsSelected()) {
+                    snsType |= MILIAO_FEEDS;
+                }
             }
-            if (mShareBtnView.isWhatsAppSelected()) {
-                snsType |= WHATSAPP;
+            // 共用
+            if (mShareBtnView.isWXSelected()) {
+                snsType |= WEI_XIN;
             }
-            if (mShareBtnView.isFacebookSelected()) {
-                snsType |= FACEBOOK;
-            }
-            if (mShareBtnView.isTwitterSelected()) {
-                snsType |= TWITTER;
-            }
-        } else {
-            if (mShareBtnView.isQQSelected()) {
-                snsType |= QQ;
-            }
-            if (mShareBtnView.isQzoneSelected()) {
-                snsType |= QZONE;
-            }
-            if (mShareBtnView.isWeiboSelected()) {
-                snsType |= WEIBO;
-            }
-            if (mShareBtnView.isMiliaoSelected()) {
-                snsType |= MILIAO;
-            }
-            if (mShareBtnView.isMiliaoFeedsSelected()) {
-                snsType |= MILIAO_FEEDS;
+            if (mShareBtnView.isMomentSelected()) {
+                snsType |= MOMENT;
             }
         }
-        // 共用
-        if (mShareBtnView.isWXSelected()) {
-            snsType |= WEI_XIN;
-        }
-        if (mShareBtnView.isMomentSelected()) {
-            snsType |= MOMENT;
-        }
+        MyLog.w(TAG, "snsType=" + snsType);
         return snsType;
     }
 
