@@ -131,6 +131,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
             return;
         }
         ToastUtils.showToast(mLiveItem.getUser().getUid() + ":" + mLiveItem.getId());
+        WatchActivity.openActivity(this, mLiveItem.getUser().getUid(), mLiveItem.getId());
     }
 
     @Override

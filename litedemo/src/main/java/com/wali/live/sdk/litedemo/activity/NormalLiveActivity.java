@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.liveassistant.camera.CameraView;
+import com.mi.liveassistant.data.User;
 import com.mi.liveassistant.room.manager.live.NormalLiveManager;
+import com.mi.liveassistant.room.user.UserInfoManager;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 
@@ -17,7 +21,16 @@ import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 
 public class NormalLiveActivity extends RxActivity {
     private NormalLiveManager mLiveManager;
+
     private CameraView mCameraView;
+
+    private SimpleDraweeView mAnchorDv;
+    private TextView mAnchorTv;
+
+    private UserInfoManager mUserManager;
+
+    private long mAnchorId;
+    private User mAnchor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

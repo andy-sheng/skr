@@ -4,13 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.mi.liveassistant.avatar.AvatarUtils;
+import com.mi.liveassistant.data.User;
 import com.mi.liveassistant.room.manager.watch.WatchManager;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
+import com.mi.liveassistant.room.user.UserInfoManager;
+import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
+import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
+import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 /**
@@ -21,11 +30,17 @@ public class WatchActivity extends RxActivity {
     public static final String EXTRA_LIVE_ID = "live_id";
 
     private WatchManager mWatchManager;
+    private UserInfoManager mUserManager;
 
     private RelativeLayout mSurfaceContainer;
 
+    private SimpleDraweeView mAnchorDv;
+    private TextView mAnchorTv;
+
     private long mPlayerId;
     private String mLiveId;
+
+    private User mAnchor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +68,9 @@ public class WatchActivity extends RxActivity {
 
     private void initView() {
         mSurfaceContainer = $(R.id.surface_container);
+
+        mAnchorDv = $(R.id.anchor_dv);
+        mAnchorTv = $(R.id.anchor_tv);
     }
 
     private void initManager() {
@@ -69,6 +87,27 @@ public class WatchActivity extends RxActivity {
                 ToastUtils.showToast("enter live success");
             }
         });
+
+        mUserManager = new UserInfoManager();
+        mUserManager.asyncUserByUuid(mPlayerId, new IUserCallback() {
+            @Override
+            public void notifyFail(int errCode) {
+            }
+
+            @Override
+            public void notifySuccess(User user) {
+                mAnchor = user;
+                updateAnchorView();
+            }
+        });
+    }
+
+    private void updateAnchorView() {
+        mAnchorTv.setText(mAnchor.getNickname());
+
+        String avatarUrl = AvatarUtils.getAvatarUrlByUid(mAnchor.getUid(), mAnchor.getAvatar());
+        Log.d(TAG, "updateAnchorView avatarUrl=" + avatarUrl);
+        FrescoWorker.loadImage(mAnchorDv, ImageFactory.newHttpImage(avatarUrl).setIsCircle(true).build());
     }
 
     @Override

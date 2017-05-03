@@ -45,7 +45,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
     private boolean mIsBegin;
 
-    private long mAnchorId;
+    private long mPlayerId;
     private User mAnchor;
 
     private Intent mIntent;
@@ -148,7 +148,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
                 mIsBegin = true;
                 mGameLiveBtn.setText("end game live");
 
-                mAnchorId = playerId;
+                mPlayerId = playerId;
                 initAnchor();
             }
         });
@@ -156,7 +156,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
     private void initAnchor() {
         mUserManager = new UserInfoManager();
-        mUserManager.asyncUserByUuid(mAnchorId, new IUserCallback() {
+        mUserManager.asyncUserByUuid(mPlayerId, new IUserCallback() {
             @Override
             public void notifyFail(int errCode) {
             }
