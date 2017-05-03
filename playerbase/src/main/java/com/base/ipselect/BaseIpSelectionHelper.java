@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by yangli on 16-10-27.
@@ -41,8 +42,8 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
     protected String mProtocol = ""; // 协议
     protected String mHost = ""; // 域名
 
-    private ExecutorService mLocalAndHttpExecutor = Executors.newSingleThreadExecutor();
-    private boolean mLocalAndHttpRunning;
+    protected final ExecutorService mLocalAndHttpExecutor = Executors.newSingleThreadExecutor();
+    protected Future mLocalAndHttpFuture;
 
     private IDnsStatusListener mDnsStatusListener;
     private boolean mNeedUseCache = true;
@@ -268,7 +269,6 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
 
     public void destroy() {
         mLocalAndHttpExecutor.shutdownNow();
-
         mContext = null;
         mDnsStatusListener = null;
     }
@@ -296,11 +296,11 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
             return;
         }
         MyLog.w(TAG, "fetchIpSetByHost host=" + host + ", forceCloseFormer=" + forceCloseFormer);
-        if (mLocalAndHttpRunning) {
+        if (mLocalAndHttpFuture != null && !mLocalAndHttpFuture.isDone()) {
             if (!forceCloseFormer) {
                 return;
             }
-            mLocalAndHttpExecutor.shutdownNow();
+            mLocalAndHttpFuture.cancel(true);
         }
 
         if (mNeedUseCache) {
@@ -311,18 +311,17 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
             }
         }
 
-        mLocalAndHttpRunning = true;
-        mLocalAndHttpExecutor.submit(new Runnable() {
+        mLocalAndHttpFuture = mLocalAndHttpExecutor.submit(new Runnable() {
             @Override
             public void run() {
                 try {
                     List<String> httpIpSet = PreDnsManager.getHttpDnsIpSet(host);
                     List<String> localIpSet = PreDnsManager.getLocalDnsIpSet(host);
                     if (httpIpSet.isEmpty() && localIpSet.isEmpty()) { // 拉取结果为空，重试一次
-                        if (!mLocalAndHttpExecutor.isShutdown()) {
+                        if (!Thread.currentThread().isInterrupted()) {
                             httpIpSet = PreDnsManager.getHttpDnsIpSet(host);
                         }
-                        if (!mLocalAndHttpExecutor.isShutdown()) {
+                        if (!Thread.currentThread().isInterrupted()) {
                             localIpSet = PreDnsManager.getLocalDnsIpSet(host);
                         }
                     }
@@ -332,7 +331,9 @@ public abstract class BaseIpSelectionHelper implements IStreamUrl {
 
                     //TODO
                     PreDnsManager.INSTANCE.addIpSetToPool(host, ipInfo);
-                    onFetchIpSetByHostDone(ipInfo);
+                    if (!Thread.currentThread().isInterrupted()) {
+                        onFetchIpSetByHostDone(ipInfo);
+                    }
                 } catch (Exception e) {
                     MyLog.e(TAG, "fetchIpSetByHost failed, exception=" + e);
                 }
