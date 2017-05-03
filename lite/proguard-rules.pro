@@ -183,6 +183,22 @@
     public *;
 }
 
--keep class com.mi.liveassistant.room.callback.ICallback{
+-keep class com.mi.liveassistant.data.User{
+    public *;
+}
+
+-keep class com.mi.liveassistant.room.manager.live.callback.ILiveCallback{
+    public *;
+}
+
+-keep class com.mi.liveassistant.room.user.callback.IUserCallback{
+    public *;
+}
+
+-keep class com.mi.liveassistant.room.user.UserInfoManager{
+    public *;
+}
+
+-keep class com.mi.liveassistant.avatar.AvatarUtils{
     public *;
 }

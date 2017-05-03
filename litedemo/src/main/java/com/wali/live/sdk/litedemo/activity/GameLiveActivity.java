@@ -11,11 +11,19 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.mi.liveassistant.room.callback.ICallback;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.mi.liveassistant.avatar.AvatarUtils;
+import com.mi.liveassistant.data.User;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
+import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
+import com.mi.liveassistant.room.user.UserInfoManager;
+import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
+import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
+import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
 import com.wali.live.sdk.litedemo.global.GlobalData;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
@@ -28,8 +36,16 @@ import static com.wali.live.sdk.litedemo.MainActivity.REQUEST_MEDIA_PROJECTION;
 public class GameLiveActivity extends RxActivity implements View.OnClickListener {
     private Button mGameLiveBtn;
 
+    private SimpleDraweeView mAnchorDv;
+    private TextView mAnchorTv;
+
     private GameLiveManager mLiveManager;
+    private UserInfoManager mUserManager;
+
     private boolean mIsBegin;
+
+    private long mAnchorId;
+    private User mAnchor;
 
     private Intent mIntent;
 
@@ -45,6 +61,9 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private void initView() {
         mGameLiveBtn = $(R.id.game_live_btn);
         mGameLiveBtn.setOnClickListener(this);
+
+        mAnchorDv = $(R.id.anchor_dv);
+        mAnchorTv = $(R.id.anchor_tv);
     }
 
     private void initManager() {
@@ -83,14 +102,14 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private void clickGameBtn() {
         if (mIsBegin) {
             ToastUtils.showToast("end game live ...");
-            mLiveManager.endLive(new ICallback() {
+            mLiveManager.endLive(new ILiveCallback() {
                 @Override
                 public void notifyFail(int errCode) {
                     ToastUtils.showToast("end game live fail=" + errCode);
                 }
 
                 @Override
-                public void notifySuccess() {
+                public void notifySuccess(long playerId) {
                     ToastUtils.showToast("end game live success");
                     mIsBegin = false;
                     mGameLiveBtn.setText("begin game live");
@@ -112,19 +131,45 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private void beginLive() {
         mLiveManager.setCaptureIntent(mIntent);
         ToastUtils.showToast("begin game live ...");
-        mLiveManager.beginLive(null, "TEST", null, new ICallback() {
+        mLiveManager.beginLive(null, "TEST", null, new ILiveCallback() {
             @Override
             public void notifyFail(int errCode) {
                 ToastUtils.showToast("begin game live fail=" + errCode);
             }
 
             @Override
-            public void notifySuccess() {
+            public void notifySuccess(long playerId) {
                 ToastUtils.showToast("begin game live success");
                 mIsBegin = true;
                 mGameLiveBtn.setText("end game live");
+
+                mAnchorId = playerId;
+                initAnchor();
             }
         });
+    }
+
+    private void initAnchor() {
+        mUserManager = new UserInfoManager();
+        mUserManager.asyncUserByUuid(mAnchorId, new IUserCallback() {
+            @Override
+            public void notifyFail(int errCode) {
+            }
+
+            @Override
+            public void notifySuccess(User user) {
+                mAnchor = user;
+                updateAnchorView();
+            }
+        });
+    }
+
+    private void updateAnchorView() {
+        mAnchorTv.setText(mAnchor.getNickname());
+
+        String avatarUrl = AvatarUtils.getAvatarUrlByUid(mAnchor.getUid(), mAnchor.getAvatar());
+        Log.d(TAG, "updateAnchorView avatarUrl=" + avatarUrl);
+        FrescoWorker.loadImage(mAnchorDv, ImageFactory.newHttpImage(avatarUrl).setIsCircle(true).build());
     }
 
     @Override

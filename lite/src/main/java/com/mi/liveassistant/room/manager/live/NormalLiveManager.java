@@ -15,7 +15,7 @@ import com.mi.liveassistant.engine.streamer.GalileoStreamer;
 import com.mi.liveassistant.engine.streamer.IStreamer;
 import com.mi.liveassistant.engine.streamer.StreamerConfig;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
-import com.mi.liveassistant.room.callback.ICallback;
+import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.presenter.live.NormalLivePresenter;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class NormalLiveManager extends BaseLiveManager {
     }
 
     @Override
-    public void beginLive(Location location, String title, String coverUrl, ICallback callback) {
+    public void beginLive(Location location, String title, String coverUrl, ILiveCallback callback) {
         super.beginLive(location, title, coverUrl, callback);
         mLivePresenter.beginLive(location, title, coverUrl);
     }

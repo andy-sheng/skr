@@ -327,8 +327,6 @@ public class User implements Serializable {
 
     /**
      * Live.proto里的UserRoomInfo.type 对应我们的LiveManager里定义的常量
-     *
-     * @return
      */
     public int getRoomType() {
         return mRoomType;
@@ -539,7 +537,6 @@ public class User implements Serializable {
     }
 
     public Relation getRelation() {
-
         Relation relation = new Relation();
         relation.setUserId(this.getUid());
         relation.setAvatar(this.avatar);

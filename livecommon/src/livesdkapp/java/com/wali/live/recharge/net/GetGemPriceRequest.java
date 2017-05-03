@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.request.live.BaseLiveRequest;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.PayProto;
 
@@ -12,7 +12,7 @@ import com.wali.live.proto.PayProto;
  * Created by rongzhisheng on 17-1-1.
  */
 
-public class GetGemPriceRequest extends BaseLiveRequest {
+public class GetGemPriceRequest extends BaseRequest {
     {
         mCommand = MiLinkCommand.COMMAND_PAY_PRICE_LIST;
         mAction = "getGemPriceListV2";

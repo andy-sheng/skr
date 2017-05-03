@@ -1,11 +1,12 @@
 package com.mi.liveassistant.room.manager.live;
 
+import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.data.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.RoomConstant;
-import com.mi.liveassistant.room.callback.ICallback;
 import com.mi.liveassistant.room.heartbeat.HeartbeatManager;
+import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.presenter.live.BaseLivePresenter;
 import com.mi.liveassistant.room.presenter.streamer.StreamerPresenter;
 import com.mi.liveassistant.room.view.ILiveView;
@@ -22,8 +23,8 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     protected LP mLivePresenter;
     protected String mLiveId;
     /*外部接口的回调*/
-    protected ICallback mOutBeginCallback;
-    protected ICallback mOutEndCallback;
+    protected ILiveCallback mOutBeginCallback;
+    protected ILiveCallback mOutEndCallback;
 
     protected boolean mIsGameLive = false;
     protected boolean mIsPaused = false;
@@ -46,7 +47,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     }
 
     @Override
-    public void beginLive(Location location, String title, String coverUrl, ICallback callback) {
+    public void beginLive(Location location, String title, String coverUrl, ILiveCallback callback) {
         MyLog.w(TAG, "beginNormalLive");
         mOutBeginCallback = callback;
         mLivePresenter.beginLive(location, title, coverUrl);
@@ -65,7 +66,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
         MyLog.d(TAG, "notifyBeginLiveSuccess liveId=" + liveId);
         mLiveId = liveId;
         if (mOutBeginCallback != null) {
-            mOutBeginCallback.notifySuccess();
+            mOutBeginCallback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong());
         }
 
         // 开始推流
@@ -93,7 +94,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     }
 
     @Override
-    public void endLive(ICallback callback) {
+    public void endLive(ILiveCallback callback) {
         MyLog.w(TAG, "endLive");
         mOutEndCallback = callback;
         innerEndLive();
@@ -131,7 +132,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     public void notifyEndLiveSuccess() {
         MyLog.d(TAG, "notifyEndLiveSuccess");
         if (mOutEndCallback != null) {
-            mOutEndCallback.notifySuccess();
+            mOutEndCallback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong());
         }
     }
 

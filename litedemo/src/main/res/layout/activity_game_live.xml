@@ -5,6 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/anchor_dv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"/>
+
+    <TextView
+        android:id="@+id/anchor_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/anchor_dv"
+        android:layout_marginLeft="20dp"/>
+
     <Button
         android:id="@+id/game_live_btn"
         android:layout_width="match_parent"
