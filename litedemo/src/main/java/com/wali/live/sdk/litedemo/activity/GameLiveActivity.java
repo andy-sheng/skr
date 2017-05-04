@@ -66,7 +66,6 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private void initView() {
         mGameLiveBtn = $(R.id.game_live_btn);
         mGameLiveBtn.setOnClickListener(this);
-
         mAnchorDv = $(R.id.anchor_dv);
         mAnchorTv = $(R.id.anchor_tv);
     }
@@ -106,20 +105,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void clickGameBtn() {
         if (mIsBegin) {
-            ToastUtils.showToast("end game live ...");
-            mLiveManager.endLive(new ILiveCallback() {
-                @Override
-                public void notifyFail(int errCode) {
-                    ToastUtils.showToast("end game live fail=" + errCode);
-                }
-
-                @Override
-                public void notifySuccess(long playerId) {
-                    ToastUtils.showToast("end game live success");
-                    mIsBegin = false;
-                    mGameLiveBtn.setText("begin game live");
-                }
-            });
+            endLive();
         } else {
             if (mIntent == null) {
                 ToastUtils.showToast("begin game live intent is null");
@@ -150,6 +136,23 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
                 mPlayerId = playerId;
                 initAnchor();
+            }
+        });
+    }
+
+    private void endLive() {
+        ToastUtils.showToast("end game live ...");
+        mLiveManager.endLive(new ILiveCallback() {
+            @Override
+            public void notifyFail(int errCode) {
+                ToastUtils.showToast("end game live fail=" + errCode);
+            }
+
+            @Override
+            public void notifySuccess(long playerId) {
+                ToastUtils.showToast("end game live success");
+                mIsBegin = false;
+                mGameLiveBtn.setText("begin game live");
             }
         });
     }
