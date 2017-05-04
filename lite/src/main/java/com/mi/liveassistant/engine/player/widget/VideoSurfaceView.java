@@ -1,6 +1,7 @@
 package com.mi.liveassistant.engine.player.widget;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
@@ -21,10 +22,12 @@ public class VideoSurfaceView extends SurfaceView {
         super(context);
     }
 
+    @Keep
     public VideoSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    @Keep
     public VideoSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }

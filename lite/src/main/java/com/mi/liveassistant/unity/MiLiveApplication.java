@@ -17,7 +17,6 @@ import java.util.List;
  *
  * @module Unity直播Application类
  */
-@Keep
 public class MiLiveApplication extends Application {
     private static final String TAG = "MiLiveApplication";
 

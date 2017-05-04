@@ -210,3 +210,7 @@
 -keep class com.mi.liveassistant.avatar.AvatarUtils{
     public *;
 }
+
+-keep class com.mi.liveassistant.unity.MiLiveForUnity{
+    public *;
+}

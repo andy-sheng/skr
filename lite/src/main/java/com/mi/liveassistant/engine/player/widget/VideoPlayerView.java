@@ -3,6 +3,7 @@ package com.mi.liveassistant.engine.player.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
+import android.support.annotation.Keep;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -44,11 +45,13 @@ public class VideoPlayerView extends VideoSurfaceView implements IVideoView, IPl
         init(context);
     }
 
+    @Keep
     public VideoPlayerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
+    @Keep
     public VideoPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);

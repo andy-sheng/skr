@@ -2,7 +2,6 @@ package com.mi.liveassistant.unity;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.support.annotation.Keep;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.mi.liveassistant.room.presenter.streamer.PullStreamerPresenter;
  *
  * @module Unity直播辅助类
  */
-@Keep
 public class MiLiveForUnity {
     private static final String TAG = "MiLiveForUnity";
 
@@ -29,7 +27,6 @@ public class MiLiveForUnity {
     protected VideoPlayerPresenter mVideoPlayerPresenter;
     protected PullStreamerPresenter mStreamerPresenter;
 
-    @Keep
     public MiLiveForUnity(Activity activity) {
         MyLog.w(TAG, "MiLiveForUnity");
         mActivity = activity;
@@ -53,7 +50,8 @@ public class MiLiveForUnity {
                         break;
                     }
                 }
-                mSurfaceView.setZOrderOnTop(true);
+                mSurfaceView.setZOrderMediaOverlay(true);
+//                mSurfaceView.setZOrderOnTop(true);
 
                 mVideoPlayerPresenter = mSurfaceView.getVideoPlayerPresenter();
                 mVideoPlayerPresenter.setRealTime(true);
@@ -68,12 +66,11 @@ public class MiLiveForUnity {
         });
     }
 
-    @Keep
     public void startLive() {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String videoUrl = "http://v2.zb.mi.com/live/3243571_1493702092.flv?playui=0";
+                String videoUrl = "http://v2.zb.mi.com/live/8319907_1493865617.flv?playui=0";
                 mStreamerPresenter.setOriginalStreamUrl(videoUrl);
                 mStreamerPresenter.startLive();
                 MyLog.w(TAG, "startLive done");
@@ -81,7 +78,6 @@ public class MiLiveForUnity {
         });
     }
 
-    @Keep
     public void stopLive() {
         mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -92,7 +88,6 @@ public class MiLiveForUnity {
         });
     }
 
-    @Keep
     public void destroy() {
         mActivity.runOnUiThread(new Runnable() {
             @Override
