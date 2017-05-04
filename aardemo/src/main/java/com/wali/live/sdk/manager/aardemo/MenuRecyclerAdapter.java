@@ -71,14 +71,14 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 // Location根据需要传，不需要可以传空
-                MiLiveSdkController.getInstance().openNormalLive(mActivity, null);
+                MiLiveSdkController.getInstance().openNormalLive(mActivity, null, 0);
             }
         }));
         mDataList.add(new Bean("开启游戏直播(Intent)", new Runnable() {
             @Override
             public void run() {
                 // Location根据需要传，不需要可以传空
-                MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setProvince("New York").setCity("New York").build());
+                MiLiveSdkController.getInstance().openGameLive(mActivity, Location.Builder.newInstance(223, 224).setCountry("USA").setProvince("New York").setCity("New York").build(), 0);
             }
         }));
         mDataList.add(new Bean("宿主传OAuth登录账号(AIDL)", new Runnable() {

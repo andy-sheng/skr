@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -42,6 +43,8 @@ public class WatchActivity extends RxActivity {
 
     private User mAnchor;
 
+    private RecyclerView mBarrageRv;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,8 @@ public class WatchActivity extends RxActivity {
 
         mAnchorDv = $(R.id.anchor_dv);
         mAnchorTv = $(R.id.anchor_tv);
+
+        mBarrageRv = $(R.id.barrage_rv);
     }
 
     private void initManager() {

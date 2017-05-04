@@ -21,4 +21,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/anchor_dv"
         android:layout_marginLeft="10dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/barrage_rv"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"/>
 </RelativeLayout>
