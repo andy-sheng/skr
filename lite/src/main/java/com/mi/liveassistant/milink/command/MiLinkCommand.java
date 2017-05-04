@@ -31,4 +31,12 @@ public class MiLinkCommand {
 
     /*用作测试的接口，频道*/
     public static final String COMMAND_HOT_CHANNEL_LIST = "zhibo.recommend.list";
+    /*弹幕相关*/
+    public static final String COMMAND_SEND_BARRAGE = "zhibo.send.roommsg";
+    public static final String COMMAND_PUSH_BARRAGE = "zhibo.push.roommsg";
+    public static final String COMMAND_SYNC_SYSMSG = "zhibo.sync.sysmsg";
+    public static final String COMMAND_PUSH_SYSMSG = "zhibo.push.sysmsg";
+    public static final String COMMAND_REPLAY_BARRAGE = "zhibo.replay.roommsg";
+    public static final String COMMAND_PUSH_GLOBAL_MSG = "zhibo.push.globalmsg";
+    public static final String COMMAND_PULL_ROOM_MESSAGE = "zhibo.pull.roommsg";
 }

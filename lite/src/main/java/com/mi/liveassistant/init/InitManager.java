@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mi.liveassistant.account.UserAccountManager;
+import com.mi.liveassistant.barrage.manager.BarragePushMessageManager;
 import com.mi.liveassistant.common.filesystem.SDCardUtils;
 import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.language.LocaleUtil;
@@ -84,10 +85,6 @@ public class InitManager {
     }
 
     // TODO
-    private static void initMiLinkPacketHandler() {
-    }
-
-    // TODO
     public static void registerAllEventBus() {
         EventBus.getDefault().register(InitDaemon.INSTANCE);
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
@@ -96,6 +93,10 @@ public class InitManager {
     private static void initLibrary() {
         System.loadLibrary("gnustl_shared");
         System.loadLibrary("broadcast");
+    }
+
+    private static void initMiLinkPacketHandler() {
+        MiLinkClientAdapter.getsInstance().addPacketDataHandler(BarragePushMessageManager.getInstance());
     }
 
     private static ClientAppInfo getClientAppInfo() {

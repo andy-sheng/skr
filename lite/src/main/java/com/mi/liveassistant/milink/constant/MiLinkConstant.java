@@ -9,4 +9,7 @@ public class MiLinkConstant {
     public static final int MY_APP_TYPE = 0; // 小米直播app
 
     public static final int ERROR_CODE_SUCCESS = 0;
+
+    public static final int ERROR_CODE_BAN_SPEAKER = 8504;
+    public static final int ERROR_CODE_MSG_TOO_LARGE = 8502;
 }

@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.liveassistant.avatar.AvatarUtils;
+import com.mi.liveassistant.barrage.callback.TextMsgCallBack;
+import com.mi.liveassistant.barrage.data.Message;
+import com.mi.liveassistant.barrage.manager.BarragePullMessageManager;
+import com.mi.liveassistant.barrage.processer.BarrageMainProcesser;
 import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.room.manager.watch.WatchManager;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
@@ -88,6 +92,14 @@ public class WatchActivity extends RxActivity {
         mViewerView = $(R.id.viewer_view);
     }
 
+    private TextMsgCallBack msgCallBack = new TextMsgCallBack() {
+        @Override
+        public void handleMessage(List<Message> list) {
+            ToastUtils.showToast("接受到的消息条数"+list.size());
+        }
+    };
+
+    private BarragePullMessageManager mPullMessageManager;
     private void initManager() {
         mWatchManager = new WatchManager();
         mWatchManager.setContainerView(mSurfaceContainer);
@@ -100,6 +112,10 @@ public class WatchActivity extends RxActivity {
             @Override
             public void notifySuccess() {
                 ToastUtils.showToast("enter live success");
+                BarrageMainProcesser.getInstance().registCallBack(msgCallBack);
+                mPullMessageManager = new BarragePullMessageManager(mLiveId);
+                mPullMessageManager.start();
+
             }
         });
 
@@ -140,6 +156,7 @@ public class WatchActivity extends RxActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mPullMessageManager.stop();
         mWatchManager.leaveLive();
     }
 

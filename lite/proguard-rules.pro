@@ -226,3 +226,21 @@
 -keep class com.mi.liveassistant.unity.MiLiveForUnity{
     public *;
 }
+
+-keep class com.mi.liveassistant.barrage.callback.TextMsgCallBack{
+    *;
+}
+
+-keep class com.mi.liveassistant.barrage.callback.MessageCallBack{
+    *;
+}
+
+-keep class com.mi.liveassistant.barrage.manager.BarragePullMessageManager{
+    public *;
+}
+
+-keep class com.mi.liveassistant.barrage.processer.BarrageMainProcesser{
+    public *;
+}
+
+-keep class com.mi.liveassistant.barrage.data.**
