@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.WindowManager;
@@ -25,11 +26,12 @@ import com.mi.liveassistant.room.viewer.ViewerInfoManager;
 import com.mi.liveassistant.room.viewer.callback.IViewerCallback;
 import com.mi.liveassistant.room.viewer.model.Viewer;
 import com.wali.live.sdk.litedemo.R;
+import com.wali.live.sdk.litedemo.barrage.BarrageAdapter;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
 import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
+import com.wali.live.sdk.litedemo.topinfo.viewer.TopViewerView;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
-import com.wali.live.sdk.litedemo.viewer.TopViewerView;
 
 import java.util.List;
 
@@ -54,9 +56,21 @@ public class WatchActivity extends RxActivity {
     private User mAnchor;
 
     private RecyclerView mBarrageRv;
+    private LinearLayoutManager mBarrageManager;
+    private BarrageAdapter mBarrageAdapter;
 
     private ViewerInfoManager mViewerManager;
     private TopViewerView mViewerView;
+
+    private BarragePullMessageManager mPullMessageManager;
+
+    private TextMsgCallBack mMsgCallBack = new TextMsgCallBack() {
+        @Override
+        public void handleMessage(List<Message> list) {
+            mBarrageAdapter.addMessageList(list);
+            mBarrageRv.smoothScrollToPosition(mBarrageAdapter.getItemCount() - 1);
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,14 +106,6 @@ public class WatchActivity extends RxActivity {
         mViewerView = $(R.id.viewer_view);
     }
 
-    private TextMsgCallBack msgCallBack = new TextMsgCallBack() {
-        @Override
-        public void handleMessage(List<Message> list) {
-            ToastUtils.showToast("接受到的消息条数"+list.size());
-        }
-    };
-
-    private BarragePullMessageManager mPullMessageManager;
     private void initManager() {
         mWatchManager = new WatchManager();
         mWatchManager.setContainerView(mSurfaceContainer);
@@ -112,10 +118,8 @@ public class WatchActivity extends RxActivity {
             @Override
             public void notifySuccess() {
                 ToastUtils.showToast("enter live success");
-                BarrageMainProcesser.getInstance().registCallBack(msgCallBack);
-                mPullMessageManager = new BarragePullMessageManager(mLiveId);
-                mPullMessageManager.start();
 
+                initBarrageComponent();
             }
         });
 
@@ -145,6 +149,19 @@ public class WatchActivity extends RxActivity {
         });
     }
 
+    private void initBarrageComponent() {
+        mBarrageManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mBarrageManager.setStackFromEnd(true);
+
+        mBarrageRv.setLayoutManager(mBarrageManager);
+        mBarrageAdapter = new BarrageAdapter();
+        mBarrageRv.setAdapter(mBarrageAdapter);
+
+        BarrageMainProcesser.getInstance().registCallBack(mMsgCallBack);
+        mPullMessageManager = new BarragePullMessageManager(mLiveId);
+        mPullMessageManager.start();
+    }
+
     private void updateAnchorView() {
         mAnchorTv.setText(mAnchor.getNickname());
 
@@ -156,6 +173,7 @@ public class WatchActivity extends RxActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        BarrageMainProcesser.getInstance().unregistCallBack(mMsgCallBack);
         mPullMessageManager.stop();
         mWatchManager.leaveLive();
     }

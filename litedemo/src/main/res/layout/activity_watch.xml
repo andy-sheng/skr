@@ -27,11 +27,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/barrage_rv"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:background="#88ffffff"/>
 
-    <com.wali.live.sdk.litedemo.viewer.TopViewerView
+    <com.wali.live.sdk.litedemo.topinfo.viewer.TopViewerView
         android:id="@+id/viewer_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"

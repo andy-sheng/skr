@@ -243,4 +243,6 @@
     public *;
 }
 
--keep class com.mi.liveassistant.barrage.data.**
+-keep class com.mi.liveassistant.barrage.data.** {
+    *;
+}

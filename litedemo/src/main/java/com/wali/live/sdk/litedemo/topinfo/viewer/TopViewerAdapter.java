@@ -1,4 +1,4 @@
-package com.wali.live.sdk.litedemo.topinfo;
+package com.wali.live.sdk.litedemo.topinfo.viewer;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,12 +20,12 @@ import java.util.List;
 /**
  * Created by lan on 15-11-26.
  */
-public class ViewerAdapter extends RecyclerView.Adapter<ViewerAdapter.ViewerHolder> {
-    private static final String TAG = ViewerAdapter.class.getSimpleName();
+public class TopViewerAdapter extends RecyclerView.Adapter<TopViewerAdapter.ViewerHolder> {
+    private static final String TAG = TopViewerAdapter.class.getSimpleName();
 
     private List<Viewer> mViewerList = new LinkedList<>();
 
-    public ViewerAdapter() {
+    public TopViewerAdapter() {
     }
 
     public void setViewerList(List<Viewer> dataList) {

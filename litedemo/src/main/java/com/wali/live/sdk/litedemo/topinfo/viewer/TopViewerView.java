@@ -1,4 +1,4 @@
-package com.wali.live.sdk.litedemo.viewer;
+package com.wali.live.sdk.litedemo.topinfo.viewer;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.mi.liveassistant.room.viewer.model.Viewer;
 import com.wali.live.sdk.litedemo.R;
-import com.wali.live.sdk.litedemo.topinfo.ViewerAdapter;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class TopViewerView extends RelativeLayout {
     private RecyclerView mViewerRv;
 
     private LinearLayoutManager mLayoutManager;
-    private ViewerAdapter mViewerAdapter;
+    private TopViewerAdapter mViewerAdapter;
 
     public TopViewerView(Context context) {
         super(context);
@@ -51,7 +50,7 @@ public class TopViewerView extends RelativeLayout {
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mViewerRv.setLayoutManager(mLayoutManager);
 
-        mViewerAdapter = new ViewerAdapter();
+        mViewerAdapter = new TopViewerAdapter();
         mViewerRv.setAdapter(mViewerAdapter);
         mViewerAdapter.setViewerList(list);
     }
