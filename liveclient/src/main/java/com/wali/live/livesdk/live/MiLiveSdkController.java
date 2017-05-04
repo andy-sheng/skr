@@ -124,9 +124,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingListCallback callback) {
+    public void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingUsersCallback callback) {
         checkHasInit();
-        mCallback.setFollowingListCallback(callback);
+        mCallback.setFollowingUsersCallback(callback);
         try {
             MiLiveSdkBinder.getInstance().getFollowingUserList(mChannelId, mPackageName, mChannelSecret, isBothWay, timeStamp);
         } catch (RemoteException e) {

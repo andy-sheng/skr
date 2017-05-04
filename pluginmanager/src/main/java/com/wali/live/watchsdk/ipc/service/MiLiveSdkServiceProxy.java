@@ -35,7 +35,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     private IMiLiveSdk.ICallback mCallback;
     private IMiLiveSdk.IChannelAssistantCallback mChannelCallback;
-    private IMiLiveSdk.IFollowingListCallback mFollowingListCallback;
+    private IMiLiveSdk.IFollowingUsersCallback mFollowingListCallback;
     private IMiLiveSdk.IFollowingLivesCallback mFollowingLivesCallback;
 
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
@@ -91,7 +91,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         @Override
         public void onEventGetFollowingUserList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) throws RemoteException {
             if (mFollowingListCallback != null) {
-                mFollowingListCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+                mFollowingListCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
                 mFollowingListCallback = null;
             }
         }
@@ -99,7 +99,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         @Override
         public void onEventGetFollowingLiveList(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
             if (mFollowingLivesCallback != null) {
-                mFollowingLivesCallback.notifyGetFollowingLives(errCode, liveInfos);
+                mFollowingLivesCallback.notifyGetFollowingLiveList(errCode, liveInfos);
                 mFollowingLivesCallback = null;
             }
         }
@@ -108,6 +108,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         public void onEventShare(ShareInfo shareInfo) throws RemoteException {
             if (mCallback != null) {
                 mCallback.notifyWantShare(shareInfo);
+            }
+        }
+
+        @Override
+        public void onEventFollow(long uuid) throws RemoteException {
+            if (mCallback != null) {
+                mCallback.notifyWantFollow(uuid);
             }
         }
     };
@@ -272,13 +279,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void getFollowingList(boolean isBothWay, long timeStamp, IMiLiveSdk.IFollowingListCallback followingListCallback) {
-        Logger.d(TAG, "getFollowingList");
-        if (followingListCallback == null) {
-            Logger.w(TAG, "getFollowingList callback is null");
+    public void getFollowingUsers(boolean isBothWay, long timeStamp, IMiLiveSdk.IFollowingUsersCallback followingUsersCallback) {
+        Logger.d(TAG, "getFollowingUsers");
+        if (followingUsersCallback == null) {
+            Logger.w(TAG, "getFollowingUsers callback is null");
             return;
         }
-        mFollowingListCallback = followingListCallback;
+        mFollowingListCallback = followingUsersCallback;
         if (mRemoteService == null) {
             resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_USERS);
         } else {
@@ -292,9 +299,9 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void getFollowingLives(IMiLiveSdk.IFollowingLivesCallback followingLivesCallback) {
-        Logger.d(TAG, "getFollowingLiveList");
+        Logger.d(TAG, "getFollowingLives");
         if (followingLivesCallback == null) {
-            Logger.w(TAG, "getFollowingLiveList callback is null");
+            Logger.w(TAG, "getFollowingLives callback is null");
             return;
         }
         mFollowingLivesCallback = followingLivesCallback;

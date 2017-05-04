@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     MiLiveSdkController.getInstance().notifyShareSuc(shareInfo.getPlatForm());
                 }
             }
+
+            @Override
+            public void notifyWantFollow(long uuid) {
+                ToastUtils.showToast("notifyWantFollow, uuid=" + uuid);
+            }
         });
     }
 }

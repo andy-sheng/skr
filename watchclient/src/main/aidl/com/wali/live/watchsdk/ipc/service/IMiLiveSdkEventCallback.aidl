@@ -21,4 +21,6 @@ interface IMiLiveSdkEventCallback {
     void onEventGetFollowingLiveList(int errCode, in List<LiveInfo> liveInfos);
 
     void onEventShare(in ShareInfo shareInfo);
+
+    void onEventFollow(long uuid);
 }

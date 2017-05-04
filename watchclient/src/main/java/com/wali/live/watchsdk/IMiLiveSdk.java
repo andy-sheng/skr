@@ -109,7 +109,7 @@ public interface IMiLiveSdk {
     /**
      * 获取关注人信息列表
      */
-    void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
+    void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingUsersCallback callback);
 
     /**
      * 宿主app通知sdk分享成功接口
@@ -161,6 +161,11 @@ public interface IMiLiveSdk {
          * 通知上层分享
          */
         void notifyWantShare(ShareInfo shareInfo);
+
+        /**
+         * 通知上层关注用户行为
+         */
+        void notifyWantFollow(long uuid);
     }
 
     @Keep
@@ -172,12 +177,12 @@ public interface IMiLiveSdk {
     }
 
     @Keep
-    interface IFollowingListCallback {
-        void notifyGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp);
+    interface IFollowingUsersCallback {
+        void notifyGetFollowingUserList(int errCode, List<UserInfo> userInfos, int total, long timeStamp);
     }
 
     @Keep
     interface IFollowingLivesCallback {
-        void notifyGetFollowingLives(int errCode, List<LiveInfo> liveInfos);
+        void notifyGetFollowingLiveList(int errCode, List<LiveInfo> liveInfos);
     }
 }

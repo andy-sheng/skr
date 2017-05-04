@@ -858,7 +858,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void onEventGetFollowingUserList(int channelId, int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
         MyLog.d(TAG, "onEventGetFollowingUserList channelId=" + channelId);
         if (mAARCallback != null) {
-            mAARCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+            mAARCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
             return;
         }
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
@@ -890,7 +890,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void onEventGetFollowingLiveList(int channelId, int errCode, List<LiveInfo> liveInfos) {
         MyLog.d(TAG, "onEventGetFollowingLiveList errCode" + errCode);
         if (mAARCallback != null) {
-            mAARCallback.notifyGetFollowingLives(errCode, liveInfos);
+            mAARCallback.notifyGetFollowingLiveList(errCode, liveInfos);
             return;
         }
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
@@ -948,5 +948,34 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         }
         MyLog.d(TAG, "onEventShare aidl success=" + aidlSuccess);
+    }
+
+    public void onEventWantFollow(int channelId, long uuid) {
+        if (mAARCallback != null) {
+            mAARCallback.notifyWantFollow(uuid);
+            return;
+        }
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
+        boolean aidlSuccess = false;
+        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+        if (callbackList != null) {
+            MyLog.w(TAG, "callbackList != null");
+            int n = callbackList.beginBroadcast();
+            for (int i = 0; i < n; i++) {
+                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                try {
+                    callback.onEventFollow(uuid);
+                    aidlSuccess = true;
+                } catch (Exception e) {
+                    MyLog.v(TAG, "dead callback.");
+                    deadCallback.add(callback);
+                }
+            }
+            callbackList.finishBroadcast();
+            for (IMiLiveSdkEventCallback callback : deadCallback) {
+                MyLog.v(TAG, "unregister event callback.");
+                callbackList.unregister(callback);
+            }
+        }
     }
 }

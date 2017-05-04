@@ -166,6 +166,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
+
+            @Override
+            public void notifyWantFollow(long uuid) {
+                ToastUtils.showToast("notifyWantFollow uuid=" + uuid);
+            }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
 //        MiLiveSdkController.getInstance().setShareType(ShareType.TYPE_WEIXIN |

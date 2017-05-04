@@ -57,7 +57,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
     private static final String ACTION_GET_CHANNEL_LIVES = "get_channel_lives";
-    private static final String ACTION_GET_FOLLOWING_LIST = "get_following_list";
+    private static final String ACTION_GET_FOLLOWING_USERS = "get_following_users";
     private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
     private static final String ACTION_GET_FOLLOWING_LIVES = "get_following_lives";
 
@@ -96,7 +96,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_THIRD_PART_LOGIN, 205005);
         mMinVersionMap.put(ACTION_GET_CHANNEL_LIVES, 205008);
-        mMinVersionMap.put(ACTION_GET_FOLLOWING_LIST, 205011);
+        mMinVersionMap.put(ACTION_GET_FOLLOWING_USERS, 205011);
         mMinVersionMap.put(ACTION_NOTIFY_SHARE_SUC, 205014);
         mMinVersionMap.put(ACTION_GET_FOLLOWING_LIVES, 205017);
     }
@@ -410,11 +410,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingListCallback callback) {
-        if (!checkVersion(ACTION_GET_FOLLOWING_LIST, callback)) {
+    public void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingUsersCallback callback) {
+        if (!checkVersion(ACTION_GET_FOLLOWING_USERS, callback)) {
             return;
         }
-        MiLiveSdkServiceProxy.getInstance().getFollowingList(isBothWay, timeStamp, callback);
+        MiLiveSdkServiceProxy.getInstance().getFollowingUsers(isBothWay, timeStamp, callback);
     }
 
     @Override
