@@ -116,7 +116,7 @@ public enum PreDnsManager {
     // Local-Dns解析，拉取到IP列表之后执行跑马再返回
     public static List<String> getLocalDnsIpSet(String host) {
         MyLog.w(TAG, "getLocalDnsIpSet domain=" + host);
-        List<String> ipList = new ArrayList<>();
+        List<String> ipList = new ArrayList<String>();
         try {
             InetAddress[] addresses = InetAddress.getAllByName(host);
             if (addresses != null && addresses.length > 0) {
@@ -137,7 +137,7 @@ public enum PreDnsManager {
     // Http-Dns解析，拉取到IP列表之后执行跑马再返回
     public static List<String> getHttpDnsIpSet(String host) {
         MyLog.w(TAG, "getHttpDnsIpSet domain=" + host);
-        List<String> ipList = new ArrayList<>();
+        List<String> ipList = new ArrayList<String>();
         try {
             DnsPodUtils dnsPodUtils = new DnsPodUtils();
             String dnsPodStr = dnsPodUtils.getAddressByHostDnsPod(host);
@@ -222,8 +222,8 @@ public enum PreDnsManager {
         public final List<String> httpIpSet;
 
         public IpInfo() {
-            localIpSet = new ArrayList<>();
-            httpIpSet = new ArrayList<>();
+            localIpSet = new ArrayList<String>();
+            httpIpSet = new ArrayList<String>();
         }
 
         public IpInfo(List<String> localIpSet, List<String> httpIpSet) {
@@ -241,7 +241,7 @@ public enum PreDnsManager {
         }
 
         public List<String> getIpList() {
-            List<String> ipList = new ArrayList<>();
+            List<String> ipList = new ArrayList<String>();
             ipList.addAll(localIpSet);
             ipList.addAll(httpIpSet);
             return ipList;
@@ -255,7 +255,7 @@ public enum PreDnsManager {
         }
 
         private void addPortInfo(List<String> ipList, List<String> portList) {
-            List<String> tmpIpList = new ArrayList<>(ipList);
+            List<String> tmpIpList = new ArrayList<String>(ipList);
             ipList.clear();
             for (String ip : tmpIpList) {
                 ip = formatIpV6(ip);

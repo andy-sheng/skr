@@ -363,7 +363,7 @@ public class GalileoPlayer implements IPlayer {
 
     private String[] ipListToIpArray(List<String> ipList) {
         if (ipList != null && !ipList.isEmpty()) {
-            LinkedHashSet<String> ipSet = new LinkedHashSet<>();
+            LinkedHashSet<String> ipSet = new LinkedHashSet<String>();
             ipSet.addAll(ipList);
             String[] ipArray = new String[ipSet.size()];
             int i = 0;
@@ -383,7 +383,7 @@ public class GalileoPlayer implements IPlayer {
             public void run() {
                 List<String> tmpIpList = null;
                 if (httpIpList != null && !httpIpList.isEmpty() && localIpList != null && !localIpList.isEmpty()) {
-                    tmpIpList = new ArrayList<>();
+                    tmpIpList = new ArrayList<String>();
                     tmpIpList.addAll(localIpList);
                     tmpIpList.removeAll(httpIpList);
                 }

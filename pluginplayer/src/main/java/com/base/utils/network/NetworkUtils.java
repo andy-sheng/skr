@@ -874,7 +874,7 @@ public class NetworkUtils {
     }
 
     public static List<String> getAddressByHost(String host) {
-        List<String> address = new ArrayList<>();
+        List<String> address = new ArrayList<String>();
         if (!TextUtils.isEmpty(host)) {
 
             //DnsPod
@@ -911,7 +911,7 @@ public class NetworkUtils {
     }
 
     public static List<String> getAddressByHost(String host, boolean forceUseDnsPod) {
-        List<String> address = new ArrayList<>();
+        List<String> address = new ArrayList<String>();
         if (!TextUtils.isEmpty(host)) {
             InetAddress[] addr = null;
             try {

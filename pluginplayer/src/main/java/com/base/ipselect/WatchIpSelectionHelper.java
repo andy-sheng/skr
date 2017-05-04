@@ -42,7 +42,7 @@ public class WatchIpSelectionHelper extends BaseIpSelectionHelper {
         List<String> portList = super.generatePortList();
         if (mProtocol.equals("http")) {
             if (portList == null) {
-                portList = new ArrayList<>();
+                portList = new ArrayList<String>();
                 portList.add("80");
             } else if (portList.isEmpty()) {
                 portList.add("80");
