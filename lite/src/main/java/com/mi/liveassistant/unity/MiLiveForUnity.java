@@ -2,6 +2,7 @@ package com.mi.liveassistant.unity;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerPresenter;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerView;
 import com.mi.liveassistant.room.presenter.streamer.PullStreamerPresenter;
+import com.xiaomi.player.Player;
 
 /**
  * Created by yangli on 2017/4/22.
@@ -66,13 +68,16 @@ public class MiLiveForUnity {
         });
     }
 
-    public void startLive() {
+    public void startLive(final @NonNull String videoUrl) {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String videoUrl = "http://v2.zb.mi.com/live/8319907_1493865617.flv?playui=0";
+                MyLog.w(TAG, "startLive videoUrl=" + videoUrl);
                 mStreamerPresenter.setOriginalStreamUrl(videoUrl);
                 mStreamerPresenter.startLive();
+                ViewGroup.LayoutParams layoutParams = mSurfaceView.getLayoutParams();
+                mVideoPlayerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+                        layoutParams.width, layoutParams.height);
                 MyLog.w(TAG, "startLive done");
             }
         });
