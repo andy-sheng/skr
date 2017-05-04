@@ -170,6 +170,7 @@ public class MiLinkClientAdapter {
 
     private static String[] accessCommand = new String[]{
             MiLinkCommand.COMMAND_LIVE_LEAVE,
+            MiLinkCommand.COMMAND_GET_CONFIG,
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {
