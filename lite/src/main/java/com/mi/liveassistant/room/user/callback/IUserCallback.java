@@ -1,6 +1,6 @@
 package com.mi.liveassistant.room.user.callback;
 
-import com.mi.liveassistant.data.User;
+import com.mi.liveassistant.data.model.User;
 
 /**
  * Created by lan on 17/5/2.

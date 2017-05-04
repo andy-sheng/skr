@@ -1,6 +1,6 @@
 package com.mi.liveassistant.room.view;
 
-import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 

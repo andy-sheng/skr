@@ -1,4 +1,4 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.presenter;
 
 /**
  * Created by lan on 16/6/28.

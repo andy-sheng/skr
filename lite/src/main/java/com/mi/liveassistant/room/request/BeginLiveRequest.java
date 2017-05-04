@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.api.BaseRequest;
-import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.milink.command.MiLinkCommand;
 import com.mi.liveassistant.milink.constant.MiLinkConstant;
 import com.mi.liveassistant.proto.LiveCommonProto.LiveCover;

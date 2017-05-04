@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.liveassistant.avatar.AvatarUtils;
-import com.mi.liveassistant.data.User;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.user.UserInfoManager;

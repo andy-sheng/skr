@@ -13,14 +13,16 @@
         android:id="@+id/anchor_dv"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/anchor_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/anchor_dv"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/barrage_rv"
@@ -28,4 +30,11 @@
         android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"/>
+
+    <com.wali.live.sdk.litedemo.viewer.TopViewerView
+        android:id="@+id/viewer_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/anchor_dv"/>
 </RelativeLayout>

@@ -187,7 +187,7 @@
     public *;
 }
 
--keep class com.mi.liveassistant.data.User{
+-keep class com.mi.liveassistant.data.model.User{
     public *;
 }
 
@@ -199,11 +199,23 @@
     public *;
 }
 
+-keep class com.mi.liveassistant.room.user.UserInfoManager{
+    public *;
+}
+
 -keep class com.mi.liveassistant.room.user.callback.IUserCallback{
     public *;
 }
 
--keep class com.mi.liveassistant.room.user.UserInfoManager{
+-keep class com.mi.liveassistant.room.viewer.ViewerInfoManager{
+    public *;
+}
+
+-keep class com.mi.liveassistant.room.viewer.callback.IViewerCallback{
+    public *;
+}
+
+-keep class com.mi.liveassistant.room.viewer.model.Viewer {
     public *;
 }
 

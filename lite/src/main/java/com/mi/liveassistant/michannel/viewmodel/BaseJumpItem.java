@@ -1,4 +1,4 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.viewmodel;
 
 import java.io.Serializable;
 

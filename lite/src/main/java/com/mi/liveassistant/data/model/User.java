@@ -1,4 +1,4 @@
-package com.mi.liveassistant.data;
+package com.mi.liveassistant.data.model;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;

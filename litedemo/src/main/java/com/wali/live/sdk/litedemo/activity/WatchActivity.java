@@ -12,16 +12,22 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.liveassistant.avatar.AvatarUtils;
-import com.mi.liveassistant.data.User;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.room.manager.watch.WatchManager;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
 import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
+import com.mi.liveassistant.room.viewer.ViewerInfoManager;
+import com.mi.liveassistant.room.viewer.callback.IViewerCallback;
+import com.mi.liveassistant.room.viewer.model.Viewer;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
 import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
+import com.wali.live.sdk.litedemo.viewer.TopViewerView;
+
+import java.util.List;
 
 /**
  * Created by lan on 17/5/3.
@@ -44,6 +50,9 @@ public class WatchActivity extends RxActivity {
     private User mAnchor;
 
     private RecyclerView mBarrageRv;
+
+    private ViewerInfoManager mViewerManager;
+    private TopViewerView mViewerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +85,7 @@ public class WatchActivity extends RxActivity {
         mAnchorTv = $(R.id.anchor_tv);
 
         mBarrageRv = $(R.id.barrage_rv);
+        mViewerView = $(R.id.viewer_view);
     }
 
     private void initManager() {
@@ -103,6 +113,18 @@ public class WatchActivity extends RxActivity {
             public void notifySuccess(User user) {
                 mAnchor = user;
                 updateAnchorView();
+            }
+        });
+
+        mViewerManager = new ViewerInfoManager();
+        mViewerManager.asyncViewerList(mPlayerId, mLiveId, new IViewerCallback() {
+            @Override
+            public void notifyFail(int errCode) {
+            }
+
+            @Override
+            public void notifySuccess(List<Viewer> list) {
+                mViewerView.updateViewerView(list);
             }
         });
     }

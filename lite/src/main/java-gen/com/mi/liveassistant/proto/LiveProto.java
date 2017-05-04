@@ -16035,6 +16035,1657 @@ public final class LiveProto {
     // @@protoc_insertion_point(class_scope:HeartBeatRsp)
   }
 
+  public interface ViewerTopReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ViewerTopReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *操作人id
+     * </pre>
+     */
+    boolean hasUuid();
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *操作人id
+     * </pre>
+     */
+    long getUuid();
+
+    /**
+     * <code>required uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *直播人id
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>required uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *直播人id
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>required string liveId = 3;</code>
+     */
+    boolean hasLiveId();
+    /**
+     * <code>required string liveId = 3;</code>
+     */
+    java.lang.String getLiveId();
+    /**
+     * <code>required string liveId = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getLiveIdBytes();
+  }
+  /**
+   * Protobuf type {@code ViewerTopReq}
+   *
+   * <pre>
+   *房间人top
+   *zhibo.live.viewertop
+   * </pre>
+   */
+  public static final class ViewerTopReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ViewerTopReq)
+      ViewerTopReqOrBuilder {
+    // Use ViewerTopReq.newBuilder() to construct.
+    private ViewerTopReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ViewerTopReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ViewerTopReq defaultInstance;
+    public static ViewerTopReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ViewerTopReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ViewerTopReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uuid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              liveId_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.ViewerTopReq.class, com.mi.liveassistant.proto.LiveProto.ViewerTopReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ViewerTopReq> PARSER =
+        new com.google.protobuf.AbstractParser<ViewerTopReq>() {
+      public ViewerTopReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ViewerTopReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ViewerTopReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UUID_FIELD_NUMBER = 1;
+    private long uuid_;
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *操作人id
+     * </pre>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uuid = 1;</code>
+     *
+     * <pre>
+     *操作人id
+     * </pre>
+     */
+    public long getUuid() {
+      return uuid_;
+    }
+
+    public static final int ZUID_FIELD_NUMBER = 2;
+    private long zuid_;
+    /**
+     * <code>required uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *直播人id
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *直播人id
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int LIVEID_FIELD_NUMBER = 3;
+    private java.lang.Object liveId_;
+    /**
+     * <code>required string liveId = 3;</code>
+     */
+    public boolean hasLiveId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string liveId = 3;</code>
+     */
+    public java.lang.String getLiveId() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          liveId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string liveId = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLiveIdBytes() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        liveId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      uuid_ = 0L;
+      zuid_ = 0L;
+      liveId_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasZuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLiveId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, zuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getLiveIdBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, zuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getLiveIdBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.ViewerTopReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ViewerTopReq}
+     *
+     * <pre>
+     *房间人top
+     *zhibo.live.viewertop
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ViewerTopReq)
+        com.mi.liveassistant.proto.LiveProto.ViewerTopReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.ViewerTopReq.class, com.mi.liveassistant.proto.LiveProto.ViewerTopReq.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.ViewerTopReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        liveId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopReq_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ViewerTopReq getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.ViewerTopReq.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ViewerTopReq build() {
+        com.mi.liveassistant.proto.LiveProto.ViewerTopReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ViewerTopReq buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.ViewerTopReq result = new com.mi.liveassistant.proto.LiveProto.ViewerTopReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.liveId_ = liveId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.ViewerTopReq) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.ViewerTopReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.ViewerTopReq other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.ViewerTopReq.getDefaultInstance()) return this;
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
+        }
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasLiveId()) {
+          bitField0_ |= 0x00000004;
+          liveId_ = other.liveId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUuid()) {
+          
+          return false;
+        }
+        if (!hasZuid()) {
+          
+          return false;
+        }
+        if (!hasLiveId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.ViewerTopReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.ViewerTopReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uuid_ ;
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *操作人id
+       * </pre>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *操作人id
+       * </pre>
+       */
+      public long getUuid() {
+        return uuid_;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *操作人id
+       * </pre>
+       */
+      public Builder setUuid(long value) {
+        bitField0_ |= 0x00000001;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uuid = 1;</code>
+       *
+       * <pre>
+       *操作人id
+       * </pre>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long zuid_ ;
+      /**
+       * <code>required uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *直播人id
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *直播人id
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>required uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *直播人id
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000002;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *直播人id
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object liveId_ = "";
+      /**
+       * <code>required string liveId = 3;</code>
+       */
+      public boolean hasLiveId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string liveId = 3;</code>
+       */
+      public java.lang.String getLiveId() {
+        java.lang.Object ref = liveId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLiveIdBytes() {
+        java.lang.Object ref = liveId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          liveId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 3;</code>
+       */
+      public Builder setLiveId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 3;</code>
+       */
+      public Builder clearLiveId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        liveId_ = getDefaultInstance().getLiveId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 3;</code>
+       */
+      public Builder setLiveIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ViewerTopReq)
+    }
+
+    static {
+      defaultInstance = new ViewerTopReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ViewerTopReq)
+  }
+
+  public interface ViewerTopRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ViewerTopRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    int getRetCode();
+
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    java.util.List<com.mi.liveassistant.proto.LiveCommonProto.Viewer> 
+        getViewerList();
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    com.mi.liveassistant.proto.LiveCommonProto.Viewer getViewer(int index);
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    int getViewerCount();
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    java.util.List<? extends com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder> 
+        getViewerOrBuilderList();
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder getViewerOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code ViewerTopRsp}
+   */
+  public static final class ViewerTopRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ViewerTopRsp)
+      ViewerTopRspOrBuilder {
+    // Use ViewerTopRsp.newBuilder() to construct.
+    private ViewerTopRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ViewerTopRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ViewerTopRsp defaultInstance;
+    public static ViewerTopRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ViewerTopRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ViewerTopRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                viewer_ = new java.util.ArrayList<com.mi.liveassistant.proto.LiveCommonProto.Viewer>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              viewer_.add(input.readMessage(com.mi.liveassistant.proto.LiveCommonProto.Viewer.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          viewer_ = java.util.Collections.unmodifiableList(viewer_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.ViewerTopRsp.class, com.mi.liveassistant.proto.LiveProto.ViewerTopRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ViewerTopRsp> PARSER =
+        new com.google.protobuf.AbstractParser<ViewerTopRsp>() {
+      public ViewerTopRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ViewerTopRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ViewerTopRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int VIEWER_FIELD_NUMBER = 2;
+    private java.util.List<com.mi.liveassistant.proto.LiveCommonProto.Viewer> viewer_;
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    public java.util.List<com.mi.liveassistant.proto.LiveCommonProto.Viewer> getViewerList() {
+      return viewer_;
+    }
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    public java.util.List<? extends com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder> 
+        getViewerOrBuilderList() {
+      return viewer_;
+    }
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    public int getViewerCount() {
+      return viewer_.size();
+    }
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    public com.mi.liveassistant.proto.LiveCommonProto.Viewer getViewer(int index) {
+      return viewer_.get(index);
+    }
+    /**
+     * <code>repeated .Viewer viewer = 2;</code>
+     *
+     * <pre>
+     *观众
+     * </pre>
+     */
+    public com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder getViewerOrBuilder(
+        int index) {
+      return viewer_.get(index);
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      viewer_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getViewerCount(); i++) {
+        if (!getViewer(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      for (int i = 0; i < viewer_.size(); i++) {
+        output.writeMessage(2, viewer_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      for (int i = 0; i < viewer_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, viewer_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.ViewerTopRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ViewerTopRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ViewerTopRsp)
+        com.mi.liveassistant.proto.LiveProto.ViewerTopRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.ViewerTopRsp.class, com.mi.liveassistant.proto.LiveProto.ViewerTopRsp.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.ViewerTopRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getViewerFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (viewerBuilder_ == null) {
+          viewer_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          viewerBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ViewerTopRsp_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ViewerTopRsp getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.ViewerTopRsp.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ViewerTopRsp build() {
+        com.mi.liveassistant.proto.LiveProto.ViewerTopRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ViewerTopRsp buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.ViewerTopRsp result = new com.mi.liveassistant.proto.LiveProto.ViewerTopRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (viewerBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            viewer_ = java.util.Collections.unmodifiableList(viewer_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.viewer_ = viewer_;
+        } else {
+          result.viewer_ = viewerBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.ViewerTopRsp) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.ViewerTopRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.ViewerTopRsp other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.ViewerTopRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (viewerBuilder_ == null) {
+          if (!other.viewer_.isEmpty()) {
+            if (viewer_.isEmpty()) {
+              viewer_ = other.viewer_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureViewerIsMutable();
+              viewer_.addAll(other.viewer_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.viewer_.isEmpty()) {
+            if (viewerBuilder_.isEmpty()) {
+              viewerBuilder_.dispose();
+              viewerBuilder_ = null;
+              viewer_ = other.viewer_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              viewerBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getViewerFieldBuilder() : null;
+            } else {
+              viewerBuilder_.addAllMessages(other.viewer_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getViewerCount(); i++) {
+          if (!getViewer(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.ViewerTopRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.ViewerTopRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.mi.liveassistant.proto.LiveCommonProto.Viewer> viewer_ =
+        java.util.Collections.emptyList();
+      private void ensureViewerIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          viewer_ = new java.util.ArrayList<com.mi.liveassistant.proto.LiveCommonProto.Viewer>(viewer_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.mi.liveassistant.proto.LiveCommonProto.Viewer, com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder, com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder> viewerBuilder_;
+
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public java.util.List<com.mi.liveassistant.proto.LiveCommonProto.Viewer> getViewerList() {
+        if (viewerBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(viewer_);
+        } else {
+          return viewerBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public int getViewerCount() {
+        if (viewerBuilder_ == null) {
+          return viewer_.size();
+        } else {
+          return viewerBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public com.mi.liveassistant.proto.LiveCommonProto.Viewer getViewer(int index) {
+        if (viewerBuilder_ == null) {
+          return viewer_.get(index);
+        } else {
+          return viewerBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder setViewer(
+          int index, com.mi.liveassistant.proto.LiveCommonProto.Viewer value) {
+        if (viewerBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewerIsMutable();
+          viewer_.set(index, value);
+          onChanged();
+        } else {
+          viewerBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder setViewer(
+          int index, com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder builderForValue) {
+        if (viewerBuilder_ == null) {
+          ensureViewerIsMutable();
+          viewer_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewerBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder addViewer(com.mi.liveassistant.proto.LiveCommonProto.Viewer value) {
+        if (viewerBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewerIsMutable();
+          viewer_.add(value);
+          onChanged();
+        } else {
+          viewerBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder addViewer(
+          int index, com.mi.liveassistant.proto.LiveCommonProto.Viewer value) {
+        if (viewerBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewerIsMutable();
+          viewer_.add(index, value);
+          onChanged();
+        } else {
+          viewerBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder addViewer(
+          com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder builderForValue) {
+        if (viewerBuilder_ == null) {
+          ensureViewerIsMutable();
+          viewer_.add(builderForValue.build());
+          onChanged();
+        } else {
+          viewerBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder addViewer(
+          int index, com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder builderForValue) {
+        if (viewerBuilder_ == null) {
+          ensureViewerIsMutable();
+          viewer_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewerBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder addAllViewer(
+          java.lang.Iterable<? extends com.mi.liveassistant.proto.LiveCommonProto.Viewer> values) {
+        if (viewerBuilder_ == null) {
+          ensureViewerIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, viewer_);
+          onChanged();
+        } else {
+          viewerBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder clearViewer() {
+        if (viewerBuilder_ == null) {
+          viewer_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          viewerBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public Builder removeViewer(int index) {
+        if (viewerBuilder_ == null) {
+          ensureViewerIsMutable();
+          viewer_.remove(index);
+          onChanged();
+        } else {
+          viewerBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder getViewerBuilder(
+          int index) {
+        return getViewerFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder getViewerOrBuilder(
+          int index) {
+        if (viewerBuilder_ == null) {
+          return viewer_.get(index);  } else {
+          return viewerBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public java.util.List<? extends com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder> 
+           getViewerOrBuilderList() {
+        if (viewerBuilder_ != null) {
+          return viewerBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(viewer_);
+        }
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder addViewerBuilder() {
+        return getViewerFieldBuilder().addBuilder(
+            com.mi.liveassistant.proto.LiveCommonProto.Viewer.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder addViewerBuilder(
+          int index) {
+        return getViewerFieldBuilder().addBuilder(
+            index, com.mi.liveassistant.proto.LiveCommonProto.Viewer.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Viewer viewer = 2;</code>
+       *
+       * <pre>
+       *观众
+       * </pre>
+       */
+      public java.util.List<com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder> 
+           getViewerBuilderList() {
+        return getViewerFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.mi.liveassistant.proto.LiveCommonProto.Viewer, com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder, com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder> 
+          getViewerFieldBuilder() {
+        if (viewerBuilder_ == null) {
+          viewerBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.mi.liveassistant.proto.LiveCommonProto.Viewer, com.mi.liveassistant.proto.LiveCommonProto.Viewer.Builder, com.mi.liveassistant.proto.LiveCommonProto.ViewerOrBuilder>(
+                  viewer_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          viewer_ = null;
+        }
+        return viewerBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ViewerTopRsp)
+    }
+
+    static {
+      defaultInstance = new ViewerTopRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ViewerTopRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BeginLiveReq_descriptor;
   private static
@@ -16085,6 +17736,16 @@ public final class LiveProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_HeartBeatRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ViewerTopReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ViewerTopReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ViewerTopRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ViewerTopRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -16139,8 +17800,11 @@ public final class LiveProto {
       "liveId\030\001 \002(\t\022\r\n\005pkuid\030\002 \001(\004\022\020\n\010pkLiveId\030" +
       "\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\016\n\006micuid\030\005 \001(\004\022\024\n" +
       "\014micuidStatus\030\006 \001(\005\"\037\n\014HeartBeatRsp\022\017\n\007r" +
-      "etCode\030\001 \002(\rB\'\n\032com.mi.liveassistant.pro" +
-      "toB\tLiveProto"
+      "etCode\030\001 \002(\r\":\n\014ViewerTopReq\022\014\n\004uuid\030\001 \002" +
+      "(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\"8\n\014View" +
+      "erTopRsp\022\017\n\007retCode\030\001 \002(\r\022\027\n\006viewer\030\002 \003(" +
+      "\0132\007.ViewerB\'\n\032com.mi.liveassistant.proto" +
+      "B\tLiveProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16215,6 +17879,18 @@ public final class LiveProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_HeartBeatRsp_descriptor,
         new java.lang.String[] { "RetCode", });
+    internal_static_ViewerTopReq_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_ViewerTopReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ViewerTopReq_descriptor,
+        new java.lang.String[] { "Uuid", "Zuid", "LiveId", });
+    internal_static_ViewerTopRsp_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_ViewerTopRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ViewerTopRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Viewer", });
     com.mi.liveassistant.proto.LiveCommonProto.getDescriptor();
   }
 

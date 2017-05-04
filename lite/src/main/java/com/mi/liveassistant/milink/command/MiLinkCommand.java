@@ -13,6 +13,9 @@ public class MiLinkCommand {
 
     public static final String COMMAND_LIVE_HB = "zhibo.live.hb";                           //直播时的心跳
 
+    /*顶部观众*/
+    public static final String COMMAND_LIVE_VIEWER_TOP = "zhibo.live.viewertop";
+    
     /*用户信息相关*/
     public static final String COMMAND_GET_HOMEPAGE = "zhibo.user.gethomepage";
 
@@ -25,4 +28,7 @@ public class MiLinkCommand {
     public static final String COMMAND_GET_OWN_INFO = "zhibo.user.getowninfo";                      //获取自己的信息
 
     public static final String COMMAND_GET_CONFIG = "zhibo.getconfig";                              //获取配置
+
+    /*用作测试的接口，频道*/
+    public static final String COMMAND_HOT_CHANNEL_LIST = "zhibo.recommend.list";
 }

@@ -1,4 +1,4 @@
-package com.mi.liveassistant.data;
+package com.mi.liveassistant.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

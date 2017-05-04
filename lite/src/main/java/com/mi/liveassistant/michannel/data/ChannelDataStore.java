@@ -1,5 +1,6 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.data;
 
+import com.mi.liveassistant.michannel.request.GetChannelRequest;
 import com.mi.liveassistant.proto.HotChannelProto;
 
 import rx.Observable;

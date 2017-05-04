@@ -3,7 +3,7 @@ package com.mi.liveassistant.room.presenter.live;
 import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.mvp.BaseRxPresenter;
-import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.proto.LiveProto;
 import com.mi.liveassistant.room.request.BeginLiveRequest;
 import com.mi.liveassistant.room.request.EndLiveRequest;

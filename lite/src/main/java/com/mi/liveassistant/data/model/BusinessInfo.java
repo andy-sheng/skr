@@ -1,8 +1,7 @@
-package com.mi.liveassistant.data;
+package com.mi.liveassistant.data.model;
 
 import android.text.TextUtils;
 
-import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.proto.UserProto;
 
 import java.io.Serializable;

@@ -2,7 +2,7 @@ package com.mi.liveassistant.room.manager.live;
 
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.RoomConstant;
 import com.mi.liveassistant.room.heartbeat.HeartbeatManager;

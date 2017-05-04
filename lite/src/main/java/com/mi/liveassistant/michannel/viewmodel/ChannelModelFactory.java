@@ -1,4 +1,4 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.viewmodel;
 
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.proto.CommonChannelProto;

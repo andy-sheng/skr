@@ -124,3 +124,16 @@ message HeartBeatReq {
 message HeartBeatRsp {
     required uint32 retCode     = 1; //0:表示成功
 }
+
+//房间人top
+//zhibo.live.viewertop
+message ViewerTopReq {
+    required uint64 uuid        = 1; //操作人id
+    required uint64 zuid        = 2; //直播人id
+    required string liveId      = 3;
+}
+
+message ViewerTopRsp {
+    required uint32 retCode     = 1; //0:表示成功
+    repeated Viewer viewer      = 2; //观众
+}

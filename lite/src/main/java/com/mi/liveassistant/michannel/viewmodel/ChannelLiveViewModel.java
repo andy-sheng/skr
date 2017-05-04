@@ -1,4 +1,4 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.viewmodel;
 
 import android.support.annotation.Keep;
 import android.text.TextUtils;
@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.google.protobuf.GeneratedMessage;
 import com.mi.liveassistant.avatar.AvatarUtils;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.data.User;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.proto.CommonChannelProto;
 import com.mi.liveassistant.proto.CommonChannelProto.BackInfo;
 import com.mi.liveassistant.proto.CommonChannelProto.ChannelItem;
@@ -24,7 +24,7 @@ import java.util.List;
  * @description 频道直播数据模型，包括直播，回放，用户，小视频
  */
 @Keep
-public class ChannelLiveViewModel extends ChannelViewModel<CommonChannelProto.ChannelItem> {
+public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
     private static final String TAG = ChannelLiveViewModel.class.getSimpleName();
     private List<BaseItem> mItemDatas;
 

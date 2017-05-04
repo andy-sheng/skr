@@ -1,6 +1,8 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.presenter;
 
 import android.support.annotation.Keep;
+
+import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
 
 import java.util.List;
 

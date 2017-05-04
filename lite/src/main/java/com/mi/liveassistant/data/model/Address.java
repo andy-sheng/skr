@@ -1,4 +1,4 @@
-package com.mi.liveassistant.data;
+package com.mi.liveassistant.data.model;
 
 /**
  * Created by chengsimin on 2016/12/12.

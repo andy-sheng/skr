@@ -1,9 +1,14 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.presenter;
 
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.mi.liveassistant.michannel.viewmodel.ChannelViewModel;
+import com.mi.liveassistant.michannel.data.ChannelDataStore;
+import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
+import com.mi.liveassistant.michannel.viewmodel.ChannelModelFactory;
+import com.mi.liveassistant.michannel.viewmodel.ChannelUiType;
 import com.mi.liveassistant.proto.CommonChannelProto;
 import com.mi.liveassistant.proto.HotChannelProto;
 

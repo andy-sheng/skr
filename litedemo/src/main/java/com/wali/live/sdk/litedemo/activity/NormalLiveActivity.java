@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.liveassistant.camera.CameraView;
-import com.mi.liveassistant.data.User;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.room.manager.live.NormalLiveManager;
 import com.mi.liveassistant.room.user.UserInfoManager;
 import com.wali.live.sdk.litedemo.R;

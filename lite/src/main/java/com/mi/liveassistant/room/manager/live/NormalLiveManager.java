@@ -9,7 +9,7 @@ import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.preference.PreferenceKeys;
 import com.mi.liveassistant.common.preference.PreferenceUtils;
-import com.mi.liveassistant.data.Location;
+import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.engine.base.GalileoConstants;
 import com.mi.liveassistant.engine.streamer.GalileoStreamer;
 import com.mi.liveassistant.engine.streamer.IStreamer;

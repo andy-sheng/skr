@@ -1,8 +1,9 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.request;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.common.api.BaseRequest;
+import com.mi.liveassistant.milink.command.MiLinkCommand;
 import com.mi.liveassistant.proto.HotChannelProto.GetRecommendListReq;
 import com.mi.liveassistant.proto.HotChannelProto.GetRecommendListRsp;
 
@@ -14,7 +15,7 @@ import com.mi.liveassistant.proto.HotChannelProto.GetRecommendListRsp;
  */
 public class GetChannelRequest extends BaseRequest {
     public GetChannelRequest(long channelId) {
-        super("zhibo.recommend.list", "GetRecommendChannel");
+        super(MiLinkCommand.COMMAND_HOT_CHANNEL_LIST, "GetRecommendChannel");
         generateRequest(channelId);
     }
 

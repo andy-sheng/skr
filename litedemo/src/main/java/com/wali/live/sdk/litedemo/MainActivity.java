@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.mi.liveassistant.login.LoginManager;
-import com.mi.liveassistant.michannel.BaseViewModel;
-import com.mi.liveassistant.michannel.ChannelLiveViewModel;
-import com.mi.liveassistant.michannel.ChannelPresenter;
-import com.mi.liveassistant.michannel.IChannelView;
+import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
+import com.mi.liveassistant.michannel.presenter.IChannelView;
+import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
+import com.mi.liveassistant.michannel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.sdk.litedemo.account.AccountManager;
 import com.wali.live.sdk.litedemo.activity.GameLiveActivity;
 import com.wali.live.sdk.litedemo.activity.NormalLiveActivity;

@@ -1,4 +1,4 @@
-package com.mi.liveassistant.michannel;
+package com.mi.liveassistant.michannel.viewmodel;
 
 /**
  * Created by lan on 16/8/2.
