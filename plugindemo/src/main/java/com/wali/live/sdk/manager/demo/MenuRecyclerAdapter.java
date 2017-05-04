@@ -203,11 +203,36 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("拉关注人信息", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().getFollowingList(false, 0,new IMiLiveSdk.IFollowingListCallback() {
+                MiLiveSdkController.getInstance().getFollowingUserList(false, 0, new IMiLiveSdk.IFollowingListCallback() {
                     @Override
                     public void notifyGetFollowingList(int errCode, List<UserInfo> list, int total, long timeStamp) {
                         Log.w(TAG, "notifyGetFollowingList errCode=" + errCode);
                         ToastUtils.showToast("notifyGetChannelLives errCode=" + errCode);
+                        if (list != null) {
+                            ToastUtils.showToast(StringUtils.join(list, "\n"));
+                        }
+                    }
+
+                    @Override
+                    public void notifyVersionLow() {
+                        ToastUtils.showToast("notifyVersionLow");
+                    }
+
+                    @Override
+                    public void notifyNotInstall() {
+                        ToastUtils.showToast("notifyNotInstall");
+                    }
+                });
+            }
+        }));
+
+        mDataList.add(new Bean("拉关注人正在直播的列表", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().getFollowingLiveList(new IMiLiveSdk.IFollowingLivesCallback() {
+                    @Override
+                    public void notifyGetFollowingLives(int i, List<LiveInfo> list) {
+                        ToastUtils.showToast("notifyGetFollowingLives errcode=" + i);
                         if (list != null) {
                             ToastUtils.showToast(StringUtils.join(list, "\n"));
                         }

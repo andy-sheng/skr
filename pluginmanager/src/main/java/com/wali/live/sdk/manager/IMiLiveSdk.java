@@ -139,7 +139,7 @@ public interface IMiLiveSdk {
      *
      * @version 205011
      */
-    void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
+    void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
 
     /**
      * 宿主app通知sdk分享成功接口
@@ -147,6 +147,13 @@ public interface IMiLiveSdk {
      * @version 205014
      */
     void notifyShareSuc(int type, IAssistantCallback callback);
+
+    /**
+     * 获取宿主关注人直播列表
+     *
+     * @version 205017
+     */
+    void getFollowingLiveList(IFollowingLivesCallback callback);
 
     /**
      * 判断该手机中是否安装的直播助手
@@ -180,7 +187,14 @@ public interface IMiLiveSdk {
          */
         int GET_CHANNEL_LIVES = 1100;
 
-        int GET_FOLLOWING_LIST = 1101;
+        int GET_FOLLOWING_USERS = 1101;
+
+        int GET_FOLLOWING_LIVES = 1102;
+
+        /**
+         * 分享相关接口标志
+         */
+        int NOTIFY_SHARE_AIDL = 1200;
 
         /**
          * 登录相关接口的返回码
@@ -256,6 +270,11 @@ public interface IMiLiveSdk {
     interface IFollowingListCallback extends IAssistantCallback {
 
         void notifyGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp);
+    }
+
+    @Keep
+    interface IFollowingLivesCallback extends IAssistantCallback {
+        void notifyGetFollowingLives(int errCode, List<LiveInfo> liveInfos);
     }
 
     @Keep

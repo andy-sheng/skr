@@ -23,7 +23,7 @@ public class ChannelLiveCaller {
     public final static int TYPE_LIVE = 1;
 
     public static Observable<ListProto.GetChannelLiveDetailRsp> getChannelLive(final int channelId) {
-        return (Observable<ListProto.GetChannelLiveDetailRsp>) Observable.create(new Observable.OnSubscribe<ListProto.GetChannelLiveDetailRsp>() {
+        return Observable.create(new Observable.OnSubscribe<ListProto.GetChannelLiveDetailRsp>() {
             @Override
             public void call(Subscriber<? super ListProto.GetChannelLiveDetailRsp> subscriber) {
                 ListProto.GetChannelLiveDetailReq req = ListProto.GetChannelLiveDetailReq.newBuilder()
@@ -50,5 +50,34 @@ public class ChannelLiveCaller {
             }
         });
     }
+
+    public static Observable<ListProto.GetFollowLiveRsp> getFollowingLives() {
+        return Observable.create(new Observable.OnSubscribe<ListProto.GetFollowLiveRsp>() {
+            @Override
+            public void call(Subscriber<? super ListProto.GetFollowLiveRsp> subscriber) {
+                ListProto.GetFollowLiveReq req = ListProto.GetFollowLiveReq.newBuilder()
+                        .setUId(UserAccountManager.getInstance().getUuidAsLong()).build();
+                MyLog.w(STAG, "getFollowingLiveList request=" + req.toString());
+                PacketData packetData = new PacketData();
+                packetData.setCommand(MiLinkCommand.COMMAND_LIST_FOLLOWLIVE);
+                packetData.setData(req.toByteArray());
+                PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+                if (rspData != null) {
+                    try {
+                        ListProto.GetFollowLiveRsp rsp = ListProto.GetFollowLiveRsp.parseFrom(rspData.getData());
+                        MyLog.w(STAG, "getFollowingLiveList response : \n" + rsp.toString());
+                        subscriber.onNext(rsp);
+                        subscriber.onCompleted();
+                    } catch (InvalidProtocolBufferException e) {
+                        MyLog.e(e);
+                        subscriber.onError(new Throwable(e));
+                    }
+                } else {
+                    subscriber.onError(new Throwable("rsp == null"));
+                }
+            }
+        });
+    }
+
 
 }

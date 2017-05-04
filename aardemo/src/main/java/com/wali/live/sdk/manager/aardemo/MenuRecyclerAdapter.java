@@ -130,11 +130,27 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("拉关注人列表", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().getFollowingList(false, 0, new IMiLiveSdk.IFollowingListCallback() {
+                MiLiveSdkController.getInstance().getFollowingUserList(false, 0, new IMiLiveSdk.IFollowingListCallback() {
                     @Override
                     public void notifyGetFollowingList(int i, List<UserInfo> list, int i1, long l) {
                         Log.w(TAG, "notifyGetFollowingList," + "errcode=" + i);
                         ToastUtils.showToast("notifyGetFollowingList," + "errcode=" + i);
+                        if (list != null) {
+                            ToastUtils.showToast(StringUtils.join(list, "\n"));
+                        }
+                    }
+                });
+            }
+        }));
+
+        mDataList.add(new Bean("拉关注人的直播列表", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().getFollowingLiveList(new IMiLiveSdk.IFollowingLivesCallback() {
+                    @Override
+                    public void notifyGetFollowingLives(int i, List<LiveInfo> list) {
+                        Log.w(TAG, "notifyGetFollowingLives," + "errcode=" + i);
+                        ToastUtils.showToast("notifyGetFollowingLives," + "errcode=" + i);
                         if (list != null) {
                             ToastUtils.showToast(StringUtils.join(list, "\n"));
                         }

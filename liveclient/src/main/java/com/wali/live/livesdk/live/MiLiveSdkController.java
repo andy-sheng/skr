@@ -35,6 +35,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private int mChannelId = 0;
     private String mChannelSecret;
     private String mPackageName;
+    private int mShareType;
 
     private AarCallback mCallback;
 
@@ -61,6 +62,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
         if (mCallback != null) {
             MiLiveSdkBinder.getInstance().setCallback(mCallback);
         }
+    }
+
+    @Override
+    public void setShareType(int shareType) {
+        mShareType = shareType;
     }
 
     private void checkHasInit() {
@@ -118,11 +124,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback) {
+    public void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingListCallback callback) {
         checkHasInit();
         mCallback.setFollowingListCallback(callback);
         try {
-            MiLiveSdkBinder.getInstance().getFollowingList(mChannelId, mPackageName, mChannelSecret, isBothWay, timeStamp);
+            MiLiveSdkBinder.getInstance().getFollowingUserList(mChannelId, mPackageName, mChannelSecret, isBothWay, timeStamp);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -139,6 +145,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void getFollowingLiveList(IFollowingLivesCallback callback) {
+        checkHasInit();
+        mCallback.setFollowingLivesCallback(callback);
+        try {
+            MiLiveSdkBinder.getInstance().getFollowingLiveList(mChannelId, mPackageName, mChannelSecret);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void clearAccount() {
         checkHasInit();
         try {
@@ -149,53 +166,53 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType) {
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, null, shareType, false);
+                playerId, liveId, videoUrl, liveType, null, mShareType, false);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType) {
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, null, shareType, false);
+                playerId, liveId, videoUrl, liveType, null, mShareType, false);
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType) {
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, gameId, shareType, false);
+                playerId, liveId, videoUrl, liveType, gameId, mShareType, false);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType) {
+    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, gameId, shareType, false);
+                playerId, liveId, videoUrl, liveType, gameId, mShareType, false);
     }
 
     @Override
-    public void openNormalLive(final Activity activity, final Location location, final int shareType) {
+    public void openNormalLive(final Activity activity, final Location location) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openNormalLive(activity, mChannelId, mPackageName, mChannelSecret,
                 new ICommonCallBack() {
                     @Override
                     public void process(Object objects) {
-                        LiveSdkActivity.openActivity(activity, location, shareType, false);
+                        LiveSdkActivity.openActivity(activity, location, mShareType, false);
                     }
                 }, false);
     }
 
     @Override
-    public void openGameLive(final Activity activity, final Location location, final int shareType) {
+    public void openGameLive(final Activity activity, final Location location) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openGameLive(activity, mChannelId, mPackageName, mChannelSecret,
                 new ICommonCallBack() {
                     @Override
                     public void process(Object objects) {
-                        LiveSdkActivity.openActivity(activity, location, shareType, true);
+                        LiveSdkActivity.openActivity(activity, location, mShareType, true);
                     }
                 }, false);
     }
@@ -216,7 +233,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                         }
                         Live2Proto.HisLive hisLive = rsp.getHisLive(0);
                         MiLiveSdkController.getInstance().openReplay(
-                                activity, Long.parseLong(playerId), hisLive.getLiveId(), hisLive.getUrl(), 0, null, 0);
+                                activity, Long.parseLong(playerId), hisLive.getLiveId(), hisLive.getUrl(), 0, null);
                         return null;
                     }
                 })
@@ -249,7 +266,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                             return null;
                         }
                         MiLiveSdkController.getInstance().openWatch(
-                                activity, liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl(), 0, null, 0);
+                                activity, liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl(), 0, null);
                         return null;
                     }
                 })

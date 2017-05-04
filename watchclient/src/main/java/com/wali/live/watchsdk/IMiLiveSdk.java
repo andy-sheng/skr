@@ -29,6 +29,11 @@ public interface IMiLiveSdk {
     void setCallback(ICallback callback);
 
     /**
+     * 上层应用设置支持的分享类型
+     */
+    void setShareType(int shareType);
+
+    /**
      * OAuth登录
      */
     void loginByMiAccountOAuth(String authCode);
@@ -46,32 +51,32 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
 
     /**
      * 打开直播回放页面
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, int shareType);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType);
 
     /**
      * 打开直播观看页面
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType);
+    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId);
 
     /**
      * 打开直播回放页面
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, int shareType);
+    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId);
 
     /**
      * 打开普通直播页面
      */
-    void openNormalLive(Activity activity, Location location, int shareType);
+    void openNormalLive(Activity activity, Location location);
 
     /**
      * 打开游戏直播页面
      */
-    void openGameLive(Activity activity, Location location, int shareType);
+    void openGameLive(Activity activity, Location location);
 
     /**
      * 测试接口，上线后删除
@@ -104,12 +109,17 @@ public interface IMiLiveSdk {
     /**
      * 获取关注人信息列表
      */
-    void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
+    void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingListCallback callback);
 
     /**
      * 宿主app通知sdk分享成功接口
      */
     void notifyShareSuc(int type);
+
+    /**
+     * 获取关注人直播列表信息
+     */
+    void getFollowingLiveList(IFollowingLivesCallback callback);
 
     /**
      * sdk 上层应用回调
@@ -164,5 +174,10 @@ public interface IMiLiveSdk {
     @Keep
     interface IFollowingListCallback {
         void notifyGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp);
+    }
+
+    @Keep
+    interface IFollowingLivesCallback {
+        void notifyGetFollowingLives(int errCode, List<LiveInfo> liveInfos);
     }
 }
