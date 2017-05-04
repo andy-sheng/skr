@@ -12,10 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.liveassistant.avatar.AvatarUtils;
 import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
@@ -23,9 +20,8 @@ import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
-import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
-import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
 import com.wali.live.sdk.litedemo.global.GlobalData;
+import com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 import static com.wali.live.sdk.litedemo.MainActivity.REQUEST_MEDIA_PROJECTION;
@@ -33,18 +29,15 @@ import static com.wali.live.sdk.litedemo.MainActivity.REQUEST_MEDIA_PROJECTION;
 /**
  * Created by chenyong on 2017/4/28.
  */
-
 public class GameLiveActivity extends RxActivity implements View.OnClickListener {
-    private Button mGameLiveBtn;
-
-    private SimpleDraweeView mAnchorDv;
-    private TextView mAnchorTv;
-
+    /*开播流程*/
     private GameLiveManager mLiveManager;
-    private UserInfoManager mUserManager;
-
+    private Button mGameLiveBtn;
     private boolean mIsBegin;
 
+    /*主播信息*/
+    private UserInfoManager mUserManager;
+    private TopAnchorView mAnchorView;
     private long mPlayerId;
     private User mAnchor;
 
@@ -66,8 +59,8 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private void initView() {
         mGameLiveBtn = $(R.id.game_live_btn);
         mGameLiveBtn.setOnClickListener(this);
-        mAnchorDv = $(R.id.anchor_dv);
-        mAnchorTv = $(R.id.anchor_tv);
+
+        mAnchorView = $(R.id.anchor_view);
     }
 
     private void initManager() {
@@ -167,17 +160,9 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
             @Override
             public void notifySuccess(User user) {
                 mAnchor = user;
-                updateAnchorView();
+                mAnchorView.updateAnchor(mAnchor);
             }
         });
-    }
-
-    private void updateAnchorView() {
-        mAnchorTv.setText(mAnchor.getNickname());
-
-        String avatarUrl = AvatarUtils.getAvatarUrlByUid(mAnchor.getUid(), mAnchor.getAvatar());
-        Log.d(TAG, "updateAnchorView avatarUrl=" + avatarUrl);
-        FrescoWorker.loadImage(mAnchorDv, ImageFactory.newHttpImage(avatarUrl).setIsCircle(true).build());
     }
 
     @Override

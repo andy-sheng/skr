@@ -4,14 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.liveassistant.avatar.AvatarUtils;
 import com.mi.liveassistant.camera.CameraView;
 import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.room.manager.live.NormalLiveManager;
@@ -20,8 +16,7 @@ import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
-import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
-import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
+import com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 /**
@@ -29,19 +24,16 @@ import com.wali.live.sdk.litedemo.utils.ToastUtils;
  */
 
 public class NormalLiveActivity extends RxActivity implements View.OnClickListener {
-    private Button mNormalLiveBtn;
+    /*开播流程*/
     private NormalLiveManager mLiveManager;
-
     private CameraView mCameraView;
-
+    private Button mNormalLiveBtn;
     private boolean mIsBegin;
 
-    private SimpleDraweeView mAnchorDv;
-    private TextView mAnchorTv;
-
+    /*主播信息*/
     private UserInfoManager mUserManager;
-
-    private long mAnchorId;
+    private TopAnchorView mAnchorView;
+    private long mPlayerId;
     private User mAnchor;
 
     @Override
@@ -58,11 +50,11 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     }
 
     private void initView() {
+        mCameraView = $(R.id.camera_view);
         mNormalLiveBtn = $(R.id.normal_live_btn);
         mNormalLiveBtn.setOnClickListener(this);
-        mCameraView = $(R.id.camera_view);
-        mAnchorDv = $(R.id.anchor_dv);
-        mAnchorTv = $(R.id.anchor_tv);
+
+        mAnchorView = $(R.id.anchor_view);
     }
 
     private void initManager() {
@@ -86,11 +78,6 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         mLiveManager.destroy();
-    }
-
-    public static void openActivity(Activity activity) {
-        Intent intent = new Intent(activity, NormalLiveActivity.class);
-        activity.startActivity(intent);
     }
 
     @Override
@@ -123,7 +110,9 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
                 ToastUtils.showToast("begin normal live success");
                 mIsBegin = true;
                 mNormalLiveBtn.setText("end normal live");
-                initAnchor(playerId);
+
+                mPlayerId = playerId;
+                initAnchor();
             }
         });
     }
@@ -145,9 +134,9 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
         });
     }
 
-    private void initAnchor(long playerId) {
+    private void initAnchor() {
         mUserManager = new UserInfoManager();
-        mUserManager.asyncUserByUuid(playerId, new IUserCallback() {
+        mUserManager.asyncUserByUuid(mPlayerId, new IUserCallback() {
             @Override
             public void notifyFail(int errCode) {
             }
@@ -155,16 +144,13 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
             @Override
             public void notifySuccess(User user) {
                 mAnchor = user;
-                updateAnchorView();
+                mAnchorView.updateAnchor(mAnchor);
             }
         });
     }
 
-    private void updateAnchorView() {
-        mAnchorTv.setText(mAnchor.getNickname());
-
-        String avatarUrl = AvatarUtils.getAvatarUrlByUid(mAnchor.getUid(), mAnchor.getAvatar());
-        Log.d(TAG, "updateAnchorView avatarUrl=" + avatarUrl);
-        FrescoWorker.loadImage(mAnchorDv, ImageFactory.newHttpImage(avatarUrl).setIsCircle(true).build());
+    public static void openActivity(Activity activity) {
+        Intent intent = new Intent(activity, NormalLiveActivity.class);
+        activity.startActivity(intent);
     }
 }

@@ -6,13 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.liveassistant.avatar.AvatarUtils;
 import com.mi.liveassistant.barrage.callback.TextMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.manager.BarragePullMessageManager;
@@ -28,8 +24,7 @@ import com.mi.liveassistant.room.viewer.model.Viewer;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.barrage.BarrageAdapter;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
-import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
-import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
+import com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView;
 import com.wali.live.sdk.litedemo.topinfo.viewer.TopViewerView;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
@@ -42,28 +37,27 @@ public class WatchActivity extends RxActivity {
     public static final String EXTRA_PLAYER_ID = "player_id";
     public static final String EXTRA_LIVE_ID = "live_id";
 
+    /*观看流程*/
     private WatchManager mWatchManager;
-    private UserInfoManager mUserManager;
-
     private RelativeLayout mSurfaceContainer;
-
-    private SimpleDraweeView mAnchorDv;
-    private TextView mAnchorTv;
-
-    private long mPlayerId;
     private String mLiveId;
 
+    /*主播信息*/
+    private UserInfoManager mUserManager;
+    private TopAnchorView mAnchorView;
+    private long mPlayerId;
     private User mAnchor;
 
+    /*观众信息*/
+    private ViewerInfoManager mViewerManager;
+    private TopViewerView mViewerView;
+
+    /*弹幕消息*/
     private RecyclerView mBarrageRv;
     private LinearLayoutManager mBarrageManager;
     private BarrageAdapter mBarrageAdapter;
 
-    private ViewerInfoManager mViewerManager;
-    private TopViewerView mViewerView;
-
     private BarragePullMessageManager mPullMessageManager;
-
     private TextMsgCallBack mMsgCallBack = new TextMsgCallBack() {
         @Override
         public void handleMessage(List<Message> list) {
@@ -99,10 +93,9 @@ public class WatchActivity extends RxActivity {
     private void initView() {
         mSurfaceContainer = $(R.id.surface_container);
 
-        mAnchorDv = $(R.id.anchor_dv);
-        mAnchorTv = $(R.id.anchor_tv);
-
         mBarrageRv = $(R.id.barrage_rv);
+
+        mAnchorView = $(R.id.anchor_view);
         mViewerView = $(R.id.viewer_view);
     }
 
@@ -132,7 +125,7 @@ public class WatchActivity extends RxActivity {
             @Override
             public void notifySuccess(User user) {
                 mAnchor = user;
-                updateAnchorView();
+                mAnchorView.updateAnchor(mAnchor);
             }
         });
 
@@ -160,14 +153,6 @@ public class WatchActivity extends RxActivity {
         BarrageMainProcesser.getInstance().registCallBack(mMsgCallBack);
         mPullMessageManager = new BarragePullMessageManager(mLiveId);
         mPullMessageManager.start();
-    }
-
-    private void updateAnchorView() {
-        mAnchorTv.setText(mAnchor.getNickname());
-
-        String avatarUrl = AvatarUtils.getAvatarUrlByUid(mAnchor.getUid(), mAnchor.getAvatar());
-        Log.d(TAG, "updateAnchorView avatarUrl=" + avatarUrl);
-        FrescoWorker.loadImage(mAnchorDv, ImageFactory.newHttpImage(avatarUrl).setIsCircle(true).build());
     }
 
     @Override
