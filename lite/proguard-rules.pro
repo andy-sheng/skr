@@ -4,6 +4,7 @@
 -dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
 -dontpreverify
+-dontobfuscate
 -verbose
 -ignorewarning
 -optimizations !code/simplification/cast,!field/*,!class/merging/*
