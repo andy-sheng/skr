@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.mi.liveassistant.barrage.callback.TextMsgCallBack;
@@ -22,6 +21,8 @@ import com.mi.liveassistant.room.viewer.callback.IViewerCallback;
 import com.mi.liveassistant.room.viewer.model.Viewer;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.barrage.BarrageAdapter;
+import com.wali.live.sdk.litedemo.barrage.view.SendBarrageView;
+import com.wali.live.sdk.litedemo.barrage.view.SendBarrageView.ISendCallback;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView;
 import com.wali.live.sdk.litedemo.topinfo.viewer.TopViewerView;
@@ -69,14 +70,19 @@ public class WatchActivity extends RxActivity {
         }
     };
 
+    private SendBarrageView mSendBarrageView;
+    private ISendCallback mSendCallback = new ISendCallback() {
+        @Override
+        public void send(String message) {
+            ToastUtils.showToast("send=" + message);
+            MessageFacade.getInstance().sendTextMessageAsync(message, mLiveId, mPlayerId);
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch);
-
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         initData();
         initView();
@@ -96,10 +102,12 @@ public class WatchActivity extends RxActivity {
     private void initView() {
         mSurfaceContainer = $(R.id.surface_container);
 
-        mBarrageRv = $(R.id.barrage_rv);
-
         mAnchorView = $(R.id.anchor_view);
         mViewerView = $(R.id.viewer_view);
+
+        mBarrageRv = $(R.id.barrage_rv);
+        mSendBarrageView = $(R.id.send_barrage_view);
+        mSendBarrageView.setCallback(mSendCallback);
     }
 
     private void initManager() {

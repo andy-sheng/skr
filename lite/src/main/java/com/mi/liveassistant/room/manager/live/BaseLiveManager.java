@@ -66,7 +66,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
         MyLog.d(TAG, "notifyBeginLiveSuccess liveId=" + liveId);
         mLiveId = liveId;
         if (mOutBeginCallback != null) {
-            mOutBeginCallback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong());
+            mOutBeginCallback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong(), mLiveId);
         }
 
         // 开始推流
@@ -132,7 +132,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     public void notifyEndLiveSuccess() {
         MyLog.d(TAG, "notifyEndLiveSuccess");
         if (mOutEndCallback != null) {
-            mOutEndCallback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong());
+            mOutEndCallback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong(), mLiveId);
         }
     }
 

@@ -6,5 +6,5 @@ package com.mi.liveassistant.room.manager.live.callback;
 public interface ILiveCallback {
     void notifyFail(int errCode);
 
-    void notifySuccess(long playerId);
+    void notifySuccess(long playerId, String liveId);
 }

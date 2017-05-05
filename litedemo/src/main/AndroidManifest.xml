@@ -45,7 +45,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/FullTheme"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <activity
             android:name=".activity.GameLiveActivity"
@@ -53,7 +53,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/FullTheme"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <activity
             android:name=".activity.WatchActivity"
@@ -61,7 +61,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/FullTheme"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <service
             android:name="com.mi.milink.sdk.service.MiLinkService"
