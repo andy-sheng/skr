@@ -12,8 +12,8 @@ import com.mi.liveassistant.barrage.converter.RoomTextMsgConverter;
 import com.mi.liveassistant.barrage.converter.RoomViewerChangeMsgConverter;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
+import com.mi.liveassistant.barrage.model.BarrageMsgType;
 import com.mi.liveassistant.common.log.MyLog;
-import com.trello.rxlifecycle.ActivityEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -63,6 +64,7 @@ public class BarrageMainProcesser {
 
     private static final int SYNC_INTERVAL = 5000;
 
+    private Set<Integer> mFilterSet = new HashSet<>();
 
     private Subscription mNotifyRenderSubscriber;
 
@@ -70,6 +72,9 @@ public class BarrageMainProcesser {
 
     private BarrageMainProcesser() {
         initConverter();
+        mFilterSet.add(BarrageMsgType.B_MSG_TYPE_JOIN);
+        mFilterSet.add(BarrageMsgType.B_MSG_TYPE_LEAVE);
+        mFilterSet.add(BarrageMsgType.B_MSG_TYPE_LIKE);
     }
 
     public static BarrageMainProcesser getInstance() {
@@ -106,9 +111,15 @@ public class BarrageMainProcesser {
                     @Override
                     public ArrayList<Message> call(ArrayList<Message> sortList) {
                         for (BarrageMsg barrageMsg : importantList) {
+                            if(mFilterSet.contains(barrageMsg.getMsgType())){
+                                continue;
+                            }
                             sortList.add(Message.loadFromBarrage(barrageMsg));
                         }
                         for (BarrageMsg barrageMsg : normalList) {
+                            if(mFilterSet.contains(barrageMsg.getMsgType())){
+                                continue;
+                            }
                             sortList.add(Message.loadFromBarrage(barrageMsg));
                         }
                         Collections.sort(sortList, new Comparator<Message>() {
@@ -154,6 +165,9 @@ public class BarrageMainProcesser {
                     @Override
                     public ArrayList<Message> call(ArrayList<Message> sortList) {
                         for (BarrageMsg barrageMsg : barrageMsgList) {
+                            if(mFilterSet.contains(barrageMsg.getMsgType())){
+                                continue;
+                            }
                             sortList.add(Message.loadFromBarrage(barrageMsg));
                         }
                         Collections.sort(sortList, new Comparator<Message>() {
