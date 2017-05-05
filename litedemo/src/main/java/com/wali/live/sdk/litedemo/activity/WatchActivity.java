@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.mi.liveassistant.barrage.callback.TextMsgCallBack;
@@ -167,6 +168,7 @@ public class WatchActivity extends RxActivity {
 
     @Override
     protected void onDestroy() {
+        Log.w(TAG,"onDestroy");
         super.onDestroy();
         MessageFacade.getInstance().unregistCallBack(mMsgCallBack);
         MessageFacade.getInstance().stopPull();

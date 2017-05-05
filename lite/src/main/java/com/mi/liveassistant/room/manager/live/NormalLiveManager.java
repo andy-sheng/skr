@@ -9,13 +9,11 @@ import com.mi.liveassistant.common.global.GlobalData;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.preference.PreferenceKeys;
 import com.mi.liveassistant.common.preference.PreferenceUtils;
-import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.engine.base.GalileoConstants;
 import com.mi.liveassistant.engine.streamer.GalileoStreamer;
 import com.mi.liveassistant.engine.streamer.IStreamer;
 import com.mi.liveassistant.engine.streamer.StreamerConfig;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
-import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.presenter.live.NormalLivePresenter;
 
 import java.util.Arrays;
@@ -35,12 +33,6 @@ public class NormalLiveManager extends BaseLiveManager {
         mLivePresenter = new NormalLivePresenter(this);
         mCameraView = cameraView;
         createStreamer();
-    }
-
-    @Override
-    public void beginLive(Location location, String title, String coverUrl, ILiveCallback callback) {
-        super.beginLive(location, title, coverUrl, callback);
-        mLivePresenter.beginLive(location, title, coverUrl);
     }
 
     @Override

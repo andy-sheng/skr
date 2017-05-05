@@ -6,8 +6,6 @@ import com.mi.liveassistant.barrage.processer.BarrageMainProcesser;
 import com.mi.liveassistant.barrage.request.PullRoomMsgRequest;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.proto.LiveMessageProto;
-import com.trello.rxlifecycle.ActivityEvent;
-import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +61,14 @@ public class BarragePullMessageManager {
     private Subscription mDelayPullSubscriber;
 
     public void start(){
+        MyLog.w(TAG,"start");
         isRunning = true;
         mBarrageProcesser = BarrageMainProcesser.getInstance();
         pullMsg();
     }
 
     public void stop(){
+        MyLog.w(TAG,"stop");
         isRunning = false;
         if(mPullRoomMessageSubscription != null && mPullRoomMessageSubscription.isUnsubscribed()){
             mPullRoomMessageSubscription.unsubscribe();
@@ -87,10 +87,15 @@ public class BarragePullMessageManager {
         mSingleThread.shutdown();
     }
 
+    public boolean isRunning(){
+        return isRunning;
+    }
+
     private void pullMsg(){
         if(!isRunning){
             return;
         }
+        MyLog.d(TAG,"pull msg");
         if(mPullRoomMessageSubscription != null && mPullRoomMessageSubscription.isUnsubscribed()){
             mPullRoomMessageSubscription.unsubscribe();
             mPullRoomMessageSubscription = null;

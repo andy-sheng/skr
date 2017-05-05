@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -115,6 +116,8 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         mLiveManager.destroy();
+        MessageFacade.getInstance().unregistCallBack(mMsgCallBack);
+        MessageFacade.getInstance().stopPull();
     }
 
     @Override
@@ -189,6 +192,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     }
 
     private void initBarrageComponent() {
+        Log.w(TAG,"initBarrageComponent");
         mBarrageManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mBarrageManager.setStackFromEnd(true);
 

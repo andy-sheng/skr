@@ -117,8 +117,11 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
+        Log.w(TAG,"onDestroy");
         super.onDestroy();
         mLiveManager.destroy();
+        MessageFacade.getInstance().unregistCallBack(mMsgCallBack);
+        MessageFacade.getInstance().stopPull();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -204,6 +207,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     }
 
     private void initBarrageComponent() {
+        Log.w(TAG,"initBarrageComponent");
         mBarrageManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mBarrageManager.setStackFromEnd(true);
 
