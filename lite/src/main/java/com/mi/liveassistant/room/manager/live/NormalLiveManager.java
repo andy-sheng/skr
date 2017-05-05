@@ -90,4 +90,38 @@ public class NormalLiveManager extends BaseLiveManager {
         super.pause();
         mStreamerPresenter.stopPreview();
     }
+
+    /*engine start*/
+    public void setVoiceVolume(int volume) {
+        mStreamerPresenter.setVoiceVolume(volume);
+    }
+
+    public void enableVideoSmooth(boolean enable) {
+        if (enable) {
+            mStreamerPresenter.setBeautyLevel(GalileoConstants.BEAUTY_LEVEL_OFF);
+        } else {
+            mStreamerPresenter.setBeautyLevel(GalileoConstants.BEAUTY_LEVEL_HIGHEST);
+        }
+    }
+
+    public void enableFlashLight(boolean enable) {
+        mStreamerPresenter.enableFlashLight(enable);
+    }
+
+    public boolean isFlashLight() {
+        return mStreamerPresenter.isFlashLight();
+    }
+
+    public void switchCamera() {
+        mStreamerPresenter.switchCamera();
+    }
+
+    public boolean isBackCamera() {
+        return mStreamerPresenter.isBackCamera();
+    }
+
+    public void setAngle(int angle) {
+        mStreamerPresenter.setAngle(angle);
+    }
+    /*engine end*/
 }
