@@ -1,8 +1,8 @@
 package com.mi.liveassistant.dns;
 
 import android.support.annotation.NonNull;
-import android.support.v4.util.LruCache;
 import android.text.TextUtils;
+import android.util.LruCache;
 import android.util.Pair;
 
 import com.mi.liveassistant.common.log.MyLog;

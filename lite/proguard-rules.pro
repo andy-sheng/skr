@@ -224,7 +224,15 @@
     public *;
 }
 
--keep class com.mi.liveassistant.unity.MiLiveForUnity{
+-keep class com.mi.liveassistant.unity.WatchForUnity{
+    public *;
+}
+
+-keep class com.mi.liveassistant.unity.LiveForUnity{
+    public *;
+}
+
+-keep class com.mi.liveassistant.unity.MiLiveActivity{
     public *;
 }
 

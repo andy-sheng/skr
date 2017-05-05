@@ -151,10 +151,10 @@ public class AccountLoginManager {
      * @param sign
      * @return
      */
-    public static AccountProto.ThirdPartSignLoginRsp thridPartLogin(String xuid, int sex, String nickName, String headUrl, String sign){
+    public static AccountProto.ThirdPartSignLoginRsp thridPartLogin(int channelId, String xuid, int sex, String nickName, String headUrl, String sign){
         AccountProto.ThirdPartSignLoginReq.Builder builder = AccountProto.ThirdPartSignLoginReq.newBuilder();
         builder.setNickname(nickName);
-        builder.setChannelId(String.valueOf(UserAccountManager.getInstance().getChannelId()));
+        builder.setChannelId(String.valueOf(channelId));
         builder.setXuid(xuid);
         builder.setHeadUrl(headUrl);
         builder.setSex(sex);

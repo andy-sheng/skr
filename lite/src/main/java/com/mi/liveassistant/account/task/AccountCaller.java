@@ -1,6 +1,7 @@
 package com.mi.liveassistant.account.task;
 
 
+import android.support.annotation.NonNull;
 
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.account.login.AccountLoginManager;
@@ -80,7 +81,7 @@ public class AccountCaller {
      * 第三方授权登陆
      */
     public static Observable<AccountProto.LoginRsp> login(final int channelId, final int accountType, final String code, final String openId, final String accessToken, final String expires_in,
-                                                final String refreshToken) {
+                                                          final String refreshToken) {
         return Observable.create(new Observable.OnSubscribe<AccountProto.LoginRsp>() {
             @Override
             public void call(Subscriber<? super AccountProto.LoginRsp> subscriber) {
@@ -119,17 +120,16 @@ public class AccountCaller {
      * @param sign
      * @return
      */
-    public static Observable<AccountProto.ThirdPartSignLoginRsp> login(final int channelId, final String xuid, final int sex, final String nickName, final String headUrl, final String sign) {
+    public static Observable<AccountProto.ThirdPartSignLoginRsp> login(final int channelId, final String xuid, final int sex, final String nickName, @NonNull final String headUrl, final String sign) {
         return Observable.create(new Observable.OnSubscribe<AccountProto.ThirdPartSignLoginRsp>() {
             @Override
             public void call(Subscriber<? super AccountProto.ThirdPartSignLoginRsp> subscriber) {
-                AccountProto.ThirdPartSignLoginRsp rsp = AccountLoginManager.thridPartLogin(xuid,sex,nickName,headUrl,sign);
+                AccountProto.ThirdPartSignLoginRsp rsp = AccountLoginManager.thridPartLogin(channelId, xuid, sex, nickName, headUrl, sign);
                 if (rsp == null) {
                     subscriber.onError(new Exception("rsp is null"));
                     return;
                 }
-                if ((rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
-
+                if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                     UserAccount userAccount = new UserAccount();
                     userAccount.setUuid(String.valueOf(rsp.getUuid()));
                     userAccount.setPassToken(rsp.getPassToken());

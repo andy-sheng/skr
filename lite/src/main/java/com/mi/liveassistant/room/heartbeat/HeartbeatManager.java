@@ -1,6 +1,7 @@
 package com.mi.liveassistant.room.heartbeat;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import com.mi.liveassistant.common.api.ErrorCode;
@@ -48,9 +49,10 @@ public class HeartbeatManager {
             mHeartbeatService = Executors.newSingleThreadExecutor();
         }
         if (mUIHandler == null) {
-            mUIHandler = new MyUIHandler(this);
+            mUIHandler = new MyUIHandler(Looper.getMainLooper(), this);
         }
-        sendHeartbeat();
+        mUIHandler.sendEmptyMessage(MSG_HEARTBEAT);
+        mUIHandler.sendEmptyMessageDelayed(MSG_HEARTBEAT_TIMEOUT, HEARTBEAT_TIMEOUT);
     }
 
     private void sendHeartbeat() {
@@ -80,6 +82,9 @@ public class HeartbeatManager {
     }
 
     public void stop() {
+        if (mUIHandler != null) {
+            mUIHandler.removeCallbacksAndMessages(null);
+        }
         if (mHeartbeatService != null) {
             mHeartbeatService.shutdownNow();
             mHeartbeatService = null;
@@ -99,7 +104,8 @@ public class HeartbeatManager {
 
         private final WeakReference<HeartbeatManager> mManagerRef;
 
-        public MyUIHandler(HeartbeatManager manager) {
+        public MyUIHandler(Looper looper, HeartbeatManager manager) {
+            super(looper);
             mManagerRef = new WeakReference<>(manager);
         }
 
