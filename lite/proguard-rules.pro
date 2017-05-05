@@ -235,11 +235,7 @@
     *;
 }
 
--keep class com.mi.liveassistant.barrage.manager.BarragePullMessageManager{
-    public *;
-}
-
--keep class com.mi.liveassistant.barrage.processer.BarrageMainProcesser{
+-keep class com.mi.liveassistant.barrage.facade.MessageFacade{
     public *;
 }
 

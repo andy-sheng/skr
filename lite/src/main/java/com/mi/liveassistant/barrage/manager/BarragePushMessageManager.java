@@ -5,8 +5,8 @@ import android.text.TextUtils;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import com.mi.liveassistant.account.MyUserInfoManager;
+import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.barrage.model.BarrageMsgType;
 import com.mi.liveassistant.barrage.processer.BarrageMainProcesser;
@@ -335,6 +335,43 @@ public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketD
             if (mSendingMsgCache != null && mSendingMsgCache.size() > 0) {
                 sendCheckBarrageMsgStatusMsgToHandle();
             }
+        }
+    }
+
+    /**
+     * @param msgBody
+     * @param roomid
+     * @param anchorId
+     */
+    public void sendBarrageMessageAsync(String msgBody, int msgType, String roomid, long anchorId, BarrageMsg.MsgExt ext) {
+        if (MyUserInfoManager.getInstance().getUser().getLevel() == 0) {
+            MyUserInfoManager.getInstance().syncSelfDetailInfo();
+        }
+        if (!TextUtils.isEmpty(msgBody) && !TextUtils.isEmpty(roomid)) {
+            BarrageMsg msg = new BarrageMsg();
+            msg.setMsgType(msgType);
+            msg.setSender(UserAccountManager.getInstance().getUuidAsLong());
+            String nickname = MyUserInfoManager.getInstance().getUser().getNickname();
+            if (nickname == null) {
+                nickname = String.valueOf(UserAccountManager.getInstance().getUuidAsLong());
+            }
+            msg.setSenderName(nickname);
+            msg.setSenderLevel(MyUserInfoManager.getInstance().getUser().getLevel());
+            msg.setRoomId(roomid);
+            msg.setBody(msgBody);
+            msg.setAnchorId(anchorId);
+            msg.setSentTime(System.currentTimeMillis());
+            if (MyUserInfoManager.getInstance().getUser() != null) {
+                msg.setCertificationType(MyUserInfoManager.getInstance().getUser().getCertificationType());
+            }
+            if (ext != null) {
+                msg.setMsgExt(ext);
+            }
+            msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
+            sendBarrageMessageAsync(msg, true);
+            //假装是个push过去
+            pretendPushBarrage(msg);
+//            addChatMsg(msg, false);
         }
     }
 }

@@ -11,8 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.mi.liveassistant.barrage.callback.TextMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
-import com.mi.liveassistant.barrage.manager.BarragePullMessageManager;
-import com.mi.liveassistant.barrage.processer.BarrageMainProcesser;
+import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.room.manager.watch.WatchManager;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
@@ -57,12 +56,16 @@ public class WatchActivity extends RxActivity {
     private LinearLayoutManager mBarrageManager;
     private BarrageAdapter mBarrageAdapter;
 
-    private BarragePullMessageManager mPullMessageManager;
     private TextMsgCallBack mMsgCallBack = new TextMsgCallBack() {
         @Override
-        public void handleMessage(List<Message> list) {
-            mBarrageAdapter.addMessageList(list);
-            mBarrageRv.smoothScrollToPosition(mBarrageAdapter.getItemCount() - 1);
+        public void handleMessage(final List<Message> list) {
+            mBarrageRv.post(new Runnable() {
+                @Override
+                public void run() {
+                    mBarrageAdapter.addMessageList(list);
+                    mBarrageRv.smoothScrollToPosition(mBarrageAdapter.getItemCount() - 1);
+                }
+            });
         }
     };
 
@@ -150,16 +153,15 @@ public class WatchActivity extends RxActivity {
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        BarrageMainProcesser.getInstance().registCallBack(mMsgCallBack);
-        mPullMessageManager = new BarragePullMessageManager(mLiveId);
-        mPullMessageManager.start();
+        MessageFacade.getInstance().registCallBack(mMsgCallBack);
+        MessageFacade.getInstance().startPull(mLiveId);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BarrageMainProcesser.getInstance().unregistCallBack(mMsgCallBack);
-        mPullMessageManager.stop();
+        MessageFacade.getInstance().unregistCallBack(mMsgCallBack);
+        MessageFacade.getInstance().stopPull();
         mWatchManager.leaveLive();
     }
 
