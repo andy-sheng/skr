@@ -2,7 +2,7 @@ package com.mi.liveassistant.barrage.manager;
 
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
-import com.mi.liveassistant.barrage.processer.BarrageMainProcesser;
+import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
 import com.mi.liveassistant.barrage.request.PullRoomMsgRequest;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.proto.LiveMessageProto;
@@ -47,7 +47,7 @@ public class BarragePullMessageManager {
      //上一次拉取间隔
     private long mLastPullTs;
 
-    private BarrageMainProcesser mBarrageProcesser;
+    private BarrageMainProcessor mBarrageProcesser;
 
     public BarragePullMessageManager(String roomId){
         mRoomId = roomId;
@@ -63,7 +63,7 @@ public class BarragePullMessageManager {
     public void start(){
         MyLog.w(TAG,"start");
         isRunning = true;
-        mBarrageProcesser = BarrageMainProcesser.getInstance();
+        mBarrageProcesser = BarrageMainProcessor.getInstance();
         pullMsg();
     }
 

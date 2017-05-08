@@ -236,11 +236,11 @@
     public *;
 }
 
--keep class com.mi.liveassistant.barrage.callback.TextMsgCallBack{
+-keep class com.mi.liveassistant.barrage.callback.ChatMsgCallBack{
     *;
 }
 
--keep class com.mi.liveassistant.barrage.callback.MessageCallBack{
+-keep class com.mi.liveassistant.barrage.callback.SysMsgCallBack{
     *;
 }
 

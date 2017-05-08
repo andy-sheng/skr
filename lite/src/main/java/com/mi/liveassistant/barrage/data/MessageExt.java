@@ -1,9 +1,7 @@
 package com.mi.liveassistant.barrage.data;
 
-import com.google.protobuf.ByteString;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
-import com.mi.liveassistant.barrage.model.ViewerModel;
-import com.mi.liveassistant.proto.LiveCommonProto;
+import com.mi.liveassistant.barrage.model.MessageRuleModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +26,15 @@ public class MessageExt {
     public static class ViewChangeMessageExt extends MessageExt{
         public int viewerCount;
 
-        public List<ViewerModel> viewerList;
+        public List<Viewer> viewerList = new ArrayList<>();
 
-        public ViewChangeMessageExt(BarrageMsg.ViewerChangeMsgExt viewerChangeMsgExt){
+        public ViewChangeMessageExt(BarrageMsg.ViewerChangeMsgExt viewerChangeMsgExt) {
             viewerCount = viewerChangeMsgExt.viewerCount;
-            viewerList = viewerChangeMsgExt.viewerList;
+            if (viewerChangeMsgExt.viewerList != null && viewerChangeMsgExt.viewerList.size() > 0) {
+                for (int i = 0; i < viewerChangeMsgExt.viewerList.size(); i++) {
+                    viewerList.add(new Viewer(viewerChangeMsgExt.viewerList.get(i)));
+                }
+            }
         }
     }
 
@@ -93,8 +95,11 @@ public class MessageExt {
         //发言频率周期,单位s,不设置或者0代表没有限制
         public int speakPeriod;
 
-        public FrequencyControlMessageExt(LiveCommonProto.MsgRule msgRule){
-            unrepeatable = msgRule.getUnrepeatable();
+        public FrequencyControlMessageExt(MessageRuleModel msgRule){
+            if(msgRule == null){
+                return;
+            }
+            unrepeatable = msgRule.isUnrepeatable();
             speakPeriod = msgRule.getSpeakPeriod();
         }
 

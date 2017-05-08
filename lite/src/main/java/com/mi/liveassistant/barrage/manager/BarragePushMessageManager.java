@@ -9,7 +9,7 @@ import com.mi.liveassistant.account.MyUserInfoManager;
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.barrage.model.BarrageMsgType;
-import com.mi.liveassistant.barrage.processer.BarrageMainProcesser;
+import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.milink.callback.MiLinkPacketDispatcher;
@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketDataHandler {
 
-    private static final String TAG = "BarrageMessageManager";
+    private static final String TAG = BarragePushMessageManager.class.getSimpleName();
 
     private static BarragePushMessageManager sInstance = new BarragePushMessageManager();
 
@@ -172,7 +172,8 @@ public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketD
     private void sendRecvEvent(List<BarrageMsg> barrageMsgList) {
         if (barrageMsgList != null) {
             MyLog.v(TAG, "sendRecvEvent list.size:" + barrageMsgList.size());
-//            EventBus.getDefault().post(new BarrageMsgEvent.ReceivedBarrageMsgEvent(barrageMsgList, "sendRecvEvent"));
+            BarrageMainProcessor.getInstance().enterRenderQueue(barrageMsgList);
+
         }
     }
 
@@ -210,8 +211,7 @@ public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketD
                             }
                         }
                         if (!barrageMsgList.isEmpty()) {
-//                            EventBus.getDefault().post(new BarrageMsgEvent.ReceivedBarrageMsgEvent(barrageMsgList, "processSystemMessage"));
-                            BarrageMainProcesser.getInstance().enterRenderQueue(barrageMsgList);
+                            BarrageMainProcessor.getInstance().enterRenderQueue(barrageMsgList);
                         }
                     }
                 }
@@ -255,7 +255,6 @@ public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketD
             packetData.setData(builder.build().toByteArray());
             MyLog.v(TAG, "BarrageMsg send:" + msg.getSenderMsgId() + "body :" + msg.getBody());
             MiLinkClientAdapter.getsInstance().sendAsync(packetData);
-//            StatisticUtils.addToMiLinkMonitor(StatisticsKey.KEY_BARRAGE_CUSTOM_SEND_ALL, StatisticUtils.SUCCESS);
         }
     }
 
@@ -292,7 +291,6 @@ public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketD
                     MyLog.e(e);
                 }
             }
-//            StatisticUtils.addToMiLinkMonitor(StatisticsKey.KEY_BARRAGE_CUSTOM_SEND_ALL, StatisticUtils.SUCCESS);
         }
         return false;
     }
@@ -370,8 +368,7 @@ public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketD
             msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
             sendBarrageMessageAsync(msg, true);
             //假装是个push过去
-            pretendPushBarrage(msg);
-//            addChatMsg(msg, false);
+            BarrageMainProcessor.getInstance().addChatMsgRightNow(msg);
         }
     }
 }

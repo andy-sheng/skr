@@ -174,20 +174,46 @@ public class Message implements Comparable<Message>{
                 liveComment.setSenderName(null);
             }
             break;
-            case BarrageMsgType.B_MSG_TYPE_LIVE_END:
-            case BarrageMsgType.B_MSG_TYPE_ANIM:
+            case BarrageMsgType.B_MSG_TYPE_FREQUENCY_CONTROL:
+                BarrageMsg.MsgRuleChangeMessageExt msgRuleChangeMessageExt = (BarrageMsg.MsgRuleChangeMessageExt)msg.getMsgExt();
+                if(msgRuleChangeMessageExt != null) {
+                    liveComment.setMessageExt(new MessageExt.FrequencyControlMessageExt(msgRuleChangeMessageExt.getMessageRule()));
+                }
+                break;
+            case BarrageMsgType.B_MSG_TYPE_KICK_VIEWER:
+                BarrageMsg.KickMessageExt kickMessageExt = (BarrageMsg.KickMessageExt)msg.getMsgExt();
+                if(kickMessageExt != null){
+                    liveComment.setMessageExt(new MessageExt.KickMessageExt(kickMessageExt));
+                }
+                break;
+            case BarrageMsgType.B_MSG_TYPE_COMMEN_SYS_MSG:
             case BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG:
             case BarrageMsgType.B_MSG_TYPE_ROOM_SYS_MSG:
+                liveComment.setMsgType(MessageType.MSG_TYPE_ROOM_SYS_MSG);
+                liveComment.setBody(msg.getBody());
+                break;
             case BarrageMsgType.B_MSG_TYPE_TOP_GET:
             case BarrageMsgType.B_MSG_TYPE_TOP_LOSE:
-            case BarrageMsgType.B_MSG_TYPE_LIVE_OWNER_MSG:
+            case BarrageMsgType.B_MSG_TYPE_LIVE_END:
+                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LiveEndMsgExt) {
+                    BarrageMsg.LiveEndMsgExt liveEndMsgExt = (BarrageMsg.LiveEndMsgExt) msg.getMsgExt();
+                    liveComment.setMessageExt(new MessageExt.LiveEndMessageExt(liveEndMsgExt));
+                }
+                liveComment.setBody(msg.getBody());
+                break;
             case BarrageMsgType.B_MSG_TYPE_ANCHOR_LEAVE:
             case BarrageMsgType.B_MSG_TYPE_ANCHOR_JOIN:
+            case BarrageMsgType.B_MSG_TYPE_VIEWER_CHANGE:
+                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.ViewerChangeMsgExt) {
+                    BarrageMsg.ViewerChangeMsgExt viewerChangeMsgExt = (BarrageMsg.ViewerChangeMsgExt) msg.getMsgExt();
+                    liveComment.setMessageExt(new MessageExt.ViewChangeMessageExt(viewerChangeMsgExt));
+                }
+                liveComment.setBody(msg.getBody());
+                break;
+            case BarrageMsgType.B_MSG_TYPE_LIVE_OWNER_MSG:
             case BarrageMsgType.B_MSG_TYPE_LINE_VIEWER_BACK:
             case BarrageMsgType.B_MSG_TYPE_LINE_VIEWER_LEAVE: {
                 liveComment.setBody(msg.getBody());
-                liveComment.setSenderLevel(0);
-                liveComment.setSenderName(null);
             }
             break;
             //用户行为类 显示名字和级别
@@ -196,6 +222,17 @@ public class Message implements Comparable<Message>{
                     liveComment.setBody("关注了主播");
                 } else {
                     liveComment.setSenderName(null);
+                    liveComment.setBody(msg.getBody());
+                }
+            }
+            break;
+            case BarrageMsgType.B_MSG_TYPE_ANIM:
+            case BarrageMsgType.B_MSG_TYPE_KICK_VIEWER_BARRAGE:
+                break;
+            case BarrageMsgType.B_MSG_TYPE_SHARE: {
+                if (!TextUtils.isEmpty(name)) {
+                    liveComment.setBody("分享了直播");
+                } else {
                     liveComment.setBody(msg.getBody());
                 }
             }
@@ -225,14 +262,18 @@ public class Message implements Comparable<Message>{
                 }
             }
             break;
-            case BarrageMsgType.B_MSG_TYPE_SHARE: {
-                if (!TextUtils.isEmpty(name)) {
-                    liveComment.setBody("分享了直播");
-                } else {
-                    liveComment.setBody(msg.getBody());
-                }
-            }
-            break;
+            case BarrageMsgType.B_MSG_TYPE_GIFT:
+            case BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE:
+            case BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT:
+            case BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT:
+                BarrageMsg.GiftMsgExt giftMsgExt = (BarrageMsg.GiftMsgExt)msg.getMsgExt();
+                liveComment.setMessageExt(new MessageExt.GiftMessageExt(giftMsgExt));
+                liveComment.setBody(msg.getBody());
+                break;
+            case BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE:
+            case BarrageMsgType.B_MSG_TYPE_GLABAL_MSG:
+                liveComment.setBody(msg.getBody());
+                break;
             default: {
                 liveComment.setBody(msg.getBody());
             }

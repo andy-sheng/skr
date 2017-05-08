@@ -1,10 +1,12 @@
 package com.mi.liveassistant.barrage.facade;
 
-import com.mi.liveassistant.barrage.callback.MessageCallBack;
+import com.mi.liveassistant.barrage.callback.ChatMsgCallBack;
+import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
+import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
 import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.manager.BarragePullMessageManager;
 import com.mi.liveassistant.barrage.manager.BarragePushMessageManager;
-import com.mi.liveassistant.barrage.processer.BarrageMainProcesser;
+import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
 import com.mi.liveassistant.common.log.MyLog;
 
 /**
@@ -18,8 +20,6 @@ public class MessageFacade {
 
     private BarragePullMessageManager mBarragePullMessageManager;
 
-    private boolean mIsRunning;
-
     public static MessageFacade getInstance() {
         return mInstance;
     }
@@ -27,12 +27,20 @@ public class MessageFacade {
     private MessageFacade() {
     }
 
-    public void registCallBack(MessageCallBack callBack) {
-        BarrageMainProcesser.getInstance().registCallBack(callBack);
+    public void registCallBack(String roomId, ChatMsgCallBack chatMsgCallBack,SysMsgCallBack sysMsgCallBack) {
+        BarrageMainProcessor.getInstance().init(roomId,chatMsgCallBack,sysMsgCallBack);
     }
 
-    public void unregistCallBack(MessageCallBack callBack) {
-        BarrageMainProcesser.getInstance().unregistCallBack(callBack);
+    public void unregistCallBack() {
+        BarrageMainProcessor.getInstance().destroy();
+    }
+
+    public void registInternalMsgCallBack(InternalMsgCallBack internalMsgCallBack){
+        BarrageMainProcessor.getInstance().registInternalMsgCallBack(internalMsgCallBack);
+    }
+
+    public void unregistInternalMsgCallBack(){
+        BarrageMainProcessor.getInstance().unregistInternalMsgCallBack();
     }
 
     public void startPull(String roomId) {
