@@ -10,7 +10,6 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
-import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -52,10 +51,11 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     private void showSharePanel() {
-        if (mSharePanel == null) {
-            mSharePanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
-        }
-        showPanel(mSharePanel, true);
+//        if (mSharePanel == null) {
+//            mSharePanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
+//        }
+//        showPanel(mSharePanel, true);
+        SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
     @Nullable

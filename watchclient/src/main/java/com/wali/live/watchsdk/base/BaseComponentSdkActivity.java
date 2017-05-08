@@ -257,12 +257,18 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.ShareSucEvent event) {
+    public void onEventMainThread(EventClass.ShareEvent event) {
         if (event != null) {
-            //update experience
-            ExpLevelPresenter expLevelPresenter = new ExpLevelPresenter();
-            addPresent(expLevelPresenter);
-            expLevelPresenter.updateExperience(ExpLevelPresenter.SHARE_TYPE, event.getSnsType());
+            switch (event.state) {
+                case EventClass.ShareEvent.TYPE_SUCCESS:
+                    //update experience
+                    ExpLevelPresenter expLevelPresenter = new ExpLevelPresenter();
+                    addPresent(expLevelPresenter);
+                    expLevelPresenter.updateExperience(ExpLevelPresenter.SHARE_TYPE, event.getSnsType());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

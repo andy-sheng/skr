@@ -58,8 +58,8 @@ public class BottomButtonPresenter extends
     }
 
     @Override
-    public int getShareType() {
-        return mMyRoomData != null ? mMyRoomData.getShareType() : 0;
+    public boolean getShareType() {
+        return mMyRoomData != null ? mMyRoomData.getShareType() : false;
     }
 
     @Nullable

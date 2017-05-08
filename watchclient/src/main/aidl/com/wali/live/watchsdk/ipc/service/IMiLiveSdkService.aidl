@@ -22,5 +22,5 @@ interface IMiLiveSdkService {
 
     void getFollowingLiveList(int channelId, String packageName, String channelSecret);
 
-    void notifyShareSuc(int channelId, String packageName, String channelSecret, int type);
+    void notifyShare(int channelId, String packageName, String channelSecret, boolean success, int type);
 }

@@ -35,7 +35,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private int mChannelId = 0;
     private String mChannelSecret;
     private String mPackageName;
-    private int mShareType;
+    private boolean mShareType;
 
     private AarCallback mCallback;
 
@@ -65,7 +65,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void setShareType(int shareType) {
+    public void setShareType(boolean shareType) {
         mShareType = shareType;
     }
 
@@ -135,10 +135,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void notifyShareSuc(int type) {
+    public void notifyShare(boolean success, int type) {
         checkHasInit();
         try {
-            MiLiveSdkBinder.getInstance().notifyShareSuc(mChannelId, mPackageName, mChannelSecret, type);
+            MiLiveSdkBinder.getInstance().notifyShare(mChannelId, mPackageName, mChannelSecret, success, type);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

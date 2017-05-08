@@ -43,7 +43,7 @@ public interface IMiLiveSdk {
     /**
      * 上层应用设置支持的分享类型
      */
-    void setShareType(int shareType);
+    void setShareType(boolean shareType);
 
     /**
      * OAuth登录
@@ -146,7 +146,7 @@ public interface IMiLiveSdk {
      *
      * @version 205014
      */
-    void notifyShareSuc(int type, IAssistantCallback callback);
+    void notifyShare(boolean success, int type, IAssistantCallback callback);
 
     /**
      * 获取宿主关注人直播列表

@@ -17,7 +17,7 @@ import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
-import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -35,8 +35,6 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private WeakReference<LiveSettingPanel> mSettingPanelRef;
     private WeakReference<LiveMagicPanel> mMagicPanelRef;
     private WeakReference<LivePlusPanel> mPlusPanelRef;
-
-    private ShareControlPanel shareControlPanel;
 
     private WeakReference<LivePlusPresenter> mPlusPresenterRef;
     private WeakReference<LiveMagicPresenter> mMagicPresenterRef;
@@ -138,10 +136,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     private void showShareControlPanel() {
-        if (shareControlPanel == null) {
-            shareControlPanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
-        }
-        showPanel(shareControlPanel, true);
+        //通知上层分享
+        SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
     @Nullable

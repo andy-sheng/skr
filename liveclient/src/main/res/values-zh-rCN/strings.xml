@@ -192,5 +192,6 @@
 
     <string name="prepare_live_share_tips">点击\"开始直播\"，把直播分享到%1$s</string>
     <string name="uninstall_share_tips">未安装%1$s，请安装后分享</string>
-    <string name="live_end_share">分享到</string>
+    <string name="end_live_share">把精彩内容分享给小伙伴</string>
+    <string name="pre_live_share">通知好友来围观</string>
 </resources>

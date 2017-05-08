@@ -12,7 +12,7 @@ import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
-import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -27,7 +27,6 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     protected LiveRoomChatMsgManager mLiveRoomChatMsgManager;
 
     private BaseBottomPanel mSettingPanel;
-    private ShareControlPanel mShareControlPanel;
 
     @Override
     protected String getTAG() {
@@ -68,10 +67,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     private void showShareControlPanel() {
-        if (mShareControlPanel == null) {
-            mShareControlPanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
-        }
-        showPanel(mShareControlPanel, true);
+        SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
     @Nullable

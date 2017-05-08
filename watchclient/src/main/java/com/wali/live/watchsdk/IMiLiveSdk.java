@@ -31,7 +31,7 @@ public interface IMiLiveSdk {
     /**
      * 上层应用设置支持的分享类型
      */
-    void setShareType(int shareType);
+    void setShareType(boolean shareType);
 
     /**
      * OAuth登录
@@ -114,7 +114,7 @@ public interface IMiLiveSdk {
     /**
      * 宿主app通知sdk分享成功接口
      */
-    void notifyShareSuc(int type);
+    void notifyShare(boolean success, int type);
 
     /**
      * 获取关注人直播列表信息

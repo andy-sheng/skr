@@ -79,7 +79,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private int mChannelId = 0;
     private String mChannelSecret;
 
-    private int mShareType;
+    private boolean mShareType;
 
     private ICallback mCallback;
 
@@ -261,8 +261,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void setShareType(int shareType) {
-        mShareType = shareType & ShareType.TYPE_MASK;
+    public void setShareType(boolean shareType) {
+        mShareType = shareType/* & ShareType.TYPE_MASK*/;
     }
 
     @Override
@@ -418,11 +418,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void notifyShareSuc(int type, IAssistantCallback callback) {
+    public void notifyShare(boolean success, int type, IAssistantCallback callback) {
         if (!checkVersion(ACTION_NOTIFY_SHARE_SUC, callback)) {
             return;
         }
-        MiLiveSdkServiceProxy.getInstance().notifyShareSuc(type);
+        MiLiveSdkServiceProxy.getInstance().notifyShare(success, type);
     }
 
     @Override
@@ -472,8 +472,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putInt(EXTRA_CHANNEL_ID, mChannelId);
         bundle.putString(EXTRA_PACKAGE_NAME, GlobalData.app().getPackageName());
         bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
-        if (mShareType != 0) {
-            bundle.putInt(EXTRA_SHARE_TYPE, mShareType);
+        if (mShareType) {
+            bundle.putBoolean(EXTRA_SHARE_TYPE, mShareType);
         }
         return bundle;
     }

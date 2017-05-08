@@ -43,7 +43,6 @@ import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
-import com.wali.live.livesdk.live.view.PreLiveShareButtonView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 
 import java.util.List;
@@ -95,8 +94,8 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected int mTagIndex = -1;
 
     protected LiveRoomChatMsgManager mRoomChatMsgManager;
-    private PreLiveShareButtonView mShareBtnView;
-
+    protected ImageView mShareSelectedIv;
+    protected View mShareContainer;
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
@@ -104,11 +103,12 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     private void tryHideShareBtnView() {
-        if (mMyRoomData != null && mShareBtnView != null) {
-            if (mMyRoomData.getShareType() == 0) {
-                mShareBtnView.setVisibility(View.GONE);
+        if (mMyRoomData != null && mShareContainer != null) {
+            if (!mMyRoomData.getShareType()) {
+                mShareContainer.setVisibility(View.GONE);
             } else {
-                mShareBtnView.setShareType(mMyRoomData.getShareType());
+                boolean shareSelectedState = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_SHARE_SELECTED_STATE, true);
+                mShareSelectedIv.setSelected(shareSelectedState);
             }
         }
     }
@@ -131,6 +131,8 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             onCloseBtnClick();
         } else if (i == R.id.tag_name_container) {
             onTagNameBtnClick();
+        } else if (i == R.id.share_container) {
+            onShareBtnClick();
         }
     }
 
@@ -151,7 +153,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         }
         openLive();
         recordShareSelectState();
-        mShareBtnView.hideShareToast();
+//        mShareBtnView.hideShareToast();
     }
 
     private void onCloseBtnClick() {
@@ -161,6 +163,12 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     private void onTagNameBtnClick() {
         getTagFromServer();
+    }
+
+    private void onShareBtnClick() {
+        MyLog.w(TAG, "onShareBtnClick");
+        mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
+        MyLog.w(TAG, "mShareSelectedIv.isSelected()=" + mShareSelectedIv.isSelected());
     }
 
     @Override
@@ -207,7 +215,10 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
         mTagNameTv = $(R.id.tag_name_tv);
 
-        mShareBtnView = $(R.id.share_view);
+        mShareContainer = $(R.id.share_container);
+        mShareSelectedIv = $(R.id.share_friends_iv);
+        mShareContainer.setOnClickListener(this);
+
         tryHideShareBtnView();
     }
 
@@ -275,7 +286,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     protected void putCommonData(Bundle bundle) {
         // 产品要求支持多个分享
-        bundle.putInt(EXTRA_SNS_TYPE, getSnsType());
+        bundle.putBoolean(EXTRA_SNS_TYPE, isShareSelected());
         bundle.putString(EXTRA_LIVE_TITLE, mLiveTitleEt.getText().toString().trim());
         // 添加标签
         if (mRoomTag != null) {
@@ -372,44 +383,17 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         }
     }
 
-    protected int getSnsType() {
-        int snsType = 0;
-        if (mShareBtnView.getVisibility() == View.VISIBLE) {
-            if (mShareBtnView.isQQSelected()) {
-                snsType |= QQ;
-            }
-            if (mShareBtnView.isQzoneSelected()) {
-                snsType |= QZONE;
-            }
-            if (mShareBtnView.isWeiboSelected()) {
-                snsType |= WEIBO;
-            }
-            if (mShareBtnView.isMiliaoSelected()) {
-                snsType |= MILIAO;
-            }
-            if (mShareBtnView.isMiliaoFeedsSelected()) {
-                snsType |= MILIAO_FEEDS;
-            }
-            if (mShareBtnView.isWXSelected()) {
-                snsType |= WEI_XIN;
-            }
-            if (mShareBtnView.isMomentSelected()) {
-                snsType |= MOMENT;
-            }
+    protected boolean isShareSelected() {
+        if (mShareContainer.getVisibility() == View.VISIBLE) {
+            return mShareSelectedIv.isSelected();
         }
-        MyLog.w(TAG, "snsType=" + snsType);
-        return snsType;
+        return false;
     }
 
     protected void recordShareSelectState() {
-        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_FRIEND_SELECTED, mShareBtnView.isWXSelected());
-        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_MOMENT_SELECTED, mShareBtnView.isMomentSelected());
-
-        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QZONE_SELECTED, mShareBtnView.isQzoneSelected());
-        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIBO_SELECTED, mShareBtnView.isWeiboSelected());
-        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QQ_SELECTED, mShareBtnView.isQQSelected());
-        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_SELECTED, mShareBtnView.isMiliaoSelected());
-        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, mShareBtnView.isMiliaoFeedsSelected());
+        if (mShareContainer.getVisibility() == View.VISIBLE) {
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_SHARE_SELECTED_STATE, mShareSelectedIv.isSelected());
+        }
     }
 
     protected static class TitleTextWatcher implements TextWatcher {

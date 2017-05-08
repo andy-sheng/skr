@@ -117,8 +117,8 @@ public class SnsShareHelper {
 
         //通知上层分享
         MiLiveSdkBinder.getInstance().onEventShare(HostChannelManager.getInstance().getChannelId(),
-                new ShareInfo(type, shareTitle, desText, imgUrl, shareUrl));
-        MyLog.w(TAG, "shareInfo=" + (new ShareInfo(type, shareTitle, desText, imgUrl, shareUrl).toString()));
+                new ShareInfo(shareTitle, desText, imgUrl, shareUrl));
+        MyLog.w(TAG, "shareInfo=" + (new ShareInfo(shareTitle, desText, imgUrl, shareUrl).toString()));
     }
 
     public void setShareTagTailMap(List<ShareProto.TagTail> tagTailList) {

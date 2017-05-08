@@ -174,8 +174,8 @@
     <string name="uninstall_share_tips">Install %1$s first</string>
     <string name="prepare_live_share_tips">Tap \"Start\" and share live stream to %1$s</string>
     <string name="cancel_share_tips">%1$s sharing is off</string>
-    <string name="live_end_share">Share with</string>
-
+    <string name="end_live_share">把精彩内容分享给小伙伴</string>
+    <string name="pre_live_share">通知好友来围观</string>
 
     <string name="admin_manager_tips_1">1. Your manager is permanent, you don\'t need to add again next time.</string>
     <string name="admin_manager_tips_2">2. You can add up to 5 managers.</string>

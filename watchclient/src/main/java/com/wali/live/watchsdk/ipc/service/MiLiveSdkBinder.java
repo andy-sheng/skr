@@ -249,12 +249,13 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void notifyShareSuc(final int channelId, final String packageName, final String channelSecret, final int type) throws RemoteException {
+    public void notifyShare(final int channelId, final String packageName, final String channelSecret, final boolean success, final int type) throws RemoteException {
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
                 MyLog.w(TAG, "notifyShareSuc type=" + type);
-                EventBus.getDefault().post(new EventClass.ShareSucEvent(type));
+                EventBus.getDefault().post(new EventClass.ShareEvent(success ? EventClass.ShareEvent.TYPE_SUCCESS :
+                        EventClass.ShareEvent.TYPE_FAILED, type));
             }
 
             @Override
@@ -409,7 +410,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final int shareType,
+                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean shareType,
                           final boolean needFinish) {
         MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
@@ -448,7 +449,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final int shareType,
+                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean shareType,
                            final boolean needFinish) {
         MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
 

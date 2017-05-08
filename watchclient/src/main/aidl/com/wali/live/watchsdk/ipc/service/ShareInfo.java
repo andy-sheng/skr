@@ -16,14 +16,14 @@ public class ShareInfo implements Parcelable {
     public static final int TYPE_MILIAO = 5;
     public static final int TYPE_MILIAO_FEEDS = 6;
 
-    private int mPlatForm;
+//    private int mPlatForm;
     private String mTitle;
     private String mContent;
     private String mPicUrl;
     private String mUrl;
 
-    public ShareInfo(int shareType, String title, String content, String picUrl, String url) {
-        mPlatForm = shareType;
+    public ShareInfo(/*int shareType,*/ String title, String content, String picUrl, String url) {
+//        mPlatForm = shareType;
         mTitle = title;
         mContent = content;
         mPicUrl = picUrl;
@@ -31,7 +31,7 @@ public class ShareInfo implements Parcelable {
     }
 
     protected ShareInfo(Parcel in) {
-        mPlatForm = in.readInt();
+//        mPlatForm = in.readInt();
         mTitle = in.readString();
         mContent = in.readString();
         mPicUrl = in.readString();
@@ -57,16 +57,16 @@ public class ShareInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.mPlatForm);
+//        dest.writeInt(this.mPlatForm);
         dest.writeString(this.mTitle);
         dest.writeString(this.mContent);
         dest.writeString(this.mPicUrl);
         dest.writeString(this.mUrl);
     }
 
-    public int getPlatForm() {
-        return mPlatForm;
-    }
+//    public int getPlatForm() {
+//        return mPlatForm;
+//    }
 
     public String getTitle() {
         return mTitle;
@@ -87,8 +87,8 @@ public class ShareInfo implements Parcelable {
     @Override
     public String toString() {
         return "ShareInfo{" +
-                "mPlatForm=" + mPlatForm +
-                ", mTitle='" + mTitle + '\'' +
+//                "mPlatForm=" + mPlatForm +
+                " mTitle='" + mTitle + '\'' +
                 ", mContent='" + mContent + '\'' +
                 ", mPicUrl='" + mPicUrl + '\'' +
                 ", mUrl='" + mUrl + '\'' +

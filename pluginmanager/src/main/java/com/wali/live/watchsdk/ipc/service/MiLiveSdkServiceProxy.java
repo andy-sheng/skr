@@ -318,13 +318,13 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
 
-    public void notifyShareSuc(int type) {
+    public void notifyShare(boolean success, int type) {
         if (mRemoteService == null) {
             resolveNullService(IMiLiveSdk.ICallback.NOTIFY_SHARE_AIDL);
         } else {
             try {
-                mRemoteService.notifyShareSuc(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
-                        MiLiveSdkController.getInstance().getChannelSecret(), type);
+                mRemoteService.notifyShare(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(), success, type);
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.NOTIFY_SHARE_AIDL);
             }

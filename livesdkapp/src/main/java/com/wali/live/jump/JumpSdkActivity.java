@@ -60,7 +60,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 String gameId = intent.getStringExtra(EXTRA_GAME_ID);
-                int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
+                boolean shareType = intent.getBooleanExtra(EXTRA_SHARE_TYPE, false);
                 MyLog.d(TAG, "openWatch shareType=" + shareType);
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
                         playerId, liveId, videoUrl, liveType, gameId, shareType, true);
@@ -72,7 +72,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 String gameId = intent.getStringExtra(EXTRA_GAME_ID);
-                int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
+                boolean shareType = intent.getBooleanExtra(EXTRA_SHARE_TYPE, false);
                 MyLog.d(TAG, "openReplay shareType=" + shareType);
                 MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName, channelSecret,
                         playerId, liveId, videoUrl, liveType, gameId, shareType, true);
@@ -80,7 +80,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
             }
             case ACTION_OPEN_NORMAL_LIVE: {
                 final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
-                final int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
+                final boolean shareType = intent.getBooleanExtra(EXTRA_SHARE_TYPE, false);
                 MyLog.d(TAG, "openReplay shareType=" + shareType);
                 MiLiveSdkBinder.getInstance().openNormalLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
@@ -93,7 +93,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
             }
             case ACTION_OPEN_GAME_LIVE: {
                 final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
-                final int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
+                final boolean shareType = intent.getBooleanExtra(EXTRA_SHARE_TYPE, false);
                 MyLog.d(TAG, "openReplay shareType=" + shareType);
                 MiLiveSdkBinder.getInstance().openGameLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
