@@ -59,7 +59,7 @@ public class BottomButtonPresenter extends
 
     @Override
     public boolean getShareType() {
-        return mMyRoomData != null ? mMyRoomData.getShareType() : false;
+        return mMyRoomData != null ? mMyRoomData.getEnableShare() : false;
     }
 
     @Nullable

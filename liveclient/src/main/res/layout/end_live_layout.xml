@@ -56,13 +56,6 @@
         android:layout_marginTop="@dimen/view_dimen_70"
         android:textSize="@dimen/text_size_50"/>
 
-    <!--<com.wali.live.livesdk.live.view.ShareButtonView-->
-    <!--android:id="@+id/share_view"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_above="@+id/back_btn"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginBottom="30dp"/>-->
     <LinearLayout
         android:id="@+id/share_container"
         android:layout_width="wrap_content"
@@ -94,8 +87,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/delete_btn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_dimen_108"
         android:layout_marginBottom="@dimen/view_dimen_50"
+        android:layout_marginTop="@dimen/view_dimen_108"
         android:background="@drawable/live_begin_btn_bg"
         android:gravity="center"
         android:text="@string/live_ended_back"

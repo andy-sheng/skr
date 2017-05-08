@@ -107,7 +107,7 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             }
             relativeLayout.setVisibility(View.VISIBLE);
             LiveBottomButton view = new LiveBottomButton(relativeLayout,
-                    mComponentController.mMyRoomData.getShareType());
+                    mComponentController.mMyRoomData.getEnableShare());
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController,
                             mComponentController.mMyRoomData,

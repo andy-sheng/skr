@@ -126,7 +126,7 @@ public class RoomBaseDataModel implements Serializable {
     /**
      * 分享类型
      */
-    private boolean mShareType = false;
+    private boolean mEnableShare = false;
 
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
@@ -515,11 +515,11 @@ public class RoomBaseDataModel implements Serializable {
         mGameId = gameId;
     }
 
-    public boolean getShareType() {
-        return mShareType;
+    public boolean getEnableShare() {
+        return mEnableShare;
     }
 
-    public void setShareType(boolean shareType) {
-        mShareType = shareType;
+    public void setEnableShare(boolean enableShare) {
+        mEnableShare = enableShare;
     }
 }

@@ -31,7 +31,7 @@ public interface IMiLiveSdk {
     /**
      * 上层应用设置支持的分享类型
      */
-    void setShareType(boolean shareType);
+    void enableShare(boolean enable);
 
     /**
      * OAuth登录

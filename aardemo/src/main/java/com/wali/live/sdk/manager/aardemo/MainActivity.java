@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mMenuRecyclerAdapter = new MenuRecyclerAdapter(this);
         mRecyclerView.setAdapter(mMenuRecyclerAdapter);
         GlobalData.setApplication(this.getApplication());
-//        MiLiveSdkController.getInstance().setShareType(ShareInfo.TYPE_WECHAT | ShareInfo.TYPE_MOMENT | ShareInfo.TYPE_WEIBO);
+        MiLiveSdkController.getInstance().enableShare(true);
         MiLiveSdkController.getInstance().setCallback(new IMiLiveSdk.ICallback() {
 
             @Override

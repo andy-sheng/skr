@@ -35,7 +35,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private int mChannelId = 0;
     private String mChannelSecret;
     private String mPackageName;
-    private boolean mShareType;
+    private boolean mEnableShare;
 
     private AarCallback mCallback;
 
@@ -65,8 +65,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void setShareType(boolean shareType) {
-        mShareType = shareType;
+    public void enableShare(boolean enable) {
+        mEnableShare = enable;
     }
 
     private void checkHasInit() {
@@ -169,28 +169,28 @@ public class MiLiveSdkController implements IMiLiveSdk {
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, null, mShareType, false);
+                playerId, liveId, videoUrl, liveType, null, mEnableShare, false);
     }
 
     @Override
     public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, null, mShareType, false);
+                playerId, liveId, videoUrl, liveType, null, mEnableShare, false);
     }
 
     @Override
     public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, gameId, mShareType, false);
+                playerId, liveId, videoUrl, liveType, gameId, mEnableShare, false);
     }
 
     @Override
     public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, gameId, mShareType, false);
+                playerId, liveId, videoUrl, liveType, gameId, mEnableShare, false);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 new ICommonCallBack() {
                     @Override
                     public void process(Object objects) {
-                        LiveSdkActivity.openActivity(activity, location, mShareType, false);
+                        LiveSdkActivity.openActivity(activity, location, mEnableShare, false);
                     }
                 }, false);
     }
@@ -212,7 +212,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 new ICommonCallBack() {
                     @Override
                     public void process(Object objects) {
-                        LiveSdkActivity.openActivity(activity, location, mShareType, true);
+                        LiveSdkActivity.openActivity(activity, location, mEnableShare, true);
                     }
                 }, false);
     }

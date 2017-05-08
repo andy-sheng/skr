@@ -142,7 +142,7 @@ public class RoomInfo implements Parcelable {
         return mShareType;
     }
 
-//    public void setShareType(int shareType) {
+//    public void setEnableShare(int shareType) {
 //        mShareType = shareType & ShareType.TYPE_MASK;
 //    }
 
@@ -187,8 +187,8 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
-//        public Builder setShareType(boolean shareType) {
-//            mRoomInfo.setShareType(shareType);
+//        public Builder setEnableShare(boolean shareType) {
+//            mRoomInfo.setEnableShare(shareType);
 //            return this;
 //        }
 

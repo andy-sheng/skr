@@ -185,7 +185,7 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
             relativeLayout.setVisibility(View.VISIBLE);
             WatchBottomButton view = new WatchBottomButton(relativeLayout, mIsGameMode,
-                    mComponentController.mMyRoomData.getShareType());
+                    mComponentController.mMyRoomData.getEnableShare());
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);

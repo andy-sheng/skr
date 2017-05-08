@@ -130,7 +130,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private static final String EXTRA_IS_GAME_LIVE = "extra_is_game_live";
     private static final String EXTRA_LOCATION = "extra_location";
-    private static final String EXTRA_SHARE_TYPE = "extra_share_type";
+    private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
 
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
     public static final int REQUEST_PREPARE_LIVE = 1000;
@@ -249,7 +249,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (data != null) {
             mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
             mLocation = data.getParcelableExtra(EXTRA_LOCATION);
-            mShareType = data.getBooleanExtra(EXTRA_SHARE_TYPE, false);
+            mShareType = data.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
         }
     }
 
@@ -257,7 +257,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mLocation != null) {
             mMyRoomData.setCity(mLocation.getCity());
         }
-        mMyRoomData.setShareType(mShareType);
+        mMyRoomData.setEnableShare(mShareType);
         if (UserAccountManager.getInstance().hasAccount()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -1082,7 +1082,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 (mLocation == null) ? "" : mLocation.getCity(), mMyRoomData.getUser(), mMyRoomData.getCoverUrl(), mMyRoomData.getLiveTitle());
         bundle.putBoolean(EndLiveFragment.EXTRA_GENERATE_HISTORY, mGenerateHistorySucc);
         bundle.putString(EndLiveFragment.EXTRA_GENERATE_HISTORY_MSG, mGenerateHistoryMsg);
-        bundle.putBoolean(EndLiveFragment.EXTRA_SHARE_TYPE, mShareType);
+        bundle.putBoolean(EndLiveFragment.EXTRA_ENABLE_SHARE, mShareType);
         EndLiveFragment.openFragment(LiveSdkActivity.this, bundle);
     }
 
@@ -1351,10 +1351,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     /**
      * 区分是否是游戏直播还是秀场直播
      */
-    public static void openActivity(Activity activity, Location location, boolean shareType, boolean isGameLive) {
+    public static void openActivity(Activity activity, Location location, boolean enableShare, boolean isGameLive) {
         Intent intent = new Intent(activity, LiveSdkActivity.class);
-        if (shareType) {
-            intent.putExtra(EXTRA_SHARE_TYPE, shareType);
+        if (enableShare) {
+            intent.putExtra(EXTRA_ENABLE_SHARE, enableShare);
         }
         if (location != null) {
             intent.putExtra(EXTRA_LOCATION, location);

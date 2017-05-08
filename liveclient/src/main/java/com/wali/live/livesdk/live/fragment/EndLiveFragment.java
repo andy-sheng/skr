@@ -31,6 +31,7 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.task.IActionCallBack;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.schema.processor.WaliliveProcessor;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 /**
  * Created by lan on 15-12-15.
@@ -59,7 +60,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public static final String EXTRA_GENERATE_LIVE_TITLE = "extra_generate_live_title";
 
     public static final String EXTRA_LIVE_TYPE = "extra_live_type";
-    public static final String EXTRA_SHARE_TYPE = "extra_share_type";
+    public static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
 
     private static final String EXTRA_FAILURE = "extra_failure";
 
@@ -88,10 +89,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     private String mLocation;
 
     private boolean mIsFailure;
-
-    //    private TextView mShareTv;
-//    private ShareButtonView mShareButtonView;
-    private boolean mAllowShareType;
+    private boolean mAllowShare;
     private ImageView mShareSelectedIv;
     private View mShareContainer;
 
@@ -135,7 +133,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         mShareUrl = bundle.getString(EXTRA_SHARE_URL, "");
         mLiveTitle = bundle.getString(EXTRA_GENERATE_LIVE_TITLE, "");
         mLocation = bundle.getString(EXTRA_LOCATION, "");
-        mAllowShareType = bundle.getBoolean(EXTRA_SHARE_TYPE, false);
+        mAllowShare = bundle.getBoolean(EXTRA_ENABLE_SHARE, false);
     }
 
     private void initContentView() {
@@ -177,18 +175,24 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
             mDeleteBtn.setVisibility(View.INVISIBLE);
         }
 
-//        mShareButtonView = $(R.id.share_view);
         mShareContainer = $(R.id.share_container);
         mShareSelectedIv = $(R.id.share_friends_iv);
         mShareSelectedIv.setOnClickListener(this);
-        if (!mAllowShareType) {
+        if (!mAllowShare) {
             mShareContainer.setVisibility(View.GONE);
         } else {
             boolean shareSelectedState = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.ENDSHARE_SELECTED_STATE, true);
             mShareSelectedIv.setSelected(shareSelectedState);
-//            mShareButtonView.setShareData(getActivity(), mOwner, mShareUrl, mCoverUrl, mLiveTitle, mLocation, mAvatarTs, mLiveType);
-//            mShareButtonView.setShareType(mAllowShareType);
+        }
+    }
 
+    private void processShare() {
+        if (mShareContainer.getVisibility() == View.VISIBLE) {
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.ENDSHARE_SELECTED_STATE, mShareSelectedIv.isSelected());
+            if (mShareSelectedIv.isSelected()) {
+                //分享
+                SnsShareHelper.getInstance().shareToSns(-1, mShareUrl, mCoverUrl, mLocation, mLiveTitle, mOwner);
+            }
         }
     }
 
@@ -196,12 +200,10 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.back_btn) {
-            getActivity().finish();
             String uri = "walilive://channel/channel_id=0";
             WaliliveProcessor.process(Uri.parse(uri), null, (RxActivity) getActivity(), false);
-            if (mShareContainer.getVisibility() == View.VISIBLE) {
-                PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.ENDSHARE_SELECTED_STATE, mShareSelectedIv.isSelected());
-            }
+            processShare();
+            getActivity().finish();
         } else if (i == R.id.delete_btn) {
             DialogUtils.showNormalDialog(getActivity(), 0, R.string.confirm_delete_replay, R.string.ok, R.string.cancel, new DialogUtils.IDialogCallback() {
                 @Override
@@ -219,9 +221,6 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public void onDestroyView() {
         mCurrentScrrenRotateIsLandScape = 0;
         super.onDestroyView();
-//        if (mShareButtonView != null) {
-//            mShareButtonView.destroy();
-//        }
     }
 
     @Override

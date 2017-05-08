@@ -67,16 +67,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     // 直播话题get的方式：从TopicRecommendActivity获取topic为1；当前页面自定义为0
     public final static int TOPIC_FROM_TMATY = 1;
     public final static int TOPIC_FROM_CUSTOM = 0;
-
-    // 分享相关
-    public static final int WEI_XIN = 1;
-    public static final int MOMENT = 1 << 1;
-    public static final int QQ = 1 << 2;
-    public static final int QZONE = 1 << 3;
-    public static final int WEIBO = 1 << 4;
-    public static final int MILIAO = 1 << 5;
-    public static final int MILIAO_FEEDS = 1 << 6;
-
     @NonNull
     protected RoomBaseDataModel mMyRoomData;
     protected boolean mIsAddHistory = true;
@@ -104,7 +94,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     private void tryHideShareBtnView() {
         if (mMyRoomData != null && mShareContainer != null) {
-            if (!mMyRoomData.getShareType()) {
+            if (!mMyRoomData.getEnableShare()) {
                 mShareContainer.setVisibility(View.GONE);
             } else {
                 boolean shareSelectedState = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_SHARE_SELECTED_STATE, true);
@@ -153,7 +143,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         }
         openLive();
         recordShareSelectState();
-//        mShareBtnView.hideShareToast();
     }
 
     private void onCloseBtnClick() {
@@ -166,9 +155,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     private void onShareBtnClick() {
-        MyLog.w(TAG, "onShareBtnClick");
         mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
-        MyLog.w(TAG, "mShareSelectedIv.isSelected()=" + mShareSelectedIv.isSelected());
     }
 
     @Override

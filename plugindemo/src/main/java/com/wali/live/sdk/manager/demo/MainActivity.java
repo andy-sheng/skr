@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
-        MiLiveSdkController.getInstance().setShareType(true);
+        MiLiveSdkController.getInstance().enableShare(true);
     }
 
     public void showUpgradeDialog(final @NonNull Activity activity, final boolean canCancel) {
