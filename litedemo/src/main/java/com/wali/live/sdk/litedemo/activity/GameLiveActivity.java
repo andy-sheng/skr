@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.mi.liveassistant.barrage.callback.ChatMsgCallBack;
 import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
@@ -29,6 +30,7 @@ import com.wali.live.sdk.litedemo.barrage.view.SendBarrageView;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.global.GlobalData;
 import com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView;
+import com.wali.live.sdk.litedemo.utils.KeyboardUtils;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 import java.util.List;
@@ -54,6 +56,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private Intent mIntent;
 
     /*弹幕消息*/
+    private Button mSendMessageBtn;
     private RecyclerView mBarrageRv;
     private LinearLayoutManager mBarrageManager;
     private BarrageAdapter mBarrageAdapter;
@@ -100,6 +103,29 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
         initView();
         initManager();
+        KeyboardUtils.assistActivity(this, new KeyboardUtils.OnKeyboardChangedListener() {
+            @Override
+            public void onKeyboardShow() {
+
+            }
+
+            @Override
+            public void onKeyboardHide() {
+                updateOnKeyboardHide();
+            }
+        });
+    }
+
+    private void updateOnKeyboardShow() {
+        mSendMessageBtn.setVisibility(View.GONE);
+        mSendBarrageView.setVisibility(View.VISIBLE);
+        KeyboardUtils.showKeyboard(this, (EditText) mSendBarrageView.findViewById(R.id.barrage_et));
+    }
+
+    private void updateOnKeyboardHide() {
+        mSendMessageBtn.setVisibility(View.VISIBLE);
+        mSendBarrageView.setVisibility(View.GONE);
+        KeyboardUtils.hideKeyboard(this, (EditText) mSendBarrageView.findViewById(R.id.barrage_et));
     }
 
     private void initView() {
@@ -111,6 +137,14 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         mBarrageRv = $(R.id.barrage_rv);
         mSendBarrageView = $(R.id.send_barrage_view);
         mSendBarrageView.setCallback(mSendCallback);
+
+        mSendMessageBtn = $(R.id.send_message_view);
+        mSendMessageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateOnKeyboardShow();
+            }
+        });
     }
 
     private void initManager() {
