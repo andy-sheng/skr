@@ -105,7 +105,11 @@ public class BarrageAdapter extends RecyclerView.Adapter<BarrageAdapter.BarrageH
 
         public void setComment() {
             int len = mBarrageSpan.length();
-            mBarrageSpan.append(mMessage.getBody());
+            String body = mMessage.getBody();
+            if (TextUtils.isEmpty(body)) {
+                return;
+            }
+            mBarrageSpan.append(body);
             mBarrageSpan.setSpan(new ForegroundColorSpan(Color.WHITE),
                     len, mBarrageSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
