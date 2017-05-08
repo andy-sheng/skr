@@ -1,0 +1,49 @@
+package com.mi.liveassistant.proto;
+
+option java_package = "com.mi.liveassistant.proto";
+option java_outer_classname = "CloudParamsProto";
+
+// 根据机型获取美颜配置
+// ServiceCmd=zhibo.getconfig.camera
+message GetCameraRequest
+{
+    required string model = 1; //机型
+    required string version = 2; //版本
+}
+
+message GetCameraResponse
+{
+    required int32 err_code = 1; //返回码
+    optional int32 camera_config = 2;
+    optional bool open_filter = 3; //是否开启滤镜
+    repeated int32  camera_levels = 4; //美颜级别. 一个数字为单级，多个为多级
+    optional bool open_videorecord = 5; //是否开启录屏, 观众端
+    optional bool open_videorecord_anchor = 6; //是否开启录屏，主播
+    optional uint32 videorecord_time=7; //录屏时长
+    optional uint32 videorecord_time_anchor=8; //主播端录屏时长
+}
+
+
+// 根据机型获取音量配置
+message GetVolumeRequest
+{
+    required string model = 1;      // 机型
+    required string os = 2;         // 操作系统
+    optional string engine = 3;     // 引擎版本，仅ios使用
+    optional string app_version = 4; //app版本
+}
+
+message GetVolumeResponse
+{
+    required int32 err_code = 1;                              // 返回码
+    optional float music_volume_in_speaker_mode = 2;          // 外放模式下音乐播放的默认音量[0,1], 安卓,ios共有
+    optional float voice_volume_in_speaker_mode = 3;          // 外放模式下录音(包括人声及外放的音乐)的默认音量 [0, 2], 安卓,ios共有
+    optional float music_volume_in_headset_mode = 4;          // 耳机模式下主播端和观众端听到的音乐播放的默认音量 [0, 1]，仅安卓有， ios为0
+    optional float voice_volume_in_headset_mode = 5;          // 耳机模式下录音(只包括人声)的默认音量 [0, 2]， 仅安卓有， iOS为0
+    optional int32 intrinsic_music_voice_delay = 6;           // 音乐播放和人声录音的固有时间偏差 [-500, +500](单位毫秒)
+    optional int32 audience_music_volume_in_headset_mode = 7; // 耳机模式观众端听到的音乐大小, 仅iOS有，安卓为0
+    optional int32 host_music_volume_in_headset_mode = 8;     // 耳机模式主播端听到的音乐大小，仅iOS有，安卓为0
+    optional int32 all_voice_volume_in_headset_mode = 9;      // 主播端和观众端听到的人声大小,仅iOS有，安卓为0
+    optional int32 only_voice_volume_in_speaker_mode = 10;    // 外放模式下录音音量(仅包括人声，无音乐)的默认音量, 安卓,ios共有
+}
+
