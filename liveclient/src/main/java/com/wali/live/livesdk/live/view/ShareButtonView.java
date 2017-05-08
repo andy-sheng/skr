@@ -17,7 +17,6 @@ import com.wali.live.watchsdk.component.presenter.SharePresenter;
 import com.wali.live.watchsdk.component.view.IShareView;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -30,9 +29,6 @@ import butterknife.ButterKnife;
  */
 public class ShareButtonView extends LinearLayout implements View.OnClickListener, IShareView {
     private static final String TAG = ShareButtonView.class.getSimpleName();
-
-    public static final int SHARE_BTN_CNT = 7;
-    public static final int SHARE_SPECIES_CNT = 11;
 
     private static final int[] SHARE_BTN_ID = new int[]{
             R.id.share_btn1,
@@ -69,20 +65,8 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
             SnsShareHelper.BTN_MILIAO_FEEDS
     };
 
-    //国外btn顺序  BTN_INSTAGRAM,
-    private static final int[] SHARE_BTN_INDEX_ABROAD = new int[]{
-            SnsShareHelper.BTN_WHATSAPP,
-            SnsShareHelper.BTN_FACEBOOK,
-            SnsShareHelper.BTN_TWITTER,
-            SnsShareHelper.BTN_WECHAT,
-            SnsShareHelper.BTN_WECHAT_MOMENT,
-    };
-
-    private boolean[] mShareBtnStateSet = new boolean[SHARE_SPECIES_CNT];
-
-    private ImageView[] mBtnSet = new ImageView[SHARE_BTN_CNT];
-
-    private HashMap<ShareProto.ChannelType, ShareProto.TagTail> mTagTailMap = new HashMap<>();
+    private boolean[] mShareBtnStateSet;
+    private ImageView[] mBtnSet;
 
     private User mOwner;
     private String mLocation = "";
@@ -165,10 +149,11 @@ public class ShareButtonView extends LinearLayout implements View.OnClickListene
     }
 
     private void initViews() {
-        boolean isLocalChina = CommonUtils.isLocalChina();
-        int btnCnt = isLocalChina ? SHARE_BTN_INDEX_DOMESTIC.length : SHARE_BTN_INDEX_ABROAD.length;
+        mBtnSet = new ImageView[SHARE_BTN_ID.length];
+        int btnCnt = SHARE_BTN_INDEX_DOMESTIC.length;
+        mShareBtnStateSet = new boolean[btnCnt];
         for (int i = 0; i < btnCnt; i++) {
-            int shareBtnIndex = isLocalChina ? SHARE_BTN_INDEX_DOMESTIC[i] : SHARE_BTN_INDEX_ABROAD[i];
+            int shareBtnIndex = SHARE_BTN_INDEX_DOMESTIC[i];
             //btn id始终保持1-5
             bindShareBtnArrays(i, shareBtnIndex);
         }

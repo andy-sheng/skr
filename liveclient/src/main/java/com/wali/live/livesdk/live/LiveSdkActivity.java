@@ -917,14 +917,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 return ShareInfo.TYPE_QZONE;
             case PrepareLiveFragment.WEIBO:
                 return ShareInfo.TYPE_WEIBO;
-            case PrepareLiveFragment.FACEBOOK:
-                return ShareInfo.TYPE_FACEBOOK;
-            case PrepareLiveFragment.TWITTER:
-                return ShareInfo.TYPE_TWITTER;
-            case PrepareLiveFragment.INSTAGRAM:
-                return ShareInfo.TYPE_INSTAGRAM;
-            case PrepareLiveFragment.WHATSAPP:
-                return ShareInfo.TYPE_WHATSAPP;
             case PrepareLiveFragment.MILIAO:
                 return ShareInfo.TYPE_MILIAO;
             case PrepareLiveFragment.MILIAO_FEEDS:

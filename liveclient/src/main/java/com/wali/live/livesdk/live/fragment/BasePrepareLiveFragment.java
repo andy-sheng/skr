@@ -32,7 +32,6 @@ import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
-import com.base.utils.CommonUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
@@ -71,17 +70,13 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     public final static int TOPIC_FROM_CUSTOM = 0;
 
     // 分享相关
-    public static final int WHATSAPP = 1;
-    public static final int FACEBOOK = 1 << 1;
-    public static final int TWITTER = 1 << 2;
-    public static final int INSTAGRAM = 1 << 3;
-    public static final int WEI_XIN = 1 << 4;
-    public static final int MOMENT = 1 << 5;
-    public static final int QQ = 1 << 6;
-    public static final int QZONE = 1 << 7;
-    public static final int WEIBO = 1 << 8;
-    public static final int MILIAO = 1 << 9;
-    public static final int MILIAO_FEEDS = 1 << 10;
+    public static final int WEI_XIN = 1;
+    public static final int MOMENT = 1 << 1;
+    public static final int QQ = 1 << 2;
+    public static final int QZONE = 1 << 3;
+    public static final int WEIBO = 1 << 4;
+    public static final int MILIAO = 1 << 5;
+    public static final int MILIAO_FEEDS = 1 << 6;
 
     @NonNull
     protected RoomBaseDataModel mMyRoomData;
@@ -380,37 +375,21 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected int getSnsType() {
         int snsType = 0;
         if (mShareBtnView.getVisibility() == View.VISIBLE) {
-            if (!CommonUtils.isLocalChina()) {
-                if (mShareBtnView.isInstagramSelected()) {
-                    snsType |= INSTAGRAM;
-                }
-                if (mShareBtnView.isWhatsAppSelected()) {
-                    snsType |= WHATSAPP;
-                }
-                if (mShareBtnView.isFacebookSelected()) {
-                    snsType |= FACEBOOK;
-                }
-                if (mShareBtnView.isTwitterSelected()) {
-                    snsType |= TWITTER;
-                }
-            } else {
-                if (mShareBtnView.isQQSelected()) {
-                    snsType |= QQ;
-                }
-                if (mShareBtnView.isQzoneSelected()) {
-                    snsType |= QZONE;
-                }
-                if (mShareBtnView.isWeiboSelected()) {
-                    snsType |= WEIBO;
-                }
-                if (mShareBtnView.isMiliaoSelected()) {
-                    snsType |= MILIAO;
-                }
-                if (mShareBtnView.isMiliaoFeedsSelected()) {
-                    snsType |= MILIAO_FEEDS;
-                }
+            if (mShareBtnView.isQQSelected()) {
+                snsType |= QQ;
             }
-            // 共用
+            if (mShareBtnView.isQzoneSelected()) {
+                snsType |= QZONE;
+            }
+            if (mShareBtnView.isWeiboSelected()) {
+                snsType |= WEIBO;
+            }
+            if (mShareBtnView.isMiliaoSelected()) {
+                snsType |= MILIAO;
+            }
+            if (mShareBtnView.isMiliaoFeedsSelected()) {
+                snsType |= MILIAO_FEEDS;
+            }
             if (mShareBtnView.isWXSelected()) {
                 snsType |= WEI_XIN;
             }
@@ -425,18 +404,12 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected void recordShareSelectState() {
         PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_FRIEND_SELECTED, mShareBtnView.isWXSelected());
         PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_MOMENT_SELECTED, mShareBtnView.isMomentSelected());
-        if (!CommonUtils.isLocalChina()) {
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_FACEBOOK_SELECTED, mShareBtnView.isFacebookSelected());
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_TWITTER_SELECTED, mShareBtnView.isTwitterSelected());
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_INSTAGRAM_SELECTED, mShareBtnView.isInstagramSelected());
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WHATSAPP_SELECTED, mShareBtnView.isWhatsAppSelected());
-        } else {
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QZONE_SELECTED, mShareBtnView.isQzoneSelected());
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIBO_SELECTED, mShareBtnView.isWeiboSelected());
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QQ_SELECTED, mShareBtnView.isQQSelected());
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_SELECTED, mShareBtnView.isMiliaoSelected());
-            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, mShareBtnView.isMiliaoFeedsSelected());
-        }
+
+        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QZONE_SELECTED, mShareBtnView.isQzoneSelected());
+        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIBO_SELECTED, mShareBtnView.isWeiboSelected());
+        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QQ_SELECTED, mShareBtnView.isQQSelected());
+        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_SELECTED, mShareBtnView.isMiliaoSelected());
+        PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, mShareBtnView.isMiliaoFeedsSelected());
     }
 
     protected static class TitleTextWatcher implements TextWatcher {

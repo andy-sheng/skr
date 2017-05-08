@@ -27,19 +27,18 @@ import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_FACEBOOK;
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_INSTAGRAM;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_MILIAO;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_MILIAO_FEEDS;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_QQ;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_QZONE;
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_TWITTER;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WECHAT;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WECHAT_MOMENT;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WEIBO;
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WHATSAPP;
+
 
 /**
+ * ø
+ *
  * @module 分享面板
  * <p>
  * Created by yangli on 16-5-11.
@@ -108,19 +107,7 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             BTN_QZONE,
             BTN_WEIBO,
             BTN_MILIAO,
-            BTN_MILIAO_FEEDS,
-            BTN_FACEBOOK,
-            BTN_TWITTER
-    };
-
-    //国内顺序fb，tw最后。 其他情况默认 BTN_INSTAGRAM,暂时先拿掉
-    public static final int[] SHARE_BTN_INDEX_ABROAD = new int[]{
-            BTN_WHATSAPP,
-            BTN_FACEBOOK,
-            BTN_TWITTER,
-            BTN_INSTAGRAM,
-            BTN_WECHAT,
-            BTN_WECHAT_MOMENT
+            BTN_MILIAO_FEEDS
     };
 
     public ShareControlPanel(@NonNull RelativeLayout parentView, @NonNull ComponentPresenter.IComponentController componentController,
@@ -158,7 +145,6 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             }
             btnItems.add(new PlusItemAdapter.PlusItem(SHARE_ID[i], SHARE_TV_ID[SHARE_BTN_INDEX_DOMAIN[i]], SHARE_DRAWABLE_ID[SHARE_BTN_INDEX_DOMAIN[i]]));
         }
-
         mShareAdapter.setPlusData(btnItems);
         mShareGridView.setAdapter(mShareAdapter);
     }
@@ -187,14 +173,6 @@ public class ShareControlPanel extends BaseBottomPanel<LinearLayout, RelativeLay
             return BTN_QZONE;
         } else if (i == R.id.blog) {
             return BTN_WEIBO;
-        } else if (i == R.id.facebook) {
-            return BTN_FACEBOOK;
-        } else if (i == R.id.twitter) {
-            return BTN_TWITTER;
-        } else if (i == R.id.instagram) {
-            return BTN_INSTAGRAM;
-        } else if (i == R.id.whatsapp) {
-            return BTN_WHATSAPP;
         } else if (i == R.id.miliao) {
             return BTN_MILIAO;
         } else if (i == R.id.miliao_feeds) {

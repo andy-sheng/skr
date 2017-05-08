@@ -13,12 +13,8 @@ public class ShareInfo implements Parcelable {
     public static final int TYPE_QQ = 2;
     public static final int TYPE_QZONE = 3;
     public static final int TYPE_WEIBO = 4;
-    public static final int TYPE_FACEBOOK = 5;
-    public static final int TYPE_TWITTER = 6;
-    public static final int TYPE_INSTAGRAM = 7;
-    public static final int TYPE_WHATSAPP = 8;
-    public static final int TYPE_MILIAO = 9;
-    public static final int TYPE_MILIAO_FEEDS = 10;
+    public static final int TYPE_MILIAO = 5;
+    public static final int TYPE_MILIAO_FEEDS = 6;
 
     private int mPlatForm;
     private String mTitle;

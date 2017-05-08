@@ -14,26 +14,22 @@ import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.wali.live.livesdk.R;
-import com.wali.live.watchsdk.component.view.IShareView;
-import com.wali.live.watchsdk.component.presenter.SharePresenter;
 import com.wali.live.proto.ShareProto;
+import com.wali.live.watchsdk.component.presenter.SharePresenter;
+import com.wali.live.watchsdk.component.view.IShareView;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_FACEBOOK;
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_INSTAGRAM;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_MILIAO;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_MILIAO_FEEDS;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_QQ;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_QZONE;
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_TWITTER;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WECHAT;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WECHAT_MOMENT;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WEIBO;
-import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.BTN_WHATSAPP;
 import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.isWechatInstalled;
 
 /**
@@ -44,9 +40,6 @@ import static com.wali.live.watchsdk.watch.presenter.SnsShareHelper.isWechatInst
  */
 public class PreLiveShareButtonView extends LinearLayout implements View.OnClickListener, IShareView {
     private static final String TAG = PreLiveShareButtonView.class.getSimpleName();
-
-    public static final int SHARE_BTN_CNT = 7;
-    public static final int SHARE_SPECIES_CNT = 11;
 
     private static final int[] SHARE_BTN_ID = new int[]{
             R.id.share_btn1,
@@ -64,10 +57,6 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
             R.drawable.live_begin_icon_share_qq_bg,
             R.drawable.live_begin_icon_share_qzone_bg,
             R.drawable.live_begin_icon_share_weibo_bg,
-            R.drawable.live_begin_icon_share_facebook_bg,
-            R.drawable.live_begin_icon_share_twitter_bg,
-            R.drawable.live_begin_icon_share_instagram_bg,
-            R.drawable.live_begin_icon_share_whatsapp_bg,
             R.drawable.live_begin_icon_share_miliao_bg,
             R.drawable.live_begin_icon_share_weiguangbo_bg
     };
@@ -78,10 +67,6 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
             R.string.QQ,
             R.string.qzone,
             R.string.blog,
-            R.string.facebook,
-            R.string.twitter,
-            R.string.instagram,
-            R.string.whatsapp,
             R.string.miliao,
             R.string.miliao_feeds
     };
@@ -98,17 +83,9 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
             BTN_MILIAO,
             BTN_MILIAO_FEEDS
     };
-    private static final int[] SHARE_BTN_INDEX_ABROAD = new int[]{//  //国外btn顺序
-            BTN_WHATSAPP,
-            BTN_FACEBOOK,
-            BTN_TWITTER,
-            BTN_INSTAGRAM,
-            BTN_WECHAT,
-            BTN_WECHAT_MOMENT
-    };
 
-    private boolean[] mShareBtnStateSet = new boolean[SHARE_SPECIES_CNT];
-    private ImageView[] mBtnSet = new ImageView[SHARE_BTN_CNT];
+    private boolean[] mShareBtnStateSet;
+    private ImageView[] mBtnSet;
 
     private boolean mIsFirstTips;
     private int mShareTipsMarginBottom;
@@ -203,42 +180,6 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
                     return;
                 }
                 mShareBtnStateSet[BTN_WEIBO] = isSelected;
-                break;
-            case BTN_FACEBOOK:
-                platform = GlobalData.app().getString(R.string.facebook);
-                if (!SnsShareHelper.isFacebookInstalled()) {
-                    tips = GlobalData.app().getString(R.string.uninstall_share_tips, platform);
-                    showShareToast(v, tips);
-                    return;
-                }
-                mShareBtnStateSet[BTN_FACEBOOK] = isSelected;
-                break;
-            case BTN_TWITTER:
-                platform = GlobalData.app().getString(R.string.twitter);
-                if (!SnsShareHelper.isTwitterInstalled()) {
-                    tips = GlobalData.app().getString(R.string.uninstall_share_tips, platform);
-                    showShareToast(v, tips);
-                    return;
-                }
-                mShareBtnStateSet[BTN_TWITTER] = isSelected;
-                break;
-            case BTN_INSTAGRAM:
-                platform = GlobalData.app().getString(R.string.instagram);
-                if (!SnsShareHelper.isInstagramInstalled()) {
-                    tips = GlobalData.app().getString(R.string.uninstall_share_tips, platform);
-                    showShareToast(v, tips);
-                    return;
-                }
-                mShareBtnStateSet[BTN_INSTAGRAM] = isSelected;
-                break;
-            case BTN_WHATSAPP:
-                platform = GlobalData.app().getString(R.string.whatsapp);
-                if (!SnsShareHelper.isWhatsappInstalled()) {
-                    tips = GlobalData.app().getString(R.string.uninstall_share_tips, platform);
-                    showShareToast(v, tips);
-                    return;
-                }
-                mShareBtnStateSet[BTN_WHATSAPP] = isSelected;
                 break;
             case BTN_MILIAO:
                 platform = GlobalData.app().getString(R.string.miliao);
@@ -339,23 +280,18 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
     }
 
     private void initData() {
+        mShareBtnStateSet = new boolean[SHARE_DRAWABLE_ID.length];
+        mBtnSet = new ImageView[SHARE_BTN_ID.length];
+
         //共用的
         mIsFirstTips = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_FIRST_TIPS, true);
-        mShareBtnStateSet[BTN_WECHAT] = isWechatInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_FRIEND_SELECTED, false) : false;
-
-        if (!CommonUtils.isLocalChina()) {
-            mShareBtnStateSet[BTN_FACEBOOK] = SnsShareHelper.isFacebookInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_FACEBOOK_SELECTED, true) : false;
-            mShareBtnStateSet[BTN_TWITTER] = SnsShareHelper.isTwitterInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_TWITTER_SELECTED, false) : false;
-            mShareBtnStateSet[BTN_INSTAGRAM] = SnsShareHelper.isInstagramInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_INSTAGRAM_SELECTED, false) : false;
-            mShareBtnStateSet[BTN_WHATSAPP] = SnsShareHelper.isWhatsappInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WHATSAPP_SELECTED, false) : false;
-        } else {
-            mShareBtnStateSet[BTN_QZONE] = SnsShareHelper.isQQInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QZONE_SELECTED, false) : false;
-            mShareBtnStateSet[BTN_WEIBO] = SnsShareHelper.isWeiboInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIBO_SELECTED, false) : false;
-            mShareBtnStateSet[BTN_WECHAT_MOMENT] = isWechatInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_MOMENT_SELECTED, true) : false;
-            mShareBtnStateSet[BTN_QQ] = SnsShareHelper.isQQInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QQ_SELECTED, false) : false;
-            mShareBtnStateSet[BTN_MILIAO] = SnsShareHelper.isMiliaoInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_SELECTED, false) : false;
-            mShareBtnStateSet[BTN_MILIAO_FEEDS] = SnsShareHelper.isMiliaoInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, false) : false;
-        }
+        mShareBtnStateSet[BTN_WECHAT] = SnsShareHelper.isWechatInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_FRIEND_SELECTED, false) : false;
+        mShareBtnStateSet[BTN_QZONE] = SnsShareHelper.isQQInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QZONE_SELECTED, false) : false;
+        mShareBtnStateSet[BTN_WEIBO] = SnsShareHelper.isWeiboInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIBO_SELECTED, false) : false;
+        mShareBtnStateSet[BTN_WECHAT_MOMENT] = SnsShareHelper.isWechatInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_WEIXIN_MOMENT_SELECTED, true) : false;
+        mShareBtnStateSet[BTN_QQ] = SnsShareHelper.isQQInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_QQ_SELECTED, false) : false;
+        mShareBtnStateSet[BTN_MILIAO] = SnsShareHelper.isMiliaoInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_SELECTED, false) : false;
+        mShareBtnStateSet[BTN_MILIAO_FEEDS] = SnsShareHelper.isMiliaoInstalled() ? PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.SHARE_MILIAO_FEEDS_SELECTED, false) : false;
 
         float density = DisplayUtils.getDensity();
         if (density >= 3) {
@@ -368,27 +304,19 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
     }
 
     private void initView() {
-        // 获取语言版本
-        boolean isLocalChina = CommonUtils.isLocalChina();
-
         // 获取支持的默认btnId
         int defaultSelectBtnId = -1;
-        if (isLocalChina) {
-            if ((mAllowShareType & (1 << BTN_WECHAT_MOMENT)) != 0) {
-                defaultSelectBtnId = BTN_WECHAT_MOMENT;
-            }
-        } else if (!isLocalChina) {
-            if ((mAllowShareType & (1 << BTN_FACEBOOK)) != 0) {
-                defaultSelectBtnId = BTN_FACEBOOK;
-            }
+        if ((mAllowShareType & (1 << BTN_WECHAT_MOMENT)) != 0) {
+            defaultSelectBtnId = BTN_WECHAT_MOMENT;
         }
+
         final int finalDefaultSelectBtnId = defaultSelectBtnId;
 
         // 获取btnId对应的btnIndex，同时绑定对应的分享按钮
         int defaultSelectBtnIndex = -1;
-        int btnCnt = isLocalChina ? SHARE_BTN_INDEX_DOMESTIC.length : SHARE_BTN_INDEX_ABROAD.length;
+        int btnCnt = SHARE_BTN_INDEX_DOMESTIC.length;
         for (int i = 0; i < btnCnt; i++) {
-            int shareBtnIndex = isLocalChina ? SHARE_BTN_INDEX_DOMESTIC[i] : SHARE_BTN_INDEX_ABROAD[i];
+            int shareBtnIndex = SHARE_BTN_INDEX_DOMESTIC[i];
             bindShareBtnArrays(i, shareBtnIndex);
             if (shareBtnIndex == finalDefaultSelectBtnId) {
                 defaultSelectBtnIndex = i;//标记默认第几个btn被选中
@@ -396,8 +324,7 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
         }
 
         // 满足对应的条件，不需要默认选中状态和对应的文案，直接返回
-        if (!mIsFirstTips || defaultSelectBtnIndex < 0 || defaultSelectBtnIndex >= btnCnt ||
-                !((isLocalChina && isWechatInstalled()) || (!isLocalChina && SnsShareHelper.isFacebookInstalled()))) {
+        if (!mIsFirstTips || defaultSelectBtnIndex < 0 || defaultSelectBtnIndex >= btnCnt || !isWechatInstalled()) {
             return;
         }
 
@@ -432,22 +359,6 @@ public class PreLiveShareButtonView extends LinearLayout implements View.OnClick
 
     public boolean isWeiboSelected() {
         return mShareBtnStateSet[BTN_WEIBO];
-    }
-
-    public boolean isFacebookSelected() {
-        return mShareBtnStateSet[BTN_FACEBOOK];
-    }
-
-    public boolean isTwitterSelected() {
-        return mShareBtnStateSet[BTN_TWITTER];
-    }
-
-    public boolean isInstagramSelected() {
-        return mShareBtnStateSet[BTN_INSTAGRAM];
-    }
-
-    public boolean isWhatsAppSelected() {
-        return mShareBtnStateSet[BTN_WHATSAPP];
     }
 
     public boolean isMiliaoSelected() {
