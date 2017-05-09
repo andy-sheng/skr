@@ -368,7 +368,7 @@ public class BarragePushMessageManager implements MiLinkPacketDispatcher.PacketD
             msg.setRedName(MyUserInfoManager.getInstance().getUser().isRedName());
             sendBarrageMessageAsync(msg, true);
             //假装是个push过去
-            BarrageMainProcessor.getInstance().addChatMsgRightNow(msg);
+            pretendPushBarrage(msg);
         }
     }
 }

@@ -27,7 +27,7 @@ public class Constants {
     public static final boolean isDebugMiChanel = DEBUGMI_CHANNEL.equals(ReleaseChannel);
     public static final boolean isIndiaBuild = INDIA_CHANNEL.equals(ReleaseChannelUtils.getReleaseChannel());
 
-    public static final int MILINK_APP_ID = 10008;
+    public static final int MILINK_APP_ID = 10013;
 
     public static final String APP_NAME = "WALI_LIVE_SDK";
 }

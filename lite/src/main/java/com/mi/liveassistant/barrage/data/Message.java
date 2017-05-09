@@ -202,7 +202,11 @@ public class Message implements Comparable<Message>{
                 liveComment.setBody(msg.getBody());
                 break;
             case BarrageMsgType.B_MSG_TYPE_ANCHOR_LEAVE:
+                liveComment.setBody(msg.getBody());
+                break;
             case BarrageMsgType.B_MSG_TYPE_ANCHOR_JOIN:
+                liveComment.setBody(msg.getBody());
+                break;
             case BarrageMsgType.B_MSG_TYPE_VIEWER_CHANGE:
                 if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.ViewerChangeMsgExt) {
                     BarrageMsg.ViewerChangeMsgExt viewerChangeMsgExt = (BarrageMsg.ViewerChangeMsgExt) msg.getMsgExt();
@@ -238,6 +242,10 @@ public class Message implements Comparable<Message>{
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_LEAVE: {
+                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LeaveRoomMsgExt){
+                    BarrageMsg.LeaveRoomMsgExt leaveRoomMsgExt = (BarrageMsg.LeaveRoomMsgExt) msg.getMsgExt();
+                    liveComment.setMessageExt(new MessageExt.LeaveRoomMessageExt(leaveRoomMsgExt));
+                }
                 if (!TextUtils.isEmpty(name)) {
                     liveComment.setBody("离开房间");
                 } else {
@@ -246,6 +254,10 @@ public class Message implements Comparable<Message>{
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_JOIN: {
+                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.JoinRoomMsgExt){
+                    BarrageMsg.JoinRoomMsgExt joinRoomMsgExt = (BarrageMsg.JoinRoomMsgExt) msg.getMsgExt();
+                    liveComment.setMessageExt(new MessageExt.JoinRoomMessageExt(joinRoomMsgExt));
+                }
                 if (!TextUtils.isEmpty(name)) {
                     liveComment.setBody("进入房间");
                 } else {

@@ -64,6 +64,8 @@ public class BarrageMainProcessor implements IMsgDispenser {
 
     private static final int SYNC_INTERVAL = 5000;
 
+    private long mSyncInterval = SYNC_INTERVAL;
+
     private Subscription mNotifyRenderSubscriber;
 
     private long mLastPullTs;
@@ -98,7 +100,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
         });
     }
 
-    public void registInternalMsgCallBack(final InternalMsgCallBack internalMsgCallBack) {
+    public void registerInternalMsgCallBack(final InternalMsgCallBack internalMsgCallBack) {
         singleThread.execute(new Runnable() {
             @Override
             public void run() {
@@ -107,7 +109,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
         });
     }
 
-    public void unregistInternalMsgCallBack() {
+    public void unregisterInternalMsgCallBack() {
         singleThread.execute(new Runnable() {
             @Override
             public void run() {
@@ -116,11 +118,12 @@ public class BarrageMainProcessor implements IMsgDispenser {
         });
     }
 
-    public void enterRenderQueue(final List<BarrageMsg> importantList, final List<BarrageMsg> normalList) {
+    public void enterRenderQueue(final List<BarrageMsg> importantList, final List<BarrageMsg> normalList,long lastPullTs,long syncInterval) {
         if (mChatMsgCallBack == null && mSysMsgCallBack == null && mInternalMsgCallBack == null) {
             return;
         }
-        mLastPullTs = System.currentTimeMillis();
+        mLastPullTs = lastPullTs;
+        mSyncInterval = syncInterval;
         Observable.just(new ArrayList<BarrageMsg>(mRenderQueue))
                 .onBackpressureBuffer()
                 .observeOn(Schedulers.from(singleThread))
@@ -164,41 +167,37 @@ public class BarrageMainProcessor implements IMsgDispenser {
         if (mChatMsgCallBack == null && mSysMsgCallBack == null && mInternalMsgCallBack == null) {
             return;
         }
-        mLastPullTs = System.currentTimeMillis();
-        Observable.just(new ArrayList<BarrageMsg>(mRenderQueue))
+//        mLastPullTs = System.currentTimeMillis();
+        Observable.just(0)
                 .onBackpressureBuffer()
-                .observeOn(Schedulers.from(singleThread))
-                .map(new Func1<ArrayList<BarrageMsg>, ArrayList<BarrageMsg>>() {
+                .observeOn(Schedulers.io())
+                .map(new Func1<Integer, List<BarrageMsg>>() {
                     @Override
-                    public ArrayList<BarrageMsg> call(ArrayList<BarrageMsg> sortList) {
-                        sortList.addAll(barrageMsgList);
-                        Collections.sort(sortList, new Comparator<BarrageMsg>() {
+                    public List<BarrageMsg> call(Integer i) {
+                        Collections.sort(barrageMsgList, new Comparator<BarrageMsg>() {
                             @Override
                             public int compare(BarrageMsg lhs, BarrageMsg rhs) {
                                 return (int) (lhs.getSentTime() - rhs.getSentTime());
                             }
                         });
-                        mRenderQueue.clear();
-                        mRenderQueue.addAll(sortList);
-                        return sortList;
+                        return barrageMsgList;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Object>() {
+                .observeOn(Schedulers.from(singleThread))
+                .subscribe(new Subscriber<List<BarrageMsg>>() {
                     @Override
                     public void onCompleted() {
-                        notifyRender();
+                        MyLog.d(TAG, "onCompleted");
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         MyLog.e(TAG, "enterRenderQueue:" + e);
-                        notifyRender();
                     }
 
                     @Override
-                    public void onNext(Object roomMsgs) {
-
+                    public void onNext(List<BarrageMsg> roomMsgs) {
+                        renderRoomMsg(roomMsgs);
                     }
                 });
     }
@@ -232,7 +231,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
                     @Override
                     public Object call(Object o) {
                         long now = System.currentTimeMillis();
-                        long leftTime = (mLastPullTs + SYNC_INTERVAL) - now;
+                        long leftTime = (mLastPullTs + mSyncInterval) - now;
 
                         if (leftTime <= 0) {
                             //已经超时了，还有没展示完的，全部展示
@@ -329,24 +328,16 @@ public class BarrageMainProcessor implements IMsgDispenser {
             return;
         }
         for (BarrageMsg barrageMsg : messageList) {
+            MyLog.w(TAG,"barrage msg type:"+barrageMsg.getMsgType());
             Set<MsgProcessor> processors = mMsgProcessorMap.get(barrageMsg.getMsgType());
             if(processors != null){
                 for (MsgProcessor processor : processors) {
                     processor.process(barrageMsg, mRoomId);
                 }
             }else{
-                MyLog.w(TAG,"message type:"+barrageMsg.getMsgType()+"\tnot have processor");
+                MyLog.d(TAG,"message type:"+barrageMsg.getMsgType()+"\tnot have processor");
             }
         }
-    }
-
-    public void addChatMsgRightNow(final BarrageMsg barrageMsg){
-        singleThread.execute(new Runnable() {
-            @Override
-            public void run() {
-                addChatMsg(Message.loadFromBarrage(barrageMsg));
-            }
-        });
     }
 
     @Override

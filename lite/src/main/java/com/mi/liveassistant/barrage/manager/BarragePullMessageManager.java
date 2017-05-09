@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * 拉取弹幕
- *
+ * <p/>
  * Created by wuxiaoshan on 17-4-28.
  */
 public class BarragePullMessageManager {
@@ -42,14 +42,14 @@ public class BarragePullMessageManager {
 
     private long mLastSyncImportantTs;
     private long mLastSyncNormalTs;
-     //拉取的时间间隔
+    //拉取的时间间隔
     private long mSyncInterval;
-     //上一次拉取间隔
+    //上一次拉取间隔
     private long mLastPullTs;
 
     private BarrageMainProcessor mBarrageProcesser;
 
-    public BarragePullMessageManager(String roomId){
+    public BarragePullMessageManager(String roomId) {
         mRoomId = roomId;
         mSyncInterval = 5000;
         mSingleThread = Executors.newSingleThreadExecutor();
@@ -60,21 +60,21 @@ public class BarragePullMessageManager {
 
     private Subscription mDelayPullSubscriber;
 
-    public void start(){
-        MyLog.w(TAG,"start");
+    public void start() {
+        MyLog.w(TAG, "start");
         isRunning = true;
         mBarrageProcesser = BarrageMainProcessor.getInstance();
         pullMsg();
     }
 
-    public void stop(){
-        MyLog.w(TAG,"stop");
+    public void stop() {
+        MyLog.w(TAG, "stop");
         isRunning = false;
-        if(mPullRoomMessageSubscription != null && mPullRoomMessageSubscription.isUnsubscribed()){
+        if (mPullRoomMessageSubscription != null && mPullRoomMessageSubscription.isUnsubscribed()) {
             mPullRoomMessageSubscription.unsubscribe();
             mPullRoomMessageSubscription = null;
         }
-        if(mDelayPullSubscriber != null && mDelayPullSubscriber.isUnsubscribed()){
+        if (mDelayPullSubscriber != null && mDelayPullSubscriber.isUnsubscribed()) {
             mDelayPullSubscriber.unsubscribe();
             mDelayPullSubscriber = null;
         }
@@ -87,16 +87,16 @@ public class BarragePullMessageManager {
         mSingleThread.shutdown();
     }
 
-    public boolean isRunning(){
+    public boolean isRunning() {
         return isRunning;
     }
 
-    private void pullMsg(){
-        if(!isRunning){
+    private void pullMsg() {
+        if (!isRunning) {
             return;
         }
-        MyLog.d(TAG,"pull msg");
-        if(mPullRoomMessageSubscription != null && mPullRoomMessageSubscription.isUnsubscribed()){
+        MyLog.d(TAG, "pull msg");
+        if (mPullRoomMessageSubscription != null && mPullRoomMessageSubscription.isUnsubscribed()) {
             mPullRoomMessageSubscription.unsubscribe();
             mPullRoomMessageSubscription = null;
         }
@@ -108,8 +108,8 @@ public class BarragePullMessageManager {
                     LiveMessageProto.SyncRoomMessageResponse response = request.syncRsp();
                     subscriber.onNext(response);
                     subscriber.onCompleted();
-                }catch (Exception e){
-                    MyLog.e(TAG,e);
+                } catch (Exception e) {
+                    MyLog.e(TAG, e);
                     subscriber.onError(e);
                 }
             }
@@ -124,6 +124,8 @@ public class BarragePullMessageManager {
                         A temp = new A();
                         temp.importList = message2Barrage(response.getImportantRoomMsgList());
                         temp.normalList = message2Barrage(response.getNormalRoomMsgList());
+                        temp.mLastPullTs = mLastPullTs;
+                        temp.mSyncInterval = mSyncInterval;
                         return Observable.just(temp);
                     }
                 })
@@ -149,8 +151,8 @@ public class BarragePullMessageManager {
                             List<BarrageMsg> l2 = a.normalList;
                             MyLog.d(TAG, "startWorkInternal result list size:" + (l1.size() + l2.size()));
                             // 进队列
-                            if(mBarrageProcesser != null){
-                                mBarrageProcesser.enterRenderQueue(l1,l2);
+                            if (mBarrageProcesser != null) {
+                                mBarrageProcesser.enterRenderQueue(l1, l2, a.mLastPullTs, a.mSyncInterval);
                             }
                         }
                     }
@@ -179,6 +181,8 @@ public class BarragePullMessageManager {
     static class A {
         public List<BarrageMsg> normalList;
         public List<BarrageMsg> importList;
+        public long mLastPullTs;
+        public long mSyncInterval;
     }
 
     private static List<BarrageMsg> message2Barrage(List<LiveMessageProto.Message> list) {
@@ -186,15 +190,13 @@ public class BarragePullMessageManager {
         if (list != null) {
             for (LiveMessageProto.Message m : list) {
                 BarrageMsg barrage = BarrageMsg.toBarrageMsg(m);
-                if(barrage != null) {
+                if (barrage != null) {
                     resultList.add(BarrageMsg.toBarrageMsg(m));
                 }
             }
         }
         return resultList;
     }
-
-
 
 
 }

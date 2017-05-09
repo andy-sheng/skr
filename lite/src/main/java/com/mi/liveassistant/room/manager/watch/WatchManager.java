@@ -8,7 +8,7 @@ import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageExt;
 import com.mi.liveassistant.barrage.data.MessageType;
-import com.mi.liveassistant.barrage.facade.MessageFacade;
+import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerPresenter;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerView;
@@ -97,7 +97,7 @@ public class WatchManager implements IWatchView, IViewerRegister {
     }
 
     private void registerInternalMsg() {
-        MessageFacade.getInstance().registInternalMsgCallBack(new InternalMsgCallBack() {
+        BarrageMainProcessor.getInstance().registerInternalMsgCallBack(new InternalMsgCallBack() {
             @Override
             public void handleMessage(List<Message> messageList) {
                 List<Message> viewerMessageList = new ArrayList();

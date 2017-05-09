@@ -2,6 +2,7 @@ package com.mi.liveassistant.barrage.data;
 
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.barrage.model.MessageRuleModel;
+import com.mi.liveassistant.barrage.model.ViewerModel;
 import com.mi.liveassistant.data.model.Viewer;
 
 import java.util.ArrayList;
@@ -105,6 +106,41 @@ public class MessageExt {
         }
 
     }
+
+    //这种消息，客户端只是接收方， 不会发出
+    public static class JoinRoomMessageExt extends MessageExt {
+        public int viewerCount;
+
+        public List<Viewer> viewerList = new ArrayList<>();
+
+        public JoinRoomMessageExt(BarrageMsg.JoinRoomMsgExt joinRoomMsgExt){
+            viewerCount = joinRoomMsgExt.viewerCount;
+            if(joinRoomMsgExt.viewerList != null){
+                for(ViewerModel viewerModel:joinRoomMsgExt.viewerList){
+                    viewerList.add(new Viewer(viewerModel));
+                }
+            }
+        }
+
+    }
+
+    //这种消息，客户端只是接收方， 不会发出
+    public static class LeaveRoomMessageExt extends MessageExt {
+        public int viewerCount;
+
+        public List<Viewer> viewerList = new ArrayList<>();
+
+        public LeaveRoomMessageExt(BarrageMsg.LeaveRoomMsgExt leaveRoomMsgExt){
+            viewerCount = leaveRoomMsgExt.viewerCount;
+            if(leaveRoomMsgExt.viewerList != null){
+                for(ViewerModel viewerModel:leaveRoomMsgExt.viewerList){
+                    viewerList.add(new Viewer(viewerModel));
+                }
+            }
+        }
+
+    }
+
 
 
 

@@ -44,8 +44,20 @@ public class MessageType {
     public static final int MSG_TYPE_ANCHOR_JOIN = BarrageMsgType.B_MSG_TYPE_ANCHOR_JOIN;
     /*需要上层处理的系统消息，结束*/
 
+    /**礼物消息，开始**/
     //礼物消息
     public static final int MSG_TYPE_GIFT = BarrageMsgType.B_MSG_TYPE_GIFT;
+    //付费弹幕
+    public static final int MSG_TYPE_PAY_BARRAGE = BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE;
+    //红包
+    public static final int MSG_TYPE_RED_ENVELOPE = BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE;
+    //背景礼物推送
+    public static final int MSG_TYPE_ROOM_BACKGROUND_GIFT =  BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT;
+    //点亮礼物消息
+    public static final int MSG_TYPE_LIGHT_UP_GIFT = BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT;
+    //全局消息推送，大金龙
+    public static final int MSG_TYPE_GLABAL_MSG = BarrageMsgType.B_MSG_TYPE_GLABAL_MSG;
+    /**礼物消息，结束**/
 
 
 
