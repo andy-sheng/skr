@@ -15,7 +15,7 @@ public class AccountLocalStore {
     public final static String TAG = AccountLocalStore.class.getSimpleName();
 
     private static AccountLocalStore sInstance;
-    
+
     private UserAccountDao mUserAccountDao;
 
     private AccountLocalStore() {
@@ -52,6 +52,15 @@ public class AccountLocalStore {
 
     public UserAccount getAccount(String uuid) {
         List list = mUserAccountDao.queryBuilder().where(UserAccountDao.Properties.Uuid.eq(uuid)).list();
+        if (list.isEmpty()) {
+            return null;
+        } else {
+            return (UserAccount) list.get(0);
+        }
+    }
+
+    public UserAccount getAccount() {
+        List list = mUserAccountDao.queryBuilder().list();
         if (list.isEmpty()) {
             return null;
         } else {

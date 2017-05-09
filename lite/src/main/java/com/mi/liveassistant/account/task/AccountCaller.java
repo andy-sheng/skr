@@ -91,9 +91,7 @@ public class AccountCaller {
                     return;
                 }
 
-                int errCode;
-                if ((errCode = rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
-
+                if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                     UserAccount userAccount = new UserAccount();
                     userAccount.setUuid(String.valueOf(rsp.getUuid()));
                     userAccount.setPassToken(rsp.getPassToken());

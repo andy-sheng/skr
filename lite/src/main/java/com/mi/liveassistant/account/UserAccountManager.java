@@ -170,11 +170,11 @@ public class UserAccountManager {
         return 0;
     }
 
-    public int getChannelId(){
+    public int getChannelId() {
         return mChannelId;
     }
 
-    public synchronized void setmChannelId(int channelId){
+    public synchronized void setmChannelId(int channelId) {
         mChannelId = channelId;
     }
 
@@ -259,7 +259,6 @@ public class UserAccountManager {
         }
     }
 
-    // TODO 全部移到data层后这里要重构
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(MiLinkEvent.Account event) {
         switch (event.op) {
@@ -273,10 +272,6 @@ public class UserAccountManager {
                     AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN);
                 }
                 UserAccountManager.getInstance().logoff(UserAccountManager.getInstance().getUuidAsLong());
-//                new MyAlertDialog.Builder(GlobalData.app())
-//                        .setMessage("账号被踢")
-//                        .create()
-//                        .show();
             }
             break;
             case MiLinkEvent.Account.GET_SERVICE_TOKEN: {

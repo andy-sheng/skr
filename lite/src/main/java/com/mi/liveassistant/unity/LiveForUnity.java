@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
 import com.mi.liveassistant.common.log.MyLog;
+import com.mi.liveassistant.login.ILoginCallback;
 import com.mi.liveassistant.login.LoginManager;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
@@ -152,7 +153,18 @@ public class LiveForUnity {
         int channelId = 50001;
         String signStr = "channelId=" + channelId + "&headUrl=" + headUrl + "&nickname=" + name + "&sex=" + sex + "&xuid=" + uid;
         String sign = RSASignature.sign(signStr, RSA_PRIVATE_KEY, "UTF-8");
-        LoginManager.thirdPartLogin(channelId, uid, name, headUrl, sex, sign);
+
+        LoginManager.thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new ILoginCallback() {
+            @Override
+            public void notifyFail(int errCode) {
+                MyLog.d(TAG, "notifyFail");
+            }
+
+            @Override
+            public void notifySuccess() {
+                MyLog.d(TAG, "notifySuccess");
+            }
+        });
         return false;
     }
 }

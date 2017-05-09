@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.mi.liveassistant.common.thread.ThreadPool;
+import com.mi.liveassistant.login.ILoginCallback;
 import com.mi.liveassistant.login.LoginManager;
 import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
 import com.mi.liveassistant.michannel.presenter.IChannelView;
@@ -47,7 +49,6 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
 
     private void initView() {
         mLoginBtn = $(R.id.login_btn);
-        mLoginBtn.setOnClickListener(this);
 
         mGameLiveBtn = $(R.id.game_live_btn);
         mGameLiveBtn.setOnClickListener(this);
@@ -57,6 +58,23 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
 
         mWatchBtn = $(R.id.watch_btn);
         mWatchBtn.setOnClickListener(this);
+
+        ThreadPool.runOnWorker(new Runnable() {
+            @Override
+            public void run() {
+                if (!LoginManager.checkAccount()) {
+                    mLoginBtn.setOnClickListener(MainActivity.this);
+                } else {
+                    mLoginBtn.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mLoginBtn.setText("已登录");
+                            mLoginBtn.setEnabled(false);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void initPresenter() {
@@ -95,7 +113,18 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String code) {
-                        LoginManager.loginByMiAccountOAuth(50001, code);
+                        LoginManager.loginByMiAccountOAuth(50001, code, new ILoginCallback() {
+                            @Override
+                            public void notifyFail(int i) {
+                                mLoginBtn.setText("登录失败");
+                            }
+
+                            @Override
+                            public void notifySuccess() {
+                                mLoginBtn.setText("已登录");
+                                mLoginBtn.setEnabled(false);
+                            }
+                        });
                     }
                 }, new Action1<Throwable>() {
                     @Override
