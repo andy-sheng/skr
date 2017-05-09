@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.mi.liveassistant.room.viewer.model.Viewer;
+import com.mi.liveassistant.data.model.Viewer;
 import com.wali.live.sdk.litedemo.R;
 
 import java.util.List;

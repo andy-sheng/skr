@@ -4,6 +4,12 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
+import com.mi.liveassistant.barrage.data.Message;
+import com.mi.liveassistant.barrage.data.MessageExt;
+import com.mi.liveassistant.barrage.data.MessageType;
+import com.mi.liveassistant.barrage.facade.MessageFacade;
+import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerPresenter;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerView;
 import com.mi.liveassistant.room.RoomConstant;
@@ -11,11 +17,16 @@ import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
 import com.mi.liveassistant.room.presenter.streamer.PullStreamerPresenter;
 import com.mi.liveassistant.room.presenter.watch.WatchPresenter;
 import com.mi.liveassistant.room.view.IWatchView;
+import com.mi.liveassistant.room.viewer.IViewerObserver;
+import com.mi.liveassistant.room.viewer.IViewerRegister;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lan on 17/4/20.
  */
-public class WatchManager implements IWatchView {
+public class WatchManager implements IWatchView, IViewerRegister {
     private static final String TAG = RoomConstant.LOG_PREFIX + WatchManager.class.getSimpleName();
 
     private VideoPlayerView mSurfaceView;
@@ -32,6 +43,8 @@ public class WatchManager implements IWatchView {
     private String mLiveId;
 
     private String mDownStreamUrl;
+
+    private IViewerObserver mViewerObserver;
 
     public WatchManager() {
         mWatchPresenter = new WatchPresenter(this);
@@ -79,6 +92,39 @@ public class WatchManager implements IWatchView {
         mStreamerPresenter.setStreamer(mVideoPlayerPresenter);
         mStreamerPresenter.setOriginalStreamUrl(mDownStreamUrl);
         mStreamerPresenter.startLive();
+
+        registerInternalMsg();
+    }
+
+    private void registerInternalMsg() {
+        MessageFacade.getInstance().registInternalMsgCallBack(new InternalMsgCallBack() {
+            @Override
+            public void handleMessage(List<Message> messageList) {
+                List<Message> viewerMessageList = new ArrayList();
+                MyLog.d(TAG, "handleMessage message=" + messageList.size());
+                boolean isViewerChange = false;
+                for (Message message : messageList) {
+                    if (message.getMsgType() == MessageType.MSG_TYPE_VIEWER_CHANGE) {
+                        viewerMessageList.add(message);
+                    } else if (message.getMsgType() == MessageType.MSG_TYPE_JOIN
+                            || message.getMsgType() == MessageType.MSG_TYPE_LEAVE) {
+                        isViewerChange = true;
+                    }
+                }
+                if (viewerMessageList.size() > 0) {
+                    MyLog.d(TAG, "handleMessage viewerMessage=" + viewerMessageList.size());
+                    if (mViewerObserver != null) {
+                        Message message = viewerMessageList.get(viewerMessageList.size() - 1);
+                        mViewerObserver.dependOnList(((MessageExt.ViewChangeMessageExt) message.getMessageExt()).viewerList);
+                    }
+                } else if (isViewerChange) {
+                    MyLog.d(TAG, "handleMessage viewerJoinOrLeave=" + isViewerChange);
+                    if (mViewerObserver != null) {
+                        mViewerObserver.dependOnSelf();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -87,5 +133,10 @@ public class WatchManager implements IWatchView {
 
         mStreamerPresenter.stopLive();
         mStreamerPresenter.destroy();
+    }
+
+    @Override
+    public void registerObserver(IViewerObserver observer) {
+        mViewerObserver = observer;
     }
 }

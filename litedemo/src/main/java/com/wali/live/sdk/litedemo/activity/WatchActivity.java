@@ -17,13 +17,14 @@ import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.data.model.User;
+import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.watch.WatchManager;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
 import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.mi.liveassistant.room.viewer.ViewerInfoManager;
 import com.mi.liveassistant.room.viewer.callback.IViewerCallback;
-import com.mi.liveassistant.room.viewer.model.Viewer;
+import com.mi.liveassistant.room.viewer.callback.IViewerListener;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.barrage.BarrageAdapter;
 import com.wali.live.sdk.litedemo.barrage.view.SendBarrageView;
@@ -191,6 +192,17 @@ public class WatchActivity extends RxActivity {
         });
 
         mViewerManager = new ViewerInfoManager();
+        mViewerManager.registerListener(mWatchManager, new IViewerListener() {
+            @Override
+            public void update(List<Viewer> list) {
+                ToastUtils.showToast("viewerList=" + list.size());
+            }
+
+            @Override
+            public void updateManually() {
+                ToastUtils.showToast("viewerList manually");
+            }
+        });
         mViewerManager.asyncViewerList(mPlayerId, mLiveId, new IViewerCallback() {
             @Override
             public void notifyFail(int errCode) {
