@@ -30,6 +30,8 @@ import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.event.LiveRoomManagerEvent;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
@@ -86,6 +88,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private ViewGroup mBlockArea;
     private GameSettingPanel mGameSettingPanel;
 
+    private ViewGroup mAdminArea;
+    private TextView mAdminCount;
+
     private View mDailyTaskSl;
     private ViewGroup mDailyTaskArea;
     private LiveCommonProto.NewWidgetUnit mWidgetUnit;
@@ -127,6 +132,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     private void asyncProcess() {
+        mRoomPreparePresenter.loadManager();
         mRoomPreparePresenter.loadTitle();
         mRoomPreparePresenter.loadDailyTask();
     }
@@ -143,6 +149,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
         mBlockArea = $(R.id.block_area);
         mBlockArea.setOnClickListener(this);
+
+        mAdminArea = $(R.id.admin_area);
+        mAdminCount = $(R.id.admin_count);
+        mAdminArea.setOnClickListener(this);
 
         mDailyTaskSl =  $(R.id.daily_task_sl);
         mDailyTaskArea = $(R.id.daily_task_area);
@@ -325,6 +335,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, new MessageRule());
         bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, UserAccountManager.getInstance().getUuidAsLong());
+        bundle.putBoolean(RoomAdminFragment.KEY_ONLY_SHOW_ADMIN_MANAGER_PAGE, true);
         FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
     }
 
@@ -442,5 +453,15 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }
+    }
+
+    @Override
+    public void setManagerCount(int count) {
+        mAdminCount.setText(getString(R.string.has_add_manager_count,count));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LiveRoomManagerEvent event) {
+        setManagerCount(LiveRoomCharacterManager.getInstance().getManagerCount());
     }
 }

@@ -2,7 +2,6 @@ package com.wali.live.livesdk.live.fragment;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.LongSparseArray;
@@ -26,7 +25,6 @@ import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.UserInfoManager;
@@ -34,10 +32,8 @@ import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.preference.MLPreferenceUtils;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.query.model.MessageRule;
-import com.mi.live.data.repository.datasource.RelationStore;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.FragmentEvent;
-import com.wali.live.event.EventClass;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.adapter.CommonTabPagerAdapter;
@@ -46,7 +42,6 @@ import com.wali.live.livesdk.live.adapter.RoomAdminItemRecyclerAdapter;
 import com.wali.live.livesdk.live.api.GetRankListRequest;
 import com.wali.live.livesdk.live.view.RoomSettingView;
 import com.wali.live.livesdk.live.view.SlidingTabLayout;
-import com.wali.live.proto.LiveProto;
 import com.wali.live.proto.RankProto;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
@@ -78,6 +73,9 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
     public static final String KEY_ROOM_IS_PRIVATE_LIVE = "key_room_is_private_live";
     //房间id
     public static final String INTENT_LIVE_ROOM_ID = "INTENT_LIVE_ROOM_ID";
+
+    public static final String KEY_ONLY_SHOW_ADMIN_MANAGER_PAGE = "key_only_show_admin_manager_page";
+
 
     /**
      * 批量拉取的数量
@@ -112,6 +110,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
     private int mCurrentTabId;
     private long mAnchorId;
     private MessageRule mMsgRule;
+    private boolean mOnlyShowAdminPage;
     /**
      * 是否为私密直播
      */
@@ -140,13 +139,18 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
     @Override
     protected void bindView() {
         Bundle bundle = getArguments();
-        mRoomId = bundle.getString(INTENT_LIVE_ROOM_ID);
+        mRoomId = bundle.getString(INTENT_LIVE_ROOM_ID,"");
         mMsgRule = (MessageRule) bundle.getSerializable(KEY_ROOM_SEND_MSG_CONFIG);
         mAnchorId = bundle.getLong(KEY_ROOM_ANCHOR_ID, 0);
         mIsPrivateLive = bundle.getBoolean(KEY_ROOM_IS_PRIVATE_LIVE, false);
+        mOnlyShowAdminPage = bundle.getBoolean(KEY_ONLY_SHOW_ADMIN_MANAGER_PAGE, false);
 
         mTitleBar = (BackTitleBar) mRootView.findViewById(R.id.title_bar);
-        mTitleBar.getBackBtn().setText(getResources().getString(R.string.room_admin));
+        if(!mOnlyShowAdminPage) {
+            mTitleBar.getBackBtn().setText(getResources().getString(R.string.room_admin));
+        }else{
+            mTitleBar.getBackBtn().setText(getResources().getString(R.string.admin_list_title));
+        }
         mTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +172,12 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
         mRoomSettingView = new RoomSettingView(getActivity(), mMsgRule, mRoomId);
 
         mManagerTab = (SlidingTabLayout) mRootView.findViewById(R.id.manager_tab);
-        mManagerTab.setSelectedIndicatorColors(getResources().getColor(R.color.color_e5aa1e));
+        if(!mOnlyShowAdminPage) {
+            mManagerTab.setSelectedIndicatorColors(getResources().getColor(R.color.color_e5aa1e));
+        }else{
+            mManagerTab.setSelectedIndicatorColors(getResources().getColor(R.color.transparent));
+            mManagerTab.setVisibility(View.GONE);
+        }
         mManagerTab.setCustomTabView(R.layout.room_admin_slide_tab_view, R.id.tab_tv);
         mManagerTab.setDistributeMode(3);
         mManagerTab.setIndicatorWidth(DisplayUtils.dip2px(12));
@@ -178,8 +187,10 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
 
         mManagerTabAdapter = new CommonTabPagerAdapter();
         mManagerTabAdapter.addView(getString(R.string.manager), mAdminRv);
-        mManagerTabAdapter.addView(getString(R.string.banspeaker_list), mBanspeakRv);
-        mManagerTabAdapter.addView(getString(R.string.room_setting), mRoomSettingView);
+        if(!mOnlyShowAdminPage) {
+            mManagerTabAdapter.addView(getString(R.string.banspeaker_list), mBanspeakRv);
+            mManagerTabAdapter.addView(getString(R.string.room_setting), mRoomSettingView);
+        }
 
         mSectionPager.setAdapter(mManagerTabAdapter);
 
@@ -431,10 +442,12 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
 
     public boolean onBackPressed() {
         //网络判断
-        if (!Network.hasNetwork((GlobalData.app()))) {
-            ToastUtils.showToast(R.string.network_unavailable);
-        } else {
-            mRoomSettingView.settingChangeNotify();
+        if(!mOnlyShowAdminPage){
+            if (!Network.hasNetwork((GlobalData.app()))) {
+                ToastUtils.showToast(R.string.network_unavailable);
+            } else {
+                mRoomSettingView.settingChangeNotify();
+            }
         }
         return false;
     }

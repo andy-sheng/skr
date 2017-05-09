@@ -526,9 +526,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                     break;
                 case REQUEST_CODE_PICK_MANAGER:
                     User pickManager = (User) data.getSerializableExtra(RecipientsSelectFragment.RESULT_SINGLE_OBJECT);
-                    if (pickManager != null && !TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+                    if (pickManager != null) {
+                        String roomId = TextUtils.isEmpty(mMyRoomData.getRoomId()) ? "" : mMyRoomData.getRoomId();
                         if (LiveRoomCharacterManager.getInstance().getManagerCount() < LiveRoomCharacterManager.MANAGER_CNT && !LiveRoomCharacterManager.getInstance().isManager(pickManager.getUid())) {
-                            LiveRoomCharacterManager.setManagerRxTask(this, pickManager, mMyRoomData.getRoomId(), mMyRoomData.getUid(), true);
+                            LiveRoomCharacterManager.setManagerRxTask(this, pickManager, roomId, mMyRoomData.getUid(), true);
                         }
                     }
                     break;

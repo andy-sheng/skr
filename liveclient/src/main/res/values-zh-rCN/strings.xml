@@ -54,6 +54,7 @@
     <string name="to_home">回到桌面</string>
     <string name="game_back_to_home">直播开始！现在，您可以返回桌面启动游戏</string>
     <string name="room_admin">房间管理</string>
+    <string name="admin_list_title">管理员列表</string>
 
     <string name="admin_manager_tips">温馨提示：</string>
     <string name="admin_banspeaker_tips_1">1：当前被禁言的用户只在本次直播中有效，如果你再次开播该用户的禁言状态则失效。</string>

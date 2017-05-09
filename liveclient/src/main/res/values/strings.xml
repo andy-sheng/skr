@@ -52,6 +52,7 @@
     <string name="to_home">Back to Home</string>
     <string name="game_back_to_home">Session begins. Go back to Home and play the game now</string>
     <string name="room_admin">Manager</string>
+    <string name="admin_list_title">Managers</string>
 
     <string name="admin_manager_tips">Attention:</string>
     <string name="admin_banspeaker_tips_1">1. This user is only banned in current session and will be allowed next time.</string>
