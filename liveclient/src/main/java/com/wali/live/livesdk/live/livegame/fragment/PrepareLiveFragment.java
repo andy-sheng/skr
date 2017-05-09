@@ -32,6 +32,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
+import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -54,6 +55,8 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import static android.view.View.VISIBLE;
 
@@ -155,7 +158,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mAdminCount = $(R.id.admin_count);
         mAdminArea.setOnClickListener(this);
 
-        mDailyTaskSl =  $(R.id.daily_task_sl);
+        mDailyTaskSl = $(R.id.daily_task_sl);
 
         mDailyTaskArea = $(R.id.daily_task_area);
         mDailyTaskArea.setOnClickListener(this);
@@ -466,11 +469,24 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     public void setManagerCount(int count) {
-        mAdminCount.setText(getString(R.string.has_add_manager_count,count));
+        mAdminCount.setText(getString(R.string.has_add_manager_count, count));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LiveRoomManagerEvent event) {
-        setManagerCount(LiveRoomCharacterManager.getInstance().getManagerCount());
+        List<LiveRoomManagerModel> managerModels = LiveRoomCharacterManager.getInstance().getRoomManagers();
+        int managerCount = managerModels.size();
+        long top1Id = mRoomPreparePresenter.getTop1Id();
+        boolean isTop1Manager = false;
+        for (LiveRoomManagerModel managerModel : managerModels) {
+            if (top1Id == managerModel.uuid) {
+                isTop1Manager = true;
+                break;
+            }
+        }
+        if (!isTop1Manager) {
+            managerCount++;
+        }
+        setManagerCount(managerCount);
     }
 }

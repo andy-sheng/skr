@@ -29,8 +29,6 @@ import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
-import com.mi.live.data.preference.MLPreferenceUtils;
-import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.FragmentEvent;
@@ -139,16 +137,16 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
     @Override
     protected void bindView() {
         Bundle bundle = getArguments();
-        mRoomId = bundle.getString(INTENT_LIVE_ROOM_ID,"");
+        mRoomId = bundle.getString(INTENT_LIVE_ROOM_ID, "");
         mMsgRule = (MessageRule) bundle.getSerializable(KEY_ROOM_SEND_MSG_CONFIG);
         mAnchorId = bundle.getLong(KEY_ROOM_ANCHOR_ID, 0);
         mIsPrivateLive = bundle.getBoolean(KEY_ROOM_IS_PRIVATE_LIVE, false);
         mOnlyShowAdminPage = bundle.getBoolean(KEY_ONLY_SHOW_ADMIN_MANAGER_PAGE, false);
 
         mTitleBar = (BackTitleBar) mRootView.findViewById(R.id.title_bar);
-        if(!mOnlyShowAdminPage) {
+        if (!mOnlyShowAdminPage) {
             mTitleBar.getBackBtn().setText(getResources().getString(R.string.room_admin));
-        }else{
+        } else {
             mTitleBar.getBackBtn().setText(getResources().getString(R.string.admin_list_title));
         }
         mTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
@@ -161,20 +159,20 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
 
         mAdminRv = new RecyclerView(getActivity());
         mAdminRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdminRecyclerAdapter = new RoomAdminItemRecyclerAdapter(RoomAdminItemRecyclerAdapter.DATA_TYPE_ADMIN,getActivity());
+        mAdminRecyclerAdapter = new RoomAdminItemRecyclerAdapter(RoomAdminItemRecyclerAdapter.DATA_TYPE_ADMIN, getActivity());
         mAdminRv.setAdapter(mAdminRecyclerAdapter);
 
         mBanspeakRv = new RecyclerView(getActivity());
         mBanspeakRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBanspeakRecyclerAdapter = new RoomAdminItemRecyclerAdapter(RoomAdminItemRecyclerAdapter.DATA_TYPE_BANSPEAKER,getActivity());
+        mBanspeakRecyclerAdapter = new RoomAdminItemRecyclerAdapter(RoomAdminItemRecyclerAdapter.DATA_TYPE_BANSPEAKER, getActivity());
         mBanspeakRv.setAdapter(mBanspeakRecyclerAdapter);
 
         mRoomSettingView = new RoomSettingView(getActivity(), mMsgRule, mRoomId);
 
         mManagerTab = (SlidingTabLayout) mRootView.findViewById(R.id.manager_tab);
-        if(!mOnlyShowAdminPage) {
+        if (!mOnlyShowAdminPage) {
             mManagerTab.setSelectedIndicatorColors(getResources().getColor(R.color.color_e5aa1e));
-        }else{
+        } else {
             mManagerTab.setSelectedIndicatorColors(getResources().getColor(R.color.transparent));
             mManagerTab.setVisibility(View.GONE);
         }
@@ -187,7 +185,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
 
         mManagerTabAdapter = new CommonTabPagerAdapter();
         mManagerTabAdapter.addView(getString(R.string.manager), mAdminRv);
-        if(!mOnlyShowAdminPage) {
+        if (!mOnlyShowAdminPage) {
             mManagerTabAdapter.addView(getString(R.string.banspeaker_list), mBanspeakRv);
             mManagerTabAdapter.addView(getString(R.string.room_setting), mRoomSettingView);
         }
@@ -210,10 +208,10 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
                 }
                 if (tabId == TAB_ID_ADMIN) {
                     loadAdminData();
-                }else if (tabId == TAB_ID_BANSPEAKER) {
+                } else if (tabId == TAB_ID_BANSPEAKER) {
                     mLoadingView.setVisibility(View.GONE);
                     loadBanSpeakerData();
-                }else{
+                } else {
                     mLoadingView.setVisibility(View.GONE);
                 }
                 mCurrentTabId = tabId;
@@ -254,10 +252,10 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
                         .subscribe(new Action1<Object>() {
                             @Override
                             public void call(Object o) {
-                                if(o == null){
+                                if (o == null) {
                                     return;
                                 }
-                                if (!(boolean)o) {
+                                if (!(boolean) o) {
                                     ToastUtils.showToast(R.string.remove_manager_fail);
                                 }
                             }
@@ -442,7 +440,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
 
     public boolean onBackPressed() {
         //网络判断
-        if(!mOnlyShowAdminPage){
+        if (!mOnlyShowAdminPage) {
             if (!Network.hasNetwork((GlobalData.app()))) {
                 ToastUtils.showToast(R.string.network_unavailable);
             } else {
@@ -479,7 +477,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        loadAdminData((Long)o);
+                        loadAdminData((Long) o);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -503,7 +501,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
         //在管理员列表增加top1用户
         Long top1 = LiveRoomCharacterManager.getInstance().getTop1Uuid(mAnchorId);
         if (top1Uid != 0) {
-            if (top1 != null && top1.longValue() != top1Uid) {
+            if (top1 == null || top1 != top1Uid) {
                 LiveRoomCharacterManager.getInstance().setTopRank(mAnchorId, top1Uid);
             }
             uidList.add(top1Uid);
@@ -531,18 +529,10 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
      *
      * @return
      */
-    public long getTop1() {
-        String variables = MLPreferenceUtils.getSettingString(GlobalData.app(), PreferenceKeys.PREF_KEY_CONVERGED, PreferenceKeys.CONVERGED_DEFAULT_VALUE);
-        String[] variable = variables.split("_");
-        int count = 10;
-        try {
-            count = Integer.parseInt(variable[1]);
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+    public static long getTop1() {
         List<Long> rankThreers = new ArrayList<>();
         RankProto.GetRankListResponse response = new GetRankListRequest().syncRsp();
-        if(response != null){
+        if (response != null) {
             List<RankProto.RankItem> rankItems = response.getItemsList();
             if (rankItems != null && rankItems.size() > 0) {
                 for (RankProto.RankItem rankItem : rankItems) {
@@ -565,10 +555,10 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
                     @Override
                     public List<User> call(Integer i) {
                         List<User> userList = new ArrayList<User>();
-                        if(uidList != null){
-                            for(Long uuid:uidList){
-                                User user =  UserInfoManager.getUserInfoByUuid(uuid, false);
-                                if(user != null){
+                        if (uidList != null) {
+                            for (Long uuid : uidList) {
+                                User user = UserInfoManager.getUserInfoByUuid(uuid, false);
+                                if (user != null) {
                                     userList.add(user);
                                 }
                             }

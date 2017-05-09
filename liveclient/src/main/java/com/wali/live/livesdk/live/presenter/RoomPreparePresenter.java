@@ -6,9 +6,10 @@ import com.base.utils.rx.RxRetryAssist;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.UserInfoManager;
+import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.wali.live.livesdk.live.api.TitleListRequest;
+import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.presenter.cache.TitleCache;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
 import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
@@ -32,6 +33,7 @@ import rx.schedulers.Schedulers;
 public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
     private TitleViewModel mCacheModel;
     private int mSource;
+    private long mTop1Id;
 
     private Subscription mTitleSubscription;
 
@@ -48,6 +50,10 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
         mSource = source;
     }
 
+    public long getTop1Id() {
+        return mTop1Id;
+    }
+
     /**
      * 异步加载管理员
      */
@@ -56,8 +62,19 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
                 .create(new Observable.OnSubscribe<Integer>() {
                     @Override
                     public void call(Subscriber<? super Integer> subscriber) {
-                        UserInfoManager.getMyManagerList(UserAccountManager.getInstance().getUuidAsLong());
-                        int managerCount = LiveRoomCharacterManager.getInstance().getManagerCount();
+                        List<LiveRoomManagerModel> managerModels = UserInfoManager.getMyManagerList(UserAccountManager.getInstance().getUuidAsLong());
+                        int managerCount = managerModels.size();
+                        boolean isTop1Manager = false;
+                        mTop1Id = RoomAdminFragment.getTop1();
+                        for (LiveRoomManagerModel managerModel : managerModels) {
+                            if (mTop1Id == managerModel.uuid) {
+                                isTop1Manager = true;
+                                break;
+                            }
+                        }
+                        if (!isTop1Manager) {
+                            managerCount++;
+                        }
                         subscriber.onNext(managerCount);
                         subscriber.onCompleted();
                     }
