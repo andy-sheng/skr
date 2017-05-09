@@ -20,6 +20,7 @@ import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.live.NormalLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
+import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.mi.liveassistant.room.viewer.ViewerInfoManager;
@@ -152,7 +153,12 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     }
 
     private void initManager() {
-        mLiveManager = new NormalLiveManager(mCameraView);
+        mLiveManager = new NormalLiveManager(mCameraView, new ILiveListener() {
+            @Override
+            public void onEndUnexpected() {
+                Log.w(TAG, "onEndUnexpected");
+            }
+        });
         mUserManager = new UserInfoManager();
 
         mViewerManager = new ViewerInfoManager();

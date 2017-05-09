@@ -23,6 +23,7 @@ import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
+import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.mi.liveassistant.room.viewer.ViewerInfoManager;
@@ -157,7 +158,12 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     }
 
     private void initManager() {
-        mLiveManager = new GameLiveManager();
+        mLiveManager = new GameLiveManager(new ILiveListener() {
+            @Override
+            public void onEndUnexpected() {
+                Log.w(TAG, "onEndUnexpected");
+            }
+        });
 
         mViewerManager = new ViewerInfoManager();
         mViewerManager.registerListener(mLiveManager, new IViewerListener() {

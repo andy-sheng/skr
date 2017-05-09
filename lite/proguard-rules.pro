@@ -200,7 +200,15 @@
     public *;
 }
 
+-keep class com.mi.liveassistant.room.manager.live.callback.ILiveListener{
+    public *;
+}
+
 -keep class com.mi.liveassistant.room.manager.watch.callback.IWatchCallback{
+    public *;
+}
+
+-keep class com.mi.liveassistant.room.manager.watch.callback.IWatchListener{
     public *;
 }
 

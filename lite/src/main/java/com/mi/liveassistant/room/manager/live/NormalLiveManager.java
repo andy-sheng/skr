@@ -14,6 +14,7 @@ import com.mi.liveassistant.engine.streamer.GalileoStreamer;
 import com.mi.liveassistant.engine.streamer.IStreamer;
 import com.mi.liveassistant.engine.streamer.StreamerConfig;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
+import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 import com.mi.liveassistant.room.presenter.live.NormalLivePresenter;
 
 import java.util.Arrays;
@@ -26,10 +27,10 @@ public class NormalLiveManager extends BaseLiveManager{
 
     private CameraView mCameraView;
 
-    public NormalLiveManager(@NonNull CameraView cameraView) {
-        super();
+    public NormalLiveManager(@NonNull CameraView cameraView, ILiveListener liveListener) {
+        super(liveListener);
         mIsGameLive = false;
-        mLivePresenter = new NormalLivePresenter(this);
+        mLivePresenter = new NormalLivePresenter(mEventController, this);
         mCameraView = cameraView;
         createStreamer();
     }

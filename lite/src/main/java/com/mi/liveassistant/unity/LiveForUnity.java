@@ -12,6 +12,7 @@ import com.mi.liveassistant.login.LoginManager;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
+import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 import com.mi.liveassistant.utils.RSASignature;
 
 /**
@@ -33,8 +34,12 @@ public class LiveForUnity {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                MyLog.w(TAG, "LiveForUnity addContentView");
-                mLiveManager = new GameLiveManager();
+                mLiveManager = new GameLiveManager(new ILiveListener() {
+                    @Override
+                    public void onEndUnexpected() {
+                        MyLog.w(TAG, "onEndUnexpected");
+                    }
+                });
                 mActivity.setLiveForUnity(LiveForUnity.this);
             }
         });

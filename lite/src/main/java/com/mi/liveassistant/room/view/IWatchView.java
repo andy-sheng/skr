@@ -9,9 +9,5 @@ import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
 public interface IWatchView extends IView {
     void enterLive(long playerId, String liveId, IWatchCallback callback);
 
-    void notifyEnterLiveFail(int errCode);
-
-    void notifyEnterLiveSuccess(String downStreamUrl);
-
     void leaveLive();
 }

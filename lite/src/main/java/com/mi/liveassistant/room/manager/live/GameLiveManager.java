@@ -11,6 +11,7 @@ import com.mi.liveassistant.engine.streamer.GalileoStreamer;
 import com.mi.liveassistant.engine.streamer.IStreamer;
 import com.mi.liveassistant.engine.streamer.StreamerConfig;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
+import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 import com.mi.liveassistant.room.presenter.live.GameLivePresenter;
 
 /**
@@ -25,10 +26,10 @@ public class GameLiveManager extends BaseLiveManager<GameLivePresenter> {
 
     private Intent mCaptureIntent;
 
-    public GameLiveManager() {
-        super();
+    public GameLiveManager(ILiveListener liveListener) {
+        super(liveListener);
         mIsGameLive = true;
-        mLivePresenter = new GameLivePresenter(this);
+        mLivePresenter = new GameLivePresenter(mEventController, this);
     }
 
     /*设置录屏intent*/

@@ -1,5 +1,8 @@
 package com.mi.liveassistant.room.manager.live;
 
+import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
+
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
@@ -11,7 +14,9 @@ import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.room.RoomConstant;
 import com.mi.liveassistant.room.heartbeat.HeartbeatManager;
+import com.mi.liveassistant.room.manager.LiveEventController;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
+import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 import com.mi.liveassistant.room.presenter.live.BaseLivePresenter;
 import com.mi.liveassistant.room.presenter.streamer.StreamerPresenter;
 import com.mi.liveassistant.room.view.ILiveView;
@@ -21,11 +26,24 @@ import com.mi.liveassistant.room.viewer.IViewerRegister;
 import java.util.ArrayList;
 import java.util.List;
 
+import component.EventController;
+import component.IEventObserver;
+import component.Params;
+
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_BEGIN_LIVE_FAILED;
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_BEGIN_LIVE_SUCCESS;
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_END_LIVE_FAILED;
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_END_LIVE_SUCCESS;
+
 /**
  * Created by lan on 17/4/20.
  */
-public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements ILiveView, IViewerRegister {
+public abstract class BaseLiveManager<LP extends BaseLivePresenter>
+        implements ILiveView, IViewerRegister, IEventObserver {
     protected final String TAG = getTAG();
+
+    /*消息总线*/
+    protected EventController mEventController;
 
     /*直播开启关闭控制*/
     protected LP mLivePresenter;
@@ -47,10 +65,15 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     /*顶部观众注册监听*/
     protected IViewerObserver mViewerObserver;
 
-    protected BaseLiveManager() {
+    protected ILiveListener mLiveListener;
+
+    protected BaseLiveManager(ILiveListener liveListener) {
+        mLiveListener = liveListener;
+        mEventController = new LiveEventController();
         mStreamerPresenter = new StreamerPresenter();
         // TODO 还是觉的放在startLive初始化比较好
         mHeartbeatManager = new HeartbeatManager();
+        registerAction();
     }
 
     protected String getTAG() {
@@ -64,16 +87,14 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
         mLivePresenter.beginLive(location, title, coverUrl);
     }
 
-    @Override
-    public void notifyBeginLiveFail(int errCode) {
+    protected void notifyBeginLiveFail(int errCode) {
         MyLog.d(TAG, "notifyBeginLiveFail errCode=" + errCode);
         if (mOutBeginCallback != null) {
             mOutBeginCallback.notifyFail(errCode);
         }
     }
 
-    @Override
-    public void notifyBeginLiveSuccess(String liveId, List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpStreamUrl) {
+    protected void notifyBeginLiveSuccess(String liveId, List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpStreamUrl) {
         MyLog.d(TAG, "notifyBeginLiveSuccess liveId=" + liveId);
         mLiveId = liveId;
         if (mOutBeginCallback != null) {
@@ -115,6 +136,9 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
 
     private void endLiveException(String reason) {
         MyLog.w(TAG, "endLiveException reason=" + reason);
+        if (mLiveListener != null) {
+            mLiveListener.onEndUnexpected();
+        }
         innerEndLive();
     }
 
@@ -133,16 +157,14 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
         mStreamerPresenter.stopLive();
     }
 
-    @Override
-    public void notifyEndLiveFail(int errCode) {
+    protected void notifyEndLiveFail(int errCode) {
         MyLog.d(TAG, "notifyEndLiveFail errCode=" + errCode);
         if (mOutEndCallback != null) {
             mOutEndCallback.notifyFail(errCode);
         }
     }
 
-    @Override
-    public void notifyEndLiveSuccess() {
+    protected void notifyEndLiveSuccess() {
         MyLog.d(TAG, "notifyEndLiveSuccess");
         if (mOutEndCallback != null) {
             mOutEndCallback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong(), mLiveId);
@@ -196,5 +218,33 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
                 }
             }
         });
+    }
+
+    @CallSuper
+    protected void registerAction() {
+        mEventController.registerObserverForEvent(MSG_BEGIN_LIVE_SUCCESS, this);
+        mEventController.registerObserverForEvent(MSG_BEGIN_LIVE_FAILED, this);
+        mEventController.registerObserverForEvent(MSG_END_LIVE_SUCCESS, this);
+        mEventController.registerObserverForEvent(MSG_END_LIVE_FAILED, this);
+    }
+
+    @Override
+    public boolean onEvent(int event, @Nullable Params params) {
+        switch (event) {
+            case MSG_BEGIN_LIVE_SUCCESS:
+                notifyBeginLiveSuccess((String) params.getItem(0),
+                        (List<LiveCommonProto.UpStreamUrl>) params.getItem(1), (String) params.getItem(2));
+                return true;
+            case MSG_BEGIN_LIVE_FAILED:
+                notifyBeginLiveFail((int) params.getItem(0));
+                return true;
+            case MSG_END_LIVE_SUCCESS:
+                notifyEndLiveSuccess();
+                return true;
+            case MSG_END_LIVE_FAILED:
+                notifyEndLiveFail((int) params.getItem(0));
+                return true;
+        }
+        return false;
     }
 }

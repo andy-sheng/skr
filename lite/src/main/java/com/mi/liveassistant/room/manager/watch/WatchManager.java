@@ -1,6 +1,7 @@
 package com.mi.liveassistant.room.manager.watch;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -13,7 +14,9 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerPresenter;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerView;
 import com.mi.liveassistant.room.RoomConstant;
+import com.mi.liveassistant.room.manager.LiveEventController;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
+import com.mi.liveassistant.room.manager.watch.callback.IWatchListener;
 import com.mi.liveassistant.room.presenter.streamer.PullStreamerPresenter;
 import com.mi.liveassistant.room.presenter.watch.WatchPresenter;
 import com.mi.liveassistant.room.view.IWatchView;
@@ -23,11 +26,21 @@ import com.mi.liveassistant.room.viewer.IViewerRegister;
 import java.util.ArrayList;
 import java.util.List;
 
+import component.EventController;
+import component.IEventObserver;
+import component.Params;
+
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_ENTER_LIVE_FAILED;
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_ENTER_LIVE_SUCCESS;
+
 /**
  * Created by lan on 17/4/20.
  */
-public class WatchManager implements IWatchView, IViewerRegister {
+public class WatchManager implements IWatchView, IViewerRegister, IEventObserver {
     private static final String TAG = RoomConstant.LOG_PREFIX + WatchManager.class.getSimpleName();
+
+    /*消息总线*/
+    protected EventController mEventController;
 
     private VideoPlayerView mSurfaceView;
 
@@ -46,9 +59,14 @@ public class WatchManager implements IWatchView, IViewerRegister {
 
     private IViewerObserver mViewerObserver;
 
-    public WatchManager() {
-        mWatchPresenter = new WatchPresenter(this);
+    protected IWatchListener mWatchListener;
+
+    public WatchManager(IWatchListener watchListener) {
+        mWatchListener = watchListener;
+        mEventController = new LiveEventController();
+        mWatchPresenter = new WatchPresenter(mEventController, this);
         mStreamerPresenter = new PullStreamerPresenter();
+        registerAction();
     }
 
     public void setContainerView(@NonNull ViewGroup containerView) {
@@ -69,15 +87,15 @@ public class WatchManager implements IWatchView, IViewerRegister {
         mWatchPresenter.enterLive(playerId, liveId);
     }
 
-    @Override
-    public void notifyEnterLiveFail(int errCode) {
+    protected void notifyEnterLiveFail(int errCode) {
+        MyLog.d(TAG, "notifyEnterLiveFail errCode=" + errCode);
         if (mOutEnterCallback != null) {
             mOutEnterCallback.notifyFail(errCode);
         }
     }
 
-    @Override
-    public void notifyEnterLiveSuccess(String downStreamUrl) {
+    protected void notifyEnterLiveSuccess(String downStreamUrl) {
+        MyLog.d(TAG, "notifyEnterLiveSuccess downStreamUrl=" + downStreamUrl);
         mDownStreamUrl = downStreamUrl;
 
         if (mOutEnterCallback != null) {
@@ -136,5 +154,23 @@ public class WatchManager implements IWatchView, IViewerRegister {
     @Override
     public void registerObserver(IViewerObserver observer) {
         mViewerObserver = observer;
+    }
+
+    protected void registerAction() {
+        mEventController.registerObserverForEvent(MSG_ENTER_LIVE_SUCCESS, this);
+        mEventController.registerObserverForEvent(MSG_ENTER_LIVE_FAILED, this);
+    }
+
+    @Override
+    public boolean onEvent(int event, @Nullable Params params) {
+        switch (event) {
+            case MSG_ENTER_LIVE_SUCCESS:
+                notifyEnterLiveSuccess((String) params.getItem(0));
+                return true;
+            case MSG_ENTER_LIVE_FAILED:
+                notifyEnterLiveFail((int) params.getItem(0));
+                return true;
+        }
+        return false;
     }
 }

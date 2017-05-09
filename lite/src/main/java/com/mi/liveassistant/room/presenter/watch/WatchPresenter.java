@@ -1,5 +1,7 @@
 package com.mi.liveassistant.room.presenter.watch;
 
+import android.support.annotation.NonNull;
+
 import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.mvp.BaseRxPresenter;
@@ -8,18 +10,26 @@ import com.mi.liveassistant.room.request.EnterLiveRequest;
 import com.mi.liveassistant.room.request.LeaveLiveRequest;
 import com.mi.liveassistant.room.view.IWatchView;
 
+import component.IEventController;
+import component.Params;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_ENTER_LIVE_FAILED;
+import static com.mi.liveassistant.room.manager.LiveEventController.MSG_ENTER_LIVE_SUCCESS;
+
 /**
  * Created by lan on 17/4/20.
  */
 public class WatchPresenter extends BaseRxPresenter<IWatchView> {
-    public WatchPresenter(IWatchView view) {
+    protected IEventController mEventController;
+
+    public WatchPresenter(@NonNull IEventController controller, IWatchView view) {
         super(view);
+        mEventController = controller;
     }
 
     public void enterLive(final long playerId, final String liveId) {
@@ -38,15 +48,19 @@ public class WatchPresenter extends BaseRxPresenter<IWatchView> {
                     public void call(LiveProto.EnterLiveRsp rsp) {
                         int errCode = ErrorCode.CODE_ERROR_NORMAL;
                         if (rsp != null && (errCode = rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
-                            mView.notifyEnterLiveSuccess(rsp.getDownStreamUrl());
+                            mEventController.postEvent(MSG_ENTER_LIVE_SUCCESS, new Params()
+                                    .putItem(rsp.getDownStreamUrl()));
                         } else {
-                            mView.notifyEnterLiveFail(errCode);
+                            mEventController.postEvent(MSG_ENTER_LIVE_FAILED, new Params()
+                                    .putItem(errCode));
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(throwable);
+                        mEventController.postEvent(MSG_ENTER_LIVE_FAILED, new Params()
+                                .putItem(ErrorCode.CODE_ERROR_NORMAL));
                     }
                 });
     }

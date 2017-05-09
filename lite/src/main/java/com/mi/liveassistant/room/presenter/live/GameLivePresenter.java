@@ -3,6 +3,7 @@ package com.mi.liveassistant.room.presenter.live;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 
 import com.mi.liveassistant.common.callback.ICommonCallBack;
 import com.mi.liveassistant.common.filesystem.SDCardUtils;
@@ -15,6 +16,7 @@ import com.mi.liveassistant.screenrecord.ScreenRecordManager;
 
 import java.io.File;
 
+import component.IEventController;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -33,8 +35,8 @@ public class GameLivePresenter extends BaseLivePresenter {
     private boolean mIsLandscape;
     private boolean mIsMuteMic;
 
-    public GameLivePresenter(ILiveView view) {
-        super(view);
+    public GameLivePresenter(@NonNull IEventController controller, ILiveView view) {
+        super(controller, view);
         mLiveRoomType = LiveRoomType.TYPE_LIVE_GAME;
     }
 

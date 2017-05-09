@@ -20,6 +20,7 @@ import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.watch.WatchManager;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
+import com.mi.liveassistant.room.manager.watch.callback.IWatchListener;
 import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
 import com.mi.liveassistant.room.viewer.ViewerInfoManager;
@@ -162,7 +163,12 @@ public class WatchActivity extends RxActivity {
     }
 
     private void initManager() {
-        mWatchManager = new WatchManager();
+        mWatchManager = new WatchManager(new IWatchListener() {
+            @Override
+            public void onEndUnexpected() {
+                Log.w(TAG, "onEndUnexpected");
+            }
+        });
         mWatchManager.setContainerView(mSurfaceContainer);
         mWatchManager.enterLive(mPlayerId, mLiveId, new IWatchCallback() {
             @Override
