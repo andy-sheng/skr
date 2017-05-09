@@ -110,9 +110,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     @CallSuper
     @Override
     public void onClick(View v) {
-        if (isFastDoubleClick() || getActivity() == null) {
-            return;
-        }
         KeyboardUtils.hideKeyboardImmediately(getActivity());
         int i = v.getId();
         if (i == R.id.begin_btn) {
