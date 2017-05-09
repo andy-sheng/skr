@@ -9,26 +9,26 @@
         android:id="@+id/login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="login"/>
+        android:text="请先登录"/>
 
     <Button
         android:id="@+id/normal_live_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_btn"
-        android:text="enter normal live activity"/>
+        android:text="进入秀场直播"/>
 
     <Button
         android:id="@+id/game_live_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/normal_live_btn"
-        android:text="enter game live activity"/>
+        android:text="进入游戏直播"/>
 
     <Button
         android:id="@+id/watch_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/game_live_btn"
-        android:text="enter watch activity"/>
+        android:text="观看直播"/>
 </RelativeLayout>

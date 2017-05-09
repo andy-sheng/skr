@@ -207,7 +207,6 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     }
 
     private void beginLive() {
-        ToastUtils.showToast("begin normal live ...");
         mLiveManager.beginLive(null, "TEST", null, new ILiveCallback() {
             @Override
             public void notifyFail(int errCode) {
@@ -218,7 +217,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
             public void notifySuccess(long playerId, String liveId) {
                 ToastUtils.showToast("begin normal live success");
                 mIsBegin = true;
-                mNormalLiveBtn.setText("end normal live");
+                mNormalLiveBtn.setText("结束直播");
 
                 mPlayerId = playerId;
                 mLiveId = liveId;
@@ -240,7 +239,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
             public void notifySuccess(long playerId, String liveId) {
                 ToastUtils.showToast("end normal live success");
                 mIsBegin = false;
-                mNormalLiveBtn.setText("begin normal live");
+                mNormalLiveBtn.setText("开始直播");
             }
         });
     }

@@ -19,6 +19,5 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/send_btn"
-        android:background="#88ffffff"
-        android:hint="click to input"/>
+        android:background="#88ffffff"/>
 </merge>

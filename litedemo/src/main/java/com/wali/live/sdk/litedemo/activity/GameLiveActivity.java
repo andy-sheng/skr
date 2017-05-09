@@ -223,7 +223,6 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
     private void beginLive() {
         mLiveManager.setCaptureIntent(mIntent);
-        ToastUtils.showToast("begin game live ...");
         mLiveManager.beginLive(null, "TEST", null, new ILiveCallback() {
             @Override
             public void notifyFail(int errCode) {
@@ -234,7 +233,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
             public void notifySuccess(long playerId, String liveId) {
                 ToastUtils.showToast("begin game live success");
                 mIsBegin = true;
-                mGameLiveBtn.setText("end game live");
+                mGameLiveBtn.setText("结束直播");
 
                 mPlayerId = playerId;
                 mLiveId = liveId;
@@ -245,7 +244,6 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     }
 
     private void endLive() {
-        ToastUtils.showToast("end game live ...");
         mLiveManager.endLive(new ILiveCallback() {
             @Override
             public void notifyFail(int errCode) {
@@ -256,7 +254,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
             public void notifySuccess(long playerId, String liveId) {
                 ToastUtils.showToast("end game live success");
                 mIsBegin = false;
-                mGameLiveBtn.setText("begin game live");
+                mGameLiveBtn.setText("开始直播");
             }
         });
     }

@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <com.mi.liveassistant.camera.CameraView
         android:id="@+id/camera_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView
         android:id="@+id/anchor_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <com.wali.live.sdk.litedemo.topinfo.viewer.TopViewerView
         android:id="@+id/viewer_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="10dp"
-        android:layout_toRightOf="@id/anchor_view" />
+        android:layout_toRightOf="@id/anchor_view"/>
 
     <Button
         android:id="@+id/normal_live_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="begin normal live" />
+        android:text="开始直播"/>
 
     <LinearLayout
         android:id="@+id/message_container"
@@ -38,7 +38,7 @@
             android:id="@+id/barrage_rv"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"/>
 
         <com.wali.live.sdk.litedemo.barrage.view.SendBarrageView
             android:id="@+id/send_barrage_view"
@@ -47,7 +47,7 @@
             android:layout_marginBottom="280dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/send_message_view"
@@ -56,7 +56,7 @@
             android:layout_marginBottom="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="发送消息" />
+            android:text="发送消息"/>
 
     </LinearLayout>
 
