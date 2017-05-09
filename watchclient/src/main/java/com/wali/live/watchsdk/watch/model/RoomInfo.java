@@ -185,8 +185,8 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
-        public Builder setEnableShare(boolean shareType) {
-            mRoomInfo.setEnableShare(shareType);
+        public Builder setEnableShare(boolean enableShare) {
+            mRoomInfo.setEnableShare(enableShare);
             return this;
         }
 

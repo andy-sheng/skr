@@ -162,10 +162,6 @@ public interface IMiLiveSdk {
          */
         void notifyWantShare(ShareInfo shareInfo);
 
-        /**
-         * 通知上层关注用户行为
-         */
-        void notifyWantFollow(long uuid);
     }
 
     @Keep

@@ -951,32 +951,4 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         MyLog.d(TAG, "onEventShare aidl success=" + aidlSuccess);
     }
 
-    public void onEventWantFollow(int channelId, long uuid) {
-        if (mAARCallback != null) {
-            mAARCallback.notifyWantFollow(uuid);
-            return;
-        }
-        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList<>(1);
-        boolean aidlSuccess = false;
-        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
-        if (callbackList != null) {
-            MyLog.w(TAG, "callbackList != null");
-            int n = callbackList.beginBroadcast();
-            for (int i = 0; i < n; i++) {
-                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
-                try {
-                    callback.onEventFollow(uuid);
-                    aidlSuccess = true;
-                } catch (Exception e) {
-                    MyLog.v(TAG, "dead callback.");
-                    deadCallback.add(callback);
-                }
-            }
-            callbackList.finishBroadcast();
-            for (IMiLiveSdkEventCallback callback : deadCallback) {
-                MyLog.v(TAG, "unregister event callback.");
-                callbackList.unregister(callback);
-            }
-        }
-    }
 }

@@ -77,13 +77,6 @@ public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCal
     }
 
     @Override
-    public void notifyWantFollow(long uuid) {
-        if (mCallback != null) {
-            mCallback.notifyWantFollow(uuid);
-        }
-    }
-
-    @Override
     public void notifyGetChannelLives(int errCode, List<LiveInfo> liveInfos) {
         if (mChannelCallback != null) {
             mChannelCallback.notifyGetChannelLives(errCode, liveInfos);

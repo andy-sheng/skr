@@ -163,7 +163,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private boolean mIsShare;
 
-    private boolean mShareType;
+    private boolean mEnableShare;
     private boolean mShareSelected;
 
     private boolean mIsGameLive;
@@ -249,7 +249,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (data != null) {
             mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
             mLocation = data.getParcelableExtra(EXTRA_LOCATION);
-            mShareType = data.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+            mEnableShare = data.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
         }
     }
 
@@ -257,7 +257,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mLocation != null) {
             mMyRoomData.setCity(mLocation.getCity());
         }
-        mMyRoomData.setEnableShare(mShareType);
+        mMyRoomData.setEnableShare(mEnableShare);
         if (UserAccountManager.getInstance().hasAccount()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -1083,7 +1083,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 (mLocation == null) ? "" : mLocation.getCity(), mMyRoomData.getUser(), mMyRoomData.getCoverUrl(), mMyRoomData.getLiveTitle());
         bundle.putBoolean(EndLiveFragment.EXTRA_GENERATE_HISTORY, mGenerateHistorySucc);
         bundle.putString(EndLiveFragment.EXTRA_GENERATE_HISTORY_MSG, mGenerateHistoryMsg);
-        bundle.putBoolean(EndLiveFragment.EXTRA_ENABLE_SHARE, mShareType);
+        bundle.putBoolean(EndLiveFragment.EXTRA_ENABLE_SHARE, mEnableShare);
         EndLiveFragment.openFragment(LiveSdkActivity.this, bundle);
     }
 

@@ -69,11 +69,6 @@ public class MainActivity extends AppCompatActivity {
                     MiLiveSdkController.getInstance().notifyShare(true, ShareInfo.TYPE_WECHAT);
                 }
             }
-
-            @Override
-            public void notifyWantFollow(long uuid) {
-                ToastUtils.showToast("notifyWantFollow, uuid=" + uuid);
-            }
         });
     }
 }

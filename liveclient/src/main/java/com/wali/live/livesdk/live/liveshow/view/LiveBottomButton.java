@@ -33,7 +33,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mSettingBtn;
     protected View mShareBtn;
 
-    private boolean mShareType;
+    private boolean mEnableShare;
 
     @Override
     protected String getTAG() {
@@ -41,9 +41,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     public LiveBottomButton(@NonNull RelativeLayout contentContainer,
-                            boolean shareType) {
+                            boolean enableShare) {
         super(contentContainer);
-        mShareType = shareType;
+        mEnableShare = enableShare;
         initView();
     }
 
@@ -72,7 +72,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     private void addShareBtn() {
-        if (mShareType) {
+        if (mEnableShare) {
             mShareBtn = createImageView(R.drawable.live_icon_share_btn);
             addCreatedView(mShareBtn, R.id.share_btn);
 

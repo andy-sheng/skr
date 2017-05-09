@@ -110,13 +110,6 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 mCallback.notifyWantShare(shareInfo);
             }
         }
-
-        @Override
-        public void onEventFollow(long uuid) throws RemoteException {
-            if (mCallback != null) {
-                mCallback.notifyWantFollow(uuid);
-            }
-        }
     };
 
     private static MiLiveSdkServiceProxy sInstance;

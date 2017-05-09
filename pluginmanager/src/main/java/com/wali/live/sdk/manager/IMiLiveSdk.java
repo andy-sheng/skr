@@ -240,11 +240,6 @@ public interface IMiLiveSdk {
          * 通知上层分享
          */
         void notifyWantShare(ShareInfo shareInfo);
-
-        /**
-         * 通知上层关注，uuid是主播的id
-         */
-        void notifyWantFollow(long uuid);
     }
 
     /**
@@ -359,11 +354,6 @@ public interface IMiLiveSdk {
 
         @Override
         public void notifyWantShare(ShareInfo shareInfo) {
-
-        }
-
-        @Override
-        public void notifyWantFollow(long uuid) {
 
         }
     }
