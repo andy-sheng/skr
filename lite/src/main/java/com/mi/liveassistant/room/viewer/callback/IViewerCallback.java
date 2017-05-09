@@ -1,6 +1,6 @@
 package com.mi.liveassistant.room.viewer.callback;
 
-import com.mi.liveassistant.room.viewer.model.Viewer;
+import com.mi.liveassistant.data.model.Viewer;
 
 import java.util.List;
 

@@ -192,6 +192,10 @@
     public *;
 }
 
+-keep class com.mi.liveassistant.data.model.Viewer {
+    public *;
+}
+
 -keep class com.mi.liveassistant.room.manager.live.callback.ILiveCallback{
     public *;
 }
@@ -213,10 +217,6 @@
 }
 
 -keep class com.mi.liveassistant.room.viewer.callback.IViewerCallback{
-    public *;
-}
-
--keep class com.mi.liveassistant.room.viewer.model.Viewer {
     public *;
 }
 

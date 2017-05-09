@@ -2,6 +2,7 @@ package com.mi.liveassistant.barrage.data;
 
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.barrage.model.MessageRuleModel;
+import com.mi.liveassistant.data.model.Viewer;
 
 import java.util.ArrayList;
 import java.util.List;

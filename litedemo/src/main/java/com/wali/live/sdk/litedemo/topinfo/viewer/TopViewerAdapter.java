@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.liveassistant.avatar.AvatarUtils;
-import com.mi.liveassistant.room.viewer.model.Viewer;
+import com.mi.liveassistant.data.model.Viewer;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
 import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
