@@ -11,4 +11,6 @@ public interface IRoomPrepareView extends IRxView {
     void fillTitle(String title);
 
     void updateControlTitleArea(boolean isShow);
+
+    void updateDailyArea(boolean isShow);
 }

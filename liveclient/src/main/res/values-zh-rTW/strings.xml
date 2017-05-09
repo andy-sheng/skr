@@ -155,6 +155,8 @@
     <string name="has_add_manager_count">已增加%d個</string>
     <string name="has_add_manager_count_zero">未添加管理员</string>
     <string name="live_title_hint">好的標題更能吸引觀眾</string>
+    <string name="daily_task_title">每日任務</string>
+    <string name="daily_task_content">任務詳情</string>
 
     <string name="qzone">QQ空間</string>
     <string name="QQ">QQ</string>

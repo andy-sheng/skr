@@ -158,6 +158,8 @@
     <string name="has_add_manager_count">Added %d</string>
     <string name="has_add_manager_count_zero">Haven\'t added managers</string>
     <string name="live_title_hint">Good titles give you more chances to get followers</string>
+    <string name="daily_task_title">Daily task</string>
+    <string name="daily_task_content">Task details</string>
 
     <string name="qzone">Qzone</string>
     <string name="QQ">QQ</string>

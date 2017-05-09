@@ -162,6 +162,8 @@
     <string name="has_add_manager_count">已添加%d个</string>
     <string name="has_add_manager_count_zero">未添加管理员</string>
     <string name="live_title_hint">好的标题更能吸引观众</string>
+    <string name="daily_task_title">每日任务</string>
+    <string name="daily_task_content">任务详情</string>
 
     <!--share-->
     <string name="qzone">QQ空间</string>

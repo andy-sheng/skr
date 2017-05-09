@@ -345,6 +345,10 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     @Override
+    public void updateDailyArea(boolean isShow) {
+    }
+
+    @Override
     public <T> Observable.Transformer<T, T> bindLifecycle() {
         return bindUntilEvent();
     }

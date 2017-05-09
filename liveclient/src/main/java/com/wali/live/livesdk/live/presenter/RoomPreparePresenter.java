@@ -138,4 +138,8 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
         }
         mView.fillTitle(mCacheModel.nextTitle());
     }
+
+    public void loadDailyTask() {
+
+    }
 }

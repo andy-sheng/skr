@@ -28,11 +28,13 @@ import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
+import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
@@ -43,12 +45,17 @@ import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
 import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
 import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
+import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.functions.Action1;
 
 /**
  * Created by yangli on 2017/3/7.
@@ -81,6 +88,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     private ViewGroup mBlockArea;
     private GameSettingPanel mGameSettingPanel;
+
+    private ViewGroup mDailyTaskArea;
 
     private ViewGroup mTopContainer;
     private ViewGroup mTitleContainer;
@@ -134,6 +143,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
         mBlockArea = $(R.id.block_area);
         mBlockArea.setOnClickListener(this);
+
+        mDailyTaskArea = $(R.id.daily_task_area);
 
         mMuteTv = $(R.id.mute_yes_tv);
         mMuteTv.setOnClickListener(this);
@@ -305,6 +316,18 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
     }
 
+    private void initDailyTaskListener(final LiveCommonProto.NewWidgetUnit unit) {
+        RxView.clicks(mDailyTaskArea)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
+                                unit.getLinkUrl(), unit.getUrlNeedParam(), unit.getOpenType(), UserAccountManager.getInstance().getUuidAsLong());
+                    }
+                });
+    }
+
     @Override
     public void fillTitle(String title) {
         mLiveTitleEt.setText(title);
@@ -319,6 +342,19 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         } else {
             if (mControlTitleArea.getVisibility() == View.VISIBLE) {
                 mControlTitleArea.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void updateDailyArea(boolean isShow) {
+        if (isShow) {
+            if (mDailyTaskArea.getVisibility() != View.VISIBLE) {
+                mDailyTaskArea.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (mDailyTaskArea.getVisibility() == View.VISIBLE) {
+                mDailyTaskArea.setVisibility(View.INVISIBLE);
             }
         }
     }
