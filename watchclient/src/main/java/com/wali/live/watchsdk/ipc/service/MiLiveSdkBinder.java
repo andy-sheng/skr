@@ -253,7 +253,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
-                MyLog.w(TAG, "notifyShareSuc type=" + type);
+                MyLog.w(TAG, "notifyShareSuc type=" + type + " success=" + success);
                 EventBus.getDefault().post(new EventClass.ShareEvent(success ? EventClass.ShareEvent.TYPE_SUCCESS :
                         EventClass.ShareEvent.TYPE_FAILED, type));
             }
@@ -410,7 +410,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean shareType,
+                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean enableShare,
                           final boolean needFinish) {
         MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
@@ -422,7 +422,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
                         .setGameId(gameId)
-                        .setShareType(shareType)
+                        .setEnableShare(enableShare)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {
@@ -449,7 +449,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean shareType,
+                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean enableShare,
                            final boolean needFinish) {
         MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
 
@@ -461,7 +461,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
                         .setGameId(gameId)
-                        .setShareType(shareType)
+                        .setEnableShare(enableShare)
                         .build();
                 ReplaySdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {

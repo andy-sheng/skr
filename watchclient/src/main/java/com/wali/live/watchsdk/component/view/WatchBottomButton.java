@@ -37,7 +37,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     protected View mShareBtn;
 
     private boolean mIsGameMode = false;
-    private boolean mShareType;
+    private boolean mEnableShare;
 
     private Runnable mAnimatorRunnable;
     private ValueAnimator mShakeAnimator;
@@ -77,10 +77,10 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     public WatchBottomButton(
             @NonNull RelativeLayout contentContainer,
-            boolean isGameMode, boolean shareType) {
+            boolean isGameMode, boolean enableShare) {
         super(contentContainer);
         mIsGameMode = isGameMode;
-        mShareType = shareType;
+        mEnableShare = enableShare;
         initView();
     }
 
@@ -109,7 +109,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     private void addShareBtn() {
-        if (mShareType) {
+        if (mEnableShare) {
             mShareBtn = createImageView(R.drawable.live_icon_share_btn);
             addCreatedView(mShareBtn, R.id.share_btn);
 
