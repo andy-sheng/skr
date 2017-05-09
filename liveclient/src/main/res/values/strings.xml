@@ -192,5 +192,4 @@
     <string name="room_friends">Friends in this session</string>
     <string name="sel_count_hint">Can select up to %d people</string>
     <string name="remove_manager_fail">Couldn\'t cancle</string>
-
 </resources>

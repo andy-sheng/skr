@@ -177,7 +177,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
 
         mShareContainer = $(R.id.share_container);
         mShareSelectedIv = $(R.id.share_friends_iv);
-        mShareSelectedIv.setOnClickListener(this);
+        mShareContainer.setOnClickListener(this);
         if (!mAllowShare) {
             mShareContainer.setVisibility(View.GONE);
         } else {
@@ -212,7 +212,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
                 }
             }, null);
 
-        } else if (i == R.id.share_friends_iv) {
+        } else if (i == R.id.share_container) {
             mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
         }
     }

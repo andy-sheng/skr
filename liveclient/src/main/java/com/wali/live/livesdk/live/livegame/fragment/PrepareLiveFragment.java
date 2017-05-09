@@ -32,6 +32,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
@@ -155,6 +156,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mAdminArea.setOnClickListener(this);
 
         mDailyTaskSl =  $(R.id.daily_task_sl);
+
         mDailyTaskArea = $(R.id.daily_task_area);
         mDailyTaskArea.setOnClickListener(this);
 
@@ -298,7 +300,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mTitleContainer.setVisibility(View.GONE);
         mMiddleContainer.setVisibility(View.GONE);
         mBeginBtn.setVisibility(View.GONE);
-
+        mShareContainer.setVisibility(View.GONE);
         mGameSettingPanel.showSelf(useAnimation, false);
         mRootView.setOnClickListener(this);
     }
@@ -308,7 +310,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mTitleContainer.setVisibility(VISIBLE);
         mMiddleContainer.setVisibility(VISIBLE);
         mBeginBtn.setVisibility(VISIBLE);
-
+        mShareContainer.setVisibility(View.VISIBLE);
         mGameSettingPanel.hideSelf(useAnimation);
         mRootView.setOnClickListener(null);
     }
@@ -419,6 +421,13 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         if (event != null) {
             MyLog.w(TAG, "HidePrepareGameLiveEvent");
             super.onBeginBtnClick();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(MiLinkEvent.StatusLogined event) {
+        if (event != null) {
+            asyncProcess();
         }
     }
 

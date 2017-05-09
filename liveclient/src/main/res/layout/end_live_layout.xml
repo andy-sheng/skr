@@ -62,7 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/back_btn"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/share_friends_iv"
@@ -88,7 +89,7 @@
         android:layout_above="@+id/delete_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_dimen_50"
-        android:layout_marginTop="@dimen/view_dimen_108"
+        android:layout_marginTop="28dp"
         android:background="@drawable/live_begin_btn_bg"
         android:gravity="center"
         android:text="@string/live_ended_back"
