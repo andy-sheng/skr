@@ -32,16 +32,15 @@ public class BarrageAdapter extends RecyclerView.Adapter<BarrageAdapter.BarrageH
     public BarrageAdapter() {
     }
 
-    public void setMessageList(List<Message> dataList) {
+    public void setMessageList(Collection<Message> dataList) {
         mMessageList.clear();
         mMessageList.addAll(dataList);
         notifyDataSetChanged();
     }
 
     public void addMessageList(Collection<Message> dataList) {
-        int pos = mMessageList.size();
         mMessageList.addAll(dataList);
-        notifyItemInserted(pos);
+        notifyDataSetChanged();
     }
 
     @Override

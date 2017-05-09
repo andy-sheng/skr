@@ -22,6 +22,7 @@ public class MessageType {
     public static final int MSG_TYPE_TOP_GET = BarrageMsgType.B_MSG_TYPE_TOP_GET;
     //排行榜失去TOP1变动消息(不展示)
     public static final int MSG_TYPE_TOP_LOSE = BarrageMsgType.B_MSG_TYPE_TOP_LOSE;
+
     /*需要上层处理的系统消息，开始*/
     //房间禁言消息
     public static final int MSG_TYPE_FORBIDDEN = BarrageMsgType.B_MSG_TYPE_FORBIDDEN;
@@ -42,6 +43,7 @@ public class MessageType {
     //主播回来
     public static final int MSG_TYPE_ANCHOR_JOIN = BarrageMsgType.B_MSG_TYPE_ANCHOR_JOIN;
     /*需要上层处理的系统消息，结束*/
+
     //礼物消息
     public static final int MSG_TYPE_GIFT = BarrageMsgType.B_MSG_TYPE_GIFT;
 
