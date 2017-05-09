@@ -102,25 +102,21 @@ public class WatchManager implements IWatchView, IViewerRegister {
             public void handleMessage(List<Message> messageList) {
                 List<Message> viewerMessageList = new ArrayList();
                 MyLog.d(TAG, "handleMessage message=" + messageList.size());
-                boolean isViewerChange = false;
                 for (Message message : messageList) {
-                    if (message.getMsgType() == MessageType.MSG_TYPE_VIEWER_CHANGE) {
-                        viewerMessageList.add(message);
-                    } else if (message.getMsgType() == MessageType.MSG_TYPE_JOIN
+                    if (message.getMsgType() == MessageType.MSG_TYPE_JOIN
                             || message.getMsgType() == MessageType.MSG_TYPE_LEAVE) {
-                        isViewerChange = true;
+                        viewerMessageList.add(message);
                     }
                 }
                 if (viewerMessageList.size() > 0) {
                     MyLog.d(TAG, "handleMessage viewerMessage=" + viewerMessageList.size());
                     if (mViewerObserver != null) {
                         Message message = viewerMessageList.get(viewerMessageList.size() - 1);
-                        mViewerObserver.dependOnList(((MessageExt.ViewChangeMessageExt) message.getMessageExt()).viewerList);
-                    }
-                } else if (isViewerChange) {
-                    MyLog.d(TAG, "handleMessage viewerJoinOrLeave=" + isViewerChange);
-                    if (mViewerObserver != null) {
-                        mViewerObserver.dependOnSelf();
+                        if (message.getMsgType() == MessageType.MSG_TYPE_JOIN) {
+                            mViewerObserver.observerOnList(((MessageExt.JoinRoomMessageExt) message.getMessageExt()).viewerList);
+                        } else if (message.getMsgType() == MessageType.MSG_TYPE_LEAVE) {
+                            mViewerObserver.observerOnList(((MessageExt.LeaveRoomMessageExt) message.getMessageExt()).viewerList);
+                        }
                     }
                 }
             }
@@ -133,6 +129,8 @@ public class WatchManager implements IWatchView, IViewerRegister {
 
         mStreamerPresenter.stopLive();
         mStreamerPresenter.destroy();
+
+        BarrageMainProcessor.getInstance().unregisterInternalMsgCallBack();
     }
 
     @Override

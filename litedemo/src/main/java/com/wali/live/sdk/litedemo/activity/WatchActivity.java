@@ -108,10 +108,10 @@ public class WatchActivity extends RxActivity {
         initData();
         initView();
         initManager();
+
         KeyboardUtils.assistActivity(this, new KeyboardUtils.OnKeyboardChangedListener() {
             @Override
             public void onKeyboardShow() {
-
             }
 
             @Override
@@ -194,13 +194,13 @@ public class WatchActivity extends RxActivity {
         mViewerManager = new ViewerInfoManager();
         mViewerManager.registerListener(mWatchManager, new IViewerListener() {
             @Override
-            public void update(List<Viewer> list) {
-                ToastUtils.showToast("viewerList=" + list.size());
-            }
-
-            @Override
-            public void updateManually() {
-                ToastUtils.showToast("viewerList manually");
+            public void update(final List<Viewer> list) {
+                mViewerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mViewerView.updateViewerView(list);
+                    }
+                });
             }
         });
         mViewerManager.asyncViewerList(mPlayerId, mLiveId, new IViewerCallback() {

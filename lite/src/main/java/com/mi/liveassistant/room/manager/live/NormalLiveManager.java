@@ -21,8 +21,7 @@ import java.util.Arrays;
 /**
  * Created by lan on 17/4/20.
  */
-public class NormalLiveManager extends BaseLiveManager {
-
+public class NormalLiveManager extends BaseLiveManager{
     public static final int[] VIDEO_RATE_360P = new int[]{400, 600, 800};
 
     private CameraView mCameraView;

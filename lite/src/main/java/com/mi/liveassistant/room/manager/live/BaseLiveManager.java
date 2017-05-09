@@ -1,6 +1,11 @@
 package com.mi.liveassistant.room.manager.live;
 
 import com.mi.liveassistant.account.UserAccountManager;
+import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
+import com.mi.liveassistant.barrage.data.Message;
+import com.mi.liveassistant.barrage.data.MessageExt;
+import com.mi.liveassistant.barrage.data.MessageType;
+import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
@@ -10,13 +15,16 @@ import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.presenter.live.BaseLivePresenter;
 import com.mi.liveassistant.room.presenter.streamer.StreamerPresenter;
 import com.mi.liveassistant.room.view.ILiveView;
+import com.mi.liveassistant.room.viewer.IViewerObserver;
+import com.mi.liveassistant.room.viewer.IViewerRegister;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by lan on 17/4/20.
  */
-public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements ILiveView {
+public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements ILiveView, IViewerRegister {
     protected final String TAG = getTAG();
 
     /*直播开启关闭控制*/
@@ -35,6 +43,9 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     /*直播推流控制*/
     protected StreamerPresenter mStreamerPresenter;
     protected boolean mIsRecording;
+
+    /*顶部观众注册监听*/
+    protected IViewerObserver mViewerObserver;
 
     protected BaseLiveManager() {
         mStreamerPresenter = new StreamerPresenter();
@@ -85,6 +96,8 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
                 }
             });
         }
+
+        registerInternalMsg();
     }
 
     protected abstract void createStreamer();
@@ -151,5 +164,37 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter> implements I
     @Override
     public void destroy() {
         innerEndLive();
+    }
+
+    @Override
+    public void registerObserver(IViewerObserver observer) {
+        mViewerObserver = observer;
+    }
+
+    protected void registerInternalMsg() {
+        BarrageMainProcessor.getInstance().registerInternalMsgCallBack(new InternalMsgCallBack() {
+            @Override
+            public void handleMessage(List<Message> messageList) {
+                List<Message> viewerMessageList = new ArrayList();
+                MyLog.d(TAG, "handleMessage message=" + messageList.size());
+                for (Message message : messageList) {
+                    if (message.getMsgType() == MessageType.MSG_TYPE_JOIN
+                            || message.getMsgType() == MessageType.MSG_TYPE_LEAVE) {
+                        viewerMessageList.add(message);
+                    }
+                }
+                if (viewerMessageList.size() > 0) {
+                    MyLog.d(TAG, "handleMessage viewerMessage=" + viewerMessageList.size());
+                    if (mViewerObserver != null) {
+                        Message message = viewerMessageList.get(viewerMessageList.size() - 1);
+                        if (message.getMsgType() == MessageType.MSG_TYPE_JOIN) {
+                            mViewerObserver.observerOnList(((MessageExt.JoinRoomMessageExt) message.getMessageExt()).viewerList);
+                        } else if (message.getMsgType() == MessageType.MSG_TYPE_LEAVE) {
+                            mViewerObserver.observerOnList(((MessageExt.LeaveRoomMessageExt) message.getMessageExt()).viewerList);
+                        }
+                    }
+                }
+            }
+        });
     }
 }

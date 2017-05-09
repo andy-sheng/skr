@@ -44,14 +44,14 @@ public class TopViewerView extends RelativeLayout {
         inflate(getContext(), R.layout.top_viewer_view, this);
 
         mViewerRv = $(R.id.viewer_rv);
-    }
-
-    public void updateViewerView(List<Viewer> list) {
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mViewerRv.setLayoutManager(mLayoutManager);
 
         mViewerAdapter = new TopViewerAdapter();
         mViewerRv.setAdapter(mViewerAdapter);
+    }
+
+    public void updateViewerView(List<Viewer> list) {
         mViewerAdapter.setViewerList(list);
     }
 }

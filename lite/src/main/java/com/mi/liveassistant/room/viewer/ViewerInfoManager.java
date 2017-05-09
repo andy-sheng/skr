@@ -1,5 +1,8 @@
 package com.mi.liveassistant.room.viewer;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.data.model.Viewer;
@@ -26,7 +29,10 @@ public class ViewerInfoManager implements IViewerObserver {
 
     private IViewerListener mListener;
 
+    private Handler mUiHandler;
+
     public ViewerInfoManager() {
+        mUiHandler = new Handler(Looper.getMainLooper());
     }
 
     /**
@@ -86,16 +92,9 @@ public class ViewerInfoManager implements IViewerObserver {
     }
 
     @Override
-    public void dependOnList(List<Viewer> viewer) {
+    public void observerOnList(final List<Viewer> viewers) {
         if (mListener != null) {
-            mListener.update(viewer);
-        }
-    }
-
-    @Override
-    public void dependOnSelf() {
-        if (mListener != null) {
-            mListener.updateManually();
+            mListener.update(viewers);
         }
     }
 }

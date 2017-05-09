@@ -9,7 +9,7 @@ import com.mi.liveassistant.barrage.model.BarrageMsgType;
 /**
  * Created by wuxiaoshan on 17-5-3.
  */
-public class Message implements Comparable<Message>{
+public class Message implements Comparable<Message> {
     private int msgType;
     private long senderMsgId; //发送方的消息，可以用来去重
     private long sender;
@@ -175,14 +175,14 @@ public class Message implements Comparable<Message>{
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_FREQUENCY_CONTROL:
-                BarrageMsg.MsgRuleChangeMessageExt msgRuleChangeMessageExt = (BarrageMsg.MsgRuleChangeMessageExt)msg.getMsgExt();
-                if(msgRuleChangeMessageExt != null) {
+                BarrageMsg.MsgRuleChangeMessageExt msgRuleChangeMessageExt = (BarrageMsg.MsgRuleChangeMessageExt) msg.getMsgExt();
+                if (msgRuleChangeMessageExt != null) {
                     liveComment.setMessageExt(new MessageExt.FrequencyControlMessageExt(msgRuleChangeMessageExt.getMessageRule()));
                 }
                 break;
             case BarrageMsgType.B_MSG_TYPE_KICK_VIEWER:
-                BarrageMsg.KickMessageExt kickMessageExt = (BarrageMsg.KickMessageExt)msg.getMsgExt();
-                if(kickMessageExt != null){
+                BarrageMsg.KickMessageExt kickMessageExt = (BarrageMsg.KickMessageExt) msg.getMsgExt();
+                if (kickMessageExt != null) {
                     liveComment.setMessageExt(new MessageExt.KickMessageExt(kickMessageExt));
                 }
                 break;
@@ -195,7 +195,7 @@ public class Message implements Comparable<Message>{
             case BarrageMsgType.B_MSG_TYPE_TOP_GET:
             case BarrageMsgType.B_MSG_TYPE_TOP_LOSE:
             case BarrageMsgType.B_MSG_TYPE_LIVE_END:
-                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LiveEndMsgExt) {
+                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LiveEndMsgExt) {
                     BarrageMsg.LiveEndMsgExt liveEndMsgExt = (BarrageMsg.LiveEndMsgExt) msg.getMsgExt();
                     liveComment.setMessageExt(new MessageExt.LiveEndMessageExt(liveEndMsgExt));
                 }
@@ -208,7 +208,7 @@ public class Message implements Comparable<Message>{
                 liveComment.setBody(msg.getBody());
                 break;
             case BarrageMsgType.B_MSG_TYPE_VIEWER_CHANGE:
-                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.ViewerChangeMsgExt) {
+                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.ViewerChangeMsgExt) {
                     BarrageMsg.ViewerChangeMsgExt viewerChangeMsgExt = (BarrageMsg.ViewerChangeMsgExt) msg.getMsgExt();
                     liveComment.setMessageExt(new MessageExt.ViewChangeMessageExt(viewerChangeMsgExt));
                 }
@@ -242,7 +242,7 @@ public class Message implements Comparable<Message>{
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_LEAVE: {
-                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LeaveRoomMsgExt){
+                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LeaveRoomMsgExt) {
                     BarrageMsg.LeaveRoomMsgExt leaveRoomMsgExt = (BarrageMsg.LeaveRoomMsgExt) msg.getMsgExt();
                     liveComment.setMessageExt(new MessageExt.LeaveRoomMessageExt(leaveRoomMsgExt));
                 }
@@ -254,7 +254,7 @@ public class Message implements Comparable<Message>{
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_JOIN: {
-                if(msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.JoinRoomMsgExt){
+                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.JoinRoomMsgExt) {
                     BarrageMsg.JoinRoomMsgExt joinRoomMsgExt = (BarrageMsg.JoinRoomMsgExt) msg.getMsgExt();
                     liveComment.setMessageExt(new MessageExt.JoinRoomMessageExt(joinRoomMsgExt));
                 }
@@ -278,7 +278,7 @@ public class Message implements Comparable<Message>{
             case BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE:
             case BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT:
             case BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT:
-                BarrageMsg.GiftMsgExt giftMsgExt = (BarrageMsg.GiftMsgExt)msg.getMsgExt();
+                BarrageMsg.GiftMsgExt giftMsgExt = (BarrageMsg.GiftMsgExt) msg.getMsgExt();
                 liveComment.setMessageExt(new MessageExt.GiftMessageExt(giftMsgExt));
                 liveComment.setBody(msg.getBody());
                 break;

@@ -8,7 +8,5 @@ import java.util.List;
  * Created by lan on 17/5/4.
  */
 public interface IViewerListener {
-    void update(List<Viewer> user);
-
-    void updateManually();
+    void update(List<Viewer> viewers);
 }

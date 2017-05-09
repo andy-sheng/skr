@@ -20,16 +20,20 @@ import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.data.model.User;
+import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.user.UserInfoManager;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
+import com.mi.liveassistant.room.viewer.ViewerInfoManager;
+import com.mi.liveassistant.room.viewer.callback.IViewerListener;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.barrage.BarrageAdapter;
 import com.wali.live.sdk.litedemo.barrage.view.SendBarrageView;
 import com.wali.live.sdk.litedemo.base.activity.RxActivity;
 import com.wali.live.sdk.litedemo.global.GlobalData;
 import com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView;
+import com.wali.live.sdk.litedemo.topinfo.viewer.TopViewerView;
 import com.wali.live.sdk.litedemo.utils.KeyboardUtils;
 import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
@@ -54,6 +58,10 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private User mAnchor;
 
     private Intent mIntent;
+
+    /*观众信息*/
+    private ViewerInfoManager mViewerManager;
+    private TopViewerView mViewerView;
 
     /*弹幕消息*/
     private Button mSendMessageBtn;
@@ -103,10 +111,10 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
         initView();
         initManager();
+
         KeyboardUtils.assistActivity(this, new KeyboardUtils.OnKeyboardChangedListener() {
             @Override
             public void onKeyboardShow() {
-
             }
 
             @Override
@@ -133,6 +141,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         mGameLiveBtn.setOnClickListener(this);
 
         mAnchorView = $(R.id.anchor_view);
+        mViewerView = $(R.id.viewer_view);
 
         mBarrageRv = $(R.id.barrage_rv);
         mSendBarrageView = $(R.id.send_barrage_view);
@@ -149,6 +158,19 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
     private void initManager() {
         mLiveManager = new GameLiveManager();
+
+        mViewerManager = new ViewerInfoManager();
+        mViewerManager.registerListener(mLiveManager, new IViewerListener() {
+            @Override
+            public void update(final List<Viewer> list) {
+                mViewerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mViewerView.updateViewerView(list);
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -165,7 +187,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
-        Log.w(TAG,"onDestroy");
+        Log.w(TAG, "onDestroy");
         super.onDestroy();
         mLiveManager.destroy();
         MessageFacade.getInstance().unregistCallBack();
@@ -255,7 +277,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     }
 
     private void initBarrageComponent() {
-        Log.w(TAG,"initBarrageComponent");
+        Log.w(TAG, "initBarrageComponent");
         mBarrageManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mBarrageManager.setStackFromEnd(true);
 
@@ -263,7 +285,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        MessageFacade.getInstance().registCallBack(mLiveId,mMsgCallBack,mSysMsgCallBack);
+        MessageFacade.getInstance().registCallBack(mLiveId, mMsgCallBack, mSysMsgCallBack);
         MessageFacade.getInstance().startPull(mLiveId);
     }
 

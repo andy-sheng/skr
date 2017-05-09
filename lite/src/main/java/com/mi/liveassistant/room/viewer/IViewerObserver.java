@@ -11,7 +11,5 @@ import java.util.List;
 public interface IViewerObserver {
     void registerListener(IViewerRegister register, IViewerListener listener);
 
-    void dependOnList(List<Viewer> user);
-
-    void dependOnSelf();
+    void observerOnList(List<Viewer> viewers);
 }
