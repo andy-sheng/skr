@@ -169,7 +169,7 @@
         android:layout_above="@+id/close_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_104"
-        android:layout_marginTop="44.67dp"
+        android:layout_marginTop="32.67dp"
         android:background="@drawable/live_begin_btn_bg"
         android:gravity="center"
         android:text="@string/live_start"
