@@ -115,7 +115,10 @@ public class GameLivePresenter implements Presenter {
             String screenshotPath = Environment.getExternalStorageDirectory().getPath() + SDCardUtils.IMAGE_DIR_PATH;
             File filePath = new File(screenshotPath);
             if (!filePath.exists()) {
-                filePath.mkdirs();
+                boolean result = filePath.mkdirs();
+                MyLog.w(TAG, "filePath.exists() false mkdirs result=" + result);
+            } else {
+                MyLog.w(TAG, "filePath.exists() true");
             }
             final String fileName = screenshotPath + "/screenshot_" + System.currentTimeMillis() + ".jpg";
             mScreenRecordManager.getScreenshot(new ScreenRecordManager.OnScreenshotReadyListener() {
