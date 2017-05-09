@@ -28,7 +28,6 @@ import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
-import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.query.model.MessageRule;
@@ -53,9 +52,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.concurrent.TimeUnit;
-
-import rx.functions.Action1;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by yangli on 2017/3/7.
@@ -89,7 +86,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private ViewGroup mBlockArea;
     private GameSettingPanel mGameSettingPanel;
 
+    private View mDailyTaskSl;
     private ViewGroup mDailyTaskArea;
+    private LiveCommonProto.NewWidgetUnit mWidgetUnit;
 
     private ViewGroup mTopContainer;
     private ViewGroup mTitleContainer;
@@ -129,6 +128,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     private void asyncProcess() {
         mRoomPreparePresenter.loadTitle();
+        mRoomPreparePresenter.loadDailyTask();
     }
 
     private void initOtherViews() {
@@ -144,7 +144,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mBlockArea = $(R.id.block_area);
         mBlockArea.setOnClickListener(this);
 
+        mDailyTaskSl =  $(R.id.daily_task_sl);
         mDailyTaskArea = $(R.id.daily_task_area);
+        mDailyTaskArea.setOnClickListener(this);
 
         mMuteTv = $(R.id.mute_yes_tv);
         mMuteTv.setOnClickListener(this);
@@ -248,6 +250,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             showQualityDialog();
         } else if (id == R.id.block_area) {
             showSettingPanel(true);
+        } else if (id == R.id.daily_task_area) {
+            showDailyTask();
         } else if (id == R.id.mute_no_tv) {
             updateMuteStatus(false);
         } else if (id == R.id.mute_yes_tv) {
@@ -290,10 +294,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     private void hideSettingPanel(boolean useAnimation) {
-        mTopContainer.setVisibility(View.VISIBLE);
-        mTitleContainer.setVisibility(View.VISIBLE);
-        mMiddleContainer.setVisibility(View.VISIBLE);
-        mBeginBtn.setVisibility(View.VISIBLE);
+        mTopContainer.setVisibility(VISIBLE);
+        mTitleContainer.setVisibility(VISIBLE);
+        mMiddleContainer.setVisibility(VISIBLE);
+        mBeginBtn.setVisibility(VISIBLE);
 
         mGameSettingPanel.hideSelf(useAnimation);
         mRootView.setOnClickListener(null);
@@ -312,23 +316,16 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
+    private void showDailyTask() {
+        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
+                mWidgetUnit.getLinkUrl(), mWidgetUnit.getUrlNeedParam(), mWidgetUnit.getOpenType(), UserAccountManager.getInstance().getUuidAsLong());
+    }
+
     private void openAdminFragment() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, new MessageRule());
         bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, UserAccountManager.getInstance().getUuidAsLong());
         FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
-    }
-
-    private void initDailyTaskListener(final LiveCommonProto.NewWidgetUnit unit) {
-        RxView.clicks(mDailyTaskArea)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void aVoid) {
-                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
-                                unit.getLinkUrl(), unit.getUrlNeedParam(), unit.getOpenType(), UserAccountManager.getInstance().getUuidAsLong());
-                    }
-                });
     }
 
     @Override
@@ -339,26 +336,25 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public void updateControlTitleArea(boolean isShow) {
         if (isShow) {
-            if (mControlTitleArea.getVisibility() != View.VISIBLE) {
-                mControlTitleArea.setVisibility(View.VISIBLE);
+            if (mControlTitleArea.getVisibility() != VISIBLE) {
+                mControlTitleArea.setVisibility(VISIBLE);
             }
         } else {
-            if (mControlTitleArea.getVisibility() == View.VISIBLE) {
+            if (mControlTitleArea.getVisibility() == VISIBLE) {
                 mControlTitleArea.setVisibility(View.INVISIBLE);
             }
         }
     }
 
     @Override
-    public void updateDailyArea(boolean isShow) {
-        if (isShow) {
-            if (mDailyTaskArea.getVisibility() != View.VISIBLE) {
-                mDailyTaskArea.setVisibility(View.VISIBLE);
-            }
+    public void setDailyTaskUnit(final LiveCommonProto.NewWidgetUnit unit) {
+        if (unit != null && unit.hasLinkUrl()) {
+            mDailyTaskSl.setVisibility(VISIBLE);
+            mDailyTaskArea.setVisibility(VISIBLE);
+            mWidgetUnit = unit;
         } else {
-            if (mDailyTaskArea.getVisibility() == View.VISIBLE) {
-                mDailyTaskArea.setVisibility(View.INVISIBLE);
-            }
+            mDailyTaskSl.setVisibility(View.GONE);
+            mDailyTaskArea.setVisibility(View.GONE);
         }
     }
 

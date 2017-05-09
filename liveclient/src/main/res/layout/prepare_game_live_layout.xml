@@ -257,7 +257,7 @@
             android:id="@+id/daily_task_sl"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_1"
-            android:layout_below="@+id/admin_area"
+            android:layout_below="@+id/mute_area"
             android:background="@color/color_white_trans_20"
             android:visibility="gone" />
 
@@ -266,6 +266,8 @@
             android:id="@+id/daily_task_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_140"
+            android:layout_below="@id/daily_task_sl"
+            android:background="@color/color_black_trans_20"
             android:visibility="gone">
 
             <TextView

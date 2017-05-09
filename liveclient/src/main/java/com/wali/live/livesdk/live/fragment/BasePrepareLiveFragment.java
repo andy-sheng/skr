@@ -44,6 +44,7 @@ import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
+import com.wali.live.proto.LiveCommonProto;
 
 import java.util.List;
 
@@ -342,7 +343,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     @Override
-    public void updateDailyArea(boolean isShow) {
+    public void setDailyTaskUnit(LiveCommonProto.NewWidgetUnit unit) {
     }
 
     @Override
