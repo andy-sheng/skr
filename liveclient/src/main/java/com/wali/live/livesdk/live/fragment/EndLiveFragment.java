@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
@@ -20,16 +21,17 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.span.SpanUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.milink.command.MiLinkCommand;
+import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.user.User;
-import com.wali.live.common.action.VideoAction;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.task.IActionCallBack;
-import com.wali.live.livesdk.live.view.ShareButtonView;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.schema.processor.WaliliveProcessor;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 /**
  * Created by lan on 15-12-15.
@@ -38,7 +40,6 @@ import com.wali.live.watchsdk.schema.processor.WaliliveProcessor;
  */
 public class EndLiveFragment extends BaseFragment implements View.OnClickListener, IActionCallBack {
     private static final String TAG = EndLiveFragment.class.getSimpleName();
-
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     private static final String EXTRA_OWNER_ID = "extra_owner_id";
@@ -59,7 +60,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public static final String EXTRA_GENERATE_LIVE_TITLE = "extra_generate_live_title";
 
     public static final String EXTRA_LIVE_TYPE = "extra_live_type";
-    public static final String EXTRA_SHARE_TYPE = "extra_share_type";
+    public static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
 
     private static final String EXTRA_FAILURE = "extra_failure";
 
@@ -88,10 +89,9 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     private String mLocation;
 
     private boolean mIsFailure;
-
-    private TextView mShareTv;
-    private ShareButtonView mShareButtonView;
-    private int mAllowShareType;
+    private boolean mAllowShare;
+    private ImageView mShareSelectedIv;
+    private View mShareContainer;
 
     @Override
     public int getRequestCode() {
@@ -133,7 +133,7 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         mShareUrl = bundle.getString(EXTRA_SHARE_URL, "");
         mLiveTitle = bundle.getString(EXTRA_GENERATE_LIVE_TITLE, "");
         mLocation = bundle.getString(EXTRA_LOCATION, "");
-        mAllowShareType = bundle.getInt(EXTRA_SHARE_TYPE, 0);
+        mAllowShare = bundle.getBoolean(EXTRA_ENABLE_SHARE, false);
     }
 
     private void initContentView() {
@@ -158,7 +158,6 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
             mTicketTv.setVisibility(View.GONE);
         }
         mBackBtn = $(R.id.back_btn);
-        mBackBtn.setTag(VideoAction.ACTION_END_BACK);
         mBackBtn.setOnClickListener(this);
 
         mDeleteBtn = $(R.id.delete_btn);
@@ -168,7 +167,6 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
             mDeleteBtn.setVisibility(View.VISIBLE);
             MyLog.d(TAG, " generateHistory = " + mGenerateHistorySucc);
             if (mGenerateHistorySucc) {
-                mDeleteBtn.setTag(VideoAction.ACTION_END_HISTORY_DELETE);
                 mDeleteBtn.setOnClickListener(this);
             } else {
                 mDeleteBtn.setText(mGenerateHistoryMsg);
@@ -177,43 +175,45 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
             mDeleteBtn.setVisibility(View.INVISIBLE);
         }
 
-        mShareTv = $(R.id.share_tv);
-        mShareButtonView = $(R.id.share_view);
-        if (mAllowShareType == 0) {
-            mShareTv.setVisibility(View.GONE);
-            mShareButtonView.setVisibility(View.GONE);
+        mShareContainer = $(R.id.share_container);
+        mShareSelectedIv = $(R.id.share_friends_iv);
+        mShareContainer.setOnClickListener(this);
+        if (!mAllowShare) {
+            mShareContainer.setVisibility(View.GONE);
         } else {
-            mShareButtonView.setShareData(getActivity(), mOwner, mShareUrl, mCoverUrl, mLiveTitle, mLocation, mAvatarTs, mLiveType);
-            mShareButtonView.setShareType(mAllowShareType);
+            boolean shareSelectedState = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.ENDSHARE_SELECTED_STATE, true);
+            mShareSelectedIv.setSelected(shareSelectedState);
+        }
+    }
+
+    private void processShare() {
+        if (mShareContainer.getVisibility() == View.VISIBLE) {
+            PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.ENDSHARE_SELECTED_STATE, mShareSelectedIv.isSelected());
+            if (mShareSelectedIv.isSelected()) {
+                //分享
+                SnsShareHelper.getInstance().shareToSns(-1, mShareUrl, mCoverUrl, mLocation, mLiveTitle, mOwner);
+            }
         }
     }
 
     @Override
     public void onClick(View v) {
-        int action = 0;
-        try {
-            if (v.getTag() != null) {
-                action = Integer.valueOf(String.valueOf(v.getTag()));
-            }
-        } catch (NumberFormatException e) {
-            MyLog.d(TAG, e);
-            return;
-        }
+        int i = v.getId();
+        if (i == R.id.back_btn) {
+            String uri = "walilive://channel/channel_id=0";
+            WaliliveProcessor.process(Uri.parse(uri), null, (RxActivity) getActivity(), false);
+            processShare();
+            getActivity().finish();
+        } else if (i == R.id.delete_btn) {
+            DialogUtils.showNormalDialog(getActivity(), 0, R.string.confirm_delete_replay, R.string.ok, R.string.cancel, new DialogUtils.IDialogCallback() {
+                @Override
+                public void process(DialogInterface dialogInterface, int i) {
+                    getActivity().finish();
+                }
+            }, null);
 
-        switch (action) {
-            case VideoAction.ACTION_END_BACK:
-                getActivity().finish();
-                String uri = "walilive://channel/channel_id=0";
-                WaliliveProcessor.process(Uri.parse(uri), null, (RxActivity) getActivity(), false);
-                break;
-            case VideoAction.ACTION_END_HISTORY_DELETE:
-                DialogUtils.showNormalDialog(getActivity(), 0, R.string.confirm_delete_replay, R.string.ok, R.string.cancel, new DialogUtils.IDialogCallback() {
-                    @Override
-                    public void process(DialogInterface dialogInterface, int i) {
-                        getActivity().finish();
-                    }
-                }, null);
-                break;
+        } else if (i == R.id.share_container) {
+            mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
         }
     }
 
@@ -221,9 +221,6 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public void onDestroyView() {
         mCurrentScrrenRotateIsLandScape = 0;
         super.onDestroyView();
-        if (mShareButtonView != null) {
-            mShareButtonView.destroy();
-        }
     }
 
     @Override

@@ -10,11 +10,10 @@ import java.util.Set;
  * Created by linjinbin on 15/11/2.
  */
 public class MiLinkCommand {
-    //服务器暂时没给命令字
     public static final String COMMAND_RECOMMEND_CHANNELLIST = "zhibo.recommend.channellist";
+    public static final String COMMAND_LIST_FOLLOWLIVE = "zhibo.list.followlive";
 
     public static final String COMMAND_VOIP_AUTO_UPLOAD_LOG = "milink.push.uploadlog";
-
     /*金山云鉴权*/
     public static final String COMMAND_ZHIBO_KS3AUTH_REQUEST = "zhibo.mfas.auth";
     public static final String COMMAND_ZHIBO_MULTIPART_AUTH = "zhibo.mfas.multipartauth";

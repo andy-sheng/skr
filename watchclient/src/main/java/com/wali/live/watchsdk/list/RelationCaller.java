@@ -29,7 +29,7 @@ public class RelationCaller {
                         .setIsBothway(isBothWay)
                         .setSyncTime(timeStamp);
 
-                MyLog.w(STAG, "getFollowingList request=" + builder.build().toString());
+                MyLog.w(STAG, "getFollowingUserList request=" + builder.build().toString());
                 PacketData packetData = new PacketData();
                 packetData.setCommand(MiLinkCommand.COMMAND_GET_FOLLOWING_LIST);
                 packetData.setData(builder.build().toByteArray());
@@ -37,7 +37,7 @@ public class RelationCaller {
                 if (rspData != null) {
                     try {
                         RelationProto.FollowingListResponse rsp = RelationProto.FollowingListResponse.parseFrom(rspData.getData());
-                        MyLog.w(STAG, "getFollowingList rsp : \n" + rsp.toString());
+                        MyLog.w(STAG, "getFollowingUserList rsp : \n" + rsp.toString());
                         subscriber.onNext(rsp);
                         subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {

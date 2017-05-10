@@ -250,16 +250,24 @@ public abstract class EventClass {
         public final boolean checked;
     }
 
-    public static class ShareSucEvent {
+    public static class ShareEvent {
         public static final int TYPE_NONE = 0;
-        public int snsType = -1;
+        public static final int TYPE_SUCCESS = 0;
+        public static final int TYPE_FAILED = 0;
+        public int snsType = -1;        //分享的type
+        public int state = TYPE_NONE;   //分享的结果
 
-        public ShareSucEvent(int type) {
+        public ShareEvent(int state, int type) {
             this.snsType = type;
+            this.state = state;
         }
 
         public int getSnsType() {
             return snsType;
+        }
+
+        public int getState() {
+            return state;
         }
     }
 

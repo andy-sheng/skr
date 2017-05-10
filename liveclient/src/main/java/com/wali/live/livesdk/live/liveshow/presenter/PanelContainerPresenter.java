@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
 import com.base.presenter.Presenter;
+import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
@@ -17,7 +18,7 @@ import com.wali.live.livesdk.live.liveshow.view.panel.LiveMagicPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LivePlusPanel;
 import com.wali.live.livesdk.live.liveshow.view.panel.LiveSettingPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
-import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -35,8 +36,6 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     private WeakReference<LiveSettingPanel> mSettingPanelRef;
     private WeakReference<LiveMagicPanel> mMagicPanelRef;
     private WeakReference<LivePlusPanel> mPlusPanelRef;
-
-    private ShareControlPanel shareControlPanel;
 
     private WeakReference<LivePlusPresenter> mPlusPresenterRef;
     private WeakReference<LiveMagicPresenter> mMagicPresenterRef;
@@ -138,10 +137,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     private void showShareControlPanel() {
-        if (shareControlPanel == null) {
-            shareControlPanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
-        }
-        showPanel(shareControlPanel, true);
+        //通知上层分享
+        SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
     @Nullable
@@ -153,8 +150,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     public class Action implements ComponentPresenter.IAction {
         @Override
         public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
+            if (mView == null || CommonUtils.isFastDoubleClick()) {
+                MyLog.e(TAG, "onAction but mView is null, source=" + source + " or CommonUtils.isFastDoubleClick() is true");
                 return false;
             }
             switch (source) {

@@ -10,10 +10,11 @@ import java.util.List;
  * Created by zyh on 2017/4/19.
  */
 
-public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCallback, IMiLiveSdk.IFollowingListCallback {
+public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCallback, IMiLiveSdk.IFollowingUsersCallback, IMiLiveSdk.IFollowingLivesCallback {
     private IMiLiveSdk.ICallback mCallback;
     private IMiLiveSdk.IChannelCallback mChannelCallback;
-    private IMiLiveSdk.IFollowingListCallback mFollowingListCallback;
+    private IMiLiveSdk.IFollowingUsersCallback mFollowingUsersCallback;
+    private IMiLiveSdk.IFollowingLivesCallback mFollowingLivesCallback;
 
     public void setCallback(IMiLiveSdk.ICallback callback) {
         mCallback = callback;
@@ -23,8 +24,12 @@ public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCal
         mChannelCallback = callback;
     }
 
-    public void setFollowingListCallback(IMiLiveSdk.IFollowingListCallback followingListCallback) {
-        mFollowingListCallback = followingListCallback;
+    public void setFollowingUsersCallback(IMiLiveSdk.IFollowingUsersCallback followingUsersCallback) {
+        mFollowingUsersCallback = followingUsersCallback;
+    }
+
+    public void setFollowingLivesCallback(IMiLiveSdk.IFollowingLivesCallback followingLivesCallback) {
+        mFollowingLivesCallback = followingLivesCallback;
     }
 
     @Override
@@ -68,6 +73,7 @@ public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCal
         if (mCallback != null) {
             mCallback.notifyWantShare(shareInfo);
         }
+
     }
 
     @Override
@@ -78,10 +84,16 @@ public class AarCallback implements IMiLiveSdk.ICallback, IMiLiveSdk.IChannelCal
     }
 
     @Override
-    public void notifyGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
-        if (mFollowingListCallback != null) {
-            mFollowingListCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+    public void notifyGetFollowingUserList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
+        if (mFollowingUsersCallback != null) {
+            mFollowingUsersCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
         }
     }
 
+    @Override
+    public void notifyGetFollowingLiveList(int errCode, List<LiveInfo> liveInfos) {
+        if (mFollowingLivesCallback != null) {
+            mFollowingLivesCallback.notifyGetFollowingLiveList(errCode, liveInfos);
+        }
+    }
 }

@@ -136,13 +136,31 @@
 
     </RelativeLayout>
 
-    <!--分享按钮区域-->
-    <com.wali.live.livesdk.live.view.PreLiveShareButtonView
-        android:id="@+id/share_view"
+    <LinearLayout
+        android:id="@+id/share_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/begin_btn"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/share_friends_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="7.67dp"
+            android:src="@drawable/bg_live_share_selector"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/pre_live_share"
+            android:textColor="@color/color_white"
+            android:textSize="14dp"/>
+
+    </LinearLayout>
 
     <!--开始直播按钮-->
     <TextView
@@ -152,7 +170,7 @@
         android:layout_above="@+id/close_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_104"
-        android:layout_marginTop="@dimen/margin_50"
+        android:layout_marginTop="24.67dp"
         android:background="@drawable/live_begin_btn_bg"
         android:gravity="center"
         android:text="@string/live_start"

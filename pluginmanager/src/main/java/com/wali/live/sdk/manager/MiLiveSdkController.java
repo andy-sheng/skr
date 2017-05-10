@@ -36,7 +36,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
     private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
-    private static final String EXTRA_SHARE_TYPE = "extra_share_type";
+    private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
 
     private static final String EXTRA_PLAYER_ID = "extra_player_id";
     private static final String EXTRA_LIVE_ID = "extra_live_id";
@@ -57,8 +57,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_OPEN_NORMAL_LIVE = "open_normal_live";
     private static final String ACTION_OPEN_GAME_LIVE = "open_game_live";
     private static final String ACTION_GET_CHANNEL_LIVES = "get_channel_lives";
-    private static final String ACTION_GET_FOLLOWING_LIST = "get_following_list";
+    private static final String ACTION_GET_FOLLOWING_USERS = "get_following_users";
     private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
+    private static final String ACTION_GET_FOLLOWING_LIVES = "get_following_lives";
 
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
@@ -78,7 +79,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private int mChannelId = 0;
     private String mChannelSecret;
 
-    private int mShareType;
+    private boolean mEnableShare;
 
     private ICallback mCallback;
 
@@ -95,8 +96,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         mMinVersionMap.put(ACTION_THIRD_PART_LOGIN, 205005);
         mMinVersionMap.put(ACTION_GET_CHANNEL_LIVES, 205008);
-        mMinVersionMap.put(ACTION_GET_FOLLOWING_LIST, 205011);
+        mMinVersionMap.put(ACTION_GET_FOLLOWING_USERS, 205011);
         mMinVersionMap.put(ACTION_NOTIFY_SHARE_SUC, 205014);
+        mMinVersionMap.put(ACTION_GET_FOLLOWING_LIVES, 205017);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -259,8 +261,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void setShareType(int shareType) {
-        mShareType = shareType & ShareType.TYPE_MASK;
+    public void enableShare(boolean enable) {
+        mEnableShare = enable;
     }
 
     @Override
@@ -408,19 +410,27 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void getFollowingList(boolean isBothWay, long timeStamp, IFollowingListCallback callback) {
-        if (!checkVersion(ACTION_GET_FOLLOWING_LIST, callback)) {
+    public void getFollowingUserList(boolean isBothWay, long timeStamp, IFollowingUsersCallback callback) {
+        if (!checkVersion(ACTION_GET_FOLLOWING_USERS, callback)) {
             return;
         }
-        MiLiveSdkServiceProxy.getInstance().getFollowingList(isBothWay, timeStamp, callback);
+        MiLiveSdkServiceProxy.getInstance().getFollowingUsers(isBothWay, timeStamp, callback);
     }
 
     @Override
-    public void notifyShareSuc(int type, IAssistantCallback callback) {
+    public void notifyShare(boolean success, int type, IAssistantCallback callback) {
         if (!checkVersion(ACTION_NOTIFY_SHARE_SUC, callback)) {
             return;
         }
-        MiLiveSdkServiceProxy.getInstance().notifyShareSuc(type);
+        MiLiveSdkServiceProxy.getInstance().notifyShare(success, type);
+    }
+
+    @Override
+    public void getFollowingLiveList(IFollowingLivesCallback callback) {
+        if (!checkVersion(ACTION_GET_FOLLOWING_LIVES, callback)) {
+            return;
+        }
+        MiLiveSdkServiceProxy.getInstance().getFollowingLives(callback);
     }
 
     @Override
@@ -462,8 +472,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putInt(EXTRA_CHANNEL_ID, mChannelId);
         bundle.putString(EXTRA_PACKAGE_NAME, GlobalData.app().getPackageName());
         bundle.putString(EXTRA_CHANNEL_SECRET, mChannelSecret);
-        if (mShareType != 0) {
-            bundle.putInt(EXTRA_SHARE_TYPE, mShareType);
+        if (mEnableShare) {
+            bundle.putBoolean(EXTRA_ENABLE_SHARE, mEnableShare);
         }
         return bundle;
     }

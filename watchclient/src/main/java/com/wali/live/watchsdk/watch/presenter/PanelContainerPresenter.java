@@ -6,11 +6,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.ComponentController;
-import com.wali.live.component.view.panel.BaseBottomPanel;
 import com.wali.live.watchsdk.component.presenter.BaseContainerPresenter;
-import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
 
 /**
  * Created by yangli on 2017/2/18.
@@ -19,8 +18,6 @@ import com.wali.live.watchsdk.component.view.panel.ShareControlPanel;
  */
 public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayout> {
     private static final String TAG = "PanelContainerPresenter";
-
-    private BaseBottomPanel mSharePanel;
     private RoomBaseDataModel mMyRoomData;
 
     @Override
@@ -52,10 +49,7 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     }
 
     private void showSharePanel() {
-        if (mSharePanel == null) {
-            mSharePanel = new ShareControlPanel(mView, mComponentController, mMyRoomData);
-        }
-        showPanel(mSharePanel, true);
+        SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
     @Nullable
@@ -67,8 +61,8 @@ public class PanelContainerPresenter extends BaseContainerPresenter<RelativeLayo
     public class Action implements IAction {
         @Override
         public boolean onAction(int source, @Nullable Params params) {
-            if (mView == null) {
-                MyLog.e(TAG, "onAction but mView is null, source=" + source);
+            if (mView == null || CommonUtils.isFastDoubleClick()) {
+                MyLog.e(TAG, "onAction but mView is null, source=" + source + " or CommonUtils.isFastDoubleClick() is true");
                 return false;
             }
             switch (source) {

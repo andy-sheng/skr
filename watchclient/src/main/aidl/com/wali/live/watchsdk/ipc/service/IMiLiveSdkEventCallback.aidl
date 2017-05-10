@@ -16,7 +16,9 @@ interface IMiLiveSdkEventCallback {
 
     void onEventGetRecommendLives(int errCode, in List<LiveInfo> liveInfos);
 
-    void onEventGetFollowingList(int errCode, in List<UserInfo> userInfos, int total ,long timeStamp);
+    void onEventGetFollowingUserList(int errCode, in List<UserInfo> userInfos, int total ,long timeStamp);
+
+    void onEventGetFollowingLiveList(int errCode, in List<LiveInfo> liveInfos);
 
     void onEventShare(in ShareInfo shareInfo);
 }

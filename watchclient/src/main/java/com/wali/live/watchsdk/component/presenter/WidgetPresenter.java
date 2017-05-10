@@ -142,17 +142,17 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         }
     }
 
-    private void getRoomAttachment() {
-        Observable.create(new Observable.OnSubscribe<Object>() {
+    public static Observable<LiveProto.GetRoomAttachmentRsp> getRoomAttachment(final String liveId, final long zuid, final int roomType) {
+        return Observable.create(new Observable.OnSubscribe<LiveProto.GetRoomAttachmentRsp>() {
             @Override
-            public void call(Subscriber<? super Object> subscriber) {
+            public void call(Subscriber<? super LiveProto.GetRoomAttachmentRsp> subscriber) {
                 LiveProto.GetRoomAttachmentReq req = LiveProto.GetRoomAttachmentReq
                         .newBuilder()
                         .setIsGetWidget(true)
-                        .setLiveid(mMyRoomData.getRoomId())
-                        .setZuid(mMyRoomData.getUid())
+                        .setLiveid(liveId)
+                        .setZuid(zuid)
                         .setIsGetAnimation(true)
-                        .setRoomType(mMyRoomData.getLiveType())
+                        .setRoomType(roomType)
                         .setIsGetIconConfig(false)
                         .build();
                 PacketData data = new PacketData();
@@ -178,25 +178,7 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                     subscriber.onError(e);
                 }
             }
-        }).compose(this.bindUntilEvent(PresenterEvent.DESTROY))
-                .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
-                        setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
-                        if (rsp.getNewWidgetInfo().hasPullInterval()) {
-                            getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        MyLog.e(TAG, throwable);
-                    }
-                });
+        });
     }
 
     private void getAttachmentDelay(int time) {
@@ -288,7 +270,26 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                         int liveType = mMyRoomData.getLiveType();
                         MyLog.d(TAG, "live type=" + liveType);
                         if (liveType != LiveManager.TYPE_LIVE_PRIVATE && liveType != LiveManager.TYPE_LIVE_TOKEN) {
-                            getRoomAttachment();
+                            getRoomAttachment(mMyRoomData.getRoomId(), mMyRoomData.getUid(), mMyRoomData.getLiveType()).compose(WidgetPresenter.this.bindUntilEvent(PresenterEvent.DESTROY))
+                                    .retryWhen(new RxRetryAssist(3, 5, true)) // 重试3次，间隔5秒
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Action1<Object>() {
+                                        @Override
+                                        public void call(Object o) {
+                                            LiveProto.GetRoomAttachmentRsp rsp = (LiveProto.GetRoomAttachmentRsp) o;
+                                            setWidgetList(rsp.getNewWidgetInfo().getWidgetItemList());
+                                            if (rsp.getNewWidgetInfo().hasPullInterval()) {
+                                                getAttachmentDelay(rsp.getNewWidgetInfo().getPullInterval());
+                                            }
+                                        }
+                                    }, new Action1<Throwable>() {
+                                        @Override
+                                        public void call(Throwable throwable) {
+                                            MyLog.e(TAG, throwable);
+                                        }
+                                    });
+                            ;
                         }
                     }
                     break;

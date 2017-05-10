@@ -49,6 +49,7 @@
     <string name="to_home">回到桌面</string>
     <string name="game_back_to_home">直播開始！ 現在，您可以返回桌面啟動遊戲</string>
     <string name="room_admin">房間管理</string>
+    <string name="admin_list_title">管理員清單</string>
 
     <string name="admin_manager_tips">溫馨提示：</string>
     <string name="admin_banspeaker_tips_1">1：當前被禁言的使用者只在本次直播中有效，如果你再次開播該使用者的禁言狀態則失效。</string>
@@ -155,6 +156,8 @@
     <string name="has_add_manager_count">已增加%d個</string>
     <string name="has_add_manager_count_zero">未添加管理员</string>
     <string name="live_title_hint">好的標題更能吸引觀眾</string>
+    <string name="daily_task_title">每日任務</string>
+    <string name="daily_task_content">任務詳情</string>
 
     <string name="qzone">QQ空間</string>
     <string name="QQ">QQ</string>
@@ -184,5 +187,6 @@
 
     <string name="prepare_live_share_tips">點擊\"開始直播\"，把直播分享到%1$s</string>
     <string name="uninstall_share_tips">未安裝%1$s，請安裝後分享</string>
-    <string name="live_end_share">分享到</string>
+    <string name="end_live_share">把精彩內容分享給小夥伴</string>
+    <string name="pre_live_share">通知好友來圍觀</string>
 </resources>

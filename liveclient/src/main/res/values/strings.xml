@@ -52,6 +52,7 @@
     <string name="to_home">Back to Home</string>
     <string name="game_back_to_home">Session begins. Go back to Home and play the game now</string>
     <string name="room_admin">Manager</string>
+    <string name="admin_list_title">Managers</string>
 
     <string name="admin_manager_tips">Attention:</string>
     <string name="admin_banspeaker_tips_1">1. This user is only banned in current session and will be allowed next time.</string>
@@ -158,6 +159,8 @@
     <string name="has_add_manager_count">Added %d</string>
     <string name="has_add_manager_count_zero">Haven\'t added managers</string>
     <string name="live_title_hint">Good titles give you more chances to get followers</string>
+    <string name="daily_task_title">Daily task</string>
+    <string name="daily_task_content">Task details</string>
 
     <string name="qzone">Qzone</string>
     <string name="QQ">QQ</string>
@@ -174,8 +177,8 @@
     <string name="uninstall_share_tips">Install %1$s first</string>
     <string name="prepare_live_share_tips">Tap \"Start\" and share live stream to %1$s</string>
     <string name="cancel_share_tips">%1$s sharing is off</string>
-    <string name="live_end_share">Share with</string>
-
+    <string name="end_live_share">Share with friends</string>
+    <string name="pre_live_share">Notify friends about this session</string>
 
     <string name="admin_manager_tips_1">1. Your manager is permanent, you don\'t need to add again next time.</string>
     <string name="admin_manager_tips_2">2. You can add up to 5 managers.</string>
@@ -189,5 +192,4 @@
     <string name="room_friends">Friends in this session</string>
     <string name="sel_count_hint">Can select up to %d people</string>
     <string name="remove_manager_fail">Couldn\'t cancle</string>
-
 </resources>

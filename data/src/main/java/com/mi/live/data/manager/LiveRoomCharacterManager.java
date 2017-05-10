@@ -1,11 +1,9 @@
 package com.mi.live.data.manager;
 
 import android.support.v4.util.LongSparseArray;
-import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.global.GlobalData;
-import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.Constants;
 import com.mi.live.data.api.BanSpeakerUtils;
@@ -15,7 +13,6 @@ import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.proto.AccountProto;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,7 +26,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -264,7 +260,7 @@ public class LiveRoomCharacterManager {
     }
 
     public static void setManagerRxTask(final RxActivity rxActivity, final User user, final String liveId, final long zuid, final boolean managerEnable) {
-        if (TextUtils.isEmpty(liveId) || user == null || rxActivity == null) {
+        if (user == null || rxActivity == null) {
             return;
         }
         final int FAILED = -1,//请求失败

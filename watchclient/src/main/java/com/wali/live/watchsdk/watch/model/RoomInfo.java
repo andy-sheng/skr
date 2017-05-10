@@ -3,8 +3,6 @@ package com.wali.live.watchsdk.watch.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.wali.live.watchsdk.watch.presenter.ShareType;
-
 /**
  * Created by lan on 16/11/29.
  *
@@ -24,8 +22,8 @@ public class RoomInfo implements Parcelable {
     // 游戏直播相关的，表明对应的游戏
     private String mGameId;
 
-    // 分享类型
-    private int mShareType;
+    // 是否支持分享
+    private boolean mEnableShare;
 
     // 以下与ui相关的信息
     private String mCoverUrl;
@@ -45,6 +43,7 @@ public class RoomInfo implements Parcelable {
         mStartTime = in.readLong();
         mLiveType = in.readInt();
         mGameId = in.readString();
+        mEnableShare = in.readByte() != 0;
     }
 
     public static final Creator<RoomInfo> CREATOR = new Creator<RoomInfo>() {
@@ -74,6 +73,7 @@ public class RoomInfo implements Parcelable {
         parcel.writeLong(mStartTime);
         parcel.writeInt(mLiveType);
         parcel.writeString(mGameId);
+        parcel.writeByte((byte) (this.mEnableShare ? 1 : 0));
     }
 
     public long getStartTime() {
@@ -140,12 +140,12 @@ public class RoomInfo implements Parcelable {
         mGameId = gameId;
     }
 
-    public int getShareType() {
-        return mShareType;
+    public boolean isEnableShare() {
+        return mEnableShare;
     }
 
-    public void setShareType(int shareType) {
-        mShareType = shareType & ShareType.TYPE_MASK;
+    public void setEnableShare(boolean enableShare) {
+        mEnableShare = enableShare;
     }
 
     public static class Builder {
@@ -185,13 +185,28 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
-        public Builder setShareType(int shareType) {
-            mRoomInfo.setShareType(shareType);
+        public Builder setEnableShare(boolean enableShare) {
+            mRoomInfo.setEnableShare(enableShare);
             return this;
         }
 
         public RoomInfo build() {
             return mRoomInfo;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "RoomInfo{" +
+                "mPlayerId=" + mPlayerId +
+                ", mLiveId='" + mLiveId + '\'' +
+                ", mVideoUrl='" + mVideoUrl + '\'' +
+                ", mStartTime=" + mStartTime +
+                ", mLiveType=" + mLiveType +
+                ", mAvatar=" + mAvatar +
+                ", mGameId='" + mGameId + '\'' +
+                ", mEnableShare=" + mEnableShare +
+                ", mCoverUrl='" + mCoverUrl + '\'' +
+                '}';
     }
 }

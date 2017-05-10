@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void notifyWantShare(ShareInfo shareInfo) {
                 ToastUtils.showToast(" notifyWantShare" + ((shareInfo != null) ? shareInfo.toString() : ""));
-                MiLiveSdkController.getInstance().notifyShareSuc(shareInfo.getPlatForm(), new IMiLiveSdk.IAssistantCallback() {
+                MiLiveSdkController.getInstance().notifyShare(true, shareInfo.TYPE_WECHAT, new IMiLiveSdk.IAssistantCallback() {
                     @Override
                     public void notifyVersionLow() {
                         ToastUtils.showToast("notifyVersionLow");
@@ -168,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
-//        MiLiveSdkController.getInstance().setShareType(ShareType.TYPE_WEIXIN |
-//                ShareType.TYPE_MOMENT | ShareType.TYPE_QQ | ShareType.TYPE_QZONE);
+        MiLiveSdkController.getInstance().enableShare(true);
     }
 
     public void showUpgradeDialog(final @NonNull Activity activity, final boolean canCancel) {

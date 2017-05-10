@@ -2081,6 +2081,1372 @@ public final class ListProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Item)
   }
 
+  public interface GetFollowLiveReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFollowLiveReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 uId = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    boolean hasUId();
+    /**
+     * <code>required uint64 uId = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    long getUId();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetFollowLiveReq}
+   *
+   * <pre>
+   ******** 9 zhibo.list.followlive 拉关注直播列表 *******
+   * </pre>
+   */
+  public static final class GetFollowLiveReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFollowLiveReq)
+      GetFollowLiveReqOrBuilder {
+    // Use GetFollowLiveReq.newBuilder() to construct.
+    private GetFollowLiveReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetFollowLiveReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetFollowLiveReq defaultInstance;
+    public static GetFollowLiveReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetFollowLiveReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetFollowLiveReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uId_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.ListProto.GetFollowLiveReq.class, com.wali.live.proto.ListProto.GetFollowLiveReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetFollowLiveReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetFollowLiveReq>() {
+      public GetFollowLiveReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetFollowLiveReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetFollowLiveReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UID_FIELD_NUMBER = 1;
+    private long uId_;
+    /**
+     * <code>required uint64 uId = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    public boolean hasUId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uId = 1;</code>
+     *
+     * <pre>
+     *用户id
+     * </pre>
+     */
+    public long getUId() {
+      return uId_;
+    }
+
+    private void initFields() {
+      uId_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.ListProto.GetFollowLiveReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetFollowLiveReq}
+     *
+     * <pre>
+     ******** 9 zhibo.list.followlive 拉关注直播列表 *******
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFollowLiveReq)
+        com.wali.live.proto.ListProto.GetFollowLiveReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.ListProto.GetFollowLiveReq.class, com.wali.live.proto.ListProto.GetFollowLiveReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.ListProto.GetFollowLiveReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveReq_descriptor;
+      }
+
+      public com.wali.live.proto.ListProto.GetFollowLiveReq getDefaultInstanceForType() {
+        return com.wali.live.proto.ListProto.GetFollowLiveReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.ListProto.GetFollowLiveReq build() {
+        com.wali.live.proto.ListProto.GetFollowLiveReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.ListProto.GetFollowLiveReq buildPartial() {
+        com.wali.live.proto.ListProto.GetFollowLiveReq result = new com.wali.live.proto.ListProto.GetFollowLiveReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uId_ = uId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.ListProto.GetFollowLiveReq) {
+          return mergeFrom((com.wali.live.proto.ListProto.GetFollowLiveReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.ListProto.GetFollowLiveReq other) {
+        if (other == com.wali.live.proto.ListProto.GetFollowLiveReq.getDefaultInstance()) return this;
+        if (other.hasUId()) {
+          setUId(other.getUId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.ListProto.GetFollowLiveReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.ListProto.GetFollowLiveReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uId_ ;
+      /**
+       * <code>required uint64 uId = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public boolean hasUId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uId = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public long getUId() {
+        return uId_;
+      }
+      /**
+       * <code>required uint64 uId = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder setUId(long value) {
+        bitField0_ |= 0x00000001;
+        uId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uId = 1;</code>
+       *
+       * <pre>
+       *用户id
+       * </pre>
+       */
+      public Builder clearUId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetFollowLiveReq)
+    }
+
+    static {
+      defaultInstance = new GetFollowLiveReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFollowLiveReq)
+  }
+
+  public interface GetFollowLiveRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFollowLiveRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    boolean hasRet();
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    int getRet();
+
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.LiveInfo> 
+        getLivesList();
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.LiveInfo getLives(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    int getLivesCount();
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder> 
+        getLivesOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder getLivesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetFollowLiveRsp}
+   */
+  public static final class GetFollowLiveRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFollowLiveRsp)
+      GetFollowLiveRspOrBuilder {
+    // Use GetFollowLiveRsp.newBuilder() to construct.
+    private GetFollowLiveRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetFollowLiveRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetFollowLiveRsp defaultInstance;
+    public static GetFollowLiveRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetFollowLiveRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetFollowLiveRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ret_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                lives_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.LiveInfo>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              lives_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.LiveInfo.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          lives_ = java.util.Collections.unmodifiableList(lives_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.ListProto.GetFollowLiveRsp.class, com.wali.live.proto.ListProto.GetFollowLiveRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetFollowLiveRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetFollowLiveRsp>() {
+      public GetFollowLiveRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetFollowLiveRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetFollowLiveRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_FIELD_NUMBER = 1;
+    private int ret_;
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public boolean hasRet() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public int getRet() {
+      return ret_;
+    }
+
+    public static final int LIVES_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.LiveInfo> lives_;
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.LiveInfo> getLivesList() {
+      return lives_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder> 
+        getLivesOrBuilderList() {
+      return lives_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    public int getLivesCount() {
+      return lives_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.LiveInfo getLives(int index) {
+      return lives_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+     *
+     * <pre>
+     *关注的人直播信息
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder getLivesOrBuilder(
+        int index) {
+      return lives_.get(index);
+    }
+
+    private void initFields() {
+      ret_ = 0;
+      lives_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRet()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getLivesCount(); i++) {
+        if (!getLives(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, ret_);
+      }
+      for (int i = 0; i < lives_.size(); i++) {
+        output.writeMessage(2, lives_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, ret_);
+      }
+      for (int i = 0; i < lives_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, lives_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.ListProto.GetFollowLiveRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.ListProto.GetFollowLiveRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetFollowLiveRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFollowLiveRsp)
+        com.wali.live.proto.ListProto.GetFollowLiveRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.ListProto.GetFollowLiveRsp.class, com.wali.live.proto.ListProto.GetFollowLiveRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.ListProto.GetFollowLiveRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getLivesFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ret_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (livesBuilder_ == null) {
+          lives_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          livesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.ListProto.internal_static_com_wali_live_proto_GetFollowLiveRsp_descriptor;
+      }
+
+      public com.wali.live.proto.ListProto.GetFollowLiveRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.ListProto.GetFollowLiveRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.ListProto.GetFollowLiveRsp build() {
+        com.wali.live.proto.ListProto.GetFollowLiveRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.ListProto.GetFollowLiveRsp buildPartial() {
+        com.wali.live.proto.ListProto.GetFollowLiveRsp result = new com.wali.live.proto.ListProto.GetFollowLiveRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ret_ = ret_;
+        if (livesBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            lives_ = java.util.Collections.unmodifiableList(lives_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.lives_ = lives_;
+        } else {
+          result.lives_ = livesBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.ListProto.GetFollowLiveRsp) {
+          return mergeFrom((com.wali.live.proto.ListProto.GetFollowLiveRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.ListProto.GetFollowLiveRsp other) {
+        if (other == com.wali.live.proto.ListProto.GetFollowLiveRsp.getDefaultInstance()) return this;
+        if (other.hasRet()) {
+          setRet(other.getRet());
+        }
+        if (livesBuilder_ == null) {
+          if (!other.lives_.isEmpty()) {
+            if (lives_.isEmpty()) {
+              lives_ = other.lives_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureLivesIsMutable();
+              lives_.addAll(other.lives_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.lives_.isEmpty()) {
+            if (livesBuilder_.isEmpty()) {
+              livesBuilder_.dispose();
+              livesBuilder_ = null;
+              lives_ = other.lives_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              livesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getLivesFieldBuilder() : null;
+            } else {
+              livesBuilder_.addAllMessages(other.lives_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRet()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getLivesCount(); i++) {
+          if (!getLives(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.ListProto.GetFollowLiveRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.ListProto.GetFollowLiveRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int ret_ ;
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public boolean hasRet() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public int getRet() {
+        return ret_;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder setRet(int value) {
+        bitField0_ |= 0x00000001;
+        ret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder clearRet() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ret_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.LiveInfo> lives_ =
+        java.util.Collections.emptyList();
+      private void ensureLivesIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          lives_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.LiveInfo>(lives_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.LiveInfo, com.wali.live.proto.CommonChannelProto.LiveInfo.Builder, com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder> livesBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.LiveInfo> getLivesList() {
+        if (livesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(lives_);
+        } else {
+          return livesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public int getLivesCount() {
+        if (livesBuilder_ == null) {
+          return lives_.size();
+        } else {
+          return livesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveInfo getLives(int index) {
+        if (livesBuilder_ == null) {
+          return lives_.get(index);
+        } else {
+          return livesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder setLives(
+          int index, com.wali.live.proto.CommonChannelProto.LiveInfo value) {
+        if (livesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLivesIsMutable();
+          lives_.set(index, value);
+          onChanged();
+        } else {
+          livesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder setLives(
+          int index, com.wali.live.proto.CommonChannelProto.LiveInfo.Builder builderForValue) {
+        if (livesBuilder_ == null) {
+          ensureLivesIsMutable();
+          lives_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          livesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder addLives(com.wali.live.proto.CommonChannelProto.LiveInfo value) {
+        if (livesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLivesIsMutable();
+          lives_.add(value);
+          onChanged();
+        } else {
+          livesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder addLives(
+          int index, com.wali.live.proto.CommonChannelProto.LiveInfo value) {
+        if (livesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLivesIsMutable();
+          lives_.add(index, value);
+          onChanged();
+        } else {
+          livesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder addLives(
+          com.wali.live.proto.CommonChannelProto.LiveInfo.Builder builderForValue) {
+        if (livesBuilder_ == null) {
+          ensureLivesIsMutable();
+          lives_.add(builderForValue.build());
+          onChanged();
+        } else {
+          livesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder addLives(
+          int index, com.wali.live.proto.CommonChannelProto.LiveInfo.Builder builderForValue) {
+        if (livesBuilder_ == null) {
+          ensureLivesIsMutable();
+          lives_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          livesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder addAllLives(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.LiveInfo> values) {
+        if (livesBuilder_ == null) {
+          ensureLivesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, lives_);
+          onChanged();
+        } else {
+          livesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder clearLives() {
+        if (livesBuilder_ == null) {
+          lives_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          livesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public Builder removeLives(int index) {
+        if (livesBuilder_ == null) {
+          ensureLivesIsMutable();
+          lives_.remove(index);
+          onChanged();
+        } else {
+          livesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveInfo.Builder getLivesBuilder(
+          int index) {
+        return getLivesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder getLivesOrBuilder(
+          int index) {
+        if (livesBuilder_ == null) {
+          return lives_.get(index);  } else {
+          return livesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder> 
+           getLivesOrBuilderList() {
+        if (livesBuilder_ != null) {
+          return livesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(lives_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveInfo.Builder addLivesBuilder() {
+        return getLivesFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.LiveInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveInfo.Builder addLivesBuilder(
+          int index) {
+        return getLivesFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.LiveInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveInfo lives = 2;</code>
+       *
+       * <pre>
+       *关注的人直播信息
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.LiveInfo.Builder> 
+           getLivesBuilderList() {
+        return getLivesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.LiveInfo, com.wali.live.proto.CommonChannelProto.LiveInfo.Builder, com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder> 
+          getLivesFieldBuilder() {
+        if (livesBuilder_ == null) {
+          livesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.LiveInfo, com.wali.live.proto.CommonChannelProto.LiveInfo.Builder, com.wali.live.proto.CommonChannelProto.LiveInfoOrBuilder>(
+                  lives_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          lives_ = null;
+        }
+        return livesBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetFollowLiveRsp)
+    }
+
+    static {
+      defaultInstance = new GetFollowLiveRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFollowLiveRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetChannelLiveDetailReq_descriptor;
   private static
@@ -2096,6 +3462,16 @@ public final class ListProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Item_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetFollowLiveReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetFollowLiveReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetFollowLiveRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetFollowLiveRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2105,13 +3481,16 @@ public final class ListProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nList.proto\022\023com.wali.live.proto\"9\n\027Get" +
-      "ChannelLiveDetailReq\022\021\n\tchannelId\030\001 \002(\r\022" +
-      "\013\n\003uid\030\002 \001(\004\"O\n\027GetChannelLiveDetailRsp\022" +
-      "\013\n\003ret\030\001 \002(\r\022\'\n\004item\030\002 \003(\0132\031.com.wali.li" +
-      "ve.proto.Item\"\"\n\004Item\022\014\n\004type\030\001 \002(\r\022\014\n\004d" +
-      "ata\030\002 \003(\014B \n\023com.wali.live.protoB\tListPr" +
-      "oto"
+      "\n\nList.proto\022\023com.wali.live.proto\032\023Commo" +
+      "nChannel.proto\"9\n\027GetChannelLiveDetailRe" +
+      "q\022\021\n\tchannelId\030\001 \002(\r\022\013\n\003uid\030\002 \001(\004\"O\n\027Get" +
+      "ChannelLiveDetailRsp\022\013\n\003ret\030\001 \002(\r\022\'\n\004ite" +
+      "m\030\002 \003(\0132\031.com.wali.live.proto.Item\"\"\n\004It" +
+      "em\022\014\n\004type\030\001 \002(\r\022\014\n\004data\030\002 \003(\014\"\037\n\020GetFol" +
+      "lowLiveReq\022\013\n\003uId\030\001 \002(\004\"M\n\020GetFollowLive" +
+      "Rsp\022\013\n\003ret\030\001 \002(\r\022,\n\005lives\030\002 \003(\0132\035.com.wa" +
+      "li.live.proto.LiveInfoB \n\023com.wali.live." +
+      "protoB\tListProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2124,6 +3503,7 @@ public final class ListProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.wali.live.proto.CommonChannelProto.getDescriptor(),
         }, assigner);
     internal_static_com_wali_live_proto_GetChannelLiveDetailReq_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -2143,6 +3523,19 @@ public final class ListProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Item_descriptor,
         new java.lang.String[] { "Type", "Data", });
+    internal_static_com_wali_live_proto_GetFollowLiveReq_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_wali_live_proto_GetFollowLiveReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFollowLiveReq_descriptor,
+        new java.lang.String[] { "UId", });
+    internal_static_com_wali_live_proto_GetFollowLiveRsp_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_com_wali_live_proto_GetFollowLiveRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFollowLiveRsp_descriptor,
+        new java.lang.String[] { "Ret", "Lives", });
+    com.wali.live.proto.CommonChannelProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

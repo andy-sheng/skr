@@ -69,6 +69,10 @@ public class PreferenceKeys {
     public static final String SHARE_MILIAO_FEEDS_SELECTED = "share_miliao_feeds_selected";
     public static final String SHARE_FIRST_TIPS = "share_first_tips";
 
+    //游戏中心
+    public static final String PRE_SHARE_SELECTED_STATE = "pre_share_selected_state";
+    public static final String ENDSHARE_SELECTED_STATE = "end_share_selected_state";
+
     public static final String FRIEND_LIVE_RED_ICON_VISIBILITY = "friend_live_red_icon_visibility";
 
     public static final String IDENTIFICATION_DATE = "last_identification_date";

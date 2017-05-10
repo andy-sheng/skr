@@ -18,10 +18,13 @@ import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.livegame.presenter.BottomButtonPresenter;
 import com.wali.live.livesdk.live.livegame.presenter.PanelContainerPresenter;
 import com.wali.live.livesdk.live.livegame.view.LiveBottomButton;
+import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
+import com.wali.live.watchsdk.component.presenter.WidgetPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
+import com.wali.live.watchsdk.component.view.WidgetView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -107,12 +110,24 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
             }
             relativeLayout.setVisibility(View.VISIBLE);
             LiveBottomButton view = new LiveBottomButton(relativeLayout,
-                    mComponentController.mMyRoomData.getShareType());
+                    mComponentController.mMyRoomData.getEnableShare());
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController,
                             mComponentController.mMyRoomData,
                             mComponentController.mGameLivePresenter);
             addComponentView(view, presenter);
+        }
+
+        // 运营位
+        {
+            WidgetView view = $(R.id.widget_view);
+            if (view == null) {
+                MyLog.e(TAG, "missing R.id.widget_view");
+                return;
+            }
+            WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData, true);
+            addComponentView(view, presenter);
+            ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
         }
 
         addViewToSet(new int[]{
@@ -121,7 +136,8 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
-                R.id.gift_room_effect_view
+                R.id.gift_room_effect_view,
+                R.id.widget_view
         }, mHorizontalMoveSet);
 
         // 滑动

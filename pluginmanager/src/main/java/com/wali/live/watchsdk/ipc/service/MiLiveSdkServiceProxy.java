@@ -35,7 +35,8 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     private IMiLiveSdk.ICallback mCallback;
     private IMiLiveSdk.IChannelAssistantCallback mChannelCallback;
-    private IMiLiveSdk.IFollowingListCallback mFollowingListCallback;
+    private IMiLiveSdk.IFollowingUsersCallback mFollowingListCallback;
+    private IMiLiveSdk.IFollowingLivesCallback mFollowingLivesCallback;
 
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
@@ -80,7 +81,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventGetRecommendLives(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
-            Logger.d(TAG, "onEventGetRecommendLives");
+            Logger.d(TAG, "onEventGetRecommendLives errCode=" + errCode);
             if (mChannelCallback != null) {
                 mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
                 mChannelCallback = null;
@@ -88,10 +89,18 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
 
         @Override
-        public void onEventGetFollowingList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) throws RemoteException {
+        public void onEventGetFollowingUserList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) throws RemoteException {
             if (mFollowingListCallback != null) {
-                mFollowingListCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+                mFollowingListCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
                 mFollowingListCallback = null;
+            }
+        }
+
+        @Override
+        public void onEventGetFollowingLiveList(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
+            if (mFollowingLivesCallback != null) {
+                mFollowingLivesCallback.notifyGetFollowingLiveList(errCode, liveInfos);
+                mFollowingLivesCallback = null;
             }
         }
 
@@ -263,34 +272,54 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void getFollowingList(boolean isBothWay, long timeStamp, IMiLiveSdk.IFollowingListCallback followingListCallback) {
-        Logger.w(TAG, "getFollowingList");
-        if (followingListCallback == null) {
-            Logger.w(TAG, "getFollowingList callback is null");
+    public void getFollowingUsers(boolean isBothWay, long timeStamp, IMiLiveSdk.IFollowingUsersCallback followingUsersCallback) {
+        Logger.d(TAG, "getFollowingUsers");
+        if (followingUsersCallback == null) {
+            Logger.w(TAG, "getFollowingUsers callback is null");
             return;
         }
-        mFollowingListCallback = followingListCallback;
+        mFollowingListCallback = followingUsersCallback;
         if (mRemoteService == null) {
-            resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+            resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_USERS);
         } else {
             try {
-                mRemoteService.getFollowingList(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                mRemoteService.getFollowingUserList(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret(), isBothWay, timeStamp);
             } catch (RemoteException e) {
-                resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+                resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_USERS);
             }
         }
     }
 
-    public void notifyShareSuc(int type) {
+    public void getFollowingLives(IMiLiveSdk.IFollowingLivesCallback followingLivesCallback) {
+        Logger.d(TAG, "getFollowingLives");
+        if (followingLivesCallback == null) {
+            Logger.w(TAG, "getFollowingLives callback is null");
+            return;
+        }
+        mFollowingLivesCallback = followingLivesCallback;
         if (mRemoteService == null) {
-            resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+            resolveNullService(IMiLiveSdk.ICallback.GET_FOLLOWING_LIVES);
         } else {
             try {
-                mRemoteService.notifyShareSuc(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
-                        MiLiveSdkController.getInstance().getChannelSecret(), type);
+                mRemoteService.getFollowingLiveList(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
-                resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIST);
+                resolveException(e, IMiLiveSdk.ICallback.GET_FOLLOWING_LIVES);
+            }
+        }
+    }
+
+
+    public void notifyShare(boolean success, int type) {
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.NOTIFY_SHARE_AIDL);
+        } else {
+            try {
+                mRemoteService.notifyShare(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(), success, type);
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.NOTIFY_SHARE_AIDL);
             }
         }
     }

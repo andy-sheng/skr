@@ -48,14 +48,6 @@ public class ExpLevelPresenter extends RxLifeCyclePresenter {
                 return QQ;
             case ShareInfo.TYPE_WEIBO:
                 return WEIBO;
-            case ShareInfo.TYPE_FACEBOOK:
-                return FACEBOOK;
-            case ShareInfo.TYPE_TWITTER:
-                return TWITTER;
-            case ShareInfo.TYPE_INSTAGRAM:
-                return INSTAGRAM;
-            case ShareInfo.TYPE_WHATSAPP:
-                return WHATSAPP;
             case ShareInfo.TYPE_MILIAO:
                 return MILIAO;
             case ShareInfo.TYPE_MILIAO_FEEDS:

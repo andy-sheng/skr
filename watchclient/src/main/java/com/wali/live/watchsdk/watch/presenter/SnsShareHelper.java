@@ -28,10 +28,6 @@ public class SnsShareHelper {
     public static final String STATISTICS_QQ = "&pf=qq";
     public static final String STATISTICS_QZONE = "&pf=qzone";
     public static final String STATISTICS_WEIBO = "&pf=weibo";
-    public static final String STATISTICS_FACEBOOK = "&pf=fb";
-    public static final String STATISTICS_TWITTER = "&pf=tw";
-    public static final String STATISTICS_INSTAGRAM = "&pf=instagram";
-    public static final String STATISTICS_WHATSAPP = "&pf=whatsapp";
     public static final String STATISTICS_MILIAO = "&pf=miliao";
     public static final String STATISTICS_MILIAO_FEEDS = "&pf=miliaowall";
 
@@ -40,10 +36,6 @@ public class SnsShareHelper {
     public static final String SHARE_QQ = "?pf=qq";
     public static final String SHARE_QZONE = "?pf=qzone";
     public static final String SHARE_WEIBO = "?pf=weibo";
-    public static final String SHARE_FACEBOOK = "?pf=fb";
-    public static final String SHARE_TWITTER = "?pf=tw";
-    public static final String SHARE_INSTAGRAM = "?pf=instagram";
-    public static final String SHARE_WHATSAPP = "?pf=whatsapp";
     public static final String SHARE_MILIAO = "?pf=miliao";
     public static final String SHARE_MILIAO_FEEDS = "?pf=miliaowall";
 
@@ -55,12 +47,8 @@ public class SnsShareHelper {
     public static final int BTN_QQ = 2;
     public static final int BTN_QZONE = 3;
     public static final int BTN_WEIBO = 4;
-    public static final int BTN_FACEBOOK = 5;
-    public static final int BTN_TWITTER = 6;
-    public static final int BTN_INSTAGRAM = 7;
-    public static final int BTN_WHATSAPP = 8;
-    public static final int BTN_MILIAO = 9;
-    public static final int BTN_MILIAO_FEEDS = 10;
+    public static final int BTN_MILIAO = 5;
+    public static final int BTN_MILIAO_FEEDS = 6;
 
     public static final int SHARE_NICK_NAME_MAX_LENGTH = 16;
     private HashMap<ShareProto.ChannelType, ShareProto.TagTail> mTagTailMap = new HashMap<>();
@@ -117,11 +105,6 @@ public class SnsShareHelper {
 
         boolean isVisitor = (owner.getUid() != UserAccountManager.getInstance().getUuidAsLong());
         if (!isChinese) {//国外
-            if (type == BTN_TWITTER) {
-                //国外app, twitter分享英文文案不加小尾巴，产品策略。
-                shareTagTailSeq = "";
-                shareTagTailValue = "";
-            }
             desText = String.format(GlobalData.app().getString(isVisitor ? R.string.share_description_visitor_abroad : R.string.share_description_anchor_abroad),
                     ownerName, owner.getUid(), shareTagTailValue, "", "");
         } else {//国内
@@ -134,8 +117,8 @@ public class SnsShareHelper {
 
         //通知上层分享
         MiLiveSdkBinder.getInstance().onEventShare(HostChannelManager.getInstance().getChannelId(),
-                new ShareInfo(type, shareTitle, desText, imgUrl, shareUrl));
-        MyLog.w(TAG, "shareInfo=" + (new ShareInfo(type, shareTitle, desText, imgUrl, shareUrl).toString()));
+                new ShareInfo(shareTitle, desText, imgUrl, shareUrl));
+        MyLog.w(TAG, "shareInfo=" + (new ShareInfo(shareTitle, desText, imgUrl, shareUrl).toString()));
     }
 
     public void setShareTagTailMap(List<ShareProto.TagTail> tagTailList) {
@@ -177,22 +160,6 @@ public class SnsShareHelper {
                     tagTail = mTagTailMap.get(ShareProto.ChannelType.WEIBO_SINA);
                     shareUrl += (hasParam ? STATISTICS_WEIBO : SHARE_WEIBO);
                     break;
-                case BTN_FACEBOOK:
-                    tagTail = mTagTailMap.get(ShareProto.ChannelType.FACEBOOK);
-                    shareUrl += (hasParam ? STATISTICS_FACEBOOK : SHARE_FACEBOOK);
-                    break;
-                case BTN_TWITTER:
-                    tagTail = mTagTailMap.get(ShareProto.ChannelType.TWITTER);
-                    shareUrl += (hasParam ? STATISTICS_TWITTER : SHARE_TWITTER);
-                    break;
-                case BTN_INSTAGRAM:
-                    tagTail = mTagTailMap.get(ShareProto.ChannelType.INSTAGRAM);
-                    shareUrl += (hasParam ? STATISTICS_INSTAGRAM : SHARE_INSTAGRAM);
-                    break;
-                case BTN_WHATSAPP:
-                    tagTail = mTagTailMap.get(ShareProto.ChannelType.WHATSAPP);
-                    shareUrl += (hasParam ? STATISTICS_WHATSAPP : SHARE_WHATSAPP);
-                    break;
                 case BTN_MILIAO:
                     tagTail = mTagTailMap.get(ShareProto.ChannelType.MLDIALOG);
                     shareUrl += (hasParam ? STATISTICS_MILIAO : SHARE_MILIAO);
@@ -230,32 +197,6 @@ public class SnsShareHelper {
                     return false;
                 }
                 break;
-            case BTN_FACEBOOK:
-                if (!isFacebookInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.facebook)));
-                    return false;
-                }
-                break;
-            case BTN_TWITTER:
-                if (!isTwitterInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.twitter)));
-                    return false;
-                }
-                break;
-            case BTN_INSTAGRAM: {
-                if (!isInstagramInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.instagram)));
-                    return false;
-                }
-            }
-            break;
-            case BTN_WHATSAPP: {
-                if (!isWhatsappInstalled()) {
-                    ToastUtils.showToast(GlobalData.app().getString(R.string.uninstall_share_tips, GlobalData.app().getString(R.string.whatsapp)));
-                    return false;
-                }
-            }
-            break;
             case BTN_MILIAO:
             case BTN_MILIAO_FEEDS:
                 if (!isMiliaoInstalled()) {

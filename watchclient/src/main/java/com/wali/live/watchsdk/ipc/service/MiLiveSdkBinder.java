@@ -133,7 +133,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                 onEventGetRecommendLives(channelId, errCode, liveInfos);
                             }
                         });
-
             }
 
             @Override
@@ -147,8 +146,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void getFollowingList(final int channelId, final String packageName, final String channelSecret, final boolean isBothWay, final long timeStamp) throws RemoteException {
-        MyLog.w(TAG, "getFollowingList channelId=" + channelId + " isBothWay=" + isBothWay + " timeStamp=" + timeStamp);
+    public void getFollowingUserList(final int channelId, final String packageName, final String channelSecret, final boolean isBothWay, final long timeStamp) throws RemoteException {
+        MyLog.w(TAG, "getFollowingUserList channelId=" + channelId + " isBothWay=" + isBothWay + " timeStamp=" + timeStamp);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
@@ -158,13 +157,13 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         .subscribe(new Observer<RelationProto.FollowingListResponse>() {
                             @Override
                             public void onCompleted() {
-                                MyLog.w(TAG, "getFollowingList onCompleted");
+                                MyLog.w(TAG, "getFollowingUserList onCompleted");
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 MyLog.e(e);
-                                onEventGetFollowingList(channelId, ErrorCode.CODE_ERROR_NORMAL, null, 0, 0);
+                                onEventGetFollowingUserList(channelId, ErrorCode.CODE_ERROR_NORMAL, null, 0, 0);
                             }
 
                             @Override
@@ -172,8 +171,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                 int errCode = ErrorCode.CODE_ERROR_NORMAL;
                                 if (followingListResponse == null || (errCode = followingListResponse.getCode()) != ErrorCode.CODE_SUCCESS) {
                                     //拉列表失败
-                                    MyLog.e(TAG, "getFollowingList failed channelId=" + channelId);
-                                    onEventGetFollowingList(channelId, errCode, null, 0, 0);
+                                    MyLog.e(TAG, "getFollowingUserList failed channelId=" + channelId);
+                                    onEventGetFollowingUserList(channelId, errCode, null, 0, 0);
                                     return;
                                 }
                                 List<UserInfo> userInfos = new ArrayList<UserInfo>();
@@ -181,7 +180,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                 for (RelationProto.UserInfo item : items) {
                                     userInfos.add(new UserInfo(item));
                                 }
-                                onEventGetFollowingList(channelId, errCode, userInfos, followingListResponse.getTotal(), followingListResponse.getSyncTime());
+                                onEventGetFollowingUserList(channelId, errCode, userInfos, followingListResponse.getTotal(), followingListResponse.getSyncTime());
                             }
                         });
 
@@ -199,12 +198,64 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void notifyShareSuc(final int channelId, final String packageName, final String channelSecret, final int type) throws RemoteException {
+    public void getFollowingLiveList(final int channelId, final String packageName, final String channelSecret) throws RemoteException {
+        MyLog.w(TAG, "getFollowingLiveList channelId=" + channelId + " packageName=" + packageName + " channelSecret=" + channelSecret);
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
-                MyLog.w(TAG, "notifyShareSuc type=" + type);
-                EventBus.getDefault().post(new EventClass.ShareSucEvent(type));
+                ChannelLiveCaller.getFollowingLives()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<ListProto.GetFollowLiveRsp>() {
+                            @Override
+                            public void onCompleted() {
+                                MyLog.w(TAG, "getFollowingLiveList onCompleted");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.e(e);
+                                onEventGetFollowingLiveList(channelId, ErrorCode.CODE_ERROR_NORMAL, null);
+                            }
+
+                            @Override
+                            public void onNext(ListProto.GetFollowLiveRsp getFollowLiveRsp) {
+                                int errCode = ErrorCode.CODE_ERROR_NORMAL;
+                                if (getFollowLiveRsp == null || (errCode = getFollowLiveRsp.getRet()) != ErrorCode.CODE_SUCCESS) {
+                                    //拉列表失败
+                                    MyLog.e(TAG, "getFollowingLiveList failed channelId=" + channelId);
+                                    onEventGetFollowingLiveList(channelId, errCode, null);
+                                    return;
+                                }
+                                List<LiveInfo> liveInfos = new ArrayList<>();
+                                for (CommonChannelProto.LiveInfo liveInfo : getFollowLiveRsp.getLivesList()) {
+                                    liveInfos.add(new LiveInfo(liveInfo));
+                                }
+                                onEventGetFollowingLiveList(channelId, errCode, liveInfos);
+                            }
+                        });
+            }
+
+            @Override
+            public void postError() {
+
+            }
+
+            @Override
+            public void processFailure() {
+
+            }
+        });
+    }
+
+    @Override
+    public void notifyShare(final int channelId, final String packageName, final String channelSecret, final boolean success, final int type) throws RemoteException {
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                MyLog.w(TAG, "notifyShareSuc type=" + type + " success=" + success);
+                EventBus.getDefault().post(new EventClass.ShareEvent(success ? EventClass.ShareEvent.TYPE_SUCCESS :
+                        EventClass.ShareEvent.TYPE_FAILED, type));
             }
 
             @Override
@@ -359,7 +410,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final int shareType,
+                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean enableShare,
                           final boolean needFinish) {
         MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
@@ -371,7 +422,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
                         .setGameId(gameId)
-                        .setShareType(shareType)
+                        .setEnableShare(enableShare)
                         .build();
                 WatchSdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {
@@ -398,7 +449,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final int shareType,
+                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean enableShare,
                            final boolean needFinish) {
         MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
 
@@ -410,7 +461,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                         .setLiveType(liveType)
                         .setGameId(gameId)
-                        .setShareType(shareType)
+                        .setEnableShare(enableShare)
                         .build();
                 ReplaySdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {
@@ -774,9 +825,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void onEventGetRecommendLives(int channelId, int errCode, List<LiveInfo> liveInfos) {
-        if (liveInfos != null) {
-            MyLog.d(TAG, "onEventGetRecommendLives " + liveInfos.size());
-        }
+        MyLog.d(TAG, "onEventGetRecommendLives errCode" + errCode);
         if (mAARCallback != null) {
             mAARCallback.notifyGetChannelLives(errCode, liveInfos);
             return;
@@ -807,10 +856,10 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
 
-    public void onEventGetFollowingList(int channelId, int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
-        MyLog.d(TAG, "onEventGetFollowingList channelId=" + channelId);
+    public void onEventGetFollowingUserList(int channelId, int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
+        MyLog.d(TAG, "onEventGetFollowingUserList channelId=" + channelId);
         if (mAARCallback != null) {
-            mAARCallback.notifyGetFollowingList(errCode, userInfos, total, timeStamp);
+            mAARCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
             return;
         }
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
@@ -822,7 +871,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
                 try {
-                    callback.onEventGetFollowingList(errCode, userInfos, total, timeStamp);
+                    callback.onEventGetFollowingUserList(errCode, userInfos, total, timeStamp);
                     aidlSuccess = true;
                 } catch (Exception e) {
                     MyLog.v(TAG, "dead callback.");
@@ -835,10 +884,44 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventGetFollowingList aidl success=" + aidlSuccess);
+        MyLog.d(TAG, "onEventGetFollowingUserList aidl success=" + aidlSuccess);
     }
 
+
+    public void onEventGetFollowingLiveList(int channelId, int errCode, List<LiveInfo> liveInfos) {
+        MyLog.d(TAG, "onEventGetFollowingLiveList errCode" + errCode);
+        if (mAARCallback != null) {
+            mAARCallback.notifyGetFollowingLiveList(errCode, liveInfos);
+            return;
+        }
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+        boolean aidlSuccess = false;
+        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+        if (callbackList != null) {
+            MyLog.w(TAG, "callbackList != null");
+            int n = callbackList.beginBroadcast();
+            for (int i = 0; i < n; i++) {
+                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                try {
+                    callback.onEventGetFollowingLiveList(errCode, liveInfos);
+                    aidlSuccess = true;
+                } catch (Exception e) {
+                    MyLog.v(TAG, "dead callback.");
+                    deadCallback.add(callback);
+                }
+            }
+            callbackList.finishBroadcast();
+            for (IMiLiveSdkEventCallback callback : deadCallback) {
+                MyLog.v(TAG, "unregister event callback.");
+                callbackList.unregister(callback);
+            }
+        }
+        MyLog.d(TAG, "onEventGetFollowingLiveList aidl success=" + aidlSuccess);
+    }
+
+
     public void onEventShare(int channelId, ShareInfo shareInfo) {
+        MyLog.d(TAG, "onEventShare");
         if (mAARCallback != null) {
             mAARCallback.notifyWantShare(shareInfo);
             return;
@@ -865,5 +948,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
+        MyLog.d(TAG, "onEventShare aidl success=" + aidlSuccess);
     }
+
 }

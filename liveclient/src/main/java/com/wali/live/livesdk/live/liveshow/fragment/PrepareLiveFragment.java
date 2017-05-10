@@ -76,6 +76,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     @Override
     public void onClick(View v) {
+        if (isFastDoubleClick() || getActivity() == null) {
+            return;
+        }
         super.onClick(v);
         int id = v.getId();
         if (id == R.id.turn_over) {

@@ -243,6 +243,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
         mMyRoomData.setGameId(mRoomInfo.getGameId());
+        mMyRoomData.setEnableShare(mRoomInfo.isEnableShare());
     }
 
 
@@ -645,12 +646,18 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.ShareSucEvent event) {
-        MyLog.w(TAG, "EventClass.ShareSucEvent");
+    public void onEventMainThread(EventClass.ShareEvent event) {
+        MyLog.w(TAG, "EventClass.ShareEvent");
         if (event != null) {
-            mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
-            //基类增长经验值 不要删掉
-            super.onEventMainThread(event);
+            switch (event.state) {
+                case EventClass.ShareEvent.TYPE_SUCCESS:
+                    mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
+                    //基类增长经验值 不要删掉
+                    super.onEventMainThread(event);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

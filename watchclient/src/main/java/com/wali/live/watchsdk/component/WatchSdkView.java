@@ -118,20 +118,6 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 addComponentView(panel, presenter);
             }
 
-        } else {
-            if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
-                // 运营位
-                {
-                    WidgetView view = $(R.id.widget_view);
-                    if (view == null) {
-                        MyLog.e(TAG, "missing R.id.widget_view");
-                        return;
-                    }
-                    WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData, false);
-                    addComponentView(view, presenter);
-                    ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
-                }
-            }
         }
         setupSdkView();
     }
@@ -185,10 +171,24 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
             }
             relativeLayout.setVisibility(View.VISIBLE);
             WatchBottomButton view = new WatchBottomButton(relativeLayout, mIsGameMode,
-                    mComponentController.mMyRoomData.getShareType());
+                    mComponentController.mMyRoomData.getEnableShare());
             BottomButtonPresenter presenter =
                     new BottomButtonPresenter(mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
+        }
+
+        if (!Constants.isGooglePlayBuild && !Constants.isIndiaBuild) {
+            // 运营位
+            {
+                WidgetView view = $(R.id.widget_view);
+                if (view == null) {
+                    MyLog.e(TAG, "missing R.id.widget_view");
+                    return;
+                }
+                WidgetPresenter presenter = new WidgetPresenter(mComponentController, mComponentController.mMyRoomData, false);
+                addComponentView(view, presenter);
+                ((BaseComponentSdkActivity) mActivity).addPushProcessor(presenter);
+            }
         }
 
         mVerticalMoveSet.add($(R.id.close_btn));
@@ -198,7 +198,8 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                 R.id.live_comment_view,
                 R.id.gift_animation_player_view,
                 R.id.gift_continue_vg,
-                R.id.gift_room_effect_view
+                R.id.gift_room_effect_view,
+                R.id.widget_view
         }, mHorizontalMoveSet, mVerticalMoveSet);
 
         if (mIsGameMode) {
@@ -207,12 +208,9 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
                     R.id.bottom_button_view,
                     R.id.game_barrage_view,
                     R.id.game_input_view,
-                    R.id.close_btn
-            }, mGameHideSet);
-        } else {
-            addViewToSet(new int[]{
+                    R.id.close_btn,
                     R.id.widget_view
-            }, mHorizontalMoveSet, mVerticalMoveSet);
+            }, mGameHideSet);
         }
 
         // 滑动

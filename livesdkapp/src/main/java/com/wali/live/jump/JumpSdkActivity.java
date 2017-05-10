@@ -28,7 +28,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
     private static final String EXTRA_GAME_ID = "extra_game_id";
-    private static final String EXTRA_SHARE_TYPE = "extra_share_type";
+    private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
 
     private static final String EXTRA_LOCATION = "extra_location";
 
@@ -60,10 +60,10 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 String gameId = intent.getStringExtra(EXTRA_GAME_ID);
-                int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
-                MyLog.d(TAG, "openWatch shareType=" + shareType);
+                boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+                MyLog.d(TAG, "openWatch enableShare=" + enableShare);
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType, gameId, shareType, true);
+                        playerId, liveId, videoUrl, liveType, gameId, enableShare, true);
                 break;
             }
             case ACTION_OPEN_REPLAY: {
@@ -72,34 +72,34 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 String gameId = intent.getStringExtra(EXTRA_GAME_ID);
-                int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
-                MyLog.d(TAG, "openReplay shareType=" + shareType);
+                boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+                MyLog.d(TAG, "openReplay enableShare=" + enableShare);
                 MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType, gameId, shareType, true);
+                        playerId, liveId, videoUrl, liveType, gameId, enableShare, true);
                 break;
             }
             case ACTION_OPEN_NORMAL_LIVE: {
                 final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
-                final int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
-                MyLog.d(TAG, "openReplay shareType=" + shareType);
+                final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+                MyLog.d(TAG, "openReplay enableShare=" + enableShare);
                 MiLiveSdkBinder.getInstance().openNormalLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                LiveSdkActivity.openActivity(JumpSdkActivity.this, location, shareType, false);
+                                LiveSdkActivity.openActivity(JumpSdkActivity.this, location, enableShare, false);
                             }
                         }, true);
                 break;
             }
             case ACTION_OPEN_GAME_LIVE: {
                 final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
-                final int shareType = intent.getIntExtra(EXTRA_SHARE_TYPE, 0);
-                MyLog.d(TAG, "openReplay shareType=" + shareType);
+                final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+                MyLog.d(TAG, "openReplay enableShare=" + enableShare);
                 MiLiveSdkBinder.getInstance().openGameLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                LiveSdkActivity.openActivity(JumpSdkActivity.this, location, shareType, true);
+                                LiveSdkActivity.openActivity(JumpSdkActivity.this, location, enableShare, true);
                             }
                         }, true);
                 break;

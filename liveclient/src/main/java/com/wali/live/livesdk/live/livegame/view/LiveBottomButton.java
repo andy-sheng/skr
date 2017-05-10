@@ -32,16 +32,16 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     protected View mMuteBtn;
     protected View mShareBtn;
 
-    private int mShareType;
+    private boolean mEnableShare;
 
     @Override
     protected String getTAG() {
         return TAG;
     }
 
-    public LiveBottomButton(@NonNull RelativeLayout contentContainer, int shareType) {
+    public LiveBottomButton(@NonNull RelativeLayout contentContainer, boolean enableShare) {
         super(contentContainer);
-        mShareType = shareType;
+        mEnableShare = enableShare;
         initView();
     }
 
@@ -66,7 +66,7 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
     }
 
     private void addShareBtn() {
-        if (mShareType != 0) {
+        if (mEnableShare) {
             mShareBtn = createImageView(R.drawable.live_icon_share_btn);
             addCreatedView(mShareBtn, R.id.share_btn);
 
@@ -160,9 +160,9 @@ public class LiveBottomButton extends BaseBottomButton<LiveBottomButton.IPresent
         void showShareView();
 
         /**
-         * 获取shareType
+         * 获取share状态
          */
-        int getShareType();
+        boolean isEnableShare();
     }
 
     public interface IView extends IViewProxy, IOrientationListener {

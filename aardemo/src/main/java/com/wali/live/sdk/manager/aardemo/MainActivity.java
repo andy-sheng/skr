@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mMenuRecyclerAdapter = new MenuRecyclerAdapter(this);
         mRecyclerView.setAdapter(mMenuRecyclerAdapter);
         GlobalData.setApplication(this.getApplication());
+        MiLiveSdkController.getInstance().enableShare(true);
         MiLiveSdkController.getInstance().setCallback(new IMiLiveSdk.ICallback() {
 
             @Override
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void notifyWantShare(ShareInfo shareInfo) {
                 ToastUtils.showToast("notifyWantShare " + ((shareInfo != null) ? shareInfo.toString() : ""));
                 if (shareInfo != null) {
-                    MiLiveSdkController.getInstance().notifyShareSuc(shareInfo.getPlatForm());
+                    MiLiveSdkController.getInstance().notifyShare(true, ShareInfo.TYPE_WECHAT);
                 }
             }
         });

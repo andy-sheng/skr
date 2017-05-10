@@ -93,7 +93,6 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
@@ -131,7 +130,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private static final String EXTRA_IS_GAME_LIVE = "extra_is_game_live";
     private static final String EXTRA_LOCATION = "extra_location";
-    private static final String EXTRA_SHARE_TYPE = "extra_share_type";
+    private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
 
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
     public static final int REQUEST_PREPARE_LIVE = 1000;
@@ -161,14 +160,14 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private String mLiveTitle;
     private String mLiveCoverUrl;
     private RoomTag mRoomTag;
-    private int mSnsType = -1;
-    //TODO 该标志位用于区分分享类别
-    private int mSnsTypeFlag = 1;
+
     private boolean mIsShare;
+
+    private boolean mEnableShare;
+    private boolean mShareSelected;
 
     private boolean mIsGameLive;
     private Location mLocation;
-    private int mShareType;
 
     private final MyUIHandler mUIHandler = new MyUIHandler(this);
 
@@ -250,7 +249,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (data != null) {
             mIsGameLive = data.getBooleanExtra(EXTRA_IS_GAME_LIVE, false);
             mLocation = data.getParcelableExtra(EXTRA_LOCATION);
-            mShareType = data.getIntExtra(EXTRA_SHARE_TYPE, 0);
+            mEnableShare = data.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
         }
     }
 
@@ -258,7 +257,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (mLocation != null) {
             mMyRoomData.setCity(mLocation.getCity());
         }
-        mMyRoomData.setShareType(mShareType);
+        mMyRoomData.setEnableShare(mEnableShare);
         if (UserAccountManager.getInstance().hasAccount()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -360,11 +359,8 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
         if (mIsShare) {
-            if (mSnsType != 0) {
-                preLiveShareSNS();
-            } else {
-                beginLiveToServer();
-            }
+            mIsShare = false;
+            beginLiveToServer();
         }
         if (!mIsGameLive) {
             resumeStream();
@@ -530,9 +526,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                     break;
                 case REQUEST_CODE_PICK_MANAGER:
                     User pickManager = (User) data.getSerializableExtra(RecipientsSelectFragment.RESULT_SINGLE_OBJECT);
-                    if (pickManager != null && !TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+                    if (pickManager != null) {
+                        String roomId = TextUtils.isEmpty(mMyRoomData.getRoomId()) ? "" : mMyRoomData.getRoomId();
                         if (LiveRoomCharacterManager.getInstance().getManagerCount() < LiveRoomCharacterManager.MANAGER_CNT && !LiveRoomCharacterManager.getInstance().isManager(pickManager.getUid())) {
-                            LiveRoomCharacterManager.setManagerRxTask(this, pickManager, mMyRoomData.getRoomId(), mMyRoomData.getUid(), true);
+                            LiveRoomCharacterManager.setManagerRxTask(this, pickManager, roomId, mMyRoomData.getUid(), true);
                         }
                     }
                     break;
@@ -554,7 +551,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             case REQUEST_PREPARE_LIVE:
                 initPrepareData(bundle);
                 postPrepare();
-                if (mSnsType != 0) {
+                if (mShareSelected) {
                     getRoomIdToServer();
                 } else {
                     beginLiveToServer();
@@ -580,7 +577,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mLiveTitle = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_TITLE);
         mRoomTag = (RoomTag) bundle.getSerializable(BasePrepareLiveFragment.EXTRA_LIVE_TAG_INFO);
         mLiveCoverUrl = bundle.getString(BasePrepareLiveFragment.EXTRA_LIVE_COVER_URL, "");
-        mSnsType = bundle.getInt(BasePrepareLiveFragment.EXTRA_SNS_TYPE, 0);
+        mShareSelected = bundle.getBoolean(BasePrepareLiveFragment.EXTRA_SNS_TYPE, false);
 
         mMyRoomData.setLiveTitle(mLiveTitle);
         mLiveRoomPresenter = new LiveRoomPresenter(this);
@@ -897,55 +894,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         if (!judgeNetwork()) {
             return;
         }
-        if (mSnsType != 0 && !TextUtils.isEmpty(mMyRoomData.getShareUrl())) {
+        if (!TextUtils.isEmpty(mMyRoomData.getShareUrl())) {
             mIsShare = true;
-            preLiveShareSNS();
+            SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
         } else {
             beginLiveToServer();
         }
-    }
-
-    private int getShareType(int snsTypeFlag) {
-        switch (snsTypeFlag) {
-            case PrepareLiveFragment.WEI_XIN:
-                return ShareInfo.TYPE_WECHAT;
-            case PrepareLiveFragment.MOMENT:
-                return ShareInfo.TYPE_MOMENT;
-            case PrepareLiveFragment.QQ:
-                return ShareInfo.TYPE_QQ;
-            case PrepareLiveFragment.QZONE:
-                return ShareInfo.TYPE_QZONE;
-            case PrepareLiveFragment.WEIBO:
-                return ShareInfo.TYPE_WEIBO;
-            case PrepareLiveFragment.FACEBOOK:
-                return ShareInfo.TYPE_FACEBOOK;
-            case PrepareLiveFragment.TWITTER:
-                return ShareInfo.TYPE_TWITTER;
-            case PrepareLiveFragment.INSTAGRAM:
-                return ShareInfo.TYPE_INSTAGRAM;
-            case PrepareLiveFragment.WHATSAPP:
-                return ShareInfo.TYPE_WHATSAPP;
-            case PrepareLiveFragment.MILIAO:
-                return ShareInfo.TYPE_MILIAO;
-            case PrepareLiveFragment.MILIAO_FEEDS:
-                return ShareInfo.TYPE_MILIAO_FEEDS;
-            default:
-                break;
-        }
-        return -1;
-    }
-
-    private void preLiveShareSNS() {
-        MyLog.w(TAG, "preLiveShareSNS mSnsType=" + mSnsType);
-        while ((mSnsType & mSnsTypeFlag) == 0) {
-            MyLog.w(TAG, "mSnsType = " + mSnsType + " mSnsTypeFlag=" + mSnsTypeFlag);
-            mSnsTypeFlag <<= 1;
-        }
-        //分享
-        SnsShareHelper.getInstance().shareToSns(getShareType(mSnsTypeFlag), mMyRoomData);
-        mSnsType &= (~mSnsTypeFlag);
-        mSnsTypeFlag <<= 1;
-        MyLog.w(TAG, "mCountDownView state" + mCountDownView.getVisibility());
     }
 
     private void getRoomIdToServer() {
@@ -1129,7 +1083,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 (mLocation == null) ? "" : mLocation.getCity(), mMyRoomData.getUser(), mMyRoomData.getCoverUrl(), mMyRoomData.getLiveTitle());
         bundle.putBoolean(EndLiveFragment.EXTRA_GENERATE_HISTORY, mGenerateHistorySucc);
         bundle.putString(EndLiveFragment.EXTRA_GENERATE_HISTORY_MSG, mGenerateHistoryMsg);
-        bundle.putInt(EndLiveFragment.EXTRA_SHARE_TYPE, mShareType);
+        bundle.putBoolean(EndLiveFragment.EXTRA_ENABLE_SHARE, mEnableShare);
         EndLiveFragment.openFragment(LiveSdkActivity.this, bundle);
     }
 
@@ -1368,20 +1322,40 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.ShareEvent event) {
+        MyLog.w(TAG, "EventClass.ShareEvent");
+        if (event != null) {
+            if (mIsShare) {
+                mIsShare = false;
+                beginLiveToServer();
+            }
+            switch (event.state) {
+                case EventClass.ShareEvent.TYPE_SUCCESS:
+                    //基类增长经验值 不要删掉
+                    super.onEventMainThread(event);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     /**
      * 秀场直播
      */
     public static void openActivity(Activity activity, Location location) {
-        openActivity(activity, location, 0, false);
+        openActivity(activity, location, false, false);
     }
 
     /**
      * 区分是否是游戏直播还是秀场直播
      */
-    public static void openActivity(Activity activity, Location location, int shareType, boolean isGameLive) {
+    public static void openActivity(Activity activity, Location location, boolean enableShare, boolean isGameLive) {
         Intent intent = new Intent(activity, LiveSdkActivity.class);
-        if (shareType != 0) {
-            intent.putExtra(EXTRA_SHARE_TYPE, shareType);
+        if (enableShare) {
+            intent.putExtra(EXTRA_ENABLE_SHARE, enableShare);
         }
         if (location != null) {
             intent.putExtra(EXTRA_LOCATION, location);

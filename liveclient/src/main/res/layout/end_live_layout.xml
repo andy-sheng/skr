@@ -47,7 +47,6 @@
             android:visibility="gone"/>
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/ticket_tv"
         android:layout_width="wrap_content"
@@ -57,24 +56,31 @@
         android:layout_marginTop="@dimen/view_dimen_70"
         android:textSize="@dimen/text_size_50"/>
 
-    <TextView
-        android:id="@+id/share_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/share_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:text="@string/live_end_share"
-        android:textColor="@color/color_white_trans_50"
-        android:textSize="@dimen/text_size_36"/>
-
-    <com.wali.live.livesdk.live.view.ShareButtonView
-        android:id="@+id/share_view"
+    <LinearLayout
+        android:id="@+id/share_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/back_btn"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"/>
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/share_friends_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="7.67dp"
+            android:src="@drawable/bg_live_share_selector"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/end_live_share"
+            android:textColor="@color/color_white"
+            android:textSize="14dp"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/back_btn"
@@ -83,12 +89,12 @@
         android:layout_above="@+id/delete_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_dimen_50"
+        android:layout_marginTop="28dp"
         android:background="@drawable/live_begin_btn_bg"
         android:gravity="center"
         android:text="@string/live_ended_back"
         android:textColor="@color/color_black_trans_80"
         android:textSize="@dimen/text_size_44"/>
-
 
     <TextView
         android:id="@+id/delete_btn"
