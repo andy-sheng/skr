@@ -61,6 +61,11 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
 
     protected IWatchListener mWatchListener;
 
+    /**
+     * #API# 构造函数
+     *
+     * @param watchListener 观看状态回调
+     */
     public WatchManager(IWatchListener watchListener) {
         mWatchListener = watchListener;
         mEventController = new LiveEventController();
@@ -69,6 +74,11 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
         registerAction();
     }
 
+    /**
+     * #API# 设置容器，用于放置观看画面
+     *
+     * @param containerView 容器
+     */
     public void setContainerView(@NonNull ViewGroup containerView) {
         if (mSurfaceView == null) {
             mSurfaceView = new VideoPlayerView(containerView.getContext());
@@ -79,6 +89,13 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
         containerView.addView(mSurfaceView, lp);
     }
 
+    /**
+     * #API# 进入房间观看直播
+     *
+     * @param playerId 房间主播ID
+     * @param liveId   本地用户ID
+     * @param callback 进入房间状态回调通知
+     */
     @Override
     public void enterLive(long playerId, String liveId, IWatchCallback callback) {
         mPlayerId = playerId;
@@ -141,6 +158,9 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
         });
     }
 
+    /**
+     * #API# 离开房间结束观看
+     */
     @Override
     public void leaveLive() {
         mWatchPresenter.leaveLive(mPlayerId, mLiveId);
@@ -151,6 +171,11 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
         BarrageMainProcessor.getInstance().unregisterInternalMsgCallBack();
     }
 
+    /**
+     * #API# 注册观察者监听观众列表变化
+     *
+     * @param observer 观察者
+     */
     @Override
     public void registerObserver(IViewerObserver observer) {
         mViewerObserver = observer;
@@ -161,6 +186,9 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
         mEventController.registerObserverForEvent(MSG_ENTER_LIVE_FAILED, this);
     }
 
+    /**
+     * @hide
+     */
     @Override
     public boolean onEvent(int event, @Nullable Params params) {
         switch (event) {
