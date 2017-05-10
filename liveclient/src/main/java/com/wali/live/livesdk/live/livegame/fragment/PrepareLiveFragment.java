@@ -303,7 +303,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mTitleContainer.setVisibility(View.GONE);
         mMiddleContainer.setVisibility(View.GONE);
         mBeginBtn.setVisibility(View.GONE);
-        mShareContainer.setVisibility(View.GONE);
+        if (mMyRoomData.getEnableShare()) {
+            mShareContainer.setVisibility(View.GONE);
+        }
         mGameSettingPanel.showSelf(useAnimation, false);
         mRootView.setOnClickListener(this);
     }
@@ -313,7 +315,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mTitleContainer.setVisibility(VISIBLE);
         mMiddleContainer.setVisibility(VISIBLE);
         mBeginBtn.setVisibility(VISIBLE);
-        mShareContainer.setVisibility(View.VISIBLE);
+        if (mMyRoomData.getEnableShare()) {
+            mShareContainer.setVisibility(View.VISIBLE);
+        }
         mGameSettingPanel.hideSelf(useAnimation);
         mRootView.setOnClickListener(null);
     }
