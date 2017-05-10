@@ -34,21 +34,31 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.preference.PreferenceKeys;
+import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.presenter.IRoomTagView;
+import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
 import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
 import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import rx.Observable;
+
+import static android.view.View.VISIBLE;
 
 /**
  * Created by zyh on 2017/2/8.
@@ -84,9 +94,24 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected RoomTagPresenter mRoomTagPresenter;
     protected int mTagIndex = -1;
 
+    protected RoomPreparePresenter mRoomPreparePresenter;
     protected LiveRoomChatMsgManager mRoomChatMsgManager;
     protected ImageView mShareSelectedIv;
     protected View mShareContainer;
+
+    private View mDailyTaskSl;
+    private ViewGroup mDailyTaskArea;
+    private LiveCommonProto.NewWidgetUnit mWidgetUnit;
+
+    private ViewGroup mAdminArea;
+    private TextView mAdminCount;
+
+    private ViewGroup mControlTitleArea;
+    private TextView mChangeTitleTv;
+    private TextView mClearTitleTv;
+    protected ViewGroup mTopContainer;
+    protected ViewGroup mTitleContainer;
+    protected ViewGroup mMiddleContainer;
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
@@ -108,6 +133,14 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mRoomChatMsgManager = roomChatMsgManager;
     }
 
+    protected void getDailyTaskFromServer() {
+        if (mRoomPreparePresenter != null) {
+            mRoomPreparePresenter.loadManager();
+            mRoomPreparePresenter.loadTitle();
+            mRoomPreparePresenter.loadDailyTask();
+        }
+    }
+
     @CallSuper
     @Override
     public void onClick(View v) {
@@ -121,6 +154,16 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             onTagNameBtnClick();
         } else if (i == R.id.share_container) {
             onShareBtnClick();
+        } else if (i == R.id.daily_task_area) {
+            showDailyTask();
+        } else if (i == R.id.admin_area) {
+            openAdminFragment();
+        } else if (i == R.id.change_title_tv) {
+            changeTitle();
+        } else if (i == R.id.clear_title_tv) {
+            clearTitle();
+        } else if (i == R.id.main_fragment_container) {
+            hideBottomPanel(true);
         }
     }
 
@@ -154,6 +197,44 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     private void onShareBtnClick() {
         mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
+    }
+
+    private void showDailyTask() {
+        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
+                mWidgetUnit.getLinkUrl(), mWidgetUnit.getUrlNeedParam(), mWidgetUnit.getOpenType(), UserAccountManager.getInstance().getUuidAsLong());
+    }
+
+    private void openAdminFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, new MessageRule());
+        bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, UserAccountManager.getInstance().getUuidAsLong());
+        bundle.putBoolean(RoomAdminFragment.KEY_ONLY_SHOW_ADMIN_MANAGER_PAGE, true);
+        FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
+    }
+
+    protected void showBottomPanel(boolean useAnimation) {
+        mTopContainer.setVisibility(View.GONE);
+        mTitleContainer.setVisibility(View.GONE);
+        mMiddleContainer.setVisibility(View.GONE);
+        if (mMyRoomData.getEnableShare()) {
+            mShareContainer.setVisibility(View.GONE);
+        }
+        mRootView.setOnClickListener(this);
+    }
+
+    protected void hideBottomPanel(boolean useAnimation) {
+        mTopContainer.setVisibility(View.VISIBLE);
+        mTitleContainer.setVisibility(View.VISIBLE);
+        mMiddleContainer.setVisibility(View.VISIBLE);
+        if (mMyRoomData.getEnableShare()) {
+            mShareContainer.setVisibility(View.VISIBLE);
+        }
+        mRootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardUtils.hideKeyboardImmediately(getActivity());
+            }
+        });
     }
 
     @Override
@@ -203,8 +284,25 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mShareContainer = $(R.id.share_container);
         mShareSelectedIv = $(R.id.share_friends_iv);
         mShareContainer.setOnClickListener(this);
-
         tryHideShareBtnView();
+
+        mDailyTaskSl = $(R.id.daily_task_sl);
+        mDailyTaskArea = $(R.id.daily_task_area);
+        mDailyTaskArea.setOnClickListener(this);
+
+        mAdminArea = $(R.id.admin_area);
+        mAdminCount = $(R.id.admin_count);
+        mAdminArea.setOnClickListener(this);
+
+        mControlTitleArea = $(R.id.control_title_area);
+        mChangeTitleTv = $(R.id.change_title_tv);
+        mChangeTitleTv.setOnClickListener(this);
+        mClearTitleTv = $(R.id.clear_title_tv);
+        mClearTitleTv.setOnClickListener(this);
+
+        mTopContainer = $(R.id.top_container);
+        mTitleContainer = $(R.id.title_container);
+        mMiddleContainer = $(R.id.middle_container);
     }
 
     protected void initTitleView() {
@@ -219,6 +317,14 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mLiveTitleEt.addTextChangedListener(mTitleTextWatcher);
     }
 
+    private void changeTitle() {
+        mRoomPreparePresenter.changeTitle();
+    }
+
+    private void clearTitle() {
+        mLiveTitleEt.setText("");
+    }
+
     @Override
     protected void bindView() {
         MyLog.w(TAG, "bindView");
@@ -228,6 +334,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         if (mTagNameContainer != null) {
             initTagName();
         }
+        getDailyTaskFromServer();
     }
 
     @Override
@@ -292,7 +399,7 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     @Override
     public void showTagList(final List<RoomTag> roomTags, int type) {
-        mTagNameContainer.setVisibility(View.VISIBLE);
+        mTagNameContainer.setVisibility(VISIBLE);
 
         MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getActivity());
         String[] tagArray = new String[roomTags.size()];
@@ -332,18 +439,37 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     @Override
     public void setManagerCount(int count) {
+        mAdminCount.setText(getString(R.string.has_add_manager_count, count));
     }
 
     @Override
     public void fillTitle(String title) {
+        mLiveTitleEt.setText(title);
     }
 
     @Override
     public void updateControlTitleArea(boolean isShow) {
+        if (isShow) {
+            if (mControlTitleArea.getVisibility() != VISIBLE) {
+                mControlTitleArea.setVisibility(VISIBLE);
+            }
+        } else {
+            if (mControlTitleArea.getVisibility() == VISIBLE) {
+                mControlTitleArea.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     @Override
     public void setDailyTaskUnit(LiveCommonProto.NewWidgetUnit unit) {
+        if (unit != null && unit.hasLinkUrl()) {
+            mDailyTaskSl.setVisibility(VISIBLE);
+            mDailyTaskArea.setVisibility(VISIBLE);
+            mWidgetUnit = unit;
+        } else {
+            mDailyTaskSl.setVisibility(View.GONE);
+            mDailyTaskArea.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -373,15 +499,22 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected boolean isShareSelected() {
-        if (mShareContainer.getVisibility() == View.VISIBLE) {
+        if (mShareContainer.getVisibility() == VISIBLE) {
             return mShareSelectedIv.isSelected();
         }
         return false;
     }
 
     protected void recordShareSelectState() {
-        if (mShareContainer.getVisibility() == View.VISIBLE) {
+        if (mShareContainer.getVisibility() == VISIBLE) {
             PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_SHARE_SELECTED_STATE, mShareSelectedIv.isSelected());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(MiLinkEvent.StatusLogined event) {
+        if (event != null) {
+            getDailyTaskFromServer();
         }
     }
 

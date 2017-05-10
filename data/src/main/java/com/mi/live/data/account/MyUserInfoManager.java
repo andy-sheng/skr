@@ -245,8 +245,15 @@ public class MyUserInfoManager {
         return mMyInfo;
     }
 
-    public long getUuid() {
+    public long getAvatar() {
         if (mMyInfo != null) {
+            mMyInfo.getAvatar();
+        }
+        return 0;
+    }
+
+    public long getUuid() {
+        if (mMyInfo != null && mMyInfo.getUid() != 0) {
             return mMyInfo.getUid();
         }
         return UserAccountManager.getInstance().getUuidAsLong();
