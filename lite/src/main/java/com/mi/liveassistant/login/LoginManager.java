@@ -90,4 +90,8 @@ public class LoginManager {
                     }
                 });
     }
+
+    public static void logoff() {
+        UserAccountManager.getInstance().logoff(UserAccountManager.getInstance().getUuidAsLong());
+    }
 }

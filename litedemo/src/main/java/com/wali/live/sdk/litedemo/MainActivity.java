@@ -1,18 +1,23 @@
 package com.wali.live.sdk.litedemo;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.thread.ThreadPool;
+import com.mi.liveassistant.global.GlobalManager;
+import com.mi.liveassistant.global.callback.IAccountListener;
 import com.mi.liveassistant.login.ILoginCallback;
 import com.mi.liveassistant.login.LoginManager;
 import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
 import com.mi.liveassistant.michannel.presenter.IChannelView;
 import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
 import com.mi.liveassistant.michannel.viewmodel.ChannelLiveViewModel;
-import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.utils.RSASignature;
 import com.wali.live.sdk.litedemo.account.AccountManager;
 import com.wali.live.sdk.litedemo.activity.GameLiveActivity;
@@ -23,17 +28,10 @@ import com.wali.live.sdk.litedemo.utils.ToastUtils;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-
 public class MainActivity extends RxActivity implements View.OnClickListener, IChannelView {
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
 
     private Button mLoginBtn;
-    private Button mThirdPartyLoginBtn;
     private Button mGameLiveBtn;
     private Button mNormalLiveBtn;
     private Button mWatchBtn;
@@ -42,6 +40,8 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
     private ChannelPresenter mChannelPresenter;
     private ChannelLiveViewModel.BaseLiveItem mLiveItem;
 
+    private boolean mHasAccount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +49,12 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
 
         initView();
         initPresenter();
+        initManager();
     }
 
     private void initView() {
         mLoginBtn = $(R.id.login_btn);
-
-        mThirdPartyLoginBtn = $(R.id.third_party_login_btn);
-        mThirdPartyLoginBtn.setOnClickListener(this);
+        mLoginBtn.setOnClickListener(MainActivity.this);
 
         mGameLiveBtn = $(R.id.game_live_btn);
         mGameLiveBtn.setOnClickListener(this);
@@ -69,15 +68,12 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
         ThreadPool.runOnWorker(new Runnable() {
             @Override
             public void run() {
-                if (!LoginManager.checkAccount()) {
-                    mLoginBtn.setOnClickListener(MainActivity.this);
-                } else {
+                mHasAccount = LoginManager.checkAccount();
+                if (mHasAccount) {
                     mLoginBtn.post(new Runnable() {
                         @Override
                         public void run() {
-                            mLoginBtn.setText("已登录");
-                            mLoginBtn.setEnabled(false);
-                            mThirdPartyLoginBtn.setVisibility(View.GONE);
+                            mLoginBtn.setText("注销登录");
                         }
                     });
                 }
@@ -90,14 +86,36 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
         mChannelPresenter.setChannelId(201);
     }
 
+    private void initManager() {
+        GlobalManager.INSTANCE.setAccountListener(new IAccountListener() {
+            @Override
+            public void forbidAccount() {
+                ToastUtils.showToast("forbidAccount");
+                mHasAccount = false;
+                mLoginBtn.setText("请先登录");
+            }
+
+            @Override
+            public void logoffAccount() {
+                ToastUtils.showToast("logoffAccount");
+                mHasAccount = false;
+                mLoginBtn.setText("请先登录");
+            }
+
+            @Override
+            public void kickAccount() {
+                ToastUtils.showToast("kickAccount");
+                mHasAccount = false;
+                mLoginBtn.setText("请先登录");
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_btn:
                 clickLoginBtn();
-                break;
-            case R.id.third_party_login_btn:
-                clickThirdPartyLoginBtn();
                 break;
             case R.id.normal_live_btn:
                 clickNormalBtn();
@@ -112,63 +130,55 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
     }
 
     private void clickLoginBtn() {
-        Observable.just(0)
-                .map(new Func1<Integer, String>() {
-                    @Override
-                    public String call(Integer integer) {
-                        return AccountManager.getOAuthCode(MainActivity.this);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String code) {
-                        LoginManager.loginByMiAccountOAuth(50001, code, new ILoginCallback() {
-                            @Override
-                            public void notifyFail(int i) {
-                                mLoginBtn.setText("登录失败");
-                            }
-
-                            @Override
-                            public void notifySuccess() {
-                                mLoginBtn.setText("已登录");
-                                mLoginBtn.setEnabled(false);
-                                mThirdPartyLoginBtn.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                    }
-                });
+        if (mHasAccount) {
+            LoginManager.logoff();
+            mHasAccount = false;
+            mLoginBtn.setText("请先登录");
+        } else {
+            thirdPartyLogin();
+        }
     }
 
-    private void clickThirdPartyLoginBtn() {
-        String uid = "100067";
-        String name = "游不动的鱼";
-        String headUrl = "";
-        int sex = 1;
-        int channelId = 50001;
-        String signStr = "channelId=" + channelId + "&headUrl=" + headUrl + "&nickname=" + name + "&sex=" + sex + "&xuid=" + uid;
-        String sign = RSASignature.sign(signStr, AccountManager.RSA_PRIVATE_KEY, "UTF-8");
-
-        LoginManager.thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new ILoginCallback() {
+    private void thirdPartyLogin() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("请输入用户id");
+        final EditText et = new EditText(this);
+        builder.setView(et);
+        et.setText("100067");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
-            public void notifyFail(int errCode) {
-                MyLog.d(TAG, "notifyFail");
-                mThirdPartyLoginBtn.setText("登录失败");
-            }
+            public void onClick(DialogInterface dialog, int which) {
+                String uid = et.getText().toString();
+                if (TextUtils.isEmpty(uid)) {
+                    ToastUtils.showToast("用户id不能为空");
+                    return;
+                }
 
-            @Override
-            public void notifySuccess() {
-                MyLog.d(TAG, "notifySuccess");
-                mThirdPartyLoginBtn.setText("已登录");
-                mThirdPartyLoginBtn.setEnabled(false);
-                mLoginBtn.setVisibility(View.GONE);
+                String name = "游不动的鱼";
+                String headUrl = "";
+                int sex = 1;
+                int channelId = 50001;
+                String signStr = "channelId=" + channelId + "&headUrl=" + headUrl + "&nickname=" + name + "&sex=" + sex + "&xuid=" + uid;
+                String sign = RSASignature.sign(signStr, AccountManager.RSA_PRIVATE_KEY, "UTF-8");
+
+                LoginManager.thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new ILoginCallback() {
+                    @Override
+                    public void notifyFail(int errCode) {
+                        MyLog.d(TAG, "notifyFail");
+                        mHasAccount = false;
+                        mLoginBtn.setText("登录失败，重新登录");
+                    }
+
+                    @Override
+                    public void notifySuccess() {
+                        MyLog.d(TAG, "notifySuccess");
+                        mHasAccount = true;
+                        mLoginBtn.setText("注销登录");
+                    }
+                });
             }
         });
+        builder.show();
     }
 
     private void clickNormalBtn() {

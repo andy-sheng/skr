@@ -164,8 +164,17 @@
 -dontwarn javax.annotation.**
 -dontwarn com.android.volley.toolbox.**
 
+# app
 -keep class com.mi.liveassistant.init.InitManager{
     public *;
+}
+
+-keep class com.mi.liveassistant.global.GlobalManager{
+    public *;
+}
+
+-keep class com.mi.liveassistant.global.callback.IAccountListener{
+    *;
 }
 
 -keep class com.mi.liveassistant.login.LoginManager{

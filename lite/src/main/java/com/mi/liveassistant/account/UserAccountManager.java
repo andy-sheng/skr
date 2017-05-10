@@ -7,7 +7,7 @@ import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
 import com.mi.liveassistant.data.repository.AccountLocalStore;
-import com.mi.liveassistant.event.AccountEventController;
+import com.mi.liveassistant.event.AccountEvent;
 import com.mi.liveassistant.event.SetUserAccountEvent;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.milink.event.MiLinkEvent;
@@ -30,7 +30,7 @@ public class UserAccountManager {
     private UserAccount mAccount;
 
     // 用户匿名账号的id,当 mAccount 为空的时候使用
-    private long anonymousId;
+    private long mAnonymousId;
 
     private volatile int mChannelId;
 
@@ -86,7 +86,7 @@ public class UserAccountManager {
         MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
 
         MyLog.w(TAG, "logoff post event");
-        AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF);
+        AccountEvent.onActionLogOff(AccountEvent.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF);
     }
 
     public void logoffWithoutClearAccount(long uuid) {
@@ -101,7 +101,7 @@ public class UserAccountManager {
             MiLinkClientAdapter.getsInstance().setIsTouristMode(true);
 
             MyLog.w(TAG, "logoffWithoutClearAccount post event");
-            AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF);
+            AccountEvent.onActionLogOff(AccountEvent.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF);
         }
     }
 
@@ -145,10 +145,10 @@ public class UserAccountManager {
 
     public String getUuid() {
         if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
-            if (anonymousId == 0) {
+            if (mAnonymousId == 0) {
                 MiLinkClientAdapter.getsInstance().trySyncAnonymousAccountId();
             }
-            return String.valueOf(anonymousId);
+            return String.valueOf(mAnonymousId);
         }
         if (null != mAccount) {
             return mAccount.getUuid();
@@ -159,10 +159,10 @@ public class UserAccountManager {
 
     public long getUuidAsLong() {
         if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
-            if (anonymousId == 0) {
+            if (mAnonymousId == 0) {
                 MiLinkClientAdapter.getsInstance().trySyncAnonymousAccountId();
             }
-            return anonymousId;
+            return mAnonymousId;
         }
         if (null != mAccount) {
             return Long.parseLong(mAccount.getUuid());
@@ -242,11 +242,11 @@ public class UserAccountManager {
     }
 
     public void setAnonymousId(long anonymousId) {
-        this.anonymousId = anonymousId;
+        this.mAnonymousId = anonymousId;
     }
 
     public long getAnonymousId() {
-        return anonymousId;
+        return mAnonymousId;
     }
 
     /*
@@ -261,15 +261,15 @@ public class UserAccountManager {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(MiLinkEvent.Account event) {
+        MyLog.w(TAG, "account event=" + event.op);
         switch (event.op) {
             case MiLinkEvent.Account.KICK: {
                 int type = (int) event.obj1;
-                MiLinkClientAdapter.getsInstance().logoff();
                 if (type == 1) {
-                    AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_KICK);
+                    AccountEvent.onActionLogOff(AccountEvent.LogOffEvent.EVENT_TYPE_KICK);
                 } else if (type == 2) {
                     //账号封禁
-                    AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN);
+                    AccountEvent.onActionLogOff(AccountEvent.LogOffEvent.EVENT_TYPE_FORBIDDEN);
                 }
                 UserAccountManager.getInstance().logoff(UserAccountManager.getInstance().getUuidAsLong());
             }
@@ -304,18 +304,21 @@ public class UserAccountManager {
                                     if (errCode != null) {
                                         if (errCode == ErrorCode.CODE_SUCCESS) {
                                             MyLog.w(TAG, "passToken to serviceToken success");
+                                            UserAccountManager.getInstance().login(mAccount);
                                         } else if (errCode == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
                                             //账号封禁
+                                            AccountEvent.onActionLogOff(AccountEvent.LogOffEvent.EVENT_TYPE_FORBIDDEN);
                                             UserAccountManager.getInstance().logoff(UserAccountManager.getInstance().getUuidAsLong());
                                         } else {
                                             MyLog.w(TAG, "passToken to serviceToken failure, kick off");
+                                            AccountEvent.onActionLogOff(AccountEvent.LogOffEvent.EVENT_TYPE_EXPIRE_LOGOFF);
                                             UserAccountManager.getInstance().logoff(UserAccountManager.getInstance().getUuidAsLong());
                                         }
                                     }
                                 }
                             });
                 } else {
-                    AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF);
+                    AccountEvent.onActionLogOff(AccountEvent.LogOffEvent.EVENT_TYPE_EXPIRE_LOGOFF);
                     MyLog.e(TAG, "onEventServiceTokenExpired but uuid is empty!");
                 }
             }

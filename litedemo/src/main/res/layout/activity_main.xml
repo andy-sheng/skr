@@ -12,17 +12,10 @@
         android:text="请先登录"/>
 
     <Button
-        android:id="@+id/third_party_login_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_btn"
-        android:text="第三方登录"/>
-
-    <Button
         android:id="@+id/normal_live_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/third_party_login_btn"
+        android:layout_below="@id/login_btn"
         android:text="开始秀场直播"/>
 
     <Button

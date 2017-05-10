@@ -14,6 +14,7 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.thread.ThreadPool;
 import com.mi.liveassistant.config.Constants;
 import com.mi.liveassistant.dns.PreDnsManager;
+import com.mi.liveassistant.global.GlobalManager;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.version.VersionManager;
 import com.mi.milink.sdk.base.Global;
@@ -84,10 +85,10 @@ public class InitManager {
         }
     }
 
-    // TODO
     public static void registerAllEventBus() {
         EventBus.getDefault().register(InitDaemon.INSTANCE);
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
+        EventBus.getDefault().register(GlobalManager.INSTANCE);
     }
 
     private static void initLibrary() {
