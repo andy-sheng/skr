@@ -80,6 +80,14 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter>
         return RoomConstant.LOG_PREFIX + getClass().getSimpleName();
     }
 
+    /**
+     * #API# 进入推流房间开始直播
+     *
+     * @param location 地理位置
+     * @param title    直播标题
+     * @param coverUrl 封面URL
+     * @param callback 进入房间状态回调通知
+     */
     @Override
     public void beginLive(Location location, String title, String coverUrl, ILiveCallback callback) {
         MyLog.w(TAG, "beginNormalLive");
@@ -127,6 +135,11 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter>
         mStreamerPresenter.startLive();
     }
 
+    /**
+     * #API# 退出推流房间结束直播
+     *
+     * @param callback 退出房间状态回调通知
+     */
     @Override
     public void endLive(ILiveCallback callback) {
         MyLog.w(TAG, "endLive");
@@ -228,6 +241,9 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter>
         mEventController.registerObserverForEvent(MSG_END_LIVE_FAILED, this);
     }
 
+    /**
+     * @hide
+     */
     @Override
     public boolean onEvent(int event, @Nullable Params params) {
         switch (event) {

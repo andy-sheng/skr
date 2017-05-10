@@ -5,14 +5,14 @@ package com.mi.liveassistant.room.manager.watch.callback;
  */
 public interface IWatchCallback {
     /**
-     * 进入房间观看失败
+     * 进入拉流房间失败
      *
      * @param errCode 服务器返回的错误码
      */
     void notifyFail(int errCode);
 
     /**
-     * 进入房间观看成功
+     * 进入拉流房间成功
      */
     void notifySuccess();
 }

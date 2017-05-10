@@ -90,10 +90,10 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
     }
 
     /**
-     * #API# 进入房间观看直播
+     * #API# 进入直播房间观看直播
      *
-     * @param playerId 房间主播ID
-     * @param liveId   本地用户ID
+     * @param playerId 主播ID
+     * @param liveId   房间ID
      * @param callback 进入房间状态回调通知
      */
     @Override

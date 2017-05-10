@@ -26,23 +26,41 @@ public class GameLiveManager extends BaseLiveManager<GameLivePresenter> {
 
     private Intent mCaptureIntent;
 
+    /**
+     * #API# 构造函数
+     *
+     * @param liveListener 直播状态回调
+     */
     public GameLiveManager(ILiveListener liveListener) {
         super(liveListener);
         mIsGameLive = true;
         mLivePresenter = new GameLivePresenter(mEventController, this);
     }
 
-    /*设置录屏intent*/
+    /**
+     * #API# 设置录屏Intent
+     *
+     * @param intent 录屏Intent
+     * @see {@link android.media.projection.MediaProjectionManager MediaProjectionManager}
+     */
     public void setCaptureIntent(Intent intent) {
         mCaptureIntent = intent;
     }
 
-    /*设置分辨率*/
+    /**
+     * #API# 设置分辨率级别，默认值MEDIUM_CLARITY
+     *
+     * @param clarity 分辨率级别
+     */
     public void setClarity(int clarity) {
         mClarity = clarity;
     }
 
-    /*静音*/
+    /**
+     * #API# 设置静音
+     *
+     * @param isMute 是否静音, true为静音, false为取消静音
+     */
     public void muteMic(boolean isMute) {
         if (mLivePresenter != null) {
             mLivePresenter.muteMic(isMute);
