@@ -4,16 +4,15 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.common.thread.ThreadPool;
 import com.mi.liveassistant.global.GlobalManager;
 import com.mi.liveassistant.global.callback.IAccountListener;
-import com.mi.liveassistant.login.ILoginCallback;
 import com.mi.liveassistant.login.LoginManager;
+import com.mi.liveassistant.login.callback.ILoginCallback;
 import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
 import com.mi.liveassistant.michannel.presenter.IChannelView;
 import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
@@ -66,7 +65,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
         mWatchBtn = $(R.id.watch_btn);
         mWatchBtn.setOnClickListener(this);
 
-        ThreadPool.runOnWorker(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 mUserId = LoginManager.checkAccount();
@@ -80,7 +79,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                     });
                 }
             }
-        });
+        }).start();
     }
 
     private void initPresenter() {
@@ -166,14 +165,14 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                 LoginManager.thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new ILoginCallback() {
                     @Override
                     public void notifyFail(int errCode) {
-                        MyLog.d(TAG, "notifyFail");
+                        Log.d(TAG, "notifyFail");
                         mHasAccount = false;
                         mLoginBtn.setText("登录失败，重新登录");
                     }
 
                     @Override
                     public void notifySuccess(String uid) {
-                        MyLog.d(TAG, "notifySuccess");
+                        Log.d(TAG, "notifySuccess");
                         mHasAccount = true;
                         mUserId = uid;
                         mLoginBtn.setText("注销登录 " + mUserId);

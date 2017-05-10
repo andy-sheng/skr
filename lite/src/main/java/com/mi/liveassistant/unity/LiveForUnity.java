@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.login.ILoginCallback;
+import com.mi.liveassistant.login.callback.ILoginCallback;
 import com.mi.liveassistant.login.LoginManager;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;

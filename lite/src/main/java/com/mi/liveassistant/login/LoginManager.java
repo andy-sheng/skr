@@ -7,6 +7,7 @@ import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
 import com.mi.liveassistant.data.repository.AccountLocalStore;
+import com.mi.liveassistant.login.callback.ILoginCallback;
 import com.mi.liveassistant.proto.AccountProto;
 
 import rx.Observer;

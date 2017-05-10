@@ -4,7 +4,6 @@
 -dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
 -dontpreverify
--dontobfuscate
 -verbose
 -ignorewarning
 -optimizations !code/simplification/cast,!field/*,!class/merging/*
@@ -181,6 +180,14 @@
     public *;
 }
 
+-keep class com.mi.liveassistant.login.callback.ILoginCallback{
+    *;
+}
+
+-keep class com.mi.liveassistant.utils.RSASignature {
+    *;
+}
+
 -keep class com.mi.liveassistant.room.manager.live.GameLiveManager{
     public *;
 }
@@ -234,7 +241,11 @@
 }
 
 -keep class com.mi.liveassistant.room.viewer.callback.IViewerCallback{
-    public *;
+    *;
+}
+
+-keep class com.mi.liveassistant.room.viewer.callback.IViewerListener{
+    *;
 }
 
 -keep class com.mi.liveassistant.avatar.AvatarUtils{

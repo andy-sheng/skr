@@ -1,4 +1,4 @@
-package com.mi.liveassistant.login;
+package com.mi.liveassistant.login.callback;
 
 /**
  * Created by lan on 17/5/9.
