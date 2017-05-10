@@ -41,6 +41,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
     private ChannelLiveViewModel.BaseLiveItem mLiveItem;
 
     private boolean mHasAccount;
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +69,13 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
         ThreadPool.runOnWorker(new Runnable() {
             @Override
             public void run() {
-                mHasAccount = LoginManager.checkAccount();
+                mUserId = LoginManager.checkAccount();
+                mHasAccount = !TextUtils.isEmpty(mUserId);
                 if (mHasAccount) {
                     mLoginBtn.post(new Runnable() {
                         @Override
                         public void run() {
-                            mLoginBtn.setText("注销登录");
+                            mLoginBtn.setText("注销登录 " + mUserId);
                         }
                     });
                 }
@@ -141,7 +143,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
 
     private void thirdPartyLogin() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("请输入用户id");
+        builder.setTitle("请输入第三方用户id");
         final EditText et = new EditText(this);
         builder.setView(et);
         et.setText("100067");
@@ -170,10 +172,11 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                     }
 
                     @Override
-                    public void notifySuccess() {
+                    public void notifySuccess(String uid) {
                         MyLog.d(TAG, "notifySuccess");
                         mHasAccount = true;
-                        mLoginBtn.setText("注销登录");
+                        mUserId = uid;
+                        mLoginBtn.setText("注销登录 " + mUserId);
                     }
                 });
             }

@@ -166,7 +166,7 @@ public class LiveForUnity {
             }
 
             @Override
-            public void notifySuccess() {
+            public void notifySuccess(String uid) {
                 MyLog.d(TAG, "notifySuccess");
             }
         });

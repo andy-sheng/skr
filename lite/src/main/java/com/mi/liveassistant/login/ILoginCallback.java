@@ -6,5 +6,5 @@ package com.mi.liveassistant.login;
 public interface ILoginCallback {
     void notifyFail(int errCode);
 
-    void notifySuccess();
+    void notifySuccess(String uid);
 }

@@ -22,13 +22,13 @@ public class LoginManager {
     /**
      * 请上层异步处理
      */
-    public static boolean checkAccount() {
+    public static String checkAccount() {
         if (UserAccountManager.getInstance().hasAccount()) {
-            return true;
+            return UserAccountManager.getInstance().getUuid();
         }
         UserAccount account = AccountLocalStore.getInstance().getAccount();
         UserAccountManager.getInstance().login(account);
-        return UserAccountManager.getInstance().hasAccount();
+        return UserAccountManager.getInstance().hasAccount() ? account.getUuid() : null;
     }
 
     public static void loginByMiAccountOAuth(final int channelId, final String code, final ILoginCallback callback) {
@@ -52,7 +52,7 @@ public class LoginManager {
                         MyLog.w(TAG, "miLoginByCode login onNext");
                         int code = rsp.getRetCode();
                         if (code == ErrorCode.CODE_SUCCESS) {
-                            callback.notifySuccess();
+                            callback.notifySuccess(UserAccountManager.getInstance().getUuid());
                         } else {
                             callback.notifyFail(code);
                         }
@@ -83,7 +83,7 @@ public class LoginManager {
                         MyLog.w(TAG, "thirdPartLogin login onNext, rsp=" + rsp);
                         int code = rsp.getRetCode();
                         if (code == ErrorCode.CODE_SUCCESS) {
-                            callback.notifySuccess();
+                            callback.notifySuccess(UserAccountManager.getInstance().getUuid());
                         } else {
                             callback.notifyFail(code);
                         }
