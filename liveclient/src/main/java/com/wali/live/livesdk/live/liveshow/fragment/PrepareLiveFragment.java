@@ -87,8 +87,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             showEffectPanel(true);
         } else if (id == R.id.magic_iv) {
             showMagicPanel(true);
-        } else if (id == R.id.main_fragment_container) {
-            hideBottomPanel(true);
         }
     }
 

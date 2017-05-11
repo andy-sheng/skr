@@ -184,8 +184,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             updateMuteStatus(false);
         } else if (id == R.id.mute_yes_tv) {
             updateMuteStatus(true);
-        } else if (id == R.id.main_fragment_container) {
-            hideSettingPanel(true);
         }
     }
 
@@ -215,7 +213,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mGameSettingPanel.showSelf(useAnimation, false);
     }
 
-    private void hideSettingPanel(boolean useAnimation) {
+    @Override
+    public void hideBottomPanel(boolean useAnimation) {
         if (mGameSettingPanel != null) {
             mGameSettingPanel.hideSelf(useAnimation);
         }
@@ -264,7 +263,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public boolean onBackPressed() {
         if (mGameSettingPanel != null && mGameSettingPanel.isShow()) {
-            hideSettingPanel(true);
+            hideBottomPanel(true);
             return true;
         }
         getActivity().finish();
