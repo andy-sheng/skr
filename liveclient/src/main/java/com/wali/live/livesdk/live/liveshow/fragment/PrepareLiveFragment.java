@@ -207,6 +207,14 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
+    public void setManagerCount(int count) {
+        if (count >= 0) {
+            mAdminCount.setText(getString(R.string.has_add_manager_count, count));
+            mAdminArea.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         MyLog.w(TAG, "onActivityResult requestCode : " + requestCode);
         if (resultCode != Activity.RESULT_OK) {

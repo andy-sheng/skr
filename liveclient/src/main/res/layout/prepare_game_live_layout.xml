@@ -56,7 +56,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/view_dimen_40"
         android:layout_marginRight="@dimen/view_dimen_40"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="120dp">
 
         <LinearLayout
             android:id="@+id/title_area"
@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="left"
+                android:hint="@string/live_title_hint"
                 android:maxLines="2"
                 android:text=""
                 android:textColor="@color/color_white"
@@ -211,7 +212,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_1"
             android:layout_below="@+id/mute_area"
-            android:background="@color/color_white_trans_20"/>
+            android:background="@color/color_white_trans_20"
+            android:visibility="gone"/>
 
         <!--添加管理员-->
         <RelativeLayout
@@ -219,7 +221,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_140"
             android:layout_below="@id/admin_sl"
-            android:background="@color/color_black_trans_20">
+            android:background="@color/color_black_trans_20"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/admin_title"
