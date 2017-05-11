@@ -28,6 +28,57 @@
         android:text="开始直播"/>
 
     <LinearLayout
+        android:id="@+id/operate_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/normal_live_btn"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/beauty_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:minWidth="0dp"
+            android:text="美颜:开"/>
+
+        <Button
+            android:id="@+id/splash_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:minWidth="0dp"
+            android:text="闪光:开"/>
+
+        <Button
+            android:id="@+id/switch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:minWidth="0dp"
+            android:text="前置"/>
+
+        <Button
+            android:id="@+id/volume_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:minWidth="0dp"
+            android:text="音量:50"/>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/volume_sb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/operate_container"
+        android:layout_alignParentRight="true"
+        android:max="100"
+        android:progress="10"/>
+
+    <LinearLayout
         android:id="@+id/message_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,11 +104,10 @@
             android:id="@+id/send_message_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="48dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="发送消息"/>
-
+            android:minWidth="0dp"
+            android:text="消息"/>
     </LinearLayout>
-
 </RelativeLayout>

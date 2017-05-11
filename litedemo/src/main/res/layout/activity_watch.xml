@@ -49,6 +49,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="发送消息"/>
+            android:minWidth="0dp"
+            android:text="消息"/>
     </LinearLayout>
 </RelativeLayout>

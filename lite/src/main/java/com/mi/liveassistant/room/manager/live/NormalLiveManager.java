@@ -102,15 +102,22 @@ public class NormalLiveManager extends BaseLiveManager {
     }
 
     /**
+     * #API# 获取人声音量
+     */
+    public int getVoiceVolume() {
+        return mStreamerPresenter.getVoiceVolume();
+    }
+
+    /**
      * #API# 开启美颜
      *
      * @param enable 是否开启美颜, true为开启, false为关闭
      */
     public void enableVideoSmooth(boolean enable) {
         if (enable) {
-            mStreamerPresenter.setBeautyLevel(GalileoConstants.BEAUTY_LEVEL_OFF);
-        } else {
             mStreamerPresenter.setBeautyLevel(GalileoConstants.BEAUTY_LEVEL_HIGHEST);
+        } else {
+            mStreamerPresenter.setBeautyLevel(GalileoConstants.BEAUTY_LEVEL_OFF);
         }
     }
 

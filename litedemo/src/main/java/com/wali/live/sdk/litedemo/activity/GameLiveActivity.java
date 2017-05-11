@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -64,6 +65,11 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private ViewerInfoManager mViewerManager;
     private TopViewerView mViewerView;
 
+    /*控制按钮*/
+    private ViewGroup mOperatorView;
+    private Button mMuteBtn;
+    private boolean mIsMute;
+
     /*弹幕消息*/
     private Button mSendMessageBtn;
     private RecyclerView mBarrageRv;
@@ -113,6 +119,12 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         initView();
         initManager();
 
+        adjustView();
+    }
+
+    private void adjustView() {
+        mMuteBtn.setText("静音:" + (mIsMute ? "是" : "否"));
+
         KeyboardUtils.assistActivity(this, new KeyboardUtils.OnKeyboardChangedListener() {
             @Override
             public void onKeyboardShow() {
@@ -128,12 +140,14 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private void updateOnKeyboardShow() {
         mSendMessageBtn.setVisibility(View.GONE);
         mSendBarrageView.setVisibility(View.VISIBLE);
+        mOperatorView.setVisibility(View.GONE);
         KeyboardUtils.showKeyboard(this, (EditText) mSendBarrageView.findViewById(R.id.barrage_et));
     }
 
     private void updateOnKeyboardHide() {
         mSendMessageBtn.setVisibility(View.VISIBLE);
         mSendBarrageView.setVisibility(View.GONE);
+        mOperatorView.setVisibility(View.VISIBLE);
         KeyboardUtils.hideKeyboard(this, (EditText) mSendBarrageView.findViewById(R.id.barrage_et));
     }
 
@@ -143,6 +157,10 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
         mAnchorView = $(R.id.anchor_view);
         mViewerView = $(R.id.viewer_view);
+
+        mOperatorView = $(R.id.operate_container);
+        mMuteBtn = $(R.id.mute_btn);
+        mMuteBtn.setOnClickListener(this);
 
         mBarrageRv = $(R.id.barrage_rv);
         mSendBarrageView = $(R.id.send_barrage_view);
@@ -206,6 +224,11 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.game_live_btn:
                 clickGameBtn();
+                break;
+            case R.id.mute_btn:
+                mIsMute = !mIsMute;
+                mLiveManager.muteMic(mIsMute);
+                mMuteBtn.setText("静音:" + (mIsMute ? "是" : "否"));
                 break;
         }
     }

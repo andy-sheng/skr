@@ -8,8 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 import com.mi.liveassistant.barrage.callback.ChatMsgCallBack;
 import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
@@ -57,6 +59,17 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     /*观众信息*/
     private ViewerInfoManager mViewerManager;
     private TopViewerView mViewerView;
+
+    /*控制按钮*/
+    private ViewGroup mOperatorView;
+    private Button mVolumeBtn;
+    private Button mSwitchBtn;
+    private Button mSplashBtn;
+    private Button mBeautyBtn;
+
+    private SeekBar mVolumeSb;
+
+    private boolean mIsBeauty = true;
 
     /*弹幕消息*/
     private Button mSendMessageBtn;
@@ -106,10 +119,21 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
 
         initView();
         initManager();
+
+        adjustView();
+    }
+
+    private void adjustView() {
+        mBeautyBtn.setText(mIsBeauty ? "美颜:开" : "美颜:关");
+        mSplashBtn.setText(mLiveManager.isFlashLight() ? "闪光:开" : "闪光:关");
+        mSwitchBtn.setText(mLiveManager.isBackCamera() ? "后置" : "前置");
+
+        mVolumeBtn.setText("音量:" + mLiveManager.getVoiceVolume());
+        mVolumeSb.setProgress(mLiveManager.getVoiceVolume());
+
         KeyboardUtils.assistActivity(this, new KeyboardUtils.OnKeyboardChangedListener() {
             @Override
             public void onKeyboardShow() {
-
             }
 
             @Override
@@ -122,12 +146,15 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     private void updateOnKeyboardShow() {
         mSendMessageBtn.setVisibility(View.GONE);
         mSendBarrageView.setVisibility(View.VISIBLE);
+        mOperatorView.setVisibility(View.GONE);
+        mVolumeSb.setVisibility(View.GONE);
         KeyboardUtils.showKeyboard(this, (EditText) mSendBarrageView.findViewById(R.id.barrage_et));
     }
 
     private void updateOnKeyboardHide() {
         mSendMessageBtn.setVisibility(View.VISIBLE);
         mSendBarrageView.setVisibility(View.GONE);
+        mOperatorView.setVisibility(View.VISIBLE);
         KeyboardUtils.hideKeyboard(this, (EditText) mSendBarrageView.findViewById(R.id.barrage_et));
     }
 
@@ -138,6 +165,34 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
 
         mAnchorView = $(R.id.anchor_view);
         mViewerView = $(R.id.viewer_view);
+
+        mOperatorView = $(R.id.operate_container);
+        mVolumeBtn = $(R.id.volume_btn);
+        mVolumeBtn.setOnClickListener(this);
+        mSwitchBtn = $(R.id.switch_btn);
+        mSwitchBtn.setOnClickListener(this);
+        mSplashBtn = $(R.id.splash_btn);
+        mSplashBtn.setOnClickListener(this);
+        mBeautyBtn = $(R.id.beauty_btn);
+        mBeautyBtn.setOnClickListener(this);
+
+        mVolumeSb = $(R.id.volume_sb);
+        mVolumeSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mVolumeBtn.setText("音量:" + mVolumeSb.getProgress());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mLiveManager.setVoiceVolume(mVolumeSb.getProgress());
+            }
+        });
+        mVolumeSb.setVisibility(View.GONE);
 
         mBarrageRv = $(R.id.barrage_rv);
         mSendBarrageView = $(R.id.send_barrage_view);
@@ -201,6 +256,35 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
             case R.id.normal_live_btn:
                 clickNormalBtn();
                 break;
+            case R.id.beauty_btn:
+                mIsBeauty = !mIsBeauty;
+                mLiveManager.enableVideoSmooth(mIsBeauty);
+                mBeautyBtn.setText(mIsBeauty ? "美颜:开" : "美颜:关");
+                break;
+            case R.id.splash_btn:
+                mLiveManager.enableFlashLight(!mLiveManager.isFlashLight());
+                mSplashBtn.setText(mLiveManager.isFlashLight() ? "闪光:开" : "闪光:关");
+                break;
+            case R.id.switch_btn:
+                mLiveManager.switchCamera();
+                mSwitchBtn.setText(mLiveManager.isBackCamera() ? "后置" : "前置");
+                if (mLiveManager.isBackCamera()) {
+                    mSplashBtn.setEnabled(true);
+                } else {
+                    mSplashBtn.setEnabled(false);
+                    if (mLiveManager.isFlashLight()) {
+                        mLiveManager.enableFlashLight(false);
+                        mSplashBtn.setText("闪光:关");
+                    }
+                }
+                break;
+            case R.id.volume_btn:
+                if (mVolumeSb.getVisibility() == View.VISIBLE) {
+                    mVolumeSb.setVisibility(View.GONE);
+                } else {
+                    mVolumeSb.setVisibility(View.VISIBLE);
+                }
+                break;
         }
     }
 
@@ -234,7 +318,6 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     }
 
     private void endLive() {
-        ToastUtils.showToast("end normal live ...");
         mLiveManager.endLive(new ILiveCallback() {
             @Override
             public void notifyFail(int errCode) {

@@ -24,6 +24,24 @@
         android:text="开始直播"/>
 
     <LinearLayout
+        android:id="@+id/operate_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/game_live_btn"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/mute_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:minWidth="0dp"
+            android:text="静音:是"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/message_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,8 +70,7 @@
             android:layout_marginBottom="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="发送消息"/>
-
+            android:minWidth="0dp"
+            android:text="消息"/>
     </LinearLayout>
-
 </RelativeLayout>
