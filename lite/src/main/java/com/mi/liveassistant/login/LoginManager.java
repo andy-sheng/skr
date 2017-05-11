@@ -7,23 +7,36 @@ import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
 import com.mi.liveassistant.data.repository.AccountLocalStore;
+import com.mi.liveassistant.event.AccountEvent;
+import com.mi.liveassistant.login.callback.IAccountListener;
 import com.mi.liveassistant.login.callback.ILoginCallback;
 import com.mi.liveassistant.proto.AccountProto;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by chenyong on 2017/4/28.
  */
-public class LoginManager {
+public enum LoginManager {
+    INSTANCE;
+
+    private static final String TAG = LoginManager.class.getSimpleName();
+
+    private IAccountListener mAccountListener;
+
+    public void setAccountListener(IAccountListener listener) {
+        mAccountListener = listener;
+    }
+
     /**
      * 请上层异步处理
      */
-    public static String checkAccount() {
+    public String checkAccount() {
         if (UserAccountManager.getInstance().hasAccount()) {
             return UserAccountManager.getInstance().getUuid();
         }
@@ -32,7 +45,7 @@ public class LoginManager {
         return UserAccountManager.getInstance().hasAccount() ? account.getUuid() : null;
     }
 
-    public static void loginByMiAccountOAuth(final int channelId, final String code, final ILoginCallback callback) {
+    public void loginByMiAccountOAuth(final int channelId, final String code, final ILoginCallback callback) {
         AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -92,7 +105,26 @@ public class LoginManager {
                 });
     }
 
-    public static void logoff() {
+    public void logoff() {
         UserAccountManager.getInstance().logoff(UserAccountManager.getInstance().getUuidAsLong());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AccountEvent.LogOffEvent event) {
+        if (event == null) {
+            return;
+        }
+        MyLog.d(TAG, "event type=" + event.getEventType());
+        switch (event.getEventType()) {
+            case AccountEvent.LogOffEvent.EVENT_TYPE_FORBIDDEN:
+                mAccountListener.forbidAccount();
+                break;
+            case AccountEvent.LogOffEvent.EVENT_TYPE_EXPIRE_LOGOFF:
+                mAccountListener.logoffAccount();
+                break;
+            case AccountEvent.LogOffEvent.EVENT_TYPE_KICK:
+                mAccountListener.kickAccount();
+                break;
+        }
     }
 }

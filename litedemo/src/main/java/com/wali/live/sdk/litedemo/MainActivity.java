@@ -9,9 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.mi.liveassistant.global.GlobalManager;
-import com.mi.liveassistant.global.callback.IAccountListener;
 import com.mi.liveassistant.login.LoginManager;
+import com.mi.liveassistant.login.callback.IAccountListener;
 import com.mi.liveassistant.login.callback.ILoginCallback;
 import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
 import com.mi.liveassistant.michannel.presenter.IChannelView;
@@ -68,7 +67,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mUserId = LoginManager.checkAccount();
+                mUserId = LoginManager.INSTANCE.checkAccount();
                 mHasAccount = !TextUtils.isEmpty(mUserId);
                 if (mHasAccount) {
                     mLoginBtn.post(new Runnable() {
@@ -88,7 +87,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
     }
 
     private void initManager() {
-        GlobalManager.INSTANCE.setAccountListener(new IAccountListener() {
+        LoginManager.INSTANCE.setAccountListener(new IAccountListener() {
             @Override
             public void forbidAccount() {
                 ToastUtils.showToast("forbidAccount");
@@ -132,7 +131,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
 
     private void clickLoginBtn() {
         if (mHasAccount) {
-            LoginManager.logoff();
+            LoginManager.INSTANCE.logoff();
             mHasAccount = false;
             mLoginBtn.setText("请先登录");
         } else {
