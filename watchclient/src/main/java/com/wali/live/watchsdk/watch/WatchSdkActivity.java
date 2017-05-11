@@ -32,6 +32,7 @@ import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -961,5 +962,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         Intent intent = new Intent(activity, WatchSdkActivity.class);
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
         activity.startActivity(intent);
+    }
+
+
+    @Override
+    public void onKickEvent(String msg) {
+        stopPlayer();
     }
 }

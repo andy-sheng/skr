@@ -412,7 +412,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     @Override
     protected void onDestroy() {
         if (sRecording) {
-            stopRecord("onDestroy");
+            stopRecord("onDestroy",false);
             sRecording = false;
         }
         super.onDestroy();
@@ -972,7 +972,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
-    private void stopRecord(String reason) {
+    /**
+     * 停止录制
+     *
+     * @param reason
+     * @param wasKicked 是否因为被踢
+     */
+    private void stopRecord(String reason,boolean wasKicked) {
         MyLog.w(TAG, "stopRecord = " + sRecording + ",from:" + reason);
         // 如果正在进行voip通话
         if (sRecording) {
@@ -989,7 +995,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 mPullRoomMessagePresenter = null;
             }
             mStreamerPresenter.stopLive();
-            mComponentController.onStopLive();
+            mComponentController.onStopLive(wasKicked);
             endLiveToServer();
             mUIHandler.removeCallbacksAndMessages(null);
             // 防止服务器返回太慢,超时1s
@@ -1096,7 +1102,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         DialogUtils.showNormalDialog(this, 0, R.string.stop_live_dialog_message, R.string.ok, R.string.cancel, new DialogUtils.IDialogCallback() {
             @Override
             public void process(DialogInterface dialogInterface, int i) {
-                stopRecord("showStopDialog");
+                stopRecord("showStopDialog",false);
             }
         }, null);
     }
@@ -1114,7 +1120,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private void endLiveUnexpected(int resId) {
         ToastUtils.showToast(GlobalData.app(), resId);
-        stopRecord("endLiveUnexpected");
+        stopRecord("endLiveUnexpected",false);
     }
 
     @Override
@@ -1277,7 +1283,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                     break;
                 case MSG_END_LIVE_FOR_TIMEOUT:
                     MyLog.w(TAG, "MSG_END_LIVE_FOR_TIMEOUT");
-                    activity.stopRecord("MSG_END_LIVE_FOR_TIMEOUT");
+                    activity.stopRecord("MSG_END_LIVE_FOR_TIMEOUT",false);
                     break;
                 case MSG_HEARTBEAT:
                     MyLog.w(TAG, "MSG_HEARTBEAT");
@@ -1373,5 +1379,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     public void onEventMainThread(UserInfoEvent userInfoEvent){
         MyLog.w(TAG,"userInfoEvent");
         mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+    }
+
+    @Override
+    public void onKickEvent(String msg) {
+        stopRecord(msg,true);
     }
 }

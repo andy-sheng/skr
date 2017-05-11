@@ -607,4 +607,9 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
         activity.startActivity(intent);
     }
+
+    @Override
+    public void onKickEvent(String msg) {
+        stopPlayer();
+    }
 }

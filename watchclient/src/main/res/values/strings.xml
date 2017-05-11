@@ -70,4 +70,7 @@
     <string name="uninstall_share_tips">Install %1$s first</string>
     <string name="can_not_enter_room_use_myself">Use another Mi Live ID to enter your room</string>
 
+    <string name="service_token_expired">Your account was used at %s. If it was you, you can ignore this message</string>
+    <string name="forbbiden_message">Your account (%s) was banned. Contact Mi Live for more information.</string>
+
 </resources>

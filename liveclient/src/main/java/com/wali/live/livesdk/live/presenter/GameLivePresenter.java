@@ -76,15 +76,19 @@ public class GameLivePresenter implements Presenter {
         }
     }
 
-    public void stopGameLive() {
+    public void stopGameLive(boolean wasKicked) {
         if (mIsStarted) {
             stopAddExtra();
             mScreenRecordManager.stopScreenRecord();
             KeepActiveProcessor.stopActive();
             mIsStarted = false;
             if (mGameFloatWindow.isWindowShow()) {
-                ToastUtils.showToast(R.string.game_live_unexpected_end_toast);
-                mGameFloatWindow.removeWindow();
+                if(wasKicked){
+                    mGameFloatWindow.removeWindowUnexpected();
+                }else {
+                    ToastUtils.showToast(R.string.game_live_unexpected_end_toast);
+                    mGameFloatWindow.removeWindow();
+                }
             }
         }
     }

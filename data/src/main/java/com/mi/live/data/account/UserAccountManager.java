@@ -2,8 +2,6 @@ package com.mi.live.data.account;
 
 import android.text.TextUtils;
 
-import com.base.dialog.MyAlertDialog;
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.account.event.SetUserAccountEvent;
@@ -273,10 +271,6 @@ public class UserAccountManager {
                     AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN);
                 }
                 UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getChannelId());
-                new MyAlertDialog.Builder(GlobalData.app())
-                        .setMessage("账号被踢")
-                        .create()
-                        .show();
             }
             break;
             case MiLinkEvent.Account.GET_SERVICE_TOKEN: {

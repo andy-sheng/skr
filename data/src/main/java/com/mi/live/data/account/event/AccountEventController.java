@@ -1,5 +1,7 @@
 package com.mi.live.data.account.event;
 
+import com.mi.live.data.account.UserAccountManager;
+
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -29,14 +31,17 @@ public class AccountEventController {
         public static final int EVENT_TYPE_ACCOUNT_FORBIDDEN = 3;
         private int eventType = EVENT_TYPE_NONE;
         private int channelId;
+        private long uuid;
 
-        private LogOffEvent(int type) {
+        private LogOffEvent(int type,long uuid) {
             this.eventType = type;
+            this.uuid = uuid;
         }
 
-        private LogOffEvent(int type, int channelId) {
+        private LogOffEvent(int type, int channelId,long uuid) {
             this.eventType = type;
             this.channelId = channelId;
+            this.uuid = uuid;
         }
 
         public int getEventType() {
@@ -46,15 +51,19 @@ public class AccountEventController {
         public int getChannelId() {
             return channelId;
         }
+
+        public long getUuid(){
+            return uuid;
+        }
     }
 
     public static void onActionLogOff(int type) {
-        LogOffEvent event = new LogOffEvent(type);
+        LogOffEvent event = new LogOffEvent(type, UserAccountManager.getInstance().getUuidAsLong());
         EventBus.getDefault().post(event);
     }
 
     public static void onActionLogOff(int type, int channelId) {
-        LogOffEvent event = new LogOffEvent(type, channelId);
+        LogOffEvent event = new LogOffEvent(type, channelId, UserAccountManager.getInstance().getUuidAsLong());
         EventBus.getDefault().post(event);
     }
 
