@@ -22,6 +22,7 @@ import com.mi.liveassistant.room.presenter.watch.WatchPresenter;
 import com.mi.liveassistant.room.view.IWatchView;
 import com.mi.liveassistant.room.viewer.IViewerObserver;
 import com.mi.liveassistant.room.viewer.IViewerRegister;
+import com.xiaomi.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,11 +83,25 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
     public void setContainerView(@NonNull ViewGroup containerView) {
         if (mSurfaceView == null) {
             mSurfaceView = new VideoPlayerView(containerView.getContext());
+            mVideoPlayerPresenter = mSurfaceView.getVideoPlayerPresenter();
         }
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         containerView.addView(mSurfaceView, lp);
+    }
+
+    /**
+     * #API# 设置画面填充方式
+     *
+     * @param gravity 填充方式
+     * @param width   容器宽度
+     * @param height  容器高度
+     */
+    public void setGravity(Player.SurfaceGravity gravity, int width, int height) {
+        if (mVideoPlayerPresenter != null) {
+            mVideoPlayerPresenter.setGravity(gravity, width, height);
+        }
     }
 
     /**
@@ -120,7 +135,6 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
         }
 
         // TODO 其实拉流和进房间没有必然关系
-        mVideoPlayerPresenter = mSurfaceView.getVideoPlayerPresenter();
         mVideoPlayerPresenter.setRealTime(true);
         mVideoPlayerPresenter.setVideoStreamBufferTime(2);
 

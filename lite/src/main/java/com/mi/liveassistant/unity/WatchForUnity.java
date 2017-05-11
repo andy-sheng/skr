@@ -1,17 +1,17 @@
 package com.mi.liveassistant.unity;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
+import com.mi.liveassistant.common.display.DisplayUtils;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.engine.player.widget.VideoPlayerPresenter;
-import com.mi.liveassistant.engine.player.widget.VideoPlayerView;
-import com.mi.liveassistant.room.presenter.streamer.PullStreamerPresenter;
+import com.mi.liveassistant.room.manager.watch.WatchManager;
+import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
+import com.mi.liveassistant.room.manager.watch.callback.IWatchListener;
 import com.xiaomi.player.Player;
 
 /**
@@ -19,76 +19,112 @@ import com.xiaomi.player.Player;
  *
  * @module Unity观看直播辅助类
  */
-public class WatchForUnity {
+public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
     private static final String TAG = "WatchForUnity";
 
-    protected Activity mActivity;
+    private static final int DEFAULT_WIDTH = DisplayUtils.dip2px(320f);
+    private static final int DEFAULT_HEIGHT = DisplayUtils.dip2px(180);
 
-    protected VideoPlayerView mSurfaceView;
+    private WatchManager mWatchManager;
 
-    protected VideoPlayerPresenter mVideoPlayerPresenter;
-    protected PullStreamerPresenter mStreamerPresenter;
+    private ViewGroup mRootView;
+    private ViewGroup mContainerView;
 
-    public WatchForUnity(Activity activity) {
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+
+    public WatchForUnity(Activity activity, IUnityWatchListener listener) {
+        super(activity, listener);
         MyLog.w(TAG, "WatchForUnity");
-        mActivity = activity;
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 MyLog.w(TAG, "WatchForUnity addContentView");
-                mStreamerPresenter = new PullStreamerPresenter();
+                mRootView = ((ViewGroup) mActivity.findViewById(android.R.id.content));
+                mContainerView = new RelativeLayout(mActivity);
+                mRootView.addView(mContainerView, new ViewGroup.LayoutParams(
+                        DEFAULT_WIDTH, DEFAULT_HEIGHT));
 
-                LayoutInflater inflater = mActivity.getLayoutInflater();
-                Resources resources = mActivity.getResources();
-                String pkgName = mActivity.getPackageName();
-
-                int id = resources.getIdentifier("layout_for_unity", "layout", pkgName);
-                View view = inflater.inflate(id, null);
-
-                for (int i = 0; i < ((ViewGroup) view).getChildCount(); ++i) {
-                    View subView = ((ViewGroup) view).getChildAt(i);
-                    if (subView instanceof VideoPlayerView) {
-                        mSurfaceView = (VideoPlayerView) subView;
-                        break;
+                mWatchManager = new WatchManager(new IWatchListener() {
+                    @Override
+                    public void onEndUnexpected() {
+                        MyLog.w(TAG, "onEndUnexpected");
+                        if (mUnityListener != null) {
+                            mUnityListener.onEndUnexpected();
+                        }
                     }
+                });
+                mWatchManager.setContainerView(mContainerView);
+                View view = mContainerView.getChildAt(0);
+                if (view != null && view instanceof SurfaceView) {
+                    ((SurfaceView) view).setZOrderMediaOverlay(true);
                 }
-                mSurfaceView.setZOrderMediaOverlay(true);
-//                mSurfaceView.setZOrderOnTop(true);
+                mWatchManager.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+                        DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-                mVideoPlayerPresenter = mSurfaceView.getVideoPlayerPresenter();
-                mVideoPlayerPresenter.setRealTime(true);
-                mVideoPlayerPresenter.setVideoStreamBufferTime(2);
-
-                FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                mActivity.addContentView(view, param);
-
-                mStreamerPresenter.setStreamer(mVideoPlayerPresenter);
+//                listView(mActivity.getWindow().getDecorView(), "");
             }
         });
     }
 
-    public void startLive(final @NonNull String videoUrl) {
+    private void listView(View view, String depth) {
+        MyLog.e(TAG, depth + "|-" + view);
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); ++i) {
+                listView(((ViewGroup) view).getChildAt(i), depth + "| ");
+            }
+        }
+    }
+
+    public void setViewPosition(final int x, final int y, final int width, final int height) {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                MyLog.w(TAG, "startLive videoUrl=" + videoUrl);
-                mStreamerPresenter.setOriginalStreamUrl(videoUrl);
-                mStreamerPresenter.startLive();
-                ViewGroup.LayoutParams layoutParams = mSurfaceView.getLayoutParams();
-                mVideoPlayerPresenter.setGravity(Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
-                        layoutParams.width, layoutParams.height);
-                MyLog.w(TAG, "startLive done");
+                MyLog.w(TAG, "setViewPosition [" + x + ", " + y + ", " + width + ", " + height + "]");
+                mContainerView.setX(x);
+                mContainerView.setY(y);
+                ViewGroup.LayoutParams layoutParams = mContainerView.getLayoutParams();
+                layoutParams.width = width;
+                layoutParams.height = height;
+                mContainerView.setLayoutParams(layoutParams);
             }
         });
     }
 
-    public void stopLive() {
+    public void startWatch(final long playerId, final @NonNull String liveId) {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStreamerPresenter.stopLive();
-                MyLog.w(TAG, "stopLive done");
+                MyLog.w(TAG, "startWatch playerId=" + playerId + ", liveId=" + liveId);
+                mWatchManager.enterLive(playerId, liveId, new IWatchCallback() {
+                    @Override
+                    public void notifyFail(int errCode) {
+                        MyLog.w(TAG, "enterLive failed, errCode=" + errCode);
+                        if (mUnityListener != null) {
+                            mUnityListener.onEnterLiveFailed(errCode);
+                        }
+                    }
+
+                    @Override
+                    public void notifySuccess() {
+                        MyLog.w(TAG, "enterLive success");
+                        if (mUnityListener != null) {
+                            mUnityListener.onEnterLiveSuccess();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void stopWatch() {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "stopWatch");
+                mWatchManager.leaveLive();
             }
         });
     }
@@ -97,10 +133,8 @@ public class WatchForUnity {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStreamerPresenter.destroy();
-                mStreamerPresenter = null;
-                mVideoPlayerPresenter.destroy();
-                mVideoPlayerPresenter = null;
+                MyLog.w(TAG, "destroy");
+                mRootView.removeView(mContainerView);
             }
         });
     }

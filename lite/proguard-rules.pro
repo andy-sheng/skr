@@ -252,6 +252,14 @@
     public *;
 }
 
+-keep interface com.mi.liveassistant.unity.** {
+    <methods>;
+}
+
+-keep class com.mi.liveassistant.unity.UnitySdk{
+    public *;
+}
+
 -keep class com.mi.liveassistant.unity.WatchForUnity{
     public *;
 }
