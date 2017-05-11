@@ -88,8 +88,8 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     private ViewGroup mDailyTaskArea;
     private LiveCommonProto.NewWidgetUnit mWidgetUnit;
 
-    private ViewGroup mAdminArea;
-    private TextView mAdminCount;
+    protected ViewGroup mAdminArea;
+    protected TextView mAdminCount;
 
     private ViewGroup mControlTitleArea;
     private TextView mChangeTitleTv;
@@ -349,7 +349,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
 
     @Override
     public void setManagerCount(int count) {
-        mAdminCount.setText(getString(R.string.has_add_manager_count, count));
     }
 
     @Override

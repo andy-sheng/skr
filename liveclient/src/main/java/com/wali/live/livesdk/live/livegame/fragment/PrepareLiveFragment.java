@@ -78,6 +78,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private ViewGroup mBlockArea;
     private GameSettingPanel mGameSettingPanel;
 
+    private View mAdminSl;
+
     @Override
     protected String getTAG() {
         return getClass().getSimpleName() + "#" + this.hashCode();
@@ -122,6 +124,8 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mMuteTv.setOnClickListener(this);
         mUnMuteTv = $(R.id.mute_no_tv);
         mUnMuteTv.setOnClickListener(this);
+
+        mAdminSl = $(R.id.admin_sl);
     }
 
     public void setRoomChatMsgManager(@NonNull LiveRoomChatMsgManager roomChatMsgManager) {
@@ -246,6 +250,15 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             mDataListener.onFragmentResult(mRequestCode, Activity.RESULT_OK, bundle);
         }
         finish();
+    }
+
+    @Override
+    public void setManagerCount(int count) {
+        if (count >= 0) {
+            mAdminSl.setVisibility(View.VISIBLE);
+            mAdminCount.setText(getString(R.string.has_add_manager_count, count));
+            mAdminArea.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

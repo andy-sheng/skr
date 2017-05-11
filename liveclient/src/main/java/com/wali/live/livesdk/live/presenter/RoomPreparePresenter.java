@@ -8,6 +8,7 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
+import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.wali.live.livesdk.live.api.TitleListRequest;
 import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.presenter.cache.TitleCache;
@@ -58,6 +59,10 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
      * 异步加载管理员
      */
     public void loadManager() {
+        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
+            mView.setManagerCount(-1);
+            return;
+        }
         Observable
                 .create(new Observable.OnSubscribe<Integer>() {
                     @Override
