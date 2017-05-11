@@ -150,8 +150,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             onBeginBtnClick();
         } else if (i == R.id.close_btn) {
             onCloseBtnClick();
-        } else if (i == R.id.tag_name_container) {
-            onTagNameBtnClick();
         } else if (i == R.id.share_container) {
             onShareBtnClick();
         } else if (i == R.id.daily_task_area) {
@@ -271,15 +269,8 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mBeginBtn = $(R.id.begin_btn);
         mBeginBtn.setOnClickListener(this);
 
-        mTagNameContainer = $(R.id.tag_name_container);
-        if (mTagNameContainer != null) {
-            mTagNameContainer.setOnClickListener(this);
-        }
-
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
-
-        mTagNameTv = $(R.id.tag_name_tv);
 
         mShareContainer = $(R.id.share_container);
         mShareSelectedIv = $(R.id.share_friends_iv);

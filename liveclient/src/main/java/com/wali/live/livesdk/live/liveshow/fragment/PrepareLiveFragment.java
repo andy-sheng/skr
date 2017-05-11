@@ -48,7 +48,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     private StreamerPresenter mStreamerPresenter;
     private LiveComponentController mLiveComponentController;
     private ImageView mTurnOverIv;
-    private RelativeLayout mAddTopicContainer;
     private SelectCoverView mCoverView;
     private ImageView mSoundEffectIv;
     private ImageView mMagicIv;
@@ -102,7 +101,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             }
         });
         mTurnOverIv = $(R.id.turn_over);
-        mAddTopicContainer = $(R.id.add_topic_container);
         mCoverView = $(R.id.cover_layout);
         mCoverView.setFragment(this);
         mBottomContainer = $(R.id.bottom_container);
@@ -111,7 +109,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
         $click(mTurnOverIv, this);
         $click(mCoverView, this);
-        $click(mAddTopicContainer, this);
         $click(mSoundEffectIv, this);
         $click(mMagicIv, this);
     }
