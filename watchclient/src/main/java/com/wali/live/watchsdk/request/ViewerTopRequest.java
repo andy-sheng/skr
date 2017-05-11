@@ -2,7 +2,7 @@ package com.wali.live.watchsdk.request;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.request.live.BaseLiveRequest;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.LiveProto.ViewerTopReq;
 import com.wali.live.proto.LiveProto.ViewerTopRsp;
@@ -11,7 +11,7 @@ import com.wali.live.proto.LiveProto.ViewerTopRsp;
  * Created by lan on 16-3-18.
  * 注意修改命令字和Action
  */
-public class ViewerTopRequest extends BaseLiveRequest {
+public class ViewerTopRequest extends BaseRequest {
 
     public ViewerTopRequest() {
         super(MiLinkCommand.COMMAND_LIVE_VIEWER_TOP,"ViewerTop",null);

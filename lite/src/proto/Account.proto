@@ -1,0 +1,348 @@
+option java_package = "com.mi.liveassistant.proto";
+option java_outer_classname = "AccountProto";
+
+//第三方授权登录
+//cmd:zhibo.account.login
+message LoginReq {
+    required uint32 accountType = 1; //1表示微信登录 2表示QQ登录 3表示新浪微博登录 4表示小米账号登录
+    optional string code = 2; //授权临时票据，参考相应oauth2.0协议
+    optional string openid = 3; //微博、qq登录客户端拿到的openid
+    optional string accessToken = 4; ////微博、qq登录客户端拿到的accessToken
+    optional uint32 expires_in = 5; ///微博、qq登录客户端拿到的expires_in
+    optional string refreshToken = 6; ////微博、qq登录客户端拿到的refreshToken
+}
+
+message LoginRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional uint64 uuid = 2; //直播用户id
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+    optional string passToken = 5; //可以用来换取serviceToken
+    optional string nickname = 6; //昵称
+    optional string headimgurl = 7; //头像地址
+    optional uint32 sex = 8; //性别 0未知  1男性  2女性
+    optional uint32 loginStatus = 9; //取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+    optional bool hasInnerAvatar = 10; //是否有内部头像
+    optional bool hasInnerNickname = 11; //是否有内部昵称
+    optional bool hasInnerSex = 12; //是否有内部
+    optional bool isSetGuide = 13 [default = false]; //是否引导设置昵称头像等
+}
+
+//passtoken换servicetoken
+//cmd:zhibo.account.getservicetoken
+message GetServiceTokenReq {
+    required string passToken = 1; //客户端缓存的passToken
+    required uint64 uuid = 2; //直播用户id
+}
+
+message GetServiceTokenRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional string passToken = 2; //客户端更新最新拉取的passToken到本地缓存
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+}
+
+//微博认证
+message CertificateReq {
+    required uint64 uuid = 1; //直播内部用户id
+    optional string openid = 2; //客户端微博认证拿到的openid
+    optional string accessToken = 3; ////客户端微博认证拿到的accessToken
+}
+
+message CertificateRsp {
+    required uint32 retCode = 1; //0表示成功
+    optional uint32 certificationType = 2; //认证类型
+    optional string certification = 3; //认证信息
+}
+
+//获取验证码
+//cmd:zhibo.account.getcaptcha
+message GetCaptchaReq {
+    required string phoneNum = 1; //手机号
+    required uint32 type = 2; // 1: 注册验证码  2:找回密码验证码  3：更改密码验证码
+    optional string lang = 3; //下发短信的语言类型，lang的值可以为 en, zh-cn, zh-hant 之一，分别对应英文，中文简体，中文繁体。此参数为空，返回文案为简体中文格式
+}
+
+message GetCaptchaRsp {
+    required uint32 retCode = 1; //0:表示成功
+}
+//手机号注册
+//cmd:zhibo.account.registerbyphone 注册
+message RegisterByPhoneReq {
+    required string phoneNum = 1; //手机号
+    required string pwd = 2; //密码
+    required string captcha = 3; //短信验证码
+}
+
+message RegisterByPhoneRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional uint64 uuid = 2; //直播用户id
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+    optional string passToken = 5; //可以用来换取serviceToken
+}
+
+//手机号登录
+//cmd:zhibo.account.loginbyphone  登录
+message LoginByPhoneReq {
+    required string phoneNum = 1; //手机号
+    required string pwd = 2; //密码
+}
+
+message LoginByPhoneRsp {
+    required uint32 retCode = 1; //0:表示成功，返回“6011”表示服务端调用用户资料失败，服务端也拿不到用户信息，客户端需要容错；
+    optional uint64 uuid = 2; //直播用户id
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+    optional string passToken = 5; //可以用来换取serviceToken
+    optional string nickname = 6; //昵称
+    optional string headinfo = 7; //头像信息
+    optional uint32 sex = 8; //性别 0未知  1男性  2女性
+    optional bool hasInnerAvatar = 9; //是否有内部头像
+    optional bool hasInnerNickname = 10; //是否有内部昵称
+    optional bool hasInnerSex = 11; //是否有内部
+}
+
+//更改密码
+//cmd:zhibo.account.updatepwd 更改密码
+message NewPwdReq {
+    required string phoneNum = 1; //手机号
+    required string pwd = 2; //新密码
+    required string captcha = 3; //短信验证码
+}
+
+message NewPwdRsp {
+    required uint32 retCode = 1; //0:表示成功
+}
+
+//忘记密码
+//cmd:zhibo.account.forgetpwd  忘记密码
+message ForgetPwdReq {
+    required string phoneNum = 1; //手机号
+    required string pwd = 2; //新密码
+    required string captcha = 3; //短信验证码
+}
+
+message ForgetPwdRsp {
+    required uint32 retCode = 1; //0:表示成功，返回“6011”表示服务端调用用户资料失败，服务端也拿不到用户信息，客户端需要容错；
+    optional uint64 uuid = 2; //直播用户id
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+    optional string passToken = 5; //可以用来换取serviceToken
+    optional string nickname = 6; //昵称
+    optional string headinfo = 7; //头像信息
+    optional uint32 sex = 8; //性别 0未知  1男性  2女性
+    optional bool hasInnerAvatar = 9; //是否有内部头像
+    optional bool hasInnerNickname = 10; //是否有内部昵称
+    optional bool hasInnerSex = 11; //是否有内部
+}
+
+//cmd:zhibo.account.loginbyuuid
+message LoginByUuidReq {
+    required uint64 uuid = 1; //直播号码
+    required string pwd = 2; //密码
+}
+
+message LoginByUuidRsp {
+    required uint32 retCode = 1; //0:表示成功，返回“6011”表示服务端调用用户资料失败，服务端也拿不到用户信息，客户端需要容错；
+    optional uint64 uuid = 2; //直播用户id
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+    optional string passToken = 5; //可以用来换取serviceToken
+    optional string nickname = 6; //昵称
+    optional string headinfo = 7; //头像信息
+    optional uint32 sex = 8; //性别 0未知 1男性 2女性
+    optional bool hasInnerAvatar = 9; //是否有内部头像
+    optional bool hasInnerNickname = 10; //是否有内部昵称
+    optional bool hasInnerSex = 11; //是否有内部性别
+    optional string errMsg = 12;
+}
+
+//设置密码
+//cmd:zhibo.account.setpwd 设置密码
+message SetPwdReq {
+    required uint64 uuid = 1; //直播用户id
+    required string pwd = 2; //密码
+}
+
+message SetPwdRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional string errMsg = 2;
+}
+
+//更改密码
+//cmd:zhibo.account.updatepwduuid 更改密码
+message UpdatePwdReq {
+    required uint64 uuid = 1; //直播用户id
+    required string oldpwd = 2; //老密码
+    required string newpwd = 3; //新密码
+}
+
+message UpdatePwdRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional string errMsg = 2;
+}
+
+//查询账户密码信息
+//cmd:zhibo.account.getaccountpwdinfo
+message GetAccountPwdInfoReq {
+    required uint64 uuid = 1; //直播用户id
+}
+
+message GetAccountPwdInfoRsp {
+    required uint32 retCode = 1;
+    optional uint32 create_account_type = 2; //账户创建的平台类型，1表示微信登录创建 2表示QQ登录创建 3表示新浪微博登录创建 4表示小米账号登录创建 5表示手机号登录创建 6表示facebook登录创建 7表示google账户登录创建
+    optional bool haspwd = 3; //是否有直播密码
+    optional string errMsg = 4;
+}
+
+//cmd:zhibo.account.forgetpwd4uuid
+message ForgetPwdUuidReq {
+    required uint32 accountType = 1; //1表示微信登录 2表示QQ登录 3表示新浪微博登录 4表示小米账号登录
+    optional string code = 2; //微信、小米账号登录，客户端拿到的oauth2.0的临时票据
+    optional string openid = 3; //微博、qq登录客户端拿到的openid
+    optional string accessToken = 4; //微博、qq登录客户端拿到的accessToken
+    optional uint32 expires_in = 5; //微博、qq登录客户端拿到的expires_in
+    optional string refreshToken = 6; //微博、qq登录客户端拿到的refreshToken
+    optional uint64 uuid = 7; //uuid和pwd成对出现，需要校验当前登录请求的用户和uuid是否一致
+    optional string pwd = 8; //uuid和pwd成对出现，重置的新密码
+}
+
+message ForgetPwdUuidRsp {
+    required uint32 retCode = 1; //0:表示成功，返回“6011”表示服务端调用用户资料失败，服务端也拿不到用户信息，客户端需要容错；
+    optional uint64 uuid = 2; //直播用户id
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+    optional string passToken = 5; //可以用来换取serviceToken
+    optional string nickname = 6; //昵称
+    optional string headinfo = 7; //头像信息
+    optional uint32 sex = 8; //性别 0未知  1男性  2女性
+    optional bool hasInnerAvatar = 9; //是否有内部头像
+    optional bool hasInnerNickname = 10; //是否有内部昵称
+    optional bool hasInnerSex = 11; //是否有内部
+    optional string errMsg = 12;
+
+}
+
+//cmd: zhibo.account.scanqrcode
+message ScanQrCodeReq {
+    required uint64 uuid = 1;
+    required string qr_code = 2;
+}
+
+message ScanQrCodeRsp {
+    required uint32 retCode = 1;
+    optional string errMsg = 2;
+}
+
+//cmd: zhibo.account.confirmloginbyqrcode
+message ConfirmLoginByQrCodeReq {
+    required uint64 uuid = 1;
+    required string qr_code = 2;
+}
+
+message ConfirmLoginByQrCodeRsp {
+    required uint32 retCode = 1;
+    optional string errMsg = 2;
+}
+
+//cmd:zhibo.account.missologin
+message MiSsoLoginReq {
+    required uint32 accountType = 1 [default = 4]; //4表小米账号登录
+    required uint64 mid = 2; //小米账号ID
+    required string miservicetoken = 3; // 小米账号servicetoken
+}
+
+message MiSsoLoginRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional uint64 uuid = 2; //直播用户id
+    optional string serviceToken = 3; //用于milink传输，有效期服务器控制
+    optional string securityKey = 4; //用户milink数据加密
+    optional string passToken = 5; //可以用来换取serviceToken
+    optional string nickname = 6; //昵称
+    optional string headimgurl = 7; //头像地址
+    optional uint32 sex = 8; //性别 0未知  1男性  2女性
+    optional uint32 loginStatus = 9; //取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+    optional bool hasInnerAvatar = 10; //是否有内部头像
+    optional bool hasInnerNickname = 11; //是否有内部昵称
+    optional bool hasInnerSex = 12; //是否有内部
+    optional bool isSetGuide = 13 [default = false]; //是否引导用户设置头像昵称(昵称为空或者为mid，头像url为空)
+    optional string errMsg = 14; //错误消息
+}
+
+//第三放appInfo
+message AppInfo {
+    optional string appId = 1;
+    optional string appKey = 2;
+}
+
+
+message UserInfo {
+    required uint64 uuid = 1;
+    optional uint64 avatar = 2; //头像
+    optional string nickname = 3; //昵称
+    optional string sign = 4; //签名
+    optional uint32 gender = 5; //性别
+    optional uint32 level = 6; //等级
+    optional uint32 badge = 7; //徽章
+    optional uint64 updateTime = 8; //更新时间，水位
+}
+
+//用于第三方（如小米游戏）接入小米直播
+//cmd:zhibo.account.getaccesstoken
+message GetAccessTokenReq {
+    required uint32 appid = 1; //第三方appid
+    required uint64 uuid = 2; //直播用户id
+}
+
+message GetAccessTokenRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional string serviceToken = 2; //用于milink传输，有效期服务器控制
+    optional string securityKey = 3; //用户milink数据加密
+    optional string errmsg = 4;
+}
+
+//用于查询uid是否需要微信老用户引导  cmd：zhibo.account.getguideflag
+message GetGuideFlagReq {
+    required uint64 uuid = 1;
+}
+message GetGuideFlagRsp {
+    required uint32 retCode = 1;
+    optional bool isGuide = 2; //true表示该微信老用户需要引导，false表示本次不需要引导
+    optional string reminderMsg = 3; //引导语正文，不需要引导时，该字段为空
+    optional uint32 diamondsCnt = 4; //钻石数量
+    optional bool isGuideNoMore = 5; //是否不再引导，如果该用户不是微信用户或者已经有了unionid，则该字段为true
+    optional string errMsg = 6;
+}
+
+//用户客户端上传code，补充微信用户的unionid  cmd：zhibo.account.fillunionid
+message FillUnionidReq {
+    required uint64 uuid = 1;
+    optional string code = 2;
+}
+message FillUnionidRsp {
+    required uint32 retCode = 1;
+    optional string errMsg = 2;
+}
+//对接第三方账号签名登陆，比如对接真真海淘，直播客户端用户进入直播房间要打通用户对输入参数进行签名
+//cmd:zhibo.account.3partsignlogin
+message ThirdPartSignLoginReq
+{
+required string channelId = 1; //给第三方分配的channelId
+required string xuid = 2;  //第三方用户id
+required uint32 sex = 3;//第三方用户性别1男2女0未知
+required string nickname = 4;//第三方用户昵称
+required string headUrl = 5;//第三方用户头像
+required string sign = 6;//签名
+}
+
+message ThirdPartSignLoginRsp
+{
+required uint32 retCode = 1; //0:表示成功
+optional uint64 uuid = 2;//小米直播颁发给第三方的用户id
+optional string serviceToken = 3;//小米直播颁发给用户的service_token
+optional string passToken = 4;//小米直播颁发给用户的pass_token
+optional string securityKey = 5;//用户milink数据加密
+optional uint32 loginStatus = 6;//取值为1表示为第一次授权登录，是第一次则生成新账号并有第三方头像昵称等，否则返回老账号但不返回第三方头像昵称，客户端使用个人资料里的头像、昵称等
+optional string errMsg  = 7; //错误信息
+}

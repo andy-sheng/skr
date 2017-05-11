@@ -15,9 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MyLog {
     private final static long KEEP_LOG_PERIOD = 4 * 24 * 60 * 60 * 1000;//4天
 
-    private final static HashMap<Integer, Long> sStartTimes = new HashMap<>();
+    private final static HashMap<Integer, Long> sStartTimes = new HashMap<Integer, Long>();
 
-    private final static HashMap<Integer, String> sActionNames = new HashMap<>();
+    private final static HashMap<Integer, String> sActionNames = new HashMap<Integer, String>();
     private static String LOGTAG = "MI_LIVE";
 
     private static AtomicInteger sCodeGenerator = new AtomicInteger(1);

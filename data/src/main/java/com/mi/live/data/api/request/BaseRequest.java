@@ -21,7 +21,7 @@ import com.mi.milink.sdk.aidl.PacketData;
  * 目前只用于LiveManager相关代码,试试效果
  */
 public abstract class BaseRequest {
-    protected String TAG = getTAG();
+    protected final String TAG = getTAG();
 
     protected String mCommand;
     protected String mAction;
@@ -34,7 +34,7 @@ public abstract class BaseRequest {
         return getClass().getSimpleName();
     }
 
-    public BaseRequest(String command,String action,String channelId){
+    public BaseRequest(String command, String action, String channelId) {
         mCommand = command;
         mAction = action;
         mChannelId = channelId;
@@ -47,7 +47,7 @@ public abstract class BaseRequest {
         PacketData reqData = new PacketData();
         reqData.setCommand(mCommand);
         reqData.setData(mRequest.toByteArray());
-        if(!TextUtils.isEmpty(mChannelId)){
+        if (!TextUtils.isEmpty(mChannelId)) {
             reqData.setChannelId(mChannelId);
         }
         MyLog.d(TAG, mAction + " request : \n" + mRequest.toString());

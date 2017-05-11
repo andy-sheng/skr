@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.api.request.live.BaseLiveRequest;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.PayProto;
 
@@ -12,10 +12,9 @@ import com.wali.live.proto.PayProto;
  * Created by rongzhisheng on 17-2-8.
  */
 
-public class CheckOrderRequest extends BaseLiveRequest {
-
+public class CheckOrderRequest extends BaseRequest {
     public CheckOrderRequest(String orderId, String payId, String receipt, String transactionId) {
-        super(MiLinkCommand.COMMAND_PAY_CHECK_ORDER,"checkOrder",null);
+        super(MiLinkCommand.COMMAND_PAY_CHECK_ORDER, "checkOrder", null);
         PayProto.CheckOrderRequest.Builder reqBuilder = PayProto.CheckOrderRequest.newBuilder()
                 .setUuid(UserAccountManager.getInstance().getUuidAsLong())
                 .setPlatform(PayProto.Platform.ANDROID)

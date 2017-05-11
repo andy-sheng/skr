@@ -17,7 +17,6 @@ import org.greenrobot.eventbus.EventBus;
  * Created by chengsimin on 16/7/1.
  */
 public class ExtraDataHandler implements MiLinkPacketDispatcher.PacketDataHandler {
-
     private static final java.lang.String TAG = "ExtraDataHandler'";
 
     @Override

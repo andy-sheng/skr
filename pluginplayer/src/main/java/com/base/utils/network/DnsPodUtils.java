@@ -30,7 +30,7 @@ public class DnsPodUtils {
             cipher.init(Cipher.ENCRYPT_MODE, keySpec);
             //获取加密后的字符串
             byte[] encryptedString = cipher.doFinal(domain.getBytes("utf-8"));
-            List<NameValuePair> parms = new ArrayList<>();
+            List<NameValuePair> parms = new ArrayList<NameValuePair>();
             parms.add(new BasicNameValuePair("id", encId));
             parms.add(new BasicNameValuePair("ttl", "1"));
             parms.add(new BasicNameValuePair("dn", bytes2HexString(encryptedString)));

@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.LiveProto.EnterLiveReq;
 import com.wali.live.proto.LiveProto.EnterLiveRsp;
@@ -12,7 +13,7 @@ import com.wali.live.proto.LiveProto.EnterLiveRsp;
  * Created by lan on 16-3-18.
  * 注意修改命令字和Action
  */
-public class EnterLiveRequest extends BaseLiveRequest {
+public class EnterLiveRequest extends BaseRequest {
     private EnterLiveReq.Builder builder;
 
     {

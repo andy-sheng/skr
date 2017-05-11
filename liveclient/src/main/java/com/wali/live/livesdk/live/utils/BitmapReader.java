@@ -1,4 +1,3 @@
-
 package com.wali.live.livesdk.live.utils;
 
 import android.graphics.Bitmap;
@@ -13,10 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BitmapReader {
-
-
     final static int SIZE_USE_BYTE_ARRAY = 700 * 700;
-
 
     public static Bitmap decodeBmpFromFile(String filePath) {
         return decodeBmpFromFile(filePath, null);

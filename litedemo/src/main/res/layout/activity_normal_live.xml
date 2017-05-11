@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.mi.liveassistant.camera.CameraView
+        android:id="@+id/camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.wali.live.sdk.litedemo.topinfo.anchor.TopAnchorView
+        android:id="@+id/anchor_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.wali.live.sdk.litedemo.topinfo.viewer.TopViewerView
+        android:id="@+id/viewer_view"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/anchor_view"/>
+
+    <Button
+        android:id="@+id/normal_live_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="开始直播"/>
+
+    <LinearLayout
+        android:id="@+id/operate_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/normal_live_btn"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/beauty_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:minWidth="0dp"
+            android:text="美颜:开"/>
+
+        <Button
+            android:id="@+id/splash_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:minWidth="0dp"
+            android:text="闪光:开"/>
+
+        <Button
+            android:id="@+id/switch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:minWidth="0dp"
+            android:text="前置"/>
+
+        <Button
+            android:id="@+id/volume_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:minWidth="0dp"
+            android:text="音量:50"/>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/volume_sb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/operate_container"
+        android:layout_alignParentRight="true"
+        android:max="100"
+        android:progress="10"/>
+
+    <LinearLayout
+        android:id="@+id/message_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/barrage_rv"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_margin="10dp"/>
+
+        <com.wali.live.sdk.litedemo.barrage.view.SendBarrageView
+            android:id="@+id/send_barrage_view"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="280dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/send_message_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:minWidth="0dp"
+            android:text="消息"/>
+    </LinearLayout>
+</RelativeLayout>
