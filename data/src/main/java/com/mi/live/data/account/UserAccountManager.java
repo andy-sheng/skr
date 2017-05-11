@@ -13,6 +13,7 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.datasource.AccountLocalStore;
 import com.wali.live.dao.UserAccount;
+import com.xsj.crasheye.Crasheye;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -70,6 +71,9 @@ public class UserAccountManager {
             MiLinkClientAdapter.getsInstance().initCallBackFirst();
             // 同步昵称等详细信息
             MyUserInfoManager.getInstance().init();
+
+            // 同步Crasheye标识
+            Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
         }
     }
 

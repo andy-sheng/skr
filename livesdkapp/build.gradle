@@ -96,8 +96,6 @@ dependencies {
         compile project(':watchclient')
     }
 
-    compile files('libs/crasheye_2.1.5.jar')
-
     compile 'com.google.code.gson:gson:2.6.2'
 
     compile 'com.trello:rxlifecycle:0.4.0'
