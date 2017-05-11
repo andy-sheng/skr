@@ -9,7 +9,6 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.Constants;
 import com.base.utils.channel.ReleaseChannelUtils;
-import com.mi.live.data.account.UserAccountManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.wali.live.watchsdk.init.InitManager;
@@ -55,7 +54,7 @@ public class LiveSdkApplication extends Application {
     private static void initCrasheye() {
         Crasheye.init(GlobalData.app(), Constants.CRASHEYE_APPID);
         Crasheye.setChannelID(ReleaseChannelUtils.getReleaseChannel());
-        Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
+        // 这里还没有登录，在UserAccountManager登录后初始化
+        // Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
     }
-
 }
