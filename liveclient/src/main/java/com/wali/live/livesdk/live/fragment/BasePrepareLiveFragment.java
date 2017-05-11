@@ -146,8 +146,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             changeTitle();
         } else if (i == R.id.clear_title_tv) {
             clearTitle();
-        } else if (i == R.id.main_fragment_container) {
-            hideBottomPanel(true);
         }
     }
 
