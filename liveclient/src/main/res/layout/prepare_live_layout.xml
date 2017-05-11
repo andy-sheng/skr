@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_fragment_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_black_trans_50">
+<RelativeLayout android:id="@+id/main_fragment_container"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_black_trans_50">
 
     <RelativeLayout
         android:id="@+id/top_container"
@@ -22,7 +22,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:padding="10dp"
-            android:src="@drawable/start_live_icon_flip" />
+            android:src="@drawable/start_live_icon_flip"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
             android:padding="10dp"
             android:text="@string/show_live"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/text_size_42" />
+            android:textSize="@dimen/text_size_42"/>
 
         <!--关闭按钮-->
         <ImageView
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="10dp"
-            android:src="@drawable/start_live_icon_close" />
+            android:src="@drawable/start_live_icon_close"/>
     </RelativeLayout>
     <!--封面-->
     <com.wali.live.livesdk.live.view.SelectCoverView
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_container"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_dimen_50" />
+        android:layout_marginTop="@dimen/view_dimen_50"/>
 
     <!--封面/直播标题等-->
     <RelativeLayout
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/begin_live_title"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
 
             <EditText
                 android:id="@+id/live_title_et"
@@ -86,12 +86,13 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="left"
+                android:hint="@string/live_title_hint"
                 android:maxLines="2"
                 android:text=""
                 android:textColor="@color/color_white"
                 android:textColorHint="@color/color_white_trans_40"
                 android:textCursorDrawable="@drawable/live_edittext_color_cursor"
-                android:textSize="@dimen/text_size_42" />
+                android:textSize="@dimen/text_size_42"/>
         </LinearLayout>
 
         <LinearLayout
@@ -112,7 +113,7 @@
                 android:paddingRight="@dimen/view_dimen_30"
                 android:text="@string/live_title_change"
                 android:textColor="@color/color_white90_pressed_40"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
 
             <TextView
                 android:id="@+id/clear_title_tv"
@@ -124,7 +125,7 @@
                 android:paddingRight="@dimen/view_dimen_30"
                 android:text="@string/live_title_clear"
                 android:textColor="@color/color_white90_pressed_40"
-                android:textSize="@dimen/text_size_36" />
+                android:textSize="@dimen/text_size_36"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -141,7 +142,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_140"
             android:layout_below="@id/admin_sl"
-            android:background="@color/color_black_trans_20">
+            android:background="@color/color_black_trans_20"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/admin_title"
@@ -151,7 +153,7 @@
                 android:layout_marginLeft="@dimen/margin_64"
                 android:text="@string/add_manager"
                 android:textColor="@color/color_white_trans_40"
-                android:textSize="@dimen/margin_40" />
+                android:textSize="@dimen/margin_40"/>
 
             <ImageView
                 android:id="@+id/next_iv"
@@ -160,7 +162,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_60"
-                android:src="@drawable/start_live_more_right_arrow" />
+                android:src="@drawable/start_live_more_right_arrow"/>
 
             <TextView
                 android:id="@+id/admin_count"
@@ -171,7 +173,7 @@
                 android:layout_toLeftOf="@+id/next_iv"
                 android:text="@null"
                 android:textColor="@color/color_white_trans_90"
-                android:textSize="@dimen/margin_36" />
+                android:textSize="@dimen/margin_36"/>
         </RelativeLayout>
 
         <View
@@ -180,7 +182,7 @@
             android:layout_height="@dimen/view_dimen_1"
             android:layout_below="@+id/admin_area"
             android:background="@color/color_white_trans_20"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <!--每日任务-->
         <RelativeLayout
@@ -208,7 +210,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_60"
-                android:src="@drawable/start_live_more_right_arrow" />
+                android:src="@drawable/start_live_more_right_arrow"/>
 
             <TextView
                 android:id="@+id/daily_task_content"
@@ -238,7 +240,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="7.67dp"
-            android:src="@drawable/bg_live_share_selector" />
+            android:src="@drawable/bg_live_share_selector"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -246,7 +248,7 @@
             android:gravity="center"
             android:text="@string/pre_live_share"
             android:textColor="@color/color_white"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -278,7 +280,7 @@
             android:gravity="center"
             android:text="@string/live_start"
             android:textColor="@color/color_black_trans_80"
-            android:textSize="@dimen/text_size_44" />
+            android:textSize="@dimen/text_size_44"/>
 
         <ImageView
             android:id="@+id/magic_iv"
