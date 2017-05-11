@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
+import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
@@ -16,11 +17,14 @@ import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
  *
  * @module Unity游戏直播辅助类
  */
-public class LiveForUnity extends UnitySdk<MiLiveActivity, IUnityLiveListener> {
+public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
     private static final String TAG = "LiveForUnity";
 
     private GameLiveManager mLiveManager;
     private boolean mIsBegin;
+
+    private String mTitle;
+    private String mCoverUrl;
 
     @Override
     protected String getTAG() {
@@ -28,7 +32,7 @@ public class LiveForUnity extends UnitySdk<MiLiveActivity, IUnityLiveListener> {
     }
 
     public LiveForUnity(Activity activity, IUnityLiveListener listener) {
-        super((MiLiveActivity) activity, listener);
+        super(activity, listener);
         MyLog.w(TAG, "LiveForUnity");
         mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -42,47 +46,73 @@ public class LiveForUnity extends UnitySdk<MiLiveActivity, IUnityLiveListener> {
                         }
                     }
                 });
-                mActivity.setLiveForUnity(LiveForUnity.this);
+                if (mActivity instanceof MiLiveActivity) {
+                    ((MiLiveActivity) mActivity).setLiveForUnity(LiveForUnity.this);
+                }
             }
         });
     }
 
     public void startLive(@NonNull Intent intent) {
-        MyLog.w(TAG, "startLive mIsBegin=" + mIsBegin);
-        if (mIsBegin) {
-            return;
-        }
-        mLiveManager.setCaptureIntent(intent);
-        mLiveManager.beginLive(null, "TEST", null, new ILiveCallback() {
-            @Override
-            public void notifyFail(int errCode) {
-                MyLog.w(TAG, "startLive failed, errCode=" + errCode);
-                if (mUnityListener != null) {
-                    mUnityListener.onBeginLiveFailed(errCode);
-                }
-            }
+        startLive(intent, mTitle, mCoverUrl);
+    }
 
+    public void startLive(final String title, final String coverUrl) {
+        mActivity.runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void notifySuccess(long playerId, String liveId) {
-                mIsBegin = true;
-                MyLog.w(TAG, "startLive success");
-                if (mUnityListener != null) {
-                    mUnityListener.onBeginLiveSuccess(playerId, liveId);
+            public void run() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    if (mUnityListener != null) {
+                        mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_TOO_LOW_SDK);
+                    }
+                    return;
+                }
+                MyLog.w(TAG, "startLive");
+                if (mActivity instanceof MiLiveActivity) {
+                    mTitle = title;
+                    mCoverUrl = coverUrl;
+                    ((MiLiveActivity) mActivity).queryScreenRecordIntent();
+                } else if (mUnityListener != null) {
+                    mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_MISSING_PROJECTION);
                 }
             }
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void startLive() {
-//        if (!checkLogin()) {
-//            return;
-//        }
+    public void startLive(final @NonNull Intent intent, final String title, final String coverUrl) {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                MyLog.w(TAG, "startLive");
-                mActivity.queryScreenRecordIntent();
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    if (mUnityListener != null) {
+                        mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_TOO_LOW_SDK);
+                    }
+                    return;
+                }
+                MyLog.w(TAG, "startLive mIsBegin=" + mIsBegin);
+                if (mIsBegin) {
+                    return;
+                }
+                mLiveManager.setCaptureIntent(intent);
+                mLiveManager.beginLive(null, title, coverUrl, new ILiveCallback() {
+                    @Override
+                    public void notifyFail(int errCode) {
+                        MyLog.w(TAG, "startLive failed, errCode=" + errCode);
+                        if (mUnityListener != null) {
+                            mUnityListener.onBeginLiveFailed(errCode);
+                        }
+                    }
+
+                    @Override
+                    public void notifySuccess(long playerId, String liveId) {
+                        mIsBegin = true;
+                        MyLog.w(TAG, "startLive success");
+                        if (mUnityListener != null) {
+                            mUnityListener.onBeginLiveSuccess(playerId, liveId);
+                        }
+                    }
+                });
             }
         });
     }
