@@ -133,6 +133,11 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
+    protected void updateCover() {
+
+    }
+
+    @Override
     protected void onBeginBtnClick() {
         PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.READ_PHONE_STATE, new PermissionUtils.IPermissionCallback() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -259,10 +264,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             mAdminCount.setText(getString(R.string.has_add_manager_count, count));
             mAdminArea.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    protected void adjustTitleEtPosByCover(boolean isTitleEtFocus, int coverState) {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

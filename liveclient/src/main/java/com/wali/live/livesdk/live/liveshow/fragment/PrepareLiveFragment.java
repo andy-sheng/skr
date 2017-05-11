@@ -14,7 +14,6 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
-import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
@@ -33,9 +32,6 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by yangli on 2017/3/7.
@@ -170,21 +166,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    protected void adjustTitleEtPosByCover(boolean isTitleEtFocus, int coverState) {
-        if (!isTitleEtFocus) {
-            return;
-        }
-        // 应产品需求去掉margin
-        // RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLiveTitleEt.getLayoutParams();
-        // params.rightMargin = params.leftMargin = DisplayUtils.dip2px(58f);
-        // mLiveTitleEt.setLayoutParams(params);
-
-
-//        mLiveTitleEt.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-//        mLiveTitleEt.setHint("");
-    }
-
-    @Override
     protected void putCommonData(Bundle bundle) {
         super.putCommonData(bundle);
         bundle.putString(EXTRA_LIVE_COVER_URL, mCoverView.getCoverUrl());
@@ -239,13 +220,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(MiLinkEvent.StatusLogined event) {
-        super.onEvent(event);
-        if (event != null) {
-            if (TextUtils.isEmpty(mCoverView.getCoverUrl())) {
-                mCoverView.setCoverByAvatar();
-            }
+    @Override
+    protected void updateCover() {
+        if (TextUtils.isEmpty(mCoverView.getCoverUrl())) {
+            mCoverView.setCoverByAvatar();
         }
     }
 

@@ -61,7 +61,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
     public static final String EXTRA_LIVE_TYPE = "extra_live_type";
     public static final String EXTRA_ADD_HISTORY = "extra_add_history";
-    public static final String EXTRA_INVITEE_LIST = "extra_invitee_list";
     public static final String EXTRA_LIVE_TITLE = "extra_live_title";
     public static final String EXTRA_LIVE_COVER_URL = "extra_live_cover_url";
     public static final String EXTRA_LIVE_TAG_INFO = "extra_live_tag_info";
@@ -150,9 +149,9 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         }
     }
 
-    protected abstract int getLayoutResId();
+    protected abstract void updateCover();
 
-    protected abstract void adjustTitleEtPosByCover(boolean isTitleEtFocus, int coverState);
+    protected abstract int getLayoutResId();
 
     @Override
     public int getRequestCode() {
@@ -276,12 +275,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
 
     protected void initTitleView() {
         mLiveTitleEt = (EditText) mRootView.findViewById(R.id.live_title_et);
-        mLiveTitleEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                BasePrepareLiveFragment.this.adjustTitleEtPosByCover(hasFocus, View.GONE);
-            }
-        });
         mTitleTextWatcher = new TitleTextWatcher(mLiveTitleEt);
         mLiveTitleEt.addTextChangedListener(mTitleTextWatcher);
     }
@@ -420,10 +413,11 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MiLinkEvent.StatusLogined event) {
         if (event != null) {
             getDailyTaskFromServer();
+            updateCover();
         }
     }
 
@@ -563,10 +557,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
             editText.setText(str);
             editText.setSelection(strIndex);
             enableWatch = true;
-        }
-
-        public void setTopicDefaultWay(int defaultWay) {
-            this.defaultWay = defaultWay;
         }
     }
 }
