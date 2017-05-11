@@ -43,6 +43,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -601,7 +602,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         registerScreenStateReceiver();
 
         if (mMyRoomData.getUser() == null || mMyRoomData.getUser().getUid() <= 0 || TextUtils.isEmpty(mMyRoomData.getUser().getNickname())) {
-            mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+            if(MyUserInfoManager.getInstance().getUser() != null && MyUserInfoManager.getInstance().getUser().getUid() >= 0) {
+                mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+            }else{
+                MyUserInfoManager.getInstance().syncSelfDetailInfo();
+            }
         }
         // 顶部view
         mTopInfoSingleView = $(R.id.live_top_info_view);
@@ -1362,5 +1367,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
         intent.putExtra(EXTRA_IS_GAME_LIVE, isGameLive);
         activity.startActivity(intent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UserInfoEvent userInfoEvent){
+        MyLog.w(TAG,"userInfoEvent");
+        mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
     }
 }
