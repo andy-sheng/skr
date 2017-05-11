@@ -40,6 +40,11 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
     private View mMirrorImageBtn;
     private View mFlashLightBtn;
 
+    //预览页不需要显示相机相关操作
+    private View mHifiBottomLine;
+    private View mCameraContainer;
+    private boolean mHideCameraContainer;
+
     private final VolumeAdjuster mVolumeAdjuster = new VolumeAdjuster(
             new VolumeAdjuster.IAdjusterListener() {
                 @Override
@@ -130,6 +135,10 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
         mComponentController = componentController;
     }
 
+    public void setHideCameraContainer(boolean hideCameraContainer) {
+        mHideCameraContainer = hideCameraContainer;
+    }
+
     @Override
     protected void inflateContentView() {
         super.inflateContentView();
@@ -140,6 +149,13 @@ public class LiveSettingPanel extends BaseBottomPanel<LinearLayout, RelativeLayo
         mChooseHifi = $(R.id.choose_hifi);
         mMirrorImageBtn = $(R.id.mirror_image);
         mFlashLightBtn = $(R.id.flash_light);
+
+        mCameraContainer = $(R.id.camera_container);
+        mHifiBottomLine = $(R.id.hifi_bottom_line);
+        if (mHideCameraContainer) {
+            mCameraContainer.setVisibility(View.GONE);
+            mHifiBottomLine.setVisibility(View.GONE);
+        }
 
         $click(mChooseHifi, this);
         $click(mMirrorImageBtn, this);

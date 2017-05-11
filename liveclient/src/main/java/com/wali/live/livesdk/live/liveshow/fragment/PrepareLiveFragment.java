@@ -118,9 +118,9 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mCoverView.setVisibility(View.GONE);
         if (mLiveSettingPanel == null && mStreamerPresenter != null) {
             mLiveSettingPanel = new LiveSettingPanel((RelativeLayout) mRootView, mStreamerPresenter, mLiveComponentController);
+            mLiveSettingPanel.setHideCameraContainer(true);
         }
         mLiveSettingPanel.showSelf(useAnimation, false);
-        mRootView.setOnClickListener(this);
     }
 
     private void showMagicPanel(boolean useAnimation) {

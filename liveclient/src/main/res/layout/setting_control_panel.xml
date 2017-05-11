@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentRight="true"
-    android:background="@color/color_black_trans_90"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:layout_alignParentRight="true"
+              android:background="@color/color_black_trans_90"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/live_anchor_microphone_minimize" />
+                android:src="@drawable/live_anchor_microphone_minimize"/>
 
             <com.base.view.RotatedSeekBar
                 android:id="@+id/volume_seek_bar"
@@ -45,7 +45,7 @@
                 app:appThumbDrawable="@drawable/live_icon_jindutiao_yuan_white"
                 app:appThumbDrawablePress="@drawable/live_icon_jindutiao_yuan_yellow"
                 app:appThumbSize="15.33dp"
-                app:appThumbSizePress="10.67dp" />
+                app:appThumbSizePress="10.67dp"/>
 
             <ImageView
                 android:id="@+id/maximize_btn"
@@ -54,14 +54,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
-                android:src="@drawable/live_anchor_microphone_maximize" />
+                android:src="@drawable/live_anchor_microphone_maximize"/>
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.33dp"
-            android:background="@color/color_white_trans_20" />
+            android:background="@color/color_white_trans_20"/>
 
         <!--混响选项-->
         <LinearLayout
@@ -84,7 +84,7 @@
                 android:gravity="center"
                 android:text="@string/original"
                 android:textColor="@color/bottom_panel_btn_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
 
             <TextView
                 android:id="@+id/recording_studio"
@@ -98,7 +98,7 @@
                 android:gravity="center"
                 android:text="@string/recording_studio"
                 android:textColor="@color/bottom_panel_btn_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
 
             <TextView
                 android:id="@+id/ktv"
@@ -112,7 +112,7 @@
                 android:gravity="center"
                 android:text="@string/ktv"
                 android:textColor="@color/bottom_panel_btn_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
 
             <TextView
                 android:id="@+id/concert"
@@ -126,14 +126,14 @@
                 android:gravity="center"
                 android:text="@string/concert"
                 android:textColor="@color/bottom_panel_btn_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.33dp"
-            android:background="@color/color_white_trans_20" />
+            android:background="@color/color_white_trans_20"/>
 
         <!--高保真-->
         <LinearLayout
@@ -150,18 +150,20 @@
                 android:gravity="center"
                 android:text="@string/choose_hifi"
                 android:textColor="@color/bottom_panel_btn_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
 
         </LinearLayout>
 
         <View
+            android:id="@+id/hifi_bottom_line"
             android:layout_width="match_parent"
             android:layout_height="0.33dp"
-            android:background="@color/color_white_trans_20" />
+            android:background="@color/color_white_trans_20"/>
     </LinearLayout>
 
     <!--相机设置-->
     <LinearLayout
+        android:id="@+id/camera_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_270"
         android:gravity="center_vertical">
@@ -184,7 +186,7 @@
                 android:paddingBottom="6.67dp"
                 android:text="@string/mirror_image"
                 android:textColor="@color/bottom_panel_btn_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
         </LinearLayout>
 
 
@@ -206,7 +208,7 @@
                 android:paddingBottom="6.67dp"
                 android:text="@string/switch_camera"
                 android:textColor="@color/bottom_panel_btn_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
         </LinearLayout>
 
         <LinearLayout
@@ -227,7 +229,7 @@
                 android:paddingBottom="6.67dp"
                 android:text="@string/flash_light"
                 android:textColor="@color/bottom_panel_btn_photo_txt_color"
-                android:textSize="@dimen/control_panel_text_size" />
+                android:textSize="@dimen/control_panel_text_size"/>
         </LinearLayout>
 
     </LinearLayout>

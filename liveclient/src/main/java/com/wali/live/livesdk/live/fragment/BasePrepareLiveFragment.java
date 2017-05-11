@@ -75,7 +75,6 @@ public abstract class BasePrepareLiveFragment extends BaseEventBusFragment imple
     protected TitleTextWatcher mTitleTextWatcher;
 
     protected TextView mBeginBtn;
-    protected TextView mTagNameTv;
     protected ImageView mCloseBtn;
 
     protected EditText mLiveTitleEt;
