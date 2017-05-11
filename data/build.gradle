@@ -70,6 +70,7 @@ dependencies {
     compile files('libs/greendao-2.0.0.jar')
     compile files('libs/accountsdk.jar')
     compile files('libs/oauth.jar')
+    compile files('libs/crasheye_2.1.5.jar')
 
     compile project(':common')
 }

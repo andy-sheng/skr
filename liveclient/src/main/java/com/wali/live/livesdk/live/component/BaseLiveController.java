@@ -38,7 +38,7 @@ public abstract class BaseLiveController extends ComponentController {
     public void onStartLive() {
     }
 
-    public void onStopLive() {
+    public void onStopLive(boolean wasKicked) {
     }
 
     public void onResumeStream() {

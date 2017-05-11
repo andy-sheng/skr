@@ -2,8 +2,6 @@ package com.mi.live.data.account;
 
 import android.text.TextUtils;
 
-import com.base.dialog.MyAlertDialog;
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.account.event.SetUserAccountEvent;
@@ -13,6 +11,7 @@ import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.datasource.AccountLocalStore;
 import com.wali.live.dao.UserAccount;
+import com.xsj.crasheye.Crasheye;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -70,6 +69,9 @@ public class UserAccountManager {
             MiLinkClientAdapter.getsInstance().initCallBackFirst();
             // 同步昵称等详细信息
             MyUserInfoManager.getInstance().init();
+
+            // 同步Crasheye标识
+            Crasheye.setUserIdentifier(UserAccountManager.getInstance().getUuid());
         }
     }
 
@@ -269,10 +271,6 @@ public class UserAccountManager {
                     AccountEventController.onActionLogOff(AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN);
                 }
                 UserAccountManager.getInstance().logoff(HostChannelManager.getInstance().getChannelId());
-                new MyAlertDialog.Builder(GlobalData.app())
-                        .setMessage("账号被踢")
-                        .create()
-                        .show();
             }
             break;
             case MiLinkEvent.Account.GET_SERVICE_TOKEN: {

@@ -1,10 +1,12 @@
 package com.wali.live.watchsdk.base;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.SparseArray;
 
 import com.base.activity.BaseRotateSdkActivity;
+import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.event.AccountEventController;
@@ -31,6 +33,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,6 +53,10 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
      * 控制是否活跃的目的为：当渠道A活跃时其他渠道不能够调用登录接口
      */
     private static AtomicInteger activeNum = new AtomicInteger(0);
+
+    private MyAlertDialog mLogOffDialog;
+
+    private boolean hasKicked;
 
     protected boolean is4g() {
         NetworkReceiver.NetState netCode = NetworkReceiver.getCurrentNetStateCode(GlobalData.app());
@@ -276,5 +285,54 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(0, R.anim.zoom_out);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(AccountEventController.LogOffEvent event) {
+        MyLog.w(TAG, "KickEvent,eventType:" + event.getEventType());
+        if (event == null) {
+            return;
+        }
+        switch (event.getEventType()) {
+            case AccountEventController.LogOffEvent.EVENT_TYPE_KICK:
+            case AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN:
+                hasKicked = true;
+                onKickEvent("EVENT_TYPE_ACCOUNT_FORBIDDEN");
+                showLogoffDialog(event.getEventType(), event.getUuid());
+                break;
+            case AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF:
+                if(!hasKicked) {
+                    finish();
+                }
+                break;
+        }
+    }
+
+    public abstract void onKickEvent(String msg);
+
+    private void showLogoffDialog(int exitType,long uuid){
+        MyLog.w(TAG, " showExitDialog KickEvent");
+        if (mLogOffDialog == null) {
+            MyAlertDialog.Builder builder = new MyAlertDialog.Builder(this);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            mLogOffDialog = builder.create();
+            mLogOffDialog.setCanceledOnTouchOutside(false);
+            mLogOffDialog.setCancelable(false);
+            Date date = new Date();
+            DateFormat format = new SimpleDateFormat("HH:mm");
+            String time = format.format(date);
+            if(exitType == AccountEventController.LogOffEvent.EVENT_TYPE_KICK) {
+                mLogOffDialog.setMessage(getString(R.string.service_token_expired, time));
+                mLogOffDialog.show();
+            }else if(exitType == AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN){
+                mLogOffDialog.setMessage(getString(R.string.forbbiden_message, String.valueOf(uuid)));
+                mLogOffDialog.show();
+            }
+        }
     }
 }

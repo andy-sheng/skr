@@ -19,7 +19,6 @@ import com.mi.live.engine.base.GalileoConstants;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.component.utils.PlusParamUtils;
-import com.wali.live.livesdk.live.view.BeautyView;
 import com.wali.live.proto.CloudParamsProto;
 import com.wali.live.statistics.StatisticsKey;
 
@@ -51,6 +50,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
             @NonNull IComponentController componentController,
             @NonNull Context context) {
         super(componentController, context);
+        syncMagicParams();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MagicParamPresenter extends BaseParamPresenter {
         }
     }
 
-    public void syncMagicParams(final BeautyView.IMagicParamsCallBack magicParamsCallBack) {
+    public void syncMagicParams() {
         if (mFaceBeautySub != null && !mFaceBeautySub.isUnsubscribed()) {
             return;
         }
@@ -102,7 +102,6 @@ public class MagicParamPresenter extends BaseParamPresenter {
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer errCode) {
-                        magicParamsCallBack.onComplete();
                         if (errCode == 0) {
                             StatisticsAlmightyWorker.getsInstance().recordDelay(StatisticsKey.AC_APP,
                                     StatisticsKey.KEY, StatisticsKey.KEY_FETCH_BEAUTY_FILTER_SUCCESS,
@@ -118,7 +117,6 @@ public class MagicParamPresenter extends BaseParamPresenter {
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, "syncMagicParams failed, exception=" + throwable);
-                        magicParamsCallBack.onComplete();
                     }
                 });
     }

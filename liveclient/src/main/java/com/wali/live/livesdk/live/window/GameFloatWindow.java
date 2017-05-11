@@ -112,6 +112,11 @@ public class GameFloatWindow implements IGameFloatPresenter {
         }
     }
 
+    public void removeWindowUnexpected() {
+        removeWindow();
+        backToApp();
+    }
+
     public void destroyWindow() {
         removeWindow();
         if (mGameFloatView != null) {

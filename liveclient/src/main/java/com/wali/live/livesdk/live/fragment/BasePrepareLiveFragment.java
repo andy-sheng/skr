@@ -1,7 +1,6 @@
 package com.wali.live.livesdk.live.fragment;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -22,11 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.base.activity.RxActivity;
-import com.base.dialog.MyAlertDialog;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
-import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -34,27 +31,31 @@ import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.network.Network;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.preference.PreferenceKeys;
+import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.api.RoomTagRequest;
-import com.wali.live.livesdk.live.presenter.IRoomTagView;
-import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
+import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
-import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 
-import java.util.List;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
+
+import static android.view.View.VISIBLE;
 
 /**
  * Created by zyh on 2017/2/8.
  */
 
-public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener, IRoomPrepareView {
+public abstract class BasePrepareLiveFragment extends BaseEventBusFragment implements View.OnClickListener, FragmentDataListener, FragmentListener, IRoomPrepareView {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
@@ -74,19 +75,28 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     protected TitleTextWatcher mTitleTextWatcher;
 
     protected TextView mBeginBtn;
-    protected TextView mTagNameTv;
-    protected ViewGroup mTagNameContainer;
     protected ImageView mCloseBtn;
 
     protected EditText mLiveTitleEt;
 
-    protected RoomTag mRoomTag;
-    protected RoomTagPresenter mRoomTagPresenter;
-    protected int mTagIndex = -1;
-
+    protected RoomPreparePresenter mRoomPreparePresenter;
     protected LiveRoomChatMsgManager mRoomChatMsgManager;
     protected ImageView mShareSelectedIv;
     protected View mShareContainer;
+
+    private View mDailyTaskSl;
+    private ViewGroup mDailyTaskArea;
+    private LiveCommonProto.NewWidgetUnit mWidgetUnit;
+
+    protected ViewGroup mAdminArea;
+    protected TextView mAdminCount;
+
+    private ViewGroup mControlTitleArea;
+    private TextView mChangeTitleTv;
+    private TextView mClearTitleTv;
+    protected ViewGroup mTopContainer;
+    protected ViewGroup mTitleContainer;
+    protected ViewGroup mMiddleContainer;
 
     public void setMyRoomData(@NonNull RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
@@ -108,6 +118,14 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mRoomChatMsgManager = roomChatMsgManager;
     }
 
+    protected void getDailyTaskFromServer() {
+        if (mRoomPreparePresenter != null) {
+            mRoomPreparePresenter.loadManager();
+            mRoomPreparePresenter.loadTitle();
+            mRoomPreparePresenter.loadDailyTask();
+        }
+    }
+
     @CallSuper
     @Override
     public void onClick(View v) {
@@ -117,10 +135,18 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
             onBeginBtnClick();
         } else if (i == R.id.close_btn) {
             onCloseBtnClick();
-        } else if (i == R.id.tag_name_container) {
-            onTagNameBtnClick();
         } else if (i == R.id.share_container) {
             onShareBtnClick();
+        } else if (i == R.id.daily_task_area) {
+            showDailyTask();
+        } else if (i == R.id.admin_area) {
+            openAdminFragment();
+        } else if (i == R.id.change_title_tv) {
+            changeTitle();
+        } else if (i == R.id.clear_title_tv) {
+            clearTitle();
+        } else if (i == R.id.main_fragment_container) {
+            hideBottomPanel(true);
         }
     }
 
@@ -148,12 +174,46 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         getActivity().finish();
     }
 
-    private void onTagNameBtnClick() {
-        getTagFromServer();
-    }
-
     private void onShareBtnClick() {
         mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
+    }
+
+    private void showDailyTask() {
+        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
+                mWidgetUnit.getLinkUrl(), mWidgetUnit.getUrlNeedParam(), mWidgetUnit.getOpenType(), UserAccountManager.getInstance().getUuidAsLong());
+    }
+
+    private void openAdminFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, new MessageRule());
+        bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, UserAccountManager.getInstance().getUuidAsLong());
+        bundle.putBoolean(RoomAdminFragment.KEY_ONLY_SHOW_ADMIN_MANAGER_PAGE, true);
+        FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
+    }
+
+    protected void showBottomPanel(boolean useAnimation) {
+        mTopContainer.setVisibility(View.GONE);
+        mTitleContainer.setVisibility(View.GONE);
+        mMiddleContainer.setVisibility(View.GONE);
+        if (mMyRoomData.getEnableShare()) {
+            mShareContainer.setVisibility(View.GONE);
+        }
+        mRootView.setOnClickListener(this);
+    }
+
+    protected void hideBottomPanel(boolean useAnimation) {
+        mTopContainer.setVisibility(View.VISIBLE);
+        mTitleContainer.setVisibility(View.VISIBLE);
+        mMiddleContainer.setVisibility(View.VISIBLE);
+        if (mMyRoomData.getEnableShare()) {
+            mShareContainer.setVisibility(View.VISIBLE);
+        }
+        mRootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardUtils.hideKeyboardImmediately(getActivity());
+            }
+        });
     }
 
     @Override
@@ -172,9 +232,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mTagNameContainer != null) {
-            mRoomTagPresenter.stop();
-        }
     }
 
     protected void initContentView() {
@@ -190,21 +247,31 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mBeginBtn = $(R.id.begin_btn);
         mBeginBtn.setOnClickListener(this);
 
-        mTagNameContainer = $(R.id.tag_name_container);
-        if (mTagNameContainer != null) {
-            mTagNameContainer.setOnClickListener(this);
-        }
-
         mCloseBtn = $(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
-
-        mTagNameTv = $(R.id.tag_name_tv);
 
         mShareContainer = $(R.id.share_container);
         mShareSelectedIv = $(R.id.share_friends_iv);
         mShareContainer.setOnClickListener(this);
-
         tryHideShareBtnView();
+
+        mDailyTaskSl = $(R.id.daily_task_sl);
+        mDailyTaskArea = $(R.id.daily_task_area);
+        mDailyTaskArea.setOnClickListener(this);
+
+        mAdminArea = $(R.id.admin_area);
+        mAdminCount = $(R.id.admin_count);
+        mAdminArea.setOnClickListener(this);
+
+        mControlTitleArea = $(R.id.control_title_area);
+        mChangeTitleTv = $(R.id.change_title_tv);
+        mChangeTitleTv.setOnClickListener(this);
+        mClearTitleTv = $(R.id.clear_title_tv);
+        mClearTitleTv.setOnClickListener(this);
+
+        mTopContainer = $(R.id.top_container);
+        mTitleContainer = $(R.id.title_container);
+        mMiddleContainer = $(R.id.middle_container);
     }
 
     protected void initTitleView() {
@@ -219,15 +286,21 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         mLiveTitleEt.addTextChangedListener(mTitleTextWatcher);
     }
 
+    private void changeTitle() {
+        mRoomPreparePresenter.changeTitle();
+    }
+
+    private void clearTitle() {
+        mLiveTitleEt.setText("");
+    }
+
     @Override
     protected void bindView() {
         MyLog.w(TAG, "bindView");
         initContentView();
         initTitleView();
         initPresenters();
-        if (mTagNameContainer != null) {
-            initTagName();
-        }
+        getDailyTaskFromServer();
     }
 
     @Override
@@ -254,10 +327,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     protected abstract void openLive();
 
-    protected abstract void getTagFromServer();
-
-    protected abstract void initTagName();
-
     protected void openPublicLive() {
         if (mDataListener != null) {
             Bundle bundle = new Bundle();
@@ -273,62 +342,10 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         // 产品要求支持多个分享
         bundle.putBoolean(EXTRA_SNS_TYPE, isShareSelected());
         bundle.putString(EXTRA_LIVE_TITLE, mLiveTitleEt.getText().toString().trim());
-        // 添加标签
-        if (mRoomTag != null) {
-            bundle.putSerializable(EXTRA_LIVE_TAG_INFO, mRoomTag);
-        }
     }
 
     protected void initPresenters() {
-        if (mTagNameContainer != null) {
-            mRoomTagPresenter = new RoomTagPresenter((RxActivity) getActivity(), this);
-        }
     }
-
-    @Override
-    public void hideTag() {
-        mTagNameContainer.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showTagList(final List<RoomTag> roomTags, int type) {
-        mTagNameContainer.setVisibility(View.VISIBLE);
-
-        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getActivity());
-        String[] tagArray = new String[roomTags.size()];
-        String[] tagIcons = new String[roomTags.size()];
-        for (int i = 0; i < roomTags.size(); i++) {
-            tagArray[i] = roomTags.get(i).getTagName();
-            tagIcons[i] = roomTags.get(i).getIconUrl();
-            if (mRoomTag != null && mRoomTag.getTagName().equals(tagArray[i])) {
-                mTagIndex = i;
-            }
-        }
-        switch (type) {
-            case RoomTagRequest.TAG_TYPE_GAME:
-                builder.setTitle(R.string.game_live_tag_title);
-                break;
-            default:
-                builder.setTitle(R.string.normal_live_tag_title);
-                mTagIndex = mTagIndex == -1 ? tagArray.length - 1 : mTagIndex;
-                mRoomTag = roomTags.get(mTagIndex);
-                break;
-        }
-        updateTagName();
-
-        builder.setSingleChoiceItems(tagArray, mTagIndex, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MyLog.d(TAG, "click item=" + which + ";tagInfo=" + mRoomTag);
-                mTagIndex = which;
-                mRoomTag = roomTags.get(which);
-                updateTagName();
-                dialog.dismiss();
-            }
-        }).show();
-    }
-
-    protected abstract void updateTagName();
 
     @Override
     public void setManagerCount(int count) {
@@ -336,14 +353,32 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     @Override
     public void fillTitle(String title) {
+        mLiveTitleEt.setText(title);
     }
 
     @Override
     public void updateControlTitleArea(boolean isShow) {
+        if (isShow) {
+            if (mControlTitleArea.getVisibility() != VISIBLE) {
+                mControlTitleArea.setVisibility(VISIBLE);
+            }
+        } else {
+            if (mControlTitleArea.getVisibility() == VISIBLE) {
+                mControlTitleArea.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     @Override
     public void setDailyTaskUnit(LiveCommonProto.NewWidgetUnit unit) {
+        if (unit != null && unit.hasLinkUrl()) {
+            mDailyTaskSl.setVisibility(VISIBLE);
+            mDailyTaskArea.setVisibility(VISIBLE);
+            mWidgetUnit = unit;
+        } else {
+            mDailyTaskSl.setVisibility(View.GONE);
+            mDailyTaskArea.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -373,15 +408,22 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     }
 
     protected boolean isShareSelected() {
-        if (mShareContainer.getVisibility() == View.VISIBLE) {
+        if (mShareContainer.getVisibility() == VISIBLE) {
             return mShareSelectedIv.isSelected();
         }
         return false;
     }
 
     protected void recordShareSelectState() {
-        if (mShareContainer.getVisibility() == View.VISIBLE) {
+        if (mShareContainer.getVisibility() == VISIBLE) {
             PreferenceUtils.setSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_SHARE_SELECTED_STATE, mShareSelectedIv.isSelected());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(MiLinkEvent.StatusLogined event) {
+        if (event != null) {
+            getDailyTaskFromServer();
         }
     }
 

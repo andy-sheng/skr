@@ -139,8 +139,8 @@ public class LiveComponentController extends BaseLiveController {
     }
 
     @Override
-    public void onStopLive() {
-        mGameLivePresenter.stopGameLive();
+    public void onStopLive(boolean wasKicked) {
+        mGameLivePresenter.stopGameLive(wasKicked);
         mRoomInfoPresenter.destroy();
     }
 

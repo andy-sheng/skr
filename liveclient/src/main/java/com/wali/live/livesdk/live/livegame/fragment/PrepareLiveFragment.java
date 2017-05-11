@@ -12,7 +12,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -28,31 +27,22 @@ import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
-import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
-import com.mi.live.data.milink.event.MiLinkEvent;
-import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
-import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
-import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
-import com.wali.live.livesdk.live.fragment.RoomAdminFragment;
 import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
 import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
 import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
-import com.wali.live.livesdk.live.viewmodel.RoomTag;
-import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -85,25 +75,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
 
     private boolean mIsMute = false;
 
-    private ViewGroup mControlTitleArea;
-    private TextView mChangeTitleTv;
-    private TextView mClearTitleTv;
-
     private ViewGroup mBlockArea;
     private GameSettingPanel mGameSettingPanel;
 
-    private ViewGroup mAdminArea;
-    private TextView mAdminCount;
-
-    private View mDailyTaskSl;
-    private ViewGroup mDailyTaskArea;
-    private LiveCommonProto.NewWidgetUnit mWidgetUnit;
-
-    private ViewGroup mTopContainer;
-    private ViewGroup mTitleContainer;
-    private ViewGroup mMiddleContainer;
-
-    private RoomPreparePresenter mRoomPreparePresenter;
+    private View mAdminSl;
 
     @Override
     protected String getTAG() {
@@ -118,27 +93,18 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void bindView() {
         super.bindView();
         initOtherViews();
-
-        asyncProcess();
     }
 
     @Override
     protected void initPresenters() {
         super.initPresenters();
         mRoomPreparePresenter = new RoomPreparePresenter(this, TitleViewModel.SOURCE_GAME);
-    }
-
-    private void asyncProcess() {
-        mRoomPreparePresenter.loadManager();
-        mRoomPreparePresenter.loadTitle();
-        mRoomPreparePresenter.loadDailyTask();
     }
 
     private void initOtherViews() {
@@ -154,44 +120,16 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         mBlockArea = $(R.id.block_area);
         mBlockArea.setOnClickListener(this);
 
-        mAdminArea = $(R.id.admin_area);
-        mAdminCount = $(R.id.admin_count);
-        mAdminArea.setOnClickListener(this);
-
-        mDailyTaskSl = $(R.id.daily_task_sl);
-
-        mDailyTaskArea = $(R.id.daily_task_area);
-        mDailyTaskArea.setOnClickListener(this);
-
         mMuteTv = $(R.id.mute_yes_tv);
         mMuteTv.setOnClickListener(this);
         mUnMuteTv = $(R.id.mute_no_tv);
         mUnMuteTv.setOnClickListener(this);
 
-        mControlTitleArea = $(R.id.control_title_area);
-
-        mChangeTitleTv = $(R.id.change_title_tv);
-        mChangeTitleTv.setOnClickListener(this);
-
-        mClearTitleTv = $(R.id.clear_title_tv);
-        mClearTitleTv.setOnClickListener(this);
-
-        mTopContainer = $(R.id.top_container);
-        mTitleContainer = $(R.id.title_container);
-        mMiddleContainer = $(R.id.middle_container);
-
-        tryInitSettingPanel();
+        mAdminSl = $(R.id.admin_sl);
     }
 
     public void setRoomChatMsgManager(@NonNull LiveRoomChatMsgManager roomChatMsgManager) {
         super.setRoomChatMsgManager(roomChatMsgManager);
-        tryInitSettingPanel();
-    }
-
-    private void tryInitSettingPanel() {
-        if (mGameSettingPanel == null && mRootView != null && mRoomChatMsgManager != null) {
-            mGameSettingPanel = new GameSettingPanel((RelativeLayout) mRootView, mRoomChatMsgManager);
-        }
     }
 
     @Override
@@ -230,26 +168,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    protected void initTagName() {
-        String jsonString = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_TAG, "");
-        if (!TextUtils.isEmpty(jsonString)) {
-            try {
-                mRoomTag = new RoomTag(jsonString);
-            } catch (Exception e) {
-            }
-            if (mRoomTag != null) {
-                mTagNameTv.setText(mRoomTag.getTagName());
-                mTagNameTv.setSelected(true);
-            }
-        }
-        prepareTagFromServer();
-    }
-
-    @Override
     protected void openLive() {
-        if (mRoomTag != null) {
-            PreferenceUtils.setSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_TAG, mRoomTag.toJsonString());
-        }
         PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, mQualityIndex);
         openGameLive();
     }
@@ -265,20 +184,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             showQualityDialog();
         } else if (id == R.id.block_area) {
             showSettingPanel(true);
-        } else if (id == R.id.daily_task_area) {
-            showDailyTask();
         } else if (id == R.id.mute_no_tv) {
             updateMuteStatus(false);
         } else if (id == R.id.mute_yes_tv) {
             updateMuteStatus(true);
-        } else if (id == R.id.admin_area) {
-            openAdminFragment();
-        } else if (id == R.id.change_title_tv) {
-            changeTitle();
-        } else if (id == R.id.clear_title_tv) {
-            clearTitle();
-        } else if (id == R.id.main_fragment_container) {
-            hideSettingPanel(true);
         }
     }
 
@@ -298,24 +207,24 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         builder.show();
     }
 
-    private void showSettingPanel(boolean useAnimation) {
-        mTopContainer.setVisibility(View.GONE);
-        mTitleContainer.setVisibility(View.GONE);
-        mMiddleContainer.setVisibility(View.GONE);
+    protected void showSettingPanel(boolean useAnimation) {
+        super.showBottomPanel(useAnimation);
         mBeginBtn.setVisibility(View.GONE);
-        mShareContainer.setVisibility(View.GONE);
+
+        if (mGameSettingPanel == null && mRootView != null && mRoomChatMsgManager != null) {
+            mGameSettingPanel = new GameSettingPanel((RelativeLayout) mRootView, mRoomChatMsgManager);
+        }
         mGameSettingPanel.showSelf(useAnimation, false);
-        mRootView.setOnClickListener(this);
     }
 
-    private void hideSettingPanel(boolean useAnimation) {
-        mTopContainer.setVisibility(VISIBLE);
-        mTitleContainer.setVisibility(VISIBLE);
-        mMiddleContainer.setVisibility(VISIBLE);
+    @Override
+    public void hideBottomPanel(boolean useAnimation) {
+        if (mGameSettingPanel != null) {
+            mGameSettingPanel.hideSelf(useAnimation);
+        }
+
         mBeginBtn.setVisibility(VISIBLE);
-        mShareContainer.setVisibility(View.VISIBLE);
-        mGameSettingPanel.hideSelf(useAnimation);
-        mRootView.setOnClickListener(null);
+        super.hideBottomPanel(useAnimation);
     }
 
     private void updateMuteStatus(boolean isMute) {
@@ -331,57 +240,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
-    private void showDailyTask() {
-        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
-                mWidgetUnit.getLinkUrl(), mWidgetUnit.getUrlNeedParam(), mWidgetUnit.getOpenType(), UserAccountManager.getInstance().getUuidAsLong());
-    }
-
-    private void openAdminFragment() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(RoomAdminFragment.KEY_ROOM_SEND_MSG_CONFIG, new MessageRule());
-        bundle.putLong(RoomAdminFragment.KEY_ROOM_ANCHOR_ID, UserAccountManager.getInstance().getUuidAsLong());
-        bundle.putBoolean(RoomAdminFragment.KEY_ONLY_SHOW_ADMIN_MANAGER_PAGE, true);
-        FragmentNaviUtils.addFragment(getActivity(), R.id.main_act_container, RoomAdminFragment.class, bundle, true, true, true);
-    }
-
-    @Override
-    public void fillTitle(String title) {
-        mLiveTitleEt.setText(title);
-    }
-
-    @Override
-    public void updateControlTitleArea(boolean isShow) {
-        if (isShow) {
-            if (mControlTitleArea.getVisibility() != VISIBLE) {
-                mControlTitleArea.setVisibility(VISIBLE);
-            }
-        } else {
-            if (mControlTitleArea.getVisibility() == VISIBLE) {
-                mControlTitleArea.setVisibility(View.INVISIBLE);
-            }
-        }
-    }
-
-    @Override
-    public void setDailyTaskUnit(final LiveCommonProto.NewWidgetUnit unit) {
-        if (unit != null && unit.hasLinkUrl()) {
-            mDailyTaskSl.setVisibility(VISIBLE);
-            mDailyTaskArea.setVisibility(VISIBLE);
-            mWidgetUnit = unit;
-        } else {
-            mDailyTaskSl.setVisibility(View.GONE);
-            mDailyTaskArea.setVisibility(View.GONE);
-        }
-    }
-
-    private void changeTitle() {
-        mRoomPreparePresenter.changeTitle();
-    }
-
-    private void clearTitle() {
-        mLiveTitleEt.setText("");
-    }
-
     protected void openGameLive() {
         if (mDataListener != null) {
             Bundle bundle = new Bundle();
@@ -395,28 +253,16 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    protected void adjustTitleEtPosByCover(boolean isTitleEtFocus, int coverState) {
-    }
-
-    @Override
-    protected void getTagFromServer() {
-        KeyboardUtils.hideKeyboard(getActivity());
-        mRoomTagPresenter.start(RoomTagRequest.TAG_TYPE_GAME);
-    }
-
-    protected void prepareTagFromServer() {
-        mRoomTagPresenter.prepare(RoomTagRequest.TAG_TYPE_GAME);
-    }
-
-    @Override
-    protected void updateTagName() {
-        if (mRoomTag != null) {
-            mTagNameTv.setText(mRoomTag.getTagName());
-            mTagNameTv.setSelected(true);
-            if (!TextUtils.isEmpty(mRoomTag.getIconUrl())) {
-                EventBus.getDefault().post(new LiveEventClass.LiveCoverEvent(mRoomTag.getIconUrl()));
-            }
+    public void setManagerCount(int count) {
+        if (count >= 0) {
+            mAdminSl.setVisibility(View.VISIBLE);
+            mAdminCount.setText(getString(R.string.has_add_manager_count, count));
+            mAdminArea.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void adjustTitleEtPosByCover(boolean isTitleEtFocus, int coverState) {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -427,17 +273,10 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(MiLinkEvent.StatusLogined event) {
-        if (event != null) {
-            asyncProcess();
-        }
-    }
-
     @Override
     public boolean onBackPressed() {
-        if (mGameSettingPanel.isShow()) {
-            hideSettingPanel(true);
+        if (mGameSettingPanel != null && mGameSettingPanel.isShow()) {
+            hideBottomPanel(true);
             return true;
         }
         getActivity().finish();
@@ -447,12 +286,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void hideTag() {
-        // 游戏直播,不需要hideTag
     }
 
     public static void openFragment(
@@ -465,11 +298,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }
-    }
-
-    @Override
-    public void setManagerCount(int count) {
-        mAdminCount.setText(getString(R.string.has_add_manager_count, count));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

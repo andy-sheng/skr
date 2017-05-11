@@ -20,10 +20,12 @@ import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.assist.Attachment;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.image.ClipImageActivity;
 import com.wali.live.livesdk.live.manager.PrepareLiveCoverManager;
+import com.wali.live.utils.AvatarUtils;
 
 /**
  * Created by zyh on 2017/3/13.
@@ -88,6 +90,12 @@ public class SelectCoverView extends RelativeLayout implements View.OnClickListe
         mCoverBigDv = (SimpleDraweeView) findViewById(R.id.cover_big);
         mCoverTv = (TextView) findViewById(R.id.cover_text);
         mCoverView = (SimpleDraweeView) findViewById(R.id.cover_view);
+        setCoverByAvatar();
+    }
+
+    public void setCoverByAvatar() {
+        AvatarUtils.loadAvatarByUidTs(mCoverBigDv, MyUserInfoManager.getInstance().getUuid(),
+                MyUserInfoManager.getInstance().getAvatar(), false);
     }
 
     private void initManager() {

@@ -29,8 +29,8 @@ import com.mi.live.engine.base.GalileoConstants;
 import com.mi.live.engine.streamer.IStreamer;
 import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.livesdk.live.opengl.GLRendererOES;
-import com.wali.live.livesdk.live.utils.LooperScheduler;
 import com.wali.live.livesdk.live.utils.AudioRecordWorker;
+import com.wali.live.livesdk.live.utils.LooperScheduler;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
@@ -115,11 +115,13 @@ public class ScreenRecordManager implements SurfaceTexture.OnFrameAvailableListe
                 if (mLastImgData == null || mLastImgData.data == null) {
                     return;
                 }
-                Bitmap bitmap = Bitmap.createBitmap(mImageData.stride, mImageData.height, Bitmap.Config.ARGB_8888);
-                ByteBuffer byteBuffer = ByteBuffer.wrap(mImageData.data);
-                bitmap.copyPixelsFromBuffer(byteBuffer);
-                bitmap = Bitmap.createBitmap(bitmap, 0, 0, mImageData.width, mImageData.height);
-                listener.onScreenshotReady(bitmap);
+                if (mImageData.stride > 0 && mImageData.height > 0) {
+                    Bitmap bitmap = Bitmap.createBitmap(mImageData.stride, mImageData.height, Bitmap.Config.ARGB_8888);
+                    ByteBuffer byteBuffer = ByteBuffer.wrap(mImageData.data);
+                    bitmap.copyPixelsFromBuffer(byteBuffer);
+                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, mImageData.width, mImageData.height);
+                    listener.onScreenshotReady(bitmap);
+                }
             }
         });
     }

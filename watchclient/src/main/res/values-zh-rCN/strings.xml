@@ -68,4 +68,8 @@
     <string name="feeds">动态</string>
     <string name="uninstall_share_tips">未安装%1$s，请安装后分享</string>
     <string name="can_not_enter_room_use_myself">请使用另一个账号进入您的直播间</string>
+
+    <string name="service_token_expired">您的账号于 %s 在其他设备上登录，如非本人操作，您的账号可能已被人盗用</string>
+    <string name="forbbiden_message">你的账号（%s）由于违反社区管理规定被封禁，如需申诉请联系＂小米LIVE＂公众号。</string>
+
 </resources>

@@ -1,5 +1,6 @@
 <configuration>
-    <property name="LOG_DIR" value="${EXT_DIR:-/sdcard}/Xiaomi/WALI_LIVE_SDK/logs/${PACKAGE_NAME}/" />
+    <property name="LOG_DIR"
+        value="${EXT_DIR:-/sdcard}/Xiaomi/WALI_LIVE_SDK/logs/${PACKAGE_NAME}/" />
     <!--声明一个时间戳-->
     <timestamp datePattern="yyyyMMdd" key="today" />
     <!--声明一个FileAppender-->
@@ -30,27 +31,27 @@
             <pattern>%date [%thread] - %msg%n</pattern>
         </encoder>
 
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">-->
-        <!--<fileNamePattern>${LOG_DIR}/livesdk.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>-->
-        <!--<minIndex>1</minIndex>-->
-        <!--<maxIndex>10</maxIndex>-->
-        <!--</rollingPolicy>-->
-
-        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
-        <!--<maxFileSize>1MB</maxFileSize>-->
-        <!--</triggeringPolicy>-->
-
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/livesdk_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!-- or whenever the file size reaches 5MB -->
-                <maxFileSize>5MB</maxFileSize>
-                <totalSizeCap>50MB</totalSizeCap>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <!--最大保存7天的日志-->
-            <maxHistory>3</maxHistory>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/livesdk.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>20</maxIndex>
         </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>15MB</maxFileSize>
+        </triggeringPolicy>
+
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+        <!--<fileNamePattern>${LOG_DIR}/livesdk%d{yyyy-MM-dd}_%i.log</fileNamePattern>-->
+        <!--<timeBasedFileNamingAndTriggeringPolicy-->
+        <!--class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+        <!--&lt;!&ndash; or whenever the file size reaches 5MB &ndash;&gt;-->
+        <!--<maxFileSize>5MB</maxFileSize>-->
+        <!--<totalSizeCap>50MB</totalSizeCap>-->
+        <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+        <!--&lt;!&ndash;最大保存7天的日志&ndash;&gt;-->
+        <!--<maxHistory>3</maxHistory>-->
+        <!--</rollingPolicy>-->
 
     </appender>
 
