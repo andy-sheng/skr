@@ -168,19 +168,15 @@
     public *;
 }
 
--keep class com.mi.liveassistant.login.GlobalManager{
+-keep class com.mi.liveassistant.account.AccountManager{
     public *;
 }
 
--keep class com.mi.liveassistant.login.callback.IAccountListener{
+-keep class com.mi.liveassistant.account.callback.IAccountListener{
     *;
 }
 
--keep class com.mi.liveassistant.login.LoginManager{
-    public *;
-}
-
--keep class com.mi.liveassistant.login.callback.ILoginCallback{
+-keep class com.mi.liveassistant.account.callback.IAccountCallback{
     *;
 }
 

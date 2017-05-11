@@ -1,6 +1,5 @@
-package com.mi.liveassistant.login;
+package com.mi.liveassistant.account;
 
-import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.account.login.LoginType;
 import com.mi.liveassistant.account.task.AccountCaller;
 import com.mi.liveassistant.common.api.ErrorCode;
@@ -8,8 +7,8 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
 import com.mi.liveassistant.data.repository.AccountLocalStore;
 import com.mi.liveassistant.event.AccountEvent;
-import com.mi.liveassistant.login.callback.IAccountListener;
-import com.mi.liveassistant.login.callback.ILoginCallback;
+import com.mi.liveassistant.account.callback.IAccountListener;
+import com.mi.liveassistant.account.callback.IAccountCallback;
 import com.mi.liveassistant.proto.AccountProto;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -22,10 +21,10 @@ import rx.schedulers.Schedulers;
 /**
  * Created by chenyong on 2017/4/28.
  */
-public enum LoginManager {
+public enum AccountManager {
     INSTANCE;
 
-    private static final String TAG = LoginManager.class.getSimpleName();
+    private static final String TAG = AccountManager.class.getSimpleName();
 
     private IAccountListener mAccountListener;
 
@@ -36,7 +35,7 @@ public enum LoginManager {
     /**
      * 请上层异步处理
      */
-    public String checkAccount() {
+    public String getAccount() {
         if (UserAccountManager.getInstance().hasAccount()) {
             return UserAccountManager.getInstance().getUuid();
         }
@@ -45,7 +44,7 @@ public enum LoginManager {
         return UserAccountManager.getInstance().hasAccount() ? account.getUuid() : null;
     }
 
-    public void loginByMiAccountOAuth(final int channelId, final String code, final ILoginCallback callback) {
+    public void loginByMiAccountOAuth(final int channelId, final String code, final IAccountCallback callback) {
         AccountCaller.login(channelId, LoginType.LOGIN_XIAOMI, code, null, null, null, null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -74,9 +73,9 @@ public enum LoginManager {
                 });
     }
 
-    public static void thirdPartLogin(final int channelId, final String xuid, final String name,
-                                      final String headUrl, final int sex, final String sign,
-                                      final ILoginCallback callback) {
+    public void thirdPartLogin(final int channelId, final String xuid, final String name,
+                               final String headUrl, final int sex, final String sign,
+                               final IAccountCallback callback) {
         AccountCaller.login(channelId, xuid, sex, name, headUrl, sign)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

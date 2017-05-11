@@ -14,7 +14,7 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.thread.ThreadPool;
 import com.mi.liveassistant.config.Constants;
 import com.mi.liveassistant.dns.PreDnsManager;
-import com.mi.liveassistant.login.LoginManager;
+import com.mi.liveassistant.account.AccountManager;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;
 import com.mi.liveassistant.version.VersionManager;
 import com.mi.milink.sdk.base.Global;
@@ -85,10 +85,10 @@ public class InitManager {
         }
     }
 
-    public static void registerAllEventBus() {
+    private static void registerAllEventBus() {
         EventBus.getDefault().register(InitDaemon.INSTANCE);
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
-        EventBus.getDefault().register(LoginManager.INSTANCE);
+        EventBus.getDefault().register(AccountManager.INSTANCE);
     }
 
     private static void initLibrary() {
@@ -112,7 +112,7 @@ public class InitManager {
                 .build();
     }
 
-    public static void initLogger() {
+    private static void initLogger() {
         if (Constants.isTestBuild
                 || Constants.isDailyBuild
                 || Constants.isDebugBuild) {
@@ -125,7 +125,7 @@ public class InitManager {
     /**
      * 同时设置app和milink日志
      */
-    public static void setAppAndMilinkLogLevel(int logLevel) {
+    private static void setAppAndMilinkLogLevel(int logLevel) {
         if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
             logLevel = TraceLevel.ALL;
         }
@@ -137,7 +137,7 @@ public class InitManager {
     /**
      * 设置app log级别
      */
-    public static void setAppLogLevel(int logLevel) {
+    private static void setAppLogLevel(int logLevel) {
         if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
             logLevel = TraceLevel.ALL;
         }
@@ -150,7 +150,7 @@ public class InitManager {
     /**
      * 设置milink log级别
      */
-    public static void setMilinkLogLevel(int logLevel) {
+    private static void setMilinkLogLevel(int logLevel) {
         if (logLevel > TraceLevel.ALL || logLevel < TraceLevel.VERBOSE) {
             logLevel = TraceLevel.ALL;
         }

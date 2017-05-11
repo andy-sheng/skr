@@ -9,15 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.mi.liveassistant.login.LoginManager;
-import com.mi.liveassistant.login.callback.IAccountListener;
-import com.mi.liveassistant.login.callback.ILoginCallback;
+import com.mi.liveassistant.account.AccountManager;
+import com.mi.liveassistant.account.callback.IAccountListener;
+import com.mi.liveassistant.account.callback.IAccountCallback;
 import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
 import com.mi.liveassistant.michannel.presenter.IChannelView;
 import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
 import com.mi.liveassistant.michannel.viewmodel.ChannelLiveViewModel;
 import com.mi.liveassistant.utils.RSASignature;
-import com.wali.live.sdk.litedemo.account.AccountManager;
 import com.wali.live.sdk.litedemo.activity.GameLiveActivity;
 import com.wali.live.sdk.litedemo.activity.NormalLiveActivity;
 import com.wali.live.sdk.litedemo.activity.WatchActivity;
@@ -28,6 +27,21 @@ import java.util.List;
 
 public class MainActivity extends RxActivity implements View.OnClickListener, IChannelView {
     public static final int REQUEST_MEDIA_PROJECTION = 2000;
+
+    public static final String RSA_PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMC8ISWECSak6Z1X" +
+            "tgTy9jrq85dZ7Z95CndJ6Sz0ty5fiVqiJ4WrRf7d+78hlEOvlE0fwLQraHZ28gkD" +
+            "kdNX1ycFDV+SBDTn+rFnRJQZjA8t3cQGiJmpyFIpaSzpz9PMTScxDmmxygUzsTXe" +
+            "sCcFV8p9thCyJj5kGsUFxzkfwR7dAgMBAAECgYAqUCMmzVoE9eej94GqjHyqarKX" +
+            "49JbVIOLtNpQWFlvAOJy12691eBEGBAQ4hpe0clJNVNlOrJwb6SrffEh6QL+2Aht" +
+            "oocO7ST4kGpYTk53ofkK9AOwdZkhhzn226qRlDFN+OyAedLsv5sZ3166KTfxaCkO" +
+            "5/KeXuD9BucT4eHTMQJBAPUGugXFJBVUZimsqwi5PKBGtmqQEJAi5M0vZvGz4vtq" +
+            "H8pXQVYHOwAQA2Kmx7LSWqUa5EZCfKQIHE88dhmcru8CQQDJXd825pM0FW6ENr/9" +
+            "IZLZBMgOlFG06WkVa442trbViGP0TPJMeEzBHoCDtlxDUxKcbFworXvVk+f8SYUo" +
+            "6g7zAkAJSIb1vwFd+YOhYpRcUUBVxjgVE349J8VJbNlWoP0hj2TC8slb7Aw1NWYb" +
+            "b7wzLzsV9E3fx5cXU+NWsTC8Sa5rAkEAw8DL4/UWmQVUoJcQ4KUoumwZh4LMQ1C8" +
+            "5SPf5nSNHNwwPygmTAyOoRZj3KcE3jX9267DkI/F2ISmeu2F05Zl3QJAX8qggola" +
+            "wpkdbvZn81X80lFuye6b0KjSWqlrrQLtjSR9/ov/avbuEDI+Ni4rDZn5a0rkGuaN" +
+            "DzBZBemtWvPkjg==";
 
     private Button mLoginBtn;
     private Button mGameLiveBtn;
@@ -67,7 +81,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mUserId = LoginManager.INSTANCE.checkAccount();
+                mUserId = AccountManager.INSTANCE.getAccount();
                 mHasAccount = !TextUtils.isEmpty(mUserId);
                 if (mHasAccount) {
                     mLoginBtn.post(new Runnable() {
@@ -87,7 +101,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
     }
 
     private void initManager() {
-        LoginManager.INSTANCE.setAccountListener(new IAccountListener() {
+        AccountManager.INSTANCE.setAccountListener(new IAccountListener() {
             @Override
             public void forbidAccount() {
                 ToastUtils.showToast("forbidAccount");
@@ -131,7 +145,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
 
     private void clickLoginBtn() {
         if (mHasAccount) {
-            LoginManager.INSTANCE.logoff();
+            AccountManager.INSTANCE.logoff();
             mHasAccount = false;
             mLoginBtn.setText("请先登录");
         } else {
@@ -159,9 +173,9 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                 int sex = 1;
                 int channelId = 50001;
                 String signStr = "channelId=" + channelId + "&headUrl=" + headUrl + "&nickname=" + name + "&sex=" + sex + "&xuid=" + uid;
-                String sign = RSASignature.sign(signStr, AccountManager.RSA_PRIVATE_KEY, "UTF-8");
+                String sign = RSASignature.sign(signStr, RSA_PRIVATE_KEY, "UTF-8");
 
-                LoginManager.thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new ILoginCallback() {
+                AccountManager.INSTANCE.thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new IAccountCallback() {
                     @Override
                     public void notifyFail(int errCode) {
                         Log.d(TAG, "notifyFail");
