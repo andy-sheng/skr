@@ -11,15 +11,12 @@ import android.widget.RelativeLayout;
 
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
-import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
-import com.base.preference.PreferenceUtils;
-import com.base.utils.language.LocaleUtil;
+import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.component.data.StreamerPresenter;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.image.ClipImageActivity;
@@ -32,11 +29,13 @@ import com.wali.live.livesdk.live.manager.PrepareLiveCoverManager;
 import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
 import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
 import com.wali.live.livesdk.live.view.SelectCoverView;
-import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by yangli on 2017/3/7.
@@ -113,17 +112,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         $click(mMagicIv, this);
     }
 
-    @Override
-    protected void getTagFromServer() {
-        mBeginBtn.setEnabled(true);
-        mRoomTagPresenter.start(RoomTagRequest.TAG_TYPE_NORMAL);
-        new LiveMagicPresenter().syncFilterData();
-    }
-
-    protected void prepareTagFromServer() {
-        mRoomTagPresenter.prepare(RoomTagRequest.TAG_TYPE_NORMAL);
-    }
-
     private void showEffectPanel(boolean useAnimation) {
         super.showBottomPanel(useAnimation);
         mBottomContainer.setVisibility(View.GONE);
@@ -197,43 +185,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    protected void initTagName() {
-        if (!LocaleUtil.isChineseLocal()) {
-            hideTag();
-            return;
-        }
-        String jsonString = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, "");
-        if (!TextUtils.isEmpty(jsonString)) {
-            try {
-                mRoomTag = new RoomTag(jsonString);
-            } catch (Exception e) {
-            }
-        }
-        if (mRoomTag != null) {
-            mTagNameTv.setText(getString(R.string.quanzi_name, mRoomTag.getTagName()));
-            mTagNameTv.setSelected(true);
-            mBeginBtn.setEnabled(true);
-        } else {
-            mBeginBtn.setEnabled(false);
-        }
-        prepareTagFromServer();
-    }
-
-    @Override
-    protected void updateTagName() {
-        if (mRoomTag != null) {
-            mTagNameTv.setText(getString(R.string.quanzi_name, mRoomTag.getTagName()));
-            mTagNameTv.setSelected(true);
-        }
-    }
-
-    @Override
-    public void hideTag() {
-        super.hideTag();
-        mBeginBtn.setEnabled(true);
-    }
-
-    @Override
     protected void putCommonData(Bundle bundle) {
         super.putCommonData(bundle);
         bundle.putString(EXTRA_LIVE_COVER_URL, mCoverView.getCoverUrl());
@@ -245,9 +196,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
             if (PermissionUtils.checkRecordAudio(getContext())) {
                 if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
                     return;
-                }
-                if (mRoomTag != null) {
-                    PreferenceUtils.setSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_NORMAL_TAG, mRoomTag.toJsonString());
                 }
                 openPublicLive();
             } else {
@@ -280,6 +228,16 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         super.onDestroyView();
         if (mCoverView != null) {
             mCoverView.onDestroy();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(MiLinkEvent.StatusLogined event) {
+        super.onEvent(event);
+        if (event != null) {
+            if (TextUtils.isEmpty(mCoverView.getCoverUrl())) {
+                mCoverView.setCoverByAvatar();
+            }
         }
     }
 

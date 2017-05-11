@@ -1,7 +1,6 @@
 package com.wali.live.livesdk.live.fragment;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -22,11 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.base.activity.RxActivity;
-import com.base.dialog.MyAlertDialog;
+import com.base.fragment.BaseEventBusFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.FragmentListener;
-import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
@@ -43,18 +40,12 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.api.RoomTagRequest;
-import com.wali.live.livesdk.live.presenter.IRoomTagView;
 import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
-import com.wali.live.livesdk.live.presenter.RoomTagPresenter;
 import com.wali.live.livesdk.live.presenter.view.IRoomPrepareView;
-import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.proto.LiveCommonProto;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import rx.Observable;
 
@@ -64,7 +55,7 @@ import static android.view.View.VISIBLE;
  * Created by zyh on 2017/2/8.
  */
 
-public abstract class BasePrepareLiveFragment extends MyRxFragment implements View.OnClickListener, FragmentDataListener, IRoomTagView, FragmentListener, IRoomPrepareView {
+public abstract class BasePrepareLiveFragment extends BaseEventBusFragment implements View.OnClickListener, FragmentDataListener, FragmentListener, IRoomPrepareView {
     public static final int REQUEST_CODE = GlobalData.getRequestCode();
 
     public static final String EXTRA_SNS_TYPE = "extra_sns_type";
@@ -85,14 +76,9 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     protected TextView mBeginBtn;
     protected TextView mTagNameTv;
-    protected ViewGroup mTagNameContainer;
     protected ImageView mCloseBtn;
 
     protected EditText mLiveTitleEt;
-
-    protected RoomTag mRoomTag;
-    protected RoomTagPresenter mRoomTagPresenter;
-    protected int mTagIndex = -1;
 
     protected RoomPreparePresenter mRoomPreparePresenter;
     protected LiveRoomChatMsgManager mRoomChatMsgManager;
@@ -189,10 +175,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         getActivity().finish();
     }
 
-    private void onTagNameBtnClick() {
-        getTagFromServer();
-    }
-
     private void onShareBtnClick() {
         mShareSelectedIv.setSelected(!mShareSelectedIv.isSelected());
     }
@@ -251,9 +233,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mTagNameContainer != null) {
-            mRoomTagPresenter.stop();
-        }
     }
 
     protected void initContentView() {
@@ -322,9 +301,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         initContentView();
         initTitleView();
         initPresenters();
-        if (mTagNameContainer != null) {
-            initTagName();
-        }
         getDailyTaskFromServer();
     }
 
@@ -352,10 +328,6 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
 
     protected abstract void openLive();
 
-    protected abstract void getTagFromServer();
-
-    protected abstract void initTagName();
-
     protected void openPublicLive() {
         if (mDataListener != null) {
             Bundle bundle = new Bundle();
@@ -371,62 +343,10 @@ public abstract class BasePrepareLiveFragment extends MyRxFragment implements Vi
         // 产品要求支持多个分享
         bundle.putBoolean(EXTRA_SNS_TYPE, isShareSelected());
         bundle.putString(EXTRA_LIVE_TITLE, mLiveTitleEt.getText().toString().trim());
-        // 添加标签
-        if (mRoomTag != null) {
-            bundle.putSerializable(EXTRA_LIVE_TAG_INFO, mRoomTag);
-        }
     }
 
     protected void initPresenters() {
-        if (mTagNameContainer != null) {
-            mRoomTagPresenter = new RoomTagPresenter((RxActivity) getActivity(), this);
-        }
     }
-
-    @Override
-    public void hideTag() {
-        mTagNameContainer.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showTagList(final List<RoomTag> roomTags, int type) {
-        mTagNameContainer.setVisibility(VISIBLE);
-
-        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(getActivity());
-        String[] tagArray = new String[roomTags.size()];
-        String[] tagIcons = new String[roomTags.size()];
-        for (int i = 0; i < roomTags.size(); i++) {
-            tagArray[i] = roomTags.get(i).getTagName();
-            tagIcons[i] = roomTags.get(i).getIconUrl();
-            if (mRoomTag != null && mRoomTag.getTagName().equals(tagArray[i])) {
-                mTagIndex = i;
-            }
-        }
-        switch (type) {
-            case RoomTagRequest.TAG_TYPE_GAME:
-                builder.setTitle(R.string.game_live_tag_title);
-                break;
-            default:
-                builder.setTitle(R.string.normal_live_tag_title);
-                mTagIndex = mTagIndex == -1 ? tagArray.length - 1 : mTagIndex;
-                mRoomTag = roomTags.get(mTagIndex);
-                break;
-        }
-        updateTagName();
-
-        builder.setSingleChoiceItems(tagArray, mTagIndex, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MyLog.d(TAG, "click item=" + which + ";tagInfo=" + mRoomTag);
-                mTagIndex = which;
-                mRoomTag = roomTags.get(which);
-                updateTagName();
-                dialog.dismiss();
-            }
-        }).show();
-    }
-
-    protected abstract void updateTagName();
 
     @Override
     public void setManagerCount(int count) {

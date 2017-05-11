@@ -12,7 +12,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -36,17 +35,14 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.LiveSdkActivity;
-import com.wali.live.livesdk.live.api.RoomTagRequest;
 import com.wali.live.livesdk.live.eventbus.LiveEventClass;
 import com.wali.live.livesdk.live.fragment.BasePrepareLiveFragment;
 import com.wali.live.livesdk.live.livegame.view.panel.GameSettingPanel;
 import com.wali.live.livesdk.live.presenter.RoomPreparePresenter;
 import com.wali.live.livesdk.live.presenter.viewmodel.TitleViewModel;
-import com.wali.live.livesdk.live.viewmodel.RoomTag;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -95,7 +91,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -169,26 +164,7 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     }
 
     @Override
-    protected void initTagName() {
-        String jsonString = PreferenceUtils.getSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_TAG, "");
-        if (!TextUtils.isEmpty(jsonString)) {
-            try {
-                mRoomTag = new RoomTag(jsonString);
-            } catch (Exception e) {
-            }
-            if (mRoomTag != null) {
-                mTagNameTv.setText(mRoomTag.getTagName());
-                mTagNameTv.setSelected(true);
-            }
-        }
-        prepareTagFromServer();
-    }
-
-    @Override
     protected void openLive() {
-        if (mRoomTag != null) {
-            PreferenceUtils.setSettingString(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_TAG, mRoomTag.toJsonString());
-        }
         PreferenceUtils.setSettingInt(GlobalData.app(), PreferenceUtils.PREF_KEY_LIVE_GAME_CLARITY, mQualityIndex);
         openGameLive();
     }
@@ -277,27 +253,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     protected void adjustTitleEtPosByCover(boolean isTitleEtFocus, int coverState) {
     }
 
-    @Override
-    protected void getTagFromServer() {
-        KeyboardUtils.hideKeyboard(getActivity());
-        mRoomTagPresenter.start(RoomTagRequest.TAG_TYPE_GAME);
-    }
-
-    protected void prepareTagFromServer() {
-        mRoomTagPresenter.prepare(RoomTagRequest.TAG_TYPE_GAME);
-    }
-
-    @Override
-    protected void updateTagName() {
-        if (mRoomTag != null) {
-            mTagNameTv.setText(mRoomTag.getTagName());
-            mTagNameTv.setSelected(true);
-            if (!TextUtils.isEmpty(mRoomTag.getIconUrl())) {
-                EventBus.getDefault().post(new LiveEventClass.LiveCoverEvent(mRoomTag.getIconUrl()));
-            }
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LiveEventClass.HidePrepareGameLiveEvent event) {
         if (event != null) {
@@ -319,12 +274,6 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void hideTag() {
-        // 游戏直播,不需要hideTag
     }
 
     public static void openFragment(

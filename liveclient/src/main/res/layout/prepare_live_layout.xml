@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_container"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="@dimen/view_dimen_50"/>
 
     <!--封面/直播标题等-->
     <RelativeLayout
@@ -61,7 +61,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/view_dimen_40"
         android:layout_marginRight="@dimen/view_dimen_40"
-        android:layout_marginTop="@dimen/view_dimen_56">
+        android:layout_marginTop="@dimen/view_dimen_80">
 
         <LinearLayout
             android:id="@+id/title_area"
@@ -261,7 +261,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="@dimen/view_dimen_150">
+        android:layout_marginBottom="@dimen/view_dimen_150"
+        android:layout_marginTop="24.67dp">
 
         <ImageView
             android:id="@+id/sound_effect_iv"
