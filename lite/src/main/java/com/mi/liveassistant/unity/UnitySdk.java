@@ -31,7 +31,7 @@ abstract class UnitySdk<ACTIVITY extends Activity, LISTENER extends ILoginListen
     public void login(String rsaKey, String uid, String name, int sex, int channelId, String avatarUrl) {
         String signStr = "channelId=" + channelId + "&headUrl=" + avatarUrl + "&nickname=" + name + "&sex=" + sex + "&xuid=" + uid;
         String sign = RSASignature.sign(signStr, rsaKey, "UTF-8");
-        AccountManager.INSTANCE.thirdPartLogin(channelId, uid, name, avatarUrl, sex, sign, new IAccountCallback() {
+        AccountManager.getInstance().thirdPartLogin(channelId, uid, name, avatarUrl, sex, sign, new IAccountCallback() {
             @Override
             public void notifyFail(int errCode) {
                 MyLog.d(TAG, "notifyFail");

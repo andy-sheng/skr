@@ -1,7 +1,7 @@
 package com.mi.liveassistant.barrage.facade;
 
-import com.mi.liveassistant.barrage.callback.ChatMsgCallBack;
-import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
+import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
+import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
 import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.manager.BarragePullMessageManager;
 import com.mi.liveassistant.barrage.manager.BarragePushMessageManager;
@@ -26,11 +26,11 @@ public class MessageFacade {
     private MessageFacade() {
     }
 
-    public void registCallBack(String roomId, ChatMsgCallBack chatMsgCallBack,SysMsgCallBack sysMsgCallBack) {
+    public void registerCallBack(String roomId, IChatMsgCallBack chatMsgCallBack, ISysMsgCallBack sysMsgCallBack) {
         BarrageMainProcessor.getInstance().init(roomId,chatMsgCallBack,sysMsgCallBack);
     }
 
-    public void unregistCallBack() {
+    public void unregisterCallBack() {
         BarrageMainProcessor.getInstance().destroy();
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
  *
  * Created by wuxiaoshan on 17-5-3.
  */
-public interface ChatMsgCallBack {
+public interface IChatMsgCallBack {
 
     void handleMessage(List<Message> messageList);
 

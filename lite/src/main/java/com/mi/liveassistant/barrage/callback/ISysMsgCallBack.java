@@ -9,6 +9,6 @@ import java.util.List;
  *
  * Created by wuxiaoshan on 17-5-5.
  */
-public interface SysMsgCallBack{
+public interface ISysMsgCallBack {
     void handleMessage(List<Message> messageList);
 }

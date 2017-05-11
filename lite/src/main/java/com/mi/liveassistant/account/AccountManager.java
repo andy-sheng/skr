@@ -1,5 +1,7 @@
 package com.mi.liveassistant.account;
 
+import com.mi.liveassistant.account.callback.IAccountCallback;
+import com.mi.liveassistant.account.callback.IAccountListener;
 import com.mi.liveassistant.account.login.LoginType;
 import com.mi.liveassistant.account.task.AccountCaller;
 import com.mi.liveassistant.common.api.ErrorCode;
@@ -7,8 +9,6 @@ import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
 import com.mi.liveassistant.data.repository.AccountLocalStore;
 import com.mi.liveassistant.event.AccountEvent;
-import com.mi.liveassistant.account.callback.IAccountListener;
-import com.mi.liveassistant.account.callback.IAccountCallback;
 import com.mi.liveassistant.proto.AccountProto;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -21,10 +21,18 @@ import rx.schedulers.Schedulers;
 /**
  * Created by chenyong on 2017/4/28.
  */
-public enum AccountManager {
-    INSTANCE;
+public class AccountManager {
 
     private static final String TAG = AccountManager.class.getSimpleName();
+
+    private static AccountManager mInstance = new AccountManager();
+
+    public static AccountManager getInstance() {
+        return mInstance;
+    }
+
+    private AccountManager() {
+    }
 
     private IAccountListener mAccountListener;
 

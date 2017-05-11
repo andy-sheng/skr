@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.mi.liveassistant.barrage.callback.ChatMsgCallBack;
-import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
+import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
+import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.data.model.User;
@@ -76,7 +76,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private LinearLayoutManager mBarrageManager;
     private BarrageAdapter mBarrageAdapter;
 
-    private ChatMsgCallBack mMsgCallBack = new ChatMsgCallBack() {
+    private IChatMsgCallBack mMsgCallBack = new IChatMsgCallBack() {
         @Override
         public void handleMessage(final List<Message> list) {
             mBarrageRv.post(new Runnable() {
@@ -89,7 +89,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         }
     };
 
-    private SysMsgCallBack mSysMsgCallBack = new SysMsgCallBack() {
+    private ISysMsgCallBack mISysMsgCallBack = new ISysMsgCallBack() {
         @Override
         public void handleMessage(final List<Message> list) {
             mBarrageRv.post(new Runnable() {
@@ -214,7 +214,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         Log.w(TAG, "onDestroy");
         super.onDestroy();
         mLiveManager.destroy();
-        MessageFacade.getInstance().unregistCallBack();
+        MessageFacade.getInstance().unregisterCallBack();
         MessageFacade.getInstance().stopPull();
     }
 
@@ -312,7 +312,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        MessageFacade.getInstance().registCallBack(mLiveId, mMsgCallBack, mSysMsgCallBack);
+        MessageFacade.getInstance().registerCallBack(mLiveId, mMsgCallBack, mISysMsgCallBack);
         MessageFacade.getInstance().startPull(mLiveId);
     }
 

@@ -88,7 +88,7 @@ public class InitManager {
     private static void registerAllEventBus() {
         EventBus.getDefault().register(InitDaemon.INSTANCE);
         EventBus.getDefault().register(PreDnsManager.INSTANCE);
-        EventBus.getDefault().register(AccountManager.INSTANCE);
+        EventBus.getDefault().register(AccountManager.getInstance());
     }
 
     private static void initLibrary() {

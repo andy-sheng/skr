@@ -2,9 +2,9 @@ package com.mi.liveassistant.barrage.processor;
 
 import android.util.SparseArray;
 
-import com.mi.liveassistant.barrage.callback.ChatMsgCallBack;
+import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
 import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
-import com.mi.liveassistant.barrage.callback.SysMsgCallBack;
+import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.common.log.MyLog;
@@ -38,9 +38,9 @@ public class BarrageMainProcessor implements IMsgDispenser {
 
     private static BarrageMainProcessor mInstance = new BarrageMainProcessor();
 
-    private ChatMsgCallBack mChatMsgCallBack;
+    private IChatMsgCallBack mChatMsgCallBack;
 
-    private SysMsgCallBack mSysMsgCallBack;
+    private ISysMsgCallBack mSysMsgCallBack;
 
     private InternalMsgCallBack mInternalMsgCallBack;
 
@@ -78,7 +78,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
         return mInstance;
     }
 
-    public void init(final String roomId, final ChatMsgCallBack chatMsgCallBack, final SysMsgCallBack sysMsgCallBack) {
+    public void init(final String roomId, final IChatMsgCallBack chatMsgCallBack, final ISysMsgCallBack sysMsgCallBack) {
         singleThread.execute(new Runnable() {
             @Override
             public void run() {

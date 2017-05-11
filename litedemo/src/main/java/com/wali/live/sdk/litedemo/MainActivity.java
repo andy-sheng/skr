@@ -81,7 +81,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mUserId = AccountManager.INSTANCE.getAccount();
+                mUserId = AccountManager.getInstance().getAccount();
                 mHasAccount = !TextUtils.isEmpty(mUserId);
                 if (mHasAccount) {
                     mLoginBtn.post(new Runnable() {
@@ -101,7 +101,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
     }
 
     private void initManager() {
-        AccountManager.INSTANCE.setAccountListener(new IAccountListener() {
+        AccountManager.getInstance().setAccountListener(new IAccountListener() {
             @Override
             public void forbidAccount() {
                 ToastUtils.showToast("forbidAccount");
@@ -145,7 +145,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
 
     private void clickLoginBtn() {
         if (mHasAccount) {
-            AccountManager.INSTANCE.logoff();
+            AccountManager.getInstance().logoff();
             mHasAccount = false;
             mLoginBtn.setText("请先登录");
         } else {
@@ -175,7 +175,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                 String signStr = "channelId=" + channelId + "&headUrl=" + headUrl + "&nickname=" + name + "&sex=" + sex + "&xuid=" + uid;
                 String sign = RSASignature.sign(signStr, RSA_PRIVATE_KEY, "UTF-8");
 
-                AccountManager.INSTANCE.thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new IAccountCallback() {
+                AccountManager.getInstance().thirdPartLogin(channelId, uid, name, headUrl, sex, sign, new IAccountCallback() {
                     @Override
                     public void notifyFail(int errCode) {
                         Log.d(TAG, "notifyFail");
