@@ -205,7 +205,8 @@ public class MiLinkClientAdapter {
             MiLinkCommand.COMMAND_GIFT_GET_LIST,
             MiLinkCommand.COMMAND_LIVE_LEAVE,
             MiLinkCommand.COMMAND_ACCOUNT_3PARTSIGNLOGIN,
-            MiLinkCommand.COMMAND_RECOMMEND_CHANNELLIST
+            MiLinkCommand.COMMAND_RECOMMEND_CHANNELLIST,
+            MiLinkCommand.COMMAND_FACE_BEAUTY_PARAMS
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {
