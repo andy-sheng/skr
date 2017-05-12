@@ -165,8 +165,8 @@ public class WatchActivity extends RxActivity {
     private void initManager() {
         mWatchManager = new WatchManager(new IWatchListener() {
             @Override
-            public void onEndUnexpected() {
-                Log.w(TAG, "onEndUnexpected");
+            public void onEndUnexpected(int errCode, String errMs) {
+                Log.w(TAG, "onEndUnexpected errCode" + errCode);
             }
         });
         mWatchManager.setContainerView(mSurfaceContainer);

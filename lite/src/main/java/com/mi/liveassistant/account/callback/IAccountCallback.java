@@ -6,5 +6,5 @@ package com.mi.liveassistant.account.callback;
 public interface IAccountCallback {
     void notifyFail(int errCode);
 
-    void notifySuccess(String uid);
+    void notifySuccess(long uid);
 }

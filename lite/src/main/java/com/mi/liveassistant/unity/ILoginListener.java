@@ -17,5 +17,5 @@ interface ILoginListener {
      *
      * @parsm uid 小米直播ID
      */
-    void onLoginSuccess(String uid);
+    void onLoginSuccess(long uid);
 }

@@ -43,13 +43,14 @@ public class AccountManager {
     /**
      * 请上层异步处理
      */
-    public String getAccount() {
+    public long getAccount() {
         if (UserAccountManager.getInstance().hasAccount()) {
-            return UserAccountManager.getInstance().getUuid();
+            return UserAccountManager.getInstance().getUuidAsLong();
         }
         UserAccount account = AccountLocalStore.getInstance().getAccount();
         UserAccountManager.getInstance().login(account);
-        return UserAccountManager.getInstance().hasAccount() ? account.getUuid() : null;
+        return UserAccountManager.getInstance().hasAccount() ?
+                UserAccountManager.getInstance().getUuidAsLong() : 0;
     }
 
     public void loginByMiAccountOAuth(final int channelId, final String code, final IAccountCallback callback) {
@@ -73,7 +74,7 @@ public class AccountManager {
                         MyLog.w(TAG, "miLoginByCode login onNext");
                         int code = rsp.getRetCode();
                         if (code == ErrorCode.CODE_SUCCESS) {
-                            callback.notifySuccess(UserAccountManager.getInstance().getUuid());
+                            callback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong());
                         } else {
                             callback.notifyFail(code);
                         }
@@ -104,7 +105,7 @@ public class AccountManager {
                         MyLog.w(TAG, "thirdPartLogin login onNext, rsp=" + rsp);
                         int code = rsp.getRetCode();
                         if (code == ErrorCode.CODE_SUCCESS) {
-                            callback.notifySuccess(UserAccountManager.getInstance().getUuid());
+                            callback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong());
                         } else {
                             callback.notifyFail(code);
                         }

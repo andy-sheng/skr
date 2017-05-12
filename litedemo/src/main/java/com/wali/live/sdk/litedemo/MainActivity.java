@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.mi.liveassistant.account.AccountManager;
-import com.mi.liveassistant.account.callback.IAccountListener;
 import com.mi.liveassistant.account.callback.IAccountCallback;
+import com.mi.liveassistant.account.callback.IAccountListener;
 import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
 import com.mi.liveassistant.michannel.presenter.IChannelView;
 import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
@@ -53,7 +53,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
     private ChannelLiveViewModel.BaseLiveItem mLiveItem;
 
     private boolean mHasAccount;
-    private String mUserId;
+    private long mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
             @Override
             public void run() {
                 mUserId = AccountManager.getInstance().getAccount();
-                mHasAccount = !TextUtils.isEmpty(mUserId);
+                mHasAccount = mUserId != 0;
                 if (mHasAccount) {
                     mLoginBtn.post(new Runnable() {
                         @Override
@@ -184,7 +184,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                     }
 
                     @Override
-                    public void notifySuccess(String uid) {
+                    public void notifySuccess(long uid) {
                         Log.d(TAG, "notifySuccess");
                         mHasAccount = true;
                         mUserId = uid;

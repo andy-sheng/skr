@@ -178,8 +178,8 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private void initManager() {
         mLiveManager = new GameLiveManager(new ILiveListener() {
             @Override
-            public void onEndUnexpected() {
-                Log.w(TAG, "onEndUnexpected");
+            public void onEndUnexpected(int errCode, String errMsg) {
+                Log.w(TAG, "onEndUnexpected errCode" + errCode);
             }
         });
 

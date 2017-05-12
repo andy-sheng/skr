@@ -210,8 +210,8 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     private void initManager() {
         mLiveManager = new NormalLiveManager(mCameraView, new ILiveListener() {
             @Override
-            public void onEndUnexpected() {
-                Log.w(TAG, "onEndUnexpected");
+            public void onEndUnexpected(int errCode, String errMsg) {
+                Log.w(TAG, "onEndUnexpected errCode" + errCode);
             }
         });
         mUserManager = new UserInfoManager();

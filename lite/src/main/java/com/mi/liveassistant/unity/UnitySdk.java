@@ -2,10 +2,10 @@ package com.mi.liveassistant.unity;
 
 import android.app.Activity;
 
-import com.mi.liveassistant.account.UserAccountManager;
-import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.account.AccountManager;
+import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.account.callback.IAccountCallback;
+import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.utils.RSASignature;
 
 /**
@@ -41,7 +41,7 @@ abstract class UnitySdk<ACTIVITY extends Activity, LISTENER extends ILoginListen
             }
 
             @Override
-            public void notifySuccess(String uid) {
+            public void notifySuccess(long uid) {
                 MyLog.d(TAG, "notifySuccess");
                 if (mUnityListener != null) {
                     mUnityListener.onLoginSuccess(uid);
