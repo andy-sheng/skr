@@ -9,6 +9,7 @@ import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageExt;
 import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
+import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.data.model.Location;
 import com.mi.liveassistant.proto.LiveCommonProto;
@@ -150,7 +151,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter>
     private void endLiveException(String reason) {
         MyLog.w(TAG, "endLiveException reason=" + reason);
         if (mLiveListener != null) {
-            mLiveListener.onEndUnexpected();
+            mLiveListener.onEndUnexpected(ErrorCode.CODE_ERROR_NORMAL, reason);
         }
         innerEndLive();
     }

@@ -36,7 +36,7 @@ abstract class UnitySdk<ACTIVITY extends Activity, LISTENER extends ILoginListen
             public void notifyFail(int errCode) {
                 MyLog.d(TAG, "notifyFail");
                 if (mUnityListener != null) {
-                    mUnityListener.onLoginFailed(errCode);
+                    mUnityListener.onLoginFailed(errCode, "thirdPartLogin failed");
                 }
             }
 

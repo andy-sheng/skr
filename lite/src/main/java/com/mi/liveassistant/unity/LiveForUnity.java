@@ -39,10 +39,10 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
             public void run() {
                 mLiveManager = new GameLiveManager(new ILiveListener() {
                     @Override
-                    public void onEndUnexpected() {
+                    public void onEndUnexpected(int errCode, String errMsg) {
                         MyLog.w(TAG, "onEndUnexpected");
                         if (mUnityListener != null) {
-                            mUnityListener.onEndUnexpected();
+                            mUnityListener.onEndUnexpected(errCode, errMsg);
                         }
                     }
                 });
@@ -64,7 +64,8 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
             public void run() {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     if (mUnityListener != null) {
-                        mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_TOO_LOW_SDK);
+                        mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_TOO_LOW_SDK,
+                                "Android SDK Version is required at least LOLLIPOP");
                     }
                     return;
                 }
@@ -74,7 +75,8 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
                     mCoverUrl = coverUrl;
                     ((MiLiveActivity) mActivity).queryScreenRecordIntent();
                 } else if (mUnityListener != null) {
-                    mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_MISSING_PROJECTION);
+                    mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_MISSING_PROJECTION,
+                            "MiLiveActivity is required to start media projection automatically");
                 }
             }
         });
@@ -86,7 +88,8 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
             public void run() {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     if (mUnityListener != null) {
-                        mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_TOO_LOW_SDK);
+                        mUnityListener.onBeginLiveFailed(ErrorCode.CODE_ERROR_TOO_LOW_SDK,
+                                "Android SDK Version is required at least LOLLIPOP");
                     }
                     return;
                 }
@@ -100,7 +103,7 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
                     public void notifyFail(int errCode) {
                         MyLog.w(TAG, "startLive failed, errCode=" + errCode);
                         if (mUnityListener != null) {
-                            mUnityListener.onBeginLiveFailed(errCode);
+                            mUnityListener.onBeginLiveFailed(errCode, "");
                         }
                     }
 
@@ -130,7 +133,7 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
                     public void notifyFail(int errCode) {
                         MyLog.w(TAG, "stopLive failed");
                         if (mUnityListener != null) {
-                            mUnityListener.onEndLiveFailed(errCode);
+                            mUnityListener.onEndLiveFailed(errCode, "");
                         }
                     }
 

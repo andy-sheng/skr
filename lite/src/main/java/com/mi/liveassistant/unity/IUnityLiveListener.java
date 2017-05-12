@@ -11,8 +11,9 @@ public interface IUnityLiveListener extends ILoginListener, ILiveListener {
      * 启动推流房间失败
      *
      * @param errCode 服务器返回的错误码
+     * @param errMsg  错误描述
      */
-    void onBeginLiveFailed(int errCode);
+    void onBeginLiveFailed(int errCode, String errMsg);
 
     /**
      * 启动推流房间成功
@@ -26,8 +27,9 @@ public interface IUnityLiveListener extends ILoginListener, ILiveListener {
      * 结束推流房间失败
      *
      * @param errCode 服务器返回的错误码
+     * @param errMsg  错误描述
      */
-    void onEndLiveFailed(int errCode);
+    void onEndLiveFailed(int errCode, String errMsg);
 
     /**
      * 结束推流房间成功

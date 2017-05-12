@@ -49,10 +49,10 @@ public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
 
                 mWatchManager = new WatchManager(new IWatchListener() {
                     @Override
-                    public void onEndUnexpected() {
+                    public void onEndUnexpected(int errCode, String errMsg) {
                         MyLog.w(TAG, "onEndUnexpected");
                         if (mUnityListener != null) {
-                            mUnityListener.onEndUnexpected();
+                            mUnityListener.onEndUnexpected(errCode, errMsg);
                         }
                     }
                 });
@@ -103,7 +103,7 @@ public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
                     public void notifyFail(int errCode) {
                         MyLog.w(TAG, "enterLive failed, errCode=" + errCode);
                         if (mUnityListener != null) {
-                            mUnityListener.onEnterLiveFailed(errCode);
+                            mUnityListener.onEnterLiveFailed(errCode, "");
                         }
                     }
 
