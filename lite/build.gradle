@@ -51,8 +51,8 @@ dependencies {
 
     provided files('libs/unity.jar')
 
-    provided 'com.android.support:appcompat-v7:25.3.1'
-    provided 'com.android.support:support-annotations:25.3.1'
+    provided 'com.android.support:appcompat-v7:24.2.1'
+    provided 'com.android.support:support-annotations:24.2.1'
 }
 
 task makeJar(type: Jar, dependsOn: build) {
