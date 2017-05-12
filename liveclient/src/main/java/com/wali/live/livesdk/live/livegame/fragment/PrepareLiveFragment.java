@@ -28,9 +28,6 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.event.LiveRoomManagerEvent;
-import com.mi.live.data.manager.LiveRoomCharacterManager;
-import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.livesdk.R;
@@ -45,8 +42,6 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import static android.view.View.VISIBLE;
 
@@ -299,23 +294,5 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
         if (listener != null) {
             fragment.initDataResult(requestCode, listener);
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(LiveRoomManagerEvent event) {
-        List<LiveRoomManagerModel> managerModels = LiveRoomCharacterManager.getInstance().getRoomManagers();
-        int managerCount = managerModels.size();
-        long top1Id = mRoomPreparePresenter.getTop1Id();
-        boolean isTop1Manager = false;
-        for (LiveRoomManagerModel managerModel : managerModels) {
-            if (top1Id == managerModel.uuid) {
-                isTop1Manager = true;
-                break;
-            }
-        }
-        if (!isTop1Manager) {
-            managerCount++;
-        }
-        setManagerCount(managerCount);
     }
 }
