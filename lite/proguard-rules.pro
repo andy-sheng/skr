@@ -266,6 +266,12 @@
 
 -keep class com.mi.liveassistant.unity.MiLiveActivity{
     public *;
+    protected *;
+}
+
+-keep class com.mi.liveassistant.unity.UnityDemoActivity{
+    public *;
+    protected *;
 }
 
 -keep class com.mi.liveassistant.barrage.callback.IChatMsgCallBack{

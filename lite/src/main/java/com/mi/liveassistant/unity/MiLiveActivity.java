@@ -33,7 +33,6 @@ public class MiLiveActivity extends UnityPlayerActivity {
         super.onCreate(bundle);
     }
 
-    @Keep
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
