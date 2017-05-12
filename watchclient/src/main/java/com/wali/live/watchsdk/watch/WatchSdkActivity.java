@@ -32,7 +32,6 @@ import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
@@ -645,20 +644,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.ShareEvent event) {
-        MyLog.w(TAG, "EventClass.ShareEvent");
-        if (event != null) {
-            switch (event.state) {
-                case EventClass.ShareEvent.TYPE_SUCCESS:
-                    mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
-                    //基类增长经验值 不要删掉
-                    super.onEventMainThread(event);
-                    break;
-                default:
-                    break;
-            }
+    @Override
+    protected void onEventShare(EventClass.ShareEvent event) {
+        if (event != null && event.state == EventClass.ShareEvent.TYPE_SUCCESS) {
+            mRoomChatMsgManager.sendShareBarrageMessageAsync(mMyRoomData.getRoomId(), mMyRoomData.getUid());
         }
     }
 

@@ -412,7 +412,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     @Override
     protected void onDestroy() {
         if (sRecording) {
-            stopRecord("onDestroy",false);
+            stopRecord("onDestroy", false);
             sRecording = false;
         }
         super.onDestroy();
@@ -602,9 +602,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         registerScreenStateReceiver();
 
         if (mMyRoomData.getUser() == null || mMyRoomData.getUser().getUid() <= 0 || TextUtils.isEmpty(mMyRoomData.getUser().getNickname())) {
-            if(MyUserInfoManager.getInstance().getUser() != null && MyUserInfoManager.getInstance().getUser().getUid() >= 0) {
+            if (MyUserInfoManager.getInstance().getUser() != null && MyUserInfoManager.getInstance().getUser().getUid() >= 0) {
                 mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
-            }else{
+            } else {
                 MyUserInfoManager.getInstance().syncSelfDetailInfo();
             }
         }
@@ -978,7 +978,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
      * @param reason
      * @param wasKicked 是否因为被踢
      */
-    private void stopRecord(String reason,boolean wasKicked) {
+    private void stopRecord(String reason, boolean wasKicked) {
         MyLog.w(TAG, "stopRecord = " + sRecording + ",from:" + reason);
         // 如果正在进行voip通话
         if (sRecording) {
@@ -1102,7 +1102,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         DialogUtils.showNormalDialog(this, 0, R.string.stop_live_dialog_message, R.string.ok, R.string.cancel, new DialogUtils.IDialogCallback() {
             @Override
             public void process(DialogInterface dialogInterface, int i) {
-                stopRecord("showStopDialog",false);
+                stopRecord("showStopDialog", false);
             }
         }, null);
     }
@@ -1120,7 +1120,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private void endLiveUnexpected(int resId) {
         ToastUtils.showToast(GlobalData.app(), resId);
-        stopRecord("endLiveUnexpected",false);
+        stopRecord("endLiveUnexpected", false);
     }
 
     @Override
@@ -1283,7 +1283,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                     break;
                 case MSG_END_LIVE_FOR_TIMEOUT:
                     MyLog.w(TAG, "MSG_END_LIVE_FOR_TIMEOUT");
-                    activity.stopRecord("MSG_END_LIVE_FOR_TIMEOUT",false);
+                    activity.stopRecord("MSG_END_LIVE_FOR_TIMEOUT", false);
                     break;
                 case MSG_HEARTBEAT:
                     MyLog.w(TAG, "MSG_HEARTBEAT");
@@ -1333,22 +1333,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.ShareEvent event) {
-        MyLog.w(TAG, "EventClass.ShareEvent");
+    @Override
+    protected void onEventShare(EventClass.ShareEvent event) {
         if (event != null) {
             if (mIsShare) {
                 mIsShare = false;
                 beginLiveToServer();
-            }
-            switch (event.state) {
-                case EventClass.ShareEvent.TYPE_SUCCESS:
-                    //基类增长经验值 不要删掉
-                    super.onEventMainThread(event);
-                    break;
-                default:
-                    break;
             }
         }
     }
@@ -1376,13 +1366,13 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(UserInfoEvent userInfoEvent){
-        MyLog.w(TAG,"userInfoEvent");
+    public void onEventMainThread(UserInfoEvent userInfoEvent) {
+        MyLog.w(TAG, "userInfoEvent");
         mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
     }
 
     @Override
     public void onKickEvent(String msg) {
-        stopRecord(msg,true);
+        stopRecord(msg, true);
     }
 }
