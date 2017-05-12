@@ -84,6 +84,14 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     }
 
     /**
+     * 子类除了长经验值外的分享行为添加在子类的onEventShare
+     *
+     * @param event
+     */
+    protected void onEventShare(EventClass.ShareEvent event) {
+    }
+
+    /**
      * 本房间相关信息
      */
     protected RoomBaseDataModel mMyRoomData = new RoomBaseDataModel("sdk_Myroominfo");
@@ -268,15 +276,12 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.ShareEvent event) {
         if (event != null) {
-            switch (event.state) {
-                case EventClass.ShareEvent.TYPE_SUCCESS:
-                    //update experience
-                    ExpLevelPresenter expLevelPresenter = new ExpLevelPresenter();
-                    addPresent(expLevelPresenter);
-                    expLevelPresenter.updateExperience(ExpLevelPresenter.SHARE_TYPE, event.getSnsType());
-                    break;
-                default:
-                    break;
+            onEventShare(event);
+            if (event.state == EventClass.ShareEvent.TYPE_SUCCESS) {
+                //update experience
+                ExpLevelPresenter expLevelPresenter = new ExpLevelPresenter();
+                addPresent(expLevelPresenter);
+                expLevelPresenter.updateExperience(ExpLevelPresenter.SHARE_TYPE, event.getSnsType());
             }
         }
     }
@@ -301,7 +306,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
                 showLogoffDialog(event.getEventType(), event.getUuid());
                 break;
             case AccountEventController.LogOffEvent.EVENT_TYPE_NORMAL_LOGOFF:
-                if(!hasKicked) {
+                if (!hasKicked) {
                     finish();
                 }
                 break;
@@ -310,7 +315,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
 
     public abstract void onKickEvent(String msg);
 
-    private void showLogoffDialog(int exitType,long uuid){
+    private void showLogoffDialog(int exitType, long uuid) {
         MyLog.w(TAG, " showExitDialog KickEvent");
         if (mLogOffDialog == null) {
             MyAlertDialog.Builder builder = new MyAlertDialog.Builder(this);
@@ -326,10 +331,10 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
             Date date = new Date();
             DateFormat format = new SimpleDateFormat("HH:mm");
             String time = format.format(date);
-            if(exitType == AccountEventController.LogOffEvent.EVENT_TYPE_KICK) {
+            if (exitType == AccountEventController.LogOffEvent.EVENT_TYPE_KICK) {
                 mLogOffDialog.setMessage(getString(R.string.service_token_expired, time));
                 mLogOffDialog.show();
-            }else if(exitType == AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN){
+            } else if (exitType == AccountEventController.LogOffEvent.EVENT_TYPE_ACCOUNT_FORBIDDEN) {
                 mLogOffDialog.setMessage(getString(R.string.forbbiden_message, String.valueOf(uuid)));
                 mLogOffDialog.show();
             }
