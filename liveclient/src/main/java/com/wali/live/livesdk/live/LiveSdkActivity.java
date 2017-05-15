@@ -788,6 +788,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private void processBeginLive(int errCode, Object... objects) {
         switch (errCode) {
+            // TODO 这里错误码是这样处理的？
             case ErrorCode.CODE_SUCCESS:
             case ErrorCode.CODE_ZUID_CERTIFY_ERROR:
             case ErrorCode.CODE_ZUID_NOT_ADULT:
@@ -932,7 +933,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private void processStartRecord(String liveId, long createTime, String shareUrl,
                                     List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {
-        MyLog.w(TAG, "processStartRecord,liveId:" + liveId);
+        MyLog.w(TAG, "processStartRecord, liveId:" + liveId);
         mMyRoomData.setRoomId(liveId);
         mMyRoomData.setShareUrl(shareUrl);
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
@@ -1012,6 +1013,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mHeartbeatService.execute(new Runnable() {
             @Override
             public void run() {
+                // 说明进房间失败了
+                if (TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+                    return;
+                }
+
                 LiveProto.HeartBeatReq.Builder builder = LiveProto.HeartBeatReq.newBuilder()
                         .setLiveId(mMyRoomData.getRoomId())
                         .setStatus((mIsGameLive || mIsForeground) && !mIsPaused ? 0 : 1);
@@ -1020,6 +1026,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 data.setCommand(MiLinkCommand.COMMAND_LIVE_HB);
                 data.setData(builder.build().toByteArray());
                 MyLog.v(TAG, "LiveHeartbeat request : \n" + builder.toString());
+
                 PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
                 if (rspData == null) {
                     return;
