@@ -151,14 +151,5 @@ public class NormalLiveManager extends BaseLiveManager {
         return mStreamerPresenter.isBackCamera();
     }
 
-    /**
-     * #API# 设置设备旋转角度
-     *
-     * @param angle 旋转角度
-     */
-    public void setAngle(int angle) {
-        mStreamerPresenter.setAngle(angle);
-    }
-
     /*engine end*/
 }
