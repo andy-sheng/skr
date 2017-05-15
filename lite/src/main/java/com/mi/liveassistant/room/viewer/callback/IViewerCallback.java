@@ -10,5 +10,5 @@ import java.util.List;
 public interface IViewerCallback {
     void notifyFail(int errCode);
 
-    void notifySuccess(List<Viewer> user);
+    void notifySuccess(List<Viewer> viewers);
 }
