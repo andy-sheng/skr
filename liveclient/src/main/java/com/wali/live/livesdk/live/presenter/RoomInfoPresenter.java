@@ -229,6 +229,12 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
         stopTimer();
     }
 
+    public void resumeTimer() {
+        MyLog.d(TAG, "resumeTimer");
+        mIsAlive = true;
+        startTimer();
+    }
+
     private void reportGameTime() {
         if (TextUtils.isEmpty(mPackageName)) {
             mTime = System.currentTimeMillis();
@@ -241,11 +247,5 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
             StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, duration);
         }
         mTime = time;
-    }
-
-    public void resumeTimer() {
-        MyLog.d(TAG, "resumeTimer");
-        mIsAlive = true;
-        startTimer();
     }
 }
