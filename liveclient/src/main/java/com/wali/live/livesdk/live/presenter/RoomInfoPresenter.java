@@ -1,5 +1,7 @@
 package com.wali.live.livesdk.live.presenter;
 
+import android.text.TextUtils;
+
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.presenter.RxLifeCyclePresenter;
@@ -9,9 +11,11 @@ import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.assist.Attachment;
 import com.wali.live.common.MessageType;
+import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.api.RoomInfoChangeRequest;
 import com.wali.live.livesdk.live.task.TaskCallBackWrapper;
 import com.wali.live.proto.Live2Proto.ChangeRoomInfoRsp;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.upload.UploadTask;
 import com.wali.live.utils.AttachmentUtils;
 
@@ -47,6 +51,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
     private boolean mAllowChangeCover = true;
 
     private boolean mIsAlive = false;
+    private long mTime = 0;
 
     public RoomInfoPresenter(RxActivity rxActivity, GameLivePresenter presenter) {
         mRxActivity = rxActivity;
@@ -145,6 +150,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
 
     private void startRoomInfo() {
         stopRoomInfo();
+        reportGameTime();
         mSubscription = Observable
                 .create(new Observable.OnSubscribe<ChangeRoomInfoRsp>() {
                     @Override
@@ -213,6 +219,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
         super.destroy();
         mIsAlive = false;
         mGameLivePresenter = null;
+        reportGameTime();
     }
 
     public void pauseTimer() {
@@ -220,6 +227,20 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
         mIsAlive = false;
         stopRoomInfo();
         stopTimer();
+    }
+
+    private void reportGameTime() {
+        if (TextUtils.isEmpty(mPackageName)) {
+            mTime = System.currentTimeMillis();
+            return;
+        }
+        long time = System.currentTimeMillis();
+        String key = String.format(StatisticsKey.KEY_GAME_TAG_TIME, mPackageName);
+        long duration = time - mTime;
+        if (!TextUtils.isEmpty(key) && duration > 0) {
+            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, duration);
+        }
+        mTime = time;
     }
 
     public void resumeTimer() {

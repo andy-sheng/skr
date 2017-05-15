@@ -841,4 +841,7 @@ public class StatisticsKey {
     public static final String KEY_GAME_ICON_SHOW = "gameSDK-show-%s-%s";
     public static final String KEY_GAME_ICON_CLICK = "gameSDK-click-%s-%s";
     public static final String KEY_GAME_DOWNLOAD_CLICK = "gameSDK-download-%s-%s";
+
+    // 游戏标签时长
+    public static final String KEY_GAME_TAG_TIME = "tag-sdk-%s-times";
 }
