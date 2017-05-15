@@ -290,7 +290,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
 
     private void initAnchor() {
         mUserManager = new UserInfoManager();
-        mUserManager.asyncUserByUuid(mPlayerId, new IUserCallback() {
+        mUserManager.getUserByUuid(mPlayerId, new IUserCallback() {
             @Override
             public void notifyFail(int errCode) {
             }

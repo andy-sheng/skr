@@ -336,7 +336,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
 
     private void initAnchor() {
         mUserManager = new UserInfoManager();
-        mUserManager.asyncUserByUuid(mPlayerId, new IUserCallback() {
+        mUserManager.getUserByUuid(mPlayerId, new IUserCallback() {
             @Override
             public void notifyFail(int errCode) {
             }

@@ -26,7 +26,7 @@ public class UserInfoManager {
     /**
      * 获取一个用户的信息
      */
-    public void asyncUserByUuid(final long uuid, final IUserCallback callback) {
+    public void getUserByUuid(final long uuid, final IUserCallback callback) {
         MyLog.d(TAG, "getUserByUuid uuid=" + uuid);
         Observable.just(0)
                 .map(new Func1<Integer, UserProto.GetHomepageRsp>() {
@@ -54,14 +54,6 @@ public class UserInfoManager {
                         MyLog.e(throwable);
                     }
                 });
-    }
-
-    public User syncUserByUuid(long uuid) {
-        UserProto.GetHomepageRsp rsp = new HomepageRequest(uuid).syncRsp();
-        if (rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
-            return parse(rsp);
-        }
-        return null;
     }
 
     private User parse(UserProto.GetHomepageRsp rsp) {

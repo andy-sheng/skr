@@ -38,7 +38,7 @@ public class ViewerInfoManager implements IViewerObserver {
     /**
      * 获取一个用户的信息
      */
-    public void asyncViewerList(final long playerId, final String liveId, final IViewerCallback callback) {
+    public void getViewerList(final long playerId, final String liveId, final IViewerCallback callback) {
         MyLog.d(TAG, "asyncViewerList liveId=" + liveId);
         Observable.just(0)
                 .map(new Func1<Integer, LiveProto.ViewerTopRsp>() {
@@ -66,14 +66,6 @@ public class ViewerInfoManager implements IViewerObserver {
                         MyLog.e(throwable);
                     }
                 });
-    }
-
-    public List<Viewer> syncViewerList(long playerId, String liveId) {
-        LiveProto.ViewerTopRsp rsp = new ViewerTopRequest(playerId, liveId).syncRsp();
-        if (rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
-            return parse(rsp);
-        }
-        return null;
     }
 
     private List<Viewer> parse(LiveProto.ViewerTopRsp rsp) {

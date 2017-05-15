@@ -185,7 +185,7 @@ public class WatchActivity extends RxActivity {
         });
 
         mUserManager = new UserInfoManager();
-        mUserManager.asyncUserByUuid(mPlayerId, new IUserCallback() {
+        mUserManager.getUserByUuid(mPlayerId, new IUserCallback() {
             @Override
             public void notifyFail(int errCode) {
             }
@@ -209,7 +209,7 @@ public class WatchActivity extends RxActivity {
                 });
             }
         });
-        mViewerManager.asyncViewerList(mPlayerId, mLiveId, new IViewerCallback() {
+        mViewerManager.getViewerList(mPlayerId, mLiveId, new IViewerCallback() {
             @Override
             public void notifyFail(int errCode) {
             }
