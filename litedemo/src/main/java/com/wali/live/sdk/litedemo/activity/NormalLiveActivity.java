@@ -126,6 +126,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     private void adjustView() {
         mBeautyBtn.setText(mIsBeauty ? "美颜:开" : "美颜:关");
         mSplashBtn.setText(mLiveManager.isFlashLight() ? "闪光:开" : "闪光:关");
+        mSplashBtn.setEnabled(mLiveManager.isBackCamera());
         mSwitchBtn.setText(mLiveManager.isBackCamera() ? "后置" : "前置");
 
         mVolumeBtn.setText("音量:" + mLiveManager.getVoiceVolume());
