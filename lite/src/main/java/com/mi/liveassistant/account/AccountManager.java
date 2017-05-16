@@ -123,6 +123,10 @@ public class AccountManager {
             return;
         }
         MyLog.d(TAG, "event type=" + event.getEventType());
+        if (mAccountListener == null) {
+            MyLog.d(TAG, "account listener is null");
+            return;
+        }
         switch (event.getEventType()) {
             case AccountEvent.LogOffEvent.EVENT_TYPE_FORBIDDEN:
                 mAccountListener.forbidAccount();
