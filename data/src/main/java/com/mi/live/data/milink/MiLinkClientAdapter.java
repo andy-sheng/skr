@@ -35,7 +35,7 @@ public class MiLinkClientAdapter {
 
     private String clientIp;
 
-    private boolean mIsTouristMode = false;
+    private boolean mIsTouristMode = true;
 
     MiLinkChannelClient mMiLinkChannelClient;
 
