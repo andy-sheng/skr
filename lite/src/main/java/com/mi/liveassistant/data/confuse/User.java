@@ -4,7 +4,6 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.Relation;
-import com.mi.liveassistant.data.model.LiteUser;
 import com.mi.liveassistant.proto.CommonChannelProto;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.proto.UserProto;
@@ -15,6 +14,8 @@ import java.util.List;
 
 /**
  * Created by zhangyuehuan on 15-12-1.
+ *
+ * @description inner user
  */
 public class User implements Serializable {
     private String TAG = User.class.getSimpleName();
@@ -607,7 +608,7 @@ public class User implements Serializable {
         this.certificationChanged = certificationChanged;
     }
 
-    public LiteUser toLite() {
-        return new LiteUser(this);
+    public com.mi.liveassistant.data.model.User toLite() {
+        return new com.mi.liveassistant.data.model.User(this);
     }
 }

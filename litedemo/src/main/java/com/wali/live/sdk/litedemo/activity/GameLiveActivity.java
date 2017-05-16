@@ -20,7 +20,7 @@ import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
 import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
-import com.mi.liveassistant.data.model.LiteUser;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.live.GameLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
@@ -57,7 +57,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
     private TopAnchorView mAnchorView;
     private long mPlayerId;
     private String mLiveId;
-    private LiteUser mAnchor;
+    private User mAnchor;
 
     private Intent mIntent;
 
@@ -296,7 +296,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
             }
 
             @Override
-            public void notifySuccess(LiteUser user) {
+            public void notifySuccess(User user) {
                 mAnchor = user;
                 mAnchorView.updateAnchor(mAnchor);
             }

@@ -16,7 +16,7 @@ import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
 import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
-import com.mi.liveassistant.data.model.LiteUser;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.watch.WatchManager;
 import com.mi.liveassistant.room.manager.watch.callback.IWatchCallback;
@@ -54,7 +54,7 @@ public class WatchActivity extends RxActivity {
     private UserInfoManager mUserManager;
     private TopAnchorView mAnchorView;
     private long mPlayerId;
-    private LiteUser mAnchor;
+    private User mAnchor;
 
     /*观众信息*/
     private ViewerInfoManager mViewerManager;
@@ -191,7 +191,7 @@ public class WatchActivity extends RxActivity {
             }
 
             @Override
-            public void notifySuccess(LiteUser user) {
+            public void notifySuccess(User user) {
                 mAnchor = user;
                 mAnchorView.updateAnchor(mAnchor);
             }

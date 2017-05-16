@@ -2,23 +2,19 @@ package com.mi.liveassistant.data.model;
 
 import android.support.annotation.NonNull;
 
-import com.mi.liveassistant.data.confuse.User;
-
 /**
  * Created by lan on 2017/5/16.
+ *
+ * @description expose to outer app
  */
-public class LiteUser {
-    private User mInnerUser;
+public class User {
+    private com.mi.liveassistant.data.confuse.User mInnerUser;
 
-    public LiteUser(@NonNull User user) throws NullPointerException {
+    public User(@NonNull com.mi.liveassistant.data.confuse.User user) throws NullPointerException {
         if (user == null) {
             throw new NullPointerException();
         }
         mInnerUser = user;
-    }
-
-    public User getInnerUser() {
-        return mInnerUser;
     }
 
     public long getUid() {

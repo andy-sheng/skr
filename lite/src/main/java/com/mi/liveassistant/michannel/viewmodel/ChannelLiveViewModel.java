@@ -6,8 +6,7 @@ import android.text.TextUtils;
 import com.google.protobuf.GeneratedMessage;
 import com.mi.liveassistant.avatar.AvatarUtils;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.data.confuse.User;
-import com.mi.liveassistant.data.model.LiteUser;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.proto.CommonChannelProto;
 import com.mi.liveassistant.proto.CommonChannelProto.BackInfo;
 import com.mi.liveassistant.proto.CommonChannelProto.ChannelItem;
@@ -111,7 +110,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected String mImgUrl;
         protected long mPublishTime;
 
-        protected LiteUser mUser;
+        protected User mUser;
         protected boolean mIsFocused;
 
         protected BaseItem() {
@@ -149,7 +148,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return mPublishTime;
         }
 
-        public LiteUser getUser() {
+        public User getUser() {
             return mUser;
         }
 
@@ -299,7 +298,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public void parse(LiveInfo protoItem) {
             mId = protoItem.getLiveId();
-            User user = new User();
+            com.mi.liveassistant.data.confuse.User user = new com.mi.liveassistant.data.confuse.User();
             user.parse(protoItem.getUser());
             mUser = user.toLite();
 
@@ -382,7 +381,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public void parse(BackInfo protoItem) {
             mId = protoItem.getBackId();
-            User user = new User();
+            com.mi.liveassistant.data.confuse.User user = new com.mi.liveassistant.data.confuse.User();
             user.parse(protoItem.getUser());
             mUser = user.toLite();
 

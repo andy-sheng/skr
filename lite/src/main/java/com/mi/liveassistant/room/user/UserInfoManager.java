@@ -5,8 +5,7 @@ import android.text.TextUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.data.confuse.User;
-import com.mi.liveassistant.data.model.LiteUser;
+import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.proto.LiveCommonProto;
 import com.mi.liveassistant.proto.UserProto;
 import com.mi.liveassistant.room.user.callback.IUserCallback;
@@ -57,8 +56,8 @@ public class UserInfoManager {
                 });
     }
 
-    private LiteUser parse(UserProto.GetHomepageRsp rsp) {
-        User user = new User();
+    private User parse(UserProto.GetHomepageRsp rsp) {
+        com.mi.liveassistant.data.confuse.User user = new com.mi.liveassistant.data.confuse.User();
         user.parse(rsp.getPersonalInfo());
         user.parse(rsp.getPersonalData());
         try {
