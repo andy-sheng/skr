@@ -1,7 +1,7 @@
 package com.mi.liveassistant.barrage.facade;
 
-import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
-import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
+import com.mi.liveassistant.barrage.callback.IChatMsgCallback;
+import com.mi.liveassistant.barrage.callback.ISysMsgCallback;
 import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.manager.BarragePullMessageManager;
 import com.mi.liveassistant.barrage.manager.BarragePushMessageManager;
@@ -26,16 +26,16 @@ public class MessageFacade {
     private MessageFacade() {
     }
 
-    public void registerCallBack(String roomId, IChatMsgCallBack chatMsgCallBack, ISysMsgCallBack sysMsgCallBack) {
-        BarrageMainProcessor.getInstance().init(roomId,chatMsgCallBack,sysMsgCallBack);
+    public void registerCallback(String roomId, IChatMsgCallback chatMsgCallback, ISysMsgCallback sysMsgCallback) {
+        BarrageMainProcessor.getInstance().init(roomId, chatMsgCallback, sysMsgCallback);
     }
 
-    public void unregisterCallBack() {
+    public void unregisterCallback() {
         BarrageMainProcessor.getInstance().destroy();
     }
 
     public void startPull(String roomId) {
-        if(mBarragePullMessageManager != null && mBarragePullMessageManager.isRunning()){
+        if (mBarragePullMessageManager != null && mBarragePullMessageManager.isRunning()) {
             return;
         }
         mBarragePullMessageManager = new BarragePullMessageManager(roomId);
