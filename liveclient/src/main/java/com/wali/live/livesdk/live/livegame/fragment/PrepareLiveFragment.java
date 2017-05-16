@@ -142,24 +142,29 @@ public class PrepareLiveFragment extends BasePrepareLiveFragment {
                     return;
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (PermissionUtils.checkSystemAlertWindow(getContext())) {
-                        if (PermissionUtils.checkRecordAudio(getContext())) {
-                            getActivity().startActivityForResult(
-                                    ((MediaProjectionManager) GlobalData.app()
-                                            .getSystemService(Context.MEDIA_PROJECTION_SERVICE)).createScreenCaptureIntent(),
-                                    LiveSdkActivity.REQUEST_MEDIA_PROJECTION);
+                    if (PermissionUtils.checkSdcardAlertWindow(getActivity())) {
+                        if (PermissionUtils.checkSystemAlertWindow(getContext())) {
+                            if (PermissionUtils.checkRecordAudio(getContext())) {
+                                getActivity().startActivityForResult(
+                                        ((MediaProjectionManager) GlobalData.app()
+                                                .getSystemService(Context.MEDIA_PROJECTION_SERVICE)).createScreenCaptureIntent(),
+                                        LiveSdkActivity.REQUEST_MEDIA_PROJECTION);
+                            } else {
+                                PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
+                            }
                         } else {
-                            PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.RECORD_AUDIO);
+                            if (VersionManager.getCurrentSdkVersion() >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getActivity())) {
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                        Uri.parse("package:" + getActivity().getPackageName()));
+                                startActivityForResult(intent, 10);
+                            } else {
+                                PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.SYSTEM_ALERT_WINDOW);
+                            }
                         }
                     } else {
-                        if (VersionManager.getCurrentSdkVersion() >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getActivity())) {
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                    Uri.parse("package:" + getActivity().getPackageName()));
-                            startActivityForResult(intent, 10);
-                        } else {
-                            PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.SYSTEM_ALERT_WINDOW);
-                        }
+                        PermissionUtils.requestPermissionDialog(getActivity(), PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
                     }
+
                 } else {
                     ToastUtils.showToast(R.string.third_party_system_version_error);
                 }
