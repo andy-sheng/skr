@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
 import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
+import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.data.model.User;
 import com.mi.liveassistant.data.model.Viewer;
@@ -87,6 +88,14 @@ public class WatchActivity extends RxActivity {
                 public void run() {
                     mBarrageAdapter.addMessageList(list);
                     mBarrageRv.smoothScrollToPosition(mBarrageAdapter.getItemCount() - 1);
+
+                    for (Message message : list) {
+                        if (message.getMsgType() == MessageType.MSG_TYPE_LIVE_END) {
+                            ToastUtils.showToast("直播已经结束");
+                            finish();
+                            break;
+                        }
+                    }
                 }
             });
         }
