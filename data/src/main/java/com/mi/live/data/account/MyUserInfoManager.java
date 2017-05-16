@@ -204,6 +204,7 @@ public class MyUserInfoManager {
                         mLastInfoTsMap.put(channelId, System.currentTimeMillis());
                         saveInfoIntoDB(user, channelId);
                         if (channelId == HostChannelManager.getInstance().getChannelId() && user != null && user.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+                            // TODO 应该这里出问题了
                             mMyInfo = user;
                             EventBus.getDefault().post(new UserInfoEvent());
                         }

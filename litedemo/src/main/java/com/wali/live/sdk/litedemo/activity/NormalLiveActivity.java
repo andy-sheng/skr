@@ -18,7 +18,7 @@ import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.camera.CameraView;
-import com.mi.liveassistant.data.model.User;
+import com.mi.liveassistant.data.model.LiteUser;
 import com.mi.liveassistant.data.model.Viewer;
 import com.mi.liveassistant.room.manager.live.NormalLiveManager;
 import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
@@ -54,7 +54,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
     private TopAnchorView mAnchorView;
     private long mPlayerId;
     private String mLiveId;
-    private User mAnchor;
+    private LiteUser mAnchor;
 
     /*观众信息*/
     private ViewerInfoManager mViewerManager;
@@ -342,7 +342,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
             }
 
             @Override
-            public void notifySuccess(User user) {
+            public void notifySuccess(LiteUser user) {
                 mAnchor = user;
                 mAnchorView.updateAnchor(mAnchor);
             }

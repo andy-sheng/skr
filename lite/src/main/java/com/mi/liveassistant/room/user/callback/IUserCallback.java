@@ -1,6 +1,6 @@
 package com.mi.liveassistant.room.user.callback;
 
-import com.mi.liveassistant.data.model.User;
+import com.mi.liveassistant.data.model.LiteUser;
 
 /**
  * Created by lan on 17/5/2.
@@ -8,5 +8,5 @@ import com.mi.liveassistant.data.model.User;
 public interface IUserCallback {
     void notifyFail(int errCode);
 
-    void notifySuccess(User user);
+    void notifySuccess(LiteUser user);
 }

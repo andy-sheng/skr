@@ -6,7 +6,8 @@ import android.text.TextUtils;
 import com.google.protobuf.GeneratedMessage;
 import com.mi.liveassistant.avatar.AvatarUtils;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.data.model.User;
+import com.mi.liveassistant.data.confuse.User;
+import com.mi.liveassistant.data.model.LiteUser;
 import com.mi.liveassistant.proto.CommonChannelProto;
 import com.mi.liveassistant.proto.CommonChannelProto.BackInfo;
 import com.mi.liveassistant.proto.CommonChannelProto.ChannelItem;
@@ -110,7 +111,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected String mImgUrl;
         protected long mPublishTime;
 
-        protected User mUser;
+        protected LiteUser mUser;
         protected boolean mIsFocused;
 
         protected BaseItem() {
@@ -148,7 +149,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return mPublishTime;
         }
 
-        public User getUser() {
+        public LiteUser getUser() {
             return mUser;
         }
 
@@ -298,8 +299,9 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public void parse(LiveInfo protoItem) {
             mId = protoItem.getLiveId();
-            mUser = new User();
-            mUser.parse(protoItem.getUser());
+            User user = new User();
+            user.parse(protoItem.getUser());
+            mUser = user.toLite();
 
             mTitle = protoItem.getLiTitle();
             mViewerCnt = protoItem.getViewerCnt();
@@ -380,8 +382,9 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
 
         public void parse(BackInfo protoItem) {
             mId = protoItem.getBackId();
-            mUser = new User();
-            mUser.parse(protoItem.getUser());
+            User user = new User();
+            user.parse(protoItem.getUser());
+            mUser = user.toLite();
 
             mTitle = protoItem.getBackTitle();
             mViewerCnt = protoItem.getViewerCnt();

@@ -200,14 +200,6 @@
     public *;
 }
 
--keep class com.mi.liveassistant.data.model.User{
-    public *;
-}
-
--keep class com.mi.liveassistant.data.model.Viewer {
-    public *;
-}
-
 -keep class com.mi.liveassistant.room.manager.live.callback.ILiveCallback{
     public *;
 }
@@ -242,6 +234,10 @@
 
 -keep class com.mi.liveassistant.room.viewer.callback.IViewerListener{
     *;
+}
+
+-keep class com.mi.liveassistant.data.model.** {
+    public *;
 }
 
 -keep class com.mi.liveassistant.avatar.AvatarUtils{
@@ -287,5 +283,5 @@
 }
 
 -keep class com.mi.liveassistant.barrage.data.** {
-    *;
+    public *;
 }

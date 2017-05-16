@@ -5,7 +5,7 @@ import com.mi.liveassistant.account.request.GetOwnInfoRequest;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.common.thread.ThreadPool;
 import com.mi.liveassistant.dao.OwnUserInfo;
-import com.mi.liveassistant.data.model.User;
+import com.mi.liveassistant.data.confuse.User;
 import com.mi.liveassistant.data.repository.MyUserInfoLocalStore;
 import com.mi.liveassistant.event.UserInfoEvent;
 import com.mi.liveassistant.milink.MiLinkClientAdapter;

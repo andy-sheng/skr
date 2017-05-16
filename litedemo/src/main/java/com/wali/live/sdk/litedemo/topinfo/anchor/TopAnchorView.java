@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.liveassistant.avatar.AvatarUtils;
-import com.mi.liveassistant.data.model.User;
+import com.mi.liveassistant.data.model.LiteUser;
 import com.wali.live.sdk.litedemo.R;
 import com.wali.live.sdk.litedemo.fresco.FrescoWorker;
 import com.wali.live.sdk.litedemo.fresco.image.ImageFactory;
@@ -49,7 +49,7 @@ public class TopAnchorView extends RelativeLayout {
         mAnchorTv = $(R.id.anchor_tv);
     }
 
-    public void updateAnchor(User anchor) {
+    public void updateAnchor(LiteUser anchor) {
         mAnchorTv.setText(anchor.getNickname());
 
         String avatarUrl = AvatarUtils.getAvatarUrlByUidTs(anchor.getUid(), anchor.getAvatar());
