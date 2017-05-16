@@ -9,10 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 消息扩展数据
+ *
  * Created by wuxiaoshan on 17-5-3.
  */
 public class MessageExt {
 
+    /**
+     * 对应的消息类型：MSG_TYPE_FORBIDDEN、MSG_TYPE_CANCEL_FORBIDDEN
+     */
     public static class ForbiddenMessageExt extends MessageExt{
         public long forbiddenUserId;
         public int operatorType;
@@ -25,6 +30,9 @@ public class MessageExt {
         }
     }
 
+    /**
+     * 对应的消息类型：MSG_TYPE_VIEWER_CHANGE
+     */
     public static class ViewChangeMessageExt extends MessageExt{
         public int viewerCount;
 
@@ -40,7 +48,11 @@ public class MessageExt {
         }
     }
 
-    //这种消息，客户端只是接收方， 不会发出
+    /**
+     * 对应的消息类型：MSG_TYPE_LIVE_END
+     *
+     * 这种消息，客户端只是接收方， 不会发出
+     */
     public static class LiveEndMessageExt extends MessageExt{
         public int viewerCount;
 
@@ -49,6 +61,9 @@ public class MessageExt {
         }
     }
 
+    /**
+     *对应的消息类型：MSG_TYPE_KICK_VIEWER
+     */
     public static class KickMessageExt extends MessageExt{
 
         public static final int OPERATION_TYPE_THIS_ROOM = 0;
@@ -73,7 +88,10 @@ public class MessageExt {
         }
     }
 
-
+    /**
+     * 对应的消息类型：B_MSG_TYPE_GIFT、MSG_TYPE_PAY_BARRAGE、MSG_TYPE_RED_ENVELOPE
+     *              、MSG_TYPE_ROOM_BACKGROUND_GIFT、MSG_TYPE_LIGHT_UP_GIFT、MSG_TYPE_GLABAL_MSG
+     */
     public static class GiftMessageExt extends MessageExt{
         public int giftId;// 礼物id
         public String giftName;// 礼物名称
@@ -91,6 +109,9 @@ public class MessageExt {
         }
     }
 
+    /**
+     * 对应的消息类型：MSG_TYPE_FREQUENCY_CONTROL
+     */
     public static class FrequencyControlMessageExt extends MessageExt{
         //不能重复，默认false，不设置或者​false：可以重复发言，true：不能重复发言
         public boolean unrepeatable;
@@ -107,7 +128,11 @@ public class MessageExt {
 
     }
 
-    //这种消息，客户端只是接收方， 不会发出
+    /**
+     * 对应的消息类型：MSG_TYPE_JOIN
+     *
+     * 这种消息，客户端只是接收方， 不会发出
+     */
     public static class JoinRoomMessageExt extends MessageExt {
         public int viewerCount;
 
@@ -124,7 +149,12 @@ public class MessageExt {
 
     }
 
-    //这种消息，客户端只是接收方， 不会发出
+    /**
+     * 这种消息，客户端只是接收方， 不会发出
+     *
+     * 对应的消息类型：MSG_TYPE_LEAVE
+     */
+
     public static class LeaveRoomMessageExt extends MessageExt {
         public int viewerCount;
 
@@ -140,8 +170,5 @@ public class MessageExt {
         }
 
     }
-
-
-
 
 }

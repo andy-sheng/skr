@@ -10,16 +10,27 @@ import com.mi.liveassistant.barrage.model.BarrageMsgType;
  * Created by wuxiaoshan on 17-5-3.
  */
 public class Message implements Comparable<Message> {
+    //消息类型，参见MesageType，如MessageType未定义则按文本消息处理
     private int msgType;
-    private long senderMsgId; //发送方的消息，可以用来去重
+    //发送方的消息，可以用来去重
+    private long senderMsgId;
+    //发送者id
     private long sender;
+    //房间ID
     private String roomId;
+    //发送时间
     private long sentTime;
-    private String senderName;//发送者名称
-    private int senderLevel; //发送者用户级别
+    //发送者名称
+    private String senderName;
+    //发送者用户级别
+    private int senderLevel;
+    //消息主体
     private String body;
+    //主播ID
     private long anchorId;
+    //房间类型
     private int roomType;
+    //发送给谁
     private long toUserId;
 
     private MessageExt messageExt;
@@ -135,6 +146,22 @@ public class Message implements Comparable<Message> {
         }
     }
 
+    public Message cloneToChatMessage(){
+        Message message = new Message();
+        message.setMsgType(MessageType.MSG_TYPE_TEXT);
+        message.setBody(body);
+        message.setAnchorId(anchorId);
+        message.setRoomId(roomId);
+        message.setRoomType(roomType);
+        message.setSender(sender);
+        message.setSenderLevel(senderLevel);
+        message.setSenderMsgId(senderMsgId);
+        message.setSenderName(senderName);
+        message.setSentTime(sentTime);
+        message.setToUserId(toUserId);
+        return message;
+    }
+
     public static Message loadFromBarrage(BarrageMsg msg) {
         Message liveComment = new Message();
         liveComment.setSender(msg.getSender());
@@ -189,7 +216,6 @@ public class Message implements Comparable<Message> {
             case BarrageMsgType.B_MSG_TYPE_COMMEN_SYS_MSG:
             case BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG:
             case BarrageMsgType.B_MSG_TYPE_ROOM_SYS_MSG:
-                liveComment.setMsgType(MessageType.MSG_TYPE_ROOM_SYS_MSG);
                 liveComment.setBody(msg.getBody());
                 break;
             case BarrageMsgType.B_MSG_TYPE_TOP_GET:
