@@ -6,9 +6,10 @@ import java.util.List;
 
 /**
  * 系统消息，包括：房间系统消息和全局系统消息
- *
+ * <p>
  * Created by wuxiaoshan on 17-5-5.
  */
 public interface ISysMsgCallBack {
-    void handleMessage(List<Message> messageList);
+
+    void handleMessage(List<Message> messages);
 }

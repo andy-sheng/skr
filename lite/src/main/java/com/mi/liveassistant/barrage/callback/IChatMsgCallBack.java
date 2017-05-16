@@ -6,11 +6,10 @@ import java.util.List;
 
 /**
  * 文本消息
- *
+ * <p>
  * Created by wuxiaoshan on 17-5-3.
  */
 public interface IChatMsgCallBack {
 
-    void handleMessage(List<Message> messageList);
-
+    void handleMessage(List<Message> messages);
 }
