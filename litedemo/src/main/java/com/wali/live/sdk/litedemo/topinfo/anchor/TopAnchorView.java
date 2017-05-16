@@ -52,7 +52,7 @@ public class TopAnchorView extends RelativeLayout {
     public void updateAnchor(User anchor) {
         mAnchorTv.setText(anchor.getNickname());
 
-        String avatarUrl = AvatarUtils.getAvatarUrlByUid(anchor.getUid(), anchor.getAvatar());
+        String avatarUrl = AvatarUtils.getAvatarUrlByUidTs(anchor.getUid(), anchor.getAvatar());
         Log.d(TAG, "updateAnchorView avatarUrl=" + avatarUrl);
         FrescoWorker.loadImage(mAnchorDv, ImageFactory.newHttpImage(avatarUrl).setIsCircle(true).build());
     }

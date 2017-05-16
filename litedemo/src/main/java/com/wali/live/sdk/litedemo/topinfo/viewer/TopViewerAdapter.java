@@ -70,7 +70,7 @@ public class TopViewerAdapter extends RecyclerView.Adapter<TopViewerAdapter.View
         }
 
         protected void bindView(Viewer viewer) {
-            String avatarUrl = AvatarUtils.getAvatarUrlByUid(viewer.getUid(), viewer.getAvatar());
+            String avatarUrl = AvatarUtils.getAvatarUrlByUidTs(viewer.getUid(), viewer.getAvatar());
             Log.d(TAG, "updateAnchorView avatarUrl=" + avatarUrl);
             FrescoWorker.loadImage(mViewerDv, ImageFactory.newHttpImage(avatarUrl).setIsCircle(true).build());
         }

@@ -15,7 +15,7 @@ public class AvatarUtils {
     public static final int SIZE_TYPE_AVATAR_LARGE = 3;          //大图：480
     public static final int SIZE_TYPE_AVATAR_XLARGE = 4;         //超大：640
 
-    public static String getAvatarUrlByUid(long uid, long timestamp) {
+    public static String getAvatarUrlByUidTs(long uid, long timestamp) {
         return getAvatarUrlByUidTs(uid, AvatarUtils.SIZE_TYPE_AVATAR_SMALL, timestamp);
     }
 
