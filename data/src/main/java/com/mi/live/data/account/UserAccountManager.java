@@ -77,6 +77,9 @@ public class UserAccountManager {
 
     public void logoff(int channelid) {
         MyLog.w(TAG, "logoff:" + channelid + "  HostChannelManager.getInstance().getChannelId()" + HostChannelManager.getInstance().getChannelId());
+        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
+            return;
+        }
         AccountLocalStore.getInstance().deleteAccount(channelid);
         if (channelid == HostChannelManager.getInstance().getChannelId()) {
             // 和当前渠道一致,当前账号置为空
