@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.mi.liveassistant.barrage.callback.IChatMsgCallBack;
-import com.mi.liveassistant.barrage.callback.ISysMsgCallBack;
+import com.mi.liveassistant.barrage.callback.IChatMsgCallback;
+import com.mi.liveassistant.barrage.callback.ISysMsgCallback;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
@@ -67,7 +67,7 @@ public class WatchActivity extends RxActivity {
     private LinearLayoutManager mBarrageManager;
     private BarrageAdapter mBarrageAdapter;
 
-    private IChatMsgCallBack mMsgCallBack = new IChatMsgCallBack() {
+    private IChatMsgCallback mMsgCallback = new IChatMsgCallback() {
         @Override
         public void handleMessage(final List<Message> list) {
             mBarrageRv.post(new Runnable() {
@@ -80,7 +80,7 @@ public class WatchActivity extends RxActivity {
         }
     };
 
-    private ISysMsgCallBack mSysMsgCallBack = new ISysMsgCallBack() {
+    private ISysMsgCallback mSysMsgCallback = new ISysMsgCallback() {
         @Override
         public void handleMessage(final List<Message> list) {
             mBarrageRv.post(new Runnable() {
@@ -238,7 +238,7 @@ public class WatchActivity extends RxActivity {
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        MessageFacade.getInstance().registerCallBack(mLiveId, mMsgCallBack, mSysMsgCallBack);
+        MessageFacade.getInstance().registerCallback(mLiveId, mMsgCallback, mSysMsgCallback);
         MessageFacade.getInstance().startPull(mLiveId);
     }
 
@@ -246,7 +246,7 @@ public class WatchActivity extends RxActivity {
     protected void onDestroy() {
         Log.w(TAG, "onDestroy");
         super.onDestroy();
-        MessageFacade.getInstance().unregisterCallBack();
+        MessageFacade.getInstance().unregisterCallback();
         MessageFacade.getInstance().stopPull();
         mWatchManager.leaveLive();
     }

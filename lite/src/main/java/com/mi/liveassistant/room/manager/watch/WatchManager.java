@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
+import com.mi.liveassistant.barrage.data.InternalMsgType;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageExt;
-import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.engine.player.widget.VideoPlayerPresenter;
@@ -152,8 +152,8 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
                 List<Message> viewerMessageList = new ArrayList();
                 MyLog.d(TAG, "handleMessage message=" + messageList.size());
                 for (Message message : messageList) {
-                    if (message.getMsgType() == MessageType.MSG_TYPE_JOIN
-                            || message.getMsgType() == MessageType.MSG_TYPE_LEAVE) {
+                    if (message.getMsgType() == InternalMsgType.MSG_TYPE_JOIN
+                            || message.getMsgType() == InternalMsgType.MSG_TYPE_LEAVE) {
                         viewerMessageList.add(message);
                     }
                 }
@@ -161,9 +161,9 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
                     MyLog.d(TAG, "handleMessage viewerMessage=" + viewerMessageList.size());
                     if (mViewerObserver != null) {
                         Message message = viewerMessageList.get(viewerMessageList.size() - 1);
-                        if (message.getMsgType() == MessageType.MSG_TYPE_JOIN) {
+                        if (message.getMsgType() == InternalMsgType.MSG_TYPE_JOIN) {
                             mViewerObserver.observerOnList(((MessageExt.JoinRoomMessageExt) message.getMessageExt()).viewerList);
-                        } else if (message.getMsgType() == MessageType.MSG_TYPE_LEAVE) {
+                        } else if (message.getMsgType() == InternalMsgType.MSG_TYPE_LEAVE) {
                             mViewerObserver.observerOnList(((MessageExt.LeaveRoomMessageExt) message.getMessageExt()).viewerList);
                         }
                     }
