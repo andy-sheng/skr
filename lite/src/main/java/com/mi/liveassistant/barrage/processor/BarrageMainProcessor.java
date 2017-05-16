@@ -79,25 +79,15 @@ public class BarrageMainProcessor implements IMsgDispenser {
     }
 
     public void init(final String roomId, final IChatMsgListener chatMsgListener, final ISysMsgListener sysMsgListener) {
-        singleThread.execute(new Runnable() {
-            @Override
-            public void run() {
-                mRoomId = roomId;
-                mChatMsgListener = chatMsgListener;
-                mSysMsgListener = sysMsgListener;
-            }
-        });
+        mRoomId = roomId;
+        mChatMsgListener = chatMsgListener;
+        mSysMsgListener = sysMsgListener;
     }
 
     public void destroy() {
-        singleThread.execute(new Runnable() {
-            @Override
-            public void run() {
-                mRoomId = null;
-                mChatMsgListener = null;
-                mSysMsgListener = null;
-            }
-        });
+        mRoomId = null;
+        mChatMsgListener = null;
+        mSysMsgListener = null;
     }
 
     public String getRoomId() {
@@ -105,24 +95,14 @@ public class BarrageMainProcessor implements IMsgDispenser {
     }
 
     public void registerInternalMsgListener(final InternalMsgListener internalMsgListener) {
-        singleThread.execute(new Runnable() {
-            @Override
-            public void run() {
-                mInternalMsgListener = internalMsgListener;
-            }
-        });
+        mInternalMsgListener = internalMsgListener;
     }
 
     public void unregisterInternalMsgListener() {
-        singleThread.execute(new Runnable() {
-            @Override
-            public void run() {
-                mInternalMsgListener = null;
-            }
-        });
+        mInternalMsgListener = null;
     }
 
-    public void enterRenderQueue(final List<BarrageMsg> importantList, final List<BarrageMsg> normalList,long lastPullTs,long syncInterval) {
+    public void enterRenderQueue(final List<BarrageMsg> importantList, final List<BarrageMsg> normalList, long lastPullTs, long syncInterval) {
         if (mChatMsgListener == null && mSysMsgListener == null && mInternalMsgListener == null) {
             return;
         }
@@ -332,25 +312,25 @@ public class BarrageMainProcessor implements IMsgDispenser {
             return;
         }
         for (BarrageMsg barrageMsg : messageList) {
-            MyLog.w(TAG,"barrage msg type:"+barrageMsg.getMsgType());
+            MyLog.w(TAG, "barrage msg type:" + barrageMsg.getMsgType());
             Set<MsgProcessor> processors = mMsgProcessorMap.get(barrageMsg.getMsgType());
-            if(processors != null){
+            if (processors != null) {
                 for (MsgProcessor processor : processors) {
                     processor.process(barrageMsg, mRoomId);
                 }
-            }else{
-                MyLog.d(TAG,"message type:"+barrageMsg.getMsgType()+"\tnot have processor");
+            } else {
+                MyLog.d(TAG, "message type:" + barrageMsg.getMsgType() + "\tnot have processor");
             }
         }
     }
 
     @Override
     public void addChatMsg(List<Message> messageList) {
+        List<Message> chatMessageList = new ArrayList<>();
+        for (int i = 0; i < messageList.size(); i++) {
+            chatMessageList.add(messageList.get(i).cloneToChatMessage());
+        }
         if (mChatMsgListener != null) {
-            List<Message> chatMessageList = new ArrayList<>();
-            for(int i=0;i<messageList.size();i++){
-                chatMessageList.add(messageList.get(i).cloneToChatMessage());
-            }
             mChatMsgListener.handleMessage(chatMessageList);
         }
     }

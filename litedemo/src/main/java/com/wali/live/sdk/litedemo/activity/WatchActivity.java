@@ -238,8 +238,7 @@ public class WatchActivity extends RxActivity {
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        MessageFacade.getInstance().init(mLiveId, mMsgListener, mSysMsgListener);
-        MessageFacade.getInstance().startPull();
+        MessageFacade.getInstance().startPull(mLiveId, mMsgListener, mSysMsgListener);
     }
 
     @Override
@@ -247,7 +246,6 @@ public class WatchActivity extends RxActivity {
         Log.w(TAG, "onDestroy");
         super.onDestroy();
         MessageFacade.getInstance().stopPull();
-        MessageFacade.getInstance().destroy();
         mWatchManager.leaveLive();
     }
 

@@ -1,5 +1,7 @@
 package com.mi.liveassistant.barrage.facade;
 
+import android.text.TextUtils;
+
 import com.mi.liveassistant.barrage.callback.IChatMsgListener;
 import com.mi.liveassistant.barrage.callback.ISysMsgListener;
 import com.mi.liveassistant.barrage.data.MessageType;
@@ -26,15 +28,12 @@ public class MessageFacade {
     private MessageFacade() {
     }
 
-    public void init(String roomId, IChatMsgListener chatMsgListener, ISysMsgListener sysMsgListener) {
+    public void startPull(String roomId, IChatMsgListener chatMsgListener, ISysMsgListener sysMsgListener) {
+        MyLog.w(TAG, "startPull");
+        if (TextUtils.isEmpty(roomId) || chatMsgListener == null || sysMsgListener == null) {
+            return;
+        }
         BarrageMainProcessor.getInstance().init(roomId, chatMsgListener, sysMsgListener);
-    }
-
-    public void destroy() {
-        BarrageMainProcessor.getInstance().destroy();
-    }
-
-    public void startPull() {
         if (mBarragePullMessageManager != null && mBarragePullMessageManager.isRunning()) {
             return;
         }
@@ -48,6 +47,7 @@ public class MessageFacade {
             mBarragePullMessageManager.stop();
             mBarragePullMessageManager = null;
         }
+        BarrageMainProcessor.getInstance().destroy();
     }
 
     public void sendTextMessageAsync(String body, String liveId, long anchorId) {

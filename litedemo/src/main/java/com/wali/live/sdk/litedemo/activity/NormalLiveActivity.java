@@ -248,7 +248,6 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
         super.onDestroy();
         mLiveManager.destroy();
         MessageFacade.getInstance().stopPull();
-        MessageFacade.getInstance().destroy();
     }
 
     @Override
@@ -358,8 +357,7 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        MessageFacade.getInstance().init(mLiveId, mMsgListener, mSysMsgListener);
-        MessageFacade.getInstance().startPull();
+        MessageFacade.getInstance().startPull(mLiveId, mMsgListener, mSysMsgListener);
     }
 
     public static void openActivity(Activity activity) {

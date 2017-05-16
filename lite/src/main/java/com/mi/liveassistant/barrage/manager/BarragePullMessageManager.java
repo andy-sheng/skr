@@ -1,5 +1,7 @@
 package com.mi.liveassistant.barrage.manager;
 
+import android.text.TextUtils;
+
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
@@ -45,7 +47,7 @@ public class BarragePullMessageManager {
     //上一次拉取间隔
     private long mLastPullTs;
 
-    private BarrageMainProcessor mBarrageProcesser;
+    private BarrageMainProcessor mBarrageProcessor;
 
     public BarragePullMessageManager() {
         mSyncInterval = 5000;
@@ -60,7 +62,7 @@ public class BarragePullMessageManager {
     public void start() {
         MyLog.w(TAG, "start");
         isRunning = true;
-        mBarrageProcesser = BarrageMainProcessor.getInstance();
+        mBarrageProcessor = BarrageMainProcessor.getInstance();
         pullMsg();
     }
 
@@ -75,13 +77,8 @@ public class BarragePullMessageManager {
             mDelayPullSubscriber.unsubscribe();
             mDelayPullSubscriber = null;
         }
-        mSingleThread.execute(new Runnable() {
-            @Override
-            public void run() {
-                mBarrageProcesser = null;
-            }
-        });
         mSingleThread.shutdown();
+        mBarrageProcessor = null;
     }
 
     public boolean isRunning() {
@@ -101,7 +98,12 @@ public class BarragePullMessageManager {
             @Override
             public void call(Subscriber<? super LiveMessageProto.SyncRoomMessageResponse> subscriber) {
                 try {
-                    PullRoomMsgRequest request = new PullRoomMsgRequest(UserAccountManager.getInstance().getUuidAsLong(), mBarrageProcesser.getRoomId(), mLastSyncImportantTs, mLastSyncNormalTs);
+                    String roomId = mBarrageProcessor.getRoomId();
+                    if (TextUtils.isEmpty(roomId)) {
+                        subscriber.onError(new Throwable("roomId is null"));
+                        return;
+                    }
+                    PullRoomMsgRequest request = new PullRoomMsgRequest(UserAccountManager.getInstance().getUuidAsLong(), roomId, mLastSyncImportantTs, mLastSyncNormalTs);
                     LiveMessageProto.SyncRoomMessageResponse response = request.syncRsp();
                     subscriber.onNext(response);
                     subscriber.onCompleted();
@@ -148,8 +150,8 @@ public class BarragePullMessageManager {
                             List<BarrageMsg> l2 = a.normalList;
                             MyLog.d(TAG, "startWorkInternal result list size:" + (l1.size() + l2.size()));
                             // 进队列
-                            if (mBarrageProcesser != null) {
-                                mBarrageProcesser.enterRenderQueue(l1, l2, a.mLastPullTs, a.mSyncInterval);
+                            if (mBarrageProcessor != null) {
+                                mBarrageProcessor.enterRenderQueue(l1, l2, a.mLastPullTs, a.mSyncInterval);
                             }
                         }
                     }

@@ -215,7 +215,6 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         super.onDestroy();
         mLiveManager.destroy();
         MessageFacade.getInstance().stopPull();
-        MessageFacade.getInstance().destroy();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -312,8 +311,7 @@ public class GameLiveActivity extends RxActivity implements View.OnClickListener
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        MessageFacade.getInstance().init(mLiveId, mMsgListener, mISysMsgListener);
-        MessageFacade.getInstance().startPull();
+        MessageFacade.getInstance().startPull(mLiveId, mMsgListener, mISysMsgListener);
     }
 
     @Override
