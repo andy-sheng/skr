@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.mi.liveassistant.barrage.callback.IChatMsgCallback;
-import com.mi.liveassistant.barrage.callback.ISysMsgCallback;
+import com.mi.liveassistant.barrage.callback.IChatMsgListener;
+import com.mi.liveassistant.barrage.callback.ISysMsgListener;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageType;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
@@ -67,7 +67,7 @@ public class WatchActivity extends RxActivity {
     private LinearLayoutManager mBarrageManager;
     private BarrageAdapter mBarrageAdapter;
 
-    private IChatMsgCallback mMsgCallback = new IChatMsgCallback() {
+    private IChatMsgListener mMsgListener = new IChatMsgListener() {
         @Override
         public void handleMessage(final List<Message> list) {
             mBarrageRv.post(new Runnable() {
@@ -80,7 +80,7 @@ public class WatchActivity extends RxActivity {
         }
     };
 
-    private ISysMsgCallback mSysMsgCallback = new ISysMsgCallback() {
+    private ISysMsgListener mSysMsgListener = new ISysMsgListener() {
         @Override
         public void handleMessage(final List<Message> list) {
             mBarrageRv.post(new Runnable() {
@@ -238,16 +238,16 @@ public class WatchActivity extends RxActivity {
         mBarrageAdapter = new BarrageAdapter();
         mBarrageRv.setAdapter(mBarrageAdapter);
 
-        MessageFacade.getInstance().registerCallback(mLiveId, mMsgCallback, mSysMsgCallback);
-        MessageFacade.getInstance().startPull(mLiveId);
+        MessageFacade.getInstance().init(mLiveId, mMsgListener, mSysMsgListener);
+        MessageFacade.getInstance().startPull();
     }
 
     @Override
     protected void onDestroy() {
         Log.w(TAG, "onDestroy");
         super.onDestroy();
-        MessageFacade.getInstance().unregisterCallback();
         MessageFacade.getInstance().stopPull();
+        MessageFacade.getInstance().destroy();
         mWatchManager.leaveLive();
     }
 

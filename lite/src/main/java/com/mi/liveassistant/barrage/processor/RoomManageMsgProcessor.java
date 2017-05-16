@@ -35,7 +35,7 @@ public class RoomManageMsgProcessor extends MsgProcessor {
         messageList.add(Message.loadFromBarrage(msg));
         mIMsgDispenser.addSysMsg(messageList);
         if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_KICK_VIEWER) {
-            mIMsgDispenser.addInternalMsgCallBack(messageList);
+            mIMsgDispenser.addInternalMsgListener(messageList);
         }
     }
 

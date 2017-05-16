@@ -9,7 +9,7 @@ import java.util.List;
  * <p>
  * Created by wuxiaoshan on 17-5-5.
  */
-public interface ISysMsgCallback {
+public interface ISysMsgListener {
 
     void handleMessage(List<Message> messages);
 }

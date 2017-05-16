@@ -270,11 +270,11 @@
     protected *;
 }
 
--keep class com.mi.liveassistant.barrage.callback.IChatMsgCallback{
+-keep class com.mi.liveassistant.barrage.callback.IChatMsgListener{
     *;
 }
 
--keep class com.mi.liveassistant.barrage.callback.ISysMsgCallback{
+-keep class com.mi.liveassistant.barrage.callback.ISysMsgListener{
     *;
 }
 

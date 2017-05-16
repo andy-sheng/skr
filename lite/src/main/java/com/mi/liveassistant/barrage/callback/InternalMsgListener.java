@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by wuxiaoshan on 17-5-8.
  */
-public interface InternalMsgCallBack {
+public interface InternalMsgListener {
 
     void handleMessage(List<Message> messageList);
 }

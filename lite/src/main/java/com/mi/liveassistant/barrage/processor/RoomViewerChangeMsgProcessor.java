@@ -28,7 +28,7 @@ public class RoomViewerChangeMsgProcessor extends MsgProcessor {
                 || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_TOP_LOSE) {
             List<Message> messageList = new ArrayList<>();
             messageList.add(Message.loadFromBarrage(msg));
-            mIMsgDispenser.addInternalMsgCallBack(messageList);
+            mIMsgDispenser.addInternalMsgListener(messageList);
         }
     }
 

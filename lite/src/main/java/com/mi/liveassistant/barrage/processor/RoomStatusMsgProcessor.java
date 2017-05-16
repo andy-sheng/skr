@@ -29,7 +29,7 @@ public class RoomStatusMsgProcessor extends MsgProcessor {
         if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIVE_END) {
             // 直播结束
             MyLog.w(TAG, "B_MSG_TYPE_LIVE_END");
-            mIMsgDispenser.addInternalMsgCallBack(messageList);
+            mIMsgDispenser.addInternalMsgListener(messageList);
             mIMsgDispenser.addSysMsg(messageList);
         }  else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ANCHOR_LEAVE) {
             MyLog.w(TAG, "B_MSG_TYPE_ANCHOR_LEAVE");

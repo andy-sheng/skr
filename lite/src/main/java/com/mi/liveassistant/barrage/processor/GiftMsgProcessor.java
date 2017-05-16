@@ -44,14 +44,14 @@ public class GiftMsgProcessor extends MsgProcessor {
                 if (count <= 10) {
                     mIMsgDispenser.addChatMsg(messageList);
                 }
-                mIMsgDispenser.addInternalMsgCallBack(messageList);
+                mIMsgDispenser.addInternalMsgListener(messageList);
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE: {
                 List<Message> messageList = new ArrayList<>();
                 messageList.add(Message.loadFromBarrage(msg));
                 mIMsgDispenser.addChatMsg(messageList);
-                mIMsgDispenser.addInternalMsgCallBack(messageList);
+                mIMsgDispenser.addInternalMsgListener(messageList);
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE: {
@@ -61,7 +61,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                     List<Message> messageList = new ArrayList<>();
                     messageList.add(Message.loadFromBarrage(msg));
                     mIMsgDispenser.addChatMsg(messageList);
-//                    mIMsgDispenser.addInternalMsgCallBack(messageList);
+//                    mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
             break;
@@ -72,7 +72,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                     List<Message> messageList = new ArrayList<>();
                     messageList.add(Message.loadFromBarrage(msg));
                     mIMsgDispenser.addChatMsg(messageList);
-                    mIMsgDispenser.addInternalMsgCallBack(messageList);
+                    mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
             break;
@@ -83,7 +83,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                     List<Message> messageList = new ArrayList<>();
                     messageList.add(Message.loadFromBarrage(msg));
                     mIMsgDispenser.addChatMsg(messageList);
-                    mIMsgDispenser.addInternalMsgCallBack(messageList);
+                    mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
             break;
@@ -94,7 +94,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                     List<Message> messageList = new ArrayList<>();
                     messageList.add(Message.loadFromBarrage(msg));
                     mIMsgDispenser.addChatMsg(messageList);
-                    mIMsgDispenser.addInternalMsgCallBack(messageList);
+                    mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
             break;

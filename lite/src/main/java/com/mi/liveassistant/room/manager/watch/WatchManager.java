@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
+import com.mi.liveassistant.barrage.callback.InternalMsgListener;
 import com.mi.liveassistant.barrage.data.InternalMsgType;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageExt;
@@ -146,7 +146,7 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
     }
 
     private void registerInternalMsg() {
-        BarrageMainProcessor.getInstance().registerInternalMsgCallBack(new InternalMsgCallBack() {
+        BarrageMainProcessor.getInstance().registerInternalMsgListener(new InternalMsgListener() {
             @Override
             public void handleMessage(List<Message> messageList) {
                 List<Message> viewerMessageList = new ArrayList();
@@ -182,7 +182,7 @@ public class WatchManager implements IWatchView, IViewerRegister, IEventObserver
         mStreamerPresenter.stopLive();
         mStreamerPresenter.destroy();
 
-        BarrageMainProcessor.getInstance().unregisterInternalMsgCallBack();
+        BarrageMainProcessor.getInstance().unregisterInternalMsgListener();
     }
 
     /**

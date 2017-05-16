@@ -2,9 +2,9 @@ package com.mi.liveassistant.barrage.processor;
 
 import android.util.SparseArray;
 
-import com.mi.liveassistant.barrage.callback.IChatMsgCallback;
-import com.mi.liveassistant.barrage.callback.ISysMsgCallback;
-import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
+import com.mi.liveassistant.barrage.callback.IChatMsgListener;
+import com.mi.liveassistant.barrage.callback.ISysMsgListener;
+import com.mi.liveassistant.barrage.callback.InternalMsgListener;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.common.log.MyLog;
@@ -38,11 +38,11 @@ public class BarrageMainProcessor implements IMsgDispenser {
 
     private static BarrageMainProcessor mInstance = new BarrageMainProcessor();
 
-    private IChatMsgCallback mChatMsgCallBack;
+    private IChatMsgListener mChatMsgListener;
 
-    private ISysMsgCallback mSysMsgCallBack;
+    private ISysMsgListener mSysMsgListener;
 
-    private InternalMsgCallBack mInternalMsgCallBack;
+    private InternalMsgListener mInternalMsgListener;
 
     private String mRoomId;
 
@@ -78,13 +78,13 @@ public class BarrageMainProcessor implements IMsgDispenser {
         return mInstance;
     }
 
-    public void init(final String roomId, final IChatMsgCallback chatMsgCallBack, final ISysMsgCallback sysMsgCallBack) {
+    public void init(final String roomId, final IChatMsgListener chatMsgListener, final ISysMsgListener sysMsgListener) {
         singleThread.execute(new Runnable() {
             @Override
             public void run() {
                 mRoomId = roomId;
-                mChatMsgCallBack = chatMsgCallBack;
-                mSysMsgCallBack = sysMsgCallBack;
+                mChatMsgListener = chatMsgListener;
+                mSysMsgListener = sysMsgListener;
             }
         });
     }
@@ -94,32 +94,36 @@ public class BarrageMainProcessor implements IMsgDispenser {
             @Override
             public void run() {
                 mRoomId = null;
-                mChatMsgCallBack = null;
-                mSysMsgCallBack = null;
+                mChatMsgListener = null;
+                mSysMsgListener = null;
             }
         });
     }
 
-    public void registerInternalMsgCallBack(final InternalMsgCallBack internalMsgCallBack) {
+    public String getRoomId() {
+        return mRoomId;
+    }
+
+    public void registerInternalMsgListener(final InternalMsgListener internalMsgListener) {
         singleThread.execute(new Runnable() {
             @Override
             public void run() {
-                mInternalMsgCallBack = internalMsgCallBack;
+                mInternalMsgListener = internalMsgListener;
             }
         });
     }
 
-    public void unregisterInternalMsgCallBack() {
+    public void unregisterInternalMsgListener() {
         singleThread.execute(new Runnable() {
             @Override
             public void run() {
-                mInternalMsgCallBack = null;
+                mInternalMsgListener = null;
             }
         });
     }
 
     public void enterRenderQueue(final List<BarrageMsg> importantList, final List<BarrageMsg> normalList,long lastPullTs,long syncInterval) {
-        if (mChatMsgCallBack == null && mSysMsgCallBack == null && mInternalMsgCallBack == null) {
+        if (mChatMsgListener == null && mSysMsgListener == null && mInternalMsgListener == null) {
             return;
         }
         mLastPullTs = lastPullTs;
@@ -164,7 +168,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
     }
 
     public void enterRenderQueue(final List<BarrageMsg> barrageMsgList) {
-        if (mChatMsgCallBack == null && mSysMsgCallBack == null && mInternalMsgCallBack == null) {
+        if (mChatMsgListener == null && mSysMsgListener == null && mInternalMsgListener == null) {
             return;
         }
 //        mLastPullTs = System.currentTimeMillis();
@@ -204,7 +208,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
 
     /*ui线程*/
     private void notifyRender() {
-        if (mChatMsgCallBack == null && mSysMsgCallBack == null && mInternalMsgCallBack == null) {
+        if (mChatMsgListener == null && mSysMsgListener == null && mInternalMsgListener == null) {
             if (mNotifyRenderSubscriber != null && !mNotifyRenderSubscriber.isUnsubscribed()) {
                 mNotifyRenderSubscriber.unsubscribe();
                 mNotifyRenderSubscriber = null;
@@ -282,7 +286,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
     }
 
     private void delayNotifyRender(long interval) {
-        if (mChatMsgCallBack == null && mSysMsgCallBack == null && mInternalMsgCallBack == null) {
+        if (mChatMsgListener == null && mSysMsgListener == null && mInternalMsgListener == null) {
             return;
         }
         Observable.timer(interval, TimeUnit.MILLISECONDS)
@@ -324,7 +328,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
     }
 
     private void renderRoomMsg(List<BarrageMsg> messageList) {
-        if (mChatMsgCallBack == null && mSysMsgCallBack == null && mInternalMsgCallBack == null) {
+        if (mChatMsgListener == null && mSysMsgListener == null && mInternalMsgListener == null) {
             return;
         }
         for (BarrageMsg barrageMsg : messageList) {
@@ -342,12 +346,12 @@ public class BarrageMainProcessor implements IMsgDispenser {
 
     @Override
     public void addChatMsg(List<Message> messageList) {
-        if (mChatMsgCallBack != null) {
+        if (mChatMsgListener != null) {
             List<Message> chatMessageList = new ArrayList<>();
             for(int i=0;i<messageList.size();i++){
                 chatMessageList.add(messageList.get(i).cloneToChatMessage());
             }
-            mChatMsgCallBack.handleMessage(chatMessageList);
+            mChatMsgListener.handleMessage(chatMessageList);
         }
     }
 
@@ -355,22 +359,22 @@ public class BarrageMainProcessor implements IMsgDispenser {
     public void addChatMsg(Message message) {
         List<Message> messages = new ArrayList<>();
         messages.add(message.cloneToChatMessage());
-        if (mChatMsgCallBack != null) {
-            mChatMsgCallBack.handleMessage(messages);
+        if (mChatMsgListener != null) {
+            mChatMsgListener.handleMessage(messages);
         }
     }
 
     @Override
     public void addSysMsg(List<Message> messageList) {
-        if (mSysMsgCallBack != null) {
-            mSysMsgCallBack.handleMessage(messageList);
+        if (mSysMsgListener != null) {
+            mSysMsgListener.handleMessage(messageList);
         }
     }
 
     @Override
-    public void addInternalMsgCallBack(List<Message> messageList) {
-        if (mInternalMsgCallBack != null) {
-            mInternalMsgCallBack.handleMessage(messageList);
+    public void addInternalMsgListener(List<Message> messageList) {
+        if (mInternalMsgListener != null) {
+            mInternalMsgListener.handleMessage(messageList);
         }
     }
 }

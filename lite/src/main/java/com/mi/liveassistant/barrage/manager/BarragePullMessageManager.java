@@ -29,8 +29,6 @@ public class BarragePullMessageManager {
 
     private static final String TAG = BarragePullMessageManager.class.getSimpleName();
 
-    private String mRoomId;
-
     private ExecutorService mSingleThread;
 
     //弹幕是push模式
@@ -49,8 +47,7 @@ public class BarragePullMessageManager {
 
     private BarrageMainProcessor mBarrageProcesser;
 
-    public BarragePullMessageManager(String roomId) {
-        mRoomId = roomId;
+    public BarragePullMessageManager() {
         mSyncInterval = 5000;
         mSingleThread = Executors.newSingleThreadExecutor();
     }
@@ -104,7 +101,7 @@ public class BarragePullMessageManager {
             @Override
             public void call(Subscriber<? super LiveMessageProto.SyncRoomMessageResponse> subscriber) {
                 try {
-                    PullRoomMsgRequest request = new PullRoomMsgRequest(UserAccountManager.getInstance().getUuidAsLong(), mRoomId, mLastSyncImportantTs, mLastSyncNormalTs);
+                    PullRoomMsgRequest request = new PullRoomMsgRequest(UserAccountManager.getInstance().getUuidAsLong(), mBarrageProcesser.getRoomId(), mLastSyncImportantTs, mLastSyncNormalTs);
                     LiveMessageProto.SyncRoomMessageResponse response = request.syncRsp();
                     subscriber.onNext(response);
                     subscriber.onCompleted();

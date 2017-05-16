@@ -17,5 +17,5 @@ public interface IMsgDispenser {
 
     void addSysMsg(List<Message> messageList);
 
-    void addInternalMsgCallBack(List<Message> messageList);
+    void addInternalMsgListener(List<Message> messageList);
 }

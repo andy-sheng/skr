@@ -4,7 +4,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
 import com.mi.liveassistant.account.UserAccountManager;
-import com.mi.liveassistant.barrage.callback.InternalMsgCallBack;
+import com.mi.liveassistant.barrage.callback.InternalMsgListener;
 import com.mi.liveassistant.barrage.data.InternalMsgType;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageExt;
@@ -208,7 +208,7 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter>
     }
 
     protected void registerInternalMsg() {
-        BarrageMainProcessor.getInstance().registerInternalMsgCallBack(new InternalMsgCallBack() {
+        BarrageMainProcessor.getInstance().registerInternalMsgListener(new InternalMsgListener() {
             @Override
             public void handleMessage(List<Message> messageList) {
                 List<Message> viewerMessageList = new ArrayList();
