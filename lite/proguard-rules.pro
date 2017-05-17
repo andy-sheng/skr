@@ -282,6 +282,18 @@
     public *;
 }
 
--keep class com.mi.liveassistant.barrage.data.** {
+-keep class com.mi.liveassistant.barrage.data.Message {
+    public *;
+}
+
+-keep class com.mi.liveassistant.barrage.data.MessageExt {
+    public *;
+}
+
+-keep class com.mi.liveassistant.barrage.data.MessageType {
+    public *;
+}
+
+-keep class com.mi.liveassistant.barrage.data.MessageExt$LiveEndMessageExt {
     public *;
 }
