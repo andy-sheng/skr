@@ -1,4 +1,4 @@
-package com.mi.liveassistant.barrage.data;
+package com.mi.liveassistant.barrage.innerdata;
 
 import com.mi.liveassistant.barrage.model.BarrageMsgType;
 

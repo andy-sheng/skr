@@ -96,7 +96,6 @@ public class NormalLiveActivity extends RxActivity implements View.OnClickListen
             mBarrageRv.post(new Runnable() {
                 @Override
                 public void run() {
-                    mBarrageAdapter.addMessageList(list);
                     mBarrageRv.smoothScrollToPosition(mBarrageAdapter.getItemCount() - 1);
                 }
             });

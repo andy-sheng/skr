@@ -35,8 +35,8 @@ public class Message implements Comparable<Message> {
 
     private MessageExt messageExt;
 
-    public MessageExt getMessageExt() {
-        return messageExt;
+    public <T extends MessageExt> T getMessageExt() {
+        return (T) messageExt;
     }
 
     public void setMessageExt(MessageExt messageExt) {
@@ -146,7 +146,7 @@ public class Message implements Comparable<Message> {
         }
     }
 
-    public Message cloneToChatMessage(){
+    public Message cloneToChatMessage() {
         Message message = new Message();
         message.setMsgType(MessageType.MSG_TYPE_TEXT);
         message.setBody(body);

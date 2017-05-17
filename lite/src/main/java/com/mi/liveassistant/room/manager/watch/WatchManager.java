@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.mi.liveassistant.barrage.callback.InternalMsgListener;
-import com.mi.liveassistant.barrage.data.InternalMsgType;
+import com.mi.liveassistant.barrage.innerdata.InternalMsgType;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageExt;
 import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;

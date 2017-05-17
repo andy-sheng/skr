@@ -4,7 +4,7 @@ import com.mi.liveassistant.barrage.model.BarrageMsgType;
 
 /**
  * 消息类型
- *
+ * <p>
  * Created by wuxiaoshan on 17-5-3.
  */
 public class MessageType {
@@ -12,6 +12,7 @@ public class MessageType {
     public static final int MSG_TYPE_TEXT = BarrageMsgType.B_MSG_TYPE_TEXT;
 
     /*需要上层处理的系统消息，开始*/
+    /*
     //房间禁言消息
     public static final int MSG_TYPE_FORBIDDEN = BarrageMsgType.B_MSG_TYPE_FORBIDDEN;
     //房间取消禁言消息
@@ -24,6 +25,7 @@ public class MessageType {
     public static final int MSG_TYPE_FREQUENCY_CONTROL = BarrageMsgType.B_MSG_TYPE_FREQUENCY_CONTROL;
     //踢人
     public static final int MSG_TYPE_KICK_VIEWER = BarrageMsgType.B_MSG_TYPE_KICK_VIEWER;
+    */
     //直播结束
     public static final int MSG_TYPE_LIVE_END = BarrageMsgType.B_MSG_TYPE_LIVE_END;
     //主播离开
@@ -31,7 +33,6 @@ public class MessageType {
     //主播回来
     public static final int MSG_TYPE_ANCHOR_JOIN = BarrageMsgType.B_MSG_TYPE_ANCHOR_JOIN;
     /*需要上层处理的系统消息，结束*/
-
 
 
 }

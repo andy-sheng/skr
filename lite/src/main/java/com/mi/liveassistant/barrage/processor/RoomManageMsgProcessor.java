@@ -42,12 +42,13 @@ public class RoomManageMsgProcessor extends MsgProcessor {
     @Override
     public int[] getAcceptMsgType() {
         return new int[]{
-                BarrageMsgType.B_MSG_TYPE_FORBIDDEN,
-                BarrageMsgType.B_MSG_TYPE_CANCEL_FORBIDDEN,
-                BarrageMsgType.B_MSG_TYPE_CANCEL_MANAGER,
-                BarrageMsgType.B_MSG_TYPE_SET_MANAGER,
-                BarrageMsgType.B_MSG_TYPE_FREQUENCY_CONTROL,
-                BarrageMsgType.B_MSG_TYPE_KICK_VIEWER
+                // TODO chenyong1 暂时这些类型的消息都不处理
+//                BarrageMsgType.B_MSG_TYPE_FORBIDDEN,
+//                BarrageMsgType.B_MSG_TYPE_CANCEL_FORBIDDEN,
+//                BarrageMsgType.B_MSG_TYPE_CANCEL_MANAGER,
+//                BarrageMsgType.B_MSG_TYPE_SET_MANAGER,
+//                BarrageMsgType.B_MSG_TYPE_FREQUENCY_CONTROL,
+//                BarrageMsgType.B_MSG_TYPE_KICK_VIEWER
         };
     }
 }
