@@ -301,10 +301,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     public void trySendDataWithServerOnce() {
-        if (mMyRoomData.getUid() == 0) {
+        if (mMyRoomData.getUid() == 0 && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
-
             AvatarUtils.loadAvatarByUidTs(mBlurIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                     AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, false, true);
         }

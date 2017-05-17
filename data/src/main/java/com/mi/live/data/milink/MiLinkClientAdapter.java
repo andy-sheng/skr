@@ -35,7 +35,7 @@ public class MiLinkClientAdapter {
 
     private String clientIp;
 
-    private boolean mIsTouristMode = true;
+    private boolean mIsTouristMode = false;
 
     MiLinkChannelClient mMiLinkChannelClient;
 
@@ -272,6 +272,7 @@ public class MiLinkClientAdapter {
             if (isTouristMode) {
                 //如果是游客模式
                 mMiLinkChannelClient.initUseChannelMode();
+                MiLinkClientIpc.logoff();
             } else {
                 //如果不是游客模式，主动退出
                 mMiLinkChannelClient.logoff();
