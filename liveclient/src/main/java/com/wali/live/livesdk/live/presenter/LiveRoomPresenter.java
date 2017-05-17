@@ -133,20 +133,21 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
 
     /*第三方app 结束直播*/
     public void endLiveByAppInfo(final String liveId, final AccountProto.AppInfo appInfo) {
-        Observable.create(new Observable.OnSubscribe<Object>() {
-            @Override
-            public void call(Subscriber<? super Object> subscriber) {
-                MyLog.w(TAG, "endLiveByAppInfo,liveId:" + liveId);
-                LiveProto.EndLiveRsp rsp = null;
-                if (appInfo != null) {
-                    rsp = new EndLiveRequest(liveId, appInfo).syncRsp();
-                } else {
-                    rsp = new EndLiveRequest(liveId).syncRsp();
-                }
-                subscriber.onNext(rsp);
-                subscriber.onCompleted();
-            }
-        })
+        Observable
+                .create(new Observable.OnSubscribe<Object>() {
+                    @Override
+                    public void call(Subscriber<? super Object> subscriber) {
+                        MyLog.w(TAG, "endLiveByAppInfo, liveId:" + liveId);
+                        LiveProto.EndLiveRsp rsp;
+                        if (appInfo != null) {
+                            rsp = new EndLiveRequest(liveId, appInfo).syncRsp();
+                        } else {
+                            rsp = new EndLiveRequest(liveId).syncRsp();
+                        }
+                        subscriber.onNext(rsp);
+                        subscriber.onCompleted();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -160,6 +161,7 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                         int errCode = ErrorCode.CODE_ERROR_NORMAL;
                         if (rsp == null) {
                             mCallback.processAction(MiLinkCommand.COMMAND_LIVE_END, errCode);
+                            return;
                         }
                         MyLog.w(TAG, "endLive rsp.toString()=" + rsp.toString());
                         if ((errCode = rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
@@ -183,7 +185,7 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
         mCallback = null;
     }
 
-    public void initManager(long uuid){
+    public void initManager(long uuid) {
         LiveRoomCharacterManager.getInstance().clear();
         Observable.just(uuid)
                 .map(new Func1<Long, List<LiveRoomManagerModel>>() {
@@ -199,9 +201,9 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                     @Override
                     public void call(Object object) {
                         if (object != null) {
-                            List<LiveRoomManagerModel> managerModelList = (List<LiveRoomManagerModel>)object;
+                            List<LiveRoomManagerModel> managerModelList = (List<LiveRoomManagerModel>) object;
                             for (LiveRoomManagerModel managerModel : managerModelList) {
-                                LiveRoomCharacterManager.getInstance().setManager(managerModel,true);
+                                LiveRoomCharacterManager.getInstance().setManager(managerModel, true);
                             }
                         }
                     }

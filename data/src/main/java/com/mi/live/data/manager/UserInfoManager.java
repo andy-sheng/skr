@@ -57,19 +57,18 @@ public class UserInfoManager {
                 if (rsp.getRetCode() == 0) {
                     user.parse(rsp.getPersonalInfo());
                     user.parse(rsp.getPersonalData());
+
                     LiveCommonProto.UserRoomInfo roomInfo = LiveCommonProto.UserRoomInfo.parseFrom(rsp.getRoomInfo());
                     user.setTVRoomId(roomInfo.getTvRoomid());
                     user.setRoomType(roomInfo.getType());
-                    user.setmAppType(roomInfo.getAppType());
+                    user.setAppType(roomInfo.getAppType());
                     user.setSellerStatus(rsp.getPersonalInfo().getSellerStatus());
                     if (rsp.getRankTopThreeListList() != null) {
                         user.setRankTopThreeList(rsp.getRankTopThreeListList());
                     }
-
                     if (!TextUtils.isEmpty(rsp.getViewUrl())) {
                         user.setViewUrl(rsp.getViewUrl());
                     }
-
                     if (!TextUtils.isEmpty(rsp.getRoomId())) {
                         user.setRoomId(rsp.getRoomId());
                     }

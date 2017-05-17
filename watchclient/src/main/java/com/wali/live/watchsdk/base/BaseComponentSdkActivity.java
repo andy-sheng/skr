@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.base;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.base.activity.BaseRotateSdkActivity;
@@ -196,11 +197,12 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
                 if (event == null || isFinishing()) {
                     return;
                 }
-                if (mMyRoomData != null) {
-                    MyLog.d(TAG, "mMyRoomData.getRoomId():" + mMyRoomData.getRoomId());
+                if (mMyRoomData == null) {
+                    return;
                 }
-
-                if (mMyRoomData == null || null == mMyRoomData.getRoomId()) {
+                String roomId = mMyRoomData.getRoomId();
+                MyLog.d(TAG, "mMyRoomData.getRoomId():" + roomId);
+                if (TextUtils.isEmpty(roomId)) {
                     return;
                 }
                 processPushMsgList(event.getMsgList());
@@ -218,12 +220,12 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
                 continue;
             }
             // 不是本房间且不是系统消息一律不处理
-            if (!mMyRoomData.getRoomId().equals(msg.getRoomId())) {
+            String roomId = mMyRoomData.getRoomId();
+            if (roomId == null || !roomId.equals(msg.getRoomId())) {
                 if (msg.getMsgType() != BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG && msg.getMsgType() != BarrageMsgType.B_MSG_TYPE_LEVEL_UPGRADE_SYS_MSG) {
-                    MyLog.w(TAG, "not this room msg,my_room_id:" + mMyRoomData.getRoomId() + ",msg_room_id:" + msg.getRoomId());
+                    MyLog.w(TAG, "not this room msg, my_room_id:" + roomId + ", msg_room_id:" + msg.getRoomId());
                     continue;
                 } else {
-
                 }
             }
             // 处理自己房间的push消息

@@ -128,6 +128,11 @@ public class RoomBaseDataModel implements Serializable {
      */
     private boolean mEnableShare = false;
 
+    /**
+     * 房间id，重要属性
+     */
+    private String mRoomId;
+
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
     }
@@ -229,11 +234,12 @@ public class RoomBaseDataModel implements Serializable {
     }
 
     public void setRoomId(String roomId) {
+        mRoomId = roomId;
         mOwner.setRoomId(roomId);
     }
 
     public String getRoomId() {
-        return mOwner.getRoomId();
+        return mRoomId;
     }
 
     public long getEnterRoomTime() {

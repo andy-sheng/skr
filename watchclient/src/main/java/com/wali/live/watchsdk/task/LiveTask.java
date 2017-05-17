@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.task;
 
+import android.text.TextUtils;
+
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.query.model.ViewerModel;
@@ -18,7 +20,7 @@ import java.util.List;
 public class LiveTask {
     private static final String TAG = LiveTask.class.getSimpleName();
 
-    public static Runnable viewerTop(final long uid,final String roomId, final WeakReference<IActionCallBack> callBack) {
+    public static Runnable viewerTop(final long uid, final String roomId, final WeakReference<IActionCallBack> callBack) {
         Runnable task = new TaskRunnable() {
             int errCode = ErrorCode.CODE_ERROR_NORMAL;
             List<ViewerModel> viewerList;
@@ -37,7 +39,7 @@ public class LiveTask {
             }
 
             protected void onPostExecute(Boolean result) {
-                if (callBack.get()!=null && callBack != null) {
+                if (callBack.get() != null && callBack != null) {
                     if (result) {
                         callBack.get().processAction(MiLinkCommand.COMMAND_LIVE_VIEWER_TOP, errCode, viewerList);
                     } else {
@@ -49,13 +51,17 @@ public class LiveTask {
         return task;
     }
 
-    public static Runnable viewerTop(final RoomBaseDataModel roomData,final WeakReference<IActionCallBack> callBack) {
+    public static Runnable viewerTop(final RoomBaseDataModel roomData, final WeakReference<IActionCallBack> callBack) {
         Runnable task = new TaskRunnable() {
             int errCode = ErrorCode.CODE_ERROR_NORMAL;
             List<ViewerModel> viewerList;
 
             protected Boolean doInBackground(Void... params) {
-                ViewerTopRsp rsp = new ViewerTopRequest(roomData.getUid(), roomData.getRoomId()).syncRsp();
+                String roomId = roomData.getRoomId();
+                if (TextUtils.isEmpty(roomId)) {
+                    return false;
+                }
+                ViewerTopRsp rsp = new ViewerTopRequest(roomData.getUid(), roomId).syncRsp();
 
                 if ((rsp != null) && (errCode = rsp.getRetCode()) == ErrorCode.CODE_SUCCESS) {
                     viewerList = new ArrayList<>();
@@ -68,7 +74,7 @@ public class LiveTask {
             }
 
             protected void onPostExecute(Boolean result) {
-                if (callBack!=null && callBack.get() != null) {
+                if (callBack != null && callBack.get() != null) {
                     if (result) {
                         callBack.get().processAction(MiLinkCommand.COMMAND_LIVE_VIEWER_TOP, errCode, roomData, viewerList);
                     } else {

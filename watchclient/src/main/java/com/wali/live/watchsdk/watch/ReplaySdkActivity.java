@@ -434,10 +434,15 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     }
 
     private void syncSystemMessage() {
-        if (!TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+        String roomId = mMyRoomData.getRoomId();
+        if (!TextUtils.isEmpty(roomId)) {
             long myId = UserAccountManager.getInstance().getUuidAsLong();
-            LiveMessageProto.SyncSysMsgRequest syncSysMsgRequest = LiveMessageProto.SyncSysMsgRequest.newBuilder()
-                    .setCid(System.currentTimeMillis()).setFromUser(myId).setRoomId(mMyRoomData.getRoomId()).build();
+            LiveMessageProto.SyncSysMsgRequest syncSysMsgRequest =
+                    LiveMessageProto.SyncSysMsgRequest.newBuilder()
+                            .setCid(System.currentTimeMillis())
+                            .setFromUser(myId)
+                            .setRoomId(roomId)
+                            .build();
             BarrageMessageManager.getInstance().sendSyncSystemMessage(syncSysMsgRequest);
         }
     }

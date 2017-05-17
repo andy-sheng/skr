@@ -95,19 +95,19 @@ public class User implements Serializable {
     private String mTVRoomId = null;         //正在播放的电视台房间id
     private int mRoomType;
 
-    public int getmAppType() {
+    public int getAppType() {
         return mAppType;
     }
 
-    public void setmAppType(int mAppType) {
+    public void setAppType(int mAppType) {
         this.mAppType = mAppType;
     }
 
-    public void setTVRoomId(String tvRoomId){
+    public void setTVRoomId(String tvRoomId) {
         mTVRoomId = tvRoomId;
     }
 
-    public String getTVRoomId(){
+    public String getTVRoomId() {
         return mTVRoomId;
     }
 
@@ -376,6 +376,7 @@ public class User implements Serializable {
 
     /**
      * Live.proto里的UserRoomInfo.type 对应我们的LiveManager里定义的常量
+     *
      * @return
      */
     public int getRoomType() {

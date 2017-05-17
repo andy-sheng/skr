@@ -1,8 +1,8 @@
 package com.mi.live.data.repository.datasource;
 
+import com.base.log.MyLog;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
-import com.base.log.MyLog;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.LiveMessageProto;
 
@@ -18,7 +18,7 @@ public class RoomMessageStore {
     public static final String TAG = "RoomMessageStore";
 
     @Inject
-    public RoomMessageStore(){
+    public RoomMessageStore() {
 
     }
 

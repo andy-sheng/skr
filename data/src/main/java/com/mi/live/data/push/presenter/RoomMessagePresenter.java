@@ -1,6 +1,5 @@
 package com.mi.live.data.push.presenter;
 
-import com.base.activity.BaseActivity;
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.presenter.Presenter;

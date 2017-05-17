@@ -389,8 +389,10 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mStreamerPresenter.stopPreview();
         }
         mComponentController.onPauseStream();
-        if (sRecording && !TextUtils.isEmpty(mMyRoomData.getRoomId())) { // TODO 这里会有耗时，初始化这个pb对象会在static中耗时
-            new ZuidSleepRequest(mMyRoomData.getRoomId()).async();
+
+        String roomId = mMyRoomData.getRoomId();
+        if (sRecording && !TextUtils.isEmpty(roomId)) { // TODO 这里会有耗时，初始化这个pb对象会在static中耗时
+            new ZuidSleepRequest(roomId).async();
             mUIHandler.removeMessages(MSG_END_LIVE_FOR_TIMEOUT);
             mUIHandler.sendEmptyMessageDelayed(MSG_END_LIVE_FOR_TIMEOUT, BACKGROUND_TIMEOUT);
         }
@@ -402,8 +404,9 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mStreamerPresenter.startPreview();
         }
         mComponentController.onResumeStream();
-        if (sRecording && !TextUtils.isEmpty(mMyRoomData.getRoomId())) {
-            new ZuidActiveRequest(mMyRoomData.getRoomId()).async();
+        String roomId = mMyRoomData.getRoomId();
+        if (sRecording && !TextUtils.isEmpty(roomId)) {
+            new ZuidActiveRequest(roomId).async();
             mUIHandler.removeMessages(MSG_END_LIVE_FOR_TIMEOUT);
         }
     }
@@ -945,10 +948,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private void syncSystemMessage() {
-        if (!TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+        String roomId = mMyRoomData.getRoomId();
+        if (!TextUtils.isEmpty(roomId)) {
             long myId = UserAccountManager.getInstance().getUuidAsLong();
             LiveMessageProto.SyncSysMsgRequest syncSysMsgRequest = LiveMessageProto.SyncSysMsgRequest.newBuilder()
-                    .setCid(System.currentTimeMillis()).setFromUser(myId).setRoomId(mMyRoomData.getRoomId()).build();
+                    .setCid(System.currentTimeMillis()).setFromUser(myId).setRoomId(roomId).build();
             BarrageMessageManager.getInstance().sendSyncSystemMessage(syncSysMsgRequest);
         }
     }
@@ -1012,13 +1016,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mHeartbeatService.execute(new Runnable() {
             @Override
             public void run() {
-                // 说明进房间失败了
-                if (TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+                String roomId = mMyRoomData.getRoomId();
+                if (TextUtils.isEmpty(roomId)) {
                     return;
                 }
-
                 LiveProto.HeartBeatReq.Builder builder = LiveProto.HeartBeatReq.newBuilder()
-                        .setLiveId(mMyRoomData.getRoomId())
+                        .setLiveId(roomId)
                         .setStatus((mIsGameLive || mIsForeground) && !mIsPaused ? 0 : 1);
                 builder.setMicuidStatus(0);
                 PacketData data = new PacketData();

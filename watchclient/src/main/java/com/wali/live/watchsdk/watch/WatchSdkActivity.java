@@ -652,6 +652,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     private void viewerTopFromServer(RoomBaseDataModel roomData) {
+        if (TextUtils.isEmpty(roomData.getRoomId())) {
+            MyLog.d(TAG, "viewerTop roomId is empty");
+            return;
+        }
         mHandlerThread.post(LiveTask.viewerTop(roomData, new WeakReference<IActionCallBack>(this)));
     }
 
