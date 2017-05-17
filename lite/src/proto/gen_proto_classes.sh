@@ -10,3 +10,5 @@ protoc --java_out=$genPath ./CommonChannel.proto
 protoc --java_out=$genPath ./HotChannel.proto
 protoc --java_out=$genPath ./Config.proto
 protoc --java_out=$genPath ./CloudParams.proto
+protoc --java_out=$genPath ./LiveMessage.proto
+protoc --java_out=$genPath ./RedEnvelope.proto

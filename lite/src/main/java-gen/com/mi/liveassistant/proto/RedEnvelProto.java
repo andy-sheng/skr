@@ -94,10 +94,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(enum_scope:Platform)
   }
 
-  public interface WinnerOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WinnerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Winner)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -115,7 +115,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // optional string nickname = 2;
     /**
      * <code>optional string nickname = 2;</code>
      *
@@ -142,7 +141,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional uint32 level = 3;
     /**
      * <code>optional uint32 level = 3;</code>
      *
@@ -160,7 +158,6 @@ public final class RedEnvelProto {
      */
     int getLevel();
 
-    // optional uint32 gain = 4;
     /**
      * <code>optional uint32 gain = 4;</code>
      *
@@ -178,7 +175,6 @@ public final class RedEnvelProto {
      */
     int getGain();
 
-    // optional uint64 timestamp = 5;
     /**
      * <code>optional uint64 timestamp = 5;</code>
      *
@@ -196,7 +192,6 @@ public final class RedEnvelProto {
      */
     long getTimestamp();
 
-    // optional uint64 avatar = 6;
     /**
      * <code>optional uint64 avatar = 6;</code>
      *
@@ -222,8 +217,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class Winner extends
-      com.google.protobuf.GeneratedMessage
-      implements WinnerOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Winner)
+      WinnerOrBuilder {
     // Use Winner.newBuilder() to construct.
     private Winner(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -275,8 +271,9 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 24: {
@@ -339,7 +336,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -363,7 +359,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // optional string nickname = 2;
     public static final int NICKNAME_FIELD_NUMBER = 2;
     private java.lang.Object nickname_;
     /**
@@ -418,7 +413,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional uint32 level = 3;
     public static final int LEVEL_FIELD_NUMBER = 3;
     private int level_;
     /**
@@ -442,7 +436,6 @@ public final class RedEnvelProto {
       return level_;
     }
 
-    // optional uint32 gain = 4;
     public static final int GAIN_FIELD_NUMBER = 4;
     private int gain_;
     /**
@@ -466,7 +459,6 @@ public final class RedEnvelProto {
       return gain_;
     }
 
-    // optional uint64 timestamp = 5;
     public static final int TIMESTAMP_FIELD_NUMBER = 5;
     private long timestamp_;
     /**
@@ -490,7 +482,6 @@ public final class RedEnvelProto {
       return timestamp_;
     }
 
-    // optional uint64 avatar = 6;
     public static final int AVATAR_FIELD_NUMBER = 6;
     private long avatar_;
     /**
@@ -525,7 +516,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -675,8 +667,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.WinnerOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Winner)
+        com.mi.liveassistant.proto.RedEnvelProto.WinnerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_Winner_descriptor;
@@ -840,7 +833,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -889,7 +881,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string nickname = 2;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 2;</code>
@@ -911,9 +902,12 @@ public final class RedEnvelProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -987,7 +981,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 level = 3;
       private int level_ ;
       /**
        * <code>optional uint32 level = 3;</code>
@@ -1036,7 +1029,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 gain = 4;
       private int gain_ ;
       /**
        * <code>optional uint32 gain = 4;</code>
@@ -1085,7 +1077,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 timestamp = 5;
       private long timestamp_ ;
       /**
        * <code>optional uint64 timestamp = 5;</code>
@@ -1134,7 +1125,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 avatar = 6;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 6;</code>
@@ -1194,10 +1184,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:Winner)
   }
 
-  public interface GrabEnvelopReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GrabEnvelopReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GrabEnvelopReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -1215,7 +1205,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // required string redEnvelopId = 2;
     /**
      * <code>required string redEnvelopId = 2;</code>
      *
@@ -1242,7 +1231,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getRedEnvelopIdBytes();
 
-    // optional string room_id = 3;
     /**
      * <code>optional string room_id = 3;</code>
      *
@@ -1278,8 +1266,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class GrabEnvelopReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GrabEnvelopReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GrabEnvelopReq)
+      GrabEnvelopReqOrBuilder {
     // Use GrabEnvelopReq.newBuilder() to construct.
     private GrabEnvelopReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1331,13 +1320,15 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              redEnvelopId_ = input.readBytes();
+              redEnvelopId_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              roomId_ = input.readBytes();
+              roomId_ = bs;
               break;
             }
           }
@@ -1380,7 +1371,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -1404,7 +1394,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // required string redEnvelopId = 2;
     public static final int REDENVELOPID_FIELD_NUMBER = 2;
     private java.lang.Object redEnvelopId_;
     /**
@@ -1459,7 +1448,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional string room_id = 3;
     public static final int ROOM_ID_FIELD_NUMBER = 3;
     private java.lang.Object roomId_;
     /**
@@ -1522,7 +1510,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -1656,8 +1645,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.GrabEnvelopReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GrabEnvelopReq)
+        com.mi.liveassistant.proto.RedEnvelProto.GrabEnvelopReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_GrabEnvelopReq_descriptor;
@@ -1800,7 +1790,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -1849,7 +1838,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required string redEnvelopId = 2;
       private java.lang.Object redEnvelopId_ = "";
       /**
        * <code>required string redEnvelopId = 2;</code>
@@ -1871,9 +1859,12 @@ public final class RedEnvelProto {
       public java.lang.String getRedEnvelopId() {
         java.lang.Object ref = redEnvelopId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          redEnvelopId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redEnvelopId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1947,7 +1938,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string room_id = 3;
       private java.lang.Object roomId_ = "";
       /**
        * <code>optional string room_id = 3;</code>
@@ -1969,9 +1959,12 @@ public final class RedEnvelProto {
       public java.lang.String getRoomId() {
         java.lang.Object ref = roomId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2056,10 +2049,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:GrabEnvelopReq)
   }
 
-  public interface GrabEnvelopRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GrabEnvelopRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GrabEnvelopRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -2077,7 +2070,6 @@ public final class RedEnvelProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      *
@@ -2104,7 +2096,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional uint64 userId = 3;
     /**
      * <code>optional uint64 userId = 3;</code>
      *
@@ -2122,7 +2113,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // optional string redEnvelopId = 4;
     /**
      * <code>optional string redEnvelopId = 4;</code>
      *
@@ -2149,7 +2139,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getRedEnvelopIdBytes();
 
-    // optional uint32 gain = 5;
     /**
      * <code>optional uint32 gain = 5;</code>
      *
@@ -2167,7 +2156,6 @@ public final class RedEnvelProto {
      */
     int getGain();
 
-    // optional uint64 timestamp = 6;
     /**
      * <code>optional uint64 timestamp = 6;</code>
      *
@@ -2185,7 +2173,6 @@ public final class RedEnvelProto {
      */
     long getTimestamp();
 
-    // optional uint64 gemExpire = 7;
     /**
      * <code>optional uint64 gemExpire = 7;</code>
      *
@@ -2203,7 +2190,6 @@ public final class RedEnvelProto {
      */
     long getGemExpire();
 
-    // repeated .GiftCard gift_cards = 8;
     /**
      * <code>repeated .GiftCard gift_cards = 8;</code>
      *
@@ -2248,7 +2234,6 @@ public final class RedEnvelProto {
     com.mi.liveassistant.proto.RedEnvelProto.GiftCardOrBuilder getGiftCardsOrBuilder(
         int index);
 
-    // optional uint32 ios_usable_gem_cnt = 9;
     /**
      * <code>optional uint32 ios_usable_gem_cnt = 9;</code>
      */
@@ -2258,7 +2243,6 @@ public final class RedEnvelProto {
      */
     int getIosUsableGemCnt();
 
-    // optional uint32 and_usable_gem_cnt = 10;
     /**
      * <code>optional uint32 and_usable_gem_cnt = 10;</code>
      */
@@ -2268,7 +2252,6 @@ public final class RedEnvelProto {
      */
     int getAndUsableGemCnt();
 
-    // optional uint64 user_asset_timestamp = 11;
     /**
      * <code>optional uint64 user_asset_timestamp = 11;</code>
      */
@@ -2278,7 +2261,6 @@ public final class RedEnvelProto {
      */
     long getUserAssetTimestamp();
 
-    // optional uint32 usable_virtual_gem_cnt = 12;
     /**
      * <code>optional uint32 usable_virtual_gem_cnt = 12;</code>
      *
@@ -2304,8 +2286,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class GrabEnvelopRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GrabEnvelopRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GrabEnvelopRsp)
+      GrabEnvelopRspOrBuilder {
     // Use GrabEnvelopRsp.newBuilder() to construct.
     private GrabEnvelopRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -2357,8 +2340,9 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 24: {
@@ -2367,8 +2351,9 @@ public final class RedEnvelProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              redEnvelopId_ = input.readBytes();
+              redEnvelopId_ = bs;
               break;
             }
             case 40: {
@@ -2457,7 +2442,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -2481,7 +2465,6 @@ public final class RedEnvelProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -2536,7 +2519,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional uint64 userId = 3;
     public static final int USERID_FIELD_NUMBER = 3;
     private long userId_;
     /**
@@ -2560,7 +2542,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // optional string redEnvelopId = 4;
     public static final int REDENVELOPID_FIELD_NUMBER = 4;
     private java.lang.Object redEnvelopId_;
     /**
@@ -2615,7 +2596,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional uint32 gain = 5;
     public static final int GAIN_FIELD_NUMBER = 5;
     private int gain_;
     /**
@@ -2639,7 +2619,6 @@ public final class RedEnvelProto {
       return gain_;
     }
 
-    // optional uint64 timestamp = 6;
     public static final int TIMESTAMP_FIELD_NUMBER = 6;
     private long timestamp_;
     /**
@@ -2663,7 +2642,6 @@ public final class RedEnvelProto {
       return timestamp_;
     }
 
-    // optional uint64 gemExpire = 7;
     public static final int GEMEXPIRE_FIELD_NUMBER = 7;
     private long gemExpire_;
     /**
@@ -2687,7 +2665,6 @@ public final class RedEnvelProto {
       return gemExpire_;
     }
 
-    // repeated .GiftCard gift_cards = 8;
     public static final int GIFT_CARDS_FIELD_NUMBER = 8;
     private java.util.List<com.mi.liveassistant.proto.RedEnvelProto.GiftCard> giftCards_;
     /**
@@ -2743,7 +2720,6 @@ public final class RedEnvelProto {
       return giftCards_.get(index);
     }
 
-    // optional uint32 ios_usable_gem_cnt = 9;
     public static final int IOS_USABLE_GEM_CNT_FIELD_NUMBER = 9;
     private int iosUsableGemCnt_;
     /**
@@ -2759,7 +2735,6 @@ public final class RedEnvelProto {
       return iosUsableGemCnt_;
     }
 
-    // optional uint32 and_usable_gem_cnt = 10;
     public static final int AND_USABLE_GEM_CNT_FIELD_NUMBER = 10;
     private int andUsableGemCnt_;
     /**
@@ -2775,7 +2750,6 @@ public final class RedEnvelProto {
       return andUsableGemCnt_;
     }
 
-    // optional uint64 user_asset_timestamp = 11;
     public static final int USER_ASSET_TIMESTAMP_FIELD_NUMBER = 11;
     private long userAssetTimestamp_;
     /**
@@ -2791,7 +2765,6 @@ public final class RedEnvelProto {
       return userAssetTimestamp_;
     }
 
-    // optional uint32 usable_virtual_gem_cnt = 12;
     public static final int USABLE_VIRTUAL_GEM_CNT_FIELD_NUMBER = 12;
     private int usableVirtualGemCnt_;
     /**
@@ -2832,7 +2805,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -3024,8 +2998,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.GrabEnvelopRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GrabEnvelopRsp)
+        com.mi.liveassistant.proto.RedEnvelProto.GrabEnvelopRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_GrabEnvelopRsp_descriptor;
@@ -3278,7 +3253,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -3327,7 +3301,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -3349,9 +3322,12 @@ public final class RedEnvelProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3425,7 +3401,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 userId = 3;
       private long userId_ ;
       /**
        * <code>optional uint64 userId = 3;</code>
@@ -3474,7 +3449,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string redEnvelopId = 4;
       private java.lang.Object redEnvelopId_ = "";
       /**
        * <code>optional string redEnvelopId = 4;</code>
@@ -3496,9 +3470,12 @@ public final class RedEnvelProto {
       public java.lang.String getRedEnvelopId() {
         java.lang.Object ref = redEnvelopId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          redEnvelopId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redEnvelopId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3572,7 +3549,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 gain = 5;
       private int gain_ ;
       /**
        * <code>optional uint32 gain = 5;</code>
@@ -3621,7 +3597,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 timestamp = 6;
       private long timestamp_ ;
       /**
        * <code>optional uint64 timestamp = 6;</code>
@@ -3670,7 +3645,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 gemExpire = 7;
       private long gemExpire_ ;
       /**
        * <code>optional uint64 gemExpire = 7;</code>
@@ -3719,7 +3693,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // repeated .GiftCard gift_cards = 8;
       private java.util.List<com.mi.liveassistant.proto.RedEnvelProto.GiftCard> giftCards_ =
         java.util.Collections.emptyList();
       private void ensureGiftCardsIsMutable() {
@@ -3901,7 +3874,8 @@ public final class RedEnvelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.RedEnvelProto.GiftCard> values) {
         if (giftCardsBuilder_ == null) {
           ensureGiftCardsIsMutable();
-          super.addAll(values, giftCards_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, giftCards_);
           onChanged();
         } else {
           giftCardsBuilder_.addAllMessages(values);
@@ -4031,7 +4005,6 @@ public final class RedEnvelProto {
         return giftCardsBuilder_;
       }
 
-      // optional uint32 ios_usable_gem_cnt = 9;
       private int iosUsableGemCnt_ ;
       /**
        * <code>optional uint32 ios_usable_gem_cnt = 9;</code>
@@ -4064,7 +4037,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 and_usable_gem_cnt = 10;
       private int andUsableGemCnt_ ;
       /**
        * <code>optional uint32 and_usable_gem_cnt = 10;</code>
@@ -4097,7 +4069,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 user_asset_timestamp = 11;
       private long userAssetTimestamp_ ;
       /**
        * <code>optional uint64 user_asset_timestamp = 11;</code>
@@ -4130,7 +4101,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 usable_virtual_gem_cnt = 12;
       private int usableVirtualGemCnt_ ;
       /**
        * <code>optional uint32 usable_virtual_gem_cnt = 12;</code>
@@ -4190,10 +4160,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:GrabEnvelopRsp)
   }
 
-  public interface GiftCardOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GiftCardOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GiftCard)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 gift_id = 1;
     /**
      * <code>optional uint32 gift_id = 1;</code>
      *
@@ -4211,7 +4181,6 @@ public final class RedEnvelProto {
      */
     int getGiftId();
 
-    // optional uint32 gift_card_cnt = 2;
     /**
      * <code>optional uint32 gift_card_cnt = 2;</code>
      *
@@ -4229,7 +4198,6 @@ public final class RedEnvelProto {
      */
     int getGiftCardCnt();
 
-    // optional uint64 begin_time = 3;
     /**
      * <code>optional uint64 begin_time = 3;</code>
      *
@@ -4247,7 +4215,6 @@ public final class RedEnvelProto {
      */
     long getBeginTime();
 
-    // optional uint64 end_time = 4;
     /**
      * <code>optional uint64 end_time = 4;</code>
      *
@@ -4265,7 +4232,6 @@ public final class RedEnvelProto {
      */
     long getEndTime();
 
-    // optional uint32 active_id = 5;
     /**
      * <code>optional uint32 active_id = 5;</code>
      *
@@ -4287,8 +4253,9 @@ public final class RedEnvelProto {
    * Protobuf type {@code GiftCard}
    */
   public static final class GiftCard extends
-      com.google.protobuf.GeneratedMessage
-      implements GiftCardOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GiftCard)
+      GiftCardOrBuilder {
     // Use GiftCard.newBuilder() to construct.
     private GiftCard(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -4399,7 +4366,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // optional uint32 gift_id = 1;
     public static final int GIFT_ID_FIELD_NUMBER = 1;
     private int giftId_;
     /**
@@ -4423,7 +4389,6 @@ public final class RedEnvelProto {
       return giftId_;
     }
 
-    // optional uint32 gift_card_cnt = 2;
     public static final int GIFT_CARD_CNT_FIELD_NUMBER = 2;
     private int giftCardCnt_;
     /**
@@ -4447,7 +4412,6 @@ public final class RedEnvelProto {
       return giftCardCnt_;
     }
 
-    // optional uint64 begin_time = 3;
     public static final int BEGIN_TIME_FIELD_NUMBER = 3;
     private long beginTime_;
     /**
@@ -4471,7 +4435,6 @@ public final class RedEnvelProto {
       return beginTime_;
     }
 
-    // optional uint64 end_time = 4;
     public static final int END_TIME_FIELD_NUMBER = 4;
     private long endTime_;
     /**
@@ -4495,7 +4458,6 @@ public final class RedEnvelProto {
       return endTime_;
     }
 
-    // optional uint32 active_id = 5;
     public static final int ACTIVE_ID_FIELD_NUMBER = 5;
     private int activeId_;
     /**
@@ -4529,7 +4491,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -4664,8 +4627,9 @@ public final class RedEnvelProto {
      * Protobuf type {@code GiftCard}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.GiftCardOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GiftCard)
+        com.mi.liveassistant.proto.RedEnvelProto.GiftCardOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_GiftCard_descriptor;
@@ -4814,7 +4778,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // optional uint32 gift_id = 1;
       private int giftId_ ;
       /**
        * <code>optional uint32 gift_id = 1;</code>
@@ -4863,7 +4826,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 gift_card_cnt = 2;
       private int giftCardCnt_ ;
       /**
        * <code>optional uint32 gift_card_cnt = 2;</code>
@@ -4912,7 +4874,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 begin_time = 3;
       private long beginTime_ ;
       /**
        * <code>optional uint64 begin_time = 3;</code>
@@ -4961,7 +4922,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 end_time = 4;
       private long endTime_ ;
       /**
        * <code>optional uint64 end_time = 4;</code>
@@ -5010,7 +4970,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 active_id = 5;
       private int activeId_ ;
       /**
        * <code>optional uint32 active_id = 5;</code>
@@ -5070,10 +5029,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:GiftCard)
   }
 
-  public interface GetEnvelopReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetEnvelopReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetEnvelopReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -5091,7 +5050,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // required string redEnvelopId = 2;
     /**
      * <code>required string redEnvelopId = 2;</code>
      *
@@ -5127,8 +5085,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class GetEnvelopReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetEnvelopReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetEnvelopReq)
+      GetEnvelopReqOrBuilder {
     // Use GetEnvelopReq.newBuilder() to construct.
     private GetEnvelopReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5180,8 +5139,9 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              redEnvelopId_ = input.readBytes();
+              redEnvelopId_ = bs;
               break;
             }
           }
@@ -5224,7 +5184,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -5248,7 +5207,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // required string redEnvelopId = 2;
     public static final int REDENVELOPID_FIELD_NUMBER = 2;
     private java.lang.Object redEnvelopId_;
     /**
@@ -5310,7 +5268,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -5437,8 +5396,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.GetEnvelopReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetEnvelopReq)
+        com.mi.liveassistant.proto.RedEnvelProto.GetEnvelopReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_GetEnvelopReq_descriptor;
@@ -5570,7 +5530,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -5619,7 +5578,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required string redEnvelopId = 2;
       private java.lang.Object redEnvelopId_ = "";
       /**
        * <code>required string redEnvelopId = 2;</code>
@@ -5641,9 +5599,12 @@ public final class RedEnvelProto {
       public java.lang.String getRedEnvelopId() {
         java.lang.Object ref = redEnvelopId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          redEnvelopId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redEnvelopId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5728,10 +5689,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:GetEnvelopReq)
   }
 
-  public interface GetEnvelopRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetEnvelopRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetEnvelopRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -5749,7 +5710,6 @@ public final class RedEnvelProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      *
@@ -5776,7 +5736,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional uint64 userId = 3;
     /**
      * <code>optional uint64 userId = 3;</code>
      *
@@ -5794,7 +5753,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // optional string redEnvelopId = 4;
     /**
      * <code>optional string redEnvelopId = 4;</code>
      *
@@ -5821,7 +5779,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getRedEnvelopIdBytes();
 
-    // repeated .Winner winners = 5;
     /**
      * <code>repeated .Winner winners = 5;</code>
      *
@@ -5866,7 +5823,6 @@ public final class RedEnvelProto {
     com.mi.liveassistant.proto.RedEnvelProto.WinnerOrBuilder getWinnersOrBuilder(
         int index);
 
-    // optional uint64 timestamp = 6;
     /**
      * <code>optional uint64 timestamp = 6;</code>
      *
@@ -5884,7 +5840,6 @@ public final class RedEnvelProto {
      */
     long getTimestamp();
 
-    // optional uint32 topShowCnt = 7;
     /**
      * <code>optional uint32 topShowCnt = 7;</code>
      *
@@ -5910,8 +5865,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class GetEnvelopRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetEnvelopRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetEnvelopRsp)
+      GetEnvelopRspOrBuilder {
     // Use GetEnvelopRsp.newBuilder() to construct.
     private GetEnvelopRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5963,8 +5919,9 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 24: {
@@ -5973,8 +5930,9 @@ public final class RedEnvelProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              redEnvelopId_ = input.readBytes();
+              redEnvelopId_ = bs;
               break;
             }
             case 42: {
@@ -6038,7 +5996,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -6062,7 +6019,6 @@ public final class RedEnvelProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -6117,7 +6073,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional uint64 userId = 3;
     public static final int USERID_FIELD_NUMBER = 3;
     private long userId_;
     /**
@@ -6141,7 +6096,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // optional string redEnvelopId = 4;
     public static final int REDENVELOPID_FIELD_NUMBER = 4;
     private java.lang.Object redEnvelopId_;
     /**
@@ -6196,7 +6150,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // repeated .Winner winners = 5;
     public static final int WINNERS_FIELD_NUMBER = 5;
     private java.util.List<com.mi.liveassistant.proto.RedEnvelProto.Winner> winners_;
     /**
@@ -6252,7 +6205,6 @@ public final class RedEnvelProto {
       return winners_.get(index);
     }
 
-    // optional uint64 timestamp = 6;
     public static final int TIMESTAMP_FIELD_NUMBER = 6;
     private long timestamp_;
     /**
@@ -6276,7 +6228,6 @@ public final class RedEnvelProto {
       return timestamp_;
     }
 
-    // optional uint32 topShowCnt = 7;
     public static final int TOPSHOWCNT_FIELD_NUMBER = 7;
     private int topShowCnt_;
     /**
@@ -6312,7 +6263,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -6475,8 +6427,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.GetEnvelopRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetEnvelopRsp)
+        com.mi.liveassistant.proto.RedEnvelProto.GetEnvelopRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_GetEnvelopRsp_descriptor;
@@ -6690,7 +6643,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -6739,7 +6691,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -6761,9 +6712,12 @@ public final class RedEnvelProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6837,7 +6791,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 userId = 3;
       private long userId_ ;
       /**
        * <code>optional uint64 userId = 3;</code>
@@ -6886,7 +6839,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string redEnvelopId = 4;
       private java.lang.Object redEnvelopId_ = "";
       /**
        * <code>optional string redEnvelopId = 4;</code>
@@ -6908,9 +6860,12 @@ public final class RedEnvelProto {
       public java.lang.String getRedEnvelopId() {
         java.lang.Object ref = redEnvelopId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          redEnvelopId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redEnvelopId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6984,7 +6939,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // repeated .Winner winners = 5;
       private java.util.List<com.mi.liveassistant.proto.RedEnvelProto.Winner> winners_ =
         java.util.Collections.emptyList();
       private void ensureWinnersIsMutable() {
@@ -7166,7 +7120,8 @@ public final class RedEnvelProto {
           java.lang.Iterable<? extends com.mi.liveassistant.proto.RedEnvelProto.Winner> values) {
         if (winnersBuilder_ == null) {
           ensureWinnersIsMutable();
-          super.addAll(values, winners_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, winners_);
           onChanged();
         } else {
           winnersBuilder_.addAllMessages(values);
@@ -7296,7 +7251,6 @@ public final class RedEnvelProto {
         return winnersBuilder_;
       }
 
-      // optional uint64 timestamp = 6;
       private long timestamp_ ;
       /**
        * <code>optional uint64 timestamp = 6;</code>
@@ -7345,7 +7299,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 topShowCnt = 7;
       private int topShowCnt_ ;
       /**
        * <code>optional uint32 topShowCnt = 7;</code>
@@ -7405,10 +7358,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:GetEnvelopRsp)
   }
 
-  public interface CreateRedEnvelopReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateRedEnvelopReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CreateRedEnvelopReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -7426,7 +7379,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // required string roomId = 2;
     /**
      * <code>required string roomId = 2;</code>
      *
@@ -7453,7 +7405,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getRoomIdBytes();
 
-    // required string client_id = 3;
     /**
      * <code>required string client_id = 3;</code>
      *
@@ -7480,7 +7431,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getClientIdBytes();
 
-    // required string msg = 4;
     /**
      * <code>required string msg = 4;</code>
      *
@@ -7507,7 +7457,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getMsgBytes();
 
-    // required uint32 gemCnt = 5;
     /**
      * <code>required uint32 gemCnt = 5;</code>
      *
@@ -7525,7 +7474,6 @@ public final class RedEnvelProto {
      */
     int getGemCnt();
 
-    // optional uint32 packageCnt = 6;
     /**
      * <code>optional uint32 packageCnt = 6;</code>
      *
@@ -7543,7 +7491,6 @@ public final class RedEnvelProto {
      */
     int getPackageCnt();
 
-    // required .Platform platform = 7;
     /**
      * <code>required .Platform platform = 7;</code>
      *
@@ -7561,7 +7508,6 @@ public final class RedEnvelProto {
      */
     com.mi.liveassistant.proto.RedEnvelProto.Platform getPlatform();
 
-    // optional uint64 zuid = 8;
     /**
      * <code>optional uint64 zuid = 8;</code>
      *
@@ -7579,7 +7525,6 @@ public final class RedEnvelProto {
      */
     long getZuid();
 
-    // optional uint32 viewer_cnt = 9;
     /**
      * <code>optional uint32 viewer_cnt = 9;</code>
      *
@@ -7606,8 +7551,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class CreateRedEnvelopReq extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateRedEnvelopReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CreateRedEnvelopReq)
+      CreateRedEnvelopReqOrBuilder {
     // Use CreateRedEnvelopReq.newBuilder() to construct.
     private CreateRedEnvelopReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7659,18 +7605,21 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              roomId_ = input.readBytes();
+              roomId_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              clientId_ = input.readBytes();
+              clientId_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
             case 40: {
@@ -7744,7 +7693,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -7768,7 +7716,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // required string roomId = 2;
     public static final int ROOMID_FIELD_NUMBER = 2;
     private java.lang.Object roomId_;
     /**
@@ -7823,7 +7770,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // required string client_id = 3;
     public static final int CLIENT_ID_FIELD_NUMBER = 3;
     private java.lang.Object clientId_;
     /**
@@ -7878,7 +7824,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // required string msg = 4;
     public static final int MSG_FIELD_NUMBER = 4;
     private java.lang.Object msg_;
     /**
@@ -7933,7 +7878,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // required uint32 gemCnt = 5;
     public static final int GEMCNT_FIELD_NUMBER = 5;
     private int gemCnt_;
     /**
@@ -7957,7 +7901,6 @@ public final class RedEnvelProto {
       return gemCnt_;
     }
 
-    // optional uint32 packageCnt = 6;
     public static final int PACKAGECNT_FIELD_NUMBER = 6;
     private int packageCnt_;
     /**
@@ -7981,7 +7924,6 @@ public final class RedEnvelProto {
       return packageCnt_;
     }
 
-    // required .Platform platform = 7;
     public static final int PLATFORM_FIELD_NUMBER = 7;
     private com.mi.liveassistant.proto.RedEnvelProto.Platform platform_;
     /**
@@ -8005,7 +7947,6 @@ public final class RedEnvelProto {
       return platform_;
     }
 
-    // optional uint64 zuid = 8;
     public static final int ZUID_FIELD_NUMBER = 8;
     private long zuid_;
     /**
@@ -8029,7 +7970,6 @@ public final class RedEnvelProto {
       return zuid_;
     }
 
-    // optional uint32 viewer_cnt = 9;
     public static final int VIEWER_CNT_FIELD_NUMBER = 9;
     private int viewerCnt_;
     /**
@@ -8067,7 +8007,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -8259,8 +8200,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.CreateRedEnvelopReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CreateRedEnvelopReq)
+        com.mi.liveassistant.proto.RedEnvelProto.CreateRedEnvelopReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_CreateRedEnvelopReq_descriptor;
@@ -8475,7 +8417,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -8524,7 +8465,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required string roomId = 2;
       private java.lang.Object roomId_ = "";
       /**
        * <code>required string roomId = 2;</code>
@@ -8546,9 +8486,12 @@ public final class RedEnvelProto {
       public java.lang.String getRoomId() {
         java.lang.Object ref = roomId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8622,7 +8565,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required string client_id = 3;
       private java.lang.Object clientId_ = "";
       /**
        * <code>required string client_id = 3;</code>
@@ -8644,9 +8586,12 @@ public final class RedEnvelProto {
       public java.lang.String getClientId() {
         java.lang.Object ref = clientId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          clientId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            clientId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8720,7 +8665,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required string msg = 4;
       private java.lang.Object msg_ = "";
       /**
        * <code>required string msg = 4;</code>
@@ -8742,9 +8686,12 @@ public final class RedEnvelProto {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8818,7 +8765,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required uint32 gemCnt = 5;
       private int gemCnt_ ;
       /**
        * <code>required uint32 gemCnt = 5;</code>
@@ -8867,7 +8813,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 packageCnt = 6;
       private int packageCnt_ ;
       /**
        * <code>optional uint32 packageCnt = 6;</code>
@@ -8916,7 +8861,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required .Platform platform = 7;
       private com.mi.liveassistant.proto.RedEnvelProto.Platform platform_ = com.mi.liveassistant.proto.RedEnvelProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 7;</code>
@@ -8968,7 +8912,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 zuid = 8;
       private long zuid_ ;
       /**
        * <code>optional uint64 zuid = 8;</code>
@@ -9017,7 +8960,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 viewer_cnt = 9;
       private int viewerCnt_ ;
       /**
        * <code>optional uint32 viewer_cnt = 9;</code>
@@ -9077,10 +9019,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:CreateRedEnvelopReq)
   }
 
-  public interface CreateRedEnvelopRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateRedEnvelopRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:CreateRedEnvelopRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -9098,7 +9040,6 @@ public final class RedEnvelProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      *
@@ -9125,7 +9066,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional string redEnvelopId = 3;
     /**
      * <code>optional string redEnvelopId = 3;</code>
      *
@@ -9160,8 +9100,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class CreateRedEnvelopRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateRedEnvelopRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:CreateRedEnvelopRsp)
+      CreateRedEnvelopRspOrBuilder {
     // Use CreateRedEnvelopRsp.newBuilder() to construct.
     private CreateRedEnvelopRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9213,13 +9154,15 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              redEnvelopId_ = input.readBytes();
+              redEnvelopId_ = bs;
               break;
             }
           }
@@ -9262,7 +9205,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -9286,7 +9228,6 @@ public final class RedEnvelProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -9341,7 +9282,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional string redEnvelopId = 3;
     public static final int REDENVELOPID_FIELD_NUMBER = 3;
     private java.lang.Object redEnvelopId_;
     /**
@@ -9404,7 +9344,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -9533,8 +9474,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.CreateRedEnvelopRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:CreateRedEnvelopRsp)
+        com.mi.liveassistant.proto.RedEnvelProto.CreateRedEnvelopRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_CreateRedEnvelopRsp_descriptor;
@@ -9673,7 +9615,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -9722,7 +9663,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -9744,9 +9684,12 @@ public final class RedEnvelProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9820,7 +9763,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string redEnvelopId = 3;
       private java.lang.Object redEnvelopId_ = "";
       /**
        * <code>optional string redEnvelopId = 3;</code>
@@ -9842,9 +9784,12 @@ public final class RedEnvelProto {
       public java.lang.String getRedEnvelopId() {
         java.lang.Object ref = redEnvelopId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          redEnvelopId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redEnvelopId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9929,10 +9874,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:CreateRedEnvelopRsp)
   }
 
-  public interface GetRedEnvelopSettingReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRedEnvelopSettingReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetRedEnvelopSettingReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -9950,7 +9895,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // required .Platform platform = 2;
     /**
      * <code>required .Platform platform = 2;</code>
      *
@@ -9968,7 +9912,6 @@ public final class RedEnvelProto {
      */
     com.mi.liveassistant.proto.RedEnvelProto.Platform getPlatform();
 
-    // optional uint64 zuid = 3;
     /**
      * <code>optional uint64 zuid = 3;</code>
      *
@@ -9986,7 +9929,6 @@ public final class RedEnvelProto {
      */
     long getZuid();
 
-    // optional string room_id = 4;
     /**
      * <code>optional string room_id = 4;</code>
      *
@@ -10013,7 +9955,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getRoomIdBytes();
 
-    // optional uint32 version = 5;
     /**
      * <code>optional uint32 version = 5;</code>
      */
@@ -10023,7 +9964,6 @@ public final class RedEnvelProto {
      */
     int getVersion();
 
-    // optional uint32 viewer_cnt = 6;
     /**
      * <code>optional uint32 viewer_cnt = 6;</code>
      *
@@ -10050,8 +9990,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class GetRedEnvelopSettingReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRedEnvelopSettingReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetRedEnvelopSettingReq)
+      GetRedEnvelopSettingReqOrBuilder {
     // Use GetRedEnvelopSettingReq.newBuilder() to construct.
     private GetRedEnvelopSettingReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -10119,8 +10060,9 @@ public final class RedEnvelProto {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              roomId_ = input.readBytes();
+              roomId_ = bs;
               break;
             }
             case 40: {
@@ -10173,7 +10115,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -10197,7 +10138,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // required .Platform platform = 2;
     public static final int PLATFORM_FIELD_NUMBER = 2;
     private com.mi.liveassistant.proto.RedEnvelProto.Platform platform_;
     /**
@@ -10221,7 +10161,6 @@ public final class RedEnvelProto {
       return platform_;
     }
 
-    // optional uint64 zuid = 3;
     public static final int ZUID_FIELD_NUMBER = 3;
     private long zuid_;
     /**
@@ -10245,7 +10184,6 @@ public final class RedEnvelProto {
       return zuid_;
     }
 
-    // optional string room_id = 4;
     public static final int ROOM_ID_FIELD_NUMBER = 4;
     private java.lang.Object roomId_;
     /**
@@ -10300,7 +10238,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional uint32 version = 5;
     public static final int VERSION_FIELD_NUMBER = 5;
     private int version_;
     /**
@@ -10316,7 +10253,6 @@ public final class RedEnvelProto {
       return version_;
     }
 
-    // optional uint32 viewer_cnt = 6;
     public static final int VIEWER_CNT_FIELD_NUMBER = 6;
     private int viewerCnt_;
     /**
@@ -10351,7 +10287,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -10506,8 +10443,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.GetRedEnvelopSettingReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetRedEnvelopSettingReq)
+        com.mi.liveassistant.proto.RedEnvelProto.GetRedEnvelopSettingReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_GetRedEnvelopSettingReq_descriptor;
@@ -10675,7 +10613,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -10724,7 +10661,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required .Platform platform = 2;
       private com.mi.liveassistant.proto.RedEnvelProto.Platform platform_ = com.mi.liveassistant.proto.RedEnvelProto.Platform.IOS;
       /**
        * <code>required .Platform platform = 2;</code>
@@ -10776,7 +10712,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 zuid = 3;
       private long zuid_ ;
       /**
        * <code>optional uint64 zuid = 3;</code>
@@ -10825,7 +10760,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string room_id = 4;
       private java.lang.Object roomId_ = "";
       /**
        * <code>optional string room_id = 4;</code>
@@ -10847,9 +10781,12 @@ public final class RedEnvelProto {
       public java.lang.String getRoomId() {
         java.lang.Object ref = roomId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10923,7 +10860,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 version = 5;
       private int version_ ;
       /**
        * <code>optional uint32 version = 5;</code>
@@ -10956,7 +10892,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 viewer_cnt = 6;
       private int viewerCnt_ ;
       /**
        * <code>optional uint32 viewer_cnt = 6;</code>
@@ -11016,10 +10951,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:GetRedEnvelopSettingReq)
   }
 
-  public interface GetRedEnvelopSettingRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRedEnvelopSettingRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetRedEnvelopSettingRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 retCode = 1;
     /**
      * <code>required uint32 retCode = 1;</code>
      *
@@ -11037,7 +10972,6 @@ public final class RedEnvelProto {
      */
     int getRetCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      *
@@ -11064,7 +10998,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // repeated uint32 gems = 3;
     /**
      * <code>repeated uint32 gems = 3;</code>
      *
@@ -11090,7 +11023,6 @@ public final class RedEnvelProto {
      */
     int getGems(int index);
 
-    // optional uint32 avgGem = 4;
     /**
      * <code>optional uint32 avgGem = 4;</code>
      *
@@ -11108,7 +11040,6 @@ public final class RedEnvelProto {
      */
     int getAvgGem();
 
-    // optional uint32 packageCntLimit = 5;
     /**
      * <code>optional uint32 packageCntLimit = 5;</code>
      *
@@ -11126,7 +11057,6 @@ public final class RedEnvelProto {
      */
     int getPackageCntLimit();
 
-    // optional uint32 gemCntLimit = 6;
     /**
      * <code>optional uint32 gemCntLimit = 6;</code>
      *
@@ -11144,7 +11074,6 @@ public final class RedEnvelProto {
      */
     int getGemCntLimit();
 
-    // optional uint32 gemCntLowerLimit = 7;
     /**
      * <code>optional uint32 gemCntLowerLimit = 7;</code>
      *
@@ -11162,7 +11091,6 @@ public final class RedEnvelProto {
      */
     int getGemCntLowerLimit();
 
-    // optional uint32 packageCntLowerLimit = 8;
     /**
      * <code>optional uint32 packageCntLowerLimit = 8;</code>
      *
@@ -11180,7 +11108,6 @@ public final class RedEnvelProto {
      */
     int getPackageCntLowerLimit();
 
-    // repeated uint32 package_leveld = 9;
     /**
      * <code>repeated uint32 package_leveld = 9;</code>
      *
@@ -11214,8 +11141,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class GetRedEnvelopSettingRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRedEnvelopSettingRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GetRedEnvelopSettingRsp)
+      GetRedEnvelopSettingRspOrBuilder {
     // Use GetRedEnvelopSettingRsp.newBuilder() to construct.
     private GetRedEnvelopSettingRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11267,8 +11195,9 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 24: {
@@ -11384,7 +11313,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint32 retCode = 1;
     public static final int RETCODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -11408,7 +11336,6 @@ public final class RedEnvelProto {
       return retCode_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -11463,7 +11390,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // repeated uint32 gems = 3;
     public static final int GEMS_FIELD_NUMBER = 3;
     private java.util.List<java.lang.Integer> gems_;
     /**
@@ -11498,7 +11424,6 @@ public final class RedEnvelProto {
       return gems_.get(index);
     }
 
-    // optional uint32 avgGem = 4;
     public static final int AVGGEM_FIELD_NUMBER = 4;
     private int avgGem_;
     /**
@@ -11522,7 +11447,6 @@ public final class RedEnvelProto {
       return avgGem_;
     }
 
-    // optional uint32 packageCntLimit = 5;
     public static final int PACKAGECNTLIMIT_FIELD_NUMBER = 5;
     private int packageCntLimit_;
     /**
@@ -11546,7 +11470,6 @@ public final class RedEnvelProto {
       return packageCntLimit_;
     }
 
-    // optional uint32 gemCntLimit = 6;
     public static final int GEMCNTLIMIT_FIELD_NUMBER = 6;
     private int gemCntLimit_;
     /**
@@ -11570,7 +11493,6 @@ public final class RedEnvelProto {
       return gemCntLimit_;
     }
 
-    // optional uint32 gemCntLowerLimit = 7;
     public static final int GEMCNTLOWERLIMIT_FIELD_NUMBER = 7;
     private int gemCntLowerLimit_;
     /**
@@ -11594,7 +11516,6 @@ public final class RedEnvelProto {
       return gemCntLowerLimit_;
     }
 
-    // optional uint32 packageCntLowerLimit = 8;
     public static final int PACKAGECNTLOWERLIMIT_FIELD_NUMBER = 8;
     private int packageCntLowerLimit_;
     /**
@@ -11618,7 +11539,6 @@ public final class RedEnvelProto {
       return packageCntLowerLimit_;
     }
 
-    // repeated uint32 package_leveld = 9;
     public static final int PACKAGE_LEVELD_FIELD_NUMBER = 9;
     private java.util.List<java.lang.Integer> packageLeveld_;
     /**
@@ -11667,7 +11587,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -11848,8 +11769,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.GetRedEnvelopSettingRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetRedEnvelopSettingRsp)
+        com.mi.liveassistant.proto.RedEnvelProto.GetRedEnvelopSettingRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_GetRedEnvelopSettingRsp_descriptor;
@@ -12056,7 +11978,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint32 retCode = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 retCode = 1;</code>
@@ -12105,7 +12026,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -12127,9 +12047,12 @@ public final class RedEnvelProto {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12203,7 +12126,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // repeated uint32 gems = 3;
       private java.util.List<java.lang.Integer> gems_ = java.util.Collections.emptyList();
       private void ensureGemsIsMutable() {
         if (!((bitField0_ & 0x00000004) == 0x00000004)) {
@@ -12279,7 +12201,8 @@ public final class RedEnvelProto {
       public Builder addAllGems(
           java.lang.Iterable<? extends java.lang.Integer> values) {
         ensureGemsIsMutable();
-        super.addAll(values, gems_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, gems_);
         onChanged();
         return this;
       }
@@ -12297,7 +12220,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 avgGem = 4;
       private int avgGem_ ;
       /**
        * <code>optional uint32 avgGem = 4;</code>
@@ -12346,7 +12268,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 packageCntLimit = 5;
       private int packageCntLimit_ ;
       /**
        * <code>optional uint32 packageCntLimit = 5;</code>
@@ -12395,7 +12316,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 gemCntLimit = 6;
       private int gemCntLimit_ ;
       /**
        * <code>optional uint32 gemCntLimit = 6;</code>
@@ -12444,7 +12364,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 gemCntLowerLimit = 7;
       private int gemCntLowerLimit_ ;
       /**
        * <code>optional uint32 gemCntLowerLimit = 7;</code>
@@ -12493,7 +12412,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 packageCntLowerLimit = 8;
       private int packageCntLowerLimit_ ;
       /**
        * <code>optional uint32 packageCntLowerLimit = 8;</code>
@@ -12542,7 +12460,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // repeated uint32 package_leveld = 9;
       private java.util.List<java.lang.Integer> packageLeveld_ = java.util.Collections.emptyList();
       private void ensurePackageLeveldIsMutable() {
         if (!((bitField0_ & 0x00000100) == 0x00000100)) {
@@ -12618,7 +12535,8 @@ public final class RedEnvelProto {
       public Builder addAllPackageLeveld(
           java.lang.Iterable<? extends java.lang.Integer> values) {
         ensurePackageLeveldIsMutable();
-        super.addAll(values, packageLeveld_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, packageLeveld_);
         onChanged();
         return this;
       }
@@ -12647,10 +12565,10 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:GetRedEnvelopSettingRsp)
   }
 
-  public interface NotifyRedEnvelopOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface NotifyRedEnvelopOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:NotifyRedEnvelop)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -12668,7 +12586,6 @@ public final class RedEnvelProto {
      */
     long getUserId();
 
-    // required string roomId = 2;
     /**
      * <code>required string roomId = 2;</code>
      *
@@ -12695,7 +12612,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getRoomIdBytes();
 
-    // required string redEnvelopId = 3;
     /**
      * <code>required string redEnvelopId = 3;</code>
      *
@@ -12722,7 +12638,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getRedEnvelopIdBytes();
 
-    // optional string msg = 4;
     /**
      * <code>optional string msg = 4;</code>
      *
@@ -12749,7 +12664,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getMsgBytes();
 
-    // optional string nickname = 5;
     /**
      * <code>optional string nickname = 5;</code>
      *
@@ -12776,7 +12690,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional uint32 level = 6;
     /**
      * <code>optional uint32 level = 6;</code>
      *
@@ -12794,7 +12707,6 @@ public final class RedEnvelProto {
      */
     int getLevel();
 
-    // optional uint64 avatar = 7;
     /**
      * <code>optional uint64 avatar = 7;</code>
      *
@@ -12812,7 +12724,6 @@ public final class RedEnvelProto {
      */
     long getAvatar();
 
-    // optional string client_id = 8;
     /**
      * <code>optional string client_id = 8;</code>
      *
@@ -12839,7 +12750,6 @@ public final class RedEnvelProto {
     com.google.protobuf.ByteString
         getClientIdBytes();
 
-    // optional uint32 gem_cnt = 9;
     /**
      * <code>optional uint32 gem_cnt = 9;</code>
      *
@@ -12857,7 +12767,6 @@ public final class RedEnvelProto {
      */
     int getGemCnt();
 
-    // optional uint32 envelop_level = 10;
     /**
      * <code>optional uint32 envelop_level = 10;</code>
      *
@@ -12883,8 +12792,9 @@ public final class RedEnvelProto {
    * </pre>
    */
   public static final class NotifyRedEnvelop extends
-      com.google.protobuf.GeneratedMessage
-      implements NotifyRedEnvelopOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:NotifyRedEnvelop)
+      NotifyRedEnvelopOrBuilder {
     // Use NotifyRedEnvelop.newBuilder() to construct.
     private NotifyRedEnvelop(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -12936,23 +12846,27 @@ public final class RedEnvelProto {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              roomId_ = input.readBytes();
+              roomId_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              redEnvelopId_ = input.readBytes();
+              redEnvelopId_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              msg_ = input.readBytes();
+              msg_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 48: {
@@ -12966,8 +12880,9 @@ public final class RedEnvelProto {
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              clientId_ = input.readBytes();
+              clientId_ = bs;
               break;
             }
             case 72: {
@@ -13020,7 +12935,6 @@ public final class RedEnvelProto {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -13044,7 +12958,6 @@ public final class RedEnvelProto {
       return userId_;
     }
 
-    // required string roomId = 2;
     public static final int ROOMID_FIELD_NUMBER = 2;
     private java.lang.Object roomId_;
     /**
@@ -13099,7 +13012,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // required string redEnvelopId = 3;
     public static final int REDENVELOPID_FIELD_NUMBER = 3;
     private java.lang.Object redEnvelopId_;
     /**
@@ -13154,7 +13066,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional string msg = 4;
     public static final int MSG_FIELD_NUMBER = 4;
     private java.lang.Object msg_;
     /**
@@ -13209,7 +13120,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional string nickname = 5;
     public static final int NICKNAME_FIELD_NUMBER = 5;
     private java.lang.Object nickname_;
     /**
@@ -13264,7 +13174,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional uint32 level = 6;
     public static final int LEVEL_FIELD_NUMBER = 6;
     private int level_;
     /**
@@ -13288,7 +13197,6 @@ public final class RedEnvelProto {
       return level_;
     }
 
-    // optional uint64 avatar = 7;
     public static final int AVATAR_FIELD_NUMBER = 7;
     private long avatar_;
     /**
@@ -13312,7 +13220,6 @@ public final class RedEnvelProto {
       return avatar_;
     }
 
-    // optional string client_id = 8;
     public static final int CLIENT_ID_FIELD_NUMBER = 8;
     private java.lang.Object clientId_;
     /**
@@ -13367,7 +13274,6 @@ public final class RedEnvelProto {
       }
     }
 
-    // optional uint32 gem_cnt = 9;
     public static final int GEM_CNT_FIELD_NUMBER = 9;
     private int gemCnt_;
     /**
@@ -13391,7 +13297,6 @@ public final class RedEnvelProto {
       return gemCnt_;
     }
 
-    // optional uint32 envelop_level = 10;
     public static final int ENVELOP_LEVEL_FIELD_NUMBER = 10;
     private int envelopLevel_;
     /**
@@ -13430,7 +13335,8 @@ public final class RedEnvelProto {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -13616,8 +13522,9 @@ public final class RedEnvelProto {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mi.liveassistant.proto.RedEnvelProto.NotifyRedEnvelopOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:NotifyRedEnvelop)
+        com.mi.liveassistant.proto.RedEnvelProto.NotifyRedEnvelopOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mi.liveassistant.proto.RedEnvelProto.internal_static_NotifyRedEnvelop_descriptor;
@@ -13833,7 +13740,6 @@ public final class RedEnvelProto {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -13882,7 +13788,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required string roomId = 2;
       private java.lang.Object roomId_ = "";
       /**
        * <code>required string roomId = 2;</code>
@@ -13904,9 +13809,12 @@ public final class RedEnvelProto {
       public java.lang.String getRoomId() {
         java.lang.Object ref = roomId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13980,7 +13888,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // required string redEnvelopId = 3;
       private java.lang.Object redEnvelopId_ = "";
       /**
        * <code>required string redEnvelopId = 3;</code>
@@ -14002,9 +13909,12 @@ public final class RedEnvelProto {
       public java.lang.String getRedEnvelopId() {
         java.lang.Object ref = redEnvelopId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          redEnvelopId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            redEnvelopId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14078,7 +13988,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string msg = 4;
       private java.lang.Object msg_ = "";
       /**
        * <code>optional string msg = 4;</code>
@@ -14100,9 +14009,12 @@ public final class RedEnvelProto {
       public java.lang.String getMsg() {
         java.lang.Object ref = msg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          msg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            msg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14176,7 +14088,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string nickname = 5;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 5;</code>
@@ -14198,9 +14109,12 @@ public final class RedEnvelProto {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14274,7 +14188,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 level = 6;
       private int level_ ;
       /**
        * <code>optional uint32 level = 6;</code>
@@ -14323,7 +14236,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint64 avatar = 7;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 7;</code>
@@ -14372,7 +14284,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional string client_id = 8;
       private java.lang.Object clientId_ = "";
       /**
        * <code>optional string client_id = 8;</code>
@@ -14394,9 +14305,12 @@ public final class RedEnvelProto {
       public java.lang.String getClientId() {
         java.lang.Object ref = clientId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          clientId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            clientId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14470,7 +14384,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 gem_cnt = 9;
       private int gemCnt_ ;
       /**
        * <code>optional uint32 gem_cnt = 9;</code>
@@ -14519,7 +14432,6 @@ public final class RedEnvelProto {
         return this;
       }
 
-      // optional uint32 envelop_level = 10;
       private int envelopLevel_ ;
       /**
        * <code>optional uint32 envelop_level = 10;</code>
@@ -14579,57 +14491,57 @@ public final class RedEnvelProto {
     // @@protoc_insertion_point(class_scope:NotifyRedEnvelop)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Winner_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Winner_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GrabEnvelopReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GrabEnvelopReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GrabEnvelopRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GrabEnvelopRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GiftCard_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GiftCard_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetEnvelopReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetEnvelopReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetEnvelopRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetEnvelopRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CreateRedEnvelopReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CreateRedEnvelopReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CreateRedEnvelopRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CreateRedEnvelopRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetRedEnvelopSettingReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetRedEnvelopSettingReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetRedEnvelopSettingRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_GetRedEnvelopSettingRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_NotifyRedEnvelop_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -14688,83 +14600,83 @@ public final class RedEnvelProto {
       "istant.protoB\rRedEnvelProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_Winner_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_Winner_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Winner_descriptor,
-              new java.lang.String[] { "UserId", "Nickname", "Level", "Gain", "Timestamp", "Avatar", });
-          internal_static_GrabEnvelopReq_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_GrabEnvelopReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GrabEnvelopReq_descriptor,
-              new java.lang.String[] { "UserId", "RedEnvelopId", "RoomId", });
-          internal_static_GrabEnvelopRsp_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_GrabEnvelopRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GrabEnvelopRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", "UserId", "RedEnvelopId", "Gain", "Timestamp", "GemExpire", "GiftCards", "IosUsableGemCnt", "AndUsableGemCnt", "UserAssetTimestamp", "UsableVirtualGemCnt", });
-          internal_static_GiftCard_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_GiftCard_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GiftCard_descriptor,
-              new java.lang.String[] { "GiftId", "GiftCardCnt", "BeginTime", "EndTime", "ActiveId", });
-          internal_static_GetEnvelopReq_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_GetEnvelopReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetEnvelopReq_descriptor,
-              new java.lang.String[] { "UserId", "RedEnvelopId", });
-          internal_static_GetEnvelopRsp_descriptor =
-            getDescriptor().getMessageTypes().get(5);
-          internal_static_GetEnvelopRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetEnvelopRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", "UserId", "RedEnvelopId", "Winners", "Timestamp", "TopShowCnt", });
-          internal_static_CreateRedEnvelopReq_descriptor =
-            getDescriptor().getMessageTypes().get(6);
-          internal_static_CreateRedEnvelopReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CreateRedEnvelopReq_descriptor,
-              new java.lang.String[] { "UserId", "RoomId", "ClientId", "Msg", "GemCnt", "PackageCnt", "Platform", "Zuid", "ViewerCnt", });
-          internal_static_CreateRedEnvelopRsp_descriptor =
-            getDescriptor().getMessageTypes().get(7);
-          internal_static_CreateRedEnvelopRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_CreateRedEnvelopRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", "RedEnvelopId", });
-          internal_static_GetRedEnvelopSettingReq_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_GetRedEnvelopSettingReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetRedEnvelopSettingReq_descriptor,
-              new java.lang.String[] { "UserId", "Platform", "Zuid", "RoomId", "Version", "ViewerCnt", });
-          internal_static_GetRedEnvelopSettingRsp_descriptor =
-            getDescriptor().getMessageTypes().get(9);
-          internal_static_GetRedEnvelopSettingRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_GetRedEnvelopSettingRsp_descriptor,
-              new java.lang.String[] { "RetCode", "ErrMsg", "Gems", "AvgGem", "PackageCntLimit", "GemCntLimit", "GemCntLowerLimit", "PackageCntLowerLimit", "PackageLeveld", });
-          internal_static_NotifyRedEnvelop_descriptor =
-            getDescriptor().getMessageTypes().get(10);
-          internal_static_NotifyRedEnvelop_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_NotifyRedEnvelop_descriptor,
-              new java.lang.String[] { "UserId", "RoomId", "RedEnvelopId", "Msg", "Nickname", "Level", "Avatar", "ClientId", "GemCnt", "EnvelopLevel", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_Winner_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_Winner_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_Winner_descriptor,
+        new java.lang.String[] { "UserId", "Nickname", "Level", "Gain", "Timestamp", "Avatar", });
+    internal_static_GrabEnvelopReq_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_GrabEnvelopReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GrabEnvelopReq_descriptor,
+        new java.lang.String[] { "UserId", "RedEnvelopId", "RoomId", });
+    internal_static_GrabEnvelopRsp_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_GrabEnvelopRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GrabEnvelopRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "UserId", "RedEnvelopId", "Gain", "Timestamp", "GemExpire", "GiftCards", "IosUsableGemCnt", "AndUsableGemCnt", "UserAssetTimestamp", "UsableVirtualGemCnt", });
+    internal_static_GiftCard_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_GiftCard_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GiftCard_descriptor,
+        new java.lang.String[] { "GiftId", "GiftCardCnt", "BeginTime", "EndTime", "ActiveId", });
+    internal_static_GetEnvelopReq_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_GetEnvelopReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetEnvelopReq_descriptor,
+        new java.lang.String[] { "UserId", "RedEnvelopId", });
+    internal_static_GetEnvelopRsp_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_GetEnvelopRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetEnvelopRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "UserId", "RedEnvelopId", "Winners", "Timestamp", "TopShowCnt", });
+    internal_static_CreateRedEnvelopReq_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_CreateRedEnvelopReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CreateRedEnvelopReq_descriptor,
+        new java.lang.String[] { "UserId", "RoomId", "ClientId", "Msg", "GemCnt", "PackageCnt", "Platform", "Zuid", "ViewerCnt", });
+    internal_static_CreateRedEnvelopRsp_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_CreateRedEnvelopRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_CreateRedEnvelopRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "RedEnvelopId", });
+    internal_static_GetRedEnvelopSettingReq_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_GetRedEnvelopSettingReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetRedEnvelopSettingReq_descriptor,
+        new java.lang.String[] { "UserId", "Platform", "Zuid", "RoomId", "Version", "ViewerCnt", });
+    internal_static_GetRedEnvelopSettingRsp_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_GetRedEnvelopSettingRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GetRedEnvelopSettingRsp_descriptor,
+        new java.lang.String[] { "RetCode", "ErrMsg", "Gems", "AvgGem", "PackageCntLimit", "GemCntLimit", "GemCntLowerLimit", "PackageCntLowerLimit", "PackageLeveld", });
+    internal_static_NotifyRedEnvelop_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_NotifyRedEnvelop_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_NotifyRedEnvelop_descriptor,
+        new java.lang.String[] { "UserId", "RoomId", "RedEnvelopId", "Msg", "Nickname", "Level", "Avatar", "ClientId", "GemCnt", "EnvelopLevel", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

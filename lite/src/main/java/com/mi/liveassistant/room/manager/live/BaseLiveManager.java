@@ -20,6 +20,8 @@ import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 import com.mi.liveassistant.room.presenter.live.BaseLivePresenter;
 import com.mi.liveassistant.room.presenter.streamer.StreamerPresenter;
+import com.mi.liveassistant.room.request.ZuidActiveRequest;
+import com.mi.liveassistant.room.request.ZuidSleepRequest;
 import com.mi.liveassistant.room.view.ILiveView;
 import com.mi.liveassistant.room.viewer.IViewerObserver;
 import com.mi.liveassistant.room.viewer.IViewerRegister;
@@ -189,12 +191,20 @@ public abstract class BaseLiveManager<LP extends BaseLivePresenter>
     public void pause() {
         mIsPaused = true;
         mHeartbeatManager.pause();
+        // 主播退到后台
+        if (mIsRecording) {
+            new ZuidSleepRequest(mLiveId).async();
+        }
     }
 
     @Override
     public void resume() {
         mIsPaused = false;
         mHeartbeatManager.resume();
+        // 主播回来
+        if (mIsRecording) {
+            new ZuidActiveRequest(mLiveId).async();
+        }
     }
 
     @Override

@@ -17686,6 +17686,1964 @@ public final class LiveProto {
     // @@protoc_insertion_point(class_scope:ViewerTopRsp)
   }
 
+  public interface ZuidSleepReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ZuidSleepReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    boolean hasLiveId();
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    java.lang.String getLiveId();
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getLiveIdBytes();
+  }
+  /**
+   * Protobuf type {@code ZuidSleepReq}
+   *
+   * <pre>
+   *主播退到后台运行
+   *zhibo.live.zuidSleep
+   * </pre>
+   */
+  public static final class ZuidSleepReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ZuidSleepReq)
+      ZuidSleepReqOrBuilder {
+    // Use ZuidSleepReq.newBuilder() to construct.
+    private ZuidSleepReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ZuidSleepReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ZuidSleepReq defaultInstance;
+    public static ZuidSleepReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ZuidSleepReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ZuidSleepReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              liveId_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.ZuidSleepReq.class, com.mi.liveassistant.proto.LiveProto.ZuidSleepReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ZuidSleepReq> PARSER =
+        new com.google.protobuf.AbstractParser<ZuidSleepReq>() {
+      public ZuidSleepReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ZuidSleepReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ZuidSleepReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int LIVEID_FIELD_NUMBER = 1;
+    private java.lang.Object liveId_;
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public boolean hasLiveId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public java.lang.String getLiveId() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          liveId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getLiveIdBytes() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        liveId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      liveId_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasLiveId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getLiveIdBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getLiveIdBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.ZuidSleepReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ZuidSleepReq}
+     *
+     * <pre>
+     *主播退到后台运行
+     *zhibo.live.zuidSleep
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ZuidSleepReq)
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.ZuidSleepReq.class, com.mi.liveassistant.proto.LiveProto.ZuidSleepReq.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.ZuidSleepReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        liveId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepReq_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidSleepReq getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.ZuidSleepReq.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidSleepReq build() {
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidSleepReq buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepReq result = new com.mi.liveassistant.proto.LiveProto.ZuidSleepReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.liveId_ = liveId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.ZuidSleepReq) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.ZuidSleepReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.ZuidSleepReq other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.ZuidSleepReq.getDefaultInstance()) return this;
+        if (other.hasLiveId()) {
+          bitField0_ |= 0x00000001;
+          liveId_ = other.liveId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasLiveId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.ZuidSleepReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object liveId_ = "";
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public boolean hasLiveId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public java.lang.String getLiveId() {
+        java.lang.Object ref = liveId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getLiveIdBytes() {
+        java.lang.Object ref = liveId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          liveId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder setLiveId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder clearLiveId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        liveId_ = getDefaultInstance().getLiveId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder setLiveIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ZuidSleepReq)
+    }
+
+    static {
+      defaultInstance = new ZuidSleepReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ZuidSleepReq)
+  }
+
+  public interface ZuidSleepRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ZuidSleepRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    int getRetCode();
+  }
+  /**
+   * Protobuf type {@code ZuidSleepRsp}
+   */
+  public static final class ZuidSleepRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ZuidSleepRsp)
+      ZuidSleepRspOrBuilder {
+    // Use ZuidSleepRsp.newBuilder() to construct.
+    private ZuidSleepRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ZuidSleepRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ZuidSleepRsp defaultInstance;
+    public static ZuidSleepRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ZuidSleepRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ZuidSleepRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp.class, com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ZuidSleepRsp> PARSER =
+        new com.google.protobuf.AbstractParser<ZuidSleepRsp>() {
+      public ZuidSleepRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ZuidSleepRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ZuidSleepRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ZuidSleepRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ZuidSleepRsp)
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp.class, com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidSleepRsp_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp build() {
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp result = new com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.ZuidSleepRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ZuidSleepRsp)
+    }
+
+    static {
+      defaultInstance = new ZuidSleepRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ZuidSleepRsp)
+  }
+
+  public interface ZuidActiveReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ZuidActiveReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    boolean hasLiveId();
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    java.lang.String getLiveId();
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getLiveIdBytes();
+  }
+  /**
+   * Protobuf type {@code ZuidActiveReq}
+   *
+   * <pre>
+   *主播回来
+   *zhibo.live.zuidActive
+   * </pre>
+   */
+  public static final class ZuidActiveReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ZuidActiveReq)
+      ZuidActiveReqOrBuilder {
+    // Use ZuidActiveReq.newBuilder() to construct.
+    private ZuidActiveReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ZuidActiveReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ZuidActiveReq defaultInstance;
+    public static ZuidActiveReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ZuidActiveReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ZuidActiveReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              liveId_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.ZuidActiveReq.class, com.mi.liveassistant.proto.LiveProto.ZuidActiveReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ZuidActiveReq> PARSER =
+        new com.google.protobuf.AbstractParser<ZuidActiveReq>() {
+      public ZuidActiveReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ZuidActiveReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ZuidActiveReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int LIVEID_FIELD_NUMBER = 1;
+    private java.lang.Object liveId_;
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public boolean hasLiveId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public java.lang.String getLiveId() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          liveId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string liveId = 1;</code>
+     *
+     * <pre>
+     *流名或者是房间号
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getLiveIdBytes() {
+      java.lang.Object ref = liveId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        liveId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      liveId_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasLiveId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getLiveIdBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getLiveIdBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.ZuidActiveReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ZuidActiveReq}
+     *
+     * <pre>
+     *主播回来
+     *zhibo.live.zuidActive
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ZuidActiveReq)
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.ZuidActiveReq.class, com.mi.liveassistant.proto.LiveProto.ZuidActiveReq.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.ZuidActiveReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        liveId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveReq_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidActiveReq getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.ZuidActiveReq.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidActiveReq build() {
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidActiveReq buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveReq result = new com.mi.liveassistant.proto.LiveProto.ZuidActiveReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.liveId_ = liveId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.ZuidActiveReq) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.ZuidActiveReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.ZuidActiveReq other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.ZuidActiveReq.getDefaultInstance()) return this;
+        if (other.hasLiveId()) {
+          bitField0_ |= 0x00000001;
+          liveId_ = other.liveId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasLiveId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.ZuidActiveReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object liveId_ = "";
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public boolean hasLiveId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public java.lang.String getLiveId() {
+        java.lang.Object ref = liveId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getLiveIdBytes() {
+        java.lang.Object ref = liveId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          liveId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder setLiveId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder clearLiveId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        liveId_ = getDefaultInstance().getLiveId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string liveId = 1;</code>
+       *
+       * <pre>
+       *流名或者是房间号
+       * </pre>
+       */
+      public Builder setLiveIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ZuidActiveReq)
+    }
+
+    static {
+      defaultInstance = new ZuidActiveReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ZuidActiveReq)
+  }
+
+  public interface ZuidActiveRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ZuidActiveRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    int getRetCode();
+  }
+  /**
+   * Protobuf type {@code ZuidActiveRsp}
+   */
+  public static final class ZuidActiveRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ZuidActiveRsp)
+      ZuidActiveRspOrBuilder {
+    // Use ZuidActiveRsp.newBuilder() to construct.
+    private ZuidActiveRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ZuidActiveRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ZuidActiveRsp defaultInstance;
+    public static ZuidActiveRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ZuidActiveRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ZuidActiveRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp.class, com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ZuidActiveRsp> PARSER =
+        new com.google.protobuf.AbstractParser<ZuidActiveRsp>() {
+      public ZuidActiveRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ZuidActiveRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ZuidActiveRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0:表示成功
+     * </pre>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ZuidActiveRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ZuidActiveRsp)
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp.class, com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp.Builder.class);
+      }
+
+      // Construct using com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mi.liveassistant.proto.LiveProto.internal_static_ZuidActiveRsp_descriptor;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp getDefaultInstanceForType() {
+        return com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp.getDefaultInstance();
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp build() {
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp buildPartial() {
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp result = new com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp) {
+          return mergeFrom((com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp other) {
+        if (other == com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mi.liveassistant.proto.LiveProto.ZuidActiveRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0:表示成功
+       * </pre>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ZuidActiveRsp)
+    }
+
+    static {
+      defaultInstance = new ZuidActiveRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ZuidActiveRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BeginLiveReq_descriptor;
   private static
@@ -17746,6 +19704,26 @@ public final class LiveProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ViewerTopRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ZuidSleepReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ZuidSleepReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ZuidSleepRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ZuidSleepRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ZuidActiveReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ZuidActiveReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ZuidActiveRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ZuidActiveRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -17803,8 +19781,11 @@ public final class LiveProto {
       "etCode\030\001 \002(\r\":\n\014ViewerTopReq\022\014\n\004uuid\030\001 \002" +
       "(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liveId\030\003 \002(\t\"8\n\014View" +
       "erTopRsp\022\017\n\007retCode\030\001 \002(\r\022\027\n\006viewer\030\002 \003(" +
-      "\0132\007.ViewerB\'\n\032com.mi.liveassistant.proto" +
-      "B\tLiveProto"
+      "\0132\007.Viewer\"\036\n\014ZuidSleepReq\022\016\n\006liveId\030\001 \002" +
+      "(\t\"\037\n\014ZuidSleepRsp\022\017\n\007retCode\030\001 \002(\r\"\037\n\rZ",
+      "uidActiveReq\022\016\n\006liveId\030\001 \002(\t\" \n\rZuidActi" +
+      "veRsp\022\017\n\007retCode\030\001 \002(\rB\'\n\032com.mi.liveass" +
+      "istant.protoB\tLiveProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -17891,6 +19872,30 @@ public final class LiveProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ViewerTopRsp_descriptor,
         new java.lang.String[] { "RetCode", "Viewer", });
+    internal_static_ZuidSleepReq_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_ZuidSleepReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ZuidSleepReq_descriptor,
+        new java.lang.String[] { "LiveId", });
+    internal_static_ZuidSleepRsp_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_ZuidSleepRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ZuidSleepRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_ZuidActiveReq_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_ZuidActiveReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ZuidActiveReq_descriptor,
+        new java.lang.String[] { "LiveId", });
+    internal_static_ZuidActiveRsp_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_ZuidActiveRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ZuidActiveRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
     com.mi.liveassistant.proto.LiveCommonProto.getDescriptor();
   }
 

@@ -1,4 +1,3 @@
-import "Live.proto";
 import "LiveCommon.proto";
 package com.mi.liveassistant.protoo;
 

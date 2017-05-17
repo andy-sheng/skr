@@ -13,9 +13,12 @@ public class MiLinkCommand {
 
     public static final String COMMAND_LIVE_HB = "zhibo.live.hb";                           //直播时的心跳
 
+    public static final String COMMAND_LIVE_ZUID_SLEEP = "zhibo.live.zuidSleep";            //主播退到后台运行
+    public static final String COMMAND_LIVE_ZUID_ACTIVE = "zhibo.live.zuidActive";          //主播回来
+
     /*顶部观众*/
     public static final String COMMAND_LIVE_VIEWER_TOP = "zhibo.live.viewertop";
-    
+
     /*用户信息相关*/
     public static final String COMMAND_GET_HOMEPAGE = "zhibo.user.gethomepage";
 
