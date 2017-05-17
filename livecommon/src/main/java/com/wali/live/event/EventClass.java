@@ -271,4 +271,8 @@ public abstract class EventClass {
         }
     }
 
+    public static class KickEvent{
+
+    }
+
 }

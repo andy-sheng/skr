@@ -25,6 +25,7 @@ import com.mi.live.data.repository.RoomMessageRepository;
 import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
 
@@ -154,6 +155,9 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 //                        }
                         if (mView != null && enterRoomInfo.getRetCode() == ErrorCode.CODE_SUCCESS) {
                             mView.enterLive(enterRoomInfo);
+                        } else if (mView != null && enterRoomInfo.getRetCode() == ErrorCode.CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM) {
+                            MyLog.w(TAG,"CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM");
+                            EventBus.getDefault().post(new EventClass.KickEvent());
                         } else {
                             BarrageMsg.LiveEndMsgExt ext = new BarrageMsg.LiveEndMsgExt();
                             ext.viewerCount = 0;

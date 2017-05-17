@@ -240,6 +240,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         HashSet<IPushMsgProcessor> set = mIPushMsgProcessorMap.get(msg.getMsgType());
         if (set != null) {
             for (IPushMsgProcessor msgProcessor : set) {
+                MyLog.d(TAG, "recv msg,msgType" + msg.getMsgType());
                 msgProcessor.process(msg, roomData);
             }
         } else {

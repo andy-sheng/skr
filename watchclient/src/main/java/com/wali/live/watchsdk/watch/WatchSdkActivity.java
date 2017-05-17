@@ -962,4 +962,22 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     public void onKickEvent(String msg) {
         stopPlayer();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.KickEvent event) {
+        stopPlayer();
+
+        DialogUtils.showCancelableDialog(this,
+                "",
+                GlobalData.app().getResources().getString(R.string.have_been_kicked),
+                R.string.i_know,
+                0,
+                new DialogUtils.IDialogCallback() {
+                    @Override
+                    public void process(DialogInterface dialogInterface, int i) {
+                            finish();
+                    }
+                },
+                null);
+    }
 }

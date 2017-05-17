@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.barrage.model.BarrageMsg;
 import com.mi.liveassistant.barrage.model.BarrageMsgType;
+import com.mi.liveassistant.common.log.MyLog;
 
 /**
  * Created by wuxiaoshan on 17-5-3.
@@ -169,12 +170,19 @@ public class Message implements Comparable<Message> {
         liveComment.setSenderLevel(msg.getSenderLevel());
         String name = msg.getSenderName();
         if (TextUtils.isEmpty(name)) {
-            liveComment.setSenderName(String.valueOf(liveComment.getSender()));
+            if(liveComment.getSender() != 0) {
+                liveComment.setSenderName(String.valueOf(liveComment.getSender()));
+            }
         } else {
             liveComment.setSenderName(name);
         }
         liveComment.setSentTime(msg.getSentTime());
         liveComment.setSenderMsgId(msg.getSenderMsgId());
+        liveComment.setToUserId(msg.getToUserId());
+        liveComment.setRoomId(msg.getRoomId());
+        liveComment.setRoomType(msg.getRoomType());
+        liveComment.setAnchorId(msg.getAnchorId());
+        MyLog.d("Message","message type:"+msg.getMsgType()+"\tto user id:"+msg.getToUserId());
 
         switch (liveComment.getMsgType()) {
             //以下是　系统消息类 　不显示名字和级别
@@ -226,6 +234,8 @@ public class Message implements Comparable<Message> {
                     liveComment.setMessageExt(new MessageExt.LiveEndMessageExt(liveEndMsgExt));
                 }
                 liveComment.setBody(msg.getBody());
+                liveComment.setSenderLevel(0);
+                liveComment.setSenderName(null);
                 break;
             case BarrageMsgType.B_MSG_TYPE_ANCHOR_LEAVE:
                 liveComment.setBody(msg.getBody());
@@ -257,13 +267,16 @@ public class Message implements Comparable<Message> {
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_ANIM:
-            case BarrageMsgType.B_MSG_TYPE_KICK_VIEWER_BARRAGE:
+                liveComment.setBody(msg.getBody());
+                liveComment.setSenderLevel(0);
+                liveComment.setSenderName(null);
                 break;
             case BarrageMsgType.B_MSG_TYPE_SHARE: {
                 if (!TextUtils.isEmpty(name)) {
                     liveComment.setBody("分享了直播");
                 } else {
                     liveComment.setBody(msg.getBody());
+                    liveComment.setSenderName(null);
                 }
             }
             break;
@@ -276,6 +289,7 @@ public class Message implements Comparable<Message> {
                     liveComment.setBody("离开房间");
                 } else {
                     liveComment.setBody(msg.getBody());
+                    liveComment.setSenderName(null);
                 }
             }
             break;
@@ -288,6 +302,7 @@ public class Message implements Comparable<Message> {
                     liveComment.setBody("进入房间");
                 } else {
                     liveComment.setBody(msg.getBody());
+                    liveComment.setSenderName(null);
                 }
             }
             break;

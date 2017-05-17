@@ -312,7 +312,7 @@ public class BarrageMainProcessor implements IMsgDispenser {
             return;
         }
         for (BarrageMsg barrageMsg : messageList) {
-            MyLog.w(TAG, "barrage msg type:" + barrageMsg.getMsgType());
+            MyLog.d(TAG, "barrage msg type:" + barrageMsg.getMsgType());
             Set<MsgProcessor> processors = mMsgProcessorMap.get(barrageMsg.getMsgType());
             if (processors != null) {
                 for (MsgProcessor processor : processors) {

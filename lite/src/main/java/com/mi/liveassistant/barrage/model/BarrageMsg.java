@@ -49,10 +49,10 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
         }
 
         String fromUserName = msg.getFromUserShowName(); //和from_user_nick_name的区别是不可能系统消息
-//        if (!TextUtils.isEmpty(fromUserName)) {
-        barrageMsg.setSenderName(fromUserName);
-//        }
-//        else if (barrageMsg.getSenderName().equals(com.base.global.GlobalData.app().getString(R.string.sys_msg))) {
+        if (!TextUtils.isEmpty(fromUserName)) {
+            barrageMsg.setSenderName(fromUserName);
+        }
+//        else if (barrageMsg.getSenderName().equals("系统消息")) {
 //            barrageMsg.setSenderName(fromUserName);
 //        }
 

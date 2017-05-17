@@ -4,6 +4,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
 import com.mi.liveassistant.account.UserAccountManager;
+
 import com.mi.liveassistant.barrage.callback.InternalMsgListener;
 import com.mi.liveassistant.barrage.data.InternalMsgType;
 import com.mi.liveassistant.barrage.data.Message;
