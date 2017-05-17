@@ -84,7 +84,7 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                 mUserId = AccountManager.getInstance().getAccount();
                 mHasAccount = mUserId != 0;
                 if (mHasAccount) {
-                    mLoginBtn.post(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             mLoginBtn.setText("注销登录 " + mUserId);
