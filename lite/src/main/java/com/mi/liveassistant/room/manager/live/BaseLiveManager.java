@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.barrage.callback.InternalMsgListener;
-import com.mi.liveassistant.barrage.innerdata.InternalMsgType;
+import com.mi.liveassistant.barrage.data.InternalMsgType;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.data.MessageExt;
 import com.mi.liveassistant.barrage.processor.BarrageMainProcessor;
