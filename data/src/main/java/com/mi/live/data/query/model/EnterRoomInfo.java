@@ -32,6 +32,7 @@ public class EnterRoomInfo {
     MessageRule messageRule;
     boolean isShop;
     boolean hideGift;
+    boolean supportMgicFace;
 
     public int getRetCode() {
         return retCode;
@@ -191,5 +192,13 @@ public class EnterRoomInfo {
 
     public void setPkInfo(PkInfo pkInfo) {
         this.pkInfo = pkInfo;
+    }
+
+    public boolean isSupportMgicFace() {
+        return supportMgicFace;
+    }
+
+    public void setSupportMgicFace(boolean supportMgicFace) {
+        this.supportMgicFace = supportMgicFace;
     }
 }

@@ -923,7 +923,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         startCountDown();
         String roomId = TextUtils.isEmpty(mMyRoomData.getRoomId()) ? "" : mMyRoomData.getRoomId();
         mLiveRoomPresenter.beginLiveByAppInfo(mLocation, mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC, null, true, mLiveTitle,
-                mLiveCoverUrl, roomId, null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, true);
+                mLiveCoverUrl, roomId, null, 0, mRoomTag, MiLinkConstant.MY_APP_TYPE, false);
     }
 
     private void processRoomIdInfo(String liveId, String shareUrl, List<LiveCommonProto.UpStreamUrl> upStreamUrlList, String udpUpstreamUrl) {

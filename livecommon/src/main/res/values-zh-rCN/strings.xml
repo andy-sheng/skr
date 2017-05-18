@@ -304,4 +304,5 @@
     <plurals name="silver_diamond_plural">
         <item quantity="other">%1$s银钻</item>
     </plurals>
+    <string name="no_support_magic_gift_tips">主播版本不支持该礼物</string>
 </resources>

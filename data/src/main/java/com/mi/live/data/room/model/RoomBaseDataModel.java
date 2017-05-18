@@ -133,6 +133,8 @@ public class RoomBaseDataModel implements Serializable {
      */
     private String mRoomId;
 
+    private boolean mSupportMagicFace;
+
     public RoomBaseDataModel(String name) {
         MyLog.d("RoomBaseDataModel", "name:" + name + ",new NO:" + NO++);
     }
@@ -527,5 +529,13 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setEnableShare(boolean enableShare) {
         mEnableShare = enableShare;
+    }
+
+    public boolean ismSupportMagicFace() {
+        return mSupportMagicFace;
+    }
+
+    public void setmSupportMagicFace(boolean mSupportMagicFace) {
+        this.mSupportMagicFace = mSupportMagicFace;
     }
 }

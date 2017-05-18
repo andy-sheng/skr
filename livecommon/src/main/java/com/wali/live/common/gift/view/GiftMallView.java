@@ -29,6 +29,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.toast.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -253,6 +254,11 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
          * @return false 条件不符合, true 可以发起购买
          */
         private boolean judgeBuyGiftCondition() {
+            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.ismSupportMagicFace()) {
+                ToastUtils.showToast(mActivity, getResources().getString(R.string.no_support_magic_gift_tips));
+                return false;
+            }
+
             if (mSelectedGift.card == null || mSelectedGift.card.getGiftCardCount() <= 0) {
                 int limitLevel = mSelectedGift.gift.getLowerLimitLevel();
                 if (mSelectedGift.gift.getCatagory() == GiftType.PRIVILEGE_GIFT && limitLevel > MyUserInfoManager.getInstance().getUser().getLevel()) {
@@ -384,6 +390,10 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                             }
                         }
                         if (mSelectedGift != null) {
+                            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.ismSupportMagicFace()) {
+                                ToastUtils.showToast(mActivity, getResources().getString(R.string.no_support_magic_gift_tips));
+                                return;
+                            }
                             // 符合购买条件才播放动画
                             if ((mSelectedGift.card != null && mSelectedGift.card.getGiftCardCount() <= 0) || (mSelectedGift.gift.getPrice() <= mGiftMallPresenter.getCurrentTotalBalance())) {
                                 mNormalBuyAnimationSet.start();
