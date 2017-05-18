@@ -2,11 +2,15 @@ package com.wali.live.watchsdk.watch.presenter;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.manager.UserInfoManager;
+import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.manager.WatchRoomCharactorManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -79,11 +83,16 @@ public class UserInfoPresenter {
                             mHasUpdateOwnerInfo = true;
 
                             mMyRoomData.setNickname(user.getNickname());
-                            mMyRoomData.getUser().setIsFocused(user.isFocused());
                             mMyRoomData.setTicket(user.getLiveTicketNum());
-                            mMyRoomData.getUser().setAvatar(user.getAvatar());
-                            mMyRoomData.getUser().setSign(user.getSign());
-
+                            mMyRoomData.setUser(user);
+                            if (mMyRoomData.getUser().isManager(UserAccountManager.getInstance().getUuidAsLong())) {
+                                LiveRoomManagerModel manager = new LiveRoomManagerModel(UserAccountManager.getInstance().getUuidAsLong());
+                                manager.level = MyUserInfoManager.getInstance().getUser().getLevel();
+                                manager.avatar = MyUserInfoManager.getInstance().getAvatar();
+                                manager.certificationType = MyUserInfoManager.getInstance().getUser().getCertificationType();
+                                manager.isInRoom = true;
+                                WatchRoomCharactorManager.getInstance().setManager(manager);
+                            }
                             EventBus.getDefault().post(new RoomDataChangeEvent(mMyRoomData, RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE));
                         }
                     }

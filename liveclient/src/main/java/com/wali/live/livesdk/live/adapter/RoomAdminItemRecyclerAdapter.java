@@ -24,9 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by wuxiaoshan on 16-6-13.
  */
@@ -138,7 +135,7 @@ public class RoomAdminItemRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
                     String cancelManage = GlobalData.app().getResources().getString(R.string.cancel_manage);
                     String blockText = GlobalData.app().getResources().getString(R.string.block);
                     if (itemViewType != DATA_TYPE_ADMIN) {
-                        cancelManage = GlobalData.app().getResources().getString(R.string.remove_blocked);
+                        cancelManage = GlobalData.app().getResources().getString(R.string.cancel_banspeaker);
                     }
                     String cancelText = GlobalData.app().getResources().getString(R.string.cancel);
                     if (!LiveRoomCharacterManager.getInstance().isManager(user.getUid())) {

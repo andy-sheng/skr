@@ -198,4 +198,5 @@
     <string name="uninstall_share_tips">未安装%1$s，请安装后分享</string>
     <string name="end_live_share">把精彩内容分享给小伙伴</string>
     <string name="pre_live_share">通知好友来围观</string>
+    <string name="cancel_banspeaker">取消禁言</string>
 </resources>
