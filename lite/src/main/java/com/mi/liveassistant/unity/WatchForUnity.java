@@ -35,8 +35,8 @@ public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
         return TAG;
     }
 
-    public WatchForUnity(Activity activity, IUnityWatchListener listener) {
-        super(activity, listener);
+    public WatchForUnity(Activity activity, IUnityWatchListener listener, IBarrageListener barrageListener) {
+        super(activity, listener, barrageListener);
         MyLog.w(TAG, "WatchForUnity");
         mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -98,6 +98,8 @@ public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
             @Override
             public void run() {
                 MyLog.w(TAG, "startWatch playerId=" + playerId + ", liveId=" + liveId);
+                mPlayerId = playerId;
+                mLiveId = liveId;
                 mWatchManager.enterLive(playerId, liveId, new IWatchCallback() {
                     @Override
                     public void notifyFail(int errCode) {

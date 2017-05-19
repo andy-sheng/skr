@@ -31,8 +31,8 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
         return TAG;
     }
 
-    public LiveForUnity(Activity activity, IUnityLiveListener listener) {
-        super(activity, listener);
+    public LiveForUnity(Activity activity, IUnityLiveListener listener, IBarrageListener barrageListener) {
+        super(activity, listener, barrageListener);
         MyLog.w(TAG, "LiveForUnity");
         mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -110,10 +110,13 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
                     @Override
                     public void notifySuccess(long playerId, String liveId) {
                         mIsBegin = true;
+                        mPlayerId = playerId;
+                        mLiveId = liveId;
                         MyLog.w(TAG, "startLive success");
                         if (mUnityListener != null) {
                             mUnityListener.onBeginLiveSuccess(playerId, liveId);
                         }
+                        pullBarrageIfNeeded(liveId);
                     }
                 });
             }
@@ -144,6 +147,7 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
                         if (mUnityListener != null) {
                             mUnityListener.onEndLiveSuccess(playerId, liveId);
                         }
+                        stopBarrageIfNeeded();
                     }
                 });
             }

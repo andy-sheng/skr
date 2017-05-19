@@ -5,8 +5,14 @@ import android.app.Activity;
 import com.mi.liveassistant.account.AccountManager;
 import com.mi.liveassistant.account.UserAccountManager;
 import com.mi.liveassistant.account.callback.IAccountCallback;
+import com.mi.liveassistant.barrage.callback.IChatMsgListener;
+import com.mi.liveassistant.barrage.callback.ISysMsgListener;
+import com.mi.liveassistant.barrage.data.Message;
+import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.utils.RSASignature;
+
+import java.util.List;
 
 /**
  * Created by yangli on 2017/5/10.
@@ -17,11 +23,56 @@ abstract class UnitySdk<ACTIVITY extends Activity, LISTENER extends ILoginListen
     protected ACTIVITY mActivity;
     protected LISTENER mUnityListener;
 
+    //弹幕相关
+    protected IBarrageListener mBarrageListener;
+    protected long mPlayerId;
+    protected String mLiveId;
+
     protected abstract String getTAG();
 
-    public UnitySdk(ACTIVITY activity, LISTENER listener) {
+    public UnitySdk(ACTIVITY activity, LISTENER listener, IBarrageListener barrageListener) {
         mActivity = activity;
         mUnityListener = listener;
+        mBarrageListener = barrageListener;
+    }
+
+    protected void pullBarrageIfNeeded(String roomId) {
+        if (mBarrageListener == null) {
+            return;
+        }
+        MessageFacade.getInstance().startPull(roomId, new IChatMsgListener() {
+            @Override
+            public void handleMessage(List<Message> messages) {
+                if (mBarrageListener != null && messages != null) {
+                    for (Message msg : messages) {
+                        mBarrageListener.onChatMsg(msg);
+                    }
+                }
+            }
+        }, new ISysMsgListener() {
+            @Override
+            public void handleMessage(List<Message> messages) {
+                if (mBarrageListener != null && messages != null) {
+                    for (Message msg : messages) {
+                        mBarrageListener.onSysMsg(msg);
+                    }
+                }
+            }
+        });
+    }
+
+    protected void stopBarrageIfNeeded() {
+        if (mBarrageListener == null) {
+            return;
+        }
+        MessageFacade.getInstance().stopPull();
+    }
+
+    public void sendTextBarrage(String body) {
+        if (mBarrageListener == null) {
+            return;
+        }
+        MessageFacade.getInstance().sendTextMessageAsync(body, mLiveId, UserAccountManager.getInstance().getUuidAsLong());
     }
 
     public boolean isLogin() {

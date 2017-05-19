@@ -1,6 +1,5 @@
 package com.mi.liveassistant.unity;
 
-import com.mi.liveassistant.room.manager.live.callback.ILiveCallback;
 import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
 
 /**
