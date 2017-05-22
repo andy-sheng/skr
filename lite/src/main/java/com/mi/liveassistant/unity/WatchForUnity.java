@@ -20,7 +20,6 @@ import com.xiaomi.player.Player;
  * @module Unity观看直播辅助类
  */
 public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
-    private static final String TAG = "WatchForUnity";
 
     private static final int DEFAULT_WIDTH = DisplayUtils.dip2px(320f);
     private static final int DEFAULT_HEIGHT = DisplayUtils.dip2px(180);
@@ -32,7 +31,7 @@ public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
 
     @Override
     protected String getTAG() {
-        return TAG;
+        return "WatchForUnity";
     }
 
     public WatchForUnity(Activity activity, IUnityWatchListener listener, IBarrageListener barrageListener) {
@@ -111,10 +110,11 @@ public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
 
                     @Override
                     public void notifySuccess() {
-                        MyLog.w(TAG, "enterLive success");
+                        MyLog.w(TAG, "enterLive success mPlayerId=" + mPlayerId + " mLiveId=" + mLiveId);
                         if (mUnityListener != null) {
                             mUnityListener.onEnterLiveSuccess();
                         }
+                        pullBarrageIfNeeded(liveId);
                     }
                 });
             }
@@ -127,6 +127,7 @@ public class WatchForUnity extends UnitySdk<Activity, IUnityWatchListener> {
             public void run() {
                 MyLog.w(TAG, "stopWatch");
                 mWatchManager.leaveLive();
+                stopBarrageIfNeeded();
             }
         });
     }
