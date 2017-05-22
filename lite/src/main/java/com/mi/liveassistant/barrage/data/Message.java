@@ -163,14 +163,25 @@ public class Message implements Comparable<Message> {
         return message;
     }
 
+    public static Message loadChatMsgFromBarrage(BarrageMsg msg) {
+        Message message = loadFromBarrage(msg, false);
+        message.setMsgType(MessageType.MSG_TYPE_TEXT);
+        message.setMessageExt(null);
+        return message;
+    }
+
     public static Message loadFromBarrage(BarrageMsg msg) {
+        return loadFromBarrage(msg, true);
+    }
+
+    private static Message loadFromBarrage(BarrageMsg msg, boolean haveMsgExt) {
         Message liveComment = new Message();
         liveComment.setSender(msg.getSender());
         liveComment.setMsgType(msg.getMsgType());
         liveComment.setSenderLevel(msg.getSenderLevel());
         String name = msg.getSenderName();
         if (TextUtils.isEmpty(name)) {
-            if(liveComment.getSender() != 0) {
+            if (liveComment.getSender() != 0) {
                 liveComment.setSenderName(String.valueOf(liveComment.getSender()));
             }
         } else {
@@ -182,19 +193,20 @@ public class Message implements Comparable<Message> {
         liveComment.setRoomId(msg.getRoomId());
         liveComment.setRoomType(msg.getRoomType());
         liveComment.setAnchorId(msg.getAnchorId());
-        MyLog.d("Message","message type:"+msg.getMsgType()+"\tto user id:"+msg.getToUserId());
+        MyLog.d("Message", "message type:" + msg.getMsgType() + "\tto user id:" + msg.getToUserId());
 
         switch (liveComment.getMsgType()) {
             //以下是　系统消息类 　不显示名字和级别
             case BarrageMsgType.B_MSG_TYPE_FORBIDDEN:
             case BarrageMsgType.B_MSG_TYPE_CANCEL_FORBIDDEN: {
-                BarrageMsg.ForbiddenMsgExt msgExt = (BarrageMsg.ForbiddenMsgExt) msg.getMsgExt();
-//                MyLog.w("ForbiddenMsg"+msg.toString());
-                String message = msgExt.getBanMessage(msg.getAnchorId(), UserAccountManager.getInstance().getUuidAsLong(), msg.getMsgType(), msg.getSenderName());
-                liveComment.setBody(message);
-                liveComment.setSenderLevel(0);
-                liveComment.setSenderName(null);
-                liveComment.setMessageExt(new MessageExt.ForbiddenMessageExt(msgExt));
+                if (haveMsgExt) {
+                    BarrageMsg.ForbiddenMsgExt msgExt = (BarrageMsg.ForbiddenMsgExt) msg.getMsgExt();
+                    String message = msgExt.getBanMessage(msg.getAnchorId(), UserAccountManager.getInstance().getUuidAsLong(), msg.getMsgType(), msg.getSenderName());
+                    liveComment.setBody(message);
+                    liveComment.setSenderLevel(0);
+                    liveComment.setSenderName(null);
+                    liveComment.setMessageExt(new MessageExt.ForbiddenMessageExt(msgExt));
+                }
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_SET_MANAGER: {
@@ -210,15 +222,19 @@ public class Message implements Comparable<Message> {
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_FREQUENCY_CONTROL:
-                BarrageMsg.MsgRuleChangeMessageExt msgRuleChangeMessageExt = (BarrageMsg.MsgRuleChangeMessageExt) msg.getMsgExt();
-                if (msgRuleChangeMessageExt != null) {
-                    liveComment.setMessageExt(new MessageExt.FrequencyControlMessageExt(msgRuleChangeMessageExt.getMessageRule()));
+                if (haveMsgExt) {
+                    BarrageMsg.MsgRuleChangeMessageExt msgRuleChangeMessageExt = (BarrageMsg.MsgRuleChangeMessageExt) msg.getMsgExt();
+                    if (msgRuleChangeMessageExt != null) {
+                        liveComment.setMessageExt(new MessageExt.FrequencyControlMessageExt(msgRuleChangeMessageExt.getMessageRule()));
+                    }
                 }
                 break;
             case BarrageMsgType.B_MSG_TYPE_KICK_VIEWER:
-                BarrageMsg.KickMessageExt kickMessageExt = (BarrageMsg.KickMessageExt) msg.getMsgExt();
-                if (kickMessageExt != null) {
-                    liveComment.setMessageExt(new MessageExt.KickMessageExt(kickMessageExt));
+                if (haveMsgExt) {
+                    BarrageMsg.KickMessageExt kickMessageExt = (BarrageMsg.KickMessageExt) msg.getMsgExt();
+                    if (kickMessageExt != null) {
+                        liveComment.setMessageExt(new MessageExt.KickMessageExt(kickMessageExt));
+                    }
                 }
                 break;
             case BarrageMsgType.B_MSG_TYPE_COMMEN_SYS_MSG:
@@ -229,9 +245,11 @@ public class Message implements Comparable<Message> {
             case BarrageMsgType.B_MSG_TYPE_TOP_GET:
             case BarrageMsgType.B_MSG_TYPE_TOP_LOSE:
             case BarrageMsgType.B_MSG_TYPE_LIVE_END:
-                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LiveEndMsgExt) {
-                    BarrageMsg.LiveEndMsgExt liveEndMsgExt = (BarrageMsg.LiveEndMsgExt) msg.getMsgExt();
-                    liveComment.setMessageExt(new MessageExt.LiveEndMessageExt(liveEndMsgExt));
+                if (haveMsgExt) {
+                    if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LiveEndMsgExt) {
+                        BarrageMsg.LiveEndMsgExt liveEndMsgExt = (BarrageMsg.LiveEndMsgExt) msg.getMsgExt();
+                        liveComment.setMessageExt(new MessageExt.LiveEndMessageExt(liveEndMsgExt));
+                    }
                 }
                 liveComment.setBody(msg.getBody());
                 liveComment.setSenderLevel(0);
@@ -244,9 +262,11 @@ public class Message implements Comparable<Message> {
                 liveComment.setBody(msg.getBody());
                 break;
             case BarrageMsgType.B_MSG_TYPE_VIEWER_CHANGE:
-                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.ViewerChangeMsgExt) {
-                    BarrageMsg.ViewerChangeMsgExt viewerChangeMsgExt = (BarrageMsg.ViewerChangeMsgExt) msg.getMsgExt();
-                    liveComment.setMessageExt(new MessageExt.ViewChangeMessageExt(viewerChangeMsgExt));
+                if (haveMsgExt) {
+                    if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.ViewerChangeMsgExt) {
+                        BarrageMsg.ViewerChangeMsgExt viewerChangeMsgExt = (BarrageMsg.ViewerChangeMsgExt) msg.getMsgExt();
+                        liveComment.setMessageExt(new MessageExt.ViewChangeMessageExt(viewerChangeMsgExt));
+                    }
                 }
                 liveComment.setBody(msg.getBody());
                 break;
@@ -281,9 +301,11 @@ public class Message implements Comparable<Message> {
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_LEAVE: {
-                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LeaveRoomMsgExt) {
-                    BarrageMsg.LeaveRoomMsgExt leaveRoomMsgExt = (BarrageMsg.LeaveRoomMsgExt) msg.getMsgExt();
-                    liveComment.setMessageExt(new MessageExt.LeaveRoomMessageExt(leaveRoomMsgExt));
+                if (haveMsgExt) {
+                    if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.LeaveRoomMsgExt) {
+                        BarrageMsg.LeaveRoomMsgExt leaveRoomMsgExt = (BarrageMsg.LeaveRoomMsgExt) msg.getMsgExt();
+                        liveComment.setMessageExt(new MessageExt.LeaveRoomMessageExt(leaveRoomMsgExt));
+                    }
                 }
                 if (!TextUtils.isEmpty(name)) {
                     liveComment.setBody("离开房间");
@@ -294,9 +316,11 @@ public class Message implements Comparable<Message> {
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_JOIN: {
-                if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.JoinRoomMsgExt) {
-                    BarrageMsg.JoinRoomMsgExt joinRoomMsgExt = (BarrageMsg.JoinRoomMsgExt) msg.getMsgExt();
-                    liveComment.setMessageExt(new MessageExt.JoinRoomMessageExt(joinRoomMsgExt));
+                if (haveMsgExt) {
+                    if (msg.getMsgExt() != null && msg.getMsgExt() instanceof BarrageMsg.JoinRoomMsgExt) {
+                        BarrageMsg.JoinRoomMsgExt joinRoomMsgExt = (BarrageMsg.JoinRoomMsgExt) msg.getMsgExt();
+                        liveComment.setMessageExt(new MessageExt.JoinRoomMessageExt(joinRoomMsgExt));
+                    }
                 }
                 if (!TextUtils.isEmpty(name)) {
                     liveComment.setBody("进入房间");
@@ -319,8 +343,10 @@ public class Message implements Comparable<Message> {
             case BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE:
             case BarrageMsgType.B_MSG_TYPE_ROOM_BACKGROUND_GIFT:
             case BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT:
-                BarrageMsg.GiftMsgExt giftMsgExt = (BarrageMsg.GiftMsgExt) msg.getMsgExt();
-                liveComment.setMessageExt(new MessageExt.GiftMessageExt(giftMsgExt));
+                if (haveMsgExt) {
+                    BarrageMsg.GiftMsgExt giftMsgExt = (BarrageMsg.GiftMsgExt) msg.getMsgExt();
+                    liveComment.setMessageExt(new MessageExt.GiftMessageExt(giftMsgExt));
+                }
                 liveComment.setBody(msg.getBody());
                 break;
             case BarrageMsgType.B_MSG_TYPE_RED_ENVELOPE:

@@ -27,7 +27,7 @@ public class RoomSystemMsgProcessor extends MsgProcessor {
                 List<BarrageMsg> barrageMsgs = globalMessageExt.getSysBarrageMsg(msg);
                 List<Message> messageList = new ArrayList<>();
                 for(BarrageMsg barrageMsg:barrageMsgs){
-                    messageList.add(Message.loadFromBarrage(barrageMsg));
+                    messageList.add(Message.loadChatMsgFromBarrage(barrageMsg));
                 }
                 mIMsgDispenser.addChatMsg(messageList);
             }
@@ -38,7 +38,7 @@ public class RoomSystemMsgProcessor extends MsgProcessor {
                 List<BarrageMsg> barrageMsgs = roomMessageExt.getRoomBarrageMsg(msg);
                 List<Message> messageList = new ArrayList<>();
                 for(BarrageMsg barrageMsg:barrageMsgs){
-                    messageList.add(Message.loadFromBarrage(barrageMsg));
+                    messageList.add(Message.loadChatMsgFromBarrage(barrageMsg));
                 }
                 mIMsgDispenser.addChatMsg(messageList);
             }
@@ -46,7 +46,7 @@ public class RoomSystemMsgProcessor extends MsgProcessor {
             if(msg == null || !roomId.equals(msg.getRoomId())){
                 return;
             }
-            mIMsgDispenser.addChatMsg(Message.loadFromBarrage(msg));
+            mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
         }
     }
 

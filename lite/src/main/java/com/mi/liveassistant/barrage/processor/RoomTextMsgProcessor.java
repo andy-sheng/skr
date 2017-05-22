@@ -23,7 +23,7 @@ public class RoomTextMsgProcessor extends MsgProcessor {
                 || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_SHARE
                 || msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_KICK_VIEWER_BARRAGE) {
 
-            mIMsgDispenser.addChatMsg(Message.loadFromBarrage(msg));
+            mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
         }
     }
 

@@ -326,19 +326,15 @@ public class BarrageMainProcessor implements IMsgDispenser {
 
     @Override
     public void addChatMsg(List<Message> messageList) {
-        List<Message> chatMessageList = new ArrayList<>();
-        for (int i = 0; i < messageList.size(); i++) {
-            chatMessageList.add(messageList.get(i).cloneToChatMessage());
-        }
         if (mChatMsgListener != null) {
-            mChatMsgListener.handleMessage(chatMessageList);
+            mChatMsgListener.handleMessage(messageList);
         }
     }
 
     @Override
     public void addChatMsg(Message message) {
         List<Message> messages = new ArrayList<>();
-        messages.add(message.cloneToChatMessage());
+        messages.add(message);
         if (mChatMsgListener != null) {
             mChatMsgListener.handleMessage(messages);
         }

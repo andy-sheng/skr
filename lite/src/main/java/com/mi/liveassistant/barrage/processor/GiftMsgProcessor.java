@@ -42,7 +42,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                 List<Message> messageList = new ArrayList<>();
                 messageList.add(Message.loadFromBarrage(msg));
                 if (count <= 10) {
-                    mIMsgDispenser.addChatMsg(messageList);
+                    mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
                 }
                 mIMsgDispenser.addInternalMsgListener(messageList);
             }
@@ -50,7 +50,7 @@ public class GiftMsgProcessor extends MsgProcessor {
             case BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE: {
                 List<Message> messageList = new ArrayList<>();
                 messageList.add(Message.loadFromBarrage(msg));
-                mIMsgDispenser.addChatMsg(messageList);
+                mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
                 mIMsgDispenser.addInternalMsgListener(messageList);
             }
             break;
@@ -58,9 +58,9 @@ public class GiftMsgProcessor extends MsgProcessor {
                 // 红包-礼物
                 BarrageMsg.RedEnvelopMsgExt ext = (BarrageMsg.RedEnvelopMsgExt) msg.getMsgExt();
                 if (ext != null) {
-                    List<Message> messageList = new ArrayList<>();
-                    messageList.add(Message.loadFromBarrage(msg));
-                    mIMsgDispenser.addChatMsg(messageList);
+//                    List<Message> messageList = new ArrayList<>();
+//                    messageList.add(Message.loadFromBarrage(msg));
+                    mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
 //                    mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
@@ -71,7 +71,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                 if (ext != null) {
                     List<Message> messageList = new ArrayList<>();
                     messageList.add(Message.loadFromBarrage(msg));
-                    mIMsgDispenser.addChatMsg(messageList);
+                    mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
                     mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
@@ -82,7 +82,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                 if (ext != null) {
                     List<Message> messageList = new ArrayList<>();
                     messageList.add(Message.loadFromBarrage(msg));
-                    mIMsgDispenser.addChatMsg(messageList);
+                    mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
                     mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
@@ -93,7 +93,7 @@ public class GiftMsgProcessor extends MsgProcessor {
                 if (ext != null) {
                     List<Message> messageList = new ArrayList<>();
                     messageList.add(Message.loadFromBarrage(msg));
-                    mIMsgDispenser.addChatMsg(messageList);
+                    mIMsgDispenser.addChatMsg(Message.loadChatMsgFromBarrage(msg));
                     mIMsgDispenser.addInternalMsgListener(messageList);
                 }
             }
