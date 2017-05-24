@@ -18,7 +18,7 @@ import java.util.List;
  * Created by yangli on 2017/5/10.
  */
 abstract class UnitySdk<ACTIVITY extends Activity, LISTENER extends ILoginListener> {
-    private final String TAG = getTAG();
+    protected final String TAG = getTAG() + "@" + this.hashCode();
 
     protected ACTIVITY mActivity;
     protected LISTENER mUnityListener;
@@ -72,7 +72,7 @@ abstract class UnitySdk<ACTIVITY extends Activity, LISTENER extends ILoginListen
         if (mBarrageListener == null) {
             return;
         }
-        MessageFacade.getInstance().sendTextMessageAsync(body, mLiveId, UserAccountManager.getInstance().getUuidAsLong());
+        MessageFacade.getInstance().sendTextMessageAsync(body, mLiveId, mPlayerId);
     }
 
     public boolean isLogin() {

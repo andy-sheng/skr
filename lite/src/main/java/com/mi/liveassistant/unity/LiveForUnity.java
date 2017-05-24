@@ -18,7 +18,6 @@ import com.mi.liveassistant.room.manager.live.callback.ILiveListener;
  * @module Unity游戏直播辅助类
  */
 public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
-    private static final String TAG = "LiveForUnity";
 
     private GameLiveManager mLiveManager;
     private boolean mIsBegin;
@@ -28,7 +27,7 @@ public class LiveForUnity extends UnitySdk<Activity, IUnityLiveListener> {
 
     @Override
     protected String getTAG() {
-        return TAG;
+        return "LiveForUnity";
     }
 
     public LiveForUnity(Activity activity, IUnityLiveListener listener, IBarrageListener barrageListener) {
