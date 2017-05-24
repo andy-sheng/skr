@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.XiaoMiOAuth;
 import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -28,6 +29,7 @@ import com.wali.live.channel.presenter.IChannelView;
 import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -71,8 +73,16 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         initData();
         getChannelFromServer();
 
-        // TEST
-        findViewById(R.id.live_test_tv).setOnClickListener(new View.OnClickListener() {
+        $(R.id.show_live_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
+                    LiveSdkActivity.openActivity(MainActivity.this, null, false, false);
+                }
+            }
+        });
+
+        $(R.id.game_live_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
@@ -80,6 +90,39 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                 }
             }
         });
+
+        ($(R.id.login_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(0).map(new Func1<Integer, Boolean>() {
+                    @Override
+                    public Boolean call(Integer integer) {
+                        String code = XiaoMiOAuth.getOAuthCode(MainActivity.this);
+                        if (!TextUtils.isEmpty(code)) {
+                            LoginPresenter loginPresenter = new LoginPresenter(MainActivity.this);
+                            loginPresenter.miLoginByCode(code);
+                            addPresent(loginPresenter);
+                            return true;
+                        }
+                        return false;
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean b) {
+                                MyLog.w(TAG, "result = " + b);
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                throwable.printStackTrace();
+                                MyLog.w(TAG, "failed " + throwable);
+                            }
+                        });
+            }
+        });
+
     }
 
     private void initData() {

@@ -18,26 +18,72 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <TextView
-        android:id="@+id/live_test_tv"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/live_container"
+        android:layout_width="match_parent"
         android:layout_height="40.67dip"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/corners_bg_e5e5e5_30px"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="直接跳LiveSdkActivity"
-        android:textColor="@color/color_black_trans_80"
-        android:textSize="@dimen/text_size_36"/>
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/show_live_tv"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/corners_bg_e5e5e5_30px"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/show_live"
+            android:textColor="@color/color_black_trans_80"
+            android:textSize="@dimen/text_size_36"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/login_tv"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/corners_bg_e5e5e5_30px"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/please_login"
+            android:textColor="@color/color_black_trans_80"
+            android:textSize="@dimen/text_size_36"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/game_live_tv"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/corners_bg_e5e5e5_30px"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/game_live"
+            android:textColor="@color/color_black_trans_80"
+            android:textSize="@dimen/text_size_36"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/watch_btn"
         android:layout_width="match_parent"
         android:layout_height="40.67dip"
-        android:layout_above="@+id/live_test_tv"
+        android:layout_above="@+id/live_container"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
