@@ -2,7 +2,8 @@
 
 python gen_build_settings_aar.py
 
-gradle assembleRelease --info
+# gradle assembleRelease --info
+../gradlew assembleRelease --info # use this if gradle fails
 
 if [ ! -d "../aardemo/libs" ]; then
   mkdir "../aardemo/libs"
