@@ -144,13 +144,13 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                         } else {
                             rsp = new EndLiveRequest(liveId).syncRsp();
                         }
-                        MyLog.w(TAG, "endLiveByAppInfo, rsp = " + ((rsp == null) ? null : rsp.toString()));
+                        MyLog.w(TAG, "endLiveByAppInfo, rsp = " + ((rsp == null) ? "null" : rsp.toString()));
                         subscriber.onNext(rsp);
                         subscriber.onCompleted();
                     }
                 })
                 .subscribeOn(Schedulers.io())
-//                .compose(bindUntilEvent(PresenterEvent.DESTROY))
+                .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Object>() {
                     @Override
