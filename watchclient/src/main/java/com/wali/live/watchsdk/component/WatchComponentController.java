@@ -30,7 +30,6 @@ public class WatchComponentController extends ComponentController {
         mRoomChatMsgManager = roomChatMsgManager;
     }
 
-
     @Nullable
     @Override
     protected String getTAG() {
