@@ -1,7 +1,8 @@
-package com.wali.live.watchsdk.component;
+package com.wali.live.watchsdk.videodetail;
 
 import android.support.annotation.Nullable;
 
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.ComponentController;
 
 /**
@@ -9,9 +10,15 @@ import com.wali.live.component.ComponentController;
  */
 public class VideoDetailController extends ComponentController {
 
+    protected RoomBaseDataModel mMyRoomData;
+
     @Nullable
     @Override
     protected String getTAG() {
         return "VideoDetailController";
+    }
+
+    public VideoDetailController(RoomBaseDataModel myRoomData) {
+        mMyRoomData = myRoomData;
     }
 }

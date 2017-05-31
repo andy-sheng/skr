@@ -73,4 +73,6 @@
     <string name="service_token_expired">Your account was used at %s. If it was you, you can ignore this message</string>
     <string name="forbbiden_message">Your account (%s) was banned. Contact Mi Live for more information.</string>
 
+
+    <string name="write_comment">Add comment</string>
 </resources>
