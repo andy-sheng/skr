@@ -254,7 +254,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
          * @return false 条件不符合, true 可以发起购买
          */
         private boolean judgeBuyGiftCondition() {
-            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.ismSupportMagicFace()) {
+            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
                 ToastUtils.showToast(mActivity, getResources().getString(R.string.no_support_magic_gift_tips));
                 return false;
             }
@@ -390,7 +390,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
                             }
                         }
                         if (mSelectedGift != null) {
-                            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.ismSupportMagicFace()) {
+                            if (mSelectedGift.gift.getCatagory() == GiftType.MAGIC_GIFT && !mMyRoomData.isSupportMagicFace()) {
                                 ToastUtils.showToast(mActivity, getResources().getString(R.string.no_support_magic_gift_tips));
                                 return;
                             }

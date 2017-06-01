@@ -485,9 +485,9 @@ public class RoomBaseDataModel implements Serializable {
     }
 
     //合并发言频率规则，如果已经有了发言频率，则合并，否则直接设置
-    public void setmMsgRule(MessageRule mMsgRule) {
-        if (mMsgRule != null) {
-            this.mMsgRule.put(mMsgRule.getMessageRuleType(), mMsgRule);
+    public void setMsgRule(MessageRule msgRule) {
+        if (msgRule != null) {
+            this.mMsgRule.put(msgRule.getMessageRuleType(), msgRule);
         }
     }
 
@@ -531,11 +531,11 @@ public class RoomBaseDataModel implements Serializable {
         mEnableShare = enableShare;
     }
 
-    public boolean ismSupportMagicFace() {
+    public boolean isSupportMagicFace() {
         return mSupportMagicFace;
     }
 
-    public void setmSupportMagicFace(boolean mSupportMagicFace) {
-        this.mSupportMagicFace = mSupportMagicFace;
+    public void setSupportMagicFace(boolean supportMagicFace) {
+        this.mSupportMagicFace = supportMagicFace;
     }
 }

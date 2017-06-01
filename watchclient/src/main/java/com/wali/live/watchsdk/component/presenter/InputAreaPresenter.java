@@ -153,7 +153,7 @@ public class InputAreaPresenter extends ComponentPresenter<InputAreaView.IView>
             msgRule.setMessageRuleType(MessageRule.MessageRuleType.NORMAL);
             msgRule.setSpeakPeriod(event.getSpeakPeriod());
             msgRule.setUnrepeatable(event.isUnrepeatable());
-            mMyRoomData.setmMsgRule(msgRule);
+            mMyRoomData.setMsgRule(msgRule);
 
             LastBarrage lastBarrage = mLastBarrageMap.get(getBarrageCacheKey(mMyRoomData.getRoomId()));
             if (!event.isUnrepeatable()) {

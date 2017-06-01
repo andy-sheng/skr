@@ -49,6 +49,12 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_ENABLE_MOVE_VIEW = MSG_TOUCH_FIRST;     // 开启滑动
     public static final int MSG_DISABLE_MOVE_VIEW = MSG_TOUCH_FIRST + 1; // 禁止滑动
     public static final int MSG_BACKGROUND_CLICK = MSG_TOUCH_FIRST + 2; // 背景点击
+    // 播放器相关消息
+    private static final int MSG_PLAYER_FIRST = 22000;
+    public static final int MSG_PLAYER_RESUME = 22001;
+    public static final int MSG_PLAYER_PAUSE = 22002;
+    public static final int MSG_PLAYER_STOP = 22003;
+    public static final int MSG_PLAYER_FULL_SCREEN = 22004;
     // 输入框相关消息
     private static final int MSG_INPUT_FIRST = 30000;
     public static final int MSG_SHOW_INPUT_VIEW = MSG_INPUT_FIRST;     // 请求弹起 输入框

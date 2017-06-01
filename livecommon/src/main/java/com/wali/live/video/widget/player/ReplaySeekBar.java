@@ -1,6 +1,7 @@
 package com.wali.live.video.widget.player;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -71,17 +72,24 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
     }
 
     @Override
-    public int getLayoutResId() {
-        return R.layout.replay_seekbar_container;
+    public int getLayoutResId(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ReplaySeekBar);
+        boolean detailReplayFlag = typedArray.getBoolean(R.styleable.ReplaySeekBar_detail_replay, false);
+        typedArray.recycle();
+        if (detailReplayFlag) {
+            return R.layout.detail_seekbar_container;
+        } else {
+            return R.layout.replay_seekbar_container;
+        }
     }
 
     @Override
     protected void initView() {
-        mSeekBar = (HotSpotSeekBar)findViewById(R.id.seek_bar);
+        mSeekBar = (HotSpotSeekBar) findViewById(R.id.seek_bar);
         mPlayBtn = findViewById(R.id.play_btn);
         mFullScreenBtn = findViewById(R.id.full_screen_btn);
-        mCurTimeTv = (TextView)findViewById(R.id.cur_time_tv);
-        mTotalTimeTv = (TextView)findViewById(R.id.total_time_tv);
+        mCurTimeTv = (TextView) findViewById(R.id.cur_time_tv);
+        mTotalTimeTv = (TextView) findViewById(R.id.total_time_tv);
         mPlayBtn.setOnClickListener(this);
         mPlayBtn.setTag(CLICK_TAG_PLAY);
         mFullScreenBtn.setOnClickListener(this);
@@ -93,7 +101,7 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
         if (view.getTag() == null || !(view.getTag() instanceof Integer)) {
             return;
         }
-        switch ((int)view.getTag()) {
+        switch ((int) view.getTag()) {
             case CLICK_TAG_PLAY:
                 if (mListener != null) {
                     mListener.onClickPlayBtn();

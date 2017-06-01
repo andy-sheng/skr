@@ -8,11 +8,16 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.base.log.MyLog;
+import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.videodetail.VideoDetailController;
 import com.wali.live.watchsdk.videodetail.VideoDetailView;
+import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by yangli on 2017/5/26.
@@ -73,8 +78,52 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
 
     private void initView() {
         mComponentController = new VideoDetailController(mMyRoomData);
-        mSdkView = new VideoDetailView(this, mComponentController, mMyRoomData);
+        mSdkView = new VideoDetailView(this, mComponentController);
         mSdkView.setupSdkView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        MyLog.w(TAG, "onDestroy");
+        super.onDestroy();
+        mComponentController.onEvent(VideoDetailController.MSG_PLAYER_STOP);
+    }
+
+    @Subscribe
+    public void onEvent(WatchOrReplayActivityCreated event) {
+    }
+
+    //视频event 刷新播放按钮等操作
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.FeedsVideoEvent event) {
+        if (event != null) {
+            MyLog.w(TAG, "onEventMainThread event.type=" + event.mType);
+            switch (event.mType) {
+                case EventClass.FeedsVideoEvent.TYPE_START:
+                    mComponentController.onEvent(VideoDetailController.MSG_PLAYER_RESUME);
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_STOP:
+                    mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PAUSE);
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_COMPLETION:
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN:
+                    mComponentController.onEvent(VideoDetailController.MSG_PLAYER_FULL_SCREEN);
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_PLAYING:
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_SET_SEEK:
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_ON_FEEDS_PLAY_ACT_DESTORY:
+                    break;
+                case EventClass.FeedsVideoEvent.TYPE_ERROR:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override

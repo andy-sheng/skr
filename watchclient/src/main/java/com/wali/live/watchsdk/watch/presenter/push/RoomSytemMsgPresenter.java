@@ -78,7 +78,7 @@ public class RoomSytemMsgPresenter implements IPushMsgProcessor {
                         oriSpeakPeriod = roomBaseDataModel.getMsgRule().getSpeakPeriod();
                     }
                     EventClass.MsgRuleChangedEvent event = new EventClass.MsgRuleChangedEvent(roomBaseDataModel.getRoomId(), messageExt.getMessageRule().getSpeakPeriod(), oriSpeakPeriod, messageExt.getMessageRule().isUnrepeatable());
-                    roomBaseDataModel.setmMsgRule(messageExt.getMessageRule());
+                    roomBaseDataModel.setMsgRule(messageExt.getMessageRule());
                     EventBus.getDefault().post(event);
                     MyLog.w("receive barrage frequency control msg:" + messageExt.toString());
                 }

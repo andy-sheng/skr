@@ -99,7 +99,7 @@ public class RoomDataMapper {
         mMyRoomData.notifyViewersChange("processEnterLive");
 //                mIsManager = (boolean) objects[2];
         mMyRoomData.setCanSpeak(!enterRoomInfo.isBanSpeak());
-        mMyRoomData.setmMsgRule(enterRoomInfo.getMessageRule());
+        mMyRoomData.setMsgRule(enterRoomInfo.getMessageRule());
 
         mMyRoomData.setLiveType(enterRoomInfo.getType());
         mMyRoomData.setShareUrl(enterRoomInfo.getShareUrl());
@@ -116,6 +116,6 @@ public class RoomDataMapper {
         if (enterRoomInfo.getLocation() != null) {
             mMyRoomData.setCity(enterRoomInfo.getLocation().getCity());
         }
-        mMyRoomData.setmSupportMagicFace(enterRoomInfo.isSupportMgicFace());
+        mMyRoomData.setSupportMagicFace(enterRoomInfo.isSupportMgicFace());
     }
 }

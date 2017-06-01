@@ -33,6 +33,7 @@ import com.wali.live.event.EventClass;
 import com.wali.live.ipselect.BaseIpSelectionHelper;
 import com.wali.live.ipselect.FeedsIpSelectionHelper;
 import com.wali.live.receiver.NetworkReceiver;
+import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.video.widget.player.VideoPlayBaseSeekBar;
 import com.wali.live.watchsdk.R;
 
@@ -52,7 +53,7 @@ public class VideoPlayerPresenterEx implements
 
     protected static final int CLICK_TAG_ROTATE = 1001;
 
-    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, VideoPlayBaseSeekBar seekBar, ImageView rotateBtn, boolean realTime) {
+    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, ReplaySeekBar seekBar, ImageView rotateBtn, boolean realTime) {
         mContext = context;
         this.mVideoView = mVideoView;
         this.mSeekBar = seekBar;
@@ -62,7 +63,7 @@ public class VideoPlayerPresenterEx implements
 
     //-------view-----------------------------------------------------------------------------------
     protected VideoPlayerTextureView mVideoView; // 真正的播放view
-    protected VideoPlayBaseSeekBar mSeekBar; // 真正的进度条
+    protected ReplaySeekBar mSeekBar; // 真正的进度条
     protected ImageView mRotateBtn;
     protected VideoPlayerPresenter mVideoPlayerPresenter;
     protected Animation mAnime;
@@ -345,6 +346,10 @@ public class VideoPlayerPresenterEx implements
 
     }
 
+    public long getPlayedTime() {
+        return mPlayedTime;
+    }
+
     public void destroy() {
         onDestroy();
         EventBus.getDefault().unregister(this);
@@ -407,7 +412,6 @@ public class VideoPlayerPresenterEx implements
             mVideoView.setVideoTransMode(mTransMode);
         }
     }
-
 
     //设置seekbar 消失的时长 小于等于0 不消失
     public void setSeekBarHideDelay(long delay) {
@@ -502,7 +506,6 @@ public class VideoPlayerPresenterEx implements
             mRotateBtn.setSelected(false);
         }
     }
-
 
     public void onSeekBarContainerClick() {
         if (CommonUtils.isFastDoubleClick()) {

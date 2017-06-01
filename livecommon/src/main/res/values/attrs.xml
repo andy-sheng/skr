@@ -11,4 +11,8 @@
     <declare-styleable name="GiftContinueView">
         <attr name="left" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ReplaySeekBar">
+        <attr name="detail_replay" format="boolean"/>
+    </declare-styleable>
 </resources>

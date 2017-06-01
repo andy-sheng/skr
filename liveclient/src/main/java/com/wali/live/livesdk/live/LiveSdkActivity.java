@@ -1243,7 +1243,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     public void onEventMainThread(LiveEventClass.UpdateMsgRuleEvent event) {
         if (event != null && mMyRoomData.getRoomId().equals(event.getRoomId())) {
             if (event.isUpdated()) {
-                mMyRoomData.setmMsgRule(event.getMsgRule());
+                mMyRoomData.setMsgRule(event.getMsgRule());
                 ToastUtils.showToast(GlobalData.app().getApplicationContext(), getString(R.string.change_room_setting_success));
             } else {
                 ToastUtils.showToast(GlobalData.app().getApplicationContext(), getString(R.string.change_room_setting_fail));

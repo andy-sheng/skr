@@ -10,15 +10,13 @@ import com.wali.live.proto.HotSpotProto;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
-
 /**
  * 播放器
  * Created by yurui on 16-10-18.
  *
  * @module feeds
  */
-public abstract class VideoPlayBaseSeekBar extends RelativeLayout  implements View.OnClickListener{
+public abstract class VideoPlayBaseSeekBar extends RelativeLayout implements View.OnClickListener {
 
     protected static final int CLICK_TAG_PLAY = 1001;
     protected static final int CLICK_TAG_FULLSCREEN = 1002;
@@ -27,13 +25,13 @@ public abstract class VideoPlayBaseSeekBar extends RelativeLayout  implements Vi
 
     public VideoPlayBaseSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, getLayoutResId(), this);
+        inflate(context, getLayoutResId(context, attrs), this);
         //lib module不能使用butterknife了
         //ButterKnife.bind(this);
         initView();
     }
 
-    protected abstract int getLayoutResId();
+    protected abstract int getLayoutResId(Context context, AttributeSet attrs);
 
     protected abstract void initView();
 

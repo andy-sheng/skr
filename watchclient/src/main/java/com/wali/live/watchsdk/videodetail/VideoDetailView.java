@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
@@ -18,13 +17,11 @@ import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
  * Created by yangli on 2017/5/26.
  */
 public class VideoDetailView extends BaseSdkView<VideoDetailController> {
-    private RoomBaseDataModel mMyRoomData;
 
     public VideoDetailView(
             @NonNull Activity activity,
-            @NonNull VideoDetailController componentController, @NonNull RoomBaseDataModel myRoomData) {
+            @NonNull VideoDetailController componentController) {
         super(activity, componentController);
-        mMyRoomData = myRoomData;
     }
 
     @Override
@@ -58,11 +55,9 @@ public class VideoDetailView extends BaseSdkView<VideoDetailController> {
                 return;
             }
             view.setMyRoomData(mComponentController.mMyRoomData);
-            VideoDetailPlayerPresenter presenter = new VideoDetailPlayerPresenter(mComponentController, mComponentController.mMyRoomData);
+            VideoDetailPlayerPresenter presenter = new VideoDetailPlayerPresenter(mComponentController, mComponentController.mMyRoomData, mActivity);
             presenter.setComponentView(view.getViewProxy());
             addComponentView(view, presenter);
-
-
         }
     }
 }
