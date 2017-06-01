@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
+import com.wali.live.watchsdk.component.presenter.VideoDetailPlayerPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
+import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
 import com.wali.live.watchsdk.videodetail.presenter.DetailBottomPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
 
@@ -15,11 +18,13 @@ import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
  * Created by yangli on 2017/5/26.
  */
 public class VideoDetailView extends BaseSdkView<VideoDetailController> {
+    private RoomBaseDataModel mMyRoomData;
 
     public VideoDetailView(
             @NonNull Activity activity,
-            @NonNull VideoDetailController componentController) {
+            @NonNull VideoDetailController componentController, @NonNull RoomBaseDataModel myRoomData) {
         super(activity, componentController);
+        mMyRoomData = myRoomData;
     }
 
     @Override
@@ -45,6 +50,19 @@ public class VideoDetailView extends BaseSdkView<VideoDetailController> {
             InputAreaPresenter presenter = new InputAreaPresenter(
                     mComponentController, mComponentController.mMyRoomData);
             addComponentView(view, presenter);
+        }
+
+        {
+            VideoDetailPlayerView view = $(R.id.video_detail_player_view);
+            if (view == null) {
+                return;
+            }
+            view.setMyRoomData(mComponentController.mMyRoomData);
+            VideoDetailPlayerPresenter presenter = new VideoDetailPlayerPresenter(mComponentController, mComponentController.mMyRoomData);
+            presenter.setComponentView(view.getViewProxy());
+            addComponentView(view, presenter);
+
+
         }
     }
 }

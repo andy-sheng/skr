@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.base.log.MyLog;
-import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.videodetail.VideoDetailController;
@@ -43,6 +42,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
 
     @Override
     protected void trySendDataWithServerOnce() {
+
     }
 
     @Override
@@ -73,8 +73,13 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
 
     private void initView() {
         mComponentController = new VideoDetailController(mMyRoomData);
-        mSdkView = new VideoDetailView(this, mComponentController);
+        mSdkView = new VideoDetailView(this, mComponentController, mMyRoomData);
         mSdkView.setupSdkView();
+    }
+
+    @Override
+    public boolean isStatusBarDark() {
+        return false;
     }
 
     public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {

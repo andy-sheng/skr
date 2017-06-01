@@ -1,0 +1,93 @@
+<RelativeLayout
+    android:id="@+id/seek_bar_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:background="@drawable/jianbian_bottom"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/left_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/play_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp">
+
+            <ImageView
+                android:layout_width="15.33dp"
+                android:layout_height="15.33dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/feeds_video_play_btn"
+                android:duplicateParentState="true"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/cur_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="04:21"
+            android:textColor="#ffffff"
+            android:textSize="10dp"/>
+
+    </LinearLayout>
+
+    <com.wali.live.video.widget.player.HotSpotSeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_toLeftOf="@+id/right_container"
+        android:layout_toRightOf="@+id/left_container"
+        app:appSeekBarLeftPadding="20dp"
+        app:appSeekBarRightPadding="10dp"
+        app:appShapeColorBK="@color/color_white_trans_40"
+        app:appShapeColorFT="#E9AD1F"
+        app:appShapeSize="1.33dp"
+        app:appThumbDrawable="@drawable/live_icon_jindutiao_yuan_white"
+        app:appThumbDrawablePress="@drawable/live_icon_jindutiao_yuan_yellow"
+        app:appThumbSize="15.33dp"
+        app:appThumbSizePress="10.67dp"/>
+
+    <LinearLayout
+        android:id="@+id/right_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/total_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="1:04:21"
+            android:textColor="#ffffff"
+            android:textSize="10dp"/>
+
+        <RelativeLayout
+            android:id="@+id/full_screen_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp">
+
+            <ImageView
+                android:layout_width="15.33dp"
+                android:layout_height="15.33dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/video_fullscreen_icon"
+                android:duplicateParentState="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

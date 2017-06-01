@@ -30,6 +30,7 @@ import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.login.LoginPresenter;
+import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -120,6 +121,16 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                                 MyLog.w(TAG, "failed " + throwable);
                             }
                         });
+            }
+        });
+        ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1")
+                        .setLiveType(6)
+                        .setEnableShare(true)
+                        .build();
+                VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
             }
         });
 

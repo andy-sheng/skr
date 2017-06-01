@@ -33,7 +33,6 @@ import com.wali.live.event.EventClass;
 import com.wali.live.ipselect.BaseIpSelectionHelper;
 import com.wali.live.ipselect.FeedsIpSelectionHelper;
 import com.wali.live.receiver.NetworkReceiver;
-import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.video.widget.player.VideoPlayBaseSeekBar;
 import com.wali.live.watchsdk.R;
 
@@ -53,7 +52,7 @@ public class VideoPlayerPresenterEx implements
 
     protected static final int CLICK_TAG_ROTATE = 1001;
 
-    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, ReplaySeekBar seekBar, ImageView rotateBtn, boolean realTime) {
+    public VideoPlayerPresenterEx(Context context, VideoPlayerTextureView mVideoView, VideoPlayBaseSeekBar seekBar, ImageView rotateBtn, boolean realTime) {
         mContext = context;
         this.mVideoView = mVideoView;
         this.mSeekBar = seekBar;
@@ -63,7 +62,7 @@ public class VideoPlayerPresenterEx implements
 
     //-------view-----------------------------------------------------------------------------------
     protected VideoPlayerTextureView mVideoView; // 真正的播放view
-    protected ReplaySeekBar mSeekBar; // 真正的进度条
+    protected VideoPlayBaseSeekBar mSeekBar; // 真正的进度条
     protected ImageView mRotateBtn;
     protected VideoPlayerPresenter mVideoPlayerPresenter;
     protected Animation mAnime;
@@ -382,6 +381,9 @@ public class VideoPlayerPresenterEx implements
     }
 
     protected void orientRotateBtn() {
+        if (mRotateBtn == null) {
+            return;
+        }
         showPortraitRotateIfNeed();
         if (mIsLandscape) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
@@ -478,6 +480,9 @@ public class VideoPlayerPresenterEx implements
     * 横屏 横屏流 显示   select = true
     */
     protected void showPortraitRotateIfNeed() {
+        if (mRotateBtn == null) {
+            return;
+        }
         if (mVideoPlayerPresenter != null) {
             if (!mIsLandscape) {
                 //竖屏

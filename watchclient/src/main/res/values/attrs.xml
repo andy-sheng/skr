@@ -4,4 +4,7 @@
         <attr name="emptyIcon" format="reference"/>
         <attr name="emptyTips" format="string"/>
     </declare-styleable>
+    <declare-styleable name="PlayerView">
+        <attr name="real_time" format="boolean"/>
+    </declare-styleable>
 </resources>
