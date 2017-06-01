@@ -81,6 +81,9 @@ public class LiveRoomPresenter extends RxLifeCyclePresenter {
                                                rsp.getLiveId(), rsp.getShareUrl(), upStreamUrlList, rsp.getUdpUpstreamUrl());
                                    } else if (errCode == ErrorCode.CODE_NOT_MEET_BEGIN_LIVE_LEVEL) {
                                        mCallback.processAction(MiLinkCommand.COMMAND_LIVE_GET_ROOM_ID, errCode, rsp.getBeginLevel());
+                                   } else {
+                                       //其他错误码也要处理
+                                       mCallback.processAction(MiLinkCommand.COMMAND_LIVE_GET_ROOM_ID, errCode);
                                    }
                                }
                            }, new Action1<Throwable>() {

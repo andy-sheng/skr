@@ -777,11 +777,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     private void processGetRoomId(int errCode, Object... objects) {
         switch (errCode) {
             case ErrorCode.CODE_SUCCESS:
+                processRoomIdInfo((String) objects[0], (String) objects[1], (List<LiveCommonProto.UpStreamUrl>) objects[2], (String) objects[3]);
+                break;
             case ErrorCode.CODE_ZUID_CERTIFY_ERROR:
             case ErrorCode.CODE_ZUID_NOT_ADULT:
             case ErrorCode.CODE_ZUID_CERTIFY_GOING:
-                processRoomIdInfo((String) objects[0], (String) objects[1], (List<LiveCommonProto.UpStreamUrl>) objects[2], (String) objects[3]);
-                break;
             default:
                 processPreLive();
                 break;
@@ -792,12 +792,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         switch (errCode) {
             // TODO 这里错误码是这样处理的？
             case ErrorCode.CODE_SUCCESS:
-            case ErrorCode.CODE_ZUID_CERTIFY_ERROR:
-            case ErrorCode.CODE_ZUID_NOT_ADULT:
-            case ErrorCode.CODE_ZUID_CERTIFY_GOING:
                 processStartRecord((String) objects[0], (long) objects[1], (String) objects[2],
                         (List<LiveCommonProto.UpStreamUrl>) objects[3], (String) objects[4]);
                 break;
+            case ErrorCode.CODE_ZUID_CERTIFY_ERROR:
+            case ErrorCode.CODE_ZUID_NOT_ADULT:
+            case ErrorCode.CODE_ZUID_CERTIFY_GOING:
             default:
                 ToastUtils.showToast(GlobalData.app(), R.string.live_failure);
                 EndLiveFragment.openFragmentWithFailure(this, R.id.main_act_container, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
