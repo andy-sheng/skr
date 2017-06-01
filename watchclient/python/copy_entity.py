@@ -119,16 +119,19 @@ class CopyDrawableRes:
 # 字符串资源拷贝
 class CopyStringRes:
     addExtraLine = False # 是否字符串前增加空行
+    subType = "string" # 字符串类别，默认为string
 
-    def __init__(self, addExtraLine):
+    def __init__(self, addExtraLine, subType):
         self.addExtraLine = addExtraLine
+        if subType and subType.strip():
+            self.subType = subType
         pass
 
     def __del__(self):
         pass
 
     def doCopy(self, itemList):
-        print "\ncopy string resource for: " + "".join(itemList)
+        print "\ncopy string resource of " + self.subType + " for: " + "".join(itemList)
         if not itemList or len(itemList) == 0:
             return
         print "copy default"
@@ -167,17 +170,19 @@ class CopyStringRes:
 
         # 依次处理每个待处理的项
         for item in resList:
-            pos = dstData.find('<string name="' + item + '">')
+            header = '<' + self.subType + ' name="' + item + '"'
+            tailor = '</' + self.subType + '>'
+            pos = dstData.find(header)
             if pos != -1:
                 # 目标中已有该项，则跳过不处理
                 print "warning: item " + item + " already exists in dst"
                 continue
-            start = srcData.find('<string name="' + item + '">')
+            start = srcData.find(header)
             if start == -1:
                 print "warning: cannot find item " + item + " in src"
                 continue
-            end = srcData.find('</string>', start)
-            content = '    ' + srcData[start:(end + len('</string>'))] + '\n'
+            end = srcData.find(tailor, start)
+            content = '    ' + srcData[start:(end + len(tailor))] + '\n'
             if self.addExtraLine: # 增加空行
                 content = '\n' + content
                 pass
