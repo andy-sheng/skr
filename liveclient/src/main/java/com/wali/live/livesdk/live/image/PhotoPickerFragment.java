@@ -45,13 +45,13 @@ import com.trello.rxlifecycle.FragmentEvent;
 import com.wali.live.common.action.PickerAction;
 import com.wali.live.common.listener.OnItemClickListener;
 import com.wali.live.livesdk.R;
-import com.wali.live.livesdk.live.adapter.CommonTabPagerAdapter;
 import com.wali.live.livesdk.live.image.adapter.FilePickerRecyclerAdapter;
 import com.wali.live.livesdk.live.image.adapter.PhotoPickerRecyclerAdapter;
 import com.wali.live.livesdk.live.utils.ImageUtils;
 import com.wali.live.livesdk.live.view.SlidingTabLayout;
 import com.wali.live.livesdk.live.view.SymmetryTitleBar;
 import com.wali.live.livesdk.live.viewmodel.PhotoItem;
+import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 
 import java.io.File;
 import java.util.ArrayList;

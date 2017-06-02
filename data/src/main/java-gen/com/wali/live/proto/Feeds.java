@@ -8,10 +8,10 @@ public final class Feeds {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface CommentInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CommentInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CommentInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 comment_id = 1;
     /**
      * <code>required uint64 comment_id = 1;</code>
      */
@@ -21,7 +21,6 @@ public final class Feeds {
      */
     long getCommentId();
 
-    // required uint64 from_uid = 2;
     /**
      * <code>required uint64 from_uid = 2;</code>
      */
@@ -31,7 +30,6 @@ public final class Feeds {
      */
     long getFromUid();
 
-    // required string content = 3;
     /**
      * <code>required string content = 3;</code>
      */
@@ -46,7 +44,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getContentBytes();
 
-    // required uint64 create_time = 4;
     /**
      * <code>required uint64 create_time = 4;</code>
      */
@@ -56,7 +53,6 @@ public final class Feeds {
      */
     long getCreateTime();
 
-    // optional uint64 to_uid = 5;
     /**
      * <code>optional uint64 to_uid = 5;</code>
      */
@@ -66,7 +62,6 @@ public final class Feeds {
      */
     long getToUid();
 
-    // optional string from_nickname = 6;
     /**
      * <code>optional string from_nickname = 6;</code>
      */
@@ -81,7 +76,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFromNicknameBytes();
 
-    // optional string to_nickname = 7;
     /**
      * <code>optional string to_nickname = 7;</code>
      */
@@ -96,7 +90,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getToNicknameBytes();
 
-    // optional uint64 index_ts = 8;
     /**
      * <code>optional uint64 index_ts = 8;</code>
      *
@@ -114,7 +107,6 @@ public final class Feeds {
      */
     long getIndexTs();
 
-    // optional bool is_good = 9;
     /**
      * <code>optional bool is_good = 9;</code>
      *
@@ -132,7 +124,6 @@ public final class Feeds {
      */
     boolean getIsGood();
 
-    // optional uint32 from_user_level = 10;
     /**
      * <code>optional uint32 from_user_level = 10;</code>
      *
@@ -150,7 +141,6 @@ public final class Feeds {
      */
     int getFromUserLevel();
 
-    // optional uint64 from_avatar = 11;
     /**
      * <code>optional uint64 from_avatar = 11;</code>
      *
@@ -168,7 +158,6 @@ public final class Feeds {
      */
     long getFromAvatar();
 
-    // optional uint32 comment_type = 12;
     /**
      * <code>optional uint32 comment_type = 12;</code>
      *
@@ -190,8 +179,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.CommentInfo}
    */
   public static final class CommentInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements CommentInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CommentInfo)
+      CommentInfoOrBuilder {
     // Use CommentInfo.newBuilder() to construct.
     private CommentInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -248,8 +238,9 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              content_ = input.readBytes();
+              content_ = bs;
               break;
             }
             case 32: {
@@ -263,13 +254,15 @@ public final class Feeds {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              fromNickname_ = input.readBytes();
+              fromNickname_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              toNickname_ = input.readBytes();
+              toNickname_ = bs;
               break;
             }
             case 64: {
@@ -337,7 +330,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 comment_id = 1;
     public static final int COMMENT_ID_FIELD_NUMBER = 1;
     private long commentId_;
     /**
@@ -353,7 +345,6 @@ public final class Feeds {
       return commentId_;
     }
 
-    // required uint64 from_uid = 2;
     public static final int FROM_UID_FIELD_NUMBER = 2;
     private long fromUid_;
     /**
@@ -369,7 +360,6 @@ public final class Feeds {
       return fromUid_;
     }
 
-    // required string content = 3;
     public static final int CONTENT_FIELD_NUMBER = 3;
     private java.lang.Object content_;
     /**
@@ -412,7 +402,6 @@ public final class Feeds {
       }
     }
 
-    // required uint64 create_time = 4;
     public static final int CREATE_TIME_FIELD_NUMBER = 4;
     private long createTime_;
     /**
@@ -428,7 +417,6 @@ public final class Feeds {
       return createTime_;
     }
 
-    // optional uint64 to_uid = 5;
     public static final int TO_UID_FIELD_NUMBER = 5;
     private long toUid_;
     /**
@@ -444,7 +432,6 @@ public final class Feeds {
       return toUid_;
     }
 
-    // optional string from_nickname = 6;
     public static final int FROM_NICKNAME_FIELD_NUMBER = 6;
     private java.lang.Object fromNickname_;
     /**
@@ -487,7 +474,6 @@ public final class Feeds {
       }
     }
 
-    // optional string to_nickname = 7;
     public static final int TO_NICKNAME_FIELD_NUMBER = 7;
     private java.lang.Object toNickname_;
     /**
@@ -530,7 +516,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 index_ts = 8;
     public static final int INDEX_TS_FIELD_NUMBER = 8;
     private long indexTs_;
     /**
@@ -554,7 +539,6 @@ public final class Feeds {
       return indexTs_;
     }
 
-    // optional bool is_good = 9;
     public static final int IS_GOOD_FIELD_NUMBER = 9;
     private boolean isGood_;
     /**
@@ -578,7 +562,6 @@ public final class Feeds {
       return isGood_;
     }
 
-    // optional uint32 from_user_level = 10;
     public static final int FROM_USER_LEVEL_FIELD_NUMBER = 10;
     private int fromUserLevel_;
     /**
@@ -602,7 +585,6 @@ public final class Feeds {
       return fromUserLevel_;
     }
 
-    // optional uint64 from_avatar = 11;
     public static final int FROM_AVATAR_FIELD_NUMBER = 11;
     private long fromAvatar_;
     /**
@@ -626,7 +608,6 @@ public final class Feeds {
       return fromAvatar_;
     }
 
-    // optional uint32 comment_type = 12;
     public static final int COMMENT_TYPE_FIELD_NUMBER = 12;
     private int commentType_;
     /**
@@ -667,7 +648,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasCommentId()) {
         memoizedIsInitialized = 0;
@@ -867,8 +849,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.CommentInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.CommentInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CommentInfo)
+        com.wali.live.proto.Feeds.CommentInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_CommentInfo_descriptor;
@@ -1102,7 +1085,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 comment_id = 1;
       private long commentId_ ;
       /**
        * <code>required uint64 comment_id = 1;</code>
@@ -1135,7 +1117,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 from_uid = 2;
       private long fromUid_ ;
       /**
        * <code>required uint64 from_uid = 2;</code>
@@ -1168,7 +1149,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string content = 3;
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 3;</code>
@@ -1182,9 +1162,12 @@ public final class Feeds {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          content_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            content_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1242,7 +1225,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 create_time = 4;
       private long createTime_ ;
       /**
        * <code>required uint64 create_time = 4;</code>
@@ -1275,7 +1257,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 to_uid = 5;
       private long toUid_ ;
       /**
        * <code>optional uint64 to_uid = 5;</code>
@@ -1308,7 +1289,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string from_nickname = 6;
       private java.lang.Object fromNickname_ = "";
       /**
        * <code>optional string from_nickname = 6;</code>
@@ -1322,9 +1302,12 @@ public final class Feeds {
       public java.lang.String getFromNickname() {
         java.lang.Object ref = fromNickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          fromNickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            fromNickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1382,7 +1365,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string to_nickname = 7;
       private java.lang.Object toNickname_ = "";
       /**
        * <code>optional string to_nickname = 7;</code>
@@ -1396,9 +1378,12 @@ public final class Feeds {
       public java.lang.String getToNickname() {
         java.lang.Object ref = toNickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          toNickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            toNickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1456,7 +1441,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 index_ts = 8;
       private long indexTs_ ;
       /**
        * <code>optional uint64 index_ts = 8;</code>
@@ -1505,7 +1489,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool is_good = 9;
       private boolean isGood_ ;
       /**
        * <code>optional bool is_good = 9;</code>
@@ -1554,7 +1537,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 from_user_level = 10;
       private int fromUserLevel_ ;
       /**
        * <code>optional uint32 from_user_level = 10;</code>
@@ -1603,7 +1585,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 from_avatar = 11;
       private long fromAvatar_ ;
       /**
        * <code>optional uint64 from_avatar = 11;</code>
@@ -1652,7 +1633,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 comment_type = 12;
       private int commentType_ ;
       /**
        * <code>optional uint32 comment_type = 12;</code>
@@ -1712,10 +1692,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.CommentInfo)
   }
 
-  public interface FeedCommentOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedCommentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedComment)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string feed_id = 1;
     /**
      * <code>required string feed_id = 1;</code>
      */
@@ -1730,7 +1710,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional uint64 feed_owner_id = 2;
     /**
      * <code>optional uint64 feed_owner_id = 2;</code>
      */
@@ -1740,7 +1719,6 @@ public final class Feeds {
      */
     long getFeedOwnerId();
 
-    // optional uint32 total = 3;
     /**
      * <code>optional uint32 total = 3;</code>
      *
@@ -1758,7 +1736,6 @@ public final class Feeds {
      */
     int getTotal();
 
-    // repeated .com.wali.live.proto.CommentInfo comment_infos = 4;
     /**
      * <code>repeated .com.wali.live.proto.CommentInfo comment_infos = 4;</code>
      */
@@ -1787,8 +1764,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.FeedComment}
    */
   public static final class FeedComment extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedCommentOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedComment)
+      FeedCommentOrBuilder {
     // Use FeedComment.newBuilder() to construct.
     private FeedComment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1835,8 +1813,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 16: {
@@ -1900,7 +1879,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required string feed_id = 1;
     public static final int FEED_ID_FIELD_NUMBER = 1;
     private java.lang.Object feedId_;
     /**
@@ -1943,7 +1921,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 feed_owner_id = 2;
     public static final int FEED_OWNER_ID_FIELD_NUMBER = 2;
     private long feedOwnerId_;
     /**
@@ -1959,7 +1936,6 @@ public final class Feeds {
       return feedOwnerId_;
     }
 
-    // optional uint32 total = 3;
     public static final int TOTAL_FIELD_NUMBER = 3;
     private int total_;
     /**
@@ -1983,7 +1959,6 @@ public final class Feeds {
       return total_;
     }
 
-    // repeated .com.wali.live.proto.CommentInfo comment_infos = 4;
     public static final int COMMENT_INFOS_FIELD_NUMBER = 4;
     private java.util.List<com.wali.live.proto.Feeds.CommentInfo> commentInfos_;
     /**
@@ -2028,7 +2003,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFeedId()) {
         memoizedIsInitialized = 0;
@@ -2166,8 +2142,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.FeedComment}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedCommentOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedComment)
+        com.wali.live.proto.Feeds.FeedCommentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedComment_descriptor;
@@ -2352,7 +2329,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required string feed_id = 1;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feed_id = 1;</code>
@@ -2366,9 +2342,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2426,7 +2405,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 feed_owner_id = 2;
       private long feedOwnerId_ ;
       /**
        * <code>optional uint64 feed_owner_id = 2;</code>
@@ -2459,7 +2437,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 total = 3;
       private int total_ ;
       /**
        * <code>optional uint32 total = 3;</code>
@@ -2508,7 +2485,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.CommentInfo comment_infos = 4;
       private java.util.List<com.wali.live.proto.Feeds.CommentInfo> commentInfos_ =
         java.util.Collections.emptyList();
       private void ensureCommentInfosIsMutable() {
@@ -2650,7 +2626,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.CommentInfo> values) {
         if (commentInfosBuilder_ == null) {
           ensureCommentInfosIsMutable();
-          super.addAll(values, commentInfos_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, commentInfos_);
           onChanged();
         } else {
           commentInfosBuilder_.addAllMessages(values);
@@ -2759,10 +2736,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedComment)
   }
 
-  public interface FeedLikeOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLike)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      *
@@ -2780,7 +2757,6 @@ public final class Feeds {
      */
     long getZuid();
 
-    // optional uint64 ts = 2;
     /**
      * <code>optional uint64 ts = 2;</code>
      *
@@ -2798,7 +2774,6 @@ public final class Feeds {
      */
     long getTs();
 
-    // optional string userName = 3;
     /**
      * <code>optional string userName = 3;</code>
      *
@@ -2833,8 +2808,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedLike extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLike)
+      FeedLikeOrBuilder {
     // Use FeedLike.newBuilder() to construct.
     private FeedLike(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -2891,8 +2867,9 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              userName_ = input.readBytes();
+              userName_ = bs;
               break;
             }
           }
@@ -2935,7 +2912,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -2959,7 +2935,6 @@ public final class Feeds {
       return zuid_;
     }
 
-    // optional uint64 ts = 2;
     public static final int TS_FIELD_NUMBER = 2;
     private long ts_;
     /**
@@ -2983,7 +2958,6 @@ public final class Feeds {
       return ts_;
     }
 
-    // optional string userName = 3;
     public static final int USERNAME_FIELD_NUMBER = 3;
     private java.lang.Object userName_;
     /**
@@ -3046,7 +3020,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -3175,8 +3150,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLike)
+        com.wali.live.proto.Feeds.FeedLikeOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLike_descriptor;
@@ -3313,7 +3289,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -3362,7 +3337,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 ts = 2;
       private long ts_ ;
       /**
        * <code>optional uint64 ts = 2;</code>
@@ -3411,7 +3385,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string userName = 3;
       private java.lang.Object userName_ = "";
       /**
        * <code>optional string userName = 3;</code>
@@ -3433,9 +3406,12 @@ public final class Feeds {
       public java.lang.String getUserName() {
         java.lang.Object ref = userName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          userName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3520,10 +3496,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLike)
   }
 
-  public interface UGCFeedOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UGCFeedOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UGCFeed)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int32 type = 1;
     /**
      * <code>required int32 type = 1;</code>
      *
@@ -3541,7 +3517,6 @@ public final class Feeds {
      */
     int getType();
 
-    // optional string url = 2;
     /**
      * <code>optional string url = 2;</code>
      *
@@ -3568,7 +3543,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional string cover_page = 3;
     /**
      * <code>optional string cover_page = 3;</code>
      *
@@ -3595,7 +3569,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getCoverPageBytes();
 
-    // optional string desc = 4;
     /**
      * <code>optional string desc = 4;</code>
      *
@@ -3622,7 +3595,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getDescBytes();
 
-    // optional string addr = 5;
     /**
      * <code>optional string addr = 5;</code>
      *
@@ -3649,7 +3621,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getAddrBytes();
 
-    // optional string share_url = 6;
     /**
      * <code>optional string share_url = 6;</code>
      *
@@ -3676,7 +3647,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getShareUrlBytes();
 
-    // optional uint32 height = 7;
     /**
      * <code>optional uint32 height = 7;</code>
      *
@@ -3694,7 +3664,6 @@ public final class Feeds {
      */
     int getHeight();
 
-    // optional uint32 width = 8;
     /**
      * <code>optional uint32 width = 8;</code>
      *
@@ -3712,7 +3681,6 @@ public final class Feeds {
      */
     int getWidth();
 
-    // optional uint64 duration = 9;
     /**
      * <code>optional uint64 duration = 9;</code>
      *
@@ -3730,7 +3698,6 @@ public final class Feeds {
      */
     long getDuration();
 
-    // optional uint64 file_size = 10;
     /**
      * <code>optional uint64 file_size = 10;</code>
      *
@@ -3748,7 +3715,6 @@ public final class Feeds {
      */
     long getFileSize();
 
-    // optional string tiltle = 11;
     /**
      * <code>optional string tiltle = 11;</code>
      *
@@ -3775,7 +3741,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getTiltleBytes();
 
-    // optional uint32 ext_type = 12;
     /**
      * <code>optional uint32 ext_type = 12;</code>
      *
@@ -3793,7 +3758,6 @@ public final class Feeds {
      */
     int getExtType();
 
-    // optional bytes ext_data = 13;
     /**
      * <code>optional bytes ext_data = 13;</code>
      *
@@ -3811,7 +3775,6 @@ public final class Feeds {
      */
     com.google.protobuf.ByteString getExtData();
 
-    // optional uint32 view_count = 14;
     /**
      * <code>optional uint32 view_count = 14;</code>
      *
@@ -3829,7 +3792,6 @@ public final class Feeds {
      */
     int getViewCount();
 
-    // optional .com.wali.live.proto.UserShow host_user_info = 15;
     /**
      * <code>optional .com.wali.live.proto.UserShow host_user_info = 15;</code>
      *
@@ -3855,7 +3817,6 @@ public final class Feeds {
      */
     com.wali.live.proto.LiveShowProto.UserShowOrBuilder getHostUserInfoOrBuilder();
 
-    // optional .com.wali.live.proto.LiveInfo liveInfo = 16;
     /**
      * <code>optional .com.wali.live.proto.LiveInfo liveInfo = 16;</code>
      *
@@ -3881,7 +3842,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.LiveInfoOrBuilder getLiveInfoOrBuilder();
 
-    // optional .com.wali.live.proto.Location location = 17;
     /**
      * <code>optional .com.wali.live.proto.Location location = 17;</code>
      *
@@ -3915,8 +3875,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class UGCFeed extends
-      com.google.protobuf.GeneratedMessage
-      implements UGCFeedOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UGCFeed)
+      UGCFeedOrBuilder {
     // Use UGCFeed.newBuilder() to construct.
     private UGCFeed(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3968,28 +3929,33 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              coverPage_ = input.readBytes();
+              coverPage_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              addr_ = input.readBytes();
+              addr_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              shareUrl_ = input.readBytes();
+              shareUrl_ = bs;
               break;
             }
             case 56: {
@@ -4013,8 +3979,9 @@ public final class Feeds {
               break;
             }
             case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000400;
-              tiltle_ = input.readBytes();
+              tiltle_ = bs;
               break;
             }
             case 96: {
@@ -4111,7 +4078,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int32 type = 1;
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -4135,7 +4101,6 @@ public final class Feeds {
       return type_;
     }
 
-    // optional string url = 2;
     public static final int URL_FIELD_NUMBER = 2;
     private java.lang.Object url_;
     /**
@@ -4190,7 +4155,6 @@ public final class Feeds {
       }
     }
 
-    // optional string cover_page = 3;
     public static final int COVER_PAGE_FIELD_NUMBER = 3;
     private java.lang.Object coverPage_;
     /**
@@ -4245,7 +4209,6 @@ public final class Feeds {
       }
     }
 
-    // optional string desc = 4;
     public static final int DESC_FIELD_NUMBER = 4;
     private java.lang.Object desc_;
     /**
@@ -4300,7 +4263,6 @@ public final class Feeds {
       }
     }
 
-    // optional string addr = 5;
     public static final int ADDR_FIELD_NUMBER = 5;
     private java.lang.Object addr_;
     /**
@@ -4355,7 +4317,6 @@ public final class Feeds {
       }
     }
 
-    // optional string share_url = 6;
     public static final int SHARE_URL_FIELD_NUMBER = 6;
     private java.lang.Object shareUrl_;
     /**
@@ -4410,7 +4371,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 height = 7;
     public static final int HEIGHT_FIELD_NUMBER = 7;
     private int height_;
     /**
@@ -4434,7 +4394,6 @@ public final class Feeds {
       return height_;
     }
 
-    // optional uint32 width = 8;
     public static final int WIDTH_FIELD_NUMBER = 8;
     private int width_;
     /**
@@ -4458,7 +4417,6 @@ public final class Feeds {
       return width_;
     }
 
-    // optional uint64 duration = 9;
     public static final int DURATION_FIELD_NUMBER = 9;
     private long duration_;
     /**
@@ -4482,7 +4440,6 @@ public final class Feeds {
       return duration_;
     }
 
-    // optional uint64 file_size = 10;
     public static final int FILE_SIZE_FIELD_NUMBER = 10;
     private long fileSize_;
     /**
@@ -4506,7 +4463,6 @@ public final class Feeds {
       return fileSize_;
     }
 
-    // optional string tiltle = 11;
     public static final int TILTLE_FIELD_NUMBER = 11;
     private java.lang.Object tiltle_;
     /**
@@ -4561,7 +4517,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 ext_type = 12;
     public static final int EXT_TYPE_FIELD_NUMBER = 12;
     private int extType_;
     /**
@@ -4585,7 +4540,6 @@ public final class Feeds {
       return extType_;
     }
 
-    // optional bytes ext_data = 13;
     public static final int EXT_DATA_FIELD_NUMBER = 13;
     private com.google.protobuf.ByteString extData_;
     /**
@@ -4609,7 +4563,6 @@ public final class Feeds {
       return extData_;
     }
 
-    // optional uint32 view_count = 14;
     public static final int VIEW_COUNT_FIELD_NUMBER = 14;
     private int viewCount_;
     /**
@@ -4633,7 +4586,6 @@ public final class Feeds {
       return viewCount_;
     }
 
-    // optional .com.wali.live.proto.UserShow host_user_info = 15;
     public static final int HOST_USER_INFO_FIELD_NUMBER = 15;
     private com.wali.live.proto.LiveShowProto.UserShow hostUserInfo_;
     /**
@@ -4667,7 +4619,6 @@ public final class Feeds {
       return hostUserInfo_;
     }
 
-    // optional .com.wali.live.proto.LiveInfo liveInfo = 16;
     public static final int LIVEINFO_FIELD_NUMBER = 16;
     private com.wali.live.proto.Feeds.LiveInfo liveInfo_;
     /**
@@ -4701,7 +4652,6 @@ public final class Feeds {
       return liveInfo_;
     }
 
-    // optional .com.wali.live.proto.Location location = 17;
     public static final int LOCATION_FIELD_NUMBER = 17;
     private com.wali.live.proto.Feeds.Location location_;
     /**
@@ -4757,7 +4707,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasType()) {
         memoizedIsInitialized = 0;
@@ -4996,8 +4947,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.UGCFeedOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UGCFeed)
+        com.wali.live.proto.Feeds.UGCFeedOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_UGCFeed_descriptor;
@@ -5309,7 +5261,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int32 type = 1;
       private int type_ ;
       /**
        * <code>required int32 type = 1;</code>
@@ -5358,7 +5309,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string url = 2;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 2;</code>
@@ -5380,9 +5330,12 @@ public final class Feeds {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5456,7 +5409,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string cover_page = 3;
       private java.lang.Object coverPage_ = "";
       /**
        * <code>optional string cover_page = 3;</code>
@@ -5478,9 +5430,12 @@ public final class Feeds {
       public java.lang.String getCoverPage() {
         java.lang.Object ref = coverPage_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverPage_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverPage_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5554,7 +5509,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string desc = 4;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 4;</code>
@@ -5576,9 +5530,12 @@ public final class Feeds {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5652,7 +5609,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string addr = 5;
       private java.lang.Object addr_ = "";
       /**
        * <code>optional string addr = 5;</code>
@@ -5674,9 +5630,12 @@ public final class Feeds {
       public java.lang.String getAddr() {
         java.lang.Object ref = addr_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          addr_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            addr_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5750,7 +5709,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string share_url = 6;
       private java.lang.Object shareUrl_ = "";
       /**
        * <code>optional string share_url = 6;</code>
@@ -5772,9 +5730,12 @@ public final class Feeds {
       public java.lang.String getShareUrl() {
         java.lang.Object ref = shareUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5848,7 +5809,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 height = 7;
       private int height_ ;
       /**
        * <code>optional uint32 height = 7;</code>
@@ -5897,7 +5857,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 width = 8;
       private int width_ ;
       /**
        * <code>optional uint32 width = 8;</code>
@@ -5946,7 +5905,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 duration = 9;
       private long duration_ ;
       /**
        * <code>optional uint64 duration = 9;</code>
@@ -5995,7 +5953,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 file_size = 10;
       private long fileSize_ ;
       /**
        * <code>optional uint64 file_size = 10;</code>
@@ -6044,7 +6001,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string tiltle = 11;
       private java.lang.Object tiltle_ = "";
       /**
        * <code>optional string tiltle = 11;</code>
@@ -6066,9 +6022,12 @@ public final class Feeds {
       public java.lang.String getTiltle() {
         java.lang.Object ref = tiltle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          tiltle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            tiltle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6142,7 +6101,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 ext_type = 12;
       private int extType_ ;
       /**
        * <code>optional uint32 ext_type = 12;</code>
@@ -6191,7 +6149,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bytes ext_data = 13;
       private com.google.protobuf.ByteString extData_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes ext_data = 13;</code>
@@ -6243,7 +6200,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 view_count = 14;
       private int viewCount_ ;
       /**
        * <code>optional uint32 view_count = 14;</code>
@@ -6292,7 +6248,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.UserShow host_user_info = 15;
       private com.wali.live.proto.LiveShowProto.UserShow hostUserInfo_ = com.wali.live.proto.LiveShowProto.UserShow.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.LiveShowProto.UserShow, com.wali.live.proto.LiveShowProto.UserShow.Builder, com.wali.live.proto.LiveShowProto.UserShowOrBuilder> hostUserInfoBuilder_;
@@ -6437,7 +6392,7 @@ public final class Feeds {
         if (hostUserInfoBuilder_ == null) {
           hostUserInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.LiveShowProto.UserShow, com.wali.live.proto.LiveShowProto.UserShow.Builder, com.wali.live.proto.LiveShowProto.UserShowOrBuilder>(
-                  hostUserInfo_,
+                  getHostUserInfo(),
                   getParentForChildren(),
                   isClean());
           hostUserInfo_ = null;
@@ -6445,7 +6400,6 @@ public final class Feeds {
         return hostUserInfoBuilder_;
       }
 
-      // optional .com.wali.live.proto.LiveInfo liveInfo = 16;
       private com.wali.live.proto.Feeds.LiveInfo liveInfo_ = com.wali.live.proto.Feeds.LiveInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.LiveInfo, com.wali.live.proto.Feeds.LiveInfo.Builder, com.wali.live.proto.Feeds.LiveInfoOrBuilder> liveInfoBuilder_;
@@ -6590,7 +6544,7 @@ public final class Feeds {
         if (liveInfoBuilder_ == null) {
           liveInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.LiveInfo, com.wali.live.proto.Feeds.LiveInfo.Builder, com.wali.live.proto.Feeds.LiveInfoOrBuilder>(
-                  liveInfo_,
+                  getLiveInfo(),
                   getParentForChildren(),
                   isClean());
           liveInfo_ = null;
@@ -6598,7 +6552,6 @@ public final class Feeds {
         return liveInfoBuilder_;
       }
 
-      // optional .com.wali.live.proto.Location location = 17;
       private com.wali.live.proto.Feeds.Location location_ = com.wali.live.proto.Feeds.Location.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.Location, com.wali.live.proto.Feeds.Location.Builder, com.wali.live.proto.Feeds.LocationOrBuilder> locationBuilder_;
@@ -6743,7 +6696,7 @@ public final class Feeds {
         if (locationBuilder_ == null) {
           locationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.Location, com.wali.live.proto.Feeds.Location.Builder, com.wali.live.proto.Feeds.LocationOrBuilder>(
-                  location_,
+                  getLocation(),
                   getParentForChildren(),
                   isClean());
           location_ = null;
@@ -6762,10 +6715,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.UGCFeed)
   }
 
-  public interface FeedContentOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedContentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedContent)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 feedType = 1;
     /**
      * <code>required uint32 feedType = 1;</code>
      *
@@ -6783,7 +6736,6 @@ public final class Feeds {
      */
     int getFeedType();
 
-    // optional .com.wali.live.proto.LiveShow liveShow = 2;
     /**
      * <code>optional .com.wali.live.proto.LiveShow liveShow = 2;</code>
      */
@@ -6797,7 +6749,6 @@ public final class Feeds {
      */
     com.wali.live.proto.LiveShowProto.LiveShowOrBuilder getLiveShowOrBuilder();
 
-    // optional .com.wali.live.proto.BackInfo backInfo = 3;
     /**
      * <code>optional .com.wali.live.proto.BackInfo backInfo = 3;</code>
      */
@@ -6811,7 +6762,6 @@ public final class Feeds {
      */
     com.wali.live.proto.LiveShowProto.BackInfoOrBuilder getBackInfoOrBuilder();
 
-    // optional .com.wali.live.proto.UGCFeed ugcFeed = 4;
     /**
      * <code>optional .com.wali.live.proto.UGCFeed ugcFeed = 4;</code>
      */
@@ -6825,7 +6775,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.UGCFeedOrBuilder getUgcFeedOrBuilder();
 
-    // optional .com.wali.live.proto.ReplaySet replaySet = 5;
     /**
      * <code>optional .com.wali.live.proto.ReplaySet replaySet = 5;</code>
      */
@@ -6847,8 +6796,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedContent extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedContentOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedContent)
+      FeedContentOrBuilder {
     // Use FeedContent.newBuilder() to construct.
     private FeedContent(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -6991,7 +6941,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 feedType = 1;
     public static final int FEEDTYPE_FIELD_NUMBER = 1;
     private int feedType_;
     /**
@@ -7015,7 +6964,6 @@ public final class Feeds {
       return feedType_;
     }
 
-    // optional .com.wali.live.proto.LiveShow liveShow = 2;
     public static final int LIVESHOW_FIELD_NUMBER = 2;
     private com.wali.live.proto.LiveShowProto.LiveShow liveShow_;
     /**
@@ -7037,7 +6985,6 @@ public final class Feeds {
       return liveShow_;
     }
 
-    // optional .com.wali.live.proto.BackInfo backInfo = 3;
     public static final int BACKINFO_FIELD_NUMBER = 3;
     private com.wali.live.proto.LiveShowProto.BackInfo backInfo_;
     /**
@@ -7059,7 +7006,6 @@ public final class Feeds {
       return backInfo_;
     }
 
-    // optional .com.wali.live.proto.UGCFeed ugcFeed = 4;
     public static final int UGCFEED_FIELD_NUMBER = 4;
     private com.wali.live.proto.Feeds.UGCFeed ugcFeed_;
     /**
@@ -7081,7 +7027,6 @@ public final class Feeds {
       return ugcFeed_;
     }
 
-    // optional .com.wali.live.proto.ReplaySet replaySet = 5;
     public static final int REPLAYSET_FIELD_NUMBER = 5;
     private com.wali.live.proto.Feeds.ReplaySet replaySet_;
     /**
@@ -7113,7 +7058,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFeedType()) {
         memoizedIsInitialized = 0;
@@ -7280,8 +7226,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedContentOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedContent)
+        com.wali.live.proto.Feeds.FeedContentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedContent_descriptor;
@@ -7494,7 +7441,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 feedType = 1;
       private int feedType_ ;
       /**
        * <code>required uint32 feedType = 1;</code>
@@ -7543,7 +7489,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.LiveShow liveShow = 2;
       private com.wali.live.proto.LiveShowProto.LiveShow liveShow_ = com.wali.live.proto.LiveShowProto.LiveShow.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.LiveShowProto.LiveShow, com.wali.live.proto.LiveShowProto.LiveShow.Builder, com.wali.live.proto.LiveShowProto.LiveShowOrBuilder> liveShowBuilder_;
@@ -7652,7 +7597,7 @@ public final class Feeds {
         if (liveShowBuilder_ == null) {
           liveShowBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.LiveShowProto.LiveShow, com.wali.live.proto.LiveShowProto.LiveShow.Builder, com.wali.live.proto.LiveShowProto.LiveShowOrBuilder>(
-                  liveShow_,
+                  getLiveShow(),
                   getParentForChildren(),
                   isClean());
           liveShow_ = null;
@@ -7660,7 +7605,6 @@ public final class Feeds {
         return liveShowBuilder_;
       }
 
-      // optional .com.wali.live.proto.BackInfo backInfo = 3;
       private com.wali.live.proto.LiveShowProto.BackInfo backInfo_ = com.wali.live.proto.LiveShowProto.BackInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.LiveShowProto.BackInfo, com.wali.live.proto.LiveShowProto.BackInfo.Builder, com.wali.live.proto.LiveShowProto.BackInfoOrBuilder> backInfoBuilder_;
@@ -7769,7 +7713,7 @@ public final class Feeds {
         if (backInfoBuilder_ == null) {
           backInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.LiveShowProto.BackInfo, com.wali.live.proto.LiveShowProto.BackInfo.Builder, com.wali.live.proto.LiveShowProto.BackInfoOrBuilder>(
-                  backInfo_,
+                  getBackInfo(),
                   getParentForChildren(),
                   isClean());
           backInfo_ = null;
@@ -7777,7 +7721,6 @@ public final class Feeds {
         return backInfoBuilder_;
       }
 
-      // optional .com.wali.live.proto.UGCFeed ugcFeed = 4;
       private com.wali.live.proto.Feeds.UGCFeed ugcFeed_ = com.wali.live.proto.Feeds.UGCFeed.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.UGCFeed, com.wali.live.proto.Feeds.UGCFeed.Builder, com.wali.live.proto.Feeds.UGCFeedOrBuilder> ugcFeedBuilder_;
@@ -7886,7 +7829,7 @@ public final class Feeds {
         if (ugcFeedBuilder_ == null) {
           ugcFeedBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.UGCFeed, com.wali.live.proto.Feeds.UGCFeed.Builder, com.wali.live.proto.Feeds.UGCFeedOrBuilder>(
-                  ugcFeed_,
+                  getUgcFeed(),
                   getParentForChildren(),
                   isClean());
           ugcFeed_ = null;
@@ -7894,7 +7837,6 @@ public final class Feeds {
         return ugcFeedBuilder_;
       }
 
-      // optional .com.wali.live.proto.ReplaySet replaySet = 5;
       private com.wali.live.proto.Feeds.ReplaySet replaySet_ = com.wali.live.proto.Feeds.ReplaySet.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.ReplaySet, com.wali.live.proto.Feeds.ReplaySet.Builder, com.wali.live.proto.Feeds.ReplaySetOrBuilder> replaySetBuilder_;
@@ -8003,7 +7945,7 @@ public final class Feeds {
         if (replaySetBuilder_ == null) {
           replaySetBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.ReplaySet, com.wali.live.proto.Feeds.ReplaySet.Builder, com.wali.live.proto.Feeds.ReplaySetOrBuilder>(
-                  replaySet_,
+                  getReplaySet(),
                   getParentForChildren(),
                   isClean());
           replaySet_ = null;
@@ -8022,10 +7964,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedContent)
   }
 
-  public interface ReplaySetOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ReplaySetOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ReplaySet)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.wali.live.proto.BackInfo backinfos = 1;
     /**
      * <code>repeated .com.wali.live.proto.BackInfo backinfos = 1;</code>
      */
@@ -8050,7 +7992,6 @@ public final class Feeds {
     com.wali.live.proto.LiveShowProto.BackInfoOrBuilder getBackinfosOrBuilder(
         int index);
 
-    // optional uint64 createTime = 2;
     /**
      * <code>optional uint64 createTime = 2;</code>
      */
@@ -8068,8 +8009,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class ReplaySet extends
-      com.google.protobuf.GeneratedMessage
-      implements ReplaySetOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ReplaySet)
+      ReplaySetOrBuilder {
     // Use ReplaySet.newBuilder() to construct.
     private ReplaySet(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -8171,7 +8113,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // repeated .com.wali.live.proto.BackInfo backinfos = 1;
     public static final int BACKINFOS_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.LiveShowProto.BackInfo> backinfos_;
     /**
@@ -8207,7 +8148,6 @@ public final class Feeds {
       return backinfos_.get(index);
     }
 
-    // optional uint64 createTime = 2;
     public static final int CREATETIME_FIELD_NUMBER = 2;
     private long createTime_;
     /**
@@ -8230,7 +8170,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getBackinfosCount(); i++) {
         if (!getBackinfos(i).isInitialized()) {
@@ -8354,8 +8295,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.ReplaySetOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ReplaySet)
+        com.wali.live.proto.Feeds.ReplaySetOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_ReplaySet_descriptor;
@@ -8516,7 +8458,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // repeated .com.wali.live.proto.BackInfo backinfos = 1;
       private java.util.List<com.wali.live.proto.LiveShowProto.BackInfo> backinfos_ =
         java.util.Collections.emptyList();
       private void ensureBackinfosIsMutable() {
@@ -8658,7 +8599,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.LiveShowProto.BackInfo> values) {
         if (backinfosBuilder_ == null) {
           ensureBackinfosIsMutable();
-          super.addAll(values, backinfos_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, backinfos_);
           onChanged();
         } else {
           backinfosBuilder_.addAllMessages(values);
@@ -8756,7 +8698,6 @@ public final class Feeds {
         return backinfosBuilder_;
       }
 
-      // optional uint64 createTime = 2;
       private long createTime_ ;
       /**
        * <code>optional uint64 createTime = 2;</code>
@@ -8800,10 +8741,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.ReplaySet)
   }
 
-  public interface FeedLikeContentOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeContentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLikeContent)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.wali.live.proto.FeedLike feedLikeList = 1;
     /**
      * <code>repeated .com.wali.live.proto.FeedLike feedLikeList = 1;</code>
      *
@@ -8848,7 +8789,6 @@ public final class Feeds {
     com.wali.live.proto.Feeds.FeedLikeOrBuilder getFeedLikeListOrBuilder(
         int index);
 
-    // required uint32 likeCount = 2;
     /**
      * <code>required uint32 likeCount = 2;</code>
      *
@@ -8866,7 +8806,6 @@ public final class Feeds {
      */
     int getLikeCount();
 
-    // optional bool hasMore = 3;
     /**
      * <code>optional bool hasMore = 3;</code>
      *
@@ -8884,7 +8823,6 @@ public final class Feeds {
      */
     boolean getHasMore();
 
-    // optional bool myselfLike = 4;
     /**
      * <code>optional bool myselfLike = 4;</code>
      *
@@ -8910,8 +8848,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedLikeContent extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeContentOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLikeContent)
+      FeedLikeContentOrBuilder {
     // Use FeedLikeContent.newBuilder() to construct.
     private FeedLikeContent(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9023,7 +8962,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // repeated .com.wali.live.proto.FeedLike feedLikeList = 1;
     public static final int FEEDLIKELIST_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.Feeds.FeedLike> feedLikeList_;
     /**
@@ -9079,7 +9017,6 @@ public final class Feeds {
       return feedLikeList_.get(index);
     }
 
-    // required uint32 likeCount = 2;
     public static final int LIKECOUNT_FIELD_NUMBER = 2;
     private int likeCount_;
     /**
@@ -9103,7 +9040,6 @@ public final class Feeds {
       return likeCount_;
     }
 
-    // optional bool hasMore = 3;
     public static final int HASMORE_FIELD_NUMBER = 3;
     private boolean hasMore_;
     /**
@@ -9127,7 +9063,6 @@ public final class Feeds {
       return hasMore_;
     }
 
-    // optional bool myselfLike = 4;
     public static final int MYSELFLIKE_FIELD_NUMBER = 4;
     private boolean myselfLike_;
     /**
@@ -9160,7 +9095,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasLikeCount()) {
         memoizedIsInitialized = 0;
@@ -9302,8 +9238,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeContentOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLikeContent)
+        com.wali.live.proto.Feeds.FeedLikeContentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLikeContent_descriptor;
@@ -9486,7 +9423,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // repeated .com.wali.live.proto.FeedLike feedLikeList = 1;
       private java.util.List<com.wali.live.proto.Feeds.FeedLike> feedLikeList_ =
         java.util.Collections.emptyList();
       private void ensureFeedLikeListIsMutable() {
@@ -9668,7 +9604,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedLike> values) {
         if (feedLikeListBuilder_ == null) {
           ensureFeedLikeListIsMutable();
-          super.addAll(values, feedLikeList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedLikeList_);
           onChanged();
         } else {
           feedLikeListBuilder_.addAllMessages(values);
@@ -9798,7 +9735,6 @@ public final class Feeds {
         return feedLikeListBuilder_;
       }
 
-      // required uint32 likeCount = 2;
       private int likeCount_ ;
       /**
        * <code>required uint32 likeCount = 2;</code>
@@ -9847,7 +9783,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool hasMore = 3;
       private boolean hasMore_ ;
       /**
        * <code>optional bool hasMore = 3;</code>
@@ -9896,7 +9831,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool myselfLike = 4;
       private boolean myselfLike_ ;
       /**
        * <code>optional bool myselfLike = 4;</code>
@@ -9956,10 +9890,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLikeContent)
   }
 
-  public interface FeedAbstractCommentOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedAbstractCommentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedAbstractComment)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.wali.live.proto.CommentInfo comment = 1;
     /**
      * <code>repeated .com.wali.live.proto.CommentInfo comment = 1;</code>
      */
@@ -9984,7 +9918,6 @@ public final class Feeds {
     com.wali.live.proto.Feeds.CommentInfoOrBuilder getCommentOrBuilder(
         int index);
 
-    // optional uint32 commentNumbers = 2;
     /**
      * <code>optional uint32 commentNumbers = 2;</code>
      *
@@ -10002,7 +9935,6 @@ public final class Feeds {
      */
     int getCommentNumbers();
 
-    // optional bool hasMore = 3;
     /**
      * <code>optional bool hasMore = 3;</code>
      *
@@ -10028,8 +9960,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedAbstractComment extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedAbstractCommentOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedAbstractComment)
+      FeedAbstractCommentOrBuilder {
     // Use FeedAbstractComment.newBuilder() to construct.
     private FeedAbstractComment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -10136,7 +10069,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // repeated .com.wali.live.proto.CommentInfo comment = 1;
     public static final int COMMENT_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.Feeds.CommentInfo> comment_;
     /**
@@ -10172,7 +10104,6 @@ public final class Feeds {
       return comment_.get(index);
     }
 
-    // optional uint32 commentNumbers = 2;
     public static final int COMMENTNUMBERS_FIELD_NUMBER = 2;
     private int commentNumbers_;
     /**
@@ -10196,7 +10127,6 @@ public final class Feeds {
       return commentNumbers_;
     }
 
-    // optional bool hasMore = 3;
     public static final int HASMORE_FIELD_NUMBER = 3;
     private boolean hasMore_;
     /**
@@ -10228,7 +10158,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getCommentCount(); i++) {
         if (!getComment(i).isInitialized()) {
@@ -10359,8 +10290,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedAbstractCommentOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedAbstractComment)
+        com.wali.live.proto.Feeds.FeedAbstractCommentOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedAbstractComment_descriptor;
@@ -10530,7 +10462,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // repeated .com.wali.live.proto.CommentInfo comment = 1;
       private java.util.List<com.wali.live.proto.Feeds.CommentInfo> comment_ =
         java.util.Collections.emptyList();
       private void ensureCommentIsMutable() {
@@ -10672,7 +10603,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.CommentInfo> values) {
         if (commentBuilder_ == null) {
           ensureCommentIsMutable();
-          super.addAll(values, comment_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, comment_);
           onChanged();
         } else {
           commentBuilder_.addAllMessages(values);
@@ -10770,7 +10702,6 @@ public final class Feeds {
         return commentBuilder_;
       }
 
-      // optional uint32 commentNumbers = 2;
       private int commentNumbers_ ;
       /**
        * <code>optional uint32 commentNumbers = 2;</code>
@@ -10819,7 +10750,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool hasMore = 3;
       private boolean hasMore_ ;
       /**
        * <code>optional bool hasMore = 3;</code>
@@ -10879,10 +10809,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedAbstractComment)
   }
 
-  public interface FeedInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 type = 1;
     /**
      * <code>required uint32 type = 1;</code>
      *
@@ -10900,7 +10830,6 @@ public final class Feeds {
      */
     int getType();
 
-    // required string feedId = 2;
     /**
      * <code>required string feedId = 2;</code>
      *
@@ -10927,7 +10856,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // required uint64 feedCteateTime = 3;
     /**
      * <code>required uint64 feedCteateTime = 3;</code>
      *
@@ -10945,7 +10873,6 @@ public final class Feeds {
      */
     long getFeedCteateTime();
 
-    // required uint64 userId = 4;
     /**
      * <code>required uint64 userId = 4;</code>
      */
@@ -10955,7 +10882,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // optional .com.wali.live.proto.FeedContent feedContent = 5;
     /**
      * <code>optional .com.wali.live.proto.FeedContent feedContent = 5;</code>
      *
@@ -10981,7 +10907,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.FeedContentOrBuilder getFeedContentOrBuilder();
 
-    // optional .com.wali.live.proto.FeedLikeContent feedLikeContent = 6;
     /**
      * <code>optional .com.wali.live.proto.FeedLikeContent feedLikeContent = 6;</code>
      *
@@ -11007,7 +10932,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.FeedLikeContentOrBuilder getFeedLikeContentOrBuilder();
 
-    // optional .com.wali.live.proto.FeedAbstractComment feedAbstractComment = 7;
     /**
      * <code>optional .com.wali.live.proto.FeedAbstractComment feedAbstractComment = 7;</code>
      *
@@ -11033,7 +10957,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.FeedAbstractCommentOrBuilder getFeedAbstractCommentOrBuilder();
 
-    // optional .com.wali.live.proto.UserShow userShow = 8;
     /**
      * <code>optional .com.wali.live.proto.UserShow userShow = 8;</code>
      *
@@ -11059,7 +10982,6 @@ public final class Feeds {
      */
     com.wali.live.proto.LiveShowProto.UserShowOrBuilder getUserShowOrBuilder();
 
-    // optional string clientId = 9;
     /**
      * <code>optional string clientId = 9;</code>
      *
@@ -11094,8 +11016,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedInfo)
+      FeedInfoOrBuilder {
     // Use FeedInfo.newBuilder() to construct.
     private FeedInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11147,8 +11070,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -11214,8 +11138,9 @@ public final class Feeds {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              clientId_ = input.readBytes();
+              clientId_ = bs;
               break;
             }
           }
@@ -11258,7 +11183,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 type = 1;
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -11282,7 +11206,6 @@ public final class Feeds {
       return type_;
     }
 
-    // required string feedId = 2;
     public static final int FEEDID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -11337,7 +11260,6 @@ public final class Feeds {
       }
     }
 
-    // required uint64 feedCteateTime = 3;
     public static final int FEEDCTEATETIME_FIELD_NUMBER = 3;
     private long feedCteateTime_;
     /**
@@ -11361,7 +11283,6 @@ public final class Feeds {
       return feedCteateTime_;
     }
 
-    // required uint64 userId = 4;
     public static final int USERID_FIELD_NUMBER = 4;
     private long userId_;
     /**
@@ -11377,7 +11298,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // optional .com.wali.live.proto.FeedContent feedContent = 5;
     public static final int FEEDCONTENT_FIELD_NUMBER = 5;
     private com.wali.live.proto.Feeds.FeedContent feedContent_;
     /**
@@ -11411,7 +11331,6 @@ public final class Feeds {
       return feedContent_;
     }
 
-    // optional .com.wali.live.proto.FeedLikeContent feedLikeContent = 6;
     public static final int FEEDLIKECONTENT_FIELD_NUMBER = 6;
     private com.wali.live.proto.Feeds.FeedLikeContent feedLikeContent_;
     /**
@@ -11445,7 +11364,6 @@ public final class Feeds {
       return feedLikeContent_;
     }
 
-    // optional .com.wali.live.proto.FeedAbstractComment feedAbstractComment = 7;
     public static final int FEEDABSTRACTCOMMENT_FIELD_NUMBER = 7;
     private com.wali.live.proto.Feeds.FeedAbstractComment feedAbstractComment_;
     /**
@@ -11479,7 +11397,6 @@ public final class Feeds {
       return feedAbstractComment_;
     }
 
-    // optional .com.wali.live.proto.UserShow userShow = 8;
     public static final int USERSHOW_FIELD_NUMBER = 8;
     private com.wali.live.proto.LiveShowProto.UserShow userShow_;
     /**
@@ -11513,7 +11430,6 @@ public final class Feeds {
       return userShow_;
     }
 
-    // optional string clientId = 9;
     public static final int CLIENTID_FIELD_NUMBER = 9;
     private java.lang.Object clientId_;
     /**
@@ -11582,7 +11498,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasType()) {
         memoizedIsInitialized = 0;
@@ -11789,8 +11706,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedInfo)
+        com.wali.live.proto.Feeds.FeedInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedInfo_descriptor;
@@ -12055,7 +11973,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 type = 1;
       private int type_ ;
       /**
        * <code>required uint32 type = 1;</code>
@@ -12104,7 +12021,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feedId = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feedId = 2;</code>
@@ -12126,9 +12042,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12202,7 +12121,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 feedCteateTime = 3;
       private long feedCteateTime_ ;
       /**
        * <code>required uint64 feedCteateTime = 3;</code>
@@ -12251,7 +12169,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 userId = 4;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 4;</code>
@@ -12284,7 +12201,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.FeedContent feedContent = 5;
       private com.wali.live.proto.Feeds.FeedContent feedContent_ = com.wali.live.proto.Feeds.FeedContent.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.FeedContent, com.wali.live.proto.Feeds.FeedContent.Builder, com.wali.live.proto.Feeds.FeedContentOrBuilder> feedContentBuilder_;
@@ -12429,7 +12345,7 @@ public final class Feeds {
         if (feedContentBuilder_ == null) {
           feedContentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.FeedContent, com.wali.live.proto.Feeds.FeedContent.Builder, com.wali.live.proto.Feeds.FeedContentOrBuilder>(
-                  feedContent_,
+                  getFeedContent(),
                   getParentForChildren(),
                   isClean());
           feedContent_ = null;
@@ -12437,7 +12353,6 @@ public final class Feeds {
         return feedContentBuilder_;
       }
 
-      // optional .com.wali.live.proto.FeedLikeContent feedLikeContent = 6;
       private com.wali.live.proto.Feeds.FeedLikeContent feedLikeContent_ = com.wali.live.proto.Feeds.FeedLikeContent.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.FeedLikeContent, com.wali.live.proto.Feeds.FeedLikeContent.Builder, com.wali.live.proto.Feeds.FeedLikeContentOrBuilder> feedLikeContentBuilder_;
@@ -12582,7 +12497,7 @@ public final class Feeds {
         if (feedLikeContentBuilder_ == null) {
           feedLikeContentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.FeedLikeContent, com.wali.live.proto.Feeds.FeedLikeContent.Builder, com.wali.live.proto.Feeds.FeedLikeContentOrBuilder>(
-                  feedLikeContent_,
+                  getFeedLikeContent(),
                   getParentForChildren(),
                   isClean());
           feedLikeContent_ = null;
@@ -12590,7 +12505,6 @@ public final class Feeds {
         return feedLikeContentBuilder_;
       }
 
-      // optional .com.wali.live.proto.FeedAbstractComment feedAbstractComment = 7;
       private com.wali.live.proto.Feeds.FeedAbstractComment feedAbstractComment_ = com.wali.live.proto.Feeds.FeedAbstractComment.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.FeedAbstractComment, com.wali.live.proto.Feeds.FeedAbstractComment.Builder, com.wali.live.proto.Feeds.FeedAbstractCommentOrBuilder> feedAbstractCommentBuilder_;
@@ -12735,7 +12649,7 @@ public final class Feeds {
         if (feedAbstractCommentBuilder_ == null) {
           feedAbstractCommentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.FeedAbstractComment, com.wali.live.proto.Feeds.FeedAbstractComment.Builder, com.wali.live.proto.Feeds.FeedAbstractCommentOrBuilder>(
-                  feedAbstractComment_,
+                  getFeedAbstractComment(),
                   getParentForChildren(),
                   isClean());
           feedAbstractComment_ = null;
@@ -12743,7 +12657,6 @@ public final class Feeds {
         return feedAbstractCommentBuilder_;
       }
 
-      // optional .com.wali.live.proto.UserShow userShow = 8;
       private com.wali.live.proto.LiveShowProto.UserShow userShow_ = com.wali.live.proto.LiveShowProto.UserShow.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.LiveShowProto.UserShow, com.wali.live.proto.LiveShowProto.UserShow.Builder, com.wali.live.proto.LiveShowProto.UserShowOrBuilder> userShowBuilder_;
@@ -12888,7 +12801,7 @@ public final class Feeds {
         if (userShowBuilder_ == null) {
           userShowBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.LiveShowProto.UserShow, com.wali.live.proto.LiveShowProto.UserShow.Builder, com.wali.live.proto.LiveShowProto.UserShowOrBuilder>(
-                  userShow_,
+                  getUserShow(),
                   getParentForChildren(),
                   isClean());
           userShow_ = null;
@@ -12896,7 +12809,6 @@ public final class Feeds {
         return userShowBuilder_;
       }
 
-      // optional string clientId = 9;
       private java.lang.Object clientId_ = "";
       /**
        * <code>optional string clientId = 9;</code>
@@ -12918,9 +12830,12 @@ public final class Feeds {
       public java.lang.String getClientId() {
         java.lang.Object ref = clientId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          clientId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            clientId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13005,10 +12920,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedInfo)
   }
 
-  public interface GetFeedNumRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetFeedNumRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFeedNumRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int64 id = 1;
     /**
      * <code>required int64 id = 1;</code>
      *
@@ -13026,7 +12941,6 @@ public final class Feeds {
      */
     long getId();
 
-    // optional int32 type = 2;
     /**
      * <code>optional int32 type = 2;</code>
      *
@@ -13052,8 +12966,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetFeedNumRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetFeedNumRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFeedNumRequest)
+      GetFeedNumRequestOrBuilder {
     // Use GetFeedNumRequest.newBuilder() to construct.
     private GetFeedNumRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13149,7 +13064,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int64 id = 1;
     public static final int ID_FIELD_NUMBER = 1;
     private long id_;
     /**
@@ -13173,7 +13087,6 @@ public final class Feeds {
       return id_;
     }
 
-    // optional int32 type = 2;
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -13204,7 +13117,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasId()) {
         memoizedIsInitialized = 0;
@@ -13326,8 +13240,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetFeedNumRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFeedNumRequest)
+        com.wali.live.proto.Feeds.GetFeedNumRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetFeedNumRequest_descriptor;
@@ -13453,7 +13368,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int64 id = 1;
       private long id_ ;
       /**
        * <code>required int64 id = 1;</code>
@@ -13502,7 +13416,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int32 type = 2;
       private int type_ ;
       /**
        * <code>optional int32 type = 2;</code>
@@ -13562,10 +13475,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFeedNumRequest)
   }
 
-  public interface GetFeedNumResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetFeedNumResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFeedNumResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int32 err_code = 1;
     /**
      * <code>required int32 err_code = 1;</code>
      *
@@ -13583,7 +13496,6 @@ public final class Feeds {
      */
     int getErrCode();
 
-    // required int32 feed_num = 2;
     /**
      * <code>required int32 feed_num = 2;</code>
      *
@@ -13601,7 +13513,6 @@ public final class Feeds {
      */
     int getFeedNum();
 
-    // optional string err_msg = 3;
     /**
      * <code>optional string err_msg = 3;</code>
      *
@@ -13632,8 +13543,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.GetFeedNumResponse}
    */
   public static final class GetFeedNumResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetFeedNumResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFeedNumResponse)
+      GetFeedNumResponseOrBuilder {
     // Use GetFeedNumResponse.newBuilder() to construct.
     private GetFeedNumResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13690,8 +13602,9 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -13734,7 +13647,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -13758,7 +13670,6 @@ public final class Feeds {
       return errCode_;
     }
 
-    // required int32 feed_num = 2;
     public static final int FEED_NUM_FIELD_NUMBER = 2;
     private int feedNum_;
     /**
@@ -13782,7 +13693,6 @@ public final class Feeds {
       return feedNum_;
     }
 
-    // optional string err_msg = 3;
     public static final int ERR_MSG_FIELD_NUMBER = 3;
     private java.lang.Object errMsg_;
     /**
@@ -13845,7 +13755,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -13974,8 +13885,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.GetFeedNumResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetFeedNumResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFeedNumResponse)
+        com.wali.live.proto.Feeds.GetFeedNumResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetFeedNumResponse_descriptor;
@@ -14116,7 +14028,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required int32 err_code = 1;</code>
@@ -14165,7 +14076,6 @@ public final class Feeds {
         return this;
       }
 
-      // required int32 feed_num = 2;
       private int feedNum_ ;
       /**
        * <code>required int32 feed_num = 2;</code>
@@ -14214,7 +14124,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string err_msg = 3;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 3;</code>
@@ -14236,9 +14145,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -14323,10 +14235,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFeedNumResponse)
   }
 
-  public interface GetFeedInfoRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetFeedInfoRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFeedInfoRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -14344,7 +14256,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required string feedId = 2;
     /**
      * <code>required string feedId = 2;</code>
      *
@@ -14371,7 +14282,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional bool isOnlyFocus = 3;
     /**
      * <code>optional bool isOnlyFocus = 3;</code>
      *
@@ -14389,7 +14299,6 @@ public final class Feeds {
      */
     boolean getIsOnlyFocus();
 
-    // optional uint64 feedOwnerId = 4;
     /**
      * <code>optional uint64 feedOwnerId = 4;</code>
      */
@@ -14407,8 +14316,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetFeedInfoRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetFeedInfoRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFeedInfoRequest)
+      GetFeedInfoRequestOrBuilder {
     // Use GetFeedInfoRequest.newBuilder() to construct.
     private GetFeedInfoRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -14460,8 +14370,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -14514,7 +14425,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -14538,7 +14448,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required string feedId = 2;
     public static final int FEEDID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -14593,7 +14502,6 @@ public final class Feeds {
       }
     }
 
-    // optional bool isOnlyFocus = 3;
     public static final int ISONLYFOCUS_FIELD_NUMBER = 3;
     private boolean isOnlyFocus_;
     /**
@@ -14617,7 +14525,6 @@ public final class Feeds {
       return isOnlyFocus_;
     }
 
-    // optional uint64 feedOwnerId = 4;
     public static final int FEEDOWNERID_FIELD_NUMBER = 4;
     private long feedOwnerId_;
     /**
@@ -14642,7 +14549,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -14782,8 +14690,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetFeedInfoRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFeedInfoRequest)
+        com.wali.live.proto.Feeds.GetFeedInfoRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetFeedInfoRequest_descriptor;
@@ -14933,7 +14842,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -14982,7 +14890,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feedId = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feedId = 2;</code>
@@ -15004,9 +14911,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15080,7 +14990,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool isOnlyFocus = 3;
       private boolean isOnlyFocus_ ;
       /**
        * <code>optional bool isOnlyFocus = 3;</code>
@@ -15129,7 +15038,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 feedOwnerId = 4;
       private long feedOwnerId_ ;
       /**
        * <code>optional uint64 feedOwnerId = 4;</code>
@@ -15173,10 +15081,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFeedInfoRequest)
   }
 
-  public interface GetFeedInfoResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetFeedInfoResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFeedInfoResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -15186,7 +15094,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // optional .com.wali.live.proto.FeedInfo feedInfo = 2;
     /**
      * <code>optional .com.wali.live.proto.FeedInfo feedInfo = 2;</code>
      */
@@ -15208,8 +15115,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetFeedInfoResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetFeedInfoResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFeedInfoResponse)
+      GetFeedInfoResponseOrBuilder {
     // Use GetFeedInfoResponse.newBuilder() to construct.
     private GetFeedInfoResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -15313,7 +15221,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -15329,7 +15236,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // optional .com.wali.live.proto.FeedInfo feedInfo = 2;
     public static final int FEEDINFO_FIELD_NUMBER = 2;
     private com.wali.live.proto.Feeds.FeedInfo feedInfo_;
     /**
@@ -15358,7 +15264,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -15486,8 +15393,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetFeedInfoResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFeedInfoResponse)
+        com.wali.live.proto.Feeds.GetFeedInfoResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetFeedInfoResponse_descriptor;
@@ -15628,7 +15536,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -15661,7 +15568,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.FeedInfo feedInfo = 2;
       private com.wali.live.proto.Feeds.FeedInfo feedInfo_ = com.wali.live.proto.Feeds.FeedInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.FeedInfo, com.wali.live.proto.Feeds.FeedInfo.Builder, com.wali.live.proto.Feeds.FeedInfoOrBuilder> feedInfoBuilder_;
@@ -15770,7 +15676,7 @@ public final class Feeds {
         if (feedInfoBuilder_ == null) {
           feedInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.FeedInfo, com.wali.live.proto.Feeds.FeedInfo.Builder, com.wali.live.proto.Feeds.FeedInfoOrBuilder>(
-                  feedInfo_,
+                  getFeedInfo(),
                   getParentForChildren(),
                   isClean());
           feedInfo_ = null;
@@ -15789,10 +15695,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFeedInfoResponse)
   }
 
-  public interface GetFeedListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetFeedListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFeedListRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -15810,7 +15716,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -15828,7 +15733,6 @@ public final class Feeds {
      */
     long getStart();
 
-    // required uint64 end = 3;
     /**
      * <code>required uint64 end = 3;</code>
      *
@@ -15854,8 +15758,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetFeedListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetFeedListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFeedListRequest)
+      GetFeedListRequestOrBuilder {
     // Use GetFeedListRequest.newBuilder() to construct.
     private GetFeedListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -15956,7 +15861,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -15980,7 +15884,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -16004,7 +15907,6 @@ public final class Feeds {
       return start_;
     }
 
-    // required uint64 end = 3;
     public static final int END_FIELD_NUMBER = 3;
     private long end_;
     /**
@@ -16036,7 +15938,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -16173,8 +16076,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetFeedListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFeedListRequest)
+        com.wali.live.proto.Feeds.GetFeedListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetFeedListRequest_descriptor;
@@ -16317,7 +16221,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -16366,7 +16269,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -16415,7 +16317,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 end = 3;
       private long end_ ;
       /**
        * <code>required uint64 end = 3;</code>
@@ -16475,10 +16376,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFeedListRequest)
   }
 
-  public interface GetFeedListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetFeedListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetFeedListResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -16488,7 +16389,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -16506,7 +16406,6 @@ public final class Feeds {
      */
     long getStart();
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     /**
      * <code>repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;</code>
      *
@@ -16559,8 +16458,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetFeedListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetFeedListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetFeedListResponse)
+      GetFeedListResponseOrBuilder {
     // Use GetFeedListResponse.newBuilder() to construct.
     private GetFeedListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -16667,7 +16567,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -16683,7 +16582,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -16707,7 +16605,6 @@ public final class Feeds {
       return start_;
     }
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     public static final int FEEDINFOLIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_;
     /**
@@ -16771,7 +16668,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -16910,8 +16808,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetFeedListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetFeedListResponse)
+        com.wali.live.proto.Feeds.GetFeedListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetFeedListResponse_descriptor;
@@ -17089,7 +16988,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -17122,7 +17020,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -17171,7 +17068,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
       private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_ =
         java.util.Collections.emptyList();
       private void ensureFeedInfoListIsMutable() {
@@ -17353,7 +17249,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedInfo> values) {
         if (feedInfoListBuilder_ == null) {
           ensureFeedInfoListIsMutable();
-          super.addAll(values, feedInfoList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedInfoList_);
           onChanged();
         } else {
           feedInfoListBuilder_.addAllMessages(values);
@@ -17494,10 +17391,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetFeedListResponse)
   }
 
-  public interface GetUserPageFeedListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUserPageFeedListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUserPageFeedListRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -17515,7 +17412,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required uint64 timestamp = 2;
     /**
      * <code>required uint64 timestamp = 2;</code>
      *
@@ -17533,7 +17429,6 @@ public final class Feeds {
      */
     long getTimestamp();
 
-    // optional string feedId = 3;
     /**
      * <code>optional string feedId = 3;</code>
      */
@@ -17556,8 +17451,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetUserPageFeedListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUserPageFeedListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUserPageFeedListRequest)
+      GetUserPageFeedListRequestOrBuilder {
     // Use GetUserPageFeedListRequest.newBuilder() to construct.
     private GetUserPageFeedListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -17614,8 +17510,9 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
           }
@@ -17658,7 +17555,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -17682,7 +17578,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required uint64 timestamp = 2;
     public static final int TIMESTAMP_FIELD_NUMBER = 2;
     private long timestamp_;
     /**
@@ -17706,7 +17601,6 @@ public final class Feeds {
       return timestamp_;
     }
 
-    // optional string feedId = 3;
     public static final int FEEDID_FIELD_NUMBER = 3;
     private java.lang.Object feedId_;
     /**
@@ -17757,7 +17651,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -17890,8 +17785,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetUserPageFeedListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUserPageFeedListRequest)
+        com.wali.live.proto.Feeds.GetUserPageFeedListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetUserPageFeedListRequest_descriptor;
@@ -18032,7 +17928,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -18081,7 +17976,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 timestamp = 2;
       private long timestamp_ ;
       /**
        * <code>required uint64 timestamp = 2;</code>
@@ -18130,7 +18024,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string feedId = 3;
       private java.lang.Object feedId_ = "";
       /**
        * <code>optional string feedId = 3;</code>
@@ -18144,9 +18037,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -18215,10 +18111,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUserPageFeedListRequest)
   }
 
-  public interface GetUserPageFeedListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUserPageFeedListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUserPageFeedListResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -18228,7 +18124,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // required uint64 timestamp = 2;
     /**
      * <code>required uint64 timestamp = 2;</code>
      *
@@ -18244,7 +18139,6 @@ public final class Feeds {
      */
     long getTimestamp();
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     /**
      * <code>repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;</code>
      *
@@ -18297,8 +18191,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetUserPageFeedListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUserPageFeedListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUserPageFeedListResponse)
+      GetUserPageFeedListResponseOrBuilder {
     // Use GetUserPageFeedListResponse.newBuilder() to construct.
     private GetUserPageFeedListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -18405,7 +18300,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -18421,7 +18315,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // required uint64 timestamp = 2;
     public static final int TIMESTAMP_FIELD_NUMBER = 2;
     private long timestamp_;
     /**
@@ -18443,7 +18336,6 @@ public final class Feeds {
       return timestamp_;
     }
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     public static final int FEEDINFOLIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_;
     /**
@@ -18507,7 +18399,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -18646,8 +18539,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetUserPageFeedListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUserPageFeedListResponse)
+        com.wali.live.proto.Feeds.GetUserPageFeedListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetUserPageFeedListResponse_descriptor;
@@ -18825,7 +18719,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -18858,7 +18751,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 timestamp = 2;
       private long timestamp_ ;
       /**
        * <code>required uint64 timestamp = 2;</code>
@@ -18903,7 +18795,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
       private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_ =
         java.util.Collections.emptyList();
       private void ensureFeedInfoListIsMutable() {
@@ -19085,7 +18976,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedInfo> values) {
         if (feedInfoListBuilder_ == null) {
           ensureFeedInfoListIsMutable();
-          super.addAll(values, feedInfoList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedInfoList_);
           onChanged();
         } else {
           feedInfoListBuilder_.addAllMessages(values);
@@ -19226,10 +19118,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUserPageFeedListResponse)
   }
 
-  public interface GetRecommedUsersRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRecommedUsersRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRecommedUsersRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -19247,7 +19139,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // optional uint32 size = 2;
     /**
      * <code>optional uint32 size = 2;</code>
      *
@@ -19273,8 +19164,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetRecommedUsersRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRecommedUsersRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRecommedUsersRequest)
+      GetRecommedUsersRequestOrBuilder {
     // Use GetRecommedUsersRequest.newBuilder() to construct.
     private GetRecommedUsersRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -19370,7 +19262,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -19394,7 +19285,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // optional uint32 size = 2;
     public static final int SIZE_FIELD_NUMBER = 2;
     private int size_;
     /**
@@ -19425,7 +19315,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -19547,8 +19438,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetRecommedUsersRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRecommedUsersRequest)
+        com.wali.live.proto.Feeds.GetRecommedUsersRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetRecommedUsersRequest_descriptor;
@@ -19674,7 +19566,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -19723,7 +19614,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 size = 2;
       private int size_ ;
       /**
        * <code>optional uint32 size = 2;</code>
@@ -19783,10 +19673,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRecommedUsersRequest)
   }
 
-  public interface TagOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface TagOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Tag)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string name = 1;
     /**
      * <code>required string name = 1;</code>
      *
@@ -19817,8 +19707,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.Tag}
    */
   public static final class Tag extends
-      com.google.protobuf.GeneratedMessage
-      implements TagOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Tag)
+      TagOrBuilder {
     // Use Tag.newBuilder() to construct.
     private Tag(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -19865,8 +19756,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              name_ = input.readBytes();
+              name_ = bs;
               break;
             }
           }
@@ -19909,7 +19801,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required string name = 1;
     public static final int NAME_FIELD_NUMBER = 1;
     private java.lang.Object name_;
     /**
@@ -19970,7 +19861,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasName()) {
         memoizedIsInitialized = 0;
@@ -20081,8 +19973,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.Tag}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.TagOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Tag)
+        com.wali.live.proto.Feeds.TagOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_Tag_descriptor;
@@ -20201,7 +20094,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required string name = 1;
       private java.lang.Object name_ = "";
       /**
        * <code>required string name = 1;</code>
@@ -20223,9 +20115,12 @@ public final class Feeds {
       public java.lang.String getName() {
         java.lang.Object ref = name_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          name_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -20310,10 +20205,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Tag)
   }
 
-  public interface RecomUsersOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RecomUsersOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RecomUsers)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uId = 1;
     /**
      * <code>required uint64 uId = 1;</code>
      *
@@ -20331,7 +20226,6 @@ public final class Feeds {
      */
     long getUId();
 
-    // optional string nickname = 2;
     /**
      * <code>optional string nickname = 2;</code>
      *
@@ -20358,7 +20252,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional uint64 avatar = 3;
     /**
      * <code>optional uint64 avatar = 3;</code>
      *
@@ -20376,7 +20269,6 @@ public final class Feeds {
      */
     long getAvatar();
 
-    // optional uint32 level = 4;
     /**
      * <code>optional uint32 level = 4;</code>
      *
@@ -20394,7 +20286,6 @@ public final class Feeds {
      */
     int getLevel();
 
-    // optional uint32 certType = 5;
     /**
      * <code>optional uint32 certType = 5;</code>
      *
@@ -20412,7 +20303,6 @@ public final class Feeds {
      */
     int getCertType();
 
-    // optional uint32 gender = 6;
     /**
      * <code>optional uint32 gender = 6;</code>
      *
@@ -20430,7 +20320,6 @@ public final class Feeds {
      */
     int getGender();
 
-    // optional uint32 followerNum = 7;
     /**
      * <code>optional uint32 followerNum = 7;</code>
      *
@@ -20448,7 +20337,6 @@ public final class Feeds {
      */
     int getFollowerNum();
 
-    // optional string certification = 8;
     /**
      * <code>optional string certification = 8;</code>
      *
@@ -20475,7 +20363,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getCertificationBytes();
 
-    // repeated .com.wali.live.proto.Tag tags = 9;
     /**
      * <code>repeated .com.wali.live.proto.Tag tags = 9;</code>
      *
@@ -20520,7 +20407,6 @@ public final class Feeds {
     com.wali.live.proto.Feeds.TagOrBuilder getTagsOrBuilder(
         int index);
 
-    // optional string mTag = 10;
     /**
      * <code>optional string mTag = 10;</code>
      *
@@ -20551,8 +20437,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.RecomUsers}
    */
   public static final class RecomUsers extends
-      com.google.protobuf.GeneratedMessage
-      implements RecomUsersOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RecomUsers)
+      RecomUsersOrBuilder {
     // Use RecomUsers.newBuilder() to construct.
     private RecomUsers(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -20604,8 +20491,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 24: {
@@ -20634,8 +20522,9 @@ public final class Feeds {
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              certification_ = input.readBytes();
+              certification_ = bs;
               break;
             }
             case 74: {
@@ -20647,8 +20536,9 @@ public final class Feeds {
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              mTag_ = input.readBytes();
+              mTag_ = bs;
               break;
             }
           }
@@ -20694,7 +20584,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 uId = 1;
     public static final int UID_FIELD_NUMBER = 1;
     private long uId_;
     /**
@@ -20718,7 +20607,6 @@ public final class Feeds {
       return uId_;
     }
 
-    // optional string nickname = 2;
     public static final int NICKNAME_FIELD_NUMBER = 2;
     private java.lang.Object nickname_;
     /**
@@ -20773,7 +20661,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 avatar = 3;
     public static final int AVATAR_FIELD_NUMBER = 3;
     private long avatar_;
     /**
@@ -20797,7 +20684,6 @@ public final class Feeds {
       return avatar_;
     }
 
-    // optional uint32 level = 4;
     public static final int LEVEL_FIELD_NUMBER = 4;
     private int level_;
     /**
@@ -20821,7 +20707,6 @@ public final class Feeds {
       return level_;
     }
 
-    // optional uint32 certType = 5;
     public static final int CERTTYPE_FIELD_NUMBER = 5;
     private int certType_;
     /**
@@ -20845,7 +20730,6 @@ public final class Feeds {
       return certType_;
     }
 
-    // optional uint32 gender = 6;
     public static final int GENDER_FIELD_NUMBER = 6;
     private int gender_;
     /**
@@ -20869,7 +20753,6 @@ public final class Feeds {
       return gender_;
     }
 
-    // optional uint32 followerNum = 7;
     public static final int FOLLOWERNUM_FIELD_NUMBER = 7;
     private int followerNum_;
     /**
@@ -20893,7 +20776,6 @@ public final class Feeds {
       return followerNum_;
     }
 
-    // optional string certification = 8;
     public static final int CERTIFICATION_FIELD_NUMBER = 8;
     private java.lang.Object certification_;
     /**
@@ -20948,7 +20830,6 @@ public final class Feeds {
       }
     }
 
-    // repeated .com.wali.live.proto.Tag tags = 9;
     public static final int TAGS_FIELD_NUMBER = 9;
     private java.util.List<com.wali.live.proto.Feeds.Tag> tags_;
     /**
@@ -21004,7 +20885,6 @@ public final class Feeds {
       return tags_.get(index);
     }
 
-    // optional string mTag = 10;
     public static final int MTAG_FIELD_NUMBER = 10;
     private java.lang.Object mTag_;
     /**
@@ -21074,7 +20954,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUId()) {
         memoizedIsInitialized = 0;
@@ -21254,8 +21135,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.RecomUsers}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.RecomUsersOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RecomUsers)
+        com.wali.live.proto.Feeds.RecomUsersOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_RecomUsers_descriptor;
@@ -21498,7 +21380,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 uId = 1;
       private long uId_ ;
       /**
        * <code>required uint64 uId = 1;</code>
@@ -21547,7 +21428,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string nickname = 2;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 2;</code>
@@ -21569,9 +21449,12 @@ public final class Feeds {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21645,7 +21528,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 avatar = 3;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 3;</code>
@@ -21694,7 +21576,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 level = 4;
       private int level_ ;
       /**
        * <code>optional uint32 level = 4;</code>
@@ -21743,7 +21624,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 certType = 5;
       private int certType_ ;
       /**
        * <code>optional uint32 certType = 5;</code>
@@ -21792,7 +21672,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 gender = 6;
       private int gender_ ;
       /**
        * <code>optional uint32 gender = 6;</code>
@@ -21841,7 +21720,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 followerNum = 7;
       private int followerNum_ ;
       /**
        * <code>optional uint32 followerNum = 7;</code>
@@ -21890,7 +21768,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string certification = 8;
       private java.lang.Object certification_ = "";
       /**
        * <code>optional string certification = 8;</code>
@@ -21912,9 +21789,12 @@ public final class Feeds {
       public java.lang.String getCertification() {
         java.lang.Object ref = certification_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          certification_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certification_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -21988,7 +21868,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.Tag tags = 9;
       private java.util.List<com.wali.live.proto.Feeds.Tag> tags_ =
         java.util.Collections.emptyList();
       private void ensureTagsIsMutable() {
@@ -22170,7 +22049,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.Tag> values) {
         if (tagsBuilder_ == null) {
           ensureTagsIsMutable();
-          super.addAll(values, tags_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, tags_);
           onChanged();
         } else {
           tagsBuilder_.addAllMessages(values);
@@ -22300,7 +22180,6 @@ public final class Feeds {
         return tagsBuilder_;
       }
 
-      // optional string mTag = 10;
       private java.lang.Object mTag_ = "";
       /**
        * <code>optional string mTag = 10;</code>
@@ -22322,9 +22201,12 @@ public final class Feeds {
       public java.lang.String getMTag() {
         java.lang.Object ref = mTag_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          mTag_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            mTag_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -22409,10 +22291,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.RecomUsers)
   }
 
-  public interface GetRecommedUsersResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetRecommedUsersResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRecommedUsersResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -22422,7 +22304,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // repeated .com.wali.live.proto.RecomUsers users = 2;
     /**
      * <code>repeated .com.wali.live.proto.RecomUsers users = 2;</code>
      *
@@ -22471,8 +22352,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.GetRecommedUsersResponse}
    */
   public static final class GetRecommedUsersResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetRecommedUsersResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRecommedUsersResponse)
+      GetRecommedUsersResponseOrBuilder {
     // Use GetRecommedUsersResponse.newBuilder() to construct.
     private GetRecommedUsersResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -22574,7 +22456,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -22590,7 +22471,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // repeated .com.wali.live.proto.RecomUsers users = 2;
     public static final int USERS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.Feeds.RecomUsers> users_;
     /**
@@ -22653,7 +22533,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -22777,8 +22658,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.GetRecommedUsersResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetRecommedUsersResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRecommedUsersResponse)
+        com.wali.live.proto.Feeds.GetRecommedUsersResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetRecommedUsersResponse_descriptor;
@@ -22943,7 +22825,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -22976,7 +22857,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.RecomUsers users = 2;
       private java.util.List<com.wali.live.proto.Feeds.RecomUsers> users_ =
         java.util.Collections.emptyList();
       private void ensureUsersIsMutable() {
@@ -23158,7 +23038,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.RecomUsers> values) {
         if (usersBuilder_ == null) {
           ensureUsersIsMutable();
-          super.addAll(values, users_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, users_);
           onChanged();
         } else {
           usersBuilder_.addAllMessages(values);
@@ -23299,10 +23180,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRecommedUsersResponse)
   }
 
-  public interface FeedLikeReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLikeReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      *
@@ -23320,7 +23201,6 @@ public final class Feeds {
      */
     long getZuid();
 
-    // required string feedId = 2;
     /**
      * <code>required string feedId = 2;</code>
      *
@@ -23347,7 +23227,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional string userName = 3;
     /**
      * <code>optional string userName = 3;</code>
      *
@@ -23374,7 +23253,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getUserNameBytes();
 
-    // optional uint64 feedUserId = 4;
     /**
      * <code>optional uint64 feedUserId = 4;</code>
      *
@@ -23392,7 +23270,6 @@ public final class Feeds {
      */
     long getFeedUserId();
 
-    // optional uint32 feedType = 5;
     /**
      * <code>optional uint32 feedType = 5;</code>
      *
@@ -23419,8 +23296,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedLikeReq extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLikeReq)
+      FeedLikeReqOrBuilder {
     // Use FeedLikeReq.newBuilder() to construct.
     private FeedLikeReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -23472,13 +23350,15 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              userName_ = input.readBytes();
+              userName_ = bs;
               break;
             }
             case 32: {
@@ -23531,7 +23411,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -23555,7 +23434,6 @@ public final class Feeds {
       return zuid_;
     }
 
-    // required string feedId = 2;
     public static final int FEEDID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -23610,7 +23488,6 @@ public final class Feeds {
       }
     }
 
-    // optional string userName = 3;
     public static final int USERNAME_FIELD_NUMBER = 3;
     private java.lang.Object userName_;
     /**
@@ -23665,7 +23542,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 feedUserId = 4;
     public static final int FEEDUSERID_FIELD_NUMBER = 4;
     private long feedUserId_;
     /**
@@ -23689,7 +23565,6 @@ public final class Feeds {
       return feedUserId_;
     }
 
-    // optional uint32 feedType = 5;
     public static final int FEEDTYPE_FIELD_NUMBER = 5;
     private int feedType_;
     /**
@@ -23723,7 +23598,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -23871,8 +23747,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLikeReq)
+        com.wali.live.proto.Feeds.FeedLikeReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLikeReq_descriptor;
@@ -24033,7 +23910,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -24082,7 +23958,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feedId = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feedId = 2;</code>
@@ -24104,9 +23979,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24180,7 +24058,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string userName = 3;
       private java.lang.Object userName_ = "";
       /**
        * <code>optional string userName = 3;</code>
@@ -24202,9 +24079,12 @@ public final class Feeds {
       public java.lang.String getUserName() {
         java.lang.Object ref = userName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          userName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -24278,7 +24158,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 feedUserId = 4;
       private long feedUserId_ ;
       /**
        * <code>optional uint64 feedUserId = 4;</code>
@@ -24327,7 +24206,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 feedType = 5;
       private int feedType_ ;
       /**
        * <code>optional uint32 feedType = 5;</code>
@@ -24387,10 +24265,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLikeReq)
   }
 
-  public interface FeedLikeRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLikeRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -24400,7 +24278,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // optional uint64 ts = 2;
     /**
      * <code>optional uint64 ts = 2;</code>
      *
@@ -24418,7 +24295,6 @@ public final class Feeds {
      */
     long getTs();
 
-    // optional string errMsg = 3;
     /**
      * <code>optional string errMsg = 3;</code>
      *
@@ -24449,8 +24325,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.FeedLikeRsp}
    */
   public static final class FeedLikeRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLikeRsp)
+      FeedLikeRspOrBuilder {
     // Use FeedLikeRsp.newBuilder() to construct.
     private FeedLikeRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -24507,8 +24384,9 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -24551,7 +24429,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -24567,7 +24444,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // optional uint64 ts = 2;
     public static final int TS_FIELD_NUMBER = 2;
     private long ts_;
     /**
@@ -24591,7 +24467,6 @@ public final class Feeds {
       return ts_;
     }
 
-    // optional string errMsg = 3;
     public static final int ERRMSG_FIELD_NUMBER = 3;
     private java.lang.Object errMsg_;
     /**
@@ -24654,7 +24529,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -24779,8 +24655,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.FeedLikeRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLikeRsp)
+        com.wali.live.proto.Feeds.FeedLikeRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLikeRsp_descriptor;
@@ -24917,7 +24794,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -24950,7 +24826,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 ts = 2;
       private long ts_ ;
       /**
        * <code>optional uint64 ts = 2;</code>
@@ -24999,7 +24874,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string errMsg = 3;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 3;</code>
@@ -25021,9 +24895,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25108,10 +24985,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLikeRsp)
   }
 
-  public interface FeedLikeDeleteReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeDeleteReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLikeDeleteReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 zuid = 1;
     /**
      * <code>required uint64 zuid = 1;</code>
      *
@@ -25129,7 +25006,6 @@ public final class Feeds {
      */
     long getZuid();
 
-    // required string feedId = 2;
     /**
      * <code>required string feedId = 2;</code>
      *
@@ -25156,7 +25032,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional uint64 feedUserId = 3;
     /**
      * <code>optional uint64 feedUserId = 3;</code>
      *
@@ -25174,7 +25049,6 @@ public final class Feeds {
      */
     long getFeedUserId();
 
-    // optional uint32 feedType = 4;
     /**
      * <code>optional uint32 feedType = 4;</code>
      *
@@ -25201,8 +25075,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedLikeDeleteReq extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeDeleteReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLikeDeleteReq)
+      FeedLikeDeleteReqOrBuilder {
     // Use FeedLikeDeleteReq.newBuilder() to construct.
     private FeedLikeDeleteReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -25254,8 +25129,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -25308,7 +25184,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 zuid = 1;
     public static final int ZUID_FIELD_NUMBER = 1;
     private long zuid_;
     /**
@@ -25332,7 +25207,6 @@ public final class Feeds {
       return zuid_;
     }
 
-    // required string feedId = 2;
     public static final int FEEDID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -25387,7 +25261,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 feedUserId = 3;
     public static final int FEEDUSERID_FIELD_NUMBER = 3;
     private long feedUserId_;
     /**
@@ -25411,7 +25284,6 @@ public final class Feeds {
       return feedUserId_;
     }
 
-    // optional uint32 feedType = 4;
     public static final int FEEDTYPE_FIELD_NUMBER = 4;
     private int feedType_;
     /**
@@ -25444,7 +25316,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
@@ -25585,8 +25458,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeDeleteReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLikeDeleteReq)
+        com.wali.live.proto.Feeds.FeedLikeDeleteReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLikeDeleteReq_descriptor;
@@ -25736,7 +25610,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 zuid = 1;
       private long zuid_ ;
       /**
        * <code>required uint64 zuid = 1;</code>
@@ -25785,7 +25658,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feedId = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feedId = 2;</code>
@@ -25807,9 +25679,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -25883,7 +25758,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 feedUserId = 3;
       private long feedUserId_ ;
       /**
        * <code>optional uint64 feedUserId = 3;</code>
@@ -25932,7 +25806,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 feedType = 4;
       private int feedType_ ;
       /**
        * <code>optional uint32 feedType = 4;</code>
@@ -25992,10 +25865,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLikeDeleteReq)
   }
 
-  public interface FeedLikeDeleteRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeDeleteRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLikeDeleteRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -26005,7 +25878,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -26024,8 +25896,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.FeedLikeDeleteRsp}
    */
   public static final class FeedLikeDeleteRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeDeleteRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLikeDeleteRsp)
+      FeedLikeDeleteRspOrBuilder {
     // Use FeedLikeDeleteRsp.newBuilder() to construct.
     private FeedLikeDeleteRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -26077,8 +25950,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -26121,7 +25995,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -26137,7 +26010,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -26187,7 +26059,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -26305,8 +26178,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.FeedLikeDeleteRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeDeleteRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLikeDeleteRsp)
+        com.wali.live.proto.Feeds.FeedLikeDeleteRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLikeDeleteRsp_descriptor;
@@ -26434,7 +26308,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -26467,7 +26340,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -26481,9 +26353,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26552,10 +26427,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLikeDeleteRsp)
   }
 
-  public interface FeedLikeListReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLikeListReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string feedId = 1;
     /**
      * <code>required string feedId = 1;</code>
      *
@@ -26582,7 +26457,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional uint32 offset = 2;
     /**
      * <code>optional uint32 offset = 2;</code>
      *
@@ -26600,7 +26474,6 @@ public final class Feeds {
      */
     int getOffset();
 
-    // optional uint32 limit = 3;
     /**
      * <code>optional uint32 limit = 3;</code>
      *
@@ -26627,8 +26500,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class FeedLikeListReq extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeListReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLikeListReq)
+      FeedLikeListReqOrBuilder {
     // Use FeedLikeListReq.newBuilder() to construct.
     private FeedLikeListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -26675,8 +26549,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 16: {
@@ -26729,7 +26604,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required string feedId = 1;
     public static final int FEEDID_FIELD_NUMBER = 1;
     private java.lang.Object feedId_;
     /**
@@ -26784,7 +26658,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 offset = 2;
     public static final int OFFSET_FIELD_NUMBER = 2;
     private int offset_;
     /**
@@ -26808,7 +26681,6 @@ public final class Feeds {
       return offset_;
     }
 
-    // optional uint32 limit = 3;
     public static final int LIMIT_FIELD_NUMBER = 3;
     private int limit_;
     /**
@@ -26840,7 +26712,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFeedId()) {
         memoizedIsInitialized = 0;
@@ -26970,8 +26843,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeListReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLikeListReq)
+        com.wali.live.proto.Feeds.FeedLikeListReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLikeListReq_descriptor;
@@ -27108,7 +26982,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required string feedId = 1;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feedId = 1;</code>
@@ -27130,9 +27003,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -27206,7 +27082,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 offset = 2;
       private int offset_ ;
       /**
        * <code>optional uint32 offset = 2;</code>
@@ -27255,7 +27130,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 limit = 3;
       private int limit_ ;
       /**
        * <code>optional uint32 limit = 3;</code>
@@ -27315,10 +27189,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLikeListReq)
   }
 
-  public interface FeedLikeListRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FeedLikeListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FeedLikeListRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -27328,7 +27202,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // repeated .com.wali.live.proto.FeedLike feeds = 2;
     /**
      * <code>repeated .com.wali.live.proto.FeedLike feeds = 2;</code>
      *
@@ -27377,8 +27250,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.FeedLikeListRsp}
    */
   public static final class FeedLikeListRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements FeedLikeListRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FeedLikeListRsp)
+      FeedLikeListRspOrBuilder {
     // Use FeedLikeListRsp.newBuilder() to construct.
     private FeedLikeListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -27480,7 +27354,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -27496,7 +27369,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // repeated .com.wali.live.proto.FeedLike feeds = 2;
     public static final int FEEDS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.Feeds.FeedLike> feeds_;
     /**
@@ -27559,7 +27431,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -27683,8 +27556,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.FeedLikeListRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FeedLikeListRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FeedLikeListRsp)
+        com.wali.live.proto.Feeds.FeedLikeListRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FeedLikeListRsp_descriptor;
@@ -27849,7 +27723,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -27882,7 +27755,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.FeedLike feeds = 2;
       private java.util.List<com.wali.live.proto.Feeds.FeedLike> feeds_ =
         java.util.Collections.emptyList();
       private void ensureFeedsIsMutable() {
@@ -28064,7 +27936,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedLike> values) {
         if (feedsBuilder_ == null) {
           ensureFeedsIsMutable();
-          super.addAll(values, feeds_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feeds_);
           onChanged();
         } else {
           feedsBuilder_.addAllMessages(values);
@@ -28205,10 +28078,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FeedLikeListRsp)
   }
 
-  public interface CreateFeedCommnetRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateFeedCommnetRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CreateFeedCommnetRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 from_uid = 1;
     /**
      * <code>required uint64 from_uid = 1;</code>
      *
@@ -28226,7 +28099,6 @@ public final class Feeds {
      */
     long getFromUid();
 
-    // required string feed_id = 2;
     /**
      * <code>required string feed_id = 2;</code>
      *
@@ -28253,7 +28125,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // required uint64 feed_owner_id = 3;
     /**
      * <code>required uint64 feed_owner_id = 3;</code>
      */
@@ -28263,7 +28134,6 @@ public final class Feeds {
      */
     long getFeedOwnerId();
 
-    // required string content = 4;
     /**
      * <code>required string content = 4;</code>
      *
@@ -28290,7 +28160,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getContentBytes();
 
-    // optional string from_nickname = 5;
     /**
      * <code>optional string from_nickname = 5;</code>
      *
@@ -28317,7 +28186,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFromNicknameBytes();
 
-    // optional uint64 to_uid = 6;
     /**
      * <code>optional uint64 to_uid = 6;</code>
      *
@@ -28335,7 +28203,6 @@ public final class Feeds {
      */
     long getToUid();
 
-    // optional string to_nickname = 7;
     /**
      * <code>optional string to_nickname = 7;</code>
      *
@@ -28362,7 +28229,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getToNicknameBytes();
 
-    // optional uint32 feedType = 8;
     /**
      * <code>optional uint32 feedType = 8;</code>
      *
@@ -28380,7 +28246,6 @@ public final class Feeds {
      */
     int getFeedType();
 
-    // optional uint32 comment_type = 9;
     /**
      * <code>optional uint32 comment_type = 9;</code>
      *
@@ -28406,8 +28271,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class CreateFeedCommnetRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateFeedCommnetRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CreateFeedCommnetRequest)
+      CreateFeedCommnetRequestOrBuilder {
     // Use CreateFeedCommnetRequest.newBuilder() to construct.
     private CreateFeedCommnetRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -28459,8 +28325,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -28469,13 +28336,15 @@ public final class Feeds {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              content_ = input.readBytes();
+              content_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              fromNickname_ = input.readBytes();
+              fromNickname_ = bs;
               break;
             }
             case 48: {
@@ -28484,8 +28353,9 @@ public final class Feeds {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              toNickname_ = input.readBytes();
+              toNickname_ = bs;
               break;
             }
             case 64: {
@@ -28538,7 +28408,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 from_uid = 1;
     public static final int FROM_UID_FIELD_NUMBER = 1;
     private long fromUid_;
     /**
@@ -28562,7 +28431,6 @@ public final class Feeds {
       return fromUid_;
     }
 
-    // required string feed_id = 2;
     public static final int FEED_ID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -28617,7 +28485,6 @@ public final class Feeds {
       }
     }
 
-    // required uint64 feed_owner_id = 3;
     public static final int FEED_OWNER_ID_FIELD_NUMBER = 3;
     private long feedOwnerId_;
     /**
@@ -28633,7 +28500,6 @@ public final class Feeds {
       return feedOwnerId_;
     }
 
-    // required string content = 4;
     public static final int CONTENT_FIELD_NUMBER = 4;
     private java.lang.Object content_;
     /**
@@ -28688,7 +28554,6 @@ public final class Feeds {
       }
     }
 
-    // optional string from_nickname = 5;
     public static final int FROM_NICKNAME_FIELD_NUMBER = 5;
     private java.lang.Object fromNickname_;
     /**
@@ -28743,7 +28608,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 to_uid = 6;
     public static final int TO_UID_FIELD_NUMBER = 6;
     private long toUid_;
     /**
@@ -28767,7 +28631,6 @@ public final class Feeds {
       return toUid_;
     }
 
-    // optional string to_nickname = 7;
     public static final int TO_NICKNAME_FIELD_NUMBER = 7;
     private java.lang.Object toNickname_;
     /**
@@ -28822,7 +28685,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 feedType = 8;
     public static final int FEEDTYPE_FIELD_NUMBER = 8;
     private int feedType_;
     /**
@@ -28846,7 +28708,6 @@ public final class Feeds {
       return feedType_;
     }
 
-    // optional uint32 comment_type = 9;
     public static final int COMMENT_TYPE_FIELD_NUMBER = 9;
     private int commentType_;
     /**
@@ -28884,7 +28745,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFromUid()) {
         memoizedIsInitialized = 0;
@@ -29067,8 +28929,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.CreateFeedCommnetRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CreateFeedCommnetRequest)
+        com.wali.live.proto.Feeds.CreateFeedCommnetRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_CreateFeedCommnetRequest_descriptor;
@@ -29277,7 +29140,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 from_uid = 1;
       private long fromUid_ ;
       /**
        * <code>required uint64 from_uid = 1;</code>
@@ -29326,7 +29188,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feed_id = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feed_id = 2;</code>
@@ -29348,9 +29209,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29424,7 +29288,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 feed_owner_id = 3;
       private long feedOwnerId_ ;
       /**
        * <code>required uint64 feed_owner_id = 3;</code>
@@ -29457,7 +29320,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string content = 4;
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 4;</code>
@@ -29479,9 +29341,12 @@ public final class Feeds {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          content_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            content_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29555,7 +29420,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string from_nickname = 5;
       private java.lang.Object fromNickname_ = "";
       /**
        * <code>optional string from_nickname = 5;</code>
@@ -29577,9 +29441,12 @@ public final class Feeds {
       public java.lang.String getFromNickname() {
         java.lang.Object ref = fromNickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          fromNickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            fromNickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29653,7 +29520,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 to_uid = 6;
       private long toUid_ ;
       /**
        * <code>optional uint64 to_uid = 6;</code>
@@ -29702,7 +29568,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string to_nickname = 7;
       private java.lang.Object toNickname_ = "";
       /**
        * <code>optional string to_nickname = 7;</code>
@@ -29724,9 +29589,12 @@ public final class Feeds {
       public java.lang.String getToNickname() {
         java.lang.Object ref = toNickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          toNickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            toNickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -29800,7 +29668,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 feedType = 8;
       private int feedType_ ;
       /**
        * <code>optional uint32 feedType = 8;</code>
@@ -29849,7 +29716,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 comment_type = 9;
       private int commentType_ ;
       /**
        * <code>optional uint32 comment_type = 9;</code>
@@ -29909,10 +29775,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.CreateFeedCommnetRequest)
   }
 
-  public interface CreateFeedCommnetResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateFeedCommnetResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CreateFeedCommnetResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 err_code = 1;
     /**
      * <code>required uint32 err_code = 1;</code>
      *
@@ -29930,7 +29796,6 @@ public final class Feeds {
      */
     int getErrCode();
 
-    // optional uint64 commnet_id = 2;
     /**
      * <code>optional uint64 commnet_id = 2;</code>
      */
@@ -29940,7 +29805,6 @@ public final class Feeds {
      */
     long getCommnetId();
 
-    // optional uint64 create_time = 3;
     /**
      * <code>optional uint64 create_time = 3;</code>
      */
@@ -29954,8 +29818,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.CreateFeedCommnetResponse}
    */
   public static final class CreateFeedCommnetResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateFeedCommnetResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CreateFeedCommnetResponse)
+      CreateFeedCommnetResponseOrBuilder {
     // Use CreateFeedCommnetResponse.newBuilder() to construct.
     private CreateFeedCommnetResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -30056,7 +29921,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -30080,7 +29944,6 @@ public final class Feeds {
       return errCode_;
     }
 
-    // optional uint64 commnet_id = 2;
     public static final int COMMNET_ID_FIELD_NUMBER = 2;
     private long commnetId_;
     /**
@@ -30096,7 +29959,6 @@ public final class Feeds {
       return commnetId_;
     }
 
-    // optional uint64 create_time = 3;
     public static final int CREATE_TIME_FIELD_NUMBER = 3;
     private long createTime_;
     /**
@@ -30120,7 +29982,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -30245,8 +30108,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.CreateFeedCommnetResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.CreateFeedCommnetResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CreateFeedCommnetResponse)
+        com.wali.live.proto.Feeds.CreateFeedCommnetResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_CreateFeedCommnetResponse_descriptor;
@@ -30381,7 +30245,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required uint32 err_code = 1;</code>
@@ -30430,7 +30293,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 commnet_id = 2;
       private long commnetId_ ;
       /**
        * <code>optional uint64 commnet_id = 2;</code>
@@ -30463,7 +30325,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 create_time = 3;
       private long createTime_ ;
       /**
        * <code>optional uint64 create_time = 3;</code>
@@ -30507,10 +30368,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.CreateFeedCommnetResponse)
   }
 
-  public interface DeleteFeedCommnetRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface DeleteFeedCommnetRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.DeleteFeedCommnetRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 from_uid = 1;
     /**
      * <code>required uint32 from_uid = 1;</code>
      *
@@ -30528,7 +30389,6 @@ public final class Feeds {
      */
     int getFromUid();
 
-    // required string feed_id = 2;
     /**
      * <code>required string feed_id = 2;</code>
      *
@@ -30555,7 +30415,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // required uint32 commnet_id = 3;
     /**
      * <code>required uint32 commnet_id = 3;</code>
      */
@@ -30565,7 +30424,6 @@ public final class Feeds {
      */
     int getCommnetId();
 
-    // optional uint64 owner_id = 4;
     /**
      * <code>optional uint64 owner_id = 4;</code>
      */
@@ -30575,7 +30433,6 @@ public final class Feeds {
      */
     long getOwnerId();
 
-    // optional uint32 feedType = 5;
     /**
      * <code>optional uint32 feedType = 5;</code>
      *
@@ -30601,8 +30458,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class DeleteFeedCommnetRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements DeleteFeedCommnetRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.DeleteFeedCommnetRequest)
+      DeleteFeedCommnetRequestOrBuilder {
     // Use DeleteFeedCommnetRequest.newBuilder() to construct.
     private DeleteFeedCommnetRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -30654,8 +30512,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -30713,7 +30572,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 from_uid = 1;
     public static final int FROM_UID_FIELD_NUMBER = 1;
     private int fromUid_;
     /**
@@ -30737,7 +30595,6 @@ public final class Feeds {
       return fromUid_;
     }
 
-    // required string feed_id = 2;
     public static final int FEED_ID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -30792,7 +30649,6 @@ public final class Feeds {
       }
     }
 
-    // required uint32 commnet_id = 3;
     public static final int COMMNET_ID_FIELD_NUMBER = 3;
     private int commnetId_;
     /**
@@ -30808,7 +30664,6 @@ public final class Feeds {
       return commnetId_;
     }
 
-    // optional uint64 owner_id = 4;
     public static final int OWNER_ID_FIELD_NUMBER = 4;
     private long ownerId_;
     /**
@@ -30824,7 +30679,6 @@ public final class Feeds {
       return ownerId_;
     }
 
-    // optional uint32 feedType = 5;
     public static final int FEEDTYPE_FIELD_NUMBER = 5;
     private int feedType_;
     /**
@@ -30858,7 +30712,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFromUid()) {
         memoizedIsInitialized = 0;
@@ -31009,8 +30864,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.DeleteFeedCommnetRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.DeleteFeedCommnetRequest)
+        com.wali.live.proto.Feeds.DeleteFeedCommnetRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_descriptor;
@@ -31173,7 +31029,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 from_uid = 1;
       private int fromUid_ ;
       /**
        * <code>required uint32 from_uid = 1;</code>
@@ -31222,7 +31077,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feed_id = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feed_id = 2;</code>
@@ -31244,9 +31098,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -31320,7 +31177,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint32 commnet_id = 3;
       private int commnetId_ ;
       /**
        * <code>required uint32 commnet_id = 3;</code>
@@ -31353,7 +31209,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 owner_id = 4;
       private long ownerId_ ;
       /**
        * <code>optional uint64 owner_id = 4;</code>
@@ -31386,7 +31241,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 feedType = 5;
       private int feedType_ ;
       /**
        * <code>optional uint32 feedType = 5;</code>
@@ -31446,10 +31300,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.DeleteFeedCommnetRequest)
   }
 
-  public interface DeleteFeedCommnetResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface DeleteFeedCommnetResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.DeleteFeedCommnetResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 err_code = 1;
     /**
      * <code>required uint32 err_code = 1;</code>
      */
@@ -31463,8 +31317,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.DeleteFeedCommnetResponse}
    */
   public static final class DeleteFeedCommnetResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements DeleteFeedCommnetResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.DeleteFeedCommnetResponse)
+      DeleteFeedCommnetResponseOrBuilder {
     // Use DeleteFeedCommnetResponse.newBuilder() to construct.
     private DeleteFeedCommnetResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -31555,7 +31410,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -31577,7 +31431,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -31688,8 +31543,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.DeleteFeedCommnetResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.DeleteFeedCommnetResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.DeleteFeedCommnetResponse)
+        com.wali.live.proto.Feeds.DeleteFeedCommnetResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_descriptor;
@@ -31806,7 +31662,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required uint32 err_code = 1;</code>
@@ -31850,10 +31705,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.DeleteFeedCommnetResponse)
   }
 
-  public interface QueryFeedCommentsRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryFeedCommentsRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.QueryFeedCommentsRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string feed_id = 1;
     /**
      * <code>required string feed_id = 1;</code>
      *
@@ -31880,7 +31735,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // required uint64 ts = 2;
     /**
      * <code>required uint64 ts = 2;</code>
      *
@@ -31898,7 +31752,6 @@ public final class Feeds {
      */
     long getTs();
 
-    // required uint32 limit = 3;
     /**
      * <code>required uint32 limit = 3;</code>
      *
@@ -31916,7 +31769,6 @@ public final class Feeds {
      */
     int getLimit();
 
-    // optional bool is_only_focus = 4;
     /**
      * <code>optional bool is_only_focus = 4;</code>
      *
@@ -31934,7 +31786,6 @@ public final class Feeds {
      */
     boolean getIsOnlyFocus();
 
-    // optional bool is_asc = 5;
     /**
      * <code>optional bool is_asc = 5;</code>
      *
@@ -31952,7 +31803,6 @@ public final class Feeds {
      */
     boolean getIsAsc();
 
-    // optional uint32 type = 6 [default = 0];
     /**
      * <code>optional uint32 type = 6 [default = 0];</code>
      *
@@ -31969,17 +31819,35 @@ public final class Feeds {
      * </pre>
      */
     int getType();
+
+    /**
+     * <code>optional bool is_add_sgc = 7 [default = true];</code>
+     *
+     * <pre>
+     * 是否加上分享产生的评论
+     * </pre>
+     */
+    boolean hasIsAddSgc();
+    /**
+     * <code>optional bool is_add_sgc = 7 [default = true];</code>
+     *
+     * <pre>
+     * 是否加上分享产生的评论
+     * </pre>
+     */
+    boolean getIsAddSgc();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.QueryFeedCommentsRequest}
    *
    * <pre>
-   ********* 拉取评论 zhibo.feeds.query_comment ********
+   ********* zhibo.feeds.query_comment ********
    * </pre>
    */
   public static final class QueryFeedCommentsRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryFeedCommentsRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.QueryFeedCommentsRequest)
+      QueryFeedCommentsRequestOrBuilder {
     // Use QueryFeedCommentsRequest.newBuilder() to construct.
     private QueryFeedCommentsRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -32026,8 +31894,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 16: {
@@ -32053,6 +31922,11 @@ public final class Feeds {
             case 48: {
               bitField0_ |= 0x00000020;
               type_ = input.readUInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              isAddSgc_ = input.readBool();
               break;
             }
           }
@@ -32095,7 +31969,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required string feed_id = 1;
     public static final int FEED_ID_FIELD_NUMBER = 1;
     private java.lang.Object feedId_;
     /**
@@ -32150,7 +32023,6 @@ public final class Feeds {
       }
     }
 
-    // required uint64 ts = 2;
     public static final int TS_FIELD_NUMBER = 2;
     private long ts_;
     /**
@@ -32174,7 +32046,6 @@ public final class Feeds {
       return ts_;
     }
 
-    // required uint32 limit = 3;
     public static final int LIMIT_FIELD_NUMBER = 3;
     private int limit_;
     /**
@@ -32198,7 +32069,6 @@ public final class Feeds {
       return limit_;
     }
 
-    // optional bool is_only_focus = 4;
     public static final int IS_ONLY_FOCUS_FIELD_NUMBER = 4;
     private boolean isOnlyFocus_;
     /**
@@ -32222,7 +32092,6 @@ public final class Feeds {
       return isOnlyFocus_;
     }
 
-    // optional bool is_asc = 5;
     public static final int IS_ASC_FIELD_NUMBER = 5;
     private boolean isAsc_;
     /**
@@ -32246,7 +32115,6 @@ public final class Feeds {
       return isAsc_;
     }
 
-    // optional uint32 type = 6 [default = 0];
     public static final int TYPE_FIELD_NUMBER = 6;
     private int type_;
     /**
@@ -32270,6 +32138,29 @@ public final class Feeds {
       return type_;
     }
 
+    public static final int IS_ADD_SGC_FIELD_NUMBER = 7;
+    private boolean isAddSgc_;
+    /**
+     * <code>optional bool is_add_sgc = 7 [default = true];</code>
+     *
+     * <pre>
+     * 是否加上分享产生的评论
+     * </pre>
+     */
+    public boolean hasIsAddSgc() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional bool is_add_sgc = 7 [default = true];</code>
+     *
+     * <pre>
+     * 是否加上分享产生的评论
+     * </pre>
+     */
+    public boolean getIsAddSgc() {
+      return isAddSgc_;
+    }
+
     private void initFields() {
       feedId_ = "";
       ts_ = 0L;
@@ -32277,11 +32168,13 @@ public final class Feeds {
       isOnlyFocus_ = false;
       isAsc_ = false;
       type_ = 0;
+      isAddSgc_ = true;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFeedId()) {
         memoizedIsInitialized = 0;
@@ -32320,6 +32213,9 @@ public final class Feeds {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeUInt32(6, type_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBool(7, isAddSgc_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -32352,6 +32248,10 @@ public final class Feeds {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(6, type_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, isAddSgc_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -32435,12 +32335,13 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.QueryFeedCommentsRequest}
      *
      * <pre>
-     ********* 拉取评论 zhibo.feeds.query_comment ********
+     ********* zhibo.feeds.query_comment ********
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.QueryFeedCommentsRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.QueryFeedCommentsRequest)
+        com.wali.live.proto.Feeds.QueryFeedCommentsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_QueryFeedCommentsRequest_descriptor;
@@ -32485,6 +32386,8 @@ public final class Feeds {
         bitField0_ = (bitField0_ & ~0x00000010);
         type_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
+        isAddSgc_ = true;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -32537,6 +32440,10 @@ public final class Feeds {
           to_bitField0_ |= 0x00000020;
         }
         result.type_ = type_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.isAddSgc_ = isAddSgc_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -32572,6 +32479,9 @@ public final class Feeds {
         }
         if (other.hasType()) {
           setType(other.getType());
+        }
+        if (other.hasIsAddSgc()) {
+          setIsAddSgc(other.getIsAddSgc());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -32612,7 +32522,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required string feed_id = 1;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feed_id = 1;</code>
@@ -32634,9 +32543,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -32710,7 +32622,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 ts = 2;
       private long ts_ ;
       /**
        * <code>required uint64 ts = 2;</code>
@@ -32759,7 +32670,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint32 limit = 3;
       private int limit_ ;
       /**
        * <code>required uint32 limit = 3;</code>
@@ -32808,7 +32718,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool is_only_focus = 4;
       private boolean isOnlyFocus_ ;
       /**
        * <code>optional bool is_only_focus = 4;</code>
@@ -32857,7 +32766,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool is_asc = 5;
       private boolean isAsc_ ;
       /**
        * <code>optional bool is_asc = 5;</code>
@@ -32906,7 +32814,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 type = 6 [default = 0];
       private int type_ ;
       /**
        * <code>optional uint32 type = 6 [default = 0];</code>
@@ -32955,6 +32862,54 @@ public final class Feeds {
         return this;
       }
 
+      private boolean isAddSgc_ = true;
+      /**
+       * <code>optional bool is_add_sgc = 7 [default = true];</code>
+       *
+       * <pre>
+       * 是否加上分享产生的评论
+       * </pre>
+       */
+      public boolean hasIsAddSgc() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional bool is_add_sgc = 7 [default = true];</code>
+       *
+       * <pre>
+       * 是否加上分享产生的评论
+       * </pre>
+       */
+      public boolean getIsAddSgc() {
+        return isAddSgc_;
+      }
+      /**
+       * <code>optional bool is_add_sgc = 7 [default = true];</code>
+       *
+       * <pre>
+       * 是否加上分享产生的评论
+       * </pre>
+       */
+      public Builder setIsAddSgc(boolean value) {
+        bitField0_ |= 0x00000040;
+        isAddSgc_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_add_sgc = 7 [default = true];</code>
+       *
+       * <pre>
+       * 是否加上分享产生的评论
+       * </pre>
+       */
+      public Builder clearIsAddSgc() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        isAddSgc_ = true;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.QueryFeedCommentsRequest)
     }
 
@@ -32966,10 +32921,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.QueryFeedCommentsRequest)
   }
 
-  public interface QueryFeedCommentsResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryFeedCommentsResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.QueryFeedCommentsResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 err_code = 1;
     /**
      * <code>required uint32 err_code = 1;</code>
      */
@@ -32979,7 +32934,6 @@ public final class Feeds {
      */
     int getErrCode();
 
-    // required uint64 last_ts = 2;
     /**
      * <code>required uint64 last_ts = 2;</code>
      */
@@ -32989,7 +32943,6 @@ public final class Feeds {
      */
     long getLastTs();
 
-    // optional .com.wali.live.proto.FeedComment feed_comment = 3;
     /**
      * <code>optional .com.wali.live.proto.FeedComment feed_comment = 3;</code>
      *
@@ -33015,7 +32968,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.FeedCommentOrBuilder getFeedCommentOrBuilder();
 
-    // optional bool has_more = 4;
     /**
      * <code>optional bool has_more = 4;</code>
      */
@@ -33025,7 +32977,6 @@ public final class Feeds {
      */
     boolean getHasMore();
 
-    // optional string errMsg = 5;
     /**
      * <code>optional string errMsg = 5;</code>
      */
@@ -33044,8 +32995,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.QueryFeedCommentsResponse}
    */
   public static final class QueryFeedCommentsResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryFeedCommentsResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.QueryFeedCommentsResponse)
+      QueryFeedCommentsResponseOrBuilder {
     // Use QueryFeedCommentsResponse.newBuilder() to construct.
     private QueryFeedCommentsResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -33120,8 +33072,9 @@ public final class Feeds {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -33164,7 +33117,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -33180,7 +33132,6 @@ public final class Feeds {
       return errCode_;
     }
 
-    // required uint64 last_ts = 2;
     public static final int LAST_TS_FIELD_NUMBER = 2;
     private long lastTs_;
     /**
@@ -33196,7 +33147,6 @@ public final class Feeds {
       return lastTs_;
     }
 
-    // optional .com.wali.live.proto.FeedComment feed_comment = 3;
     public static final int FEED_COMMENT_FIELD_NUMBER = 3;
     private com.wali.live.proto.Feeds.FeedComment feedComment_;
     /**
@@ -33230,7 +33180,6 @@ public final class Feeds {
       return feedComment_;
     }
 
-    // optional bool has_more = 4;
     public static final int HAS_MORE_FIELD_NUMBER = 4;
     private boolean hasMore_;
     /**
@@ -33246,7 +33195,6 @@ public final class Feeds {
       return hasMore_;
     }
 
-    // optional string errMsg = 5;
     public static final int ERRMSG_FIELD_NUMBER = 5;
     private java.lang.Object errMsg_;
     /**
@@ -33299,7 +33247,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -33448,8 +33397,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.QueryFeedCommentsResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.QueryFeedCommentsResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.QueryFeedCommentsResponse)
+        com.wali.live.proto.Feeds.QueryFeedCommentsResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_QueryFeedCommentsResponse_descriptor;
@@ -33623,7 +33573,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required uint32 err_code = 1;</code>
@@ -33656,7 +33605,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 last_ts = 2;
       private long lastTs_ ;
       /**
        * <code>required uint64 last_ts = 2;</code>
@@ -33689,7 +33637,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.FeedComment feed_comment = 3;
       private com.wali.live.proto.Feeds.FeedComment feedComment_ = com.wali.live.proto.Feeds.FeedComment.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.FeedComment, com.wali.live.proto.Feeds.FeedComment.Builder, com.wali.live.proto.Feeds.FeedCommentOrBuilder> feedCommentBuilder_;
@@ -33834,7 +33781,7 @@ public final class Feeds {
         if (feedCommentBuilder_ == null) {
           feedCommentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.FeedComment, com.wali.live.proto.Feeds.FeedComment.Builder, com.wali.live.proto.Feeds.FeedCommentOrBuilder>(
-                  feedComment_,
+                  getFeedComment(),
                   getParentForChildren(),
                   isClean());
           feedComment_ = null;
@@ -33842,7 +33789,6 @@ public final class Feeds {
         return feedCommentBuilder_;
       }
 
-      // optional bool has_more = 4;
       private boolean hasMore_ ;
       /**
        * <code>optional bool has_more = 4;</code>
@@ -33875,7 +33821,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string errMsg = 5;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 5;</code>
@@ -33889,9 +33834,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -33960,10 +33908,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.QueryFeedCommentsResponse)
   }
 
-  public interface QueryParticularCommentsRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryParticularCommentsRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.QueryParticularCommentsRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string feed_id = 1;
     /**
      * <code>required string feed_id = 1;</code>
      *
@@ -33990,7 +33938,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // required uint64 comment_id = 2;
     /**
      * <code>required uint64 comment_id = 2;</code>
      *
@@ -34008,7 +33955,6 @@ public final class Feeds {
      */
     long getCommentId();
 
-    // optional uint32 up_num = 3;
     /**
      * <code>optional uint32 up_num = 3;</code>
      *
@@ -34026,7 +33972,6 @@ public final class Feeds {
      */
     int getUpNum();
 
-    // optional uint32 down_num = 4;
     /**
      * <code>optional uint32 down_num = 4;</code>
      *
@@ -34052,8 +33997,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class QueryParticularCommentsRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryParticularCommentsRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.QueryParticularCommentsRequest)
+      QueryParticularCommentsRequestOrBuilder {
     // Use QueryParticularCommentsRequest.newBuilder() to construct.
     private QueryParticularCommentsRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -34100,8 +34046,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 16: {
@@ -34159,7 +34106,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required string feed_id = 1;
     public static final int FEED_ID_FIELD_NUMBER = 1;
     private java.lang.Object feedId_;
     /**
@@ -34214,7 +34160,6 @@ public final class Feeds {
       }
     }
 
-    // required uint64 comment_id = 2;
     public static final int COMMENT_ID_FIELD_NUMBER = 2;
     private long commentId_;
     /**
@@ -34238,7 +34183,6 @@ public final class Feeds {
       return commentId_;
     }
 
-    // optional uint32 up_num = 3;
     public static final int UP_NUM_FIELD_NUMBER = 3;
     private int upNum_;
     /**
@@ -34262,7 +34206,6 @@ public final class Feeds {
       return upNum_;
     }
 
-    // optional uint32 down_num = 4;
     public static final int DOWN_NUM_FIELD_NUMBER = 4;
     private int downNum_;
     /**
@@ -34295,7 +34238,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFeedId()) {
         memoizedIsInitialized = 0;
@@ -34435,8 +34379,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.QueryParticularCommentsRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.QueryParticularCommentsRequest)
+        com.wali.live.proto.Feeds.QueryParticularCommentsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_QueryParticularCommentsRequest_descriptor;
@@ -34586,7 +34531,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required string feed_id = 1;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feed_id = 1;</code>
@@ -34608,9 +34552,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -34684,7 +34631,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 comment_id = 2;
       private long commentId_ ;
       /**
        * <code>required uint64 comment_id = 2;</code>
@@ -34733,7 +34679,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 up_num = 3;
       private int upNum_ ;
       /**
        * <code>optional uint32 up_num = 3;</code>
@@ -34782,7 +34727,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 down_num = 4;
       private int downNum_ ;
       /**
        * <code>optional uint32 down_num = 4;</code>
@@ -34842,10 +34786,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.QueryParticularCommentsRequest)
   }
 
-  public interface QueryParticularCommentsResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface QueryParticularCommentsResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.QueryParticularCommentsResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 err_code = 1;
     /**
      * <code>required uint32 err_code = 1;</code>
      */
@@ -34855,7 +34799,6 @@ public final class Feeds {
      */
     int getErrCode();
 
-    // repeated .com.wali.live.proto.CommentInfo comment_infos = 2;
     /**
      * <code>repeated .com.wali.live.proto.CommentInfo comment_infos = 2;</code>
      *
@@ -34900,7 +34843,6 @@ public final class Feeds {
     com.wali.live.proto.Feeds.CommentInfoOrBuilder getCommentInfosOrBuilder(
         int index);
 
-    // optional uint32 up_total = 3;
     /**
      * <code>optional uint32 up_total = 3;</code>
      *
@@ -34918,7 +34860,6 @@ public final class Feeds {
      */
     int getUpTotal();
 
-    // optional uint32 down_total = 4;
     /**
      * <code>optional uint32 down_total = 4;</code>
      *
@@ -34936,7 +34877,6 @@ public final class Feeds {
      */
     int getDownTotal();
 
-    // optional string err_msg = 5;
     /**
      * <code>optional string err_msg = 5;</code>
      *
@@ -34971,8 +34911,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class QueryParticularCommentsResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements QueryParticularCommentsResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.QueryParticularCommentsResponse)
+      QueryParticularCommentsResponseOrBuilder {
     // Use QueryParticularCommentsResponse.newBuilder() to construct.
     private QueryParticularCommentsResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -35042,8 +34983,9 @@ public final class Feeds {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -35089,7 +35031,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -35105,7 +35046,6 @@ public final class Feeds {
       return errCode_;
     }
 
-    // repeated .com.wali.live.proto.CommentInfo comment_infos = 2;
     public static final int COMMENT_INFOS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.Feeds.CommentInfo> commentInfos_;
     /**
@@ -35161,7 +35101,6 @@ public final class Feeds {
       return commentInfos_.get(index);
     }
 
-    // optional uint32 up_total = 3;
     public static final int UP_TOTAL_FIELD_NUMBER = 3;
     private int upTotal_;
     /**
@@ -35185,7 +35124,6 @@ public final class Feeds {
       return upTotal_;
     }
 
-    // optional uint32 down_total = 4;
     public static final int DOWN_TOTAL_FIELD_NUMBER = 4;
     private int downTotal_;
     /**
@@ -35209,7 +35147,6 @@ public final class Feeds {
       return downTotal_;
     }
 
-    // optional string err_msg = 5;
     public static final int ERR_MSG_FIELD_NUMBER = 5;
     private java.lang.Object errMsg_;
     /**
@@ -35274,7 +35211,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -35423,8 +35361,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.QueryParticularCommentsResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.QueryParticularCommentsResponse)
+        com.wali.live.proto.Feeds.QueryParticularCommentsResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_QueryParticularCommentsResponse_descriptor;
@@ -35618,7 +35557,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required uint32 err_code = 1;</code>
@@ -35651,7 +35589,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.CommentInfo comment_infos = 2;
       private java.util.List<com.wali.live.proto.Feeds.CommentInfo> commentInfos_ =
         java.util.Collections.emptyList();
       private void ensureCommentInfosIsMutable() {
@@ -35833,7 +35770,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.CommentInfo> values) {
         if (commentInfosBuilder_ == null) {
           ensureCommentInfosIsMutable();
-          super.addAll(values, commentInfos_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, commentInfos_);
           onChanged();
         } else {
           commentInfosBuilder_.addAllMessages(values);
@@ -35963,7 +35901,6 @@ public final class Feeds {
         return commentInfosBuilder_;
       }
 
-      // optional uint32 up_total = 3;
       private int upTotal_ ;
       /**
        * <code>optional uint32 up_total = 3;</code>
@@ -36012,7 +35949,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 down_total = 4;
       private int downTotal_ ;
       /**
        * <code>optional uint32 down_total = 4;</code>
@@ -36061,7 +35997,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string err_msg = 5;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 5;</code>
@@ -36083,9 +36018,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -36170,10 +36108,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.QueryParticularCommentsResponse)
   }
 
-  public interface CreateFeedsRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateFeedsRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CreateFeedsRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int64 id = 1;
     /**
      * <code>required int64 id = 1;</code>
      *
@@ -36191,7 +36129,6 @@ public final class Feeds {
      */
     long getId();
 
-    // required int32 type = 2;
     /**
      * <code>required int32 type = 2;</code>
      *
@@ -36209,7 +36146,6 @@ public final class Feeds {
      */
     int getType();
 
-    // optional string url = 3;
     /**
      * <code>optional string url = 3;</code>
      *
@@ -36236,7 +36172,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional string cover_page = 4;
     /**
      * <code>optional string cover_page = 4;</code>
      *
@@ -36263,7 +36198,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getCoverPageBytes();
 
-    // optional string desc = 5;
     /**
      * <code>optional string desc = 5;</code>
      *
@@ -36290,7 +36224,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getDescBytes();
 
-    // optional .com.wali.live.proto.Location addr = 6;
     /**
      * <code>optional .com.wali.live.proto.Location addr = 6;</code>
      *
@@ -36316,7 +36249,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.LocationOrBuilder getAddrOrBuilder();
 
-    // optional string client_id = 7;
     /**
      * <code>optional string client_id = 7;</code>
      *
@@ -36343,7 +36275,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getClientIdBytes();
 
-    // optional string md5 = 8;
     /**
      * <code>optional string md5 = 8;</code>
      *
@@ -36370,7 +36301,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getMd5Bytes();
 
-    // optional string title = 9;
     /**
      * <code>optional string title = 9;</code>
      *
@@ -36397,7 +36327,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getTitleBytes();
 
-    // optional uint32 height = 10;
     /**
      * <code>optional uint32 height = 10;</code>
      *
@@ -36415,7 +36344,6 @@ public final class Feeds {
      */
     int getHeight();
 
-    // optional uint32 width = 11;
     /**
      * <code>optional uint32 width = 11;</code>
      *
@@ -36433,7 +36361,6 @@ public final class Feeds {
      */
     int getWidth();
 
-    // optional uint64 duration = 12;
     /**
      * <code>optional uint64 duration = 12;</code>
      *
@@ -36451,7 +36378,6 @@ public final class Feeds {
      */
     long getDuration();
 
-    // optional uint64 file_size = 13;
     /**
      * <code>optional uint64 file_size = 13;</code>
      *
@@ -36469,7 +36395,6 @@ public final class Feeds {
      */
     long getFileSize();
 
-    // optional uint32 ext_type = 14;
     /**
      * <code>optional uint32 ext_type = 14;</code>
      *
@@ -36487,7 +36412,6 @@ public final class Feeds {
      */
     int getExtType();
 
-    // optional bytes ext_data = 15;
     /**
      * <code>optional bytes ext_data = 15;</code>
      *
@@ -36505,7 +36429,6 @@ public final class Feeds {
      */
     com.google.protobuf.ByteString getExtData();
 
-    // optional uint32 channel_id = 16;
     /**
      * <code>optional uint32 channel_id = 16;</code>
      *
@@ -36531,8 +36454,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class CreateFeedsRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateFeedsRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CreateFeedsRequest)
+      CreateFeedsRequestOrBuilder {
     // Use CreateFeedsRequest.newBuilder() to construct.
     private CreateFeedsRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -36589,18 +36513,21 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              coverPage_ = input.readBytes();
+              coverPage_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
             case 50: {
@@ -36617,18 +36544,21 @@ public final class Feeds {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              clientId_ = input.readBytes();
+              clientId_ = bs;
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              md5_ = input.readBytes();
+              md5_ = bs;
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              title_ = input.readBytes();
+              title_ = bs;
               break;
             }
             case 80: {
@@ -36706,7 +36636,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int64 id = 1;
     public static final int ID_FIELD_NUMBER = 1;
     private long id_;
     /**
@@ -36730,7 +36659,6 @@ public final class Feeds {
       return id_;
     }
 
-    // required int32 type = 2;
     public static final int TYPE_FIELD_NUMBER = 2;
     private int type_;
     /**
@@ -36754,7 +36682,6 @@ public final class Feeds {
       return type_;
     }
 
-    // optional string url = 3;
     public static final int URL_FIELD_NUMBER = 3;
     private java.lang.Object url_;
     /**
@@ -36809,7 +36736,6 @@ public final class Feeds {
       }
     }
 
-    // optional string cover_page = 4;
     public static final int COVER_PAGE_FIELD_NUMBER = 4;
     private java.lang.Object coverPage_;
     /**
@@ -36864,7 +36790,6 @@ public final class Feeds {
       }
     }
 
-    // optional string desc = 5;
     public static final int DESC_FIELD_NUMBER = 5;
     private java.lang.Object desc_;
     /**
@@ -36919,7 +36844,6 @@ public final class Feeds {
       }
     }
 
-    // optional .com.wali.live.proto.Location addr = 6;
     public static final int ADDR_FIELD_NUMBER = 6;
     private com.wali.live.proto.Feeds.Location addr_;
     /**
@@ -36953,7 +36877,6 @@ public final class Feeds {
       return addr_;
     }
 
-    // optional string client_id = 7;
     public static final int CLIENT_ID_FIELD_NUMBER = 7;
     private java.lang.Object clientId_;
     /**
@@ -37008,7 +36931,6 @@ public final class Feeds {
       }
     }
 
-    // optional string md5 = 8;
     public static final int MD5_FIELD_NUMBER = 8;
     private java.lang.Object md5_;
     /**
@@ -37063,7 +36985,6 @@ public final class Feeds {
       }
     }
 
-    // optional string title = 9;
     public static final int TITLE_FIELD_NUMBER = 9;
     private java.lang.Object title_;
     /**
@@ -37118,7 +37039,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 height = 10;
     public static final int HEIGHT_FIELD_NUMBER = 10;
     private int height_;
     /**
@@ -37142,7 +37062,6 @@ public final class Feeds {
       return height_;
     }
 
-    // optional uint32 width = 11;
     public static final int WIDTH_FIELD_NUMBER = 11;
     private int width_;
     /**
@@ -37166,7 +37085,6 @@ public final class Feeds {
       return width_;
     }
 
-    // optional uint64 duration = 12;
     public static final int DURATION_FIELD_NUMBER = 12;
     private long duration_;
     /**
@@ -37190,7 +37108,6 @@ public final class Feeds {
       return duration_;
     }
 
-    // optional uint64 file_size = 13;
     public static final int FILE_SIZE_FIELD_NUMBER = 13;
     private long fileSize_;
     /**
@@ -37214,7 +37131,6 @@ public final class Feeds {
       return fileSize_;
     }
 
-    // optional uint32 ext_type = 14;
     public static final int EXT_TYPE_FIELD_NUMBER = 14;
     private int extType_;
     /**
@@ -37238,7 +37154,6 @@ public final class Feeds {
       return extType_;
     }
 
-    // optional bytes ext_data = 15;
     public static final int EXT_DATA_FIELD_NUMBER = 15;
     private com.google.protobuf.ByteString extData_;
     /**
@@ -37262,7 +37177,6 @@ public final class Feeds {
       return extData_;
     }
 
-    // optional uint32 channel_id = 16;
     public static final int CHANNEL_ID_FIELD_NUMBER = 16;
     private int channelId_;
     /**
@@ -37307,7 +37221,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasId()) {
         memoizedIsInitialized = 0;
@@ -37531,8 +37446,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.CreateFeedsRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CreateFeedsRequest)
+        com.wali.live.proto.Feeds.CreateFeedsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_CreateFeedsRequest_descriptor;
@@ -37809,7 +37725,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int64 id = 1;
       private long id_ ;
       /**
        * <code>required int64 id = 1;</code>
@@ -37858,7 +37773,6 @@ public final class Feeds {
         return this;
       }
 
-      // required int32 type = 2;
       private int type_ ;
       /**
        * <code>required int32 type = 2;</code>
@@ -37907,7 +37821,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string url = 3;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 3;</code>
@@ -37929,9 +37842,12 @@ public final class Feeds {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38005,7 +37921,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string cover_page = 4;
       private java.lang.Object coverPage_ = "";
       /**
        * <code>optional string cover_page = 4;</code>
@@ -38027,9 +37942,12 @@ public final class Feeds {
       public java.lang.String getCoverPage() {
         java.lang.Object ref = coverPage_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverPage_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverPage_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38103,7 +38021,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string desc = 5;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 5;</code>
@@ -38125,9 +38042,12 @@ public final class Feeds {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38201,7 +38121,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.Location addr = 6;
       private com.wali.live.proto.Feeds.Location addr_ = com.wali.live.proto.Feeds.Location.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.Location, com.wali.live.proto.Feeds.Location.Builder, com.wali.live.proto.Feeds.LocationOrBuilder> addrBuilder_;
@@ -38346,7 +38265,7 @@ public final class Feeds {
         if (addrBuilder_ == null) {
           addrBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.Location, com.wali.live.proto.Feeds.Location.Builder, com.wali.live.proto.Feeds.LocationOrBuilder>(
-                  addr_,
+                  getAddr(),
                   getParentForChildren(),
                   isClean());
           addr_ = null;
@@ -38354,7 +38273,6 @@ public final class Feeds {
         return addrBuilder_;
       }
 
-      // optional string client_id = 7;
       private java.lang.Object clientId_ = "";
       /**
        * <code>optional string client_id = 7;</code>
@@ -38376,9 +38294,12 @@ public final class Feeds {
       public java.lang.String getClientId() {
         java.lang.Object ref = clientId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          clientId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            clientId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38452,7 +38373,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string md5 = 8;
       private java.lang.Object md5_ = "";
       /**
        * <code>optional string md5 = 8;</code>
@@ -38474,9 +38394,12 @@ public final class Feeds {
       public java.lang.String getMd5() {
         java.lang.Object ref = md5_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          md5_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            md5_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38550,7 +38473,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string title = 9;
       private java.lang.Object title_ = "";
       /**
        * <code>optional string title = 9;</code>
@@ -38572,9 +38494,12 @@ public final class Feeds {
       public java.lang.String getTitle() {
         java.lang.Object ref = title_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          title_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -38648,7 +38573,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 height = 10;
       private int height_ ;
       /**
        * <code>optional uint32 height = 10;</code>
@@ -38697,7 +38621,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 width = 11;
       private int width_ ;
       /**
        * <code>optional uint32 width = 11;</code>
@@ -38746,7 +38669,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 duration = 12;
       private long duration_ ;
       /**
        * <code>optional uint64 duration = 12;</code>
@@ -38795,7 +38717,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 file_size = 13;
       private long fileSize_ ;
       /**
        * <code>optional uint64 file_size = 13;</code>
@@ -38844,7 +38765,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 ext_type = 14;
       private int extType_ ;
       /**
        * <code>optional uint32 ext_type = 14;</code>
@@ -38893,7 +38813,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bytes ext_data = 15;
       private com.google.protobuf.ByteString extData_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes ext_data = 15;</code>
@@ -38945,7 +38864,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 channel_id = 16;
       private int channelId_ ;
       /**
        * <code>optional uint32 channel_id = 16;</code>
@@ -39005,10 +38923,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.CreateFeedsRequest)
   }
 
-  public interface LocationOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LocationOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Location)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional double lon = 1;
     /**
      * <code>optional double lon = 1;</code>
      *
@@ -39026,7 +38944,6 @@ public final class Feeds {
      */
     double getLon();
 
-    // optional double lat = 2;
     /**
      * <code>optional double lat = 2;</code>
      *
@@ -39044,7 +38961,6 @@ public final class Feeds {
      */
     double getLat();
 
-    // optional string country = 3;
     /**
      * <code>optional string country = 3;</code>
      *
@@ -39071,7 +38987,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getCountryBytes();
 
-    // optional string province = 4;
     /**
      * <code>optional string province = 4;</code>
      *
@@ -39098,7 +39013,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getProvinceBytes();
 
-    // optional string city = 5;
     /**
      * <code>optional string city = 5;</code>
      *
@@ -39125,7 +39039,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getCityBytes();
 
-    // optional uint32 type = 6;
     /**
      * <code>optional uint32 type = 6;</code>
      *
@@ -39147,8 +39060,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.Location}
    */
   public static final class Location extends
-      com.google.protobuf.GeneratedMessage
-      implements LocationOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Location)
+      LocationOrBuilder {
     // Use Location.newBuilder() to construct.
     private Location(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -39205,18 +39119,21 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              country_ = input.readBytes();
+              country_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              province_ = input.readBytes();
+              province_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              city_ = input.readBytes();
+              city_ = bs;
               break;
             }
             case 48: {
@@ -39264,7 +39181,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional double lon = 1;
     public static final int LON_FIELD_NUMBER = 1;
     private double lon_;
     /**
@@ -39288,7 +39204,6 @@ public final class Feeds {
       return lon_;
     }
 
-    // optional double lat = 2;
     public static final int LAT_FIELD_NUMBER = 2;
     private double lat_;
     /**
@@ -39312,7 +39227,6 @@ public final class Feeds {
       return lat_;
     }
 
-    // optional string country = 3;
     public static final int COUNTRY_FIELD_NUMBER = 3;
     private java.lang.Object country_;
     /**
@@ -39367,7 +39281,6 @@ public final class Feeds {
       }
     }
 
-    // optional string province = 4;
     public static final int PROVINCE_FIELD_NUMBER = 4;
     private java.lang.Object province_;
     /**
@@ -39422,7 +39335,6 @@ public final class Feeds {
       }
     }
 
-    // optional string city = 5;
     public static final int CITY_FIELD_NUMBER = 5;
     private java.lang.Object city_;
     /**
@@ -39477,7 +39389,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 type = 6;
     public static final int TYPE_FIELD_NUMBER = 6;
     private int type_;
     /**
@@ -39512,7 +39423,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -39654,8 +39566,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.Location}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.LocationOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Location)
+        com.wali.live.proto.Feeds.LocationOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_Location_descriptor;
@@ -39819,7 +39732,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional double lon = 1;
       private double lon_ ;
       /**
        * <code>optional double lon = 1;</code>
@@ -39868,7 +39780,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional double lat = 2;
       private double lat_ ;
       /**
        * <code>optional double lat = 2;</code>
@@ -39917,7 +39828,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string country = 3;
       private java.lang.Object country_ = "";
       /**
        * <code>optional string country = 3;</code>
@@ -39939,9 +39849,12 @@ public final class Feeds {
       public java.lang.String getCountry() {
         java.lang.Object ref = country_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          country_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            country_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -40015,7 +39928,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string province = 4;
       private java.lang.Object province_ = "";
       /**
        * <code>optional string province = 4;</code>
@@ -40037,9 +39949,12 @@ public final class Feeds {
       public java.lang.String getProvince() {
         java.lang.Object ref = province_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          province_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            province_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -40113,7 +40028,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string city = 5;
       private java.lang.Object city_ = "";
       /**
        * <code>optional string city = 5;</code>
@@ -40135,9 +40049,12 @@ public final class Feeds {
       public java.lang.String getCity() {
         java.lang.Object ref = city_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          city_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            city_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -40211,7 +40128,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 type = 6;
       private int type_ ;
       /**
        * <code>optional uint32 type = 6;</code>
@@ -40271,10 +40187,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Location)
   }
 
-  public interface CreateFeedsResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface CreateFeedsResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.CreateFeedsResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int32 err_code = 1;
     /**
      * <code>required int32 err_code = 1;</code>
      *
@@ -40292,7 +40208,6 @@ public final class Feeds {
      */
     int getErrCode();
 
-    // optional string feed_id = 2;
     /**
      * <code>optional string feed_id = 2;</code>
      *
@@ -40316,7 +40231,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional int64 create_time = 3;
     /**
      * <code>optional int64 create_time = 3;</code>
      *
@@ -40334,7 +40248,6 @@ public final class Feeds {
      */
     long getCreateTime();
 
-    // optional string err_msg = 4;
     /**
      * <code>optional string err_msg = 4;</code>
      *
@@ -40361,7 +40274,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional string share_url = 5;
     /**
      * <code>optional string share_url = 5;</code>
      *
@@ -40392,8 +40304,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.CreateFeedsResponse}
    */
   public static final class CreateFeedsResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements CreateFeedsResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.CreateFeedsResponse)
+      CreateFeedsResponseOrBuilder {
     // Use CreateFeedsResponse.newBuilder() to construct.
     private CreateFeedsResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -40445,8 +40358,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -40455,13 +40369,15 @@ public final class Feeds {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              shareUrl_ = input.readBytes();
+              shareUrl_ = bs;
               break;
             }
           }
@@ -40504,7 +40420,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -40528,7 +40443,6 @@ public final class Feeds {
       return errCode_;
     }
 
-    // optional string feed_id = 2;
     public static final int FEED_ID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -40580,7 +40494,6 @@ public final class Feeds {
       }
     }
 
-    // optional int64 create_time = 3;
     public static final int CREATE_TIME_FIELD_NUMBER = 3;
     private long createTime_;
     /**
@@ -40604,7 +40517,6 @@ public final class Feeds {
       return createTime_;
     }
 
-    // optional string err_msg = 4;
     public static final int ERR_MSG_FIELD_NUMBER = 4;
     private java.lang.Object errMsg_;
     /**
@@ -40659,7 +40571,6 @@ public final class Feeds {
       }
     }
 
-    // optional string share_url = 5;
     public static final int SHARE_URL_FIELD_NUMBER = 5;
     private java.lang.Object shareUrl_;
     /**
@@ -40724,7 +40635,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -40863,8 +40775,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.CreateFeedsResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.CreateFeedsResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.CreateFeedsResponse)
+        com.wali.live.proto.Feeds.CreateFeedsResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_CreateFeedsResponse_descriptor;
@@ -41023,7 +40936,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required int32 err_code = 1;</code>
@@ -41072,7 +40984,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string feed_id = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>optional string feed_id = 2;</code>
@@ -41092,9 +41003,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41164,7 +41078,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int64 create_time = 3;
       private long createTime_ ;
       /**
        * <code>optional int64 create_time = 3;</code>
@@ -41213,7 +41126,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string err_msg = 4;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 4;</code>
@@ -41235,9 +41147,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41311,7 +41226,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string share_url = 5;
       private java.lang.Object shareUrl_ = "";
       /**
        * <code>optional string share_url = 5;</code>
@@ -41333,9 +41247,12 @@ public final class Feeds {
       public java.lang.String getShareUrl() {
         java.lang.Object ref = shareUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          shareUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            shareUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -41420,10 +41337,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.CreateFeedsResponse)
   }
 
-  public interface DeleteFeedsRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface DeleteFeedsRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.DeleteFeedsRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int64 id = 1;
     /**
      * <code>required int64 id = 1;</code>
      *
@@ -41441,7 +41358,6 @@ public final class Feeds {
      */
     long getId();
 
-    // required string feed_id = 2;
     /**
      * <code>required string feed_id = 2;</code>
      *
@@ -41468,7 +41384,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional int32 type = 3;
     /**
      * <code>optional int32 type = 3;</code>
      *
@@ -41494,8 +41409,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class DeleteFeedsRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements DeleteFeedsRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.DeleteFeedsRequest)
+      DeleteFeedsRequestOrBuilder {
     // Use DeleteFeedsRequest.newBuilder() to construct.
     private DeleteFeedsRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -41547,8 +41463,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -41596,7 +41513,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int64 id = 1;
     public static final int ID_FIELD_NUMBER = 1;
     private long id_;
     /**
@@ -41620,7 +41536,6 @@ public final class Feeds {
       return id_;
     }
 
-    // required string feed_id = 2;
     public static final int FEED_ID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -41675,7 +41590,6 @@ public final class Feeds {
       }
     }
 
-    // optional int32 type = 3;
     public static final int TYPE_FIELD_NUMBER = 3;
     private int type_;
     /**
@@ -41707,7 +41621,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasId()) {
         memoizedIsInitialized = 0;
@@ -41840,8 +41755,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.DeleteFeedsRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.DeleteFeedsRequest)
+        com.wali.live.proto.Feeds.DeleteFeedsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_DeleteFeedsRequest_descriptor;
@@ -41982,7 +41898,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int64 id = 1;
       private long id_ ;
       /**
        * <code>required int64 id = 1;</code>
@@ -42031,7 +41946,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feed_id = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feed_id = 2;</code>
@@ -42053,9 +41967,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -42129,7 +42046,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int32 type = 3;
       private int type_ ;
       /**
        * <code>optional int32 type = 3;</code>
@@ -42189,10 +42105,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.DeleteFeedsRequest)
   }
 
-  public interface DeleteFeedsResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface DeleteFeedsResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.DeleteFeedsResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int32 err_code = 1;
     /**
      * <code>required int32 err_code = 1;</code>
      *
@@ -42210,7 +42126,6 @@ public final class Feeds {
      */
     int getErrCode();
 
-    // optional string err_msg = 2;
     /**
      * <code>optional string err_msg = 2;</code>
      *
@@ -42241,8 +42156,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.DeleteFeedsResponse}
    */
   public static final class DeleteFeedsResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements DeleteFeedsResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.DeleteFeedsResponse)
+      DeleteFeedsResponseOrBuilder {
     // Use DeleteFeedsResponse.newBuilder() to construct.
     private DeleteFeedsResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -42294,8 +42210,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
           }
@@ -42338,7 +42255,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -42362,7 +42278,6 @@ public final class Feeds {
       return errCode_;
     }
 
-    // optional string err_msg = 2;
     public static final int ERR_MSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -42424,7 +42339,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -42542,8 +42458,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.DeleteFeedsResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.DeleteFeedsResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.DeleteFeedsResponse)
+        com.wali.live.proto.Feeds.DeleteFeedsResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_DeleteFeedsResponse_descriptor;
@@ -42671,7 +42588,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required int32 err_code = 1;</code>
@@ -42720,7 +42636,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string err_msg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string err_msg = 2;</code>
@@ -42742,9 +42657,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -42829,10 +42747,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.DeleteFeedsResponse)
   }
 
-  public interface GetNewFeedRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetNewFeedRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetNewFeedRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int64 uid = 1;
     /**
      * <code>required int64 uid = 1;</code>
      */
@@ -42842,7 +42760,6 @@ public final class Feeds {
      */
     long getUid();
 
-    // required int64 last_update_time = 2;
     /**
      * <code>required int64 last_update_time = 2;</code>
      */
@@ -42860,8 +42777,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetNewFeedRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetNewFeedRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetNewFeedRequest)
+      GetNewFeedRequestOrBuilder {
     // Use GetNewFeedRequest.newBuilder() to construct.
     private GetNewFeedRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -42957,7 +42875,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int64 uid = 1;
     public static final int UID_FIELD_NUMBER = 1;
     private long uid_;
     /**
@@ -42973,7 +42890,6 @@ public final class Feeds {
       return uid_;
     }
 
-    // required int64 last_update_time = 2;
     public static final int LAST_UPDATE_TIME_FIELD_NUMBER = 2;
     private long lastUpdateTime_;
     /**
@@ -42996,7 +42912,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUid()) {
         memoizedIsInitialized = 0;
@@ -43122,8 +43039,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetNewFeedRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetNewFeedRequest)
+        com.wali.live.proto.Feeds.GetNewFeedRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetNewFeedRequest_descriptor;
@@ -43253,7 +43171,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int64 uid = 1;
       private long uid_ ;
       /**
        * <code>required int64 uid = 1;</code>
@@ -43286,7 +43203,6 @@ public final class Feeds {
         return this;
       }
 
-      // required int64 last_update_time = 2;
       private long lastUpdateTime_ ;
       /**
        * <code>required int64 last_update_time = 2;</code>
@@ -43330,10 +43246,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetNewFeedRequest)
   }
 
-  public interface GetNewFeedResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetNewFeedResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetNewFeedResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int32 err_code = 1;
     /**
      * <code>required int32 err_code = 1;</code>
      */
@@ -43343,7 +43259,6 @@ public final class Feeds {
      */
     int getErrCode();
 
-    // optional int64 new_uid = 2;
     /**
      * <code>optional int64 new_uid = 2;</code>
      */
@@ -43353,7 +43268,6 @@ public final class Feeds {
      */
     long getNewUid();
 
-    // optional uint64 new_uid_icon = 3;
     /**
      * <code>optional uint64 new_uid_icon = 3;</code>
      */
@@ -43363,7 +43277,6 @@ public final class Feeds {
      */
     long getNewUidIcon();
 
-    // optional string new_feed_id = 4;
     /**
      * <code>optional string new_feed_id = 4;</code>
      */
@@ -43378,7 +43291,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getNewFeedIdBytes();
 
-    // optional int64 last_update_time = 5;
     /**
      * <code>optional int64 last_update_time = 5;</code>
      */
@@ -43392,8 +43304,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.GetNewFeedResponse}
    */
   public static final class GetNewFeedResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetNewFeedResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetNewFeedResponse)
+      GetNewFeedResponseOrBuilder {
     // Use GetNewFeedResponse.newBuilder() to construct.
     private GetNewFeedResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -43455,8 +43368,9 @@ public final class Feeds {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              newFeedId_ = input.readBytes();
+              newFeedId_ = bs;
               break;
             }
             case 40: {
@@ -43504,7 +43418,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required int32 err_code = 1;
     public static final int ERR_CODE_FIELD_NUMBER = 1;
     private int errCode_;
     /**
@@ -43520,7 +43433,6 @@ public final class Feeds {
       return errCode_;
     }
 
-    // optional int64 new_uid = 2;
     public static final int NEW_UID_FIELD_NUMBER = 2;
     private long newUid_;
     /**
@@ -43536,7 +43448,6 @@ public final class Feeds {
       return newUid_;
     }
 
-    // optional uint64 new_uid_icon = 3;
     public static final int NEW_UID_ICON_FIELD_NUMBER = 3;
     private long newUidIcon_;
     /**
@@ -43552,7 +43463,6 @@ public final class Feeds {
       return newUidIcon_;
     }
 
-    // optional string new_feed_id = 4;
     public static final int NEW_FEED_ID_FIELD_NUMBER = 4;
     private java.lang.Object newFeedId_;
     /**
@@ -43595,7 +43505,6 @@ public final class Feeds {
       }
     }
 
-    // optional int64 last_update_time = 5;
     public static final int LAST_UPDATE_TIME_FIELD_NUMBER = 5;
     private long lastUpdateTime_;
     /**
@@ -43621,7 +43530,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasErrCode()) {
         memoizedIsInitialized = 0;
@@ -43760,8 +43670,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.GetNewFeedResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetNewFeedResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetNewFeedResponse)
+        com.wali.live.proto.Feeds.GetNewFeedResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetNewFeedResponse_descriptor;
@@ -43916,7 +43827,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required int32 err_code = 1;
       private int errCode_ ;
       /**
        * <code>required int32 err_code = 1;</code>
@@ -43949,7 +43859,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int64 new_uid = 2;
       private long newUid_ ;
       /**
        * <code>optional int64 new_uid = 2;</code>
@@ -43982,7 +43891,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 new_uid_icon = 3;
       private long newUidIcon_ ;
       /**
        * <code>optional uint64 new_uid_icon = 3;</code>
@@ -44015,7 +43923,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string new_feed_id = 4;
       private java.lang.Object newFeedId_ = "";
       /**
        * <code>optional string new_feed_id = 4;</code>
@@ -44029,9 +43936,12 @@ public final class Feeds {
       public java.lang.String getNewFeedId() {
         java.lang.Object ref = newFeedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          newFeedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            newFeedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -44089,7 +43999,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int64 last_update_time = 5;
       private long lastUpdateTime_ ;
       /**
        * <code>optional int64 last_update_time = 5;</code>
@@ -44133,10 +44042,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetNewFeedResponse)
   }
 
-  public interface SetFeedsStatInfoReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface SetFeedsStatInfoReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.SetFeedsStatInfoReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string feed_id = 1;
     /**
      * <code>required string feed_id = 1;</code>
      */
@@ -44151,7 +44060,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional int64 feed_owner_id = 2;
     /**
      * <code>optional int64 feed_owner_id = 2;</code>
      */
@@ -44161,7 +44069,6 @@ public final class Feeds {
      */
     long getFeedOwnerId();
 
-    // optional int32 type = 3;
     /**
      * <code>optional int32 type = 3;</code>
      *
@@ -44187,8 +44094,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class SetFeedsStatInfoReq extends
-      com.google.protobuf.GeneratedMessage
-      implements SetFeedsStatInfoReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.SetFeedsStatInfoReq)
+      SetFeedsStatInfoReqOrBuilder {
     // Use SetFeedsStatInfoReq.newBuilder() to construct.
     private SetFeedsStatInfoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -44235,8 +44143,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 16: {
@@ -44289,7 +44198,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required string feed_id = 1;
     public static final int FEED_ID_FIELD_NUMBER = 1;
     private java.lang.Object feedId_;
     /**
@@ -44332,7 +44240,6 @@ public final class Feeds {
       }
     }
 
-    // optional int64 feed_owner_id = 2;
     public static final int FEED_OWNER_ID_FIELD_NUMBER = 2;
     private long feedOwnerId_;
     /**
@@ -44348,7 +44255,6 @@ public final class Feeds {
       return feedOwnerId_;
     }
 
-    // optional int32 type = 3;
     public static final int TYPE_FIELD_NUMBER = 3;
     private int type_;
     /**
@@ -44380,7 +44286,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFeedId()) {
         memoizedIsInitialized = 0;
@@ -44509,8 +44416,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.SetFeedsStatInfoReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.SetFeedsStatInfoReq)
+        com.wali.live.proto.Feeds.SetFeedsStatInfoReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_SetFeedsStatInfoReq_descriptor;
@@ -44647,7 +44555,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required string feed_id = 1;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feed_id = 1;</code>
@@ -44661,9 +44568,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -44721,7 +44631,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int64 feed_owner_id = 2;
       private long feedOwnerId_ ;
       /**
        * <code>optional int64 feed_owner_id = 2;</code>
@@ -44754,7 +44663,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int32 type = 3;
       private int type_ ;
       /**
        * <code>optional int32 type = 3;</code>
@@ -44814,10 +44722,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.SetFeedsStatInfoReq)
   }
 
-  public interface SetFeedsStatInfoRespOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface SetFeedsStatInfoRespOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.SetFeedsStatInfoResp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 code = 1;
     /**
      * <code>required uint32 code = 1;</code>
      */
@@ -44827,7 +44735,6 @@ public final class Feeds {
      */
     int getCode();
 
-    // optional string errMsg = 2;
     /**
      * <code>optional string errMsg = 2;</code>
      */
@@ -44842,7 +44749,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getErrMsgBytes();
 
-    // optional int64 viewcount = 3;
     /**
      * <code>optional int64 viewcount = 3;</code>
      *
@@ -44864,8 +44770,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.SetFeedsStatInfoResp}
    */
   public static final class SetFeedsStatInfoResp extends
-      com.google.protobuf.GeneratedMessage
-      implements SetFeedsStatInfoRespOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.SetFeedsStatInfoResp)
+      SetFeedsStatInfoRespOrBuilder {
     // Use SetFeedsStatInfoResp.newBuilder() to construct.
     private SetFeedsStatInfoResp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -44917,8 +44824,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              errMsg_ = input.readBytes();
+              errMsg_ = bs;
               break;
             }
             case 24: {
@@ -44966,7 +44874,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 code = 1;
     public static final int CODE_FIELD_NUMBER = 1;
     private int code_;
     /**
@@ -44982,7 +44889,6 @@ public final class Feeds {
       return code_;
     }
 
-    // optional string errMsg = 2;
     public static final int ERRMSG_FIELD_NUMBER = 2;
     private java.lang.Object errMsg_;
     /**
@@ -45025,7 +44931,6 @@ public final class Feeds {
       }
     }
 
-    // optional int64 viewcount = 3;
     public static final int VIEWCOUNT_FIELD_NUMBER = 3;
     private long viewcount_;
     /**
@@ -45057,7 +44962,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasCode()) {
         memoizedIsInitialized = 0;
@@ -45182,8 +45088,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.SetFeedsStatInfoResp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.SetFeedsStatInfoRespOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.SetFeedsStatInfoResp)
+        com.wali.live.proto.Feeds.SetFeedsStatInfoRespOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_SetFeedsStatInfoResp_descriptor;
@@ -45320,7 +45227,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 code = 1;
       private int code_ ;
       /**
        * <code>required uint32 code = 1;</code>
@@ -45353,7 +45259,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string errMsg = 2;
       private java.lang.Object errMsg_ = "";
       /**
        * <code>optional string errMsg = 2;</code>
@@ -45367,9 +45272,12 @@ public final class Feeds {
       public java.lang.String getErrMsg() {
         java.lang.Object ref = errMsg_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          errMsg_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -45427,7 +45335,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional int64 viewcount = 3;
       private long viewcount_ ;
       /**
        * <code>optional int64 viewcount = 3;</code>
@@ -45487,10 +45394,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.SetFeedsStatInfoResp)
   }
 
-  public interface RoomRecordOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface RoomRecordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RoomRecord)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint64 host_id = 1;
     /**
      * <code>optional uint64 host_id = 1;</code>
      *
@@ -45508,7 +45415,6 @@ public final class Feeds {
      */
     long getHostId();
 
-    // optional string room_id = 2;
     /**
      * <code>optional string room_id = 2;</code>
      *
@@ -45535,7 +45441,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getRoomIdBytes();
 
-    // optional uint32 liType = 3;
     /**
      * <code>optional uint32 liType = 3;</code>
      *
@@ -45553,7 +45458,6 @@ public final class Feeds {
      */
     int getLiType();
 
-    // optional uint32 app_type = 4;
     /**
      * <code>optional uint32 app_type = 4;</code>
      *
@@ -45571,7 +45475,6 @@ public final class Feeds {
      */
     int getAppType();
 
-    // optional string room_title = 5;
     /**
      * <code>optional string room_title = 5;</code>
      *
@@ -45598,7 +45501,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getRoomTitleBytes();
 
-    // optional string live_cover = 6;
     /**
      * <code>optional string live_cover = 6;</code>
      *
@@ -45633,8 +45535,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class RoomRecord extends
-      com.google.protobuf.GeneratedMessage
-      implements RoomRecordOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RoomRecord)
+      RoomRecordOrBuilder {
     // Use RoomRecord.newBuilder() to construct.
     private RoomRecord(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -45686,8 +45589,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              roomId_ = input.readBytes();
+              roomId_ = bs;
               break;
             }
             case 24: {
@@ -45701,13 +45605,15 @@ public final class Feeds {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              roomTitle_ = input.readBytes();
+              roomTitle_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              liveCover_ = input.readBytes();
+              liveCover_ = bs;
               break;
             }
           }
@@ -45750,7 +45656,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional uint64 host_id = 1;
     public static final int HOST_ID_FIELD_NUMBER = 1;
     private long hostId_;
     /**
@@ -45774,7 +45679,6 @@ public final class Feeds {
       return hostId_;
     }
 
-    // optional string room_id = 2;
     public static final int ROOM_ID_FIELD_NUMBER = 2;
     private java.lang.Object roomId_;
     /**
@@ -45829,7 +45733,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 liType = 3;
     public static final int LITYPE_FIELD_NUMBER = 3;
     private int liType_;
     /**
@@ -45853,7 +45756,6 @@ public final class Feeds {
       return liType_;
     }
 
-    // optional uint32 app_type = 4;
     public static final int APP_TYPE_FIELD_NUMBER = 4;
     private int appType_;
     /**
@@ -45877,7 +45779,6 @@ public final class Feeds {
       return appType_;
     }
 
-    // optional string room_title = 5;
     public static final int ROOM_TITLE_FIELD_NUMBER = 5;
     private java.lang.Object roomTitle_;
     /**
@@ -45932,7 +45833,6 @@ public final class Feeds {
       }
     }
 
-    // optional string live_cover = 6;
     public static final int LIVE_COVER_FIELD_NUMBER = 6;
     private java.lang.Object liveCover_;
     /**
@@ -45998,7 +45898,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -46144,8 +46045,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.RoomRecordOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RoomRecord)
+        com.wali.live.proto.Feeds.RoomRecordOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_RoomRecord_descriptor;
@@ -46309,7 +46211,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional uint64 host_id = 1;
       private long hostId_ ;
       /**
        * <code>optional uint64 host_id = 1;</code>
@@ -46358,7 +46259,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string room_id = 2;
       private java.lang.Object roomId_ = "";
       /**
        * <code>optional string room_id = 2;</code>
@@ -46380,9 +46280,12 @@ public final class Feeds {
       public java.lang.String getRoomId() {
         java.lang.Object ref = roomId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -46456,7 +46359,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 liType = 3;
       private int liType_ ;
       /**
        * <code>optional uint32 liType = 3;</code>
@@ -46505,7 +46407,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 app_type = 4;
       private int appType_ ;
       /**
        * <code>optional uint32 app_type = 4;</code>
@@ -46554,7 +46455,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string room_title = 5;
       private java.lang.Object roomTitle_ = "";
       /**
        * <code>optional string room_title = 5;</code>
@@ -46576,9 +46476,12 @@ public final class Feeds {
       public java.lang.String getRoomTitle() {
         java.lang.Object ref = roomTitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          roomTitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomTitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -46652,7 +46555,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string live_cover = 6;
       private java.lang.Object liveCover_ = "";
       /**
        * <code>optional string live_cover = 6;</code>
@@ -46674,9 +46576,12 @@ public final class Feeds {
       public java.lang.String getLiveCover() {
         java.lang.Object ref = liveCover_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liveCover_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveCover_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -46761,10 +46666,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.RoomRecord)
   }
 
-  public interface BlogFeedOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface BlogFeedOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.BlogFeed)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated .com.wali.live.proto.MultiMedia multi_media = 1;
     /**
      * <code>repeated .com.wali.live.proto.MultiMedia multi_media = 1;</code>
      */
@@ -46789,7 +46694,6 @@ public final class Feeds {
     com.wali.live.proto.Feeds.MultiMediaOrBuilder getMultiMediaOrBuilder(
         int index);
 
-    // repeated .com.wali.live.proto.UserShow refered_users = 2;
     /**
      * <code>repeated .com.wali.live.proto.UserShow refered_users = 2;</code>
      */
@@ -46814,7 +46718,6 @@ public final class Feeds {
     com.wali.live.proto.LiveShowProto.UserShowOrBuilder getReferedUsersOrBuilder(
         int index);
 
-    // optional uint32 max_item_id = 3;
     /**
      * <code>optional uint32 max_item_id = 3;</code>
      *
@@ -46832,7 +46735,6 @@ public final class Feeds {
      */
     int getMaxItemId();
 
-    // optional uint32 cp_id = 4;
     /**
      * <code>optional uint32 cp_id = 4;</code>
      *
@@ -46858,8 +46760,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class BlogFeed extends
-      com.google.protobuf.GeneratedMessage
-      implements BlogFeedOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.BlogFeed)
+      BlogFeedOrBuilder {
     // Use BlogFeed.newBuilder() to construct.
     private BlogFeed(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -46977,7 +46880,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // repeated .com.wali.live.proto.MultiMedia multi_media = 1;
     public static final int MULTI_MEDIA_FIELD_NUMBER = 1;
     private java.util.List<com.wali.live.proto.Feeds.MultiMedia> multiMedia_;
     /**
@@ -47013,7 +46915,6 @@ public final class Feeds {
       return multiMedia_.get(index);
     }
 
-    // repeated .com.wali.live.proto.UserShow refered_users = 2;
     public static final int REFERED_USERS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.LiveShowProto.UserShow> referedUsers_;
     /**
@@ -47049,7 +46950,6 @@ public final class Feeds {
       return referedUsers_.get(index);
     }
 
-    // optional uint32 max_item_id = 3;
     public static final int MAX_ITEM_ID_FIELD_NUMBER = 3;
     private int maxItemId_;
     /**
@@ -47073,7 +46973,6 @@ public final class Feeds {
       return maxItemId_;
     }
 
-    // optional uint32 cp_id = 4;
     public static final int CP_ID_FIELD_NUMBER = 4;
     private int cpId_;
     /**
@@ -47106,7 +47005,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       for (int i = 0; i < getReferedUsersCount(); i++) {
         if (!getReferedUsers(i).isInitialized()) {
@@ -47244,8 +47144,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.BlogFeedOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.BlogFeed)
+        com.wali.live.proto.Feeds.BlogFeedOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_BlogFeed_descriptor;
@@ -47457,7 +47358,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // repeated .com.wali.live.proto.MultiMedia multi_media = 1;
       private java.util.List<com.wali.live.proto.Feeds.MultiMedia> multiMedia_ =
         java.util.Collections.emptyList();
       private void ensureMultiMediaIsMutable() {
@@ -47599,7 +47499,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.MultiMedia> values) {
         if (multiMediaBuilder_ == null) {
           ensureMultiMediaIsMutable();
-          super.addAll(values, multiMedia_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, multiMedia_);
           onChanged();
         } else {
           multiMediaBuilder_.addAllMessages(values);
@@ -47697,7 +47598,6 @@ public final class Feeds {
         return multiMediaBuilder_;
       }
 
-      // repeated .com.wali.live.proto.UserShow refered_users = 2;
       private java.util.List<com.wali.live.proto.LiveShowProto.UserShow> referedUsers_ =
         java.util.Collections.emptyList();
       private void ensureReferedUsersIsMutable() {
@@ -47839,7 +47739,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.LiveShowProto.UserShow> values) {
         if (referedUsersBuilder_ == null) {
           ensureReferedUsersIsMutable();
-          super.addAll(values, referedUsers_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, referedUsers_);
           onChanged();
         } else {
           referedUsersBuilder_.addAllMessages(values);
@@ -47937,7 +47838,6 @@ public final class Feeds {
         return referedUsersBuilder_;
       }
 
-      // optional uint32 max_item_id = 3;
       private int maxItemId_ ;
       /**
        * <code>optional uint32 max_item_id = 3;</code>
@@ -47986,7 +47886,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 cp_id = 4;
       private int cpId_ ;
       /**
        * <code>optional uint32 cp_id = 4;</code>
@@ -48046,10 +47945,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.BlogFeed)
   }
 
-  public interface MultiMediaOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface MultiMediaOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.MultiMedia)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 media_type = 1;
     /**
      * <code>optional uint32 media_type = 1;</code>
      *
@@ -48067,7 +47966,6 @@ public final class Feeds {
      */
     int getMediaType();
 
-    // optional bytes media_data = 2;
     /**
      * <code>optional bytes media_data = 2;</code>
      *
@@ -48085,7 +47983,6 @@ public final class Feeds {
      */
     com.google.protobuf.ByteString getMediaData();
 
-    // optional uint32 id = 5;
     /**
      * <code>optional uint32 id = 5;</code>
      *
@@ -48107,8 +48004,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.MultiMedia}
    */
   public static final class MultiMedia extends
-      com.google.protobuf.GeneratedMessage
-      implements MultiMediaOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.MultiMedia)
+      MultiMediaOrBuilder {
     // Use MultiMedia.newBuilder() to construct.
     private MultiMedia(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -48209,7 +48107,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional uint32 media_type = 1;
     public static final int MEDIA_TYPE_FIELD_NUMBER = 1;
     private int mediaType_;
     /**
@@ -48233,7 +48130,6 @@ public final class Feeds {
       return mediaType_;
     }
 
-    // optional bytes media_data = 2;
     public static final int MEDIA_DATA_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString mediaData_;
     /**
@@ -48257,7 +48153,6 @@ public final class Feeds {
       return mediaData_;
     }
 
-    // optional uint32 id = 5;
     public static final int ID_FIELD_NUMBER = 5;
     private int id_;
     /**
@@ -48289,7 +48184,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -48410,8 +48306,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.MultiMedia}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.MultiMediaOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.MultiMedia)
+        com.wali.live.proto.Feeds.MultiMediaOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_MultiMedia_descriptor;
@@ -48542,7 +48439,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional uint32 media_type = 1;
       private int mediaType_ ;
       /**
        * <code>optional uint32 media_type = 1;</code>
@@ -48591,7 +48487,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bytes media_data = 2;
       private com.google.protobuf.ByteString mediaData_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes media_data = 2;</code>
@@ -48643,7 +48538,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 id = 5;
       private int id_ ;
       /**
        * <code>optional uint32 id = 5;</code>
@@ -48703,10 +48597,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.MultiMedia)
   }
 
-  public interface PictureOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface PictureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Picture)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string url = 1;
     /**
      * <code>optional string url = 1;</code>
      *
@@ -48733,7 +48627,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional uint32 height = 2;
     /**
      * <code>optional uint32 height = 2;</code>
      *
@@ -48751,7 +48644,6 @@ public final class Feeds {
      */
     int getHeight();
 
-    // optional uint32 width = 3;
     /**
      * <code>optional uint32 width = 3;</code>
      *
@@ -48769,7 +48661,6 @@ public final class Feeds {
      */
     int getWidth();
 
-    // optional string desc = 4;
     /**
      * <code>optional string desc = 4;</code>
      *
@@ -48804,8 +48695,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class Picture extends
-      com.google.protobuf.GeneratedMessage
-      implements PictureOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Picture)
+      PictureOrBuilder {
     // Use Picture.newBuilder() to construct.
     private Picture(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -48852,8 +48744,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 16: {
@@ -48867,8 +48760,9 @@ public final class Feeds {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
           }
@@ -48911,7 +48805,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional string url = 1;
     public static final int URL_FIELD_NUMBER = 1;
     private java.lang.Object url_;
     /**
@@ -48966,7 +48859,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 height = 2;
     public static final int HEIGHT_FIELD_NUMBER = 2;
     private int height_;
     /**
@@ -48990,7 +48882,6 @@ public final class Feeds {
       return height_;
     }
 
-    // optional uint32 width = 3;
     public static final int WIDTH_FIELD_NUMBER = 3;
     private int width_;
     /**
@@ -49014,7 +48905,6 @@ public final class Feeds {
       return width_;
     }
 
-    // optional string desc = 4;
     public static final int DESC_FIELD_NUMBER = 4;
     private java.lang.Object desc_;
     /**
@@ -49078,7 +48968,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -49210,8 +49101,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.PictureOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Picture)
+        com.wali.live.proto.Feeds.PictureOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_Picture_descriptor;
@@ -49355,7 +49247,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional string url = 1;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 1;</code>
@@ -49377,9 +49268,12 @@ public final class Feeds {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -49453,7 +49347,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 height = 2;
       private int height_ ;
       /**
        * <code>optional uint32 height = 2;</code>
@@ -49502,7 +49395,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 width = 3;
       private int width_ ;
       /**
        * <code>optional uint32 width = 3;</code>
@@ -49551,7 +49443,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string desc = 4;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 4;</code>
@@ -49573,9 +49464,12 @@ public final class Feeds {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -49660,10 +49554,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Picture)
   }
 
-  public interface VideoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface VideoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Video)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string url = 1;
     /**
      * <code>optional string url = 1;</code>
      *
@@ -49690,7 +49584,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional string cover_page = 2;
     /**
      * <code>optional string cover_page = 2;</code>
      *
@@ -49717,7 +49610,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getCoverPageBytes();
 
-    // optional uint32 height = 3;
     /**
      * <code>optional uint32 height = 3;</code>
      *
@@ -49735,7 +49627,6 @@ public final class Feeds {
      */
     int getHeight();
 
-    // optional uint32 width = 4;
     /**
      * <code>optional uint32 width = 4;</code>
      *
@@ -49753,7 +49644,6 @@ public final class Feeds {
      */
     int getWidth();
 
-    // optional uint64 duration = 5;
     /**
      * <code>optional uint64 duration = 5;</code>
      *
@@ -49771,7 +49661,6 @@ public final class Feeds {
      */
     long getDuration();
 
-    // optional uint64 file_size = 6;
     /**
      * <code>optional uint64 file_size = 6;</code>
      *
@@ -49789,7 +49678,6 @@ public final class Feeds {
      */
     long getFileSize();
 
-    // optional string desc = 7;
     /**
      * <code>optional string desc = 7;</code>
      *
@@ -49824,8 +49712,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class Video extends
-      com.google.protobuf.GeneratedMessage
-      implements VideoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Video)
+      VideoOrBuilder {
     // Use Video.newBuilder() to construct.
     private Video(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -49872,13 +49761,15 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              coverPage_ = input.readBytes();
+              coverPage_ = bs;
               break;
             }
             case 24: {
@@ -49902,8 +49793,9 @@ public final class Feeds {
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
           }
@@ -49946,7 +49838,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional string url = 1;
     public static final int URL_FIELD_NUMBER = 1;
     private java.lang.Object url_;
     /**
@@ -50001,7 +49892,6 @@ public final class Feeds {
       }
     }
 
-    // optional string cover_page = 2;
     public static final int COVER_PAGE_FIELD_NUMBER = 2;
     private java.lang.Object coverPage_;
     /**
@@ -50056,7 +49946,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 height = 3;
     public static final int HEIGHT_FIELD_NUMBER = 3;
     private int height_;
     /**
@@ -50080,7 +49969,6 @@ public final class Feeds {
       return height_;
     }
 
-    // optional uint32 width = 4;
     public static final int WIDTH_FIELD_NUMBER = 4;
     private int width_;
     /**
@@ -50104,7 +49992,6 @@ public final class Feeds {
       return width_;
     }
 
-    // optional uint64 duration = 5;
     public static final int DURATION_FIELD_NUMBER = 5;
     private long duration_;
     /**
@@ -50128,7 +50015,6 @@ public final class Feeds {
       return duration_;
     }
 
-    // optional uint64 file_size = 6;
     public static final int FILE_SIZE_FIELD_NUMBER = 6;
     private long fileSize_;
     /**
@@ -50152,7 +50038,6 @@ public final class Feeds {
       return fileSize_;
     }
 
-    // optional string desc = 7;
     public static final int DESC_FIELD_NUMBER = 7;
     private java.lang.Object desc_;
     /**
@@ -50219,7 +50104,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -50372,8 +50258,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.VideoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Video)
+        com.wali.live.proto.Feeds.VideoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_Video_descriptor;
@@ -50546,7 +50433,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional string url = 1;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 1;</code>
@@ -50568,9 +50454,12 @@ public final class Feeds {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -50644,7 +50533,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string cover_page = 2;
       private java.lang.Object coverPage_ = "";
       /**
        * <code>optional string cover_page = 2;</code>
@@ -50666,9 +50554,12 @@ public final class Feeds {
       public java.lang.String getCoverPage() {
         java.lang.Object ref = coverPage_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverPage_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverPage_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -50742,7 +50633,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 height = 3;
       private int height_ ;
       /**
        * <code>optional uint32 height = 3;</code>
@@ -50791,7 +50681,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 width = 4;
       private int width_ ;
       /**
        * <code>optional uint32 width = 4;</code>
@@ -50840,7 +50729,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 duration = 5;
       private long duration_ ;
       /**
        * <code>optional uint64 duration = 5;</code>
@@ -50889,7 +50777,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 file_size = 6;
       private long fileSize_ ;
       /**
        * <code>optional uint64 file_size = 6;</code>
@@ -50938,7 +50825,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string desc = 7;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 7;</code>
@@ -50960,9 +50846,12 @@ public final class Feeds {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -51047,10 +50936,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Video)
   }
 
-  public interface TextOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface TextOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Text)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 type = 1;
     /**
      * <code>optional uint32 type = 1;</code>
      *
@@ -51068,7 +50957,6 @@ public final class Feeds {
      */
     int getType();
 
-    // optional string content = 2;
     /**
      * <code>optional string content = 2;</code>
      *
@@ -51095,7 +50983,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getContentBytes();
 
-    // optional bool is_inner = 3;
     /**
      * <code>optional bool is_inner = 3;</code>
      *
@@ -51121,8 +51008,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class Text extends
-      com.google.protobuf.GeneratedMessage
-      implements TextOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Text)
+      TextOrBuilder {
     // Use Text.newBuilder() to construct.
     private Text(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -51174,8 +51062,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              content_ = input.readBytes();
+              content_ = bs;
               break;
             }
             case 24: {
@@ -51223,7 +51112,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional uint32 type = 1;
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -51247,7 +51135,6 @@ public final class Feeds {
       return type_;
     }
 
-    // optional string content = 2;
     public static final int CONTENT_FIELD_NUMBER = 2;
     private java.lang.Object content_;
     /**
@@ -51302,7 +51189,6 @@ public final class Feeds {
       }
     }
 
-    // optional bool is_inner = 3;
     public static final int IS_INNER_FIELD_NUMBER = 3;
     private boolean isInner_;
     /**
@@ -51334,7 +51220,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -51459,8 +51346,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.TextOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Text)
+        com.wali.live.proto.Feeds.TextOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_Text_descriptor;
@@ -51593,7 +51481,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional uint32 type = 1;
       private int type_ ;
       /**
        * <code>optional uint32 type = 1;</code>
@@ -51642,7 +51529,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string content = 2;
       private java.lang.Object content_ = "";
       /**
        * <code>optional string content = 2;</code>
@@ -51664,9 +51550,12 @@ public final class Feeds {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          content_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            content_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -51740,7 +51629,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool is_inner = 3;
       private boolean isInner_ ;
       /**
        * <code>optional bool is_inner = 3;</code>
@@ -51800,10 +51688,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Text)
   }
 
-  public interface HyperlinkOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface HyperlinkOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Hyperlink)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional string desc = 1;
     /**
      * <code>optional string desc = 1;</code>
      *
@@ -51830,7 +51718,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getDescBytes();
 
-    // optional string url = 2;
     /**
      * <code>optional string url = 2;</code>
      *
@@ -51857,7 +51744,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional bool is_inner = 3;
     /**
      * <code>optional bool is_inner = 3;</code>
      *
@@ -51883,8 +51769,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class Hyperlink extends
-      com.google.protobuf.GeneratedMessage
-      implements HyperlinkOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Hyperlink)
+      HyperlinkOrBuilder {
     // Use Hyperlink.newBuilder() to construct.
     private Hyperlink(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -51931,13 +51818,15 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 24: {
@@ -51985,7 +51874,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional string desc = 1;
     public static final int DESC_FIELD_NUMBER = 1;
     private java.lang.Object desc_;
     /**
@@ -52040,7 +51928,6 @@ public final class Feeds {
       }
     }
 
-    // optional string url = 2;
     public static final int URL_FIELD_NUMBER = 2;
     private java.lang.Object url_;
     /**
@@ -52095,7 +51982,6 @@ public final class Feeds {
       }
     }
 
-    // optional bool is_inner = 3;
     public static final int IS_INNER_FIELD_NUMBER = 3;
     private boolean isInner_;
     /**
@@ -52127,7 +52013,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -52252,8 +52139,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.HyperlinkOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Hyperlink)
+        com.wali.live.proto.Feeds.HyperlinkOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_Hyperlink_descriptor;
@@ -52388,7 +52276,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional string desc = 1;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 1;</code>
@@ -52410,9 +52297,12 @@ public final class Feeds {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -52486,7 +52376,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string url = 2;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 2;</code>
@@ -52508,9 +52397,12 @@ public final class Feeds {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -52584,7 +52476,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool is_inner = 3;
       private boolean isInner_ ;
       /**
        * <code>optional bool is_inner = 3;</code>
@@ -52644,10 +52535,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Hyperlink)
   }
 
-  public interface UserlinkOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserlinkOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.Userlink)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint64 uid = 1;
     /**
      * <code>optional uint64 uid = 1;</code>
      */
@@ -52657,7 +52548,6 @@ public final class Feeds {
      */
     long getUid();
 
-    // optional bool is_inner = 2;
     /**
      * <code>optional bool is_inner = 2;</code>
      *
@@ -52683,8 +52573,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class Userlink extends
-      com.google.protobuf.GeneratedMessage
-      implements UserlinkOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.Userlink)
+      UserlinkOrBuilder {
     // Use Userlink.newBuilder() to construct.
     private Userlink(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -52780,7 +52671,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional uint64 uid = 1;
     public static final int UID_FIELD_NUMBER = 1;
     private long uid_;
     /**
@@ -52796,7 +52686,6 @@ public final class Feeds {
       return uid_;
     }
 
-    // optional bool is_inner = 2;
     public static final int IS_INNER_FIELD_NUMBER = 2;
     private boolean isInner_;
     /**
@@ -52827,7 +52716,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -52945,8 +52835,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.UserlinkOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.Userlink)
+        com.wali.live.proto.Feeds.UserlinkOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_Userlink_descriptor;
@@ -53068,7 +52959,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional uint64 uid = 1;
       private long uid_ ;
       /**
        * <code>optional uint64 uid = 1;</code>
@@ -53101,7 +52991,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool is_inner = 2;
       private boolean isInner_ ;
       /**
        * <code>optional bool is_inner = 2;</code>
@@ -53161,10 +53050,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.Userlink)
   }
 
-  public interface GetTitleListReqOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetTitleListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetTitleListReq)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint64 uuid = 1;
     /**
      * <code>optional uint64 uuid = 1;</code>
      */
@@ -53174,7 +53063,6 @@ public final class Feeds {
      */
     long getUuid();
 
-    // repeated uint32 source = 2;
     /**
      * <code>repeated uint32 source = 2;</code>
      *
@@ -53209,8 +53097,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetTitleListReq extends
-      com.google.protobuf.GeneratedMessage
-      implements GetTitleListReqOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetTitleListReq)
+      GetTitleListReqOrBuilder {
     // Use GetTitleListReq.newBuilder() to construct.
     private GetTitleListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -53325,7 +53214,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional uint64 uuid = 1;
     public static final int UUID_FIELD_NUMBER = 1;
     private long uuid_;
     /**
@@ -53341,7 +53229,6 @@ public final class Feeds {
       return uuid_;
     }
 
-    // repeated uint32 source = 2;
     public static final int SOURCE_FIELD_NUMBER = 2;
     private java.util.List<java.lang.Integer> source_;
     /**
@@ -53383,7 +53270,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -53507,8 +53395,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetTitleListReqOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetTitleListReq)
+        com.wali.live.proto.Feeds.GetTitleListReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetTitleListReq_descriptor;
@@ -53638,7 +53527,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional uint64 uuid = 1;
       private long uuid_ ;
       /**
        * <code>optional uint64 uuid = 1;</code>
@@ -53671,7 +53559,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated uint32 source = 2;
       private java.util.List<java.lang.Integer> source_ = java.util.Collections.emptyList();
       private void ensureSourceIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
@@ -53747,7 +53634,8 @@ public final class Feeds {
       public Builder addAllSource(
           java.lang.Iterable<? extends java.lang.Integer> values) {
         ensureSourceIsMutable();
-        super.addAll(values, source_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, source_);
         onChanged();
         return this;
       }
@@ -53776,10 +53664,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetTitleListReq)
   }
 
-  public interface GetTitleListRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetTitleListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetTitleListRsp)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret_code = 1;
     /**
      * <code>required uint32 ret_code = 1;</code>
      */
@@ -53789,7 +53677,6 @@ public final class Feeds {
      */
     int getRetCode();
 
-    // repeated .com.wali.live.proto.TitleInfo title_info = 2;
     /**
      * <code>repeated .com.wali.live.proto.TitleInfo title_info = 2;</code>
      */
@@ -53818,8 +53705,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.GetTitleListRsp}
    */
   public static final class GetTitleListRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements GetTitleListRspOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetTitleListRsp)
+      GetTitleListRspOrBuilder {
     // Use GetTitleListRsp.newBuilder() to construct.
     private GetTitleListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -53921,7 +53809,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret_code = 1;
     public static final int RET_CODE_FIELD_NUMBER = 1;
     private int retCode_;
     /**
@@ -53937,7 +53824,6 @@ public final class Feeds {
       return retCode_;
     }
 
-    // repeated .com.wali.live.proto.TitleInfo title_info = 2;
     public static final int TITLE_INFO_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.Feeds.TitleInfo> titleInfo_;
     /**
@@ -53980,7 +53866,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRetCode()) {
         memoizedIsInitialized = 0;
@@ -54098,8 +53985,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.GetTitleListRsp}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetTitleListRspOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetTitleListRsp)
+        com.wali.live.proto.Feeds.GetTitleListRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetTitleListRsp_descriptor;
@@ -54258,7 +54146,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret_code = 1;
       private int retCode_ ;
       /**
        * <code>required uint32 ret_code = 1;</code>
@@ -54291,7 +54178,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.TitleInfo title_info = 2;
       private java.util.List<com.wali.live.proto.Feeds.TitleInfo> titleInfo_ =
         java.util.Collections.emptyList();
       private void ensureTitleInfoIsMutable() {
@@ -54433,7 +54319,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.TitleInfo> values) {
         if (titleInfoBuilder_ == null) {
           ensureTitleInfoIsMutable();
-          super.addAll(values, titleInfo_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, titleInfo_);
           onChanged();
         } else {
           titleInfoBuilder_.addAllMessages(values);
@@ -54542,10 +54429,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetTitleListRsp)
   }
 
-  public interface TitleInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface TitleInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.TitleInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional uint32 source = 1;
     /**
      * <code>optional uint32 source = 1;</code>
      *
@@ -54563,7 +54450,6 @@ public final class Feeds {
      */
     int getSource();
 
-    // optional uint32 user_colony = 2;
     /**
      * <code>optional uint32 user_colony = 2;</code>
      *
@@ -54581,7 +54467,6 @@ public final class Feeds {
      */
     int getUserColony();
 
-    // repeated string title_list = 3;
     /**
      * <code>repeated string title_list = 3;</code>
      *
@@ -54589,8 +54474,8 @@ public final class Feeds {
      *标题内容
      * </pre>
      */
-    java.util.List<java.lang.String>
-    getTitleListList();
+    com.google.protobuf.ProtocolStringList
+        getTitleListList();
     /**
      * <code>repeated string title_list = 3;</code>
      *
@@ -54621,8 +54506,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.TitleInfo}
    */
   public static final class TitleInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements TitleInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.TitleInfo)
+      TitleInfoOrBuilder {
     // Use TitleInfo.newBuilder() to construct.
     private TitleInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -54679,11 +54565,12 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                 titleList_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000004;
               }
-              titleList_.add(input.readBytes());
+              titleList_.add(bs);
               break;
             }
           }
@@ -54695,7 +54582,7 @@ public final class Feeds {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-          titleList_ = new com.google.protobuf.UnmodifiableLazyStringList(titleList_);
+          titleList_ = titleList_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -54729,7 +54616,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional uint32 source = 1;
     public static final int SOURCE_FIELD_NUMBER = 1;
     private int source_;
     /**
@@ -54753,7 +54639,6 @@ public final class Feeds {
       return source_;
     }
 
-    // optional uint32 user_colony = 2;
     public static final int USER_COLONY_FIELD_NUMBER = 2;
     private int userColony_;
     /**
@@ -54777,7 +54662,6 @@ public final class Feeds {
       return userColony_;
     }
 
-    // repeated string title_list = 3;
     public static final int TITLE_LIST_FIELD_NUMBER = 3;
     private com.google.protobuf.LazyStringList titleList_;
     /**
@@ -54787,7 +54671,7 @@ public final class Feeds {
      *标题内容
      * </pre>
      */
-    public java.util.List<java.lang.String>
+    public com.google.protobuf.ProtocolStringList
         getTitleListList() {
       return titleList_;
     }
@@ -54831,7 +54715,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -54957,8 +54842,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.TitleInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.TitleInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.TitleInfo)
+        com.wali.live.proto.Feeds.TitleInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_TitleInfo_descriptor;
@@ -55034,8 +54920,7 @@ public final class Feeds {
         }
         result.userColony_ = userColony_;
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          titleList_ = new com.google.protobuf.UnmodifiableLazyStringList(
-              titleList_);
+          titleList_ = titleList_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000004);
         }
         result.titleList_ = titleList_;
@@ -55098,7 +54983,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional uint32 source = 1;
       private int source_ ;
       /**
        * <code>optional uint32 source = 1;</code>
@@ -55147,7 +55031,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 user_colony = 2;
       private int userColony_ ;
       /**
        * <code>optional uint32 user_colony = 2;</code>
@@ -55196,7 +55079,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated string title_list = 3;
       private com.google.protobuf.LazyStringList titleList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureTitleListIsMutable() {
         if (!((bitField0_ & 0x00000004) == 0x00000004)) {
@@ -55211,9 +55093,9 @@ public final class Feeds {
        *标题内容
        * </pre>
        */
-      public java.util.List<java.lang.String>
+      public com.google.protobuf.ProtocolStringList
           getTitleListList() {
-        return java.util.Collections.unmodifiableList(titleList_);
+        return titleList_.getUnmodifiableView();
       }
       /**
        * <code>repeated string title_list = 3;</code>
@@ -55290,7 +55172,8 @@ public final class Feeds {
       public Builder addAllTitleList(
           java.lang.Iterable<java.lang.String> values) {
         ensureTitleListIsMutable();
-        super.addAll(values, titleList_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, titleList_);
         onChanged();
         return this;
       }
@@ -55336,10 +55219,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.TitleInfo)
   }
 
-  public interface GetHomePageFeedListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetHomePageFeedListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetHomePageFeedListRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -55357,7 +55240,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -55383,8 +55265,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetHomePageFeedListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetHomePageFeedListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetHomePageFeedListRequest)
+      GetHomePageFeedListRequestOrBuilder {
     // Use GetHomePageFeedListRequest.newBuilder() to construct.
     private GetHomePageFeedListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -55480,7 +55363,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -55504,7 +55386,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -55535,7 +55416,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -55661,8 +55543,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetHomePageFeedListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetHomePageFeedListRequest)
+        com.wali.live.proto.Feeds.GetHomePageFeedListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetHomePageFeedListRequest_descriptor;
@@ -55792,7 +55675,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -55841,7 +55723,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -55901,10 +55782,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetHomePageFeedListRequest)
   }
 
-  public interface GetHomePageFeedListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetHomePageFeedListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetHomePageFeedListResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -55914,7 +55795,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -55932,7 +55812,6 @@ public final class Feeds {
      */
     long getStart();
 
-    // repeated .com.wali.live.proto.LiveInfo liveInfo = 3;
     /**
      * <code>repeated .com.wali.live.proto.LiveInfo liveInfo = 3;</code>
      *
@@ -55977,7 +55856,6 @@ public final class Feeds {
     com.wali.live.proto.Feeds.LiveInfoOrBuilder getLiveInfoOrBuilder(
         int index);
 
-    // repeated .com.wali.live.proto.UserFornoticeInfo fornotices = 4;
     /**
      * <code>repeated .com.wali.live.proto.UserFornoticeInfo fornotices = 4;</code>
      *
@@ -56022,7 +55900,6 @@ public final class Feeds {
     com.wali.live.proto.Feeds.UserFornoticeInfoOrBuilder getFornoticesOrBuilder(
         int index);
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 5;
     /**
      * <code>repeated .com.wali.live.proto.FeedInfo feedInfoList = 5;</code>
      *
@@ -56075,8 +55952,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetHomePageFeedListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetHomePageFeedListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetHomePageFeedListResponse)
+      GetHomePageFeedListResponseOrBuilder {
     // Use GetHomePageFeedListResponse.newBuilder() to construct.
     private GetHomePageFeedListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -56205,7 +56083,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -56221,7 +56098,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -56245,7 +56121,6 @@ public final class Feeds {
       return start_;
     }
 
-    // repeated .com.wali.live.proto.LiveInfo liveInfo = 3;
     public static final int LIVEINFO_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.Feeds.LiveInfo> liveInfo_;
     /**
@@ -56301,7 +56176,6 @@ public final class Feeds {
       return liveInfo_.get(index);
     }
 
-    // repeated .com.wali.live.proto.UserFornoticeInfo fornotices = 4;
     public static final int FORNOTICES_FIELD_NUMBER = 4;
     private java.util.List<com.wali.live.proto.Feeds.UserFornoticeInfo> fornotices_;
     /**
@@ -56357,7 +56231,6 @@ public final class Feeds {
       return fornotices_.get(index);
     }
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 5;
     public static final int FEEDINFOLIST_FIELD_NUMBER = 5;
     private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_;
     /**
@@ -56423,7 +56296,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -56588,8 +56462,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetHomePageFeedListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetHomePageFeedListResponse)
+        com.wali.live.proto.Feeds.GetHomePageFeedListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetHomePageFeedListResponse_descriptor;
@@ -56863,7 +56738,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -56896,7 +56770,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -56945,7 +56818,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.LiveInfo liveInfo = 3;
       private java.util.List<com.wali.live.proto.Feeds.LiveInfo> liveInfo_ =
         java.util.Collections.emptyList();
       private void ensureLiveInfoIsMutable() {
@@ -57127,7 +56999,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.LiveInfo> values) {
         if (liveInfoBuilder_ == null) {
           ensureLiveInfoIsMutable();
-          super.addAll(values, liveInfo_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, liveInfo_);
           onChanged();
         } else {
           liveInfoBuilder_.addAllMessages(values);
@@ -57257,7 +57130,6 @@ public final class Feeds {
         return liveInfoBuilder_;
       }
 
-      // repeated .com.wali.live.proto.UserFornoticeInfo fornotices = 4;
       private java.util.List<com.wali.live.proto.Feeds.UserFornoticeInfo> fornotices_ =
         java.util.Collections.emptyList();
       private void ensureFornoticesIsMutable() {
@@ -57439,7 +57311,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.UserFornoticeInfo> values) {
         if (fornoticesBuilder_ == null) {
           ensureFornoticesIsMutable();
-          super.addAll(values, fornotices_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, fornotices_);
           onChanged();
         } else {
           fornoticesBuilder_.addAllMessages(values);
@@ -57569,7 +57442,6 @@ public final class Feeds {
         return fornoticesBuilder_;
       }
 
-      // repeated .com.wali.live.proto.FeedInfo feedInfoList = 5;
       private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_ =
         java.util.Collections.emptyList();
       private void ensureFeedInfoListIsMutable() {
@@ -57751,7 +57623,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedInfo> values) {
         if (feedInfoListBuilder_ == null) {
           ensureFeedInfoListIsMutable();
-          super.addAll(values, feedInfoList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedInfoList_);
           onChanged();
         } else {
           feedInfoListBuilder_.addAllMessages(values);
@@ -57892,10 +57765,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetHomePageFeedListResponse)
   }
 
-  public interface FornoticeInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface FornoticeInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FornoticeInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 owner_id = 1;
     /**
      * <code>required uint64 owner_id = 1;</code>
      */
@@ -57905,7 +57778,6 @@ public final class Feeds {
      */
     long getOwnerId();
 
-    // required string fornotice_id = 2;
     /**
      * <code>required string fornotice_id = 2;</code>
      */
@@ -57920,7 +57792,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFornoticeIdBytes();
 
-    // optional uint64 begin_time = 3;
     /**
      * <code>optional uint64 begin_time = 3;</code>
      */
@@ -57930,7 +57801,6 @@ public final class Feeds {
      */
     long getBeginTime();
 
-    // optional string title = 4;
     /**
      * <code>optional string title = 4;</code>
      */
@@ -57945,7 +57815,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getTitleBytes();
 
-    // optional uint32 type = 5;
     /**
      * <code>optional uint32 type = 5;</code>
      *
@@ -57963,7 +57832,6 @@ public final class Feeds {
      */
     int getType();
 
-    // optional string img_url = 6;
     /**
      * <code>optional string img_url = 6;</code>
      *
@@ -57990,7 +57858,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getImgUrlBytes();
 
-    // optional uint64 end_time = 7;
     /**
      * <code>optional uint64 end_time = 7;</code>
      */
@@ -58000,7 +57867,6 @@ public final class Feeds {
      */
     long getEndTime();
 
-    // optional string desc = 8;
     /**
      * <code>optional string desc = 8;</code>
      */
@@ -58015,7 +57881,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getDescBytes();
 
-    // optional string client_id = 9;
     /**
      * <code>optional string client_id = 9;</code>
      *
@@ -58042,7 +57907,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getClientIdBytes();
 
-    // optional string md5 = 10;
     /**
      * <code>optional string md5 = 10;</code>
      *
@@ -58069,7 +57933,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getMd5Bytes();
 
-    // optional uint32 height = 11;
     /**
      * <code>optional uint32 height = 11;</code>
      *
@@ -58087,7 +57950,6 @@ public final class Feeds {
      */
     int getHeight();
 
-    // optional uint32 width = 12;
     /**
      * <code>optional uint32 width = 12;</code>
      *
@@ -58105,7 +57967,6 @@ public final class Feeds {
      */
     int getWidth();
 
-    // optional uint32 status = 13;
     /**
      * <code>optional uint32 status = 13;</code>
      *
@@ -58127,8 +57988,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.FornoticeInfo}
    */
   public static final class FornoticeInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements FornoticeInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FornoticeInfo)
+      FornoticeInfoOrBuilder {
     // Use FornoticeInfo.newBuilder() to construct.
     private FornoticeInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -58180,8 +58042,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              fornoticeId_ = input.readBytes();
+              fornoticeId_ = bs;
               break;
             }
             case 24: {
@@ -58190,8 +58053,9 @@ public final class Feeds {
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              title_ = input.readBytes();
+              title_ = bs;
               break;
             }
             case 40: {
@@ -58200,8 +58064,9 @@ public final class Feeds {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              imgUrl_ = input.readBytes();
+              imgUrl_ = bs;
               break;
             }
             case 56: {
@@ -58210,18 +58075,21 @@ public final class Feeds {
               break;
             }
             case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              desc_ = input.readBytes();
+              desc_ = bs;
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              clientId_ = input.readBytes();
+              clientId_ = bs;
               break;
             }
             case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              md5_ = input.readBytes();
+              md5_ = bs;
               break;
             }
             case 88: {
@@ -58279,7 +58147,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 owner_id = 1;
     public static final int OWNER_ID_FIELD_NUMBER = 1;
     private long ownerId_;
     /**
@@ -58295,7 +58162,6 @@ public final class Feeds {
       return ownerId_;
     }
 
-    // required string fornotice_id = 2;
     public static final int FORNOTICE_ID_FIELD_NUMBER = 2;
     private java.lang.Object fornoticeId_;
     /**
@@ -58338,7 +58204,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 begin_time = 3;
     public static final int BEGIN_TIME_FIELD_NUMBER = 3;
     private long beginTime_;
     /**
@@ -58354,7 +58219,6 @@ public final class Feeds {
       return beginTime_;
     }
 
-    // optional string title = 4;
     public static final int TITLE_FIELD_NUMBER = 4;
     private java.lang.Object title_;
     /**
@@ -58397,7 +58261,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 type = 5;
     public static final int TYPE_FIELD_NUMBER = 5;
     private int type_;
     /**
@@ -58421,7 +58284,6 @@ public final class Feeds {
       return type_;
     }
 
-    // optional string img_url = 6;
     public static final int IMG_URL_FIELD_NUMBER = 6;
     private java.lang.Object imgUrl_;
     /**
@@ -58476,7 +58338,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 end_time = 7;
     public static final int END_TIME_FIELD_NUMBER = 7;
     private long endTime_;
     /**
@@ -58492,7 +58353,6 @@ public final class Feeds {
       return endTime_;
     }
 
-    // optional string desc = 8;
     public static final int DESC_FIELD_NUMBER = 8;
     private java.lang.Object desc_;
     /**
@@ -58535,7 +58395,6 @@ public final class Feeds {
       }
     }
 
-    // optional string client_id = 9;
     public static final int CLIENT_ID_FIELD_NUMBER = 9;
     private java.lang.Object clientId_;
     /**
@@ -58590,7 +58449,6 @@ public final class Feeds {
       }
     }
 
-    // optional string md5 = 10;
     public static final int MD5_FIELD_NUMBER = 10;
     private java.lang.Object md5_;
     /**
@@ -58645,7 +58503,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 height = 11;
     public static final int HEIGHT_FIELD_NUMBER = 11;
     private int height_;
     /**
@@ -58669,7 +58526,6 @@ public final class Feeds {
       return height_;
     }
 
-    // optional uint32 width = 12;
     public static final int WIDTH_FIELD_NUMBER = 12;
     private int width_;
     /**
@@ -58693,7 +58549,6 @@ public final class Feeds {
       return width_;
     }
 
-    // optional uint32 status = 13;
     public static final int STATUS_FIELD_NUMBER = 13;
     private int status_;
     /**
@@ -58735,7 +58590,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasOwnerId()) {
         memoizedIsInitialized = 0;
@@ -58934,8 +58790,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.FornoticeInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.FornoticeInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FornoticeInfo)
+        com.wali.live.proto.Feeds.FornoticeInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_FornoticeInfo_descriptor;
@@ -59176,7 +59033,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 owner_id = 1;
       private long ownerId_ ;
       /**
        * <code>required uint64 owner_id = 1;</code>
@@ -59209,7 +59065,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string fornotice_id = 2;
       private java.lang.Object fornoticeId_ = "";
       /**
        * <code>required string fornotice_id = 2;</code>
@@ -59223,9 +59078,12 @@ public final class Feeds {
       public java.lang.String getFornoticeId() {
         java.lang.Object ref = fornoticeId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          fornoticeId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            fornoticeId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -59283,7 +59141,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 begin_time = 3;
       private long beginTime_ ;
       /**
        * <code>optional uint64 begin_time = 3;</code>
@@ -59316,7 +59173,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string title = 4;
       private java.lang.Object title_ = "";
       /**
        * <code>optional string title = 4;</code>
@@ -59330,9 +59186,12 @@ public final class Feeds {
       public java.lang.String getTitle() {
         java.lang.Object ref = title_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          title_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -59390,7 +59249,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 type = 5;
       private int type_ ;
       /**
        * <code>optional uint32 type = 5;</code>
@@ -59439,7 +59297,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string img_url = 6;
       private java.lang.Object imgUrl_ = "";
       /**
        * <code>optional string img_url = 6;</code>
@@ -59461,9 +59318,12 @@ public final class Feeds {
       public java.lang.String getImgUrl() {
         java.lang.Object ref = imgUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          imgUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            imgUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -59537,7 +59397,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 end_time = 7;
       private long endTime_ ;
       /**
        * <code>optional uint64 end_time = 7;</code>
@@ -59570,7 +59429,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string desc = 8;
       private java.lang.Object desc_ = "";
       /**
        * <code>optional string desc = 8;</code>
@@ -59584,9 +59442,12 @@ public final class Feeds {
       public java.lang.String getDesc() {
         java.lang.Object ref = desc_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          desc_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -59644,7 +59505,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string client_id = 9;
       private java.lang.Object clientId_ = "";
       /**
        * <code>optional string client_id = 9;</code>
@@ -59666,9 +59526,12 @@ public final class Feeds {
       public java.lang.String getClientId() {
         java.lang.Object ref = clientId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          clientId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            clientId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -59742,7 +59605,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string md5 = 10;
       private java.lang.Object md5_ = "";
       /**
        * <code>optional string md5 = 10;</code>
@@ -59764,9 +59626,12 @@ public final class Feeds {
       public java.lang.String getMd5() {
         java.lang.Object ref = md5_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          md5_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            md5_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -59840,7 +59705,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 height = 11;
       private int height_ ;
       /**
        * <code>optional uint32 height = 11;</code>
@@ -59889,7 +59753,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 width = 12;
       private int width_ ;
       /**
        * <code>optional uint32 width = 12;</code>
@@ -59938,7 +59801,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 status = 13;
       private int status_ ;
       /**
        * <code>optional uint32 status = 13;</code>
@@ -59998,10 +59860,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.FornoticeInfo)
   }
 
-  public interface UserFornoticeInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserFornoticeInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UserFornoticeInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required .com.wali.live.proto.FornoticeInfo fornotice_info = 1;
     /**
      * <code>required .com.wali.live.proto.FornoticeInfo fornotice_info = 1;</code>
      *
@@ -60027,7 +59889,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.FornoticeInfoOrBuilder getFornoticeInfoOrBuilder();
 
-    // optional bool is_booked = 2;
     /**
      * <code>optional bool is_booked = 2;</code>
      *
@@ -60045,7 +59906,6 @@ public final class Feeds {
      */
     boolean getIsBooked();
 
-    // optional .com.wali.live.proto.UserBrief user_info = 3;
     /**
      * <code>optional .com.wali.live.proto.UserBrief user_info = 3;</code>
      *
@@ -60075,8 +59935,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.UserFornoticeInfo}
    */
   public static final class UserFornoticeInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements UserFornoticeInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UserFornoticeInfo)
+      UserFornoticeInfoOrBuilder {
     // Use UserFornoticeInfo.newBuilder() to construct.
     private UserFornoticeInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -60193,7 +60054,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required .com.wali.live.proto.FornoticeInfo fornotice_info = 1;
     public static final int FORNOTICE_INFO_FIELD_NUMBER = 1;
     private com.wali.live.proto.Feeds.FornoticeInfo fornoticeInfo_;
     /**
@@ -60227,7 +60087,6 @@ public final class Feeds {
       return fornoticeInfo_;
     }
 
-    // optional bool is_booked = 2;
     public static final int IS_BOOKED_FIELD_NUMBER = 2;
     private boolean isBooked_;
     /**
@@ -60251,7 +60110,6 @@ public final class Feeds {
       return isBooked_;
     }
 
-    // optional .com.wali.live.proto.UserBrief user_info = 3;
     public static final int USER_INFO_FIELD_NUMBER = 3;
     private com.wali.live.proto.Feeds.UserBrief userInfo_;
     /**
@@ -60293,7 +60151,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFornoticeInfo()) {
         memoizedIsInitialized = 0;
@@ -60428,8 +60287,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.UserFornoticeInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.UserFornoticeInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UserFornoticeInfo)
+        com.wali.live.proto.Feeds.UserFornoticeInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_UserFornoticeInfo_descriptor;
@@ -60592,7 +60452,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required .com.wali.live.proto.FornoticeInfo fornotice_info = 1;
       private com.wali.live.proto.Feeds.FornoticeInfo fornoticeInfo_ = com.wali.live.proto.Feeds.FornoticeInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.FornoticeInfo, com.wali.live.proto.Feeds.FornoticeInfo.Builder, com.wali.live.proto.Feeds.FornoticeInfoOrBuilder> fornoticeInfoBuilder_;
@@ -60737,7 +60596,7 @@ public final class Feeds {
         if (fornoticeInfoBuilder_ == null) {
           fornoticeInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.FornoticeInfo, com.wali.live.proto.Feeds.FornoticeInfo.Builder, com.wali.live.proto.Feeds.FornoticeInfoOrBuilder>(
-                  fornoticeInfo_,
+                  getFornoticeInfo(),
                   getParentForChildren(),
                   isClean());
           fornoticeInfo_ = null;
@@ -60745,7 +60604,6 @@ public final class Feeds {
         return fornoticeInfoBuilder_;
       }
 
-      // optional bool is_booked = 2;
       private boolean isBooked_ ;
       /**
        * <code>optional bool is_booked = 2;</code>
@@ -60794,7 +60652,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.UserBrief user_info = 3;
       private com.wali.live.proto.Feeds.UserBrief userInfo_ = com.wali.live.proto.Feeds.UserBrief.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.UserBrief, com.wali.live.proto.Feeds.UserBrief.Builder, com.wali.live.proto.Feeds.UserBriefOrBuilder> userInfoBuilder_;
@@ -60939,7 +60796,7 @@ public final class Feeds {
         if (userInfoBuilder_ == null) {
           userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.UserBrief, com.wali.live.proto.Feeds.UserBrief.Builder, com.wali.live.proto.Feeds.UserBriefOrBuilder>(
-                  userInfo_,
+                  getUserInfo(),
                   getParentForChildren(),
                   isClean());
           userInfo_ = null;
@@ -60958,10 +60815,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.UserFornoticeInfo)
   }
 
-  public interface UserBriefOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface UserBriefOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UserBrief)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 uId = 1;
     /**
      * <code>required uint64 uId = 1;</code>
      *
@@ -60979,7 +60836,6 @@ public final class Feeds {
      */
     long getUId();
 
-    // optional string nickname = 2;
     /**
      * <code>optional string nickname = 2;</code>
      *
@@ -61006,7 +60862,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getNicknameBytes();
 
-    // optional uint64 avatar = 3;
     /**
      * <code>optional uint64 avatar = 3;</code>
      *
@@ -61024,7 +60879,6 @@ public final class Feeds {
      */
     long getAvatar();
 
-    // optional uint32 level = 4;
     /**
      * <code>optional uint32 level = 4;</code>
      *
@@ -61042,7 +60896,6 @@ public final class Feeds {
      */
     int getLevel();
 
-    // optional uint32 certType = 5;
     /**
      * <code>optional uint32 certType = 5;</code>
      *
@@ -61064,8 +60917,9 @@ public final class Feeds {
    * Protobuf type {@code com.wali.live.proto.UserBrief}
    */
   public static final class UserBrief extends
-      com.google.protobuf.GeneratedMessage
-      implements UserBriefOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UserBrief)
+      UserBriefOrBuilder {
     // Use UserBrief.newBuilder() to construct.
     private UserBrief(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -61117,8 +60971,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              nickname_ = input.readBytes();
+              nickname_ = bs;
               break;
             }
             case 24: {
@@ -61176,7 +61031,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 uId = 1;
     public static final int UID_FIELD_NUMBER = 1;
     private long uId_;
     /**
@@ -61200,7 +61054,6 @@ public final class Feeds {
       return uId_;
     }
 
-    // optional string nickname = 2;
     public static final int NICKNAME_FIELD_NUMBER = 2;
     private java.lang.Object nickname_;
     /**
@@ -61255,7 +61108,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 avatar = 3;
     public static final int AVATAR_FIELD_NUMBER = 3;
     private long avatar_;
     /**
@@ -61279,7 +61131,6 @@ public final class Feeds {
       return avatar_;
     }
 
-    // optional uint32 level = 4;
     public static final int LEVEL_FIELD_NUMBER = 4;
     private int level_;
     /**
@@ -61303,7 +61154,6 @@ public final class Feeds {
       return level_;
     }
 
-    // optional uint32 certType = 5;
     public static final int CERTTYPE_FIELD_NUMBER = 5;
     private int certType_;
     /**
@@ -61337,7 +61187,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUId()) {
         memoizedIsInitialized = 0;
@@ -61476,8 +61327,9 @@ public final class Feeds {
      * Protobuf type {@code com.wali.live.proto.UserBrief}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.UserBriefOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UserBrief)
+        com.wali.live.proto.Feeds.UserBriefOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_UserBrief_descriptor;
@@ -61632,7 +61484,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 uId = 1;
       private long uId_ ;
       /**
        * <code>required uint64 uId = 1;</code>
@@ -61681,7 +61532,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string nickname = 2;
       private java.lang.Object nickname_ = "";
       /**
        * <code>optional string nickname = 2;</code>
@@ -61703,9 +61553,12 @@ public final class Feeds {
       public java.lang.String getNickname() {
         java.lang.Object ref = nickname_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          nickname_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nickname_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -61779,7 +61632,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 avatar = 3;
       private long avatar_ ;
       /**
        * <code>optional uint64 avatar = 3;</code>
@@ -61828,7 +61680,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 level = 4;
       private int level_ ;
       /**
        * <code>optional uint32 level = 4;</code>
@@ -61877,7 +61728,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 certType = 5;
       private int certType_ ;
       /**
        * <code>optional uint32 certType = 5;</code>
@@ -61937,10 +61787,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.UserBrief)
   }
 
-  public interface ShopBriefOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ShopBriefOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ShopBrief)
+      com.google.protobuf.MessageOrBuilder {
 
-    // optional bool hideGoods = 1;
     /**
      * <code>optional bool hideGoods = 1;</code>
      *
@@ -61958,7 +61808,6 @@ public final class Feeds {
      */
     boolean getHideGoods();
 
-    // optional uint32 desiredCnt = 2;
     /**
      * <code>optional uint32 desiredCnt = 2;</code>
      *
@@ -61984,8 +61833,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class ShopBrief extends
-      com.google.protobuf.GeneratedMessage
-      implements ShopBriefOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ShopBrief)
+      ShopBriefOrBuilder {
     // Use ShopBrief.newBuilder() to construct.
     private ShopBrief(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -62081,7 +61931,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // optional bool hideGoods = 1;
     public static final int HIDEGOODS_FIELD_NUMBER = 1;
     private boolean hideGoods_;
     /**
@@ -62105,7 +61954,6 @@ public final class Feeds {
       return hideGoods_;
     }
 
-    // optional uint32 desiredCnt = 2;
     public static final int DESIREDCNT_FIELD_NUMBER = 2;
     private int desiredCnt_;
     /**
@@ -62136,7 +61984,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -62254,8 +62103,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.ShopBriefOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ShopBrief)
+        com.wali.live.proto.Feeds.ShopBriefOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_ShopBrief_descriptor;
@@ -62377,7 +62227,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // optional bool hideGoods = 1;
       private boolean hideGoods_ ;
       /**
        * <code>optional bool hideGoods = 1;</code>
@@ -62426,7 +62275,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 desiredCnt = 2;
       private int desiredCnt_ ;
       /**
        * <code>optional uint32 desiredCnt = 2;</code>
@@ -62486,10 +62334,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.ShopBrief)
   }
 
-  public interface LiveInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface LiveInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveInfo)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string liveId = 1;
     /**
      * <code>required string liveId = 1;</code>
      *
@@ -62516,7 +62364,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getLiveIdBytes();
 
-    // optional .com.wali.live.proto.UserBrief user = 2;
     /**
      * <code>optional .com.wali.live.proto.UserBrief user = 2;</code>
      *
@@ -62542,7 +62389,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.UserBriefOrBuilder getUserOrBuilder();
 
-    // optional string location = 3;
     /**
      * <code>optional string location = 3;</code>
      *
@@ -62569,7 +62415,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getLocationBytes();
 
-    // optional uint32 viewerCnt = 4;
     /**
      * <code>optional uint32 viewerCnt = 4;</code>
      *
@@ -62587,7 +62432,6 @@ public final class Feeds {
      */
     int getViewerCnt();
 
-    // optional string url = 5;
     /**
      * <code>optional string url = 5;</code>
      *
@@ -62614,7 +62458,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getUrlBytes();
 
-    // optional string coverUrl = 6;
     /**
      * <code>optional string coverUrl = 6;</code>
      *
@@ -62641,7 +62484,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getCoverUrlBytes();
 
-    // optional string liTitle = 7;
     /**
      * <code>optional string liTitle = 7;</code>
      *
@@ -62668,7 +62510,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getLiTitleBytes();
 
-    // optional uint64 startTime = 8;
     /**
      * <code>optional uint64 startTime = 8;</code>
      *
@@ -62686,7 +62527,6 @@ public final class Feeds {
      */
     long getStartTime();
 
-    // optional string tag = 9;
     /**
      * <code>optional string tag = 9;</code>
      *
@@ -62713,7 +62553,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getTagBytes();
 
-    // optional .com.wali.live.proto.ShopBrief shop = 10;
     /**
      * <code>optional .com.wali.live.proto.ShopBrief shop = 10;</code>
      *
@@ -62739,7 +62578,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.ShopBriefOrBuilder getShopOrBuilder();
 
-    // optional uint32 appType = 11;
     /**
      * <code>optional uint32 appType = 11;</code>
      *
@@ -62757,7 +62595,6 @@ public final class Feeds {
      */
     int getAppType();
 
-    // optional uint32 liveType = 12;
     /**
      * <code>optional uint32 liveType = 12;</code>
      *
@@ -62775,7 +62612,6 @@ public final class Feeds {
      */
     int getLiveType();
 
-    // optional string gameTag = 13;
     /**
      * <code>optional string gameTag = 13;</code>
      *
@@ -62810,8 +62646,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class LiveInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements LiveInfoOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveInfo)
+      LiveInfoOrBuilder {
     // Use LiveInfo.newBuilder() to construct.
     private LiveInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -62858,8 +62695,9 @@ public final class Feeds {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              liveId_ = input.readBytes();
+              liveId_ = bs;
               break;
             }
             case 18: {
@@ -62876,8 +62714,9 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              location_ = input.readBytes();
+              location_ = bs;
               break;
             }
             case 32: {
@@ -62886,18 +62725,21 @@ public final class Feeds {
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              url_ = input.readBytes();
+              url_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              coverUrl_ = input.readBytes();
+              coverUrl_ = bs;
               break;
             }
             case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              liTitle_ = input.readBytes();
+              liTitle_ = bs;
               break;
             }
             case 64: {
@@ -62906,8 +62748,9 @@ public final class Feeds {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              tag_ = input.readBytes();
+              tag_ = bs;
               break;
             }
             case 82: {
@@ -62934,8 +62777,9 @@ public final class Feeds {
               break;
             }
             case 106: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00001000;
-              gameTag_ = input.readBytes();
+              gameTag_ = bs;
               break;
             }
           }
@@ -62978,7 +62822,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required string liveId = 1;
     public static final int LIVEID_FIELD_NUMBER = 1;
     private java.lang.Object liveId_;
     /**
@@ -63033,7 +62876,6 @@ public final class Feeds {
       }
     }
 
-    // optional .com.wali.live.proto.UserBrief user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private com.wali.live.proto.Feeds.UserBrief user_;
     /**
@@ -63067,7 +62909,6 @@ public final class Feeds {
       return user_;
     }
 
-    // optional string location = 3;
     public static final int LOCATION_FIELD_NUMBER = 3;
     private java.lang.Object location_;
     /**
@@ -63122,7 +62963,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint32 viewerCnt = 4;
     public static final int VIEWERCNT_FIELD_NUMBER = 4;
     private int viewerCnt_;
     /**
@@ -63146,7 +62986,6 @@ public final class Feeds {
       return viewerCnt_;
     }
 
-    // optional string url = 5;
     public static final int URL_FIELD_NUMBER = 5;
     private java.lang.Object url_;
     /**
@@ -63201,7 +63040,6 @@ public final class Feeds {
       }
     }
 
-    // optional string coverUrl = 6;
     public static final int COVERURL_FIELD_NUMBER = 6;
     private java.lang.Object coverUrl_;
     /**
@@ -63256,7 +63094,6 @@ public final class Feeds {
       }
     }
 
-    // optional string liTitle = 7;
     public static final int LITITLE_FIELD_NUMBER = 7;
     private java.lang.Object liTitle_;
     /**
@@ -63311,7 +63148,6 @@ public final class Feeds {
       }
     }
 
-    // optional uint64 startTime = 8;
     public static final int STARTTIME_FIELD_NUMBER = 8;
     private long startTime_;
     /**
@@ -63335,7 +63171,6 @@ public final class Feeds {
       return startTime_;
     }
 
-    // optional string tag = 9;
     public static final int TAG_FIELD_NUMBER = 9;
     private java.lang.Object tag_;
     /**
@@ -63390,7 +63225,6 @@ public final class Feeds {
       }
     }
 
-    // optional .com.wali.live.proto.ShopBrief shop = 10;
     public static final int SHOP_FIELD_NUMBER = 10;
     private com.wali.live.proto.Feeds.ShopBrief shop_;
     /**
@@ -63424,7 +63258,6 @@ public final class Feeds {
       return shop_;
     }
 
-    // optional uint32 appType = 11;
     public static final int APPTYPE_FIELD_NUMBER = 11;
     private int appType_;
     /**
@@ -63448,7 +63281,6 @@ public final class Feeds {
       return appType_;
     }
 
-    // optional uint32 liveType = 12;
     public static final int LIVETYPE_FIELD_NUMBER = 12;
     private int liveType_;
     /**
@@ -63472,7 +63304,6 @@ public final class Feeds {
       return liveType_;
     }
 
-    // optional string gameTag = 13;
     public static final int GAMETAG_FIELD_NUMBER = 13;
     private java.lang.Object gameTag_;
     /**
@@ -63545,7 +63376,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasLiveId()) {
         memoizedIsInitialized = 0;
@@ -63750,8 +63582,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.LiveInfoOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveInfo)
+        com.wali.live.proto.Feeds.LiveInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_LiveInfo_descriptor;
@@ -64014,7 +63847,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required string liveId = 1;
       private java.lang.Object liveId_ = "";
       /**
        * <code>required string liveId = 1;</code>
@@ -64036,9 +63868,12 @@ public final class Feeds {
       public java.lang.String getLiveId() {
         java.lang.Object ref = liveId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liveId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liveId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -64112,7 +63947,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.UserBrief user = 2;
       private com.wali.live.proto.Feeds.UserBrief user_ = com.wali.live.proto.Feeds.UserBrief.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.UserBrief, com.wali.live.proto.Feeds.UserBrief.Builder, com.wali.live.proto.Feeds.UserBriefOrBuilder> userBuilder_;
@@ -64257,7 +64091,7 @@ public final class Feeds {
         if (userBuilder_ == null) {
           userBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.UserBrief, com.wali.live.proto.Feeds.UserBrief.Builder, com.wali.live.proto.Feeds.UserBriefOrBuilder>(
-                  user_,
+                  getUser(),
                   getParentForChildren(),
                   isClean());
           user_ = null;
@@ -64265,7 +64099,6 @@ public final class Feeds {
         return userBuilder_;
       }
 
-      // optional string location = 3;
       private java.lang.Object location_ = "";
       /**
        * <code>optional string location = 3;</code>
@@ -64287,9 +64120,12 @@ public final class Feeds {
       public java.lang.String getLocation() {
         java.lang.Object ref = location_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          location_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            location_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -64363,7 +64199,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 viewerCnt = 4;
       private int viewerCnt_ ;
       /**
        * <code>optional uint32 viewerCnt = 4;</code>
@@ -64412,7 +64247,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string url = 5;
       private java.lang.Object url_ = "";
       /**
        * <code>optional string url = 5;</code>
@@ -64434,9 +64268,12 @@ public final class Feeds {
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          url_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -64510,7 +64347,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string coverUrl = 6;
       private java.lang.Object coverUrl_ = "";
       /**
        * <code>optional string coverUrl = 6;</code>
@@ -64532,9 +64368,12 @@ public final class Feeds {
       public java.lang.String getCoverUrl() {
         java.lang.Object ref = coverUrl_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          coverUrl_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverUrl_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -64608,7 +64447,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string liTitle = 7;
       private java.lang.Object liTitle_ = "";
       /**
        * <code>optional string liTitle = 7;</code>
@@ -64630,9 +64468,12 @@ public final class Feeds {
       public java.lang.String getLiTitle() {
         java.lang.Object ref = liTitle_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          liTitle_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            liTitle_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -64706,7 +64547,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 startTime = 8;
       private long startTime_ ;
       /**
        * <code>optional uint64 startTime = 8;</code>
@@ -64755,7 +64595,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string tag = 9;
       private java.lang.Object tag_ = "";
       /**
        * <code>optional string tag = 9;</code>
@@ -64777,9 +64616,12 @@ public final class Feeds {
       public java.lang.String getTag() {
         java.lang.Object ref = tag_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          tag_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            tag_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -64853,7 +64695,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.ShopBrief shop = 10;
       private com.wali.live.proto.Feeds.ShopBrief shop_ = com.wali.live.proto.Feeds.ShopBrief.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.ShopBrief, com.wali.live.proto.Feeds.ShopBrief.Builder, com.wali.live.proto.Feeds.ShopBriefOrBuilder> shopBuilder_;
@@ -64998,7 +64839,7 @@ public final class Feeds {
         if (shopBuilder_ == null) {
           shopBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.ShopBrief, com.wali.live.proto.Feeds.ShopBrief.Builder, com.wali.live.proto.Feeds.ShopBriefOrBuilder>(
-                  shop_,
+                  getShop(),
                   getParentForChildren(),
                   isClean());
           shop_ = null;
@@ -65006,7 +64847,6 @@ public final class Feeds {
         return shopBuilder_;
       }
 
-      // optional uint32 appType = 11;
       private int appType_ ;
       /**
        * <code>optional uint32 appType = 11;</code>
@@ -65055,7 +64895,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint32 liveType = 12;
       private int liveType_ ;
       /**
        * <code>optional uint32 liveType = 12;</code>
@@ -65104,7 +64943,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string gameTag = 13;
       private java.lang.Object gameTag_ = "";
       /**
        * <code>optional string gameTag = 13;</code>
@@ -65126,9 +64964,12 @@ public final class Feeds {
       public java.lang.String getGameTag() {
         java.lang.Object ref = gameTag_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          gameTag_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gameTag_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -65213,10 +65054,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveInfo)
   }
 
-  public interface GetUgcFeedListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUgcFeedListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUgcFeedListRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -65234,7 +65075,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -65260,8 +65100,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetUgcFeedListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUgcFeedListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUgcFeedListRequest)
+      GetUgcFeedListRequestOrBuilder {
     // Use GetUgcFeedListRequest.newBuilder() to construct.
     private GetUgcFeedListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -65357,7 +65198,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -65381,7 +65221,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -65412,7 +65251,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -65538,8 +65378,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetUgcFeedListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUgcFeedListRequest)
+        com.wali.live.proto.Feeds.GetUgcFeedListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetUgcFeedListRequest_descriptor;
@@ -65669,7 +65510,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -65718,7 +65558,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -65778,10 +65617,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUgcFeedListRequest)
   }
 
-  public interface GetUgcFeedListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUgcFeedListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUgcFeedListResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -65791,7 +65630,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -65809,7 +65647,6 @@ public final class Feeds {
      */
     long getStart();
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     /**
      * <code>repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;</code>
      *
@@ -65862,8 +65699,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetUgcFeedListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUgcFeedListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUgcFeedListResponse)
+      GetUgcFeedListResponseOrBuilder {
     // Use GetUgcFeedListResponse.newBuilder() to construct.
     private GetUgcFeedListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -65970,7 +65808,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -65986,7 +65823,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -66010,7 +65846,6 @@ public final class Feeds {
       return start_;
     }
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     public static final int FEEDINFOLIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_;
     /**
@@ -66074,7 +65909,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -66213,8 +66049,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetUgcFeedListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUgcFeedListResponse)
+        com.wali.live.proto.Feeds.GetUgcFeedListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetUgcFeedListResponse_descriptor;
@@ -66392,7 +66229,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -66425,7 +66261,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -66474,7 +66309,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
       private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_ =
         java.util.Collections.emptyList();
       private void ensureFeedInfoListIsMutable() {
@@ -66656,7 +66490,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedInfo> values) {
         if (feedInfoListBuilder_ == null) {
           ensureFeedInfoListIsMutable();
-          super.addAll(values, feedInfoList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedInfoList_);
           onChanged();
         } else {
           feedInfoListBuilder_.addAllMessages(values);
@@ -66797,10 +66632,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUgcFeedListResponse)
   }
 
-  public interface GetVideoFeedListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetVideoFeedListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetVideoFeedListRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -66818,7 +66653,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -66844,8 +66678,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetVideoFeedListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetVideoFeedListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetVideoFeedListRequest)
+      GetVideoFeedListRequestOrBuilder {
     // Use GetVideoFeedListRequest.newBuilder() to construct.
     private GetVideoFeedListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -66941,7 +66776,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -66965,7 +66799,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -66996,7 +66829,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -67122,8 +66956,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetVideoFeedListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetVideoFeedListRequest)
+        com.wali.live.proto.Feeds.GetVideoFeedListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetVideoFeedListRequest_descriptor;
@@ -67253,7 +67088,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -67302,7 +67136,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -67362,10 +67195,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetVideoFeedListRequest)
   }
 
-  public interface GetVideoFeedListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetVideoFeedListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetVideoFeedListResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -67375,7 +67208,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // required uint64 start = 2;
     /**
      * <code>required uint64 start = 2;</code>
      *
@@ -67393,7 +67225,6 @@ public final class Feeds {
      */
     long getStart();
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     /**
      * <code>repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;</code>
      *
@@ -67446,8 +67277,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetVideoFeedListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetVideoFeedListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetVideoFeedListResponse)
+      GetVideoFeedListResponseOrBuilder {
     // Use GetVideoFeedListResponse.newBuilder() to construct.
     private GetVideoFeedListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -67554,7 +67386,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -67570,7 +67401,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // required uint64 start = 2;
     public static final int START_FIELD_NUMBER = 2;
     private long start_;
     /**
@@ -67594,7 +67424,6 @@ public final class Feeds {
       return start_;
     }
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     public static final int FEEDINFOLIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_;
     /**
@@ -67658,7 +67487,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -67797,8 +67627,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetVideoFeedListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetVideoFeedListResponse)
+        com.wali.live.proto.Feeds.GetVideoFeedListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetVideoFeedListResponse_descriptor;
@@ -67976,7 +67807,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -68009,7 +67839,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 start = 2;
       private long start_ ;
       /**
        * <code>required uint64 start = 2;</code>
@@ -68058,7 +67887,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
       private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_ =
         java.util.Collections.emptyList();
       private void ensureFeedInfoListIsMutable() {
@@ -68240,7 +68068,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedInfo> values) {
         if (feedInfoListBuilder_ == null) {
           ensureFeedInfoListIsMutable();
-          super.addAll(values, feedInfoList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedInfoList_);
           onChanged();
         } else {
           feedInfoListBuilder_.addAllMessages(values);
@@ -68381,10 +68210,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetVideoFeedListResponse)
   }
 
-  public interface GetUserVideoFeedListRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUserVideoFeedListRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUserVideoFeedListRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -68402,7 +68231,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required uint64 timestamp = 2;
     /**
      * <code>required uint64 timestamp = 2;</code>
      *
@@ -68420,7 +68248,6 @@ public final class Feeds {
      */
     long getTimestamp();
 
-    // optional string feedId = 3;
     /**
      * <code>optional string feedId = 3;</code>
      */
@@ -68443,8 +68270,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetUserVideoFeedListRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUserVideoFeedListRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUserVideoFeedListRequest)
+      GetUserVideoFeedListRequestOrBuilder {
     // Use GetUserVideoFeedListRequest.newBuilder() to construct.
     private GetUserVideoFeedListRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -68501,8 +68329,9 @@ public final class Feeds {
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
           }
@@ -68545,7 +68374,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -68569,7 +68397,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required uint64 timestamp = 2;
     public static final int TIMESTAMP_FIELD_NUMBER = 2;
     private long timestamp_;
     /**
@@ -68593,7 +68420,6 @@ public final class Feeds {
       return timestamp_;
     }
 
-    // optional string feedId = 3;
     public static final int FEEDID_FIELD_NUMBER = 3;
     private java.lang.Object feedId_;
     /**
@@ -68644,7 +68470,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -68777,8 +68604,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetUserVideoFeedListRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUserVideoFeedListRequest)
+        com.wali.live.proto.Feeds.GetUserVideoFeedListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_descriptor;
@@ -68919,7 +68747,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -68968,7 +68795,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 timestamp = 2;
       private long timestamp_ ;
       /**
        * <code>required uint64 timestamp = 2;</code>
@@ -69017,7 +68843,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional string feedId = 3;
       private java.lang.Object feedId_ = "";
       /**
        * <code>optional string feedId = 3;</code>
@@ -69031,9 +68856,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -69102,10 +68930,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUserVideoFeedListRequest)
   }
 
-  public interface GetUserVideoFeedListResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetUserVideoFeedListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetUserVideoFeedListResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -69115,7 +68943,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // required uint64 timestamp = 2;
     /**
      * <code>required uint64 timestamp = 2;</code>
      *
@@ -69131,7 +68958,6 @@ public final class Feeds {
      */
     long getTimestamp();
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     /**
      * <code>repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;</code>
      *
@@ -69184,8 +69010,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetUserVideoFeedListResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetUserVideoFeedListResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetUserVideoFeedListResponse)
+      GetUserVideoFeedListResponseOrBuilder {
     // Use GetUserVideoFeedListResponse.newBuilder() to construct.
     private GetUserVideoFeedListResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -69292,7 +69119,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -69308,7 +69134,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // required uint64 timestamp = 2;
     public static final int TIMESTAMP_FIELD_NUMBER = 2;
     private long timestamp_;
     /**
@@ -69330,7 +69155,6 @@ public final class Feeds {
       return timestamp_;
     }
 
-    // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
     public static final int FEEDINFOLIST_FIELD_NUMBER = 3;
     private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_;
     /**
@@ -69394,7 +69218,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -69533,8 +69358,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetUserVideoFeedListResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetUserVideoFeedListResponse)
+        com.wali.live.proto.Feeds.GetUserVideoFeedListResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_descriptor;
@@ -69712,7 +69538,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -69745,7 +69570,6 @@ public final class Feeds {
         return this;
       }
 
-      // required uint64 timestamp = 2;
       private long timestamp_ ;
       /**
        * <code>required uint64 timestamp = 2;</code>
@@ -69790,7 +69614,6 @@ public final class Feeds {
         return this;
       }
 
-      // repeated .com.wali.live.proto.FeedInfo feedInfoList = 3;
       private java.util.List<com.wali.live.proto.Feeds.FeedInfo> feedInfoList_ =
         java.util.Collections.emptyList();
       private void ensureFeedInfoListIsMutable() {
@@ -69972,7 +69795,8 @@ public final class Feeds {
           java.lang.Iterable<? extends com.wali.live.proto.Feeds.FeedInfo> values) {
         if (feedInfoListBuilder_ == null) {
           ensureFeedInfoListIsMutable();
-          super.addAll(values, feedInfoList_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedInfoList_);
           onChanged();
         } else {
           feedInfoListBuilder_.addAllMessages(values);
@@ -70113,10 +69937,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetUserVideoFeedListResponse)
   }
 
-  public interface GetVideoFeedInfoRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetVideoFeedInfoRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetVideoFeedInfoRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint64 userId = 1;
     /**
      * <code>required uint64 userId = 1;</code>
      *
@@ -70134,7 +69958,6 @@ public final class Feeds {
      */
     long getUserId();
 
-    // required string feedId = 2;
     /**
      * <code>required string feedId = 2;</code>
      *
@@ -70161,7 +69984,6 @@ public final class Feeds {
     com.google.protobuf.ByteString
         getFeedIdBytes();
 
-    // optional bool isOnlyFocus = 3;
     /**
      * <code>optional bool isOnlyFocus = 3;</code>
      *
@@ -70179,7 +70001,6 @@ public final class Feeds {
      */
     boolean getIsOnlyFocus();
 
-    // optional uint64 feedOwnerId = 4;
     /**
      * <code>optional uint64 feedOwnerId = 4;</code>
      */
@@ -70189,7 +70010,6 @@ public final class Feeds {
      */
     long getFeedOwnerId();
 
-    // optional .com.wali.live.proto.Location location = 5;
     /**
      * <code>optional .com.wali.live.proto.Location location = 5;</code>
      *
@@ -70223,8 +70043,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetVideoFeedInfoRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements GetVideoFeedInfoRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetVideoFeedInfoRequest)
+      GetVideoFeedInfoRequestOrBuilder {
     // Use GetVideoFeedInfoRequest.newBuilder() to construct.
     private GetVideoFeedInfoRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -70276,8 +70097,9 @@ public final class Feeds {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              feedId_ = input.readBytes();
+              feedId_ = bs;
               break;
             }
             case 24: {
@@ -70343,7 +70165,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint64 userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
     private long userId_;
     /**
@@ -70367,7 +70188,6 @@ public final class Feeds {
       return userId_;
     }
 
-    // required string feedId = 2;
     public static final int FEEDID_FIELD_NUMBER = 2;
     private java.lang.Object feedId_;
     /**
@@ -70422,7 +70242,6 @@ public final class Feeds {
       }
     }
 
-    // optional bool isOnlyFocus = 3;
     public static final int ISONLYFOCUS_FIELD_NUMBER = 3;
     private boolean isOnlyFocus_;
     /**
@@ -70446,7 +70265,6 @@ public final class Feeds {
       return isOnlyFocus_;
     }
 
-    // optional uint64 feedOwnerId = 4;
     public static final int FEEDOWNERID_FIELD_NUMBER = 4;
     private long feedOwnerId_;
     /**
@@ -70462,7 +70280,6 @@ public final class Feeds {
       return feedOwnerId_;
     }
 
-    // optional .com.wali.live.proto.Location location = 5;
     public static final int LOCATION_FIELD_NUMBER = 5;
     private com.wali.live.proto.Feeds.Location location_;
     /**
@@ -70506,7 +70323,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUserId()) {
         memoizedIsInitialized = 0;
@@ -70653,8 +70471,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetVideoFeedInfoRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetVideoFeedInfoRequest)
+        com.wali.live.proto.Feeds.GetVideoFeedInfoRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_descriptor;
@@ -70822,7 +70641,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint64 userId = 1;
       private long userId_ ;
       /**
        * <code>required uint64 userId = 1;</code>
@@ -70871,7 +70689,6 @@ public final class Feeds {
         return this;
       }
 
-      // required string feedId = 2;
       private java.lang.Object feedId_ = "";
       /**
        * <code>required string feedId = 2;</code>
@@ -70893,9 +70710,12 @@ public final class Feeds {
       public java.lang.String getFeedId() {
         java.lang.Object ref = feedId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          feedId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -70969,7 +70789,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional bool isOnlyFocus = 3;
       private boolean isOnlyFocus_ ;
       /**
        * <code>optional bool isOnlyFocus = 3;</code>
@@ -71018,7 +70837,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional uint64 feedOwnerId = 4;
       private long feedOwnerId_ ;
       /**
        * <code>optional uint64 feedOwnerId = 4;</code>
@@ -71051,7 +70869,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.Location location = 5;
       private com.wali.live.proto.Feeds.Location location_ = com.wali.live.proto.Feeds.Location.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.Location, com.wali.live.proto.Feeds.Location.Builder, com.wali.live.proto.Feeds.LocationOrBuilder> locationBuilder_;
@@ -71196,7 +71013,7 @@ public final class Feeds {
         if (locationBuilder_ == null) {
           locationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.Location, com.wali.live.proto.Feeds.Location.Builder, com.wali.live.proto.Feeds.LocationOrBuilder>(
-                  location_,
+                  getLocation(),
                   getParentForChildren(),
                   isClean());
           location_ = null;
@@ -71215,10 +71032,10 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetVideoFeedInfoRequest)
   }
 
-  public interface GetVideoFeedInfoResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface GetVideoFeedInfoResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetVideoFeedInfoResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required uint32 ret = 1;
     /**
      * <code>required uint32 ret = 1;</code>
      */
@@ -71228,7 +71045,6 @@ public final class Feeds {
      */
     int getRet();
 
-    // optional .com.wali.live.proto.FeedInfo feedInfo = 2;
     /**
      * <code>optional .com.wali.live.proto.FeedInfo feedInfo = 2;</code>
      */
@@ -71242,7 +71058,6 @@ public final class Feeds {
      */
     com.wali.live.proto.Feeds.FeedInfoOrBuilder getFeedInfoOrBuilder();
 
-    // optional double distance = 3;
     /**
      * <code>optional double distance = 3;</code>
      *
@@ -71268,8 +71083,9 @@ public final class Feeds {
    * </pre>
    */
   public static final class GetVideoFeedInfoResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements GetVideoFeedInfoResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetVideoFeedInfoResponse)
+      GetVideoFeedInfoResponseOrBuilder {
     // Use GetVideoFeedInfoResponse.newBuilder() to construct.
     private GetVideoFeedInfoResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -71378,7 +71194,6 @@ public final class Feeds {
     }
 
     private int bitField0_;
-    // required uint32 ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
     private int ret_;
     /**
@@ -71394,7 +71209,6 @@ public final class Feeds {
       return ret_;
     }
 
-    // optional .com.wali.live.proto.FeedInfo feedInfo = 2;
     public static final int FEEDINFO_FIELD_NUMBER = 2;
     private com.wali.live.proto.Feeds.FeedInfo feedInfo_;
     /**
@@ -71416,7 +71230,6 @@ public final class Feeds {
       return feedInfo_;
     }
 
-    // optional double distance = 3;
     public static final int DISTANCE_FIELD_NUMBER = 3;
     private double distance_;
     /**
@@ -71448,7 +71261,8 @@ public final class Feeds {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasRet()) {
         memoizedIsInitialized = 0;
@@ -71583,8 +71397,9 @@ public final class Feeds {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.wali.live.proto.Feeds.GetVideoFeedInfoResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetVideoFeedInfoResponse)
+        com.wali.live.proto.Feeds.GetVideoFeedInfoResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.wali.live.proto.Feeds.internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_descriptor;
@@ -71734,7 +71549,6 @@ public final class Feeds {
       }
       private int bitField0_;
 
-      // required uint32 ret = 1;
       private int ret_ ;
       /**
        * <code>required uint32 ret = 1;</code>
@@ -71767,7 +71581,6 @@ public final class Feeds {
         return this;
       }
 
-      // optional .com.wali.live.proto.FeedInfo feedInfo = 2;
       private com.wali.live.proto.Feeds.FeedInfo feedInfo_ = com.wali.live.proto.Feeds.FeedInfo.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.wali.live.proto.Feeds.FeedInfo, com.wali.live.proto.Feeds.FeedInfo.Builder, com.wali.live.proto.Feeds.FeedInfoOrBuilder> feedInfoBuilder_;
@@ -71876,7 +71689,7 @@ public final class Feeds {
         if (feedInfoBuilder_ == null) {
           feedInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.wali.live.proto.Feeds.FeedInfo, com.wali.live.proto.Feeds.FeedInfo.Builder, com.wali.live.proto.Feeds.FeedInfoOrBuilder>(
-                  feedInfo_,
+                  getFeedInfo(),
                   getParentForChildren(),
                   isClean());
           feedInfo_ = null;
@@ -71884,7 +71697,6 @@ public final class Feeds {
         return feedInfoBuilder_;
       }
 
-      // optional double distance = 3;
       private double distance_ ;
       /**
        * <code>optional double distance = 3;</code>
@@ -71944,352 +71756,352 @@ public final class Feeds {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetVideoFeedInfoResponse)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_CommentInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_CommentInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedComment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedComment_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLike_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLike_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_UGCFeed_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_UGCFeed_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedContent_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedContent_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_ReplaySet_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_ReplaySet_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLikeContent_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLikeContent_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedAbstractComment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedAbstractComment_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetFeedNumRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetFeedNumRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetFeedNumResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetFeedNumResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetFeedInfoRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetFeedInfoRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetFeedInfoResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetFeedInfoResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetFeedListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetFeedListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetFeedListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetFeedListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetUserPageFeedListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetUserPageFeedListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetUserPageFeedListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetUserPageFeedListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetRecommedUsersRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetRecommedUsersRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Tag_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Tag_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_RecomUsers_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_RecomUsers_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetRecommedUsersResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetRecommedUsersResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLikeReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLikeReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLikeRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLikeRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLikeDeleteReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLikeDeleteReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLikeDeleteRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLikeDeleteRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLikeListReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLikeListReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FeedLikeListRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FeedLikeListRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_CreateFeedCommnetRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_CreateFeedCommnetRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_CreateFeedCommnetResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_CreateFeedCommnetResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_QueryFeedCommentsRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_QueryFeedCommentsRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_QueryFeedCommentsResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_QueryFeedCommentsResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_QueryParticularCommentsRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_QueryParticularCommentsRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_QueryParticularCommentsResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_QueryParticularCommentsResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_CreateFeedsRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_CreateFeedsRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Location_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Location_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_CreateFeedsResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_CreateFeedsResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_DeleteFeedsRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_DeleteFeedsRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_DeleteFeedsResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_DeleteFeedsResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetNewFeedRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetNewFeedRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetNewFeedResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetNewFeedResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_SetFeedsStatInfoReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_SetFeedsStatInfoReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_SetFeedsStatInfoResp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_SetFeedsStatInfoResp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_RoomRecord_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_RoomRecord_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_BlogFeed_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_BlogFeed_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_MultiMedia_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_MultiMedia_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Picture_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Picture_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Video_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Video_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Text_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Text_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Hyperlink_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Hyperlink_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_Userlink_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_Userlink_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetTitleListReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetTitleListReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetTitleListRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetTitleListRsp_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_TitleInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_TitleInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetHomePageFeedListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetHomePageFeedListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetHomePageFeedListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetHomePageFeedListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_FornoticeInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_FornoticeInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_UserFornoticeInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_UserFornoticeInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_UserBrief_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_UserBrief_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_ShopBrief_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_ShopBrief_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_LiveInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetUgcFeedListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetUgcFeedListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetUgcFeedListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetUgcFeedListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetVideoFeedListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetVideoFeedListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetVideoFeedListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetVideoFeedListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -72396,550 +72208,552 @@ public final class Feeds {
       "\030\001 \002(\r\022\017\n\007feed_id\030\002 \002(\t\022\022\n\ncommnet_id\030\003 " +
       "\002(\r\022\020\n\010owner_id\030\004 \001(\004\022\020\n\010feedType\030\005 \001(\r\"" +
       "-\n\031DeleteFeedCommnetResponse\022\020\n\010err_code" +
-      "\030\001 \002(\r\"~\n\030QueryFeedCommentsRequest\022\017\n\007fe" +
-      "ed_id\030\001 \002(\t\022\n\n\002ts\030\002 \002(\004\022\r\n\005limit\030\003 \002(\r\022\025" +
-      "\n\ris_only_focus\030\004 \001(\010\022\016\n\006is_asc\030\005 \001(\010\022\017\n" +
-      "\004type\030\006 \001(\r:\0010\"\230\001\n\031QueryFeedCommentsResp" +
-      "onse\022\020\n\010err_code\030\001 \002(\r\022\017\n\007last_ts\030\002 \002(\004\022" +
-      "6\n\014feed_comment\030\003 \001(\0132 .com.wali.live.pr" +
-      "oto.FeedComment\022\020\n\010has_more\030\004 \001(\010\022\016\n\006err",
-      "Msg\030\005 \001(\t\"g\n\036QueryParticularCommentsRequ" +
-      "est\022\017\n\007feed_id\030\001 \002(\t\022\022\n\ncomment_id\030\002 \002(\004" +
-      "\022\016\n\006up_num\030\003 \001(\r\022\020\n\010down_num\030\004 \001(\r\"\243\001\n\037Q" +
-      "ueryParticularCommentsResponse\022\020\n\010err_co" +
-      "de\030\001 \002(\r\0227\n\rcomment_infos\030\002 \003(\0132 .com.wa" +
-      "li.live.proto.CommentInfo\022\020\n\010up_total\030\003 " +
-      "\001(\r\022\022\n\ndown_total\030\004 \001(\r\022\017\n\007err_msg\030\005 \001(\t" +
-      "\"\265\002\n\022CreateFeedsRequest\022\n\n\002id\030\001 \002(\003\022\014\n\004t" +
-      "ype\030\002 \002(\005\022\013\n\003url\030\003 \001(\t\022\022\n\ncover_page\030\004 \001" +
-      "(\t\022\014\n\004desc\030\005 \001(\t\022+\n\004addr\030\006 \001(\0132\035.com.wal",
-      "i.live.proto.Location\022\021\n\tclient_id\030\007 \001(\t" +
-      "\022\013\n\003md5\030\010 \001(\t\022\r\n\005title\030\t \001(\t\022\016\n\006height\030\n" +
-      " \001(\r\022\r\n\005width\030\013 \001(\r\022\020\n\010duration\030\014 \001(\004\022\021\n" +
-      "\tfile_size\030\r \001(\004\022\020\n\010ext_type\030\016 \001(\r\022\020\n\010ex" +
-      "t_data\030\017 \001(\014\022\022\n\nchannel_id\030\020 \001(\r\"c\n\010Loca" +
-      "tion\022\013\n\003lon\030\001 \001(\001\022\013\n\003lat\030\002 \001(\001\022\017\n\007countr" +
-      "y\030\003 \001(\t\022\020\n\010province\030\004 \001(\t\022\014\n\004city\030\005 \001(\t\022" +
-      "\014\n\004type\030\006 \001(\r\"q\n\023CreateFeedsResponse\022\020\n\010" +
-      "err_code\030\001 \002(\005\022\017\n\007feed_id\030\002 \001(\t\022\023\n\013creat" +
-      "e_time\030\003 \001(\003\022\017\n\007err_msg\030\004 \001(\t\022\021\n\tshare_u",
-      "rl\030\005 \001(\t\"?\n\022DeleteFeedsRequest\022\n\n\002id\030\001 \002" +
-      "(\003\022\017\n\007feed_id\030\002 \002(\t\022\014\n\004type\030\003 \001(\005\"8\n\023Del" +
-      "eteFeedsResponse\022\020\n\010err_code\030\001 \002(\005\022\017\n\007er" +
-      "r_msg\030\002 \001(\t\":\n\021GetNewFeedRequest\022\013\n\003uid\030" +
-      "\001 \002(\003\022\030\n\020last_update_time\030\002 \002(\003\"|\n\022GetNe" +
-      "wFeedResponse\022\020\n\010err_code\030\001 \002(\005\022\017\n\007new_u" +
-      "id\030\002 \001(\003\022\024\n\014new_uid_icon\030\003 \001(\004\022\023\n\013new_fe" +
-      "ed_id\030\004 \001(\t\022\030\n\020last_update_time\030\005 \001(\003\"K\n" +
-      "\023SetFeedsStatInfoReq\022\017\n\007feed_id\030\001 \002(\t\022\025\n" +
-      "\rfeed_owner_id\030\002 \001(\003\022\014\n\004type\030\003 \001(\005\"G\n\024Se",
-      "tFeedsStatInfoResp\022\014\n\004code\030\001 \002(\r\022\016\n\006errM" +
-      "sg\030\002 \001(\t\022\021\n\tviewcount\030\003 \001(\003\"x\n\nRoomRecor" +
-      "d\022\017\n\007host_id\030\001 \001(\004\022\017\n\007room_id\030\002 \001(\t\022\016\n\006l" +
-      "iType\030\003 \001(\r\022\020\n\010app_type\030\004 \001(\r\022\022\n\nroom_ti" +
-      "tle\030\005 \001(\t\022\022\n\nlive_cover\030\006 \001(\t\"\232\001\n\010BlogFe" +
-      "ed\0224\n\013multi_media\030\001 \003(\0132\037.com.wali.live." +
-      "proto.MultiMedia\0224\n\rrefered_users\030\002 \003(\0132" +
-      "\035.com.wali.live.proto.UserShow\022\023\n\013max_it" +
-      "em_id\030\003 \001(\r\022\r\n\005cp_id\030\004 \001(\r\"@\n\nMultiMedia" +
-      "\022\022\n\nmedia_type\030\001 \001(\r\022\022\n\nmedia_data\030\002 \001(\014",
-      "\022\n\n\002id\030\005 \001(\r\"C\n\007Picture\022\013\n\003url\030\001 \001(\t\022\016\n\006" +
-      "height\030\002 \001(\r\022\r\n\005width\030\003 \001(\r\022\014\n\004desc\030\004 \001(" +
-      "\t\"z\n\005Video\022\013\n\003url\030\001 \001(\t\022\022\n\ncover_page\030\002 " +
-      "\001(\t\022\016\n\006height\030\003 \001(\r\022\r\n\005width\030\004 \001(\r\022\020\n\010du" +
-      "ration\030\005 \001(\004\022\021\n\tfile_size\030\006 \001(\004\022\014\n\004desc\030" +
-      "\007 \001(\t\"7\n\004Text\022\014\n\004type\030\001 \001(\r\022\017\n\007content\030\002" +
-      " \001(\t\022\020\n\010is_inner\030\003 \001(\010\"8\n\tHyperlink\022\014\n\004d" +
-      "esc\030\001 \001(\t\022\013\n\003url\030\002 \001(\t\022\020\n\010is_inner\030\003 \001(\010" +
-      "\")\n\010Userlink\022\013\n\003uid\030\001 \001(\004\022\020\n\010is_inner\030\002 " +
-      "\001(\010\"/\n\017GetTitleListReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006",
-      "source\030\002 \003(\r\"W\n\017GetTitleListRsp\022\020\n\010ret_c" +
-      "ode\030\001 \002(\r\0222\n\ntitle_info\030\002 \003(\0132\036.com.wali" +
-      ".live.proto.TitleInfo\"D\n\tTitleInfo\022\016\n\006so" +
-      "urce\030\001 \001(\r\022\023\n\013user_colony\030\002 \001(\r\022\022\n\ntitle" +
-      "_list\030\003 \003(\t\";\n\032GetHomePageFeedListReques" +
-      "t\022\016\n\006userId\030\001 \002(\004\022\r\n\005start\030\002 \002(\004\"\333\001\n\033Get" +
-      "HomePageFeedListResponse\022\013\n\003ret\030\001 \002(\r\022\r\n" +
-      "\005start\030\002 \002(\004\022/\n\010liveInfo\030\003 \003(\0132\035.com.wal" +
-      "i.live.proto.LiveInfo\022:\n\nfornotices\030\004 \003(" +
-      "\0132&.com.wali.live.proto.UserFornoticeInf",
-      "o\0223\n\014feedInfoList\030\005 \003(\0132\035.com.wali.live." +
-      "proto.FeedInfo\"\350\001\n\rFornoticeInfo\022\020\n\010owne" +
-      "r_id\030\001 \002(\004\022\024\n\014fornotice_id\030\002 \002(\t\022\022\n\nbegi" +
-      "n_time\030\003 \001(\004\022\r\n\005title\030\004 \001(\t\022\014\n\004type\030\005 \001(" +
-      "\r\022\017\n\007img_url\030\006 \001(\t\022\020\n\010end_time\030\007 \001(\004\022\014\n\004" +
-      "desc\030\010 \001(\t\022\021\n\tclient_id\030\t \001(\t\022\013\n\003md5\030\n \001" +
-      "(\t\022\016\n\006height\030\013 \001(\r\022\r\n\005width\030\014 \001(\r\022\016\n\006sta" +
-      "tus\030\r \001(\r\"\225\001\n\021UserFornoticeInfo\022:\n\016forno" +
-      "tice_info\030\001 \002(\0132\".com.wali.live.proto.Fo" +
-      "rnoticeInfo\022\021\n\tis_booked\030\002 \001(\010\0221\n\tuser_i",
-      "nfo\030\003 \001(\0132\036.com.wali.live.proto.UserBrie" +
-      "f\"[\n\tUserBrief\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickname\030" +
-      "\002 \001(\t\022\016\n\006avatar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022\020\n\010" +
-      "certType\030\005 \001(\r\"2\n\tShopBrief\022\021\n\thideGoods" +
-      "\030\001 \001(\010\022\022\n\ndesiredCnt\030\002 \001(\r\"\237\002\n\010LiveInfo\022" +
-      "\016\n\006liveId\030\001 \002(\t\022,\n\004user\030\002 \001(\0132\036.com.wali" +
-      ".live.proto.UserBrief\022\020\n\010location\030\003 \001(\t\022" +
-      "\021\n\tviewerCnt\030\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\020\n\010cover" +
-      "Url\030\006 \001(\t\022\017\n\007liTitle\030\007 \001(\t\022\021\n\tstartTime\030" +
-      "\010 \001(\004\022\013\n\003tag\030\t \001(\t\022,\n\004shop\030\n \001(\0132\036.com.w",
-      "ali.live.proto.ShopBrief\022\017\n\007appType\030\013 \001(" +
-      "\r\022\020\n\010liveType\030\014 \001(\r\022\017\n\007gameTag\030\r \001(\t\"6\n\025" +
-      "GetUgcFeedListRequest\022\016\n\006userId\030\001 \002(\004\022\r\n" +
-      "\005start\030\002 \002(\004\"i\n\026GetUgcFeedListResponse\022\013" +
-      "\n\003ret\030\001 \002(\r\022\r\n\005start\030\002 \002(\004\0223\n\014feedInfoLi" +
-      "st\030\003 \003(\0132\035.com.wali.live.proto.FeedInfo\"" +
-      "8\n\027GetVideoFeedListRequest\022\016\n\006userId\030\001 \002" +
-      "(\004\022\r\n\005start\030\002 \002(\004\"k\n\030GetVideoFeedListRes" +
-      "ponse\022\013\n\003ret\030\001 \002(\r\022\r\n\005start\030\002 \002(\004\0223\n\014fee" +
-      "dInfoList\030\003 \003(\0132\035.com.wali.live.proto.Fe",
-      "edInfo\"P\n\033GetUserVideoFeedListRequest\022\016\n" +
-      "\006userId\030\001 \002(\004\022\021\n\ttimestamp\030\002 \002(\004\022\016\n\006feed" +
-      "Id\030\003 \001(\t\"s\n\034GetUserVideoFeedListResponse" +
-      "\022\013\n\003ret\030\001 \002(\r\022\021\n\ttimestamp\030\002 \002(\004\0223\n\014feed" +
-      "InfoList\030\003 \003(\0132\035.com.wali.live.proto.Fee" +
-      "dInfo\"\224\001\n\027GetVideoFeedInfoRequest\022\016\n\006use" +
-      "rId\030\001 \002(\004\022\016\n\006feedId\030\002 \002(\t\022\023\n\013isOnlyFocus" +
-      "\030\003 \001(\010\022\023\n\013feedOwnerId\030\004 \001(\004\022/\n\010location\030" +
-      "\005 \001(\0132\035.com.wali.live.proto.Location\"j\n\030" +
-      "GetVideoFeedInfoResponse\022\013\n\003ret\030\001 \002(\r\022/\n",
-      "\010feedInfo\030\002 \001(\0132\035.com.wali.live.proto.Fe" +
-      "edInfo\022\020\n\010distance\030\003 \001(\001B\034\n\023com.wali.liv" +
-      "e.protoB\005Feeds"
+      "\030\001 \002(\r\"\230\001\n\030QueryFeedCommentsRequest\022\017\n\007f" +
+      "eed_id\030\001 \002(\t\022\n\n\002ts\030\002 \002(\004\022\r\n\005limit\030\003 \002(\r\022" +
+      "\025\n\ris_only_focus\030\004 \001(\010\022\016\n\006is_asc\030\005 \001(\010\022\017" +
+      "\n\004type\030\006 \001(\r:\0010\022\030\n\nis_add_sgc\030\007 \001(\010:\004tru" +
+      "e\"\230\001\n\031QueryFeedCommentsResponse\022\020\n\010err_c" +
+      "ode\030\001 \002(\r\022\017\n\007last_ts\030\002 \002(\004\0226\n\014feed_comme" +
+      "nt\030\003 \001(\0132 .com.wali.live.proto.FeedComme",
+      "nt\022\020\n\010has_more\030\004 \001(\010\022\016\n\006errMsg\030\005 \001(\t\"g\n\036" +
+      "QueryParticularCommentsRequest\022\017\n\007feed_i" +
+      "d\030\001 \002(\t\022\022\n\ncomment_id\030\002 \002(\004\022\016\n\006up_num\030\003 " +
+      "\001(\r\022\020\n\010down_num\030\004 \001(\r\"\243\001\n\037QueryParticula" +
+      "rCommentsResponse\022\020\n\010err_code\030\001 \002(\r\0227\n\rc" +
+      "omment_infos\030\002 \003(\0132 .com.wali.live.proto" +
+      ".CommentInfo\022\020\n\010up_total\030\003 \001(\r\022\022\n\ndown_t" +
+      "otal\030\004 \001(\r\022\017\n\007err_msg\030\005 \001(\t\"\265\002\n\022CreateFe" +
+      "edsRequest\022\n\n\002id\030\001 \002(\003\022\014\n\004type\030\002 \002(\005\022\013\n\003" +
+      "url\030\003 \001(\t\022\022\n\ncover_page\030\004 \001(\t\022\014\n\004desc\030\005 ",
+      "\001(\t\022+\n\004addr\030\006 \001(\0132\035.com.wali.live.proto." +
+      "Location\022\021\n\tclient_id\030\007 \001(\t\022\013\n\003md5\030\010 \001(\t" +
+      "\022\r\n\005title\030\t \001(\t\022\016\n\006height\030\n \001(\r\022\r\n\005width" +
+      "\030\013 \001(\r\022\020\n\010duration\030\014 \001(\004\022\021\n\tfile_size\030\r " +
+      "\001(\004\022\020\n\010ext_type\030\016 \001(\r\022\020\n\010ext_data\030\017 \001(\014\022" +
+      "\022\n\nchannel_id\030\020 \001(\r\"c\n\010Location\022\013\n\003lon\030\001" +
+      " \001(\001\022\013\n\003lat\030\002 \001(\001\022\017\n\007country\030\003 \001(\t\022\020\n\010pr" +
+      "ovince\030\004 \001(\t\022\014\n\004city\030\005 \001(\t\022\014\n\004type\030\006 \001(\r" +
+      "\"q\n\023CreateFeedsResponse\022\020\n\010err_code\030\001 \002(" +
+      "\005\022\017\n\007feed_id\030\002 \001(\t\022\023\n\013create_time\030\003 \001(\003\022",
+      "\017\n\007err_msg\030\004 \001(\t\022\021\n\tshare_url\030\005 \001(\t\"?\n\022D" +
+      "eleteFeedsRequest\022\n\n\002id\030\001 \002(\003\022\017\n\007feed_id" +
+      "\030\002 \002(\t\022\014\n\004type\030\003 \001(\005\"8\n\023DeleteFeedsRespo" +
+      "nse\022\020\n\010err_code\030\001 \002(\005\022\017\n\007err_msg\030\002 \001(\t\":" +
+      "\n\021GetNewFeedRequest\022\013\n\003uid\030\001 \002(\003\022\030\n\020last" +
+      "_update_time\030\002 \002(\003\"|\n\022GetNewFeedResponse" +
+      "\022\020\n\010err_code\030\001 \002(\005\022\017\n\007new_uid\030\002 \001(\003\022\024\n\014n" +
+      "ew_uid_icon\030\003 \001(\004\022\023\n\013new_feed_id\030\004 \001(\t\022\030" +
+      "\n\020last_update_time\030\005 \001(\003\"K\n\023SetFeedsStat" +
+      "InfoReq\022\017\n\007feed_id\030\001 \002(\t\022\025\n\rfeed_owner_i",
+      "d\030\002 \001(\003\022\014\n\004type\030\003 \001(\005\"G\n\024SetFeedsStatInf" +
+      "oResp\022\014\n\004code\030\001 \002(\r\022\016\n\006errMsg\030\002 \001(\t\022\021\n\tv" +
+      "iewcount\030\003 \001(\003\"x\n\nRoomRecord\022\017\n\007host_id\030" +
+      "\001 \001(\004\022\017\n\007room_id\030\002 \001(\t\022\016\n\006liType\030\003 \001(\r\022\020" +
+      "\n\010app_type\030\004 \001(\r\022\022\n\nroom_title\030\005 \001(\t\022\022\n\n" +
+      "live_cover\030\006 \001(\t\"\232\001\n\010BlogFeed\0224\n\013multi_m" +
+      "edia\030\001 \003(\0132\037.com.wali.live.proto.MultiMe" +
+      "dia\0224\n\rrefered_users\030\002 \003(\0132\035.com.wali.li" +
+      "ve.proto.UserShow\022\023\n\013max_item_id\030\003 \001(\r\022\r" +
+      "\n\005cp_id\030\004 \001(\r\"@\n\nMultiMedia\022\022\n\nmedia_typ",
+      "e\030\001 \001(\r\022\022\n\nmedia_data\030\002 \001(\014\022\n\n\002id\030\005 \001(\r\"" +
+      "C\n\007Picture\022\013\n\003url\030\001 \001(\t\022\016\n\006height\030\002 \001(\r\022" +
+      "\r\n\005width\030\003 \001(\r\022\014\n\004desc\030\004 \001(\t\"z\n\005Video\022\013\n" +
+      "\003url\030\001 \001(\t\022\022\n\ncover_page\030\002 \001(\t\022\016\n\006height" +
+      "\030\003 \001(\r\022\r\n\005width\030\004 \001(\r\022\020\n\010duration\030\005 \001(\004\022" +
+      "\021\n\tfile_size\030\006 \001(\004\022\014\n\004desc\030\007 \001(\t\"7\n\004Text" +
+      "\022\014\n\004type\030\001 \001(\r\022\017\n\007content\030\002 \001(\t\022\020\n\010is_in" +
+      "ner\030\003 \001(\010\"8\n\tHyperlink\022\014\n\004desc\030\001 \001(\t\022\013\n\003" +
+      "url\030\002 \001(\t\022\020\n\010is_inner\030\003 \001(\010\")\n\010Userlink\022" +
+      "\013\n\003uid\030\001 \001(\004\022\020\n\010is_inner\030\002 \001(\010\"/\n\017GetTit",
+      "leListReq\022\014\n\004uuid\030\001 \001(\004\022\016\n\006source\030\002 \003(\r\"" +
+      "W\n\017GetTitleListRsp\022\020\n\010ret_code\030\001 \002(\r\0222\n\n" +
+      "title_info\030\002 \003(\0132\036.com.wali.live.proto.T" +
+      "itleInfo\"D\n\tTitleInfo\022\016\n\006source\030\001 \001(\r\022\023\n" +
+      "\013user_colony\030\002 \001(\r\022\022\n\ntitle_list\030\003 \003(\t\";" +
+      "\n\032GetHomePageFeedListRequest\022\016\n\006userId\030\001" +
+      " \002(\004\022\r\n\005start\030\002 \002(\004\"\333\001\n\033GetHomePageFeedL" +
+      "istResponse\022\013\n\003ret\030\001 \002(\r\022\r\n\005start\030\002 \002(\004\022" +
+      "/\n\010liveInfo\030\003 \003(\0132\035.com.wali.live.proto." +
+      "LiveInfo\022:\n\nfornotices\030\004 \003(\0132&.com.wali.",
+      "live.proto.UserFornoticeInfo\0223\n\014feedInfo" +
+      "List\030\005 \003(\0132\035.com.wali.live.proto.FeedInf" +
+      "o\"\350\001\n\rFornoticeInfo\022\020\n\010owner_id\030\001 \002(\004\022\024\n" +
+      "\014fornotice_id\030\002 \002(\t\022\022\n\nbegin_time\030\003 \001(\004\022" +
+      "\r\n\005title\030\004 \001(\t\022\014\n\004type\030\005 \001(\r\022\017\n\007img_url\030" +
+      "\006 \001(\t\022\020\n\010end_time\030\007 \001(\004\022\014\n\004desc\030\010 \001(\t\022\021\n" +
+      "\tclient_id\030\t \001(\t\022\013\n\003md5\030\n \001(\t\022\016\n\006height\030" +
+      "\013 \001(\r\022\r\n\005width\030\014 \001(\r\022\016\n\006status\030\r \001(\r\"\225\001\n" +
+      "\021UserFornoticeInfo\022:\n\016fornotice_info\030\001 \002" +
+      "(\0132\".com.wali.live.proto.FornoticeInfo\022\021",
+      "\n\tis_booked\030\002 \001(\010\0221\n\tuser_info\030\003 \001(\0132\036.c" +
+      "om.wali.live.proto.UserBrief\"[\n\tUserBrie" +
+      "f\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickname\030\002 \001(\t\022\016\n\006avat" +
+      "ar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022\020\n\010certType\030\005 \001(" +
+      "\r\"2\n\tShopBrief\022\021\n\thideGoods\030\001 \001(\010\022\022\n\ndes" +
+      "iredCnt\030\002 \001(\r\"\237\002\n\010LiveInfo\022\016\n\006liveId\030\001 \002" +
+      "(\t\022,\n\004user\030\002 \001(\0132\036.com.wali.live.proto.U" +
+      "serBrief\022\020\n\010location\030\003 \001(\t\022\021\n\tviewerCnt\030" +
+      "\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\020\n\010coverUrl\030\006 \001(\t\022\017\n\007" +
+      "liTitle\030\007 \001(\t\022\021\n\tstartTime\030\010 \001(\004\022\013\n\003tag\030",
+      "\t \001(\t\022,\n\004shop\030\n \001(\0132\036.com.wali.live.prot" +
+      "o.ShopBrief\022\017\n\007appType\030\013 \001(\r\022\020\n\010liveType" +
+      "\030\014 \001(\r\022\017\n\007gameTag\030\r \001(\t\"6\n\025GetUgcFeedLis" +
+      "tRequest\022\016\n\006userId\030\001 \002(\004\022\r\n\005start\030\002 \002(\004\"" +
+      "i\n\026GetUgcFeedListResponse\022\013\n\003ret\030\001 \002(\r\022\r" +
+      "\n\005start\030\002 \002(\004\0223\n\014feedInfoList\030\003 \003(\0132\035.co" +
+      "m.wali.live.proto.FeedInfo\"8\n\027GetVideoFe" +
+      "edListRequest\022\016\n\006userId\030\001 \002(\004\022\r\n\005start\030\002" +
+      " \002(\004\"k\n\030GetVideoFeedListResponse\022\013\n\003ret\030" +
+      "\001 \002(\r\022\r\n\005start\030\002 \002(\004\0223\n\014feedInfoList\030\003 \003",
+      "(\0132\035.com.wali.live.proto.FeedInfo\"P\n\033Get" +
+      "UserVideoFeedListRequest\022\016\n\006userId\030\001 \002(\004" +
+      "\022\021\n\ttimestamp\030\002 \002(\004\022\016\n\006feedId\030\003 \001(\t\"s\n\034G" +
+      "etUserVideoFeedListResponse\022\013\n\003ret\030\001 \002(\r" +
+      "\022\021\n\ttimestamp\030\002 \002(\004\0223\n\014feedInfoList\030\003 \003(" +
+      "\0132\035.com.wali.live.proto.FeedInfo\"\224\001\n\027Get" +
+      "VideoFeedInfoRequest\022\016\n\006userId\030\001 \002(\004\022\016\n\006" +
+      "feedId\030\002 \002(\t\022\023\n\013isOnlyFocus\030\003 \001(\010\022\023\n\013fee" +
+      "dOwnerId\030\004 \001(\004\022/\n\010location\030\005 \001(\0132\035.com.w" +
+      "ali.live.proto.Location\"j\n\030GetVideoFeedI",
+      "nfoResponse\022\013\n\003ret\030\001 \002(\r\022/\n\010feedInfo\030\002 \001" +
+      "(\0132\035.com.wali.live.proto.FeedInfo\022\020\n\010dis" +
+      "tance\030\003 \001(\001B\034\n\023com.wali.live.protoB\005Feed" +
+      "s"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_com_wali_live_proto_CommentInfo_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_com_wali_live_proto_CommentInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_CommentInfo_descriptor,
-              new java.lang.String[] { "CommentId", "FromUid", "Content", "CreateTime", "ToUid", "FromNickname", "ToNickname", "IndexTs", "IsGood", "FromUserLevel", "FromAvatar", "CommentType", });
-          internal_static_com_wali_live_proto_FeedComment_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_com_wali_live_proto_FeedComment_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedComment_descriptor,
-              new java.lang.String[] { "FeedId", "FeedOwnerId", "Total", "CommentInfos", });
-          internal_static_com_wali_live_proto_FeedLike_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_com_wali_live_proto_FeedLike_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLike_descriptor,
-              new java.lang.String[] { "Zuid", "Ts", "UserName", });
-          internal_static_com_wali_live_proto_UGCFeed_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_com_wali_live_proto_UGCFeed_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_UGCFeed_descriptor,
-              new java.lang.String[] { "Type", "Url", "CoverPage", "Desc", "Addr", "ShareUrl", "Height", "Width", "Duration", "FileSize", "Tiltle", "ExtType", "ExtData", "ViewCount", "HostUserInfo", "LiveInfo", "Location", });
-          internal_static_com_wali_live_proto_FeedContent_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_com_wali_live_proto_FeedContent_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedContent_descriptor,
-              new java.lang.String[] { "FeedType", "LiveShow", "BackInfo", "UgcFeed", "ReplaySet", });
-          internal_static_com_wali_live_proto_ReplaySet_descriptor =
-            getDescriptor().getMessageTypes().get(5);
-          internal_static_com_wali_live_proto_ReplaySet_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_ReplaySet_descriptor,
-              new java.lang.String[] { "Backinfos", "CreateTime", });
-          internal_static_com_wali_live_proto_FeedLikeContent_descriptor =
-            getDescriptor().getMessageTypes().get(6);
-          internal_static_com_wali_live_proto_FeedLikeContent_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLikeContent_descriptor,
-              new java.lang.String[] { "FeedLikeList", "LikeCount", "HasMore", "MyselfLike", });
-          internal_static_com_wali_live_proto_FeedAbstractComment_descriptor =
-            getDescriptor().getMessageTypes().get(7);
-          internal_static_com_wali_live_proto_FeedAbstractComment_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedAbstractComment_descriptor,
-              new java.lang.String[] { "Comment", "CommentNumbers", "HasMore", });
-          internal_static_com_wali_live_proto_FeedInfo_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_com_wali_live_proto_FeedInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedInfo_descriptor,
-              new java.lang.String[] { "Type", "FeedId", "FeedCteateTime", "UserId", "FeedContent", "FeedLikeContent", "FeedAbstractComment", "UserShow", "ClientId", });
-          internal_static_com_wali_live_proto_GetFeedNumRequest_descriptor =
-            getDescriptor().getMessageTypes().get(9);
-          internal_static_com_wali_live_proto_GetFeedNumRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetFeedNumRequest_descriptor,
-              new java.lang.String[] { "Id", "Type", });
-          internal_static_com_wali_live_proto_GetFeedNumResponse_descriptor =
-            getDescriptor().getMessageTypes().get(10);
-          internal_static_com_wali_live_proto_GetFeedNumResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetFeedNumResponse_descriptor,
-              new java.lang.String[] { "ErrCode", "FeedNum", "ErrMsg", });
-          internal_static_com_wali_live_proto_GetFeedInfoRequest_descriptor =
-            getDescriptor().getMessageTypes().get(11);
-          internal_static_com_wali_live_proto_GetFeedInfoRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetFeedInfoRequest_descriptor,
-              new java.lang.String[] { "UserId", "FeedId", "IsOnlyFocus", "FeedOwnerId", });
-          internal_static_com_wali_live_proto_GetFeedInfoResponse_descriptor =
-            getDescriptor().getMessageTypes().get(12);
-          internal_static_com_wali_live_proto_GetFeedInfoResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetFeedInfoResponse_descriptor,
-              new java.lang.String[] { "Ret", "FeedInfo", });
-          internal_static_com_wali_live_proto_GetFeedListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(13);
-          internal_static_com_wali_live_proto_GetFeedListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetFeedListRequest_descriptor,
-              new java.lang.String[] { "UserId", "Start", "End", });
-          internal_static_com_wali_live_proto_GetFeedListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(14);
-          internal_static_com_wali_live_proto_GetFeedListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetFeedListResponse_descriptor,
-              new java.lang.String[] { "Ret", "Start", "FeedInfoList", });
-          internal_static_com_wali_live_proto_GetUserPageFeedListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(15);
-          internal_static_com_wali_live_proto_GetUserPageFeedListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetUserPageFeedListRequest_descriptor,
-              new java.lang.String[] { "UserId", "Timestamp", "FeedId", });
-          internal_static_com_wali_live_proto_GetUserPageFeedListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(16);
-          internal_static_com_wali_live_proto_GetUserPageFeedListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetUserPageFeedListResponse_descriptor,
-              new java.lang.String[] { "Ret", "Timestamp", "FeedInfoList", });
-          internal_static_com_wali_live_proto_GetRecommedUsersRequest_descriptor =
-            getDescriptor().getMessageTypes().get(17);
-          internal_static_com_wali_live_proto_GetRecommedUsersRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetRecommedUsersRequest_descriptor,
-              new java.lang.String[] { "UserId", "Size", });
-          internal_static_com_wali_live_proto_Tag_descriptor =
-            getDescriptor().getMessageTypes().get(18);
-          internal_static_com_wali_live_proto_Tag_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_Tag_descriptor,
-              new java.lang.String[] { "Name", });
-          internal_static_com_wali_live_proto_RecomUsers_descriptor =
-            getDescriptor().getMessageTypes().get(19);
-          internal_static_com_wali_live_proto_RecomUsers_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_RecomUsers_descriptor,
-              new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", "Gender", "FollowerNum", "Certification", "Tags", "MTag", });
-          internal_static_com_wali_live_proto_GetRecommedUsersResponse_descriptor =
-            getDescriptor().getMessageTypes().get(20);
-          internal_static_com_wali_live_proto_GetRecommedUsersResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetRecommedUsersResponse_descriptor,
-              new java.lang.String[] { "Ret", "Users", });
-          internal_static_com_wali_live_proto_FeedLikeReq_descriptor =
-            getDescriptor().getMessageTypes().get(21);
-          internal_static_com_wali_live_proto_FeedLikeReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLikeReq_descriptor,
-              new java.lang.String[] { "Zuid", "FeedId", "UserName", "FeedUserId", "FeedType", });
-          internal_static_com_wali_live_proto_FeedLikeRsp_descriptor =
-            getDescriptor().getMessageTypes().get(22);
-          internal_static_com_wali_live_proto_FeedLikeRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLikeRsp_descriptor,
-              new java.lang.String[] { "Ret", "Ts", "ErrMsg", });
-          internal_static_com_wali_live_proto_FeedLikeDeleteReq_descriptor =
-            getDescriptor().getMessageTypes().get(23);
-          internal_static_com_wali_live_proto_FeedLikeDeleteReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLikeDeleteReq_descriptor,
-              new java.lang.String[] { "Zuid", "FeedId", "FeedUserId", "FeedType", });
-          internal_static_com_wali_live_proto_FeedLikeDeleteRsp_descriptor =
-            getDescriptor().getMessageTypes().get(24);
-          internal_static_com_wali_live_proto_FeedLikeDeleteRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLikeDeleteRsp_descriptor,
-              new java.lang.String[] { "Ret", "ErrMsg", });
-          internal_static_com_wali_live_proto_FeedLikeListReq_descriptor =
-            getDescriptor().getMessageTypes().get(25);
-          internal_static_com_wali_live_proto_FeedLikeListReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLikeListReq_descriptor,
-              new java.lang.String[] { "FeedId", "Offset", "Limit", });
-          internal_static_com_wali_live_proto_FeedLikeListRsp_descriptor =
-            getDescriptor().getMessageTypes().get(26);
-          internal_static_com_wali_live_proto_FeedLikeListRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FeedLikeListRsp_descriptor,
-              new java.lang.String[] { "Ret", "Feeds", });
-          internal_static_com_wali_live_proto_CreateFeedCommnetRequest_descriptor =
-            getDescriptor().getMessageTypes().get(27);
-          internal_static_com_wali_live_proto_CreateFeedCommnetRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_CreateFeedCommnetRequest_descriptor,
-              new java.lang.String[] { "FromUid", "FeedId", "FeedOwnerId", "Content", "FromNickname", "ToUid", "ToNickname", "FeedType", "CommentType", });
-          internal_static_com_wali_live_proto_CreateFeedCommnetResponse_descriptor =
-            getDescriptor().getMessageTypes().get(28);
-          internal_static_com_wali_live_proto_CreateFeedCommnetResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_CreateFeedCommnetResponse_descriptor,
-              new java.lang.String[] { "ErrCode", "CommnetId", "CreateTime", });
-          internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_descriptor =
-            getDescriptor().getMessageTypes().get(29);
-          internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_descriptor,
-              new java.lang.String[] { "FromUid", "FeedId", "CommnetId", "OwnerId", "FeedType", });
-          internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_descriptor =
-            getDescriptor().getMessageTypes().get(30);
-          internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_descriptor,
-              new java.lang.String[] { "ErrCode", });
-          internal_static_com_wali_live_proto_QueryFeedCommentsRequest_descriptor =
-            getDescriptor().getMessageTypes().get(31);
-          internal_static_com_wali_live_proto_QueryFeedCommentsRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_QueryFeedCommentsRequest_descriptor,
-              new java.lang.String[] { "FeedId", "Ts", "Limit", "IsOnlyFocus", "IsAsc", "Type", });
-          internal_static_com_wali_live_proto_QueryFeedCommentsResponse_descriptor =
-            getDescriptor().getMessageTypes().get(32);
-          internal_static_com_wali_live_proto_QueryFeedCommentsResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_QueryFeedCommentsResponse_descriptor,
-              new java.lang.String[] { "ErrCode", "LastTs", "FeedComment", "HasMore", "ErrMsg", });
-          internal_static_com_wali_live_proto_QueryParticularCommentsRequest_descriptor =
-            getDescriptor().getMessageTypes().get(33);
-          internal_static_com_wali_live_proto_QueryParticularCommentsRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_QueryParticularCommentsRequest_descriptor,
-              new java.lang.String[] { "FeedId", "CommentId", "UpNum", "DownNum", });
-          internal_static_com_wali_live_proto_QueryParticularCommentsResponse_descriptor =
-            getDescriptor().getMessageTypes().get(34);
-          internal_static_com_wali_live_proto_QueryParticularCommentsResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_QueryParticularCommentsResponse_descriptor,
-              new java.lang.String[] { "ErrCode", "CommentInfos", "UpTotal", "DownTotal", "ErrMsg", });
-          internal_static_com_wali_live_proto_CreateFeedsRequest_descriptor =
-            getDescriptor().getMessageTypes().get(35);
-          internal_static_com_wali_live_proto_CreateFeedsRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_CreateFeedsRequest_descriptor,
-              new java.lang.String[] { "Id", "Type", "Url", "CoverPage", "Desc", "Addr", "ClientId", "Md5", "Title", "Height", "Width", "Duration", "FileSize", "ExtType", "ExtData", "ChannelId", });
-          internal_static_com_wali_live_proto_Location_descriptor =
-            getDescriptor().getMessageTypes().get(36);
-          internal_static_com_wali_live_proto_Location_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_Location_descriptor,
-              new java.lang.String[] { "Lon", "Lat", "Country", "Province", "City", "Type", });
-          internal_static_com_wali_live_proto_CreateFeedsResponse_descriptor =
-            getDescriptor().getMessageTypes().get(37);
-          internal_static_com_wali_live_proto_CreateFeedsResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_CreateFeedsResponse_descriptor,
-              new java.lang.String[] { "ErrCode", "FeedId", "CreateTime", "ErrMsg", "ShareUrl", });
-          internal_static_com_wali_live_proto_DeleteFeedsRequest_descriptor =
-            getDescriptor().getMessageTypes().get(38);
-          internal_static_com_wali_live_proto_DeleteFeedsRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_DeleteFeedsRequest_descriptor,
-              new java.lang.String[] { "Id", "FeedId", "Type", });
-          internal_static_com_wali_live_proto_DeleteFeedsResponse_descriptor =
-            getDescriptor().getMessageTypes().get(39);
-          internal_static_com_wali_live_proto_DeleteFeedsResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_DeleteFeedsResponse_descriptor,
-              new java.lang.String[] { "ErrCode", "ErrMsg", });
-          internal_static_com_wali_live_proto_GetNewFeedRequest_descriptor =
-            getDescriptor().getMessageTypes().get(40);
-          internal_static_com_wali_live_proto_GetNewFeedRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetNewFeedRequest_descriptor,
-              new java.lang.String[] { "Uid", "LastUpdateTime", });
-          internal_static_com_wali_live_proto_GetNewFeedResponse_descriptor =
-            getDescriptor().getMessageTypes().get(41);
-          internal_static_com_wali_live_proto_GetNewFeedResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetNewFeedResponse_descriptor,
-              new java.lang.String[] { "ErrCode", "NewUid", "NewUidIcon", "NewFeedId", "LastUpdateTime", });
-          internal_static_com_wali_live_proto_SetFeedsStatInfoReq_descriptor =
-            getDescriptor().getMessageTypes().get(42);
-          internal_static_com_wali_live_proto_SetFeedsStatInfoReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_SetFeedsStatInfoReq_descriptor,
-              new java.lang.String[] { "FeedId", "FeedOwnerId", "Type", });
-          internal_static_com_wali_live_proto_SetFeedsStatInfoResp_descriptor =
-            getDescriptor().getMessageTypes().get(43);
-          internal_static_com_wali_live_proto_SetFeedsStatInfoResp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_SetFeedsStatInfoResp_descriptor,
-              new java.lang.String[] { "Code", "ErrMsg", "Viewcount", });
-          internal_static_com_wali_live_proto_RoomRecord_descriptor =
-            getDescriptor().getMessageTypes().get(44);
-          internal_static_com_wali_live_proto_RoomRecord_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_RoomRecord_descriptor,
-              new java.lang.String[] { "HostId", "RoomId", "LiType", "AppType", "RoomTitle", "LiveCover", });
-          internal_static_com_wali_live_proto_BlogFeed_descriptor =
-            getDescriptor().getMessageTypes().get(45);
-          internal_static_com_wali_live_proto_BlogFeed_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_BlogFeed_descriptor,
-              new java.lang.String[] { "MultiMedia", "ReferedUsers", "MaxItemId", "CpId", });
-          internal_static_com_wali_live_proto_MultiMedia_descriptor =
-            getDescriptor().getMessageTypes().get(46);
-          internal_static_com_wali_live_proto_MultiMedia_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_MultiMedia_descriptor,
-              new java.lang.String[] { "MediaType", "MediaData", "Id", });
-          internal_static_com_wali_live_proto_Picture_descriptor =
-            getDescriptor().getMessageTypes().get(47);
-          internal_static_com_wali_live_proto_Picture_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_Picture_descriptor,
-              new java.lang.String[] { "Url", "Height", "Width", "Desc", });
-          internal_static_com_wali_live_proto_Video_descriptor =
-            getDescriptor().getMessageTypes().get(48);
-          internal_static_com_wali_live_proto_Video_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_Video_descriptor,
-              new java.lang.String[] { "Url", "CoverPage", "Height", "Width", "Duration", "FileSize", "Desc", });
-          internal_static_com_wali_live_proto_Text_descriptor =
-            getDescriptor().getMessageTypes().get(49);
-          internal_static_com_wali_live_proto_Text_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_Text_descriptor,
-              new java.lang.String[] { "Type", "Content", "IsInner", });
-          internal_static_com_wali_live_proto_Hyperlink_descriptor =
-            getDescriptor().getMessageTypes().get(50);
-          internal_static_com_wali_live_proto_Hyperlink_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_Hyperlink_descriptor,
-              new java.lang.String[] { "Desc", "Url", "IsInner", });
-          internal_static_com_wali_live_proto_Userlink_descriptor =
-            getDescriptor().getMessageTypes().get(51);
-          internal_static_com_wali_live_proto_Userlink_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_Userlink_descriptor,
-              new java.lang.String[] { "Uid", "IsInner", });
-          internal_static_com_wali_live_proto_GetTitleListReq_descriptor =
-            getDescriptor().getMessageTypes().get(52);
-          internal_static_com_wali_live_proto_GetTitleListReq_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetTitleListReq_descriptor,
-              new java.lang.String[] { "Uuid", "Source", });
-          internal_static_com_wali_live_proto_GetTitleListRsp_descriptor =
-            getDescriptor().getMessageTypes().get(53);
-          internal_static_com_wali_live_proto_GetTitleListRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetTitleListRsp_descriptor,
-              new java.lang.String[] { "RetCode", "TitleInfo", });
-          internal_static_com_wali_live_proto_TitleInfo_descriptor =
-            getDescriptor().getMessageTypes().get(54);
-          internal_static_com_wali_live_proto_TitleInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_TitleInfo_descriptor,
-              new java.lang.String[] { "Source", "UserColony", "TitleList", });
-          internal_static_com_wali_live_proto_GetHomePageFeedListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(55);
-          internal_static_com_wali_live_proto_GetHomePageFeedListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetHomePageFeedListRequest_descriptor,
-              new java.lang.String[] { "UserId", "Start", });
-          internal_static_com_wali_live_proto_GetHomePageFeedListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(56);
-          internal_static_com_wali_live_proto_GetHomePageFeedListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetHomePageFeedListResponse_descriptor,
-              new java.lang.String[] { "Ret", "Start", "LiveInfo", "Fornotices", "FeedInfoList", });
-          internal_static_com_wali_live_proto_FornoticeInfo_descriptor =
-            getDescriptor().getMessageTypes().get(57);
-          internal_static_com_wali_live_proto_FornoticeInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_FornoticeInfo_descriptor,
-              new java.lang.String[] { "OwnerId", "FornoticeId", "BeginTime", "Title", "Type", "ImgUrl", "EndTime", "Desc", "ClientId", "Md5", "Height", "Width", "Status", });
-          internal_static_com_wali_live_proto_UserFornoticeInfo_descriptor =
-            getDescriptor().getMessageTypes().get(58);
-          internal_static_com_wali_live_proto_UserFornoticeInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_UserFornoticeInfo_descriptor,
-              new java.lang.String[] { "FornoticeInfo", "IsBooked", "UserInfo", });
-          internal_static_com_wali_live_proto_UserBrief_descriptor =
-            getDescriptor().getMessageTypes().get(59);
-          internal_static_com_wali_live_proto_UserBrief_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_UserBrief_descriptor,
-              new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", });
-          internal_static_com_wali_live_proto_ShopBrief_descriptor =
-            getDescriptor().getMessageTypes().get(60);
-          internal_static_com_wali_live_proto_ShopBrief_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_ShopBrief_descriptor,
-              new java.lang.String[] { "HideGoods", "DesiredCnt", });
-          internal_static_com_wali_live_proto_LiveInfo_descriptor =
-            getDescriptor().getMessageTypes().get(61);
-          internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_LiveInfo_descriptor,
-              new java.lang.String[] { "LiveId", "User", "Location", "ViewerCnt", "Url", "CoverUrl", "LiTitle", "StartTime", "Tag", "Shop", "AppType", "LiveType", "GameTag", });
-          internal_static_com_wali_live_proto_GetUgcFeedListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(62);
-          internal_static_com_wali_live_proto_GetUgcFeedListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetUgcFeedListRequest_descriptor,
-              new java.lang.String[] { "UserId", "Start", });
-          internal_static_com_wali_live_proto_GetUgcFeedListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(63);
-          internal_static_com_wali_live_proto_GetUgcFeedListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetUgcFeedListResponse_descriptor,
-              new java.lang.String[] { "Ret", "Start", "FeedInfoList", });
-          internal_static_com_wali_live_proto_GetVideoFeedListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(64);
-          internal_static_com_wali_live_proto_GetVideoFeedListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetVideoFeedListRequest_descriptor,
-              new java.lang.String[] { "UserId", "Start", });
-          internal_static_com_wali_live_proto_GetVideoFeedListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(65);
-          internal_static_com_wali_live_proto_GetVideoFeedListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetVideoFeedListResponse_descriptor,
-              new java.lang.String[] { "Ret", "Start", "FeedInfoList", });
-          internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_descriptor =
-            getDescriptor().getMessageTypes().get(66);
-          internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_descriptor,
-              new java.lang.String[] { "UserId", "Timestamp", "FeedId", });
-          internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_descriptor =
-            getDescriptor().getMessageTypes().get(67);
-          internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_descriptor,
-              new java.lang.String[] { "Ret", "Timestamp", "FeedInfoList", });
-          internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_descriptor =
-            getDescriptor().getMessageTypes().get(68);
-          internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_descriptor,
-              new java.lang.String[] { "UserId", "FeedId", "IsOnlyFocus", "FeedOwnerId", "Location", });
-          internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_descriptor =
-            getDescriptor().getMessageTypes().get(69);
-          internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_descriptor,
-              new java.lang.String[] { "Ret", "FeedInfo", "Distance", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.wali.live.proto.LiveShowProto.getDescriptor(),
         }, assigner);
+    internal_static_com_wali_live_proto_CommentInfo_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_com_wali_live_proto_CommentInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_CommentInfo_descriptor,
+        new java.lang.String[] { "CommentId", "FromUid", "Content", "CreateTime", "ToUid", "FromNickname", "ToNickname", "IndexTs", "IsGood", "FromUserLevel", "FromAvatar", "CommentType", });
+    internal_static_com_wali_live_proto_FeedComment_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_com_wali_live_proto_FeedComment_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedComment_descriptor,
+        new java.lang.String[] { "FeedId", "FeedOwnerId", "Total", "CommentInfos", });
+    internal_static_com_wali_live_proto_FeedLike_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_com_wali_live_proto_FeedLike_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLike_descriptor,
+        new java.lang.String[] { "Zuid", "Ts", "UserName", });
+    internal_static_com_wali_live_proto_UGCFeed_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_wali_live_proto_UGCFeed_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UGCFeed_descriptor,
+        new java.lang.String[] { "Type", "Url", "CoverPage", "Desc", "Addr", "ShareUrl", "Height", "Width", "Duration", "FileSize", "Tiltle", "ExtType", "ExtData", "ViewCount", "HostUserInfo", "LiveInfo", "Location", });
+    internal_static_com_wali_live_proto_FeedContent_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_com_wali_live_proto_FeedContent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedContent_descriptor,
+        new java.lang.String[] { "FeedType", "LiveShow", "BackInfo", "UgcFeed", "ReplaySet", });
+    internal_static_com_wali_live_proto_ReplaySet_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_com_wali_live_proto_ReplaySet_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ReplaySet_descriptor,
+        new java.lang.String[] { "Backinfos", "CreateTime", });
+    internal_static_com_wali_live_proto_FeedLikeContent_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_wali_live_proto_FeedLikeContent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLikeContent_descriptor,
+        new java.lang.String[] { "FeedLikeList", "LikeCount", "HasMore", "MyselfLike", });
+    internal_static_com_wali_live_proto_FeedAbstractComment_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_wali_live_proto_FeedAbstractComment_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedAbstractComment_descriptor,
+        new java.lang.String[] { "Comment", "CommentNumbers", "HasMore", });
+    internal_static_com_wali_live_proto_FeedInfo_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_com_wali_live_proto_FeedInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedInfo_descriptor,
+        new java.lang.String[] { "Type", "FeedId", "FeedCteateTime", "UserId", "FeedContent", "FeedLikeContent", "FeedAbstractComment", "UserShow", "ClientId", });
+    internal_static_com_wali_live_proto_GetFeedNumRequest_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_com_wali_live_proto_GetFeedNumRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFeedNumRequest_descriptor,
+        new java.lang.String[] { "Id", "Type", });
+    internal_static_com_wali_live_proto_GetFeedNumResponse_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_com_wali_live_proto_GetFeedNumResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFeedNumResponse_descriptor,
+        new java.lang.String[] { "ErrCode", "FeedNum", "ErrMsg", });
+    internal_static_com_wali_live_proto_GetFeedInfoRequest_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_com_wali_live_proto_GetFeedInfoRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFeedInfoRequest_descriptor,
+        new java.lang.String[] { "UserId", "FeedId", "IsOnlyFocus", "FeedOwnerId", });
+    internal_static_com_wali_live_proto_GetFeedInfoResponse_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_com_wali_live_proto_GetFeedInfoResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFeedInfoResponse_descriptor,
+        new java.lang.String[] { "Ret", "FeedInfo", });
+    internal_static_com_wali_live_proto_GetFeedListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_com_wali_live_proto_GetFeedListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFeedListRequest_descriptor,
+        new java.lang.String[] { "UserId", "Start", "End", });
+    internal_static_com_wali_live_proto_GetFeedListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_com_wali_live_proto_GetFeedListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetFeedListResponse_descriptor,
+        new java.lang.String[] { "Ret", "Start", "FeedInfoList", });
+    internal_static_com_wali_live_proto_GetUserPageFeedListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_com_wali_live_proto_GetUserPageFeedListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetUserPageFeedListRequest_descriptor,
+        new java.lang.String[] { "UserId", "Timestamp", "FeedId", });
+    internal_static_com_wali_live_proto_GetUserPageFeedListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_com_wali_live_proto_GetUserPageFeedListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetUserPageFeedListResponse_descriptor,
+        new java.lang.String[] { "Ret", "Timestamp", "FeedInfoList", });
+    internal_static_com_wali_live_proto_GetRecommedUsersRequest_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_com_wali_live_proto_GetRecommedUsersRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetRecommedUsersRequest_descriptor,
+        new java.lang.String[] { "UserId", "Size", });
+    internal_static_com_wali_live_proto_Tag_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_com_wali_live_proto_Tag_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Tag_descriptor,
+        new java.lang.String[] { "Name", });
+    internal_static_com_wali_live_proto_RecomUsers_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_com_wali_live_proto_RecomUsers_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_RecomUsers_descriptor,
+        new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", "Gender", "FollowerNum", "Certification", "Tags", "MTag", });
+    internal_static_com_wali_live_proto_GetRecommedUsersResponse_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_com_wali_live_proto_GetRecommedUsersResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetRecommedUsersResponse_descriptor,
+        new java.lang.String[] { "Ret", "Users", });
+    internal_static_com_wali_live_proto_FeedLikeReq_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_com_wali_live_proto_FeedLikeReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLikeReq_descriptor,
+        new java.lang.String[] { "Zuid", "FeedId", "UserName", "FeedUserId", "FeedType", });
+    internal_static_com_wali_live_proto_FeedLikeRsp_descriptor =
+      getDescriptor().getMessageTypes().get(22);
+    internal_static_com_wali_live_proto_FeedLikeRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLikeRsp_descriptor,
+        new java.lang.String[] { "Ret", "Ts", "ErrMsg", });
+    internal_static_com_wali_live_proto_FeedLikeDeleteReq_descriptor =
+      getDescriptor().getMessageTypes().get(23);
+    internal_static_com_wali_live_proto_FeedLikeDeleteReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLikeDeleteReq_descriptor,
+        new java.lang.String[] { "Zuid", "FeedId", "FeedUserId", "FeedType", });
+    internal_static_com_wali_live_proto_FeedLikeDeleteRsp_descriptor =
+      getDescriptor().getMessageTypes().get(24);
+    internal_static_com_wali_live_proto_FeedLikeDeleteRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLikeDeleteRsp_descriptor,
+        new java.lang.String[] { "Ret", "ErrMsg", });
+    internal_static_com_wali_live_proto_FeedLikeListReq_descriptor =
+      getDescriptor().getMessageTypes().get(25);
+    internal_static_com_wali_live_proto_FeedLikeListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLikeListReq_descriptor,
+        new java.lang.String[] { "FeedId", "Offset", "Limit", });
+    internal_static_com_wali_live_proto_FeedLikeListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(26);
+    internal_static_com_wali_live_proto_FeedLikeListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FeedLikeListRsp_descriptor,
+        new java.lang.String[] { "Ret", "Feeds", });
+    internal_static_com_wali_live_proto_CreateFeedCommnetRequest_descriptor =
+      getDescriptor().getMessageTypes().get(27);
+    internal_static_com_wali_live_proto_CreateFeedCommnetRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_CreateFeedCommnetRequest_descriptor,
+        new java.lang.String[] { "FromUid", "FeedId", "FeedOwnerId", "Content", "FromNickname", "ToUid", "ToNickname", "FeedType", "CommentType", });
+    internal_static_com_wali_live_proto_CreateFeedCommnetResponse_descriptor =
+      getDescriptor().getMessageTypes().get(28);
+    internal_static_com_wali_live_proto_CreateFeedCommnetResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_CreateFeedCommnetResponse_descriptor,
+        new java.lang.String[] { "ErrCode", "CommnetId", "CreateTime", });
+    internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_descriptor =
+      getDescriptor().getMessageTypes().get(29);
+    internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_DeleteFeedCommnetRequest_descriptor,
+        new java.lang.String[] { "FromUid", "FeedId", "CommnetId", "OwnerId", "FeedType", });
+    internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_descriptor =
+      getDescriptor().getMessageTypes().get(30);
+    internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_DeleteFeedCommnetResponse_descriptor,
+        new java.lang.String[] { "ErrCode", });
+    internal_static_com_wali_live_proto_QueryFeedCommentsRequest_descriptor =
+      getDescriptor().getMessageTypes().get(31);
+    internal_static_com_wali_live_proto_QueryFeedCommentsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_QueryFeedCommentsRequest_descriptor,
+        new java.lang.String[] { "FeedId", "Ts", "Limit", "IsOnlyFocus", "IsAsc", "Type", "IsAddSgc", });
+    internal_static_com_wali_live_proto_QueryFeedCommentsResponse_descriptor =
+      getDescriptor().getMessageTypes().get(32);
+    internal_static_com_wali_live_proto_QueryFeedCommentsResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_QueryFeedCommentsResponse_descriptor,
+        new java.lang.String[] { "ErrCode", "LastTs", "FeedComment", "HasMore", "ErrMsg", });
+    internal_static_com_wali_live_proto_QueryParticularCommentsRequest_descriptor =
+      getDescriptor().getMessageTypes().get(33);
+    internal_static_com_wali_live_proto_QueryParticularCommentsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_QueryParticularCommentsRequest_descriptor,
+        new java.lang.String[] { "FeedId", "CommentId", "UpNum", "DownNum", });
+    internal_static_com_wali_live_proto_QueryParticularCommentsResponse_descriptor =
+      getDescriptor().getMessageTypes().get(34);
+    internal_static_com_wali_live_proto_QueryParticularCommentsResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_QueryParticularCommentsResponse_descriptor,
+        new java.lang.String[] { "ErrCode", "CommentInfos", "UpTotal", "DownTotal", "ErrMsg", });
+    internal_static_com_wali_live_proto_CreateFeedsRequest_descriptor =
+      getDescriptor().getMessageTypes().get(35);
+    internal_static_com_wali_live_proto_CreateFeedsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_CreateFeedsRequest_descriptor,
+        new java.lang.String[] { "Id", "Type", "Url", "CoverPage", "Desc", "Addr", "ClientId", "Md5", "Title", "Height", "Width", "Duration", "FileSize", "ExtType", "ExtData", "ChannelId", });
+    internal_static_com_wali_live_proto_Location_descriptor =
+      getDescriptor().getMessageTypes().get(36);
+    internal_static_com_wali_live_proto_Location_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Location_descriptor,
+        new java.lang.String[] { "Lon", "Lat", "Country", "Province", "City", "Type", });
+    internal_static_com_wali_live_proto_CreateFeedsResponse_descriptor =
+      getDescriptor().getMessageTypes().get(37);
+    internal_static_com_wali_live_proto_CreateFeedsResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_CreateFeedsResponse_descriptor,
+        new java.lang.String[] { "ErrCode", "FeedId", "CreateTime", "ErrMsg", "ShareUrl", });
+    internal_static_com_wali_live_proto_DeleteFeedsRequest_descriptor =
+      getDescriptor().getMessageTypes().get(38);
+    internal_static_com_wali_live_proto_DeleteFeedsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_DeleteFeedsRequest_descriptor,
+        new java.lang.String[] { "Id", "FeedId", "Type", });
+    internal_static_com_wali_live_proto_DeleteFeedsResponse_descriptor =
+      getDescriptor().getMessageTypes().get(39);
+    internal_static_com_wali_live_proto_DeleteFeedsResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_DeleteFeedsResponse_descriptor,
+        new java.lang.String[] { "ErrCode", "ErrMsg", });
+    internal_static_com_wali_live_proto_GetNewFeedRequest_descriptor =
+      getDescriptor().getMessageTypes().get(40);
+    internal_static_com_wali_live_proto_GetNewFeedRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetNewFeedRequest_descriptor,
+        new java.lang.String[] { "Uid", "LastUpdateTime", });
+    internal_static_com_wali_live_proto_GetNewFeedResponse_descriptor =
+      getDescriptor().getMessageTypes().get(41);
+    internal_static_com_wali_live_proto_GetNewFeedResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetNewFeedResponse_descriptor,
+        new java.lang.String[] { "ErrCode", "NewUid", "NewUidIcon", "NewFeedId", "LastUpdateTime", });
+    internal_static_com_wali_live_proto_SetFeedsStatInfoReq_descriptor =
+      getDescriptor().getMessageTypes().get(42);
+    internal_static_com_wali_live_proto_SetFeedsStatInfoReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_SetFeedsStatInfoReq_descriptor,
+        new java.lang.String[] { "FeedId", "FeedOwnerId", "Type", });
+    internal_static_com_wali_live_proto_SetFeedsStatInfoResp_descriptor =
+      getDescriptor().getMessageTypes().get(43);
+    internal_static_com_wali_live_proto_SetFeedsStatInfoResp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_SetFeedsStatInfoResp_descriptor,
+        new java.lang.String[] { "Code", "ErrMsg", "Viewcount", });
+    internal_static_com_wali_live_proto_RoomRecord_descriptor =
+      getDescriptor().getMessageTypes().get(44);
+    internal_static_com_wali_live_proto_RoomRecord_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_RoomRecord_descriptor,
+        new java.lang.String[] { "HostId", "RoomId", "LiType", "AppType", "RoomTitle", "LiveCover", });
+    internal_static_com_wali_live_proto_BlogFeed_descriptor =
+      getDescriptor().getMessageTypes().get(45);
+    internal_static_com_wali_live_proto_BlogFeed_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_BlogFeed_descriptor,
+        new java.lang.String[] { "MultiMedia", "ReferedUsers", "MaxItemId", "CpId", });
+    internal_static_com_wali_live_proto_MultiMedia_descriptor =
+      getDescriptor().getMessageTypes().get(46);
+    internal_static_com_wali_live_proto_MultiMedia_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_MultiMedia_descriptor,
+        new java.lang.String[] { "MediaType", "MediaData", "Id", });
+    internal_static_com_wali_live_proto_Picture_descriptor =
+      getDescriptor().getMessageTypes().get(47);
+    internal_static_com_wali_live_proto_Picture_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Picture_descriptor,
+        new java.lang.String[] { "Url", "Height", "Width", "Desc", });
+    internal_static_com_wali_live_proto_Video_descriptor =
+      getDescriptor().getMessageTypes().get(48);
+    internal_static_com_wali_live_proto_Video_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Video_descriptor,
+        new java.lang.String[] { "Url", "CoverPage", "Height", "Width", "Duration", "FileSize", "Desc", });
+    internal_static_com_wali_live_proto_Text_descriptor =
+      getDescriptor().getMessageTypes().get(49);
+    internal_static_com_wali_live_proto_Text_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Text_descriptor,
+        new java.lang.String[] { "Type", "Content", "IsInner", });
+    internal_static_com_wali_live_proto_Hyperlink_descriptor =
+      getDescriptor().getMessageTypes().get(50);
+    internal_static_com_wali_live_proto_Hyperlink_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Hyperlink_descriptor,
+        new java.lang.String[] { "Desc", "Url", "IsInner", });
+    internal_static_com_wali_live_proto_Userlink_descriptor =
+      getDescriptor().getMessageTypes().get(51);
+    internal_static_com_wali_live_proto_Userlink_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_Userlink_descriptor,
+        new java.lang.String[] { "Uid", "IsInner", });
+    internal_static_com_wali_live_proto_GetTitleListReq_descriptor =
+      getDescriptor().getMessageTypes().get(52);
+    internal_static_com_wali_live_proto_GetTitleListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetTitleListReq_descriptor,
+        new java.lang.String[] { "Uuid", "Source", });
+    internal_static_com_wali_live_proto_GetTitleListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(53);
+    internal_static_com_wali_live_proto_GetTitleListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetTitleListRsp_descriptor,
+        new java.lang.String[] { "RetCode", "TitleInfo", });
+    internal_static_com_wali_live_proto_TitleInfo_descriptor =
+      getDescriptor().getMessageTypes().get(54);
+    internal_static_com_wali_live_proto_TitleInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_TitleInfo_descriptor,
+        new java.lang.String[] { "Source", "UserColony", "TitleList", });
+    internal_static_com_wali_live_proto_GetHomePageFeedListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(55);
+    internal_static_com_wali_live_proto_GetHomePageFeedListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetHomePageFeedListRequest_descriptor,
+        new java.lang.String[] { "UserId", "Start", });
+    internal_static_com_wali_live_proto_GetHomePageFeedListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(56);
+    internal_static_com_wali_live_proto_GetHomePageFeedListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetHomePageFeedListResponse_descriptor,
+        new java.lang.String[] { "Ret", "Start", "LiveInfo", "Fornotices", "FeedInfoList", });
+    internal_static_com_wali_live_proto_FornoticeInfo_descriptor =
+      getDescriptor().getMessageTypes().get(57);
+    internal_static_com_wali_live_proto_FornoticeInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FornoticeInfo_descriptor,
+        new java.lang.String[] { "OwnerId", "FornoticeId", "BeginTime", "Title", "Type", "ImgUrl", "EndTime", "Desc", "ClientId", "Md5", "Height", "Width", "Status", });
+    internal_static_com_wali_live_proto_UserFornoticeInfo_descriptor =
+      getDescriptor().getMessageTypes().get(58);
+    internal_static_com_wali_live_proto_UserFornoticeInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UserFornoticeInfo_descriptor,
+        new java.lang.String[] { "FornoticeInfo", "IsBooked", "UserInfo", });
+    internal_static_com_wali_live_proto_UserBrief_descriptor =
+      getDescriptor().getMessageTypes().get(59);
+    internal_static_com_wali_live_proto_UserBrief_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UserBrief_descriptor,
+        new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", });
+    internal_static_com_wali_live_proto_ShopBrief_descriptor =
+      getDescriptor().getMessageTypes().get(60);
+    internal_static_com_wali_live_proto_ShopBrief_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ShopBrief_descriptor,
+        new java.lang.String[] { "HideGoods", "DesiredCnt", });
+    internal_static_com_wali_live_proto_LiveInfo_descriptor =
+      getDescriptor().getMessageTypes().get(61);
+    internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_LiveInfo_descriptor,
+        new java.lang.String[] { "LiveId", "User", "Location", "ViewerCnt", "Url", "CoverUrl", "LiTitle", "StartTime", "Tag", "Shop", "AppType", "LiveType", "GameTag", });
+    internal_static_com_wali_live_proto_GetUgcFeedListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(62);
+    internal_static_com_wali_live_proto_GetUgcFeedListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetUgcFeedListRequest_descriptor,
+        new java.lang.String[] { "UserId", "Start", });
+    internal_static_com_wali_live_proto_GetUgcFeedListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(63);
+    internal_static_com_wali_live_proto_GetUgcFeedListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetUgcFeedListResponse_descriptor,
+        new java.lang.String[] { "Ret", "Start", "FeedInfoList", });
+    internal_static_com_wali_live_proto_GetVideoFeedListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(64);
+    internal_static_com_wali_live_proto_GetVideoFeedListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetVideoFeedListRequest_descriptor,
+        new java.lang.String[] { "UserId", "Start", });
+    internal_static_com_wali_live_proto_GetVideoFeedListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(65);
+    internal_static_com_wali_live_proto_GetVideoFeedListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetVideoFeedListResponse_descriptor,
+        new java.lang.String[] { "Ret", "Start", "FeedInfoList", });
+    internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_descriptor =
+      getDescriptor().getMessageTypes().get(66);
+    internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetUserVideoFeedListRequest_descriptor,
+        new java.lang.String[] { "UserId", "Timestamp", "FeedId", });
+    internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(67);
+    internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetUserVideoFeedListResponse_descriptor,
+        new java.lang.String[] { "Ret", "Timestamp", "FeedInfoList", });
+    internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_descriptor =
+      getDescriptor().getMessageTypes().get(68);
+    internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetVideoFeedInfoRequest_descriptor,
+        new java.lang.String[] { "UserId", "FeedId", "IsOnlyFocus", "FeedOwnerId", "Location", });
+    internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_descriptor =
+      getDescriptor().getMessageTypes().get(69);
+    internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetVideoFeedInfoResponse_descriptor,
+        new java.lang.String[] { "Ret", "FeedInfo", "Distance", });
+    com.wali.live.proto.LiveShowProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

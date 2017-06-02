@@ -83,4 +83,6 @@
         <item quantity="one">%d viewer</item>
         <item quantity="other">%d viewers</item>
     </plurals>
+    <string name="feeds_detail_label_comment" formatted="false">Comments (%s)</string>
+    <string name="feeds_detail_label_replay">Replay</string>
 </resources>

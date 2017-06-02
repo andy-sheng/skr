@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.videodetail;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.view.View;
 
 import com.wali.live.component.BaseSdkView;
@@ -12,9 +11,11 @@ import com.wali.live.watchsdk.component.presenter.VideoDetailPlayerPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
 import com.wali.live.watchsdk.videodetail.presenter.DetailBottomPresenter;
-import com.wali.live.watchsdk.videodetail.presenter.InfoAreaPresenter;
+import com.wali.live.watchsdk.videodetail.presenter.DetailInfoPresenter;
+import com.wali.live.watchsdk.videodetail.presenter.DetailTabPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
-import com.wali.live.watchsdk.videodetail.view.InfoAreaView;
+import com.wali.live.watchsdk.videodetail.view.DetailInfoView;
+import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
 /**
  * Created by yangli on 2017/5/26.
@@ -35,11 +36,20 @@ public class VideoDetailView extends BaseSdkView<VideoDetailController> {
             if (contentView == null) {
                 return;
             }
-            InfoAreaView view = new InfoAreaView(contentView);
-            InfoAreaPresenter presenter = new InfoAreaPresenter(mComponentController,
+            DetailInfoView view = new DetailInfoView(contentView);
+            DetailInfoPresenter presenter = new DetailInfoPresenter(mComponentController,
                     mComponentController.mMyRoomData);
             addComponentView(view, presenter);
         }
+
+        // TAB区域
+        {
+            DetailTabView view = new DetailTabView($(android.R.id.content));
+            DetailTabPresenter presenter = new DetailTabPresenter(mComponentController,
+                    mComponentController.mMyRoomData);
+            addComponentView(view, presenter);
+        }
+
         // 底部按钮
         {
             View contentView = $(R.id.bottom_button_view);

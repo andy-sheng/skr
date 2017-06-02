@@ -80,4 +80,6 @@
     <plurals name="live_end_viewer_cnt">
         <item quantity="other">%d人看过</item>
     </plurals>
+    <string name="feeds_detail_label_comment" formatted="false">评论(%s)</string>
+    <string name="feeds_detail_label_replay">回放</string>
 </resources>

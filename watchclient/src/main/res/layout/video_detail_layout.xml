@@ -132,6 +132,33 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/splitter"
+        android:layout_width="match_parent"
+        android:layout_height="0.33dip"
+        android:layout_below="@+id/info_area"
+        android:background="@color/color_black_trans_10" />
+
+    <com.base.view.SlidingTabLayout
+        android:id="@+id/detail_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_130"
+        android:layout_below="@+id/splitter"
+        android:background="@color/white" />
+
+    <!--数据列表-->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/detail_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_button_view"
+        android:layout_below="@id/detail_tab"
+        android:background="@color/color_f8f8f8"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none" />
+
     <!--底部按钮-->
     <RelativeLayout
         android:id="@+id/bottom_button_view"

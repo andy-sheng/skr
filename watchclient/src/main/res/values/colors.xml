@@ -10,4 +10,5 @@
     <color name="avatar_outer_bg_top1">#ffca02</color>
     <color name="avatar_outer_bg_top2">#d2d2dd</color>
     <color name="avatar_outer_bg_top3">#ebc69b</color>
+    <color name="color_red_ff2966">#ff2966</color>
 </resources>

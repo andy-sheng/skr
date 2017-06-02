@@ -16,10 +16,11 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.proto.Feeds;
+import com.wali.live.proto.LiveShowProto;
 import com.wali.live.utils.relation.RelationUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.feeds.FeedsInfoUtils;
-import com.wali.live.watchsdk.videodetail.view.InfoAreaView;
+import com.wali.live.watchsdk.videodetail.view.DetailInfoView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,13 +41,13 @@ import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
  *
  * @module 详情信息表现
  */
-public class InfoAreaPresenter extends ComponentPresenter<InfoAreaView.IView>
-        implements InfoAreaView.IPresenter {
-    private static final String TAG = "InfoAreaPresenter";
+public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView>
+        implements DetailInfoView.IPresenter {
+    private static final String TAG = "DetailInfoPresenter";
 
     private RoomBaseDataModel mMyRoomData;
 
-    public InfoAreaPresenter(
+    public DetailInfoPresenter(
             @NonNull IComponentController componentController,
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
@@ -81,7 +82,7 @@ public class InfoAreaPresenter extends ComponentPresenter<InfoAreaView.IView>
     }
 
     @Override
-    public void syncFeedsInfo() {
+    public void syncUserInfo() {
         Observable.just(mMyRoomData.getUid())
                 .map(new Func1<Long, User>() {
                     @Override
@@ -102,13 +103,14 @@ public class InfoAreaPresenter extends ComponentPresenter<InfoAreaView.IView>
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.e(TAG, "followUser failed, exception=" + throwable);
+                        MyLog.e(TAG, "syncUserInfo failed, exception=" + throwable);
                     }
                 });
     }
 
     @Override
-    public void syncUserInfo() {
+    public void syncFeedsInfo() {
+        MyLog.d(TAG, "syncFeedsInfo");
         Observable.just(0)
                 .map(new Func1<Integer, Feeds.GetFeedInfoResponse>() {
                     @Override
@@ -125,24 +127,29 @@ public class InfoAreaPresenter extends ComponentPresenter<InfoAreaView.IView>
                     @Override
                     public void call(Feeds.GetFeedInfoResponse rsp) {
                         if (mView != null) {
-                            if (rsp == null && rsp.getRet() == ErrorCode.CODE_SUCCESS) {
+                            if (rsp != null && rsp.getRet() == ErrorCode.CODE_SUCCESS) {
                                 Feeds.FeedInfo feedInfo = rsp.getFeedInfo();
+                                String title = "";
                                 long timestamp = 0;
                                 int viewerCnt = 0;
+                                String coverUrl = "";
                                 try {
                                     timestamp = feedInfo.getFeedCteateTime();
-                                    viewerCnt = feedInfo.getFeedContent().getLiveShow().getViewerCnt();
+                                    LiveShowProto.BackInfo backInfo = feedInfo.getFeedContent().getBackInfo();
+                                    title = backInfo.getBaTitle();
+                                    viewerCnt = backInfo.getViewerCnt();
+                                    coverUrl = backInfo.getCoverUrl();
                                 } catch (Exception e) {
-                                    MyLog.e(TAG, "followUser failed, exception=" + e);
+                                    MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
                                 }
-                                mView.onFeedsInfo(timestamp, viewerCnt);
+                                mView.onFeedsInfo(mMyRoomData.getUid(), title, timestamp, viewerCnt, coverUrl);
                             }
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.e(TAG, "followUser failed, exception=" + throwable);
+                        MyLog.e(TAG, "syncFeedsInfo failed, exception=" + throwable);
                     }
                 });
     }

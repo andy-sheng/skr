@@ -1,4 +1,4 @@
-package com.wali.live.livesdk.live.adapter;
+package com.wali.live.watchsdk.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

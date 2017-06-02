@@ -211,7 +211,6 @@ class CopyLayoutRes:
         print "copy layout for: ".join(itemList)
         if not itemList or len(itemList) == 0:
             return
-        print "copy layout"
         for srcItem in itemList:
            print "copy layout " + srcItem
            ret = self.__doCopy("/layout/", srcItem)
@@ -221,11 +220,11 @@ class CopyLayoutRes:
         pass
 
 
-    def __doCopy(self, resPath,fileName):
-        srcFile = org_res_path + resPath + fileName
-        print(srcFile)
+    def __doCopy(self, resPath, fileName):
+        srcFile = org_res_path + resPath + fileName + '.xml'
+        print 'srcFile=' + srcFile
         dstPath = dst_res_path + resPath
-        print(dstPath)
+        print 'distFile=' + dstPath
 
         if not os.path.exists(dstPath):
             os.makedirs(dstPath)
