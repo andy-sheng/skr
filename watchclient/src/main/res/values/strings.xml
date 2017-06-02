@@ -75,4 +75,12 @@
 
 
     <string name="write_comment">Add comment</string>
+    <plurals name="feeds_fans_count_formatter" formatted="false">
+        <item quantity="one">%d fan</item>
+        <item quantity="other">%d fans</item>
+    </plurals>
+    <plurals name="live_end_viewer_cnt">
+        <item quantity="one">%d viewer</item>
+        <item quantity="other">%d viewers</item>
+    </plurals>
 </resources>

@@ -88,6 +88,7 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        MyLog.e(TAG, "praiseVideo failed, exception=" + throwable);
                         if (mView != null) {
                             mView.onPraiseFailed(isLike);
                         }

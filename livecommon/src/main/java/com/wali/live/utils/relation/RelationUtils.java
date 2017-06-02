@@ -50,9 +50,13 @@ public class RelationUtils {
     private static final String TAG = RelationUtils.class.getSimpleName();
 
     //以下为关注返回的值 大于等于0说明成功 返回FOLLOW_STATE_BOTH_WAY 说明双向关注
+    public static final int FOLLOW_STATE_BLACK = -2;
     public static final int FOLLOW_STATE_FAILED = -1;
     public static final int FOLLOW_STATE_SUCCESS = 0;
     public static final int FOLLOW_STATE_BOTH_WAY = 1;
+
+    public static final int ERROR_CODE_YOURSELF = 7505;
+    public static final int ERROR_CODE_BLACK = 7506;
 
     public static int sErrorCode = 0;
 
@@ -87,6 +91,8 @@ public class RelationUtils {
                     event.isBothFollow = response.getIsBothway();
                     EventBus.getDefault().post(event);
                     return response.getIsBothway() ? FOLLOW_STATE_BOTH_WAY : FOLLOW_STATE_SUCCESS;
+                } else if (response.getCode() == RelationUtils.ERROR_CODE_BLACK) {
+                    return FOLLOW_STATE_BLACK;
                 }
             }
         } catch (InvalidProtocolBufferException e) {

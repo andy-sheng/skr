@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white">
@@ -11,19 +10,127 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_alignParentTop="true"
-        android:background="@color/black"/>
+        android:background="@color/black" />
 
     <com.wali.live.watchsdk.component.view.VideoDetailPlayerView
         android:id="@+id/video_detail_player_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/status_bar"/>
+        android:layout_below="@+id/status_bar" />
 
-    <!--个人信息，详情，评论等-->
-    <RelativeLayout
-        android:id="@+id/middle_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <!--标题 时间戳 个人资料区域-->
+    <LinearLayout
+        android:id="@+id/info_area"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/video_detail_player_view"
+        android:background="@color/color_white"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_40">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/margin_18"
+            android:paddingLeft="@dimen/margin_30"
+            android:paddingRight="@dimen/margin_30"
+            android:paddingTop="@dimen/margin_28">
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6.67dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical|left"
+                android:lineSpacingExtra="0px"
+                android:maxLines="2"
+                android:textColor="@color/color_black_trans_80"
+                android:textSize="@dimen/text_size_55"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/timestamp_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_tv"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="@dimen/text_size_40" />
+
+            <TextView
+                android:id="@+id/watch_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/timestamp_tv"
+                android:layout_marginLeft="13.33dp"
+                android:layout_toRightOf="@id/timestamp_tv"
+                android:textColor="@color/color_black_trans_50"
+                android:textSize="13.33dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_110"
+            android:layout_marginTop="@dimen/margin_22"
+            android:background="@color/white">
+
+            <com.base.image.fresco.BaseImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="@dimen/view_dimen_110"
+                android:layout_height="@dimen/view_dimen_110"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:src="@drawable/avatar_default_a" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_toLeftOf="@+id/focus"
+                android:layout_toRightOf="@+id/user_avatar">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/color_black_trans_90"
+                    android:textSize="@dimen/text_size_46" />
+
+                <TextView
+                    android:id="@+id/fans_count_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/user_name"
+                    android:layout_below="@+id/user_name"
+                    android:layout_marginTop="0.67dp"
+                    android:textColor="@color/color_black_trans_50"
+                    android:textSize="13.33dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/focus"
+                android:layout_width="@dimen/view_dimen_200"
+                android:layout_height="@dimen/view_dimen_70"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_30"
+                android:background="@drawable/follow_btn_bg"
+                android:gravity="center"
+                android:text="@string/follow"
+                android:textColor="@color/color_follow_btn"
+                android:textSize="@dimen/text_size_40" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <!--底部按钮-->
     <RelativeLayout
@@ -37,7 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.33dp"
             android:layout_alignParentTop="true"
-            android:background="@color/color_black_trans_10"/>
+            android:background="@color/color_black_trans_10" />
 
         <!--评论输入框-->
         <TextView
@@ -58,7 +165,7 @@
             android:paddingRight="30dip"
             android:textColor="@color/color_black_trans_90"
             android:textColorHint="@color/color_black_trans_30"
-            android:textSize="@dimen/text_size_40"/>
+            android:textSize="@dimen/text_size_40" />
 
         <ImageView
             android:id="@+id/praise_button"
@@ -67,7 +174,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_60"
             android:layout_toLeftOf="@+id/share_button"
-            android:src="@drawable/feeds_praise"/>
+            android:src="@drawable/feeds_praise" />
 
         <ImageView
             android:id="@+id/share_button"
@@ -77,7 +184,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_70"
             android:layout_marginRight="@dimen/margin_60"
-            android:src="@drawable/feeds_share"/>
+            android:src="@drawable/feeds_share" />
 
     </RelativeLayout>
 
@@ -88,6 +195,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </RelativeLayout>

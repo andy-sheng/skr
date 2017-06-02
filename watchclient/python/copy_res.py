@@ -18,11 +18,23 @@ while i < count:
     if command.lower() == "-h" or command.lower() == "--help":
         print 'usage:'
         print '-s [string source] [string source] ... (note: if use -S, a new empty line will be inserted before each item)'
+        print '-p [plurals source] [plurals source] ... (note: if use -P, a new empty line will be inserted before each item)'
         print '-i [drawable source] [drawable source] ...(note: if use -I, items in xml drawable will be checked recursively)'
         print '-D [dimen source] [dimen source] ...'
         print '-L [layout source] [layout source] ...'
     elif command.lower() == "-s":
-        copier = CopyStringRes(command == "-S")
+        copier = CopyStringRes(command == "-S", "string")
+        resList = []
+        while i < count:
+            item = sys.argv[i]
+            if item[0] == "-":
+                break
+            resList.append(item)
+            i += 1
+        print ""
+        copier.doCopy(resList)
+    elif command.lower() == "-p":
+        copier = CopyStringRes(command == "-P", "plurals")
         resList = []
         while i < count:
             item = sys.argv[i]
