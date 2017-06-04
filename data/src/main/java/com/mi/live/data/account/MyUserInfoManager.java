@@ -264,6 +264,10 @@ public class MyUserInfoManager {
         mMyInfo.setLevel(level);
     }
 
+    public int getLevel() {
+        return mMyInfo != null ? mMyInfo.getLevel() : 0;
+    }
+
     public void setNickname(String nickname) {
         mMyInfo.setNickname(nickname);
         EventBus.getDefault().post(new UserInfoEvent());

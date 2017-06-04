@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_white">
@@ -18,146 +19,165 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/status_bar" />
 
-    <!--标题 时间戳 个人资料区域-->
-    <LinearLayout
-        android:id="@+id/info_area"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/video_detail_player_view"
-        android:background="@color/color_white"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/margin_40">
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_button_view"
+        android:layout_below="@id/video_detail_player_view">
 
-        <RelativeLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingBottom="@dimen/margin_18"
-            android:paddingLeft="@dimen/margin_30"
-            android:paddingRight="@dimen/margin_30"
-            android:paddingTop="@dimen/margin_28">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/title_tv"
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/main.collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6.67dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical|left"
-                android:lineSpacingExtra="0px"
-                android:maxLines="2"
-                android:textColor="@color/color_black_trans_80"
-                android:textSize="@dimen/text_size_55"
-                android:visibility="gone" />
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <TextView
-                android:id="@+id/timestamp_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title_tv"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="@color/color_black_trans_50"
-                android:textSize="@dimen/text_size_40" />
+                <!--标题 时间戳 个人资料区域-->
+                <LinearLayout
+                    android:id="@+id/info_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:baselineAligned="false"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="pin">
 
-            <TextView
-                android:id="@+id/watch_num_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/timestamp_tv"
-                android:layout_marginLeft="13.33dp"
-                android:layout_toRightOf="@id/timestamp_tv"
-                android:textColor="@color/color_black_trans_50"
-                android:textSize="13.33dp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingBottom="@dimen/margin_18"
+                        android:paddingLeft="@dimen/margin_30"
+                        android:paddingRight="@dimen/margin_30"
+                        android:paddingTop="@dimen/margin_28">
 
-        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/title_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6.67dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical|left"
+                            android:lineSpacingExtra="0px"
+                            android:maxLines="2"
+                            android:textColor="@color/color_black_trans_80"
+                            android:textSize="@dimen/text_size_55"
+                            android:visibility="gone" />
 
-        <RelativeLayout
+                        <TextView
+                            android:id="@+id/timestamp_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/title_tv"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:textColor="@color/color_black_trans_50"
+                            android:textSize="@dimen/text_size_40" />
+
+                        <TextView
+                            android:id="@+id/watch_num_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/timestamp_tv"
+                            android:layout_marginLeft="13.33dp"
+                            android:layout_toRightOf="@id/timestamp_tv"
+                            android:textColor="@color/color_black_trans_50"
+                            android:textSize="13.33dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_dimen_110"
+                        android:layout_marginTop="@dimen/margin_22"
+                        android:background="@color/white">
+
+                        <com.base.image.fresco.BaseImageView
+                            android:id="@+id/user_avatar"
+                            android:layout_width="@dimen/view_dimen_110"
+                            android:layout_height="@dimen/view_dimen_110"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="@dimen/margin_30"
+                            android:src="@drawable/avatar_default_a" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/margin_30"
+                            android:layout_toLeftOf="@+id/focus"
+                            android:layout_toRightOf="@+id/user_avatar">
+
+                            <TextView
+                                android:id="@+id/user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/color_black_trans_90"
+                                android:textSize="@dimen/text_size_46" />
+
+                            <TextView
+                                android:id="@+id/fans_count_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/user_name"
+                                android:layout_below="@+id/user_name"
+                                android:layout_marginTop="0.67dp"
+                                android:textColor="@color/color_black_trans_50"
+                                android:textSize="13.33dp" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/focus"
+                            android:layout_width="@dimen/view_dimen_200"
+                            android:layout_height="@dimen/view_dimen_70"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/margin_30"
+                            android:background="@drawable/follow_btn_bg"
+                            android:gravity="center"
+                            android:text="@string/follow"
+                            android:textColor="@color/color_follow_btn"
+                            android:textSize="@dimen/text_size_40" />
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/splitter"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.33dip"
+                        android:background="@color/color_black_trans_10" />
+
+                </LinearLayout>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+            <com.base.view.SlidingTabLayout
+                android:id="@+id/detail_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_130"
+                android:background="@color/white"
+                app:layout_scrollFlags="scroll" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <!--数据列表-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/detail_pager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_dimen_110"
-            android:layout_marginTop="@dimen/margin_22"
-            android:background="@color/white">
+            android:layout_height="match_parent"
+            android:background="@color/color_f8f8f8"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <com.base.image.fresco.BaseImageView
-                android:id="@+id/user_avatar"
-                android:layout_width="@dimen/view_dimen_110"
-                android:layout_height="@dimen/view_dimen_110"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/margin_30"
-                android:src="@drawable/avatar_default_a" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_30"
-                android:layout_toLeftOf="@+id/focus"
-                android:layout_toRightOf="@+id/user_avatar">
-
-                <TextView
-                    android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/color_black_trans_90"
-                    android:textSize="@dimen/text_size_46" />
-
-                <TextView
-                    android:id="@+id/fans_count_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/user_name"
-                    android:layout_below="@+id/user_name"
-                    android:layout_marginTop="0.67dp"
-                    android:textColor="@color/color_black_trans_50"
-                    android:textSize="13.33dp" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/focus"
-                android:layout_width="@dimen/view_dimen_200"
-                android:layout_height="@dimen/view_dimen_70"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_30"
-                android:background="@drawable/follow_btn_bg"
-                android:gravity="center"
-                android:text="@string/follow"
-                android:textColor="@color/color_follow_btn"
-                android:textSize="@dimen/text_size_40" />
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/splitter"
-        android:layout_width="match_parent"
-        android:layout_height="0.33dip"
-        android:layout_below="@+id/info_area"
-        android:background="@color/color_black_trans_10" />
-
-    <com.base.view.SlidingTabLayout
-        android:id="@+id/detail_tab"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_130"
-        android:layout_below="@+id/splitter"
-        android:background="@color/white" />
-
-    <!--数据列表-->
-    <android.support.v4.view.ViewPager
-        android:id="@+id/detail_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_button_view"
-        android:layout_below="@id/detail_tab"
-        android:background="@color/color_f8f8f8"
-        android:fadingEdge="none"
-        android:fadingEdgeLength="0dp"
-        android:overScrollMode="never"
-        android:requiresFadingEdge="none" />
+    </android.support.design.widget.CoordinatorLayout>
 
     <!--底部按钮-->
     <RelativeLayout

@@ -126,7 +126,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(22869193l, "22869193_1480938327", "http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1")
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348", "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
                         .setLiveType(6)
                         .setEnableShare(true)
                         .build();

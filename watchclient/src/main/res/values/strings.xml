@@ -85,4 +85,7 @@
     </plurals>
     <string name="feeds_detail_label_comment" formatted="false">Comments (%s)</string>
     <string name="feeds_detail_label_replay">Replay</string>
+    <string name="recomment_text">\@\u0020</string>
+    <string name="feeds_hot_comment" formatted="false">Top comments</string>
+    <string name="feeds_hot_all" formatted="false">All comments</string>
 </resources>

@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.videodetail.view;
 
 import android.graphics.Color;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -9,10 +10,13 @@ import android.widget.RelativeLayout;
 
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
+import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
+import com.wali.live.watchsdk.videodetail.presenter.DetailCommentPresenter;
 
 /**
  * Created by yangli on 2017/06/02.
@@ -48,7 +52,10 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         mPresenter = iPresenter;
     }
 
-    public DetailTabView(View rootView) {
+    public DetailTabView(
+            View rootView,
+            @NonNull ComponentPresenter.IComponentController componentController,
+            @NonNull RoomBaseDataModel roomData) {
         mRootView = rootView;
         mSlidingTabLayout = $(R.id.detail_tab);
         mViewPager = $(R.id.detail_pager);
@@ -65,6 +72,14 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         view2.setLayoutParams(new ViewPager.LayoutParams());
         mMessageAdapter.addView(mRootView.getResources().getString(
                 R.string.feeds_detail_label_replay), view2);
+
+        {
+            DetailCommentView view = new DetailCommentView(mRootView.getContext());
+            DetailCommentPresenter presenter = new DetailCommentPresenter(componentController, roomData);
+            view.setPresenter(presenter);
+            presenter.setComponentView(view.getViewProxy());
+            mMessageAdapter.addView("测试", view);
+        }
 
         mSlidingTabLayout.setCustomTabView(R.layout.feeds_detail_slide_tab_view, R.id.tab_tv);
         mSlidingTabLayout.setCustomTabColorizer(

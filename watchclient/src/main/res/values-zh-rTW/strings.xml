@@ -82,4 +82,7 @@
     </plurals>
     <string name="feeds_detail_label_comment" formatted="false">評論(%s)</string>
     <string name="feeds_detail_label_replay">重播</string>
+    <string name="recomment_text">回覆\u0020</string>
+    <string name="feeds_hot_comment" formatted="false">熱門評論</string>
+    <string name="feeds_hot_all" formatted="false">全部評論</string>
 </resources>

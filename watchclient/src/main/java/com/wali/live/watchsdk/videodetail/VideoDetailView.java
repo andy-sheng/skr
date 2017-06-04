@@ -44,7 +44,8 @@ public class VideoDetailView extends BaseSdkView<VideoDetailController> {
 
         // TAB区域
         {
-            DetailTabView view = new DetailTabView($(android.R.id.content));
+            DetailTabView view = new DetailTabView(
+                    $(android.R.id.content), mComponentController, mComponentController.mMyRoomData);
             DetailTabPresenter presenter = new DetailTabPresenter(mComponentController,
                     mComponentController.mMyRoomData);
             addComponentView(view, presenter);
