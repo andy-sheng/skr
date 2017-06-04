@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.base.log.MyLog;
+import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
@@ -83,6 +84,17 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PAUSE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         MyLog.w(TAG, "onDestroy");
         super.onDestroy();
@@ -96,39 +108,62 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
     //视频event 刷新播放按钮等操作
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.FeedsVideoEvent event) {
-        if (event != null) {
-            MyLog.w(TAG, "onEventMainThread event.type=" + event.mType);
-            switch (event.mType) {
-                case EventClass.FeedsVideoEvent.TYPE_START:
-                    mComponentController.onEvent(VideoDetailController.MSG_PLAYER_RESUME);
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_STOP:
-                    mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PAUSE);
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_COMPLETION:
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN:
-                    mComponentController.onEvent(VideoDetailController.MSG_PLAYER_FULL_SCREEN);
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_PLAYING:
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_SET_SEEK:
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_ON_FEEDS_PLAY_ACT_DESTORY:
-                    break;
-                case EventClass.FeedsVideoEvent.TYPE_ERROR:
-                    break;
-                default:
-                    break;
-            }
+        MyLog.w(TAG, "onEventMainThread  mIsForeground" + mIsForeground + " event.type=" + event.mType);
+        if (!mIsForeground) {
+            return;
+        }
+        switch (event.mType) {
+            case EventClass.FeedsVideoEvent.TYPE_START:
+                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_RESUME);
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_STOP:
+                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PAUSE);
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_COMPLETION:
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN:
+                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_FULL_SCREEN);
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_PLAYING:
+                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PLAYING);
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_SET_SEEK:
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_ON_FEEDS_PLAY_ACT_DESTORY:
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_ERROR:
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public boolean isStatusBarDark() {
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        MyLog.w(TAG, "onActivityResult requestCode=" + requestCode + " resultCode=" + resultCode + " foreground=" + mIsForeground);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case ReplaySdkActivity.REQUEST_REPLAY:
+                if (data != null) {
+                    mIsForeground = true;
+                    long timeStamp = data.getLongExtra(ReplaySdkActivity.EXT_REPLAYED_TIME, 0);
+                    mComponentController.onEvent(VideoDetailController.MSG_PLAYER_SEEK,
+                            new ComponentPresenter.Params().putItem(timeStamp));
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {

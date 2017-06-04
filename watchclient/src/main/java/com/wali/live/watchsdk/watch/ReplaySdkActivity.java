@@ -81,6 +81,9 @@ import rx.functions.Action1;
 public class ReplaySdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener, IActionCallBack {
     protected final static String TAG = "ReplaySdkActivity";
 
+    protected static final int REQUEST_REPLAY = 10000;
+    protected static final String EXT_REPLAYED_TIME = "ext_replayed_time";
+
     private static final int MSG_ROOM_INFO = 108;               //主播拉取房间信息
     public static final int MSG_UPDATE_QOS = 200;               //金山云调试信息
 
@@ -139,6 +142,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.replaysdk_layout);
+        overridePendingTransition(R.anim.open_room, 0);
         openOrientation();
         initData();
 
@@ -225,7 +229,18 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     }
 
     @Override
+    public void finish() {
+        MyLog.w(TAG, "finish()");
+        Intent intent = new Intent();
+        intent.putExtra(EXT_REPLAYED_TIME, mReplayVideoPresenter.getCurrentPosition());
+        setResult(RESULT_OK, intent);
+        super.finish();
+        overridePendingTransition(0, R.anim.zoom_out);
+    }
+
+    @Override
     protected void onDestroy() {
+        MyLog.w(TAG, "onDestroy");
         super.onDestroy();
         stopPlayer();
         unregisterReceiver();
@@ -266,6 +281,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 //        mFeedsVideoPlayer.setTempForceOrientListener(this);
         mReplayVideoPresenter.setSeekBarHideDelay(4000);
         mReplayVideoPresenter.setSeekBarFullScreenBtnVisible(false);
+        mReplayVideoPresenter.setPreSeekTo(mReplayStartTime);
 
         // 点击事件代理，左右滑动隐藏组件的逻辑
         mTouchPresenter = new TouchPresenter(mTouchDelegateView);
@@ -324,6 +340,8 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         //TODO 记得去掉
 //        mMyRoomData.setLiveType(LiveManager.TYPE_LIVE_GAME);
         mReplayStartTime = mRoomInfo.getStartTime();
+
+        MyLog.w(TAG, "mReplayStartTime=" + mReplayStartTime);
     }
 
     private void initView() {
@@ -382,7 +400,6 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                     }
                 });
         orientCloseBtn(false);
-
     }
 
     /**
@@ -610,7 +627,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
         Intent intent = new Intent(activity, ReplaySdkActivity.class);
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, REQUEST_REPLAY);
     }
 
     @Override

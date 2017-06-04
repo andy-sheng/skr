@@ -33,12 +33,21 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
         registerAction(VideoDetailController.MSG_PLAYER_PAUSE);
         registerAction(VideoDetailController.MSG_PLAYER_STOP);
         registerAction(VideoDetailController.MSG_PLAYER_FULL_SCREEN);
+        registerAction(VideoDetailController.MSG_PLAYER_SEEK);
+        registerAction(VideoDetailController.MSG_PLAYER_PLAYING);
     }
 
     @Nullable
     @Override
     protected IAction createAction() {
         return new Action();
+    }
+
+    @Override
+    public void onBackPress() {
+        if (mActivity != null) {
+            mActivity.finish();
+        }
     }
 
     public class Action implements ComponentPresenter.IAction {
@@ -49,6 +58,12 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                 return false;
             }
             switch (source) {
+                case VideoDetailController.MSG_PLAYER_PLAYING:
+                    mView.onPlaying();
+                    break;
+                case VideoDetailController.MSG_PLAYER_SEEK:
+                    mView.onSeekPlayer((long) params.getItem(0));
+                    break;
                 case VideoDetailController.MSG_PLAYER_RESUME:
                     mView.showPlayBtn(false);
                     break;
@@ -59,7 +74,6 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                     mView.onStopPlayer();
                     break;
                 case VideoDetailController.MSG_PLAYER_FULL_SCREEN:
-                    mView.onPausePlayer();
                     RoomInfo roomInfo = RoomInfo.Builder.newInstance(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl())
                             .setLiveType(mMyRoomData.getLiveType())
                             .setGameId(mMyRoomData.getGameId())
@@ -67,6 +81,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                             .setStartTime(mView.onGetPlayingTime())
                             .build();
                     ReplaySdkActivity.openActivity(mActivity, roomInfo);
+                    mView.onClickFullScreen();
                     break;
                 default:
                     break;

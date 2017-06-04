@@ -49,7 +49,7 @@ import java.lang.ref.WeakReference;
 
 public class VideoPlayerPresenterEx implements
         IStreamReconnect, View.OnClickListener {
-    protected final static String TAG = "FeedsVideoPlayer";
+    protected static final String TAG = "VideoPlayerPresenterEx";
 
     protected static final int CLICK_TAG_ROTATE = 1001;
 
@@ -102,7 +102,7 @@ public class VideoPlayerPresenterEx implements
 
         @Override
         public void onPrepared() {
-            MyLog.v(TAG, " onPrepared");
+            MyLog.v(TAG, " onPrepared mPreSeekTo=" + mPreSeekTo + " ");
             if (mVideoPlayerPresenter != null && mVideoPlayerPresenter.isEnableReconnect()) {
                 hideLoading();
                 mIsAlreadyPrepared = true;
@@ -280,7 +280,6 @@ public class VideoPlayerPresenterEx implements
     //从头开始播放视频
     public void play(String videoUrl) {//, ViewGroup viewGroup, boolean isCinemaMode, int transMode, boolean soundOn, boolean showSeekBar
         if (!TextUtils.isEmpty(videoUrl)) {
-            mPreSeekTo = 0;
             mIsAlreadyPrepared = false;
             setSeekBarContainerVisible(false);
             showLoading();
@@ -313,6 +312,7 @@ public class VideoPlayerPresenterEx implements
 
     //继续播放
     public void resume() {
+        MyLog.w(TAG, "resume");
         if (mIsCompletion) {
             mIsCompletion = false;
             mVideoPlayerPresenter.seekTo(0);
@@ -324,6 +324,7 @@ public class VideoPlayerPresenterEx implements
 
     //暂停播放
     public void pause() {
+        MyLog.w(TAG, "pause");
         mVideoPlayerPresenter.pause();
         setPlayBtnSelected(false);
         EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_STOP));
@@ -331,6 +332,7 @@ public class VideoPlayerPresenterEx implements
 
     //停止播放
     public void stop() {
+        MyLog.w(TAG, "pause");
         mVideoPlayerPresenter.release();
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
@@ -346,11 +348,8 @@ public class VideoPlayerPresenterEx implements
 
     }
 
-    public long getPlayedTime() {
-        return mPlayedTime;
-    }
-
     public void destroy() {
+        MyLog.w(TAG, "destroy");
         onDestroy();
         EventBus.getDefault().unregister(this);
     }
@@ -460,6 +459,11 @@ public class VideoPlayerPresenterEx implements
         return 0l;
     }
 
+    //设置PreSeekTo
+    public void setPreSeekTo(long preSeekTo) {
+        mPreSeekTo = preSeekTo;
+    }
+
     //---------内部调 用方法--------------------------------------------------------------------------
     //改变seekbar 播放按钮图标
     protected void setPlayBtnSelected(boolean playing) {
@@ -515,6 +519,14 @@ public class VideoPlayerPresenterEx implements
             setSeekBarContainerVisible(false);
         } else {
             setSeekBarContainerVisible(true);
+        }
+    }
+
+    //对外的seek接口
+    public void seekTo(long playedTime) {
+        if (mVideoPlayerPresenter != null) {
+            mVideoPlayerPresenter.seekTo(playedTime);
+            EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_START));
         }
     }
 

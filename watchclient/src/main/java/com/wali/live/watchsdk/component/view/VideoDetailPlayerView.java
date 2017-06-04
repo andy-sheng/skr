@@ -39,6 +39,8 @@ public class VideoDetailPlayerView extends RelativeLayout
     private ImageView mLoadingIv;
     private ImageButton mPlayBtn;
     private BaseImageView mCoverIv;
+    private ImageView mBackIv;
+    private View mPlayerContainer;
 
     public VideoDetailPlayerView(Context context) {
         this(context, null);
@@ -84,17 +86,21 @@ public class VideoDetailPlayerView extends RelativeLayout
             mCoverIv = $(R.id.cover_iv);
             mPlayBtn = $(R.id.play_button);
             $click(mPlayBtn, this);
+            mBackIv = $(R.id.back_iv);
+            $click(mBackIv, this);
+            mPlayerContainer = $(R.id.player_container);
+            $click(mPlayerContainer, this);
         }
         {
             mVideoPlayerView = $(R.id.video_player_texture_view);
             mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this.getContext(), mVideoPlayerView, mDetailSeekBar, null, false);
             mVideoPlayerPresenterEx.setSeekBarHideDelay(4000);
             mVideoPlayerPresenterEx.setSeekBarFullScreenBtnVisible(true);
-            $click(mVideoPlayerView, this);
         }
     }
 
     private void startPlayer() {
+        MyLog.w(TAG, "startPlayer");
         if (mVideoPlayerPresenterEx != null) {
             if (!mVideoPlayerPresenterEx.isActivate()) {
                 mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());
@@ -104,6 +110,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     }
 
     private void stopPlayer() {
+        MyLog.w(TAG, "stopPlayer");
         if (mVideoPlayerPresenterEx != null) {
             mVideoPlayerPresenterEx.destroy();
         }
@@ -124,7 +131,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     }
 
     private void showPlayBtn(boolean show) {
-        MyLog.w(TAG, "showPlayBtn");
+        MyLog.w(TAG, "showPlayBtn show=" + show);
         if (mPlayBtn.getVisibility() != View.VISIBLE && show) {
             mPlayBtn.setVisibility(View.VISIBLE);
         } else if (mPlayBtn.getVisibility() == View.VISIBLE && !show) {
@@ -133,14 +140,34 @@ public class VideoDetailPlayerView extends RelativeLayout
     }
 
     private void clickFullScreen() {
+        MyLog.w(TAG, "clickFullScreen");
+        if (mCoverIv.getVisibility() != VISIBLE) {
+            mCoverIv.setVisibility(VISIBLE);
+        }
         pausePlayer();
     }
 
+    private void onPlayingState() {
+        MyLog.w(TAG, "onPlayingState");
+        if (mCoverIv.getVisibility() == VISIBLE) {
+            mCoverIv.setVisibility(GONE);
+        }
+    }
+
     private long getPlayingTime() {
+        MyLog.w(TAG, "getPlayingTime");
         if (mVideoPlayerPresenterEx != null) {
-            return mVideoPlayerPresenterEx.getPlayedTime();
+            return mVideoPlayerPresenterEx.getCurrentPosition();
         }
         return 0;
+    }
+
+    private void seekVideoPlayer(long playedTime) {
+        MyLog.w(TAG, "seekVideoPlayer playedTime=" + playedTime);
+        if (mVideoPlayerPresenterEx != null) {
+            mVideoPlayerPresenterEx.resume();
+            mVideoPlayerPresenterEx.seekTo(playedTime);
+        }
     }
 
     @Override
@@ -155,6 +182,11 @@ public class VideoDetailPlayerView extends RelativeLayout
             }
 
             @Override
+            public void onPlaying() {
+                VideoDetailPlayerView.this.onPlayingState();
+            }
+
+            @Override
             public void onClickFullScreen() {
                 VideoDetailPlayerView.this.clickFullScreen();
             }
@@ -162,6 +194,11 @@ public class VideoDetailPlayerView extends RelativeLayout
             @Override
             public void showPlayBtn(boolean show) {
                 VideoDetailPlayerView.this.showPlayBtn(show);
+            }
+
+            @Override
+            public void onStartPlayer() {
+                VideoDetailPlayerView.this.startPlayer();
             }
 
             @Override
@@ -183,6 +220,11 @@ public class VideoDetailPlayerView extends RelativeLayout
             public long onGetPlayingTime() {
                 return VideoDetailPlayerView.this.getPlayingTime();
             }
+
+            @Override
+            public void onSeekPlayer(long playedTime) {
+                VideoDetailPlayerView.this.seekVideoPlayer(playedTime);
+            }
         }
         return new ComponentView();
     }
@@ -190,18 +232,25 @@ public class VideoDetailPlayerView extends RelativeLayout
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.play_button) {
+        if (i == R.id.back_iv) {
+            mPresenter.onBackPress();
+        } else if (i == R.id.play_button) {
             resumePlayer();
-        } else if (i == R.id.video_player_texture_view) {
+        } else if (i == R.id.player_container) {
             mVideoPlayerPresenterEx.onSeekBarContainerClick();
         }
     }
 
     public interface IPresenter {
+        void onBackPress();
     }
 
     public interface IView extends IViewProxy {
+        void onPlaying();
+
         void showPlayBtn(boolean show);
+
+        void onStartPlayer();
 
         void onResumePlayer();
 
@@ -212,5 +261,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         void onStopPlayer();
 
         long onGetPlayingTime();
+
+        void onSeekPlayer(long playedTime);
     }
 }
