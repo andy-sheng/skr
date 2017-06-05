@@ -8,6 +8,7 @@ import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.presenter.RxLifeCyclePresenter;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
@@ -25,6 +26,7 @@ import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.watchsdk.R;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -33,24 +35,30 @@ import rx.schedulers.Schedulers;
  * for watch/repaly/live
  * Created by chengsimin on 16/7/4.
  */
-public class RoomManagerPresenter implements IPushMsgProcessor {
+public class RoomManagerPresenter extends RxLifeCyclePresenter implements IPushMsgProcessor {
 
-    private static final String TAG = "RoomManagerPresenter";
+    private static final String TAG = "RoomManagePresenter";
 
-    LiveRoomChatMsgManager mRoomChatMsgManager;
-    boolean mIsWatchRoom = false;
-    long mManagerUpdateTime;
-    MyAlertDialog mDialog; //多个presenter之间可能会有多个dialog，先不管
-    RxActivity mRxActivity;
+    private LiveRoomChatMsgManager mRoomChatMsgManager;
+    private boolean mIsWatchRoom = false;
+    private long mManagerUpdateTime;
+    private MyAlertDialog mDialog; //多个presenter之间可能会有多个dialog，先不管
+    private RxActivity mRxActivity;
 
+    protected RoomBaseDataModel mMyRoomData;
 
-    public RoomManagerPresenter(RxActivity rxActivity, LiveRoomChatMsgManager mRoomChatMsgManager, boolean mIsWatchRoom) {
-        this.mRoomChatMsgManager = mRoomChatMsgManager;
-        this.mIsWatchRoom = mIsWatchRoom;
-        this.mRxActivity = rxActivity;
+    public RoomManagerPresenter(
+            RxActivity rxActivity,
+            LiveRoomChatMsgManager roomChatMsgManager,
+            boolean isWatchRoom,
+            RoomBaseDataModel myRoomData) {
+        mRoomChatMsgManager = roomChatMsgManager;
+        mIsWatchRoom = isWatchRoom;
+        mRxActivity = rxActivity;
+        mMyRoomData = myRoomData;
     }
 
-    Handler mHandler;
+    private Handler mHandler;
 
     @Override
     public void process(final BarrageMsg msg, RoomBaseDataModel roomBaseDataModel) {
@@ -182,29 +190,48 @@ public class RoomManagerPresenter implements IPushMsgProcessor {
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
     public void destroy() {
+        super.destroy();
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
+    }
+
+    public void syncOwnerInfo(final long uid, final boolean needPullLiveInfo) {
+        Observable.just(0)
+                .map(new Func1<Integer, User>() {
+                    @Override
+                    public User call(Integer integer) {
+                        return UserInfoManager.getUserInfoByUuid(uid, needPullLiveInfo);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<User>bindUntilEvent(RxLifeCyclePresenter.PresenterEvent.DESTROY))
+                .subscribe(new Action1<User>() {
+                    @Override
+                    public void call(User user) {
+                        if (user == null || mMyRoomData == null || mMyRoomData.getUid() != uid) {
+                            return;
+                        }
+                        if (user.isManager(MyUserInfoManager.getInstance().getUuid())) {
+                            LiveRoomManagerModel manager = new LiveRoomManagerModel(
+                                    UserAccountManager.getInstance().getUuidAsLong());
+                            User mine = MyUserInfoManager.getInstance().getUser();
+                            manager.level = mine.getLevel();
+                            manager.avatar = mine.getAvatar();
+                            manager.certificationType = mine.getCertificationType();
+                            WatchRoomCharactorManager.getInstance().setManager(manager);
+                            WatchRoomCharactorManager.initBanSpeakerList(
+                                    UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), mMyRoomData.getRoomId());
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "syncOwnerInfo failed, exception=" + throwable);
+                    }
+                });
+
     }
 }

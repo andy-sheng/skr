@@ -363,8 +363,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomTextMsgPresenter);
 
-        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true);
+        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true, mMyRoomData);
         addPushProcessor(mRoomManagerPresenter);
+        mRoomManagerPresenter.syncOwnerInfo(mMyRoomData.getUid(), true); // 拉取一下主播信息，同步观看端是否是管理员
 
         mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData, mComponentController);
         addBindActivityLifeCycle(mGiftMallPresenter, true);
@@ -975,7 +976,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 new DialogUtils.IDialogCallback() {
                     @Override
                     public void process(DialogInterface dialogInterface, int i) {
-                            finish();
+                        finish();
                     }
                 },
                 null);

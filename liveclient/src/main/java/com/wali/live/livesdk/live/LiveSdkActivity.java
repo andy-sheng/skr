@@ -650,7 +650,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPresent(mRoomViewerPresenter);
         addPushProcessor(mRoomViewerPresenter);
-        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, false);
+        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, false, mMyRoomData);
         addPresent(mRoomManagerPresenter);
         addPushProcessor(mRoomManagerPresenter);
 
