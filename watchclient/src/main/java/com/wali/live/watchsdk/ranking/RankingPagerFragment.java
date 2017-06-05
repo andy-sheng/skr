@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.ranking;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import com.base.activity.BaseActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.keyboard.KeyboardUtils;
 import com.base.view.BackTitleBar;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.statistics.StatisticsKey;
@@ -59,6 +61,12 @@ public class RankingPagerFragment extends BaseFragment {
     @Override
     public int getRequestCode() {
         return REQUEST_CODE;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
     }
 
     @Override

@@ -301,6 +301,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Override
     public void trySendDataWithServerOnce() {
+        MyLog.w(TAG, "trySendDataWithServerOnce mMyRoomData.getUid()=" + mMyRoomData.getUid());
         if (mMyRoomData.getUid() == 0 && !MiLinkClientAdapter.getsInstance().isTouristMode()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -790,7 +791,6 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     private void processBeginLive(int errCode, Object... objects) {
         switch (errCode) {
-            // TODO 这里错误码是这样处理的？
             case ErrorCode.CODE_SUCCESS:
                 processStartRecord((String) objects[0], (long) objects[1], (String) objects[2],
                         (List<LiveCommonProto.UpStreamUrl>) objects[3], (String) objects[4]);
