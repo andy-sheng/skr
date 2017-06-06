@@ -201,6 +201,7 @@ public class PermissionUtils {
         String permission = "android.permission." + type;
         if (!PermissionUtils.checkPermissionWithType(activity, type)) {
             MyLog.d(TAG, "requestPermissionDialog permission: " + permission);
+            RxPermissions.getInstance(GlobalData.app()).clearSubjects();
             RxPermissions.getInstance(GlobalData.app())
                     .requestEach(permission)
                     .subscribe(new Action1<Permission>() {
@@ -224,9 +225,9 @@ public class PermissionUtils {
                         }
                     });
         } else {
-           if (grantCallback != null) {
-               grantCallback.okProcess();
-           }
+            if (grantCallback != null) {
+                grantCallback.okProcess();
+            }
         }
     }
 
