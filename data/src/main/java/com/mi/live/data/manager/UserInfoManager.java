@@ -502,10 +502,10 @@ public class UserInfoManager {
         MyLog.v(TAG, " getMyManagerList request : \n" + request.toString());
 
         PacketData responseData = MiLinkClientAdapter.getsInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-        MyLog.v(TAG, " getViewerList responseData=" + responseData);
+        MyLog.v(TAG, " getMyManagerList responseData=" + responseData);
         try {
             if (responseData != null) {
-                MyLog.v(TAG, "getViewerList getMnsCode:" + responseData.getMnsCode());
+                MyLog.v(TAG, "getMyManagerList getMnsCode:" + responseData.getMnsCode());
                 UserProto.AdminListRsp response = UserProto.AdminListRsp.parseFrom(responseData.getData());
                 if (response.getUserInfosList() != null) {
                     for (UserProto.PersonalInfo data : response.getUserInfosList()) {
