@@ -14,7 +14,7 @@ public class FileUtils {
     public static final int KB = 1024;
     public static final int MB = 1024 * KB;
 
-    private static final HashMap<String, String> mFileTypes = new HashMap<String, String>();
+    private static final HashMap<String, String> mFileTypes = new HashMap<>();
 
     static {
         // images
@@ -74,6 +74,7 @@ public class FileUtils {
 
     /**
      * 获得文件后缀
+     *
      * @param path
      * @return
      */

@@ -24,11 +24,10 @@ import rx.schedulers.Schedulers;
 
 /**
  * 异步上传用户信息
- *
+ * <p>
  * Created by wuxiaoshan on 17-3-3.
  */
-public class UploadRunnable implements Runnable{
-
+public class UploadRunnable implements Runnable {
     private static final String TAG = UploadRunnable.class.getSimpleName();
 
     public static final int DEFAULT_GENDER = 0;
@@ -39,7 +38,7 @@ public class UploadRunnable implements Runnable{
 
     private String mAvatarMd5;
 
-    public UploadRunnable(@NonNull UploadService.UploadInfo uploadInfo){
+    public UploadRunnable(@NonNull UploadService.UploadInfo uploadInfo) {
         mUploadInfo = uploadInfo;
     }
 
@@ -56,7 +55,7 @@ public class UploadRunnable implements Runnable{
                 mUploadInfo.gender = DEFAULT_GENDER;
             }
         }
-        MyLog.w(TAG, "uploadUserInfo start,UploadUserInfo:"+mUploadInfo.toString());
+        MyLog.w(TAG, "uploadUserInfo start,UploadUserInfo:" + mUploadInfo.toString());
         if (!mUploadInfo.hasInnerAvatar && !TextUtils.isEmpty(mUploadInfo.avatar)) {
             String localImgUrl = mUploadInfo.avatar;
             if (mUploadInfo.avatarNeedDowload) {

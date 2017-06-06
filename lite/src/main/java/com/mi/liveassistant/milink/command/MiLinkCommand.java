@@ -21,6 +21,7 @@ public class MiLinkCommand {
 
     /*用户信息相关*/
     public static final String COMMAND_GET_HOMEPAGE = "zhibo.user.gethomepage";
+    public static final String COMMAND_UPLOAD_USER_INFO = "zhibo.user.uploaduserpro";       //更新用户信息
 
     /*登录相关*/
     public static final String COMMAND_LOGIN = "zhibo.account.login";

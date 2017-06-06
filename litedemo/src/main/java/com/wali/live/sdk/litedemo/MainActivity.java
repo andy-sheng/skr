@@ -12,11 +12,11 @@ import android.widget.EditText;
 import com.mi.liveassistant.account.AccountManager;
 import com.mi.liveassistant.account.callback.IAccountCallback;
 import com.mi.liveassistant.account.callback.IAccountListener;
+import com.mi.liveassistant.common.security.RSASignature;
 import com.mi.liveassistant.michannel.presenter.ChannelPresenter;
 import com.mi.liveassistant.michannel.presenter.IChannelView;
 import com.mi.liveassistant.michannel.viewmodel.BaseViewModel;
 import com.mi.liveassistant.michannel.viewmodel.ChannelLiveViewModel;
-import com.mi.liveassistant.utils.RSASignature;
 import com.wali.live.sdk.litedemo.activity.GameLiveActivity;
 import com.wali.live.sdk.litedemo.activity.NormalLiveActivity;
 import com.wali.live.sdk.litedemo.activity.WatchActivity;
@@ -168,9 +168,9 @@ public class MainActivity extends RxActivity implements View.OnClickListener, IC
                     return;
                 }
 
-                String name = "游不动的鱼";
-                String headUrl = "";
-                int sex = 1;
+                String name = "心即理也";
+                String headUrl = "http://android-wallpapers.25pp.com//fs08/2016/10/12/8/2000_04e9045cfeaf708a7f6121271da65090_900x675.jpg";
+                int sex = 2;
                 int channelId = 50001;
                 String signStr = "channelId=" + channelId + "&headUrl=" + headUrl + "&nickname=" + name + "&sex=" + sex + "&xuid=" + uid;
                 String sign = RSASignature.sign(signStr, RSA_PRIVATE_KEY, "UTF-8");

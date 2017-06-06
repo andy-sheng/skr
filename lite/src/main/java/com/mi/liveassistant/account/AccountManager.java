@@ -1,9 +1,12 @@
 package com.mi.liveassistant.account;
 
+import android.text.TextUtils;
+
 import com.mi.liveassistant.account.callback.IAccountCallback;
 import com.mi.liveassistant.account.callback.IAccountListener;
 import com.mi.liveassistant.account.login.LoginType;
 import com.mi.liveassistant.account.task.AccountCaller;
+import com.mi.liveassistant.account.upload.UploadService;
 import com.mi.liveassistant.common.api.ErrorCode;
 import com.mi.liveassistant.common.log.MyLog;
 import com.mi.liveassistant.dao.UserAccount;
@@ -106,6 +109,11 @@ public class AccountManager {
                         int code = rsp.getRetCode();
                         if (code == ErrorCode.CODE_SUCCESS) {
                             callback.notifySuccess(UserAccountManager.getInstance().getUuidAsLong());
+                            if (TextUtils.isEmpty(headUrl)) {
+                                MyLog.d(TAG, "thirdPartLogin headUrl is empty");
+                                return;
+                            }
+                            UploadService.toUpload(new UploadService.UploadInfo(rsp, name, headUrl, sex, channelId));
                         } else {
                             callback.notifyFail(code);
                         }

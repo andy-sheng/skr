@@ -83,7 +83,7 @@
  *;
 }
 
--keep class org.apache.*{
+-keep class org.apache.**{
  *;
 }
 
@@ -180,7 +180,7 @@
     *;
 }
 
--keep class com.mi.liveassistant.utils.RSASignature {
+-keep class com.mi.liveassistant.common.security.RSASignature {
     *;
 }
 

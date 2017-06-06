@@ -10,7 +10,7 @@ import com.mi.liveassistant.barrage.callback.ISysMsgListener;
 import com.mi.liveassistant.barrage.data.Message;
 import com.mi.liveassistant.barrage.facade.MessageFacade;
 import com.mi.liveassistant.common.log.MyLog;
-import com.mi.liveassistant.utils.RSASignature;
+import com.mi.liveassistant.common.security.RSASignature;
 
 import java.util.List;
 

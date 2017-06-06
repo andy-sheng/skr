@@ -12,3 +12,4 @@ protoc --java_out=$genPath ./Config.proto
 protoc --java_out=$genPath ./CloudParams.proto
 protoc --java_out=$genPath ./LiveMessage.proto
 protoc --java_out=$genPath ./RedEnvelope.proto
+protoc --java_out=$genPath ./AuthUploadFile.proto

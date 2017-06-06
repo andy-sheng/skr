@@ -6,6 +6,9 @@ package com.mi.liveassistant.common.preference;
 public class PreferenceKeys {
     public static final String KEY_RELEASE_CHANNEL = "pref_channel";
 
+    // 生成attachment_id
+    public static final String PREF_KEY_ATTACHMENT_BASE_ID = "pref_key_attachment_base_id";
+
     // 保存上次选中的美颜等级
     public static final String PREF_KEY_FACE_BEAUTY_LEVEL = "pref_key_face_beauty_level";
 
