@@ -4,10 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.proto.Feeds;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.feeds.FeedsCommentUtils;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 import com.wali.live.watchsdk.videodetail.view.DetailCommentView;
@@ -16,11 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.component.ComponentController.MSG_COMMENT_TOTAL_CNT;
 import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD;
 
 /**
@@ -34,12 +38,14 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         implements DetailCommentView.IPresenter {
     private static final String TAG = "DetailCommentPresenter";
 
+    private final static int PULL_COMMENT_LIMIT = 30; // 单次拉取评论的条数
+
     private RoomBaseDataModel mMyRoomData;
 
     private long mCommentTs = 0;
-    private int mCommentCnt = 0;
     private int mTotalCnt = 0;
     private boolean mHasMore = true;
+    private Subscription mPullSubscription;
 
     public DetailCommentPresenter(
             @NonNull IComponentController componentController,
@@ -50,17 +56,21 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
 
     @Override
     public void pullFeedsComment() {
-        Observable.just(0)
+        if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
+            return;
+        }
+        mView.onShowLoadingView(true);
+        mPullSubscription = Observable.just(0)
                 .map(new Func1<Integer, FeedsCommentList>() {
                     @Override
                     public FeedsCommentList call(Integer integer) {
                         Feeds.QueryFeedCommentsResponse rsp = FeedsCommentUtils.fetchFeedsCommentFromServer(
-                                mMyRoomData.getRoomId(), mCommentTs, mCommentCnt, false, true,
+                                mMyRoomData.getRoomId(), mCommentTs, PULL_COMMENT_LIMIT, false, true,
                                 FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD, true);
                         if (rsp == null && rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
                             return null;
                         }
-                        FeedsCommentList feedsCommentList = new FeedsCommentList(rsp.getLastTs(), rsp.hasHasMore());
+                        FeedsCommentList feedsCommentList = new FeedsCommentList(rsp.getLastTs(), rsp.getHasMore());
                         Feeds.FeedComment feedComment = rsp.getFeedComment();
                         if (feedComment == null) {
                             return feedsCommentList;
@@ -93,13 +103,21 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                         if (mView == null) {
                             return;
                         }
-                        if (feedsCommentList == null) {
-                            return;
+                        mView.onShowLoadingView(false);
+                        if (feedsCommentList != null) {
+                            if (mTotalCnt != feedsCommentList.totalCnt) {
+                                mTotalCnt = feedsCommentList.totalCnt;
+                                mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+                            }
+                            mCommentTs = feedsCommentList.lastTs;
+                            mHasMore = feedsCommentList.hasMore;
+                            mView.onPullCommentDone(feedsCommentList.commentItemList);
+                            if (feedsCommentList.commentItemList.isEmpty() && !mHasMore) {
+                                ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_no_more);
+                            }
+                        } else {
+                            mView.onPullCommentFailed();
                         }
-                        mCommentTs = feedsCommentList.lastTs;
-                        mTotalCnt = feedsCommentList.totalCnt;
-                        mHasMore = feedsCommentList.hasMore;
-                        mView.onCommentItemList(feedsCommentList.commentItemList);
                     }
                 }, new Action1<Throwable>() {
                     @Override

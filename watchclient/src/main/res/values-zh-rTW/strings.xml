@@ -85,4 +85,5 @@
     <string name="recomment_text">回覆\u0020</string>
     <string name="feeds_hot_comment" formatted="false">熱門評論</string>
     <string name="feeds_hot_all" formatted="false">全部評論</string>
+    <string name="feeds_comment_no_more">沒有更多評論</string>
 </resources>

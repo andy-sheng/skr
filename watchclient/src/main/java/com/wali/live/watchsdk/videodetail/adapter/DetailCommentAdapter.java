@@ -13,9 +13,11 @@ import android.view.ContextMenu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.base.global.GlobalData;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.config.GetConfigManager;
+import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
@@ -71,7 +73,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         private String fromNickName;
         private long toUid;
         private String toNickName;
-        private String content;
+        private CharSequence content;
 
         public CommentItem(long commentId, int fromUserLevel, long fromUid, String fromNickName,
                            long toUid, String toNickName, String content) {
@@ -82,7 +84,10 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             this.fromNickName = fromNickName;
             this.toUid = toUid;
             this.toNickName = toNickName;
-            this.content = content;
+            if (!TextUtils.isEmpty(content)) {
+                this.content = SmileyParser.getInstance().addSmileySpans(GlobalData.app(), content,
+                        DisplayUtils.dip2px(16), true, false, true);
+            }
         }
     }
 
@@ -155,7 +160,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             mLevelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
         }
 
-        private void appendTextWithSpan(String content, @ColorRes int colorId, ClickableSpan clickableSpan) {
+        private void appendTextWithSpan(CharSequence content, @ColorRes int colorId, ClickableSpan clickableSpan) {
             int start = mCommentSpan.length(), end = start + content.length();
             mCommentSpan.append(content);
             if (colorId != 0) {

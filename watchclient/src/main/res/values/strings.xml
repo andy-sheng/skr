@@ -88,4 +88,5 @@
     <string name="recomment_text">\@\u0020</string>
     <string name="feeds_hot_comment" formatted="false">Top comments</string>
     <string name="feeds_hot_all" formatted="false">All comments</string>
+    <string name="feeds_comment_no_more">No more comments</string>
 </resources>

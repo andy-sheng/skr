@@ -8,6 +8,9 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
+import static com.wali.live.component.ComponentController.MSG_COMMENT_TOTAL_CNT;
+import static com.wali.live.component.ComponentController.MSG_REPLAY_TOTAL_CNT;
+
 /**
  * Created by yangli on 2017/06/02.
  * <p>
@@ -26,6 +29,8 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
         mMyRoomData = roomData;
+        registerAction(MSG_COMMENT_TOTAL_CNT);
+        registerAction(MSG_REPLAY_TOTAL_CNT);
     }
 
     @Nullable
@@ -42,6 +47,11 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                 return false;
             }
             switch (source) {
+                case MSG_COMMENT_TOTAL_CNT:
+                    mView.updateCommentTotalCnt((int) params.getItem(0));
+                    break;
+                case MSG_REPLAY_TOTAL_CNT:
+                    break;
                 default:
                     break;
             }

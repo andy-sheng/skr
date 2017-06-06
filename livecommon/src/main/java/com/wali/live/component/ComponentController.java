@@ -80,6 +80,11 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_SHOW_GAME_DOWNLOAD = MSG_POPUP_FIRST + 7;       // 暂时游戏中心下载框
     public static final int MSG_SHOW_SHARE_PANEL = MSG_POPUP_FIRST + 8;         // 显示 分享面板
 
+    // 详情播放相关
+    private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
+    public static final int MSG_COMMENT_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST; // 更新 评论总数
+    public static final int MSG_REPLAY_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 1;  // 更新 回放总数
+
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI
 

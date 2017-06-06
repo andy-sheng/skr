@@ -3,10 +3,13 @@ package com.wali.live.watchsdk.videodetail.view;
 import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -98,6 +101,18 @@ public class DetailCommentView extends RelativeLayout
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && mPresenter != null) {
+                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
+                        mPresenter.pullFeedsComment();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -112,19 +127,58 @@ public class DetailCommentView extends RelativeLayout
             }
 
             @Override
-            public void onCommentItemList(List<DetailCommentAdapter.CommentItem> commentItemList) {
+            public void onPullCommentDone(List<DetailCommentAdapter.CommentItem> commentItemList) {
                 mCommentItemList.addAll(commentItemList);
                 mAdapter.setItemData(mCommentItemList);
+                mEmptyView.setVisibility(mCommentItemList.isEmpty() ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onPullCommentFailed() {
+                if (mCommentItemList.isEmpty()) {
+                    mEmptyView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onShowLoadingView(boolean isShow) {
+                mLoadingView.setVisibility(isShow ? View.VISIBLE : ViewGroup.GONE);
+            }
+
+            @Override
+            public void onShowEmptyView(boolean isShow) {
+                mEmptyView.setVisibility(isShow ? View.VISIBLE : ViewGroup.GONE);
             }
         }
         return new ComponentView();
     }
 
     public interface IPresenter {
+        /**
+         * 拉取更多评论
+         */
         void pullFeedsComment();
     }
 
     public interface IView extends IViewProxy {
-        void onCommentItemList(List<DetailCommentAdapter.CommentItem> commentItemList);
+        /**
+         * 拉取评论成功
+         */
+        void onPullCommentDone(List<DetailCommentAdapter.CommentItem> commentItemList);
+
+        /**
+         * 拉取评论失败
+         */
+        void onPullCommentFailed();
+
+        /**
+         * 显示加载图标
+         */
+        void onShowLoadingView(boolean isShow);
+
+        /**
+         * 显示/隐藏空页面
+         */
+        void onShowEmptyView(boolean isShow);
     }
 }

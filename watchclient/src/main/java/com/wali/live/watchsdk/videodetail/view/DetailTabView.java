@@ -61,24 +61,22 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         mViewPager = $(R.id.detail_pager);
 
         mMessageAdapter = new CommonTabPagerAdapter();
-        RelativeLayout view1 = new RelativeLayout(mRootView.getContext());
-        view1.setBackgroundColor(Color.RED);
-        view1.setLayoutParams(new ViewPager.LayoutParams());
-        mMessageAdapter.addView(String.format(mRootView.getResources().getString(
-                R.string.feeds_detail_label_comment), "0"), view1);
-
-        RelativeLayout view2 = new RelativeLayout(mRootView.getContext());
-        view2.setBackgroundColor(Color.GREEN);
-        view2.setLayoutParams(new ViewPager.LayoutParams());
-        mMessageAdapter.addView(mRootView.getResources().getString(
-                R.string.feeds_detail_label_replay), view2);
 
         {
             DetailCommentView view = new DetailCommentView(mRootView.getContext());
             DetailCommentPresenter presenter = new DetailCommentPresenter(componentController, roomData);
-            view.setPresenter(presenter);
             presenter.setComponentView(view.getViewProxy());
-            mMessageAdapter.addView("测试", view);
+            view.setPresenter(presenter);
+            mMessageAdapter.addView(String.format(mRootView.getResources().getString(
+                    R.string.feeds_detail_label_comment), "0"), view);
+        }
+
+        {
+            RelativeLayout view = new RelativeLayout(mRootView.getContext());
+            view.setBackgroundColor(Color.GREEN);
+            view.setLayoutParams(new ViewPager.LayoutParams());
+            mMessageAdapter.addView(mRootView.getResources().getString(
+                    R.string.feeds_detail_label_replay), view);
         }
 
         mSlidingTabLayout.setCustomTabView(R.layout.feeds_detail_slide_tab_view, R.id.tab_tv);
@@ -110,6 +108,13 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             public <T extends View> T getRealView() {
                 return null;
             }
+
+            @Override
+            public void updateCommentTotalCnt(int cnt) {
+                mMessageAdapter.updatePageTitle(0, String.format(mRootView.getResources()
+                        .getString(R.string.feeds_detail_label_comment), "" + cnt));
+                mSlidingTabLayout.notifyDataChange();
+            }
         }
         return new ComponentView();
     }
@@ -118,5 +123,6 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     }
 
     public interface IView extends IViewProxy {
+        void updateCommentTotalCnt(int cnt);
     }
 }
