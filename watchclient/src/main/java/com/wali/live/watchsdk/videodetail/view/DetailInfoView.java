@@ -118,6 +118,8 @@ public class DetailInfoView implements View.OnClickListener,
                         mFollowTv.setEnabled(true);
                         mFollowTv.setText(R.string.follow);
                     }
+                } else {
+                    mFollowTv.setVisibility(View.GONE);
                 }
                 int fansCnt = user.getFansNum();
                 mFansCntTv.setText(mContentView.getResources().getQuantityString(
@@ -138,18 +140,6 @@ public class DetailInfoView implements View.OnClickListener,
                 } else {
                     mTitleTv.setVisibility(View.GONE);
                 }
-//                if (TextUtils.isEmpty(coverUrl)) {
-//                    AvatarUtils.loadAvatarByUid(mAvatarIv, uid, false);
-//                } else {
-//                    if (coverUrl.startsWith("http") || coverUrl.startsWith("https")) {
-//                        AvatarUtils.loadAvatarByUrl(mAvatarIv, coverUrl, false);
-//                    } else {
-//                        FrescoWorker.loadImage(mAvatarIv, ImageFactory.newLocalImage(coverUrl)
-//                                .setLoadingDrawable(mContentView.getResources().getDrawable(R.drawable.live_feeds_show_avatar_loading))
-//                                .setFailureDrawable(mContentView.getResources().getDrawable(R.drawable.live_feeds_show_avatar_loading))
-//                                .build());
-//                    }
-//                }
             }
 
             @Override
