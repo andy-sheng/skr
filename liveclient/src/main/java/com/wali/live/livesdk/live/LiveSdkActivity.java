@@ -678,7 +678,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.PhoneStateEvent event) {
-        if (event != null && mComponentController != null) {
+        if (event != null && mComponentController != null && !mIsLiveEnd) {
             MyLog.w(TAG, "onEventMainThread PhoneStateEvent type=" + event.type);
             switch (event.type) {
                 case EventClass.PhoneStateEvent.TYPE_PHONE_STATE_IDLE:
