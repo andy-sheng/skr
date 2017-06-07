@@ -86,4 +86,5 @@
     <string name="feeds_hot_comment" formatted="false">熱門評論</string>
     <string name="feeds_hot_all" formatted="false">全部評論</string>
     <string name="feeds_comment_no_more">沒有更多評論</string>
+    <string name="commend_failed">評論發送失敗</string>
 </resources>

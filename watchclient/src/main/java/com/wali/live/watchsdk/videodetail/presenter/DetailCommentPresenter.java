@@ -2,8 +2,10 @@ package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -25,6 +27,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.ComponentController.MSG_COMMENT_TOTAL_CNT;
+import static com.wali.live.component.ComponentController.MSG_SEND_COMMENT;
+import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
 import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD;
 
 /**
@@ -47,11 +51,15 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
     private boolean mHasMore = true;
     private Subscription mPullSubscription;
 
+    private List<DetailCommentAdapter.CommentItem> mHotList = new ArrayList<>();
+    private List<DetailCommentAdapter.CommentItem> mAllList = new ArrayList<>();
+
     public DetailCommentPresenter(
             @NonNull IComponentController componentController,
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
         mMyRoomData = roomData;
+        registerAction(MSG_SEND_COMMENT);
     }
 
     @Override
@@ -127,6 +135,50 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 });
     }
 
+    @Override
+    public void showCommentInput(DetailCommentAdapter.CommentItem commentItem) {
+        mComponentController.onEvent(MSG_SHOW_COMMENT_INPUT, new Params()
+                .putItem(mMyRoomData.getRoomId()).putItem(commentItem));
+    }
+
+    @Override
+    public void sendComment(final String feedsId, final DetailCommentAdapter.CommentItem commentItem) {
+        if (TextUtils.isEmpty(mMyRoomData.getRoomId()) || TextUtils.isEmpty(feedsId) ||
+                !mMyRoomData.getRoomId().equals(feedsId)) {
+            return;
+        }
+        final long ownerId = mMyRoomData.getUid();
+        Observable.just(0)
+                .map(new Func1<Integer, DetailCommentAdapter.CommentItem>() {
+                    @Override
+                    public DetailCommentAdapter.CommentItem call(Integer integer) {
+                        return FeedsCommentUtils.sendComment(commentItem, ownerId, feedsId, 0, 0);
+                    }
+                })
+                .retryWhen(new RxRetryAssist()) // 增加一次重试
+                .subscribeOn(Schedulers.io())
+                .compose(this.<DetailCommentAdapter.CommentItem>bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<DetailCommentAdapter.CommentItem>() {
+                    @Override
+                    public void call(DetailCommentAdapter.CommentItem commentItem) {
+                        if (commentItem != null) {
+//                            ++mTotalCnt;
+//                            mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+//                            mView.onSendCommentDone(commentItem);
+                        } else {
+                            ToastUtils.showToast(mView.getRealView().getContext(), R.string.commend_failed);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "sendComment failed, exception=" + throwable);
+                        ToastUtils.showToast(mView.getRealView().getContext(), R.string.commend_failed);
+                    }
+                });
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {
@@ -141,6 +193,9 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 return false;
             }
             switch (source) {
+                case MSG_SEND_COMMENT:
+                    sendComment((String) params.getItem(0), (DetailCommentAdapter.CommentItem) params.getItem(1));
+                    break;
                 default:
                     break;
             }

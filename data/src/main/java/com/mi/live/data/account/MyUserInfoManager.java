@@ -273,6 +273,13 @@ public class MyUserInfoManager {
         EventBus.getDefault().post(new UserInfoEvent());
     }
 
+    public String getNickname() {
+        if (mMyInfo != null && !TextUtils.isEmpty(mMyInfo.getNickname())) {
+            return mMyInfo.getNickname();
+        }
+        return UserAccountManager.getInstance().getNickname();
+    }
+
     public void setDiamonds(int deduct, int virtualGemCnt) {
         mMyInfo.setDiamondNum(deduct);
         mMyInfo.setVirtualDiamondNum(virtualGemCnt);

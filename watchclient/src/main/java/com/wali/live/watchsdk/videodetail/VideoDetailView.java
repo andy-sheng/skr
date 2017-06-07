@@ -6,10 +6,10 @@ import android.view.View;
 
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.VideoDetailPlayerPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
+import com.wali.live.watchsdk.videodetail.presenter.CommentInputPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailBottomPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailInfoPresenter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailTabPresenter;
@@ -69,8 +69,7 @@ public class VideoDetailView extends BaseSdkView<VideoDetailController> {
             if (view == null) {
                 return;
             }
-            InputAreaPresenter presenter = new InputAreaPresenter(
-                    mComponentController, mComponentController.mMyRoomData);
+            CommentInputPresenter presenter = new CommentInputPresenter(mComponentController);
             addComponentView(view, presenter);
         }
 

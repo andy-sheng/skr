@@ -366,6 +366,11 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             }
 
             @Override
+            public void setHint(String hint) {
+                mInputView.setHint(hint);
+            }
+
+            @Override
             public void onKeyboardShowed(int keyboardHeight) {
                 if (getVisibility() != View.VISIBLE) {
                     return;
@@ -444,6 +449,11 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
          * 隐藏输入框
          */
         boolean hideInputView();
+
+        /**
+         * 设置提示
+         */
+        void setHint(String hint);
 
         /**
          * 键盘弹起

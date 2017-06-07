@@ -20,6 +20,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
+
 /**
  * Created by yangli on 2017/05/31.
  * <p>
@@ -54,7 +56,7 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
 
     @Override
     public void showInputView() {
-        mComponentController.onEvent(ComponentController.MSG_SHOW_INPUT_VIEW);
+        mComponentController.onEvent(MSG_SHOW_COMMENT_INPUT, new Params().putItem(mMyRoomData.getRoomId()));
     }
 
     @Override

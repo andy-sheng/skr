@@ -1,12 +1,17 @@
 package com.wali.live.watchsdk.feeds;
 
+import android.text.TextUtils;
+
 import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.milink.sdk.aidl.PacketData;
+import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.proto.Feeds;
+import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
 /**
  * Created by yangli on 2017/6/2.
@@ -42,7 +47,7 @@ public class FeedsCommentUtils {
                 .setIsAddSgc(includeShare)
                 .build();
 
-        MyLog.d(TAG, " fetchFeedsCommentFromServer request : \n" + request.toString());
+        MyLog.d(TAG, "fetchFeedsCommentFromServer request : \n" + request.toString());
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_FEEDS_COMMENT_QUERY);
         data.setData(request.toByteArray());
@@ -53,11 +58,71 @@ public class FeedsCommentUtils {
             return null;
         }
 
-        MyLog.v(TAG + " fetchFeedsCommentFromServer rsp : " + rspData.toString());
+        MyLog.v(TAG, "fetchFeedsCommentFromServer rsp : " + rspData.toString());
         try {
             Feeds.QueryFeedCommentsResponse rsp = Feeds.QueryFeedCommentsResponse.parseFrom(rspData.getData());
-            MyLog.v(TAG,  " fetchFeedsCommentFromServer rsp : " + rsp.toString());
+            MyLog.v(TAG, "fetchFeedsCommentFromServer rsp : " + rsp.toString());
             return rsp;
+        } catch (InvalidProtocolBufferException e) {
+            MyLog.e(TAG, e);
+        }
+        return null;
+    }
+
+    /**
+     * 创建一条评论
+     */
+    public static DetailCommentAdapter.CommentItem sendComment(
+            DetailCommentAdapter.CommentItem commentItem,
+            long feedOwnerId,
+            String feedId,
+            int feedType,
+            int commentType) {
+        if (commentItem == null || TextUtils.isEmpty(commentItem.content)) {
+            return null;
+        }
+
+        Feeds.CreateFeedCommnetRequest.Builder builder = Feeds.CreateFeedCommnetRequest.newBuilder();
+        builder.setFromUid(commentItem.fromUid);
+        builder.setFromNickname(commentItem.fromNickName);
+        builder.setContent(SmileyParser.getInstance()
+                .convertString(commentItem.content, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString());
+        builder.setFeedId(feedId);
+        builder.setFeedOwnerId(feedOwnerId);
+        if (commentItem.toUid > 0) {
+            builder.setToUid(commentItem.toUid);
+        }
+        if (!TextUtils.isEmpty(commentItem.toNickName)) {
+            builder.setToNickname(commentItem.toNickName);
+        }
+        if (feedType != 0) {
+            builder.setFeedType(feedType);
+        }
+        if (commentType != 0) {
+            builder.setCommentType(commentType);
+        }
+
+        Feeds.CreateFeedCommnetRequest req = builder.build();
+        MyLog.d(TAG, "sendComment request : \n" + req.toString());
+        PacketData data = new PacketData();
+        data.setCommand(MiLinkCommand.COMMAND_FEEDS_COMMENT_CREATE);
+        data.setData(req.toByteArray());
+
+        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+        if (null == rspData) {
+            MyLog.d(TAG, "sendComment failed, packetData is null");
+            return null;
+        }
+
+        MyLog.v(TAG, "sendComment rsp : " + rspData.toString());
+        try {
+            Feeds.CreateFeedCommnetResponse rsp = Feeds.CreateFeedCommnetResponse.parseFrom(rspData.getData());
+            MyLog.v(TAG, "sendComment rsp : " + rsp.toString());
+            if (rsp != null && rsp.getErrCode() == ErrorCode.CODE_SUCCESS) {
+                commentItem.commentId = rsp.getCommnetId();
+                commentItem.createTime = rsp.getCreateTime();
+                return commentItem;
+            }
         } catch (InvalidProtocolBufferException e) {
             MyLog.e(TAG, e);
         }

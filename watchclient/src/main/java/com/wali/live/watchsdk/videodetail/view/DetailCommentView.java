@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
@@ -48,10 +49,12 @@ public class DetailCommentView extends RelativeLayout
 
                 @Override
                 public void onClickName(long uid) {
+                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, null);
                 }
 
                 @Override
                 public void onItemClick(DetailCommentAdapter.CommentItem item) {
+                    mPresenter.showCommentInput(item);
                 }
 
                 @Override
@@ -134,6 +137,12 @@ public class DetailCommentView extends RelativeLayout
             }
 
             @Override
+            public void onSendCommentDone(DetailCommentAdapter.CommentItem commentItem) {
+                mCommentItemList.add(commentItem);
+                mAdapter.setItemData(mCommentItemList);
+            }
+
+            @Override
             public void onPullCommentFailed() {
                 if (mCommentItemList.isEmpty()) {
                     mEmptyView.setVisibility(View.VISIBLE);
@@ -158,6 +167,16 @@ public class DetailCommentView extends RelativeLayout
          * 拉取更多评论
          */
         void pullFeedsComment();
+
+        /**
+         * 回复评论
+         */
+        void showCommentInput(DetailCommentAdapter.CommentItem commentItem);
+
+        /**
+         * 发送评论
+         */
+        void sendComment(String feedsId, DetailCommentAdapter.CommentItem commentItem);
     }
 
     public interface IView extends IViewProxy {
@@ -165,6 +184,8 @@ public class DetailCommentView extends RelativeLayout
          * 拉取评论成功
          */
         void onPullCommentDone(List<DetailCommentAdapter.CommentItem> commentItemList);
+
+        void onSendCommentDone(DetailCommentAdapter.CommentItem commentItem);
 
         /**
          * 拉取评论失败

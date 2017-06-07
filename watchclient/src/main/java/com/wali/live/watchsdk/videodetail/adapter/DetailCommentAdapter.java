@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.base.global.GlobalData;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.span.LinkMovementClickMethod;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.config.GetConfigManager;
 import com.wali.live.common.smiley.SmileyParser;
@@ -67,13 +69,14 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
     }
 
     public static class CommentItem extends LabelItem {
-        private long commentId;
-        private int fromUserLevel;
-        private long fromUid;
-        private String fromNickName;
-        private long toUid;
-        private String toNickName;
-        private CharSequence content;
+        public long commentId;
+        public int fromUserLevel;
+        public long fromUid;
+        public String fromNickName;
+        public long toUid;
+        public String toNickName;
+        public long createTime;
+        public CharSequence content;
 
         public CommentItem(long commentId, int fromUserLevel, long fromUid, String fromNickName,
                            long toUid, String toNickName, String content) {
@@ -135,14 +138,14 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             mListener = listener;
             bindLevelView(item);
             bindComment(item);
-            if (mListener != null) {
-                itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-                    @Override
-                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                @Override
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                    if (mListener != null) {
                         mListener.onItemLongClick(item);
                     }
-                });
-            }
+                }
+            });
         }
 
         private void bindLevelView(CommentItem item) {
@@ -156,13 +159,14 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             }
             GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(level);
             mLevelTv.setText(String.valueOf(String.valueOf(level)));
-            mLevelTv.setBackgroundDrawable(levelItem.drawableBG);
+            mLevelTv.setBackground(levelItem.drawableBG);
             mLevelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
         }
 
         private void appendTextWithSpan(CharSequence content, @ColorRes int colorId, ClickableSpan clickableSpan) {
-            int start = mCommentSpan.length(), end = start + content.length();
+            int start = mCommentSpan.length();
             mCommentSpan.append(content);
+            int end = mCommentSpan.length();
             if (colorId != 0) {
                 mCommentSpan.setSpan(new ForegroundColorSpan(getResources().getColor(colorId)),
                         start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -180,10 +184,13 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             if (TextUtils.isEmpty(name)) {
                 name = String.valueOf(item.fromUid);
             }
-            appendTextWithSpan(name, R.color.color_5191d2, mListener == null ? null : new ClickableSpan() {
+            appendTextWithSpan(name, R.color.color_5191d2, new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-                    mListener.onClickName(item.fromUid);
+                    MyLog.d(TAG, "itemView onClickName");
+                    if (mListener != null) {
+                        mListener.onClickName(item.fromUid);
+                    }
                 }
 
                 @Override
@@ -197,10 +204,13 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
                     item.toNickName = String.valueOf(item.toUid);
                 }
                 mCommentSpan.append(" " + getResources().getString(R.string.recomment_text) + " "); // 回复两个字
-                appendTextWithSpan(item.toNickName, R.color.color_5191d2, mListener == null ? null : new ClickableSpan() {
+                appendTextWithSpan(item.toNickName, R.color.color_5191d2, new ClickableSpan() {
                     @Override
                     public void onClick(View widget) {
-                        mListener.onClickName(item.toUid);
+                        MyLog.d(TAG, "itemView onClickName");
+                        if (mListener != null) {
+                            mListener.onClickName(item.toUid);
+                        }
                     }
 
                     @Override
@@ -211,10 +221,13 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             }
             mCommentSpan.append(": ");
             // 评论内容
-            appendTextWithSpan(item.content, 0, mListener == null ? null : new ClickableSpan() {
+            appendTextWithSpan(item.content, 0, new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-                    mListener.onItemClick(item);
+                    MyLog.d(TAG, "itemView onItemClick");
+                    if (mListener != null) {
+                        mListener.onItemClick(item);
+                    }
                 }
 
                 @Override
@@ -225,6 +238,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             mCommentSpan.setSpan(new LeadingMarginSpan.Standard(DisplayUtils.dip2px(31), 0),
                     0, mCommentSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mCommentTv.setText(mCommentSpan);
+            mCommentTv.setMovementMethod(LinkMovementClickMethod.getInstance());
         }
     }
 
