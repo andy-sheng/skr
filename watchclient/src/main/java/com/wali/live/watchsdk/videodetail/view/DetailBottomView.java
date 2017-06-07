@@ -77,6 +77,11 @@ public class DetailBottomView implements View.OnClickListener,
             }
 
             @Override
+            public void updateLikeStatus(boolean isLike) {
+                mPraiseBtn.setSelected(isLike);
+            }
+
+            @Override
             public void onPraiseDone(boolean isLike) {
                 MyLog.w(TAG, "onPraiseDone, isLike=" + isLike);
                 mPraiseBtn.setSelected(isLike);
@@ -112,6 +117,11 @@ public class DetailBottomView implements View.OnClickListener,
 
     public interface IView extends IViewProxy {
         /**
+         * 更新点赞按钮状态
+         */
+        void updateLikeStatus(boolean isLike);
+
+        /**
          * 点赞/取消点赞成功
          *
          * @param isLike true-点赞，false-取消点赞
@@ -124,6 +134,5 @@ public class DetailBottomView implements View.OnClickListener,
          * @param isLike true-点赞，false-取消点赞
          */
         void onPraiseFailed(boolean isLike);
-
     }
 }

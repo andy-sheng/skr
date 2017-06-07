@@ -24,6 +24,8 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 
+import java.util.List;
+
 /**
  * Created by yangli on 2017/6/2.
  */
@@ -36,6 +38,26 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
     protected static final int ITEM_TYPE_COMMENT = 2;
 
     private final SpannableStringBuilder mCommentSpan = new SpannableStringBuilder();
+
+    private final LabelItem mHotLabel = new LabelItem(ITEM_TYPE_HOT_LABEL);
+    private final LabelItem mAllLabel = new LabelItem(ITEM_TYPE_ALL_LABEL);
+
+    public boolean isEmpty() {
+        return mItems.isEmpty();
+    }
+
+    public void setItemData(List<CommentItem> hotList, List<CommentItem> allList) {
+        mItems.clear();
+        if (!hotList.isEmpty()) {
+            mItems.add(mHotLabel);
+            mItems.addAll(hotList);
+        }
+        if (!allList.isEmpty()) {
+            mItems.add(mAllLabel);
+            mItems.addAll(allList);
+        }
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -95,7 +117,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
     }
 
     protected static class LabelHolder extends ClickItemAdapter.BaseHolder<
-            LabelItem, View.OnClickListener> {
+            LabelItem, ICommentClickListener> {
         private TextView mLabelTv;
 
         public LabelHolder(View view) {
@@ -104,7 +126,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         }
 
         @Override
-        public void bindView(LabelItem item, View.OnClickListener onClickListener) {
+        public void bindView(LabelItem item, ICommentClickListener listener) {
             switch (item.type) {
                 case ITEM_TYPE_HOT_LABEL:
                     mLabelTv.setText(getResources().getString(R.string.feeds_hot_comment));

@@ -21,6 +21,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
+import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
 
 /**
  * Created by yangli on 2017/05/31.
@@ -52,6 +53,7 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
         mMyRoomData = roomData;
+        registerAction(MSG_UPDATE_LIKE_STATUS);
     }
 
     @Override
@@ -117,6 +119,9 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
                 return false;
             }
             switch (source) {
+                case MSG_UPDATE_LIKE_STATUS:
+                    mView.onPraiseDone((boolean) params.getItem(0));
+                    break;
                 default:
                     break;
             }

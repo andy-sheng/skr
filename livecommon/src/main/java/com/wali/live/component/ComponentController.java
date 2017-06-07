@@ -82,10 +82,11 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
 
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
-    public static final int MSG_COMMENT_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST; // 更新 评论总数
-    public static final int MSG_REPLAY_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 1;  // 更新 回放总数
-    public static final int MSG_SHOW_COMMENT_INPUT = MSG_DETAIL_VIDEO_FIRST + 2;  // 回复 评论
-    public static final int MSG_SEND_COMMENT = MSG_DETAIL_VIDEO_FIRST + 3;  // 发送 评论
+    public static final int MSG_UPDATE_LIKE_STATUS = MSG_DETAIL_VIDEO_FIRST; // 更新 点赞状态
+    public static final int MSG_COMMENT_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 1; // 更新 评论总数
+    public static final int MSG_REPLAY_TOTAL_CNT = MSG_DETAIL_VIDEO_FIRST + 2;  // 更新 回放总数
+    public static final int MSG_SHOW_COMMENT_INPUT = MSG_DETAIL_VIDEO_FIRST + 3;  // 回复 评论
+    public static final int MSG_SEND_COMMENT = MSG_DETAIL_VIDEO_FIRST + 4;  // 发送 评论
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI

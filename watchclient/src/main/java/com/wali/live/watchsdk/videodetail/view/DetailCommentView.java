@@ -19,7 +19,6 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,8 +34,6 @@ public class DetailCommentView extends RelativeLayout
 
     @Nullable
     protected IPresenter mPresenter;
-
-    private List<DetailCommentAdapter.CommentItem> mCommentItemList = new ArrayList<>();
 
     private TextView mEmptyView;
     private View mLoadingView;
@@ -100,7 +97,7 @@ public class DetailCommentView extends RelativeLayout
         mRecyclerView = $(R.id.recycler_view);
 
         mAdapter = new DetailCommentAdapter();
-        mAdapter.setOnClickListener(mCommentClickListener);
+        mAdapter.setClickListener(mCommentClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false));
@@ -130,21 +127,16 @@ public class DetailCommentView extends RelativeLayout
             }
 
             @Override
-            public void onPullCommentDone(List<DetailCommentAdapter.CommentItem> commentItemList) {
-                mCommentItemList.addAll(commentItemList);
-                mAdapter.setItemData(mCommentItemList);
-                mEmptyView.setVisibility(mCommentItemList.isEmpty() ? View.VISIBLE : View.GONE);
-            }
-
-            @Override
-            public void onSendCommentDone(DetailCommentAdapter.CommentItem commentItem) {
-                mCommentItemList.add(commentItem);
-                mAdapter.setItemData(mCommentItemList);
+            public void onPullCommentDone(
+                    List<DetailCommentAdapter.CommentItem> hotList,
+                    List<DetailCommentAdapter.CommentItem> allList) {
+                mAdapter.setItemData(hotList, allList);
+                mEmptyView.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
             }
 
             @Override
             public void onPullCommentFailed() {
-                if (mCommentItemList.isEmpty()) {
+                if (mAdapter.isEmpty()) {
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
             }
@@ -183,9 +175,9 @@ public class DetailCommentView extends RelativeLayout
         /**
          * 拉取评论成功
          */
-        void onPullCommentDone(List<DetailCommentAdapter.CommentItem> commentItemList);
-
-        void onSendCommentDone(DetailCommentAdapter.CommentItem commentItem);
+        void onPullCommentDone(
+                List<DetailCommentAdapter.CommentItem> hotList,
+                List<DetailCommentAdapter.CommentItem> allList);
 
         /**
          * 拉取评论失败

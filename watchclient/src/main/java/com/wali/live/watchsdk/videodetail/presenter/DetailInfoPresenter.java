@@ -33,6 +33,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
+import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
 
 /**
  * Created by yangli on 2017/06/01.
@@ -130,11 +131,13 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                             if (rsp != null && rsp.getRet() == ErrorCode.CODE_SUCCESS) {
                                 Feeds.FeedInfo feedInfo = rsp.getFeedInfo();
                                 String title = "";
+                                boolean mySelfLike = false;
                                 long timestamp = 0;
                                 int viewerCnt = 0;
                                 String coverUrl = "";
                                 try {
                                     timestamp = feedInfo.getFeedCteateTime();
+                                    mySelfLike = feedInfo.getFeedLikeContent().getMyselfLike();
                                     LiveShowProto.BackInfo backInfo = feedInfo.getFeedContent().getBackInfo();
                                     title = backInfo.getBaTitle();
                                     viewerCnt = backInfo.getViewerCnt();
@@ -142,6 +145,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                                 } catch (Exception e) {
                                     MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
                                 }
+                                mComponentController.onEvent(MSG_UPDATE_LIKE_STATUS, new Params().putItem(mySelfLike));
                                 mView.onFeedsInfo(mMyRoomData.getUid(), title, timestamp, viewerCnt, coverUrl);
                             }
                         }

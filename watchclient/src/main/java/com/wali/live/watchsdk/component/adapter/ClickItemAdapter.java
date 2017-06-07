@@ -52,7 +52,7 @@ public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         notifyDataSetChanged();
     }
 
-    public void setOnClickListener(LISTENER listener) {
+    public void setClickListener(LISTENER listener) {
         mListener = listener;
     }
 

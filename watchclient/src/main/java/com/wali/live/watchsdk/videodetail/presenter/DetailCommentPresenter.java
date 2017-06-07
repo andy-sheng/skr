@@ -88,16 +88,17 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                         if (commentInfoList == null) {
                             return feedsCommentList;
                         }
+                        List<DetailCommentAdapter.CommentItem> outList;
                         for (Feeds.CommentInfo commentInfo : commentInfoList) {
-                            feedsCommentList.commentItemList.add(
-                                    new DetailCommentAdapter.CommentItem(
-                                            commentInfo.getCommentId(),
-                                            commentInfo.getFromUserLevel(),
-                                            commentInfo.getFromUid(),
-                                            commentInfo.getFromNickname(),
-                                            commentInfo.getToUid(),
-                                            commentInfo.getToNickname(),
-                                            commentInfo.getContent()));
+                            outList = commentInfo.getIsGood() ? feedsCommentList.hotList : feedsCommentList.allList;
+                            outList.add(new DetailCommentAdapter.CommentItem(
+                                    commentInfo.getCommentId(),
+                                    commentInfo.getFromUserLevel(),
+                                    commentInfo.getFromUid(),
+                                    commentInfo.getFromNickname(),
+                                    commentInfo.getToUid(),
+                                    commentInfo.getToNickname(),
+                                    commentInfo.getContent()));
                         }
                         return feedsCommentList;
                     }
@@ -119,8 +120,10 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                             }
                             mCommentTs = feedsCommentList.lastTs;
                             mHasMore = feedsCommentList.hasMore;
-                            mView.onPullCommentDone(feedsCommentList.commentItemList);
-                            if (feedsCommentList.commentItemList.isEmpty() && !mHasMore) {
+                            mHotList.addAll(feedsCommentList.hotList);
+                            mAllList.addAll(feedsCommentList.allList);
+                            mView.onPullCommentDone(mHotList, mAllList);
+                            if (feedsCommentList.isEmpty() && !mHasMore) {
                                 ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_no_more);
                             }
                         } else {
@@ -163,9 +166,12 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                     @Override
                     public void call(DetailCommentAdapter.CommentItem commentItem) {
                         if (commentItem != null) {
-//                            ++mTotalCnt;
-//                            mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
-//                            mView.onSendCommentDone(commentItem);
+                            if (!mHasMore) {
+                                ++mTotalCnt;
+                                mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+                            } else {
+                                pullFeedsComment();
+                            }
                         } else {
                             ToastUtils.showToast(mView.getRealView().getContext(), R.string.commend_failed);
                         }
@@ -207,7 +213,12 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         private long lastTs;
         private int totalCnt;
         private boolean hasMore;
-        private List<DetailCommentAdapter.CommentItem> commentItemList = new ArrayList<>();
+        private List<DetailCommentAdapter.CommentItem> hotList = new ArrayList<>();
+        private List<DetailCommentAdapter.CommentItem> allList = new ArrayList<>();
+
+        public boolean isEmpty() {
+            return hotList.isEmpty() && allList.isEmpty();
+        }
 
         public FeedsCommentList(long lastTs, boolean hasMore) {
             this.lastTs = lastTs;

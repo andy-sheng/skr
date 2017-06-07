@@ -49,7 +49,7 @@ public class GameInputView extends RelativeLayout implements View.OnClickListene
         return (T) findViewById(resId);
     }
 
-    // Auto-generated to easy use setOnClickListener
+    // Auto-generated to easy use setClickListener
     protected final void $click(View view, View.OnClickListener listener) {
         if (view != null) {
             view.setOnClickListener(listener);
