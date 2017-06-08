@@ -569,9 +569,10 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                     public Integer call(Object o) {
                         SecurityProto.VerifyAssistantRsp rsp = new VerifyRequest(channelId, packageName, channelSecret).syncRsp();
                         if (rsp == null) {
+                            MyLog.e(TAG, "verify rsp is null");
                             return null;
                         }
-                        MyLog.d(TAG, "errMsg = " + rsp.getErrMsg());
+                        MyLog.e(TAG, "errMsg=" + rsp.getErrMsg() + " errCode=" + rsp.getRetCode());
                         return rsp.getRetCode();
                     }
                 })
@@ -584,14 +585,14 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, "verify failure, ");
+                        MyLog.e(TAG, "verify failure", e);
                         onEventVerifyFailure(channelId, -1);
                         callback.processFailure();
                     }
 
                     @Override
                     public void onNext(Integer integer) {
-                        MyLog.d(TAG, "onNext integer=" + integer);
+                        MyLog.w(TAG, "onNext integer=" + integer);
                         if (integer != null && integer == 0) {
                             if (callback != null) {
                                 callback.process(channelId, packageName);
@@ -647,7 +648,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             mAARCallback.notifyLogin(code);
             return;
         }
-        MyLog.d(TAG, "onEventLogin channelId=" + channelId);
+        MyLog.w(TAG, "onEventLogin channelId=" + channelId);
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
@@ -671,7 +672,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventLogin aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventLogin aidl success=" + aidlSuccess);
     }
 
     /**
@@ -682,7 +683,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             mAARCallback.notifyWantLogin();
             return;
         }
-        MyLog.d(TAG, "onEventWantLogin channelId=" + channelId);
+        MyLog.w(TAG, "onEventWantLogin channelId=" + channelId);
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
@@ -705,7 +706,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventWantLogin aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventWantLogin aidl success=" + aidlSuccess);
     }
 
     public void onEventVerifyFailure(int channelId, int code) {
@@ -713,7 +714,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             mAARCallback.notifyVerifyFailure(code);
             return;
         }
-        MyLog.d(TAG, "onEventVerifyFailure channelId=" + channelId);
+        MyLog.w(TAG, "onEventVerifyFailure channelId=" + channelId);
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
@@ -736,7 +737,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventVerifyFailure aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventVerifyFailure aidl success=" + aidlSuccess);
     }
 
     public void onEventOtherAppActive(int channelId) {
@@ -744,7 +745,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             mAARCallback.notifyOtherAppActive();
             return;
         }
-        MyLog.d(TAG, "onEventOtherApp channelId=" + channelId);
+        MyLog.w(TAG, "onEventOtherApp channelId=" + channelId);
         List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
         boolean aidlSuccess = false;
         RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
@@ -767,7 +768,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventOtherApp aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventOtherApp aidl success=" + aidlSuccess);
     }
 
     @Override
@@ -825,7 +826,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void onEventGetRecommendLives(int channelId, int errCode, List<LiveInfo> liveInfos) {
-        MyLog.d(TAG, "onEventGetRecommendLives errCode" + errCode);
+        MyLog.w(TAG, "onEventGetRecommendLives errCode" + errCode);
         if (mAARCallback != null) {
             mAARCallback.notifyGetChannelLives(errCode, liveInfos);
             return;
@@ -852,12 +853,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventGetRecommendLives aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventGetRecommendLives aidl success=" + aidlSuccess);
     }
 
 
     public void onEventGetFollowingUserList(int channelId, int errCode, List<UserInfo> userInfos, int total, long timeStamp) {
-        MyLog.d(TAG, "onEventGetFollowingUserList channelId=" + channelId);
+        MyLog.w(TAG, "onEventGetFollowingUserList channelId=" + channelId);
         if (mAARCallback != null) {
             mAARCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
             return;
@@ -884,12 +885,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventGetFollowingUserList aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventGetFollowingUserList aidl success=" + aidlSuccess);
     }
 
-
     public void onEventGetFollowingLiveList(int channelId, int errCode, List<LiveInfo> liveInfos) {
-        MyLog.d(TAG, "onEventGetFollowingLiveList errCode" + errCode);
+        MyLog.w(TAG, "onEventGetFollowingLiveList errCode" + errCode);
         if (mAARCallback != null) {
             mAARCallback.notifyGetFollowingLiveList(errCode, liveInfos);
             return;
@@ -916,12 +916,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventGetFollowingLiveList aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventGetFollowingLiveList aidl success=" + aidlSuccess);
     }
 
 
     public void onEventShare(int channelId, ShareInfo shareInfo) {
-        MyLog.d(TAG, "onEventShare");
+        MyLog.w(TAG, "onEventShare");
         if (mAARCallback != null) {
             mAARCallback.notifyWantShare(shareInfo);
             return;
@@ -948,7 +948,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 callbackList.unregister(callback);
             }
         }
-        MyLog.d(TAG, "onEventShare aidl success=" + aidlSuccess);
+        MyLog.w(TAG, "onEventShare aidl success=" + aidlSuccess);
     }
 
 }
