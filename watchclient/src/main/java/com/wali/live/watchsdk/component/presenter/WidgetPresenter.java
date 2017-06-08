@@ -117,6 +117,11 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
     }
 
     @Override
+    public String getRoomId() {
+        return mMyRoomData.getRoomId();
+    }
+
+    @Override
     public void process(BarrageMsg msg, RoomBaseDataModel roomBaseDataModel) {
         if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ATTACHMENT) {
             long attachmentStamp = msg.getSenderMsgId();
