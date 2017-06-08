@@ -58,7 +58,7 @@ public abstract class BaseRequest {
      */
     protected GeneratedMessage sendSync() {
         if (mRequest == null) {
-            MyLog.d(TAG, mAction + " request is null");
+            MyLog.w(TAG, mAction + " request is null");
             return null;
         }
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(generateReqData(), MiLinkConstant.TIME_OUT);
@@ -66,10 +66,10 @@ public abstract class BaseRequest {
             try {
                 mResponse = parse(rspData.getData());
             } catch (InvalidProtocolBufferException e) {
-                MyLog.d(TAG, e);
+                MyLog.e(TAG, e);
             }
         } else {
-            MyLog.d(TAG, mAction + " response is null");
+            MyLog.w(TAG, mAction + " response is null");
         }
         return mResponse;
     }
@@ -84,7 +84,7 @@ public abstract class BaseRequest {
      */
     protected boolean sendAsync() {
         if (mRequest == null) {
-            MyLog.d(TAG, mAction + " request is null");
+            MyLog.w(TAG, mAction + " request is null");
             return false;
         }
         MiLinkClientAdapter.getsInstance().sendAsync(generateReqData(), MiLinkConstant.TIME_OUT);
