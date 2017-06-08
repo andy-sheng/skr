@@ -19,7 +19,7 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by yangli on 2017/06/02.
@@ -39,6 +39,7 @@ public class DetailCommentView extends RelativeLayout
     private View mLoadingView;
     private RecyclerView mRecyclerView;
 
+    private LinearLayoutManager mLayoutManager;
     private DetailCommentAdapter mAdapter;
 
     private final DetailCommentAdapter.ICommentClickListener mCommentClickListener =
@@ -73,7 +74,7 @@ public class DetailCommentView extends RelativeLayout
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
         if (mPresenter != null) {
-            mPresenter.pullFeedsComment();
+            mPresenter.pullNewerComments();
         }
     }
 
@@ -99,16 +100,21 @@ public class DetailCommentView extends RelativeLayout
         mAdapter = new DetailCommentAdapter();
         mAdapter.setClickListener(mCommentClickListener);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(
-                context, LinearLayoutManager.VERTICAL, false));
+
+        mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && mPresenter != null) {
-                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
-                        mPresenter.pullFeedsComment();
+                    if (!mLayoutManager.getReverseLayout() &&
+                            !ViewCompat.canScrollVertically(recyclerView, 1)) { // 正向模式 上拉到底
+                        mPresenter.pullNewerComments();
+                    } else if (mLayoutManager.getReverseLayout() &&
+                            !ViewCompat.canScrollVertically(recyclerView, -1)) { // 反向模式 下拉到顶
+                        mPresenter.pullOlderComments();
                     }
                 }
             }
@@ -128,9 +134,10 @@ public class DetailCommentView extends RelativeLayout
 
             @Override
             public void onPullCommentDone(
-                    List<DetailCommentAdapter.CommentItem> hotList,
-                    List<DetailCommentAdapter.CommentItem> allList) {
-                mAdapter.setItemData(hotList, allList);
+                    Collection<DetailCommentAdapter.CommentItem> hotList,
+                    Collection<DetailCommentAdapter.CommentItem> allList,
+                    boolean isReverse) {
+                mAdapter.setItemData(hotList, allList, isReverse);
                 mEmptyView.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
             }
 
@@ -150,15 +157,33 @@ public class DetailCommentView extends RelativeLayout
             public void onShowEmptyView(boolean isShow) {
                 mEmptyView.setVisibility(isShow ? View.VISIBLE : ViewGroup.GONE);
             }
+
+            @Override
+            public void setReverseLayout(boolean reverseLayout) {
+                mLayoutManager.setReverseLayout(reverseLayout);
+                mLayoutManager.setStackFromEnd(reverseLayout);
+                mLayoutManager.scrollToPosition(0);
+            }
+
+            @Override
+            public void addSendComment(DetailCommentAdapter.CommentItem commentItem) {
+                mAdapter.addSendItem(commentItem);
+                mLayoutManager.scrollToPosition(0);
+            }
         }
         return new ComponentView();
     }
 
     public interface IPresenter {
         /**
-         * 拉取更多评论
+         * 拉取更多更新的评论
          */
-        void pullFeedsComment();
+        void pullNewerComments();
+
+        /**
+         * 拉取更多更老的评论
+         */
+        void pullOlderComments();
 
         /**
          * 回复评论
@@ -176,8 +201,9 @@ public class DetailCommentView extends RelativeLayout
          * 拉取评论成功
          */
         void onPullCommentDone(
-                List<DetailCommentAdapter.CommentItem> hotList,
-                List<DetailCommentAdapter.CommentItem> allList);
+                Collection<DetailCommentAdapter.CommentItem> hotList,
+                Collection<DetailCommentAdapter.CommentItem> allList,
+                boolean isReverse);
 
         /**
          * 拉取评论失败
@@ -193,5 +219,15 @@ public class DetailCommentView extends RelativeLayout
          * 显示/隐藏空页面
          */
         void onShowEmptyView(boolean isShow);
+
+        /**
+         * 更改列表方向
+         */
+        void setReverseLayout(boolean reverseLayout);
+
+        /**
+         * 方向模式下添加一条发送的评论
+         */
+        void addSendComment(DetailCommentAdapter.CommentItem commentItem);
     }
 }

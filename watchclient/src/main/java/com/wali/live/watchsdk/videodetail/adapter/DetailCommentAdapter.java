@@ -24,7 +24,7 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by yangli on 2017/6/2.
@@ -46,16 +46,32 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         return mItems.isEmpty();
     }
 
-    public void setItemData(List<CommentItem> hotList, List<CommentItem> allList) {
+    public void setItemData(Collection<CommentItem> hotList, Collection<CommentItem> allList, boolean isReverse) {
         mItems.clear();
-        if (!hotList.isEmpty()) {
-            mItems.add(mHotLabel);
-            mItems.addAll(hotList);
+        if (isReverse) {
+            if (!allList.isEmpty()) {
+                mItems.addAll(allList);
+                mItems.add(mAllLabel);
+            }
+            if (!hotList.isEmpty()) {
+                mItems.addAll(hotList);
+                mItems.add(mHotLabel);
+            }
+        } else {
+            if (!hotList.isEmpty()) {
+                mItems.add(mHotLabel);
+                mItems.addAll(hotList);
+            }
+            if (!allList.isEmpty()) {
+                mItems.add(mAllLabel);
+                mItems.addAll(allList);
+            }
         }
-        if (!allList.isEmpty()) {
-            mItems.add(mAllLabel);
-            mItems.addAll(allList);
-        }
+        notifyDataSetChanged();
+    }
+
+    public void addSendItem(CommentItem commentItem) {
+        mItems.add(0, commentItem);
         notifyDataSetChanged();
     }
 

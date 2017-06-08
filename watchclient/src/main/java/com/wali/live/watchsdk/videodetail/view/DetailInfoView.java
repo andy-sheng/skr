@@ -194,6 +194,5 @@ public class DetailInfoView implements View.OnClickListener,
          * 重置关注按钮状态
          */
         void onUnFollowed();
-
     }
 }

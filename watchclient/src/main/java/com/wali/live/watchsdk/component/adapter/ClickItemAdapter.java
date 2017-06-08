@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class ClickItemAdapter<ITEM extends ClickItemAdapter.BaseItem,
         HOLDER extends ClickItemAdapter.BaseHolder, LISTENER> extends RecyclerView.Adapter<HOLDER> {
     protected LayoutInflater mInflater;
-    protected ArrayList<ITEM> mItems = new ArrayList<>(0);
+    protected List<ITEM> mItems = new ArrayList<>(0);
     protected LISTENER mListener;
 
     public ClickItemAdapter() {

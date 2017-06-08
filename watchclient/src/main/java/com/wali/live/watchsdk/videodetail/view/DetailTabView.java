@@ -123,6 +123,9 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     }
 
     public interface IView extends IViewProxy {
+        /**
+         * 更新评论总数
+         */
         void updateCommentTotalCnt(int cnt);
     }
 }

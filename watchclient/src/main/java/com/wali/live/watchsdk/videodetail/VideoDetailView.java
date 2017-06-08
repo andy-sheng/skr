@@ -79,7 +79,8 @@ public class VideoDetailView extends BaseSdkView<VideoDetailController> {
                 return;
             }
             view.setMyRoomData(mComponentController.mMyRoomData);
-            VideoDetailPlayerPresenter presenter = new VideoDetailPlayerPresenter(mComponentController, mComponentController.mMyRoomData, mActivity);
+            VideoDetailPlayerPresenter presenter = new VideoDetailPlayerPresenter(
+                    mComponentController, mComponentController.mMyRoomData, mActivity);
             presenter.setComponentView(view.getViewProxy());
             addComponentView(view, presenter);
         }
