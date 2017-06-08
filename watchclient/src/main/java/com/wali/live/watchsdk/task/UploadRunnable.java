@@ -48,7 +48,7 @@ public class UploadRunnable implements Runnable {
     }
 
     public void uploadUserInfo() {
-        if (!mUploadInfo.needEditUserInfo && !mUploadInfo.isFirstLogin()) {
+        if (!mUploadInfo.needEditUserInfo && !mUploadInfo.isFirstLogin() && !mUploadInfo.hasInfoUpload()) {
             return;
         } else if (mUploadInfo.needEditUserInfo) {
             if (!mUploadInfo.hasInnerSex && mUploadInfo.gender <= 0) {

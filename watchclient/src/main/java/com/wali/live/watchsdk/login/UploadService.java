@@ -16,7 +16,7 @@ public class UploadService {
     private static final String TAG = UploadService.class.getSimpleName();
 
     public static void toUpload(UploadInfo uploadInfo) {
-        if (!uploadInfo.isFirstLogin()) {
+        if (!uploadInfo.isFirstLogin() && !uploadInfo.hasInfoUpload()) {
             return;
         }
         ThreadPool.runOnPool(new UploadRunnable(uploadInfo));
@@ -78,6 +78,10 @@ public class UploadService {
             needEditUserInfo = false;
             avatarNeedDowload = true;
             this.channelId = loginData.getChannelId();
+        }
+
+        public boolean hasInfoUpload() {
+            return !(hasInnerSex && hasInnerNickName && hasInnerAvatar);
         }
 
         public boolean isFirstLogin() {
