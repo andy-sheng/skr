@@ -9,6 +9,7 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.videodetail.view.DetailTabView;
 
 import static com.wali.live.component.ComponentController.MSG_COMMENT_TOTAL_CNT;
+import static com.wali.live.component.ComponentController.MSG_FOLD_INFO_AREA;
 import static com.wali.live.component.ComponentController.MSG_REPLAY_TOTAL_CNT;
 
 /**
@@ -31,6 +32,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
         mMyRoomData = roomData;
         registerAction(MSG_COMMENT_TOTAL_CNT);
         registerAction(MSG_REPLAY_TOTAL_CNT);
+        registerAction(MSG_FOLD_INFO_AREA);
     }
 
     @Nullable
@@ -51,6 +53,9 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                     mView.updateCommentTotalCnt((int) params.getItem(0));
                     break;
                 case MSG_REPLAY_TOTAL_CNT:
+                    break;
+                case MSG_FOLD_INFO_AREA:
+                    mView.onFoldInfoArea();
                     break;
                 default:
                     break;

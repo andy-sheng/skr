@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -33,6 +34,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     @Nullable
     protected IPresenter mPresenter;
 
+    private AppBarLayout mAppBarLayout;
     private SlidingTabLayout mSlidingTabLayout;
     private ViewPager mViewPager;
     private CommonTabPagerAdapter mMessageAdapter;
@@ -57,6 +59,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             @NonNull ComponentPresenter.IComponentController componentController,
             @NonNull RoomBaseDataModel roomData) {
         mRootView = rootView;
+        mAppBarLayout = $(R.id.app_bar_layout);
         mSlidingTabLayout = $(R.id.detail_tab);
         mViewPager = $(R.id.detail_pager);
 
@@ -115,6 +118,11 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
                         .getString(R.string.feeds_detail_label_comment), "" + cnt));
                 mSlidingTabLayout.notifyDataChange();
             }
+
+            @Override
+            public void onFoldInfoArea() {
+                mAppBarLayout.setExpanded(false);
+            }
         }
         return new ComponentView();
     }
@@ -127,5 +135,10 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
          * 更新评论总数
          */
         void updateCommentTotalCnt(int cnt);
+
+        /**
+         * 收起信息区
+         */
+        void onFoldInfoArea();
     }
 }

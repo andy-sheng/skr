@@ -163,12 +163,14 @@ public class DetailCommentView extends RelativeLayout
                 mLayoutManager.setReverseLayout(reverseLayout);
                 mLayoutManager.setStackFromEnd(reverseLayout);
                 mLayoutManager.scrollToPosition(0);
+                mPresenter.foldInfoArea();
             }
 
             @Override
             public void addSendComment(DetailCommentAdapter.CommentItem commentItem) {
                 mAdapter.addSendItem(commentItem);
                 mLayoutManager.scrollToPosition(0);
+                mPresenter.foldInfoArea();
             }
         }
         return new ComponentView();
@@ -194,6 +196,11 @@ public class DetailCommentView extends RelativeLayout
          * 发送评论
          */
         void sendComment(String feedsId, DetailCommentAdapter.CommentItem commentItem);
+
+        /**
+         * 收起信息区
+         */
+        void foldInfoArea();
     }
 
     public interface IView extends IViewProxy {
@@ -226,7 +233,7 @@ public class DetailCommentView extends RelativeLayout
         void setReverseLayout(boolean reverseLayout);
 
         /**
-         * 方向模式下添加一条发送的评论
+         * 反向模式下添加一条发送的评论
          */
         void addSendComment(DetailCommentAdapter.CommentItem commentItem);
     }

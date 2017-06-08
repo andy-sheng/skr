@@ -20,7 +20,6 @@ import com.wali.live.watchsdk.videodetail.view.DetailCommentView;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,6 +31,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.ComponentController.MSG_COMMENT_TOTAL_CNT;
+import static com.wali.live.component.ComponentController.MSG_FOLD_INFO_AREA;
 import static com.wali.live.component.ComponentController.MSG_SEND_COMMENT;
 import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
 import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD;
@@ -227,6 +227,11 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 });
     }
 
+    @Override
+    public void foldInfoArea() {
+        mComponentController.onEvent(MSG_FOLD_INFO_AREA);
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {
@@ -275,8 +280,6 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             }
         }
 
-        Random random = new Random(System.currentTimeMillis());
-
         private PullCommentHelper pullMore(final int limit) {
             Feeds.QueryFeedCommentsResponse rsp = FeedsCommentUtils.fetchFeedsCommentFromServer(
                     mMyRoomData.getRoomId(), mCommentTs, limit, false, mIsAsc,
@@ -306,7 +309,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                         commentInfo.getToUid(),
                         commentInfo.getToNickname(),
                         commentInfo.getContent());
-                outList = (commentInfo.getIsGood() || (random.nextInt(100) > 80)) ? mHotList : mAllList;
+                outList = commentInfo.getIsGood() ? mHotList : mAllList;
                 outList.addLast(commentItem);
             }
             return this;
