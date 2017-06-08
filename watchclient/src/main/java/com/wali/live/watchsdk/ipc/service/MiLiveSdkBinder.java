@@ -935,6 +935,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
                 try {
+                    MyLog.w(TAG, "onEventShare sub for i=" + i);
                     callback.onEventShare(shareInfo);
                     aidlSuccess = true;
                 } catch (Exception e) {
