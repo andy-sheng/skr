@@ -465,7 +465,7 @@ public class WidgetItemView extends LinearLayout {
      * 运营位打点
      */
     private void sendClick(int widgetID, String type) {
-        String key = String.format(StatisticsKey.KEY_WIDGET_CLICK, String.valueOf(widgetID), type, mPresenter.getUid());
+        String key = String.format(StatisticsKey.KEY_WIDGET_CLICK, String.valueOf(widgetID), type, mPresenter.getRoomId());
         if (TextUtils.isEmpty(key)) {
             return;
         }
