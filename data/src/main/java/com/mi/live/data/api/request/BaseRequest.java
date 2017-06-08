@@ -50,7 +50,6 @@ public abstract class BaseRequest {
         if (!TextUtils.isEmpty(mChannelId)) {
             reqData.setChannelId(mChannelId);
         }
-        MyLog.d(TAG, mAction + " request : \n" + mRequest.toString());
         return reqData;
     }
 
@@ -66,7 +65,6 @@ public abstract class BaseRequest {
         if (rspData != null) {
             try {
                 mResponse = parse(rspData.getData());
-                MyLog.d(TAG, mAction + " response : \n" + mResponse.toString());
             } catch (InvalidProtocolBufferException e) {
                 MyLog.d(TAG, e);
             }
