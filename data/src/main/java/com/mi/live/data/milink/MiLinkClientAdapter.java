@@ -170,7 +170,7 @@ public class MiLinkClientAdapter {
         return false;
     }
 
-    private static String[] accessCommand = new String[]{
+    private static final String[] accessCommand = new String[]{
             MiLinkCommand.COMMAND_ACCOUNT_VERIFY_ASSISTANT,
             MiLinkCommand.COMMAND_LIVE_ROOM_INFO,
             MiLinkCommand.COMMAND_LIVE_VIEWER_TOP,
@@ -206,7 +206,9 @@ public class MiLinkClientAdapter {
             MiLinkCommand.COMMAND_LIVE_LEAVE,
             MiLinkCommand.COMMAND_ACCOUNT_3PARTSIGNLOGIN,
             MiLinkCommand.COMMAND_RECOMMEND_CHANNELLIST,
-            MiLinkCommand.COMMAND_FACE_BEAUTY_PARAMS
+            MiLinkCommand.COMMAND_FACE_BEAUTY_PARAMS,
+            MiLinkCommand.COMMAND_FEEDS_GET_FEED_INFO,
+            MiLinkCommand.COMMAND_FEEDS_COMMENT_QUERY,
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {

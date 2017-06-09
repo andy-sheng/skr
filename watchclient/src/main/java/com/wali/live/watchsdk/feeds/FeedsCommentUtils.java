@@ -53,7 +53,7 @@ public class FeedsCommentUtils {
      * @param isAsc
      * @param type      //评论类型 1：热门评论  2：全部评论(type为0除去1)    0：代表老客户端拉取模式：热门和非热门评论混在一起，热门排在非热门的前面
      */
-    public static Feeds.QueryFeedCommentsResponse fetchFeedsCommentFromServer(
+    public static Feeds.QueryFeedCommentsResponse fetchFeedsComment(
             String feedId, long ts, int limit, boolean onlyFocus, boolean isAsc, int type, boolean includeShare) {
         Feeds.QueryFeedCommentsRequest request = Feeds.QueryFeedCommentsRequest.newBuilder()
                 .setFeedId(feedId)
@@ -65,24 +65,23 @@ public class FeedsCommentUtils {
                 .setIsAddSgc(includeShare)
                 .build();
 
-        MyLog.d(TAG, "fetchFeedsCommentFromServer request : \n" + request.toString());
+        MyLog.d(TAG, "fetchFeedsComment request : " + request.toString());
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_FEEDS_COMMENT_QUERY);
         data.setData(request.toByteArray());
 
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
         if (rspData == null) {
-            MyLog.w(TAG, "fetchFeedsCommentFromServer failed, packet data is null");
+            MyLog.w(TAG, "fetchFeedsComment failed, rspData is null");
             return null;
         }
 
-        MyLog.v(TAG, "fetchFeedsCommentFromServer rsp : " + rspData.toString());
         try {
             Feeds.QueryFeedCommentsResponse rsp = Feeds.QueryFeedCommentsResponse.parseFrom(rspData.getData());
-            MyLog.v(TAG, "fetchFeedsCommentFromServer rsp : " + rsp.toString());
+            MyLog.d(TAG, "fetchFeedsComment rsp : " + rsp);
             return rsp;
         } catch (InvalidProtocolBufferException e) {
-            MyLog.e(TAG, e);
+            MyLog.e(TAG, "fetchFeedsComment failed, exception=" + e);
         }
         return null;
     }

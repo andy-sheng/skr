@@ -33,6 +33,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
+import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
 
 /**
@@ -116,7 +117,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                 .map(new Func1<Integer, Feeds.GetFeedInfoResponse>() {
                     @Override
                     public Feeds.GetFeedInfoResponse call(Integer integer) {
-                        return FeedsInfoUtils.fetchFetchInfoFromServer(
+                        return FeedsInfoUtils.fetchFeedsInfo(
                                 MyUserInfoManager.getInstance().getUuid(), mMyRoomData.getRoomId(),
                                 false, mMyRoomData.getUid());
                     }
@@ -156,6 +157,14 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                         MyLog.e(TAG, "syncFeedsInfo failed, exception=" + throwable);
                     }
                 });
+    }
+
+    @Override
+    public void showPersonalInfo() {
+        long uid = mMyRoomData.getUid();
+        if (uid > 0) {
+            mComponentController.onEvent(MSG_SHOW_PERSONAL_INFO, new Params().putItem(uid));
+        }
     }
 
     @Override

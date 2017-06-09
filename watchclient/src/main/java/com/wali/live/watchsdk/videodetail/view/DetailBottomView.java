@@ -9,6 +9,7 @@ import com.base.log.MyLog;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 2017/05/31.
@@ -44,9 +45,13 @@ public class DetailBottomView implements View.OnClickListener,
         }
         int i = v.getId();
         if (i == R.id.text_editor) {
-            mPresenter.showInputView();
+            if (AccountAuthManager.triggerActionNeedAccount(mContentView.getContext())) {
+                mPresenter.showInputView();
+            }
         } else if (i == R.id.praise_button) {
-            mPresenter.praiseVideo(!v.isSelected());
+            if (AccountAuthManager.triggerActionNeedAccount(mContentView.getContext())) {
+                mPresenter.praiseVideo(!v.isSelected());
+            }
         } else if (i == R.id.share_button) {
             mPresenter.showSharePanel();
         }

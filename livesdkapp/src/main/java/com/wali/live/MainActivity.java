@@ -127,8 +127,8 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
             @Override
             public void onClick(View v) {
                 // http://playback.ks.zb.mi.com/record/live/100067_1490154994/hls/100067_1490154994.m3u8?playui=0
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(100067, "100067_1496656388",
-                        "http://playback.ks.zb.mi.com/record/live/100067_1496656388/hls/100067_1496656388.m3u8?playui=0")
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
+                        "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
                         .setLiveType(6)
                         .setEnableShare(true)
                         .build();

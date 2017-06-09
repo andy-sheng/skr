@@ -127,6 +127,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, "syncFeedsInfo failed, exception=" + throwable);
+                        onPullMoreDone(null);
                     }
                 });
     }
@@ -167,6 +168,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                     @Override
                     public void call(Throwable throwable) {
                         MyLog.e(TAG, "syncFeedsInfo failed, exception=" + throwable);
+                        onPullMoreDone(null);
                     }
                 });
     }
@@ -411,7 +413,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         }
 
         private PullCommentHelper pullMore(final int limit) {
-            Feeds.QueryFeedCommentsResponse rsp = FeedsCommentUtils.fetchFeedsCommentFromServer(
+            Feeds.QueryFeedCommentsResponse rsp = FeedsCommentUtils.fetchFeedsComment(
                     mMyRoomData.getRoomId(), mCommentTs, limit, false, mIsAsc,
                     FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD, true);
             if (rsp == null && rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/empty_view"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:drawablePadding="@dimen/margin_40"
     android:drawableTop="@drawable/home_empty_icon"
     android:gravity="center"
-    android:paddingBottom="@dimen/margin_120"
     android:lineSpacingExtra="@dimen/margin_8"
+    android:paddingBottom="@dimen/margin_120"
     android:text="@string/empty_tips"
     android:textColor="@color/color_white_trans_20"
     android:textSize="@dimen/text_size_40"
-    android:visibility="gone"/>
+    android:visibility="gone" />

@@ -15,6 +15,7 @@ import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 /**
  * Created by yangli on 2017/06/01.
@@ -58,7 +59,11 @@ public class DetailInfoView implements View.OnClickListener,
         }
         int i = v.getId();
         if (i == R.id.focus) {
-            mPresenter.followUser();
+            if (AccountAuthManager.triggerActionNeedAccount(mContentView.getContext())) {
+                mPresenter.followUser();
+            }
+        } else if (i == R.id.user_avatar) {
+            mPresenter.showPersonalInfo();
         }
     }
 
@@ -82,6 +87,7 @@ public class DetailInfoView implements View.OnClickListener,
         mFansCntTv = $(R.id.fans_count_tv);
         mFollowTv = $(R.id.focus);
 
+        $click(mAvatarIv, this);
         $click(mFollowTv, this);
     }
 
@@ -167,6 +173,11 @@ public class DetailInfoView implements View.OnClickListener,
          * 拉取Feeds信息
          */
         void syncFeedsInfo();
+
+        /**
+         * 显示个人信息页
+         */
+        void showPersonalInfo();
 
         /**
          * 关注
