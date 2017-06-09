@@ -40,7 +40,8 @@ import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.ComponentController.MSG_SEND_COMMENT;
 import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
 import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
-import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD;
+import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.PULL_TYPE_ALL_HYBRID;
+import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
 /**
  * Created by yangli on 2017/06/02.
@@ -107,11 +108,12 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         }
         MyLog.w(TAG, "pullNewerComments");
         mView.onShowLoadingView(true);
+        final String feedId = mMyRoomData.getRoomId();
         mPullSubscription = Observable.just(0)
                 .map(new Func1<Integer, PullCommentHelper>() {
                     @Override
                     public PullCommentHelper call(Integer integer) {
-                        return mNewerPuller.pullMore(PULL_COMMENT_LIMIT);
+                        return mNewerPuller.pullMore(feedId, PULL_COMMENT_LIMIT);
                     }
                 })
                 .subscribeOn(Schedulers.from(mExecutor))
@@ -144,11 +146,12 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         }
         MyLog.w(TAG, "pullOlderComments");
         mView.onShowLoadingView(true);
+        final String feedId = mMyRoomData.getRoomId();
         mPullSubscription = Observable.just(0)
                 .map(new Func1<Integer, PullCommentHelper>() {
                     @Override
                     public PullCommentHelper call(Integer integer) {
-                        return mOlderPuller.pullMore(PULL_COMMENT_LIMIT);
+                        return mOlderPuller.pullMore(feedId, PULL_COMMENT_LIMIT);
                     }
                 })
                 .subscribeOn(Schedulers.from(mExecutor))
@@ -197,7 +200,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                     @Override
                     public DetailCommentAdapter.CommentItem call(Integer integer) {
                         DetailCommentAdapter.CommentItem result = FeedsCommentUtils.sendComment(
-                                commentItem, ownerId, feedId, 0, 0);
+                                commentItem, feedId, ownerId, FEED_TYPE_DEFAULT, 0);
                         mOlderPuller.addSendItem(result);
                         return result;
                     }
@@ -247,7 +250,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                     @Override
                     public PullCommentHelper call(Integer integer) {
                         boolean result = FeedsCommentUtils.deleteComment(
-                                commentItem, ownerId, feedId, 0);
+                                commentItem, feedId, ownerId, FEED_TYPE_DEFAULT);
                         if (result) {
                             PullCommentHelper helper = mIsReverse ? mOlderPuller : mNewerPuller;
                             helper.removeItem(commentItem);
@@ -417,10 +420,9 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             mAllList.remove(commentItem);
         }
 
-        private PullCommentHelper pullMore(final int limit) {
+        private PullCommentHelper pullMore(final String feedId, final int limit) {
             Feeds.QueryFeedCommentsResponse rsp = FeedsCommentUtils.fetchFeedsComment(
-                    mMyRoomData.getRoomId(), mCommentTs, limit, false, mIsAsc,
-                    FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD, true);
+                    feedId, mCommentTs, limit, false, mIsAsc, PULL_TYPE_ALL_HYBRID, true);
             if (rsp == null && rsp.getErrCode() != ErrorCode.CODE_SUCCESS) {
                 return null;
             }

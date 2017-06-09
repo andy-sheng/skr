@@ -4,14 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
-import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.mi.live.data.user.User;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.feeds.FeedsLikeUtils;
-import com.wali.live.watchsdk.feeds.model.IFeedsInfoable;
-import com.wali.live.watchsdk.feeds.model.SimpleFeedsInfoable;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
 
 import rx.Observable;
@@ -22,6 +18,7 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
 import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
+import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
 /**
  * Created by yangli on 2017/05/31.
@@ -35,18 +32,6 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
     private static final String TAG = "DetailBottomPresenter";
 
     private RoomBaseDataModel mMyRoomData;
-
-    private final IFeedsInfoable mFeedsInfo = new SimpleFeedsInfoable() {
-        @Override
-        public String getFeedsInfoId() {
-            return mMyRoomData.getRoomId();
-        }
-
-        @Override
-        public long getOwnerUserId() {
-            return mMyRoomData.getUid();
-        }
-    };
 
     public DetailBottomPresenter(
             @NonNull IComponentController componentController,
@@ -63,15 +48,16 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
 
     @Override
     public void praiseVideo(final boolean isLike) {
+        final String feedId = mMyRoomData.getRoomId();
+        final long ownerId = mMyRoomData.getUid();
         Observable.just(0)
                 .map(new Func1<Integer, Boolean>() {
                     @Override
                     public Boolean call(Integer integer) {
-                        User user = MyUserInfoManager.getInstance().getUser();
-                        if (isLike) { //点赞
-                            return FeedsLikeUtils.likeFeeds(user, mFeedsInfo);
-                        } else { //取消点赞
-                            return FeedsLikeUtils.cancelLikeFeeds(user, mFeedsInfo);
+                        if (isLike) { // 点赞
+                            return FeedsLikeUtils.likeFeeds(feedId, ownerId, FEED_TYPE_DEFAULT);
+                        } else { // 取消点赞
+                            return FeedsLikeUtils.cancelLikeFeeds(feedId, ownerId, FEED_TYPE_DEFAULT);
                         }
                     }
                 })

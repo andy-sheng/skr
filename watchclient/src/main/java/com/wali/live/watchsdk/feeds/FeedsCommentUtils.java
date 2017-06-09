@@ -17,20 +17,19 @@ import com.wali.live.proto.Feeds;
 import com.wali.live.proto.Live2Proto;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
-import static com.wali.live.watchsdk.feeds.FeedsLikeUtils.FEED_TYPE_SMALL_VIDEO;
-import static com.wali.live.watchsdk.feeds.FeedsLikeUtils.UGC_TYPE_SMALLVIDEO_WORKS;
+import static com.wali.live.watchsdk.feeds.FeedsInfoUtils.FEED_TYPE_DEFAULT;
 
 /**
  * Created by yangli on 2017/6/2.
  *
- * @module feeds
+ * @module Feeds评论
  */
 public class FeedsCommentUtils {
     private final static String TAG = "FeedsCommentUtils";
 
-    public final static int FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD = 0;     //代表老客户端拉取模式：热门和非热门评论混在一起，热门排在非热门的前面
-    public final static int FEEDS_COMMENT_PULL_TYPE_HOT = 1;        //热门评论
-    public final static int FEEDS_COMMENT_PULL_TYPE_ALL_EXCLUSIVE_HOT = 2;    //全部评论, type0除去type1
+    public final static int PULL_TYPE_ALL_HYBRID = 0; // 代表老客户端拉取模式：热门和非热门评论混在一起，热门排在非热门的前面
+    public final static int PULL_TYPE_HOT = 1;        // 热门评论
+    public final static int PULL_TYPE_ALL_EXCLUSIVE_HOT = 2; // 全部评论, type0除去type1
 
     public static void copyToClipboard(CharSequence str, boolean addSpan) {
         if (!TextUtils.isEmpty(str)) {
@@ -45,17 +44,27 @@ public class FeedsCommentUtils {
     }
 
     /**
-     * 拉取一条feeds的评论
+     * 拉取feeds的评论
      *
-     * @param feedId
-     * @param ts
-     * @param limit
-     * @param onlyFocus
-     * @param isAsc
-     * @param type      //评论类型 1：热门评论  2：全部评论(type为0除去1)    0：代表老客户端拉取模式：热门和非热门评论混在一起，热门排在非热门的前面
+     * @param feedId       feed ID
+     * @param ts           时间戳
+     * @param limit        拉取数量上限，最大100
+     * @param onlyFocus    true-只拉取关注人的评论；false-拉取所有人的评论(默认)
+     * @param isAsc        true-拉取ts之后的评论，按时间增序；false-拉取ts之前的评论，按时间逆序
+     * @param type         拉取的评论类型，{@link #PULL_TYPE_ALL_HYBRID}、{@link #PULL_TYPE_HOT}、{@link #PULL_TYPE_ALL_EXCLUSIVE_HOT}
+     * @param includeShare 是否加上分享产生的评论
      */
     public static Feeds.QueryFeedCommentsResponse fetchFeedsComment(
-            String feedId, long ts, int limit, boolean onlyFocus, boolean isAsc, int type, boolean includeShare) {
+            String feedId,
+            long ts,
+            int limit,
+            boolean onlyFocus,
+            boolean isAsc,
+            int type,
+            boolean includeShare) {
+        if (TextUtils.isEmpty(feedId)) {
+            return null;
+        }
         Feeds.QueryFeedCommentsRequest request = Feeds.QueryFeedCommentsRequest.newBuilder()
                 .setFeedId(feedId)
                 .setTs(ts)
@@ -65,18 +74,16 @@ public class FeedsCommentUtils {
                 .setType(type)
                 .setIsAddSgc(includeShare)
                 .build();
-
-        MyLog.d(TAG, "fetchFeedsComment request : " + request.toString());
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_FEEDS_COMMENT_QUERY);
         data.setData(request.toByteArray());
 
+        MyLog.d(TAG, "fetchFeedsComment request : " + request.toString());
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
         if (rspData == null) {
             MyLog.w(TAG, "fetchFeedsComment failed, rspData is null");
             return null;
         }
-
         try {
             Feeds.QueryFeedCommentsResponse rsp = Feeds.QueryFeedCommentsResponse.parseFrom(rspData.getData());
             MyLog.d(TAG, "fetchFeedsComment rsp : " + rsp);
@@ -88,25 +95,32 @@ public class FeedsCommentUtils {
     }
 
     /**
-     * 创建一条评论
+     * 创建评论
+     *
+     * @param commentItem 评论信息
+     * @param feedId      feed ID
+     * @param ownerId     feed作者ID
+     * @param feedType    feed类型，0-默认、1-小视频
+     * @param commentType 评论类型，0-默认、1-分享被动评论
      */
     public static DetailCommentAdapter.CommentItem sendComment(
             DetailCommentAdapter.CommentItem commentItem,
-            long feedOwnerId,
             String feedId,
+            long ownerId,
             int feedType,
             int commentType) {
-        if (commentItem == null || TextUtils.isEmpty(commentItem.content)) {
+        if (commentItem == null || TextUtils.isEmpty(commentItem.content)
+                || TextUtils.isEmpty(feedId)) {
             return null;
         }
 
-        Feeds.CreateFeedCommnetRequest.Builder builder = Feeds.CreateFeedCommnetRequest.newBuilder();
-        builder.setFromUid(commentItem.fromUid);
-        builder.setFromNickname(commentItem.fromNickName);
-        builder.setContent(SmileyParser.getInstance()
-                .convertString(commentItem.content, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString());
-        builder.setFeedId(feedId);
-        builder.setFeedOwnerId(feedOwnerId);
+        Feeds.CreateFeedCommnetRequest.Builder builder = Feeds.CreateFeedCommnetRequest.newBuilder()
+                .setFromUid(commentItem.fromUid)
+                .setFromNickname(commentItem.fromNickName)
+                .setContent(SmileyParser.getInstance().convertString(
+                        commentItem.content, SmileyParser.TYPE_LOCAL_TO_GLOBAL).toString())
+                .setFeedId(feedId)
+                .setFeedOwnerId(ownerId);
         if (commentItem.toUid > 0) {
             builder.setToUid(commentItem.toUid);
         }
@@ -119,41 +133,43 @@ public class FeedsCommentUtils {
         if (commentType != 0) {
             builder.setCommentType(commentType);
         }
-
         Feeds.CreateFeedCommnetRequest req = builder.build();
-        MyLog.d(TAG, "sendComment request : \n" + req.toString());
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_FEEDS_COMMENT_CREATE);
         data.setData(req.toByteArray());
 
+        MyLog.d(TAG, "sendComment request : " + req.toString());
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
-        if (null == rspData) {
+        if (rspData == null) {
             MyLog.e(TAG, "sendComment failed, packetData is null");
             return null;
         }
-
-        MyLog.v(TAG, "sendComment rsp : " + rspData.toString());
         try {
             Feeds.CreateFeedCommnetResponse rsp = Feeds.CreateFeedCommnetResponse.parseFrom(rspData.getData());
-            MyLog.v(TAG, "sendComment rsp : " + rsp.toString());
+            MyLog.d(TAG, "sendComment rsp : " + rsp.toString());
             if (rsp != null && rsp.getErrCode() == ErrorCode.CODE_SUCCESS) {
                 commentItem.commentId = rsp.getCommnetId();
                 commentItem.createTime = rsp.getCreateTime();
                 return commentItem;
             }
         } catch (InvalidProtocolBufferException e) {
-            MyLog.e(TAG, e);
+            MyLog.e(TAG, "sendComment failed, exception=" + e);
         }
         return null;
     }
 
     /**
-     * 删除服务端　的一条　评论
+     * 删除评论
+     *
+     * @param commentItem 评论信息
+     * @param feedId      feed ID
+     * @param ownerId     feed作者ID
+     * @param feedType    feed类型，0-默认、1-小视频
      */
     public static boolean deleteComment(
             DetailCommentAdapter.CommentItem commentItem,
-            long feedOwnerId,
             String feedId,
+            long ownerId,
             int feedType) {
         if (commentItem == null || TextUtils.isEmpty(feedId)) {
             MyLog.w(TAG, "deleteComment commentItem or feedId is null");
@@ -164,16 +180,16 @@ public class FeedsCommentUtils {
                 .setFromUid((int) commentItem.fromUid)
                 .setCommnetId((int) commentItem.commentId)
                 .setFeedId(feedId)
-                .setOwnerId(feedOwnerId);
-        if (feedType == UGC_TYPE_SMALLVIDEO_WORKS) {
-            builder.setFeedType(FEED_TYPE_SMALL_VIDEO);
+                .setOwnerId(ownerId);
+        if (feedType != FEED_TYPE_DEFAULT) {
+            builder.setFeedType(feedType);
         }
         Feeds.DeleteFeedCommnetRequest request = builder.build();
-        MyLog.d(TAG, "deleteComment request : " + request.toString());
         PacketData data = new PacketData();
         data.setCommand(MiLinkCommand.COMMAND_FEEDS_COMMENT_DELETE);
         data.setData(request.toByteArray());
 
+        MyLog.d(TAG, "deleteComment request : " + request.toString());
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
         if (null == rspData) {
             MyLog.e(TAG, "deleteComment failed, packetData is null");
@@ -181,15 +197,10 @@ public class FeedsCommentUtils {
         }
         try {
             Feeds.DeleteFeedCommnetResponse rsp = Feeds.DeleteFeedCommnetResponse.parseFrom(rspData.getData());
-            if (rsp == null) {
-                MyLog.v(TAG, "deleteComment rsp == null");
-                return false;
-            } else {
-                MyLog.v(TAG, "deleteComment rsp : " + rsp.toString());
-                return rsp.getErrCode() == 0;
-            }
+            MyLog.d(TAG, "deleteComment rsp : " + rsp);
+            return rsp != null && rsp.getErrCode() == ErrorCode.CODE_SUCCESS;
         } catch (InvalidProtocolBufferException e) {
-            MyLog.e(TAG, e);
+            MyLog.e(TAG, "deleteComment failed, exception=" + e);
         }
         return false;
     }

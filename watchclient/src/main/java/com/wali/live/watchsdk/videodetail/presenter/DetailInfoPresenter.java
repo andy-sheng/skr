@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
-import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.event.BlockOrUnblockEvent;
@@ -117,13 +116,13 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
     @Override
     public void syncFeedsInfo() {
         MyLog.d(TAG, "syncFeedsInfo");
+        final String feedId = mMyRoomData.getRoomId();
+        final long ownerId = mMyRoomData.getUid();
         Observable.just(0)
                 .map(new Func1<Integer, Feeds.GetFeedInfoResponse>() {
                     @Override
                     public Feeds.GetFeedInfoResponse call(Integer integer) {
-                        return FeedsInfoUtils.fetchFeedsInfo(
-                                MyUserInfoManager.getInstance().getUuid(), mMyRoomData.getRoomId(),
-                                false, mMyRoomData.getUid());
+                        return FeedsInfoUtils.fetchFeedsInfo(feedId, ownerId, false);
                     }
                 })
                 .subscribeOn(Schedulers.io())
