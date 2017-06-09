@@ -65,7 +65,9 @@ public enum PreDnsManager {
 
     INSTANCE;
 
-    /** 推流地址获取方式 */
+    /**
+     * 推流地址获取方式
+     */
     public static final int URL_STATUS_DNS = 1; // 域名解析 (LocalIp)
 
     public static final int URL_STATUS_DNS_POD = 2; // DNSPod解析 (HttpIp)
@@ -274,7 +276,8 @@ public enum PreDnsManager {
     }
 
     // Local-Dns解析，拉取到IP列表之后执行跑马再返回
-    public static @NonNull List<String> getLocalDnsIpSet(String host) {
+    @NonNull
+    public static List<String> getLocalDnsIpSet(String host) {
         MyLog.w(TAG, "getLocalDnsIpSet domain=" + host);
         List<String> ipList = new ArrayList<>();
         try {
@@ -295,7 +298,8 @@ public enum PreDnsManager {
     }
 
     // Http-Dns解析，拉取到IP列表之后执行跑马再返回
-    public static @NonNull List<String> getHttpDnsIpSet(String host) {
+    @NonNull
+    public static List<String> getHttpDnsIpSet(String host) {
         MyLog.w(TAG, "getHttpDnsIpSet domain=" + host);
         List<String> ipList = new ArrayList<>();
         try {

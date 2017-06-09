@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
 import com.base.log.MyLog;
 import com.mi.live.data.repository.GiftRepository;
+import com.wali.live.dns.PreDnsManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.network.ImageUrlDNSManager;
 
@@ -33,6 +36,15 @@ public class NetworkReceiver extends BroadcastReceiver {
     private static long mLastClearTimestamp;
     private static NetState mLastNetState;
 
+    public static String getNetworkID(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager == null ? null : wifiManager.getConnectionInfo();
+        if (wifiInfo != null) {
+            return String.valueOf(wifiInfo.getBSSID());
+        }
+        return null;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         MyLog.w("NetworkReceiver", "network changed, NetworkReceiver");
@@ -48,8 +60,13 @@ public class NetworkReceiver extends BroadcastReceiver {
                 }
             }
             MyLog.w(TAG, netState + "");
-            EventBus.getDefault().post(new EventClass.NetWorkChangeEvent(netState));
-            GiftRepository.onChangeNetState();
+            String networkId = netState == NetState.NET_WIFI ? getNetworkID(context) : null;
+            EventClass.NetWorkChangeEvent event = new EventClass.NetWorkChangeEvent(netState, networkId);
+            if (netState != NetState.NET_NO) {
+                PreDnsManager.INSTANCE.onNetworkConnected(event.getNetworkId());
+                GiftRepository.onChangeNetState();
+            }
+            EventBus.getDefault().post(event);
         }
         mLastNetState = netState;
     }
