@@ -49,15 +49,6 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_ENABLE_MOVE_VIEW = MSG_TOUCH_FIRST;     // 开启滑动
     public static final int MSG_DISABLE_MOVE_VIEW = MSG_TOUCH_FIRST + 1; // 禁止滑动
     public static final int MSG_BACKGROUND_CLICK = MSG_TOUCH_FIRST + 2; // 背景点击
-    // 播放器相关消息
-    private static final int MSG_PLAYER_FIRST = 22000;
-    public static final int MSG_PLAYER_PLAYING = MSG_PLAYER_FIRST + 1;
-    public static final int MSG_PLAYER_RESUME = MSG_PLAYER_FIRST + 2;
-    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 3;
-    public static final int MSG_PLAYER_STOP = MSG_PLAYER_FIRST + 4;
-    public static final int MSG_PLAYER_SEEK = MSG_PLAYER_FIRST + 5;
-    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST + 6;
-    public static final int MSG_PLAYER_BACKPRESS = MSG_PLAYER_FIRST + 7;
     // 输入框相关消息
     private static final int MSG_INPUT_FIRST = 30000;
     public static final int MSG_SHOW_INPUT_VIEW = MSG_INPUT_FIRST;     // 请求弹起 输入框
@@ -89,6 +80,19 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_SHOW_COMMENT_INPUT = MSG_DETAIL_VIDEO_FIRST + 3;  // 回复 评论
     public static final int MSG_SEND_COMMENT = MSG_DETAIL_VIDEO_FIRST + 4;  // 发送 评论
     public static final int MSG_FOLD_INFO_AREA = MSG_DETAIL_VIDEO_FIRST + 5;  // 收起 信息区
+    public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 6;  // 点击回放每一条
+
+    // 播放器相关消息
+    private static final int MSG_PLAYER_FIRST = 41000;
+    public static final int MSG_PLAYER_PLAYING = MSG_PLAYER_FIRST + 1;
+    public static final int MSG_PLAYER_RESUME = MSG_PLAYER_FIRST + 2;
+    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 3;
+    public static final int MSG_PLAYER_STOP = MSG_PLAYER_FIRST + 4;
+    public static final int MSG_PLAYER_SEEK = MSG_PLAYER_FIRST + 5;
+    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST + 6;
+    public static final int MSG_PLAYER_BACKPRESS = MSG_PLAYER_FIRST + 7;
+    public static final int MSG_PLAYER_SHOW_BTN = MSG_PLAYER_FIRST + 8;
+    public static final int MSG_PLAYER_HIDE_BTN = MSG_PLAYER_FIRST + 9;
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI

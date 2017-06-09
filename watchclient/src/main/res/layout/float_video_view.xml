@@ -17,15 +17,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:real_time="false"/>
-
-        <com.wali.live.video.widget.player.ReplaySeekBar
-            android:id="@+id/detail_seek_bar"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            app:detail_replay="true"/>
     </RelativeLayout>
+
+    <com.wali.live.video.widget.player.ReplaySeekBar
+        android:id="@+id/detail_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        app:detail_replay="true"/>
+
+    <!--播放区域流回來之前占位图-->
+    <com.base.image.fresco.BaseImageView
+        android:id="@+id/cover_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <ImageView
         android:id="@+id/back_iv"
@@ -34,12 +40,6 @@
         android:layout_marginTop="@dimen/margin_40"
         android:paddingLeft="@dimen/margin_30"
         android:src="@drawable/topbar_icon_all_back_white_bg"/>
-
-    <!--播放区域流回來之前占位图-->
-    <com.base.image.fresco.BaseImageView
-        android:id="@+id/cover_iv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
     <!-- 播放按钮-->
     <ImageButton
@@ -51,11 +51,11 @@
         android:src="@drawable/video_detail_play_btn"
         android:visibility="gone"/>
 
-    <ImageView
+    <ProgressBar
         android:id="@+id/loading_iv"
+        style="@android:style/Widget.ProgressBar.Inverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/feeds_loading_quan"
         android:visibility="gone"/>
 </RelativeLayout>

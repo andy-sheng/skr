@@ -36,6 +36,7 @@ import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.ComponentController.MSG_COMMENT_TOTAL_CNT;
 import static com.wali.live.component.ComponentController.MSG_FOLD_INFO_AREA;
+import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.ComponentController.MSG_SEND_COMMENT;
 import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
 import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
@@ -70,6 +71,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         super(componentController);
         mMyRoomData = roomData;
         registerAction(MSG_SEND_COMMENT);
+        registerAction(MSG_NEW_DETAIL_REPLAY);
     }
 
     @Override
@@ -376,6 +378,9 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 case MSG_SEND_COMMENT:
                     sendComment((String) params.getItem(0), (DetailCommentAdapter.CommentItem)
                             params.getItem(1));
+                    break;
+                case MSG_NEW_DETAIL_REPLAY:
+                    pullNewerComments();
                     break;
                 default:
                     break;

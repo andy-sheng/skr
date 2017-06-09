@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.base.image.fresco.BaseImageView;
@@ -36,7 +37,7 @@ public class VideoDetailPlayerView extends RelativeLayout
 
     private VideoPlayerTextureView mVideoPlayerView;
     private ReplaySeekBar mDetailSeekBar;
-    private ImageView mLoadingIv;
+    private ProgressBar mLoadingProgressBar;
     private ImageButton mPlayBtn;
     private BaseImageView mCoverIv;
     private ImageView mBackIv;
@@ -81,7 +82,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.float_video_view, this);
         {
-            mLoadingIv = $(R.id.loading_iv);
+            mLoadingProgressBar = $(R.id.loading_iv);
             mDetailSeekBar = $(R.id.detail_seek_bar);
             mCoverIv = $(R.id.cover_iv);
             mPlayBtn = $(R.id.play_button);
@@ -99,13 +100,30 @@ public class VideoDetailPlayerView extends RelativeLayout
         }
     }
 
+    private void showLoadingView() {
+        mLoadingProgressBar.setVisibility(VISIBLE);
+    }
+
+    private void hideLoadingView() {
+        mLoadingProgressBar.setVisibility(GONE);
+    }
+
+    private void resetPlayer() {
+        MyLog.w(TAG, "resetPlayer");
+        if (mVideoPlayerPresenterEx != null) {
+            mVideoPlayerPresenterEx.reset();
+        }
+    }
+
     private void startPlayer() {
         MyLog.w(TAG, "startPlayer");
+        mCoverIv.setVisibility(VISIBLE);
+        showLoadingView();
         if (mVideoPlayerPresenterEx != null) {
-            if (!mVideoPlayerPresenterEx.isActivate()) {
-                mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());
-                mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
-            }
+//            if (!mVideoPlayerPresenterEx.isActivate()) {
+            mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());
+            mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
+//            }
         }
     }
 
@@ -149,6 +167,7 @@ public class VideoDetailPlayerView extends RelativeLayout
 
     private void onPlayingState() {
         MyLog.w(TAG, "onPlayingState");
+        hideLoadingView();
         if (mCoverIv.getVisibility() == VISIBLE) {
             mCoverIv.setVisibility(GONE);
         }
@@ -225,6 +244,11 @@ public class VideoDetailPlayerView extends RelativeLayout
             public void onSeekPlayer(long playedTime) {
                 VideoDetailPlayerView.this.seekVideoPlayer(playedTime);
             }
+
+            @Override
+            public void onResetPlayer() {
+                VideoDetailPlayerView.this.resetPlayer();
+            }
         }
         return new ComponentView();
     }
@@ -263,5 +287,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         long onGetPlayingTime();
 
         void onSeekPlayer(long playedTime);
+
+        void onResetPlayer();
     }
 }

@@ -344,6 +344,10 @@ public class VideoPlayerPresenterEx implements
         mIsActivate = false;
     }
 
+    public void reset(){
+        mVideoPlayerPresenter.reset();
+    }
+
     private void hideLoading() {
 
     }

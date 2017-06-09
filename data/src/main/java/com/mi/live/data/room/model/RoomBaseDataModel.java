@@ -343,11 +343,12 @@ public class RoomBaseDataModel implements Serializable {
                 if (newUser.getAvatar() <= 0 && mOwner.getAvatar() > 0) {
                     newUser.setAvatar(mOwner.getAvatar());
                 }
-
                 if (newUser.getFansNum() <= 0) {
                     newUser.setFansNum(mOwner.getFansNum());
                 }
-
+                if (TextUtils.isEmpty(newUser.getViewUrl())) {
+                    newUser.setViewUrl(mOwner.getViewUrl());
+                }
             }
             this.mOwner = newUser;
             // 通知票改变 通知头像改变 通知用户数改变 显示关注按钮

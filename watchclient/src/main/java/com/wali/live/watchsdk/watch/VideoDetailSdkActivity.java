@@ -120,10 +120,10 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
         }
         switch (event.mType) {
             case EventClass.FeedsVideoEvent.TYPE_START:
-                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_RESUME);
+                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_HIDE_BTN);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_STOP:
-                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PAUSE);
+                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_SHOW_BTN);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_COMPLETION:
                 break;

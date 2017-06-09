@@ -1,13 +1,11 @@
 package com.wali.live.watchsdk.videodetail.view;
 
-import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
@@ -15,6 +13,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
+import com.wali.live.watchsdk.videodetail.presenter.DetailReplayPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
 import com.wali.live.watchsdk.videodetail.presenter.DetailCommentPresenter;
@@ -64,7 +63,6 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         mViewPager = $(R.id.detail_pager);
 
         mMessageAdapter = new CommonTabPagerAdapter();
-
         {
             DetailCommentView view = new DetailCommentView(mRootView.getContext());
             DetailCommentPresenter presenter = new DetailCommentPresenter(componentController, roomData);
@@ -73,15 +71,13 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             mMessageAdapter.addView(String.format(mRootView.getResources().getString(
                     R.string.feeds_detail_label_comment), "0"), view);
         }
-
         {
-            RelativeLayout view = new RelativeLayout(mRootView.getContext());
-            view.setBackgroundColor(Color.GREEN);
-            view.setLayoutParams(new ViewPager.LayoutParams());
-            mMessageAdapter.addView(mRootView.getResources().getString(
-                    R.string.feeds_detail_label_replay), view);
+            DetailReplayView view = new DetailReplayView(mRootView.getContext());
+            DetailReplayPresenter presenter = new DetailReplayPresenter(componentController, roomData);
+            presenter.setComponentView(view.getViewProxy());
+            view.setPresenter(presenter);
+            mMessageAdapter.addView(mRootView.getResources().getString(R.string.feeds_detail_label_replay), view);
         }
-
         mSlidingTabLayout.setCustomTabView(R.layout.feeds_detail_slide_tab_view, R.id.tab_tv);
         mSlidingTabLayout.setCustomTabColorizer(
                 new SlidingTabLayout.TabColorizer() {

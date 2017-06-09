@@ -35,6 +35,9 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
         registerAction(VideoDetailController.MSG_PLAYER_FULL_SCREEN);
         registerAction(VideoDetailController.MSG_PLAYER_SEEK);
         registerAction(VideoDetailController.MSG_PLAYER_PLAYING);
+        registerAction(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
+        registerAction(VideoDetailController.MSG_PLAYER_SHOW_BTN);
+        registerAction(VideoDetailController.MSG_PLAYER_HIDE_BTN);
     }
 
     @Nullable
@@ -58,6 +61,10 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                 return false;
             }
             switch (source) {
+                case VideoDetailController.MSG_NEW_DETAIL_REPLAY:
+                    mView.onResetPlayer();
+                    mView.onStartPlayer();
+                    break;
                 case VideoDetailController.MSG_PLAYER_PLAYING:
                     mView.onPlaying();
                     break;
@@ -65,10 +72,10 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                     mView.onSeekPlayer((long) params.getItem(0));
                     break;
                 case VideoDetailController.MSG_PLAYER_RESUME:
-                    mView.showPlayBtn(false);
+                    mView.onResumePlayer();
                     break;
                 case VideoDetailController.MSG_PLAYER_PAUSE:
-                    mView.showPlayBtn(true);
+                    mView.onPausePlayer();
                     break;
                 case VideoDetailController.MSG_PLAYER_STOP:
                     mView.onStopPlayer();
@@ -83,6 +90,11 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                     ReplaySdkActivity.openActivity(mActivity, roomInfo);
                     mView.onClickFullScreen();
                     break;
+                case VideoDetailController.MSG_PLAYER_SHOW_BTN:
+                    mView.showPlayBtn(true);
+                    break;
+                case VideoDetailController.MSG_PLAYER_HIDE_BTN:
+                    mView.showPlayBtn(false);
                 default:
                     break;
             }

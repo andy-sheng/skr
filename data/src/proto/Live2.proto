@@ -108,3 +108,17 @@ message TitleInfo {
     optional uint32 source          = 1;
     repeated string title_list      = 2;
 }
+
+//历史直播
+//zhibo.live.history
+message HistoryLiveReq {
+    required uint64 uuid = 1; //操作人id
+    required uint64 zuid = 2; //查看历史的直播人id
+}
+
+message HistoryLiveRsp {
+    required uint32 retCode = 1; //0:表示成功
+    repeated HisLive hisLive = 2; //回放详情
+    optional uint32 type = 3; //类型，0公开，1私密, 2口令, 3门票
+    optional TicketLiveStatus ticketStatus = 4; //用户观看门票直播状态信息
+}

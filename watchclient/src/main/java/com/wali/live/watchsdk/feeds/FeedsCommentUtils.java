@@ -14,6 +14,7 @@ import com.mi.live.data.milink.constant.MiLinkConstant;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.proto.Feeds;
+import com.wali.live.proto.Live2Proto;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
 import static com.wali.live.watchsdk.feeds.FeedsLikeUtils.FEED_TYPE_SMALL_VIDEO;
@@ -178,7 +179,6 @@ public class FeedsCommentUtils {
             MyLog.e(TAG, "deleteComment failed, packetData is null");
             return false;
         }
-
         try {
             Feeds.DeleteFeedCommnetResponse rsp = Feeds.DeleteFeedCommnetResponse.parseFrom(rspData.getData());
             if (rsp == null) {
@@ -191,7 +191,32 @@ public class FeedsCommentUtils {
         } catch (InvalidProtocolBufferException e) {
             MyLog.e(TAG, e);
         }
-
         return false;
+    }
+
+    /**
+     * 查询回放列表
+     */
+    public static Live2Proto.HistoryLiveRsp getHistoryShowList(long uuid, long zuid) {
+        Live2Proto.HistoryLiveReq request = Live2Proto.HistoryLiveReq.newBuilder().setUuid(uuid).setZuid(zuid).build();
+        PacketData packetData = new PacketData();
+        packetData.setCommand(MiLinkCommand.COMMAND_LIST_HISTORY);
+        packetData.setData(request.toByteArray());
+        MyLog.w(TAG, "getHistoryShowList request : \n" + request.toString());
+        PacketData responseData = MiLinkClientAdapter.getsInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+        if (responseData == null) {
+            MyLog.w(TAG, "getHistoryShowList failed, packet data is null");
+            return null;
+        }
+        try {
+            Live2Proto.HistoryLiveRsp response = Live2Proto.HistoryLiveRsp.parseFrom(responseData.getData());
+            MyLog.v(TAG, "getHistoryShowList responseCode: \n" + response.getRetCode());
+            if (response != null && response.getRetCode() == 0) {
+                return response;
+            }
+        } catch (InvalidProtocolBufferException e) {
+            MyLog.e(e);
+        }
+        return null;
     }
 }

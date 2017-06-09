@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -100,6 +101,9 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                     public void call(User user) {
                         if (mView != null) {
                             mView.onUserInfo(user);
+                        }
+                        if (TextUtils.isEmpty(mMyRoomData.getNickName()) && user != null) {
+                            mMyRoomData.setNickname(user.getNickname());
                         }
                     }
                 }, new Action1<Throwable>() {
