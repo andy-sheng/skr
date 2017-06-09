@@ -1,7 +1,10 @@
 package com.wali.live.watchsdk.feeds;
 
+import android.content.Context;
+import android.text.ClipboardManager;
 import android.text.TextUtils;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.api.ErrorCode;
@@ -12,6 +15,9 @@ import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.common.smiley.SmileyParser;
 import com.wali.live.proto.Feeds;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
+
+import static com.wali.live.watchsdk.feeds.FeedsLikeUtils.FEED_TYPE_SMALL_VIDEO;
+import static com.wali.live.watchsdk.feeds.FeedsLikeUtils.UGC_TYPE_SMALLVIDEO_WORKS;
 
 /**
  * Created by yangli on 2017/6/2.
@@ -24,6 +30,18 @@ public class FeedsCommentUtils {
     public final static int FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD = 0;     //代表老客户端拉取模式：热门和非热门评论混在一起，热门排在非热门的前面
     public final static int FEEDS_COMMENT_PULL_TYPE_HOT = 1;        //热门评论
     public final static int FEEDS_COMMENT_PULL_TYPE_ALL_EXCLUSIVE_HOT = 2;    //全部评论, type0除去type1
+
+    public static void copyToClipboard(CharSequence str, boolean addSpan) {
+        if (!TextUtils.isEmpty(str)) {
+            final ClipboardManager clip = (ClipboardManager) GlobalData.app()
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            if (addSpan) {
+                str = SmileyParser.getInstance().addSmileySpans(
+                        GlobalData.app(), str, 0);
+            }
+            clip.setText(str);
+        }
+    }
 
     /**
      * 拉取一条feeds的评论
@@ -110,7 +128,7 @@ public class FeedsCommentUtils {
 
         PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
         if (null == rspData) {
-            MyLog.d(TAG, "sendComment failed, packetData is null");
+            MyLog.e(TAG, "sendComment failed, packetData is null");
             return null;
         }
 
@@ -127,5 +145,54 @@ public class FeedsCommentUtils {
             MyLog.e(TAG, e);
         }
         return null;
+    }
+
+    /**
+     * 删除服务端　的一条　评论
+     */
+    public static boolean deleteComment(
+            DetailCommentAdapter.CommentItem commentItem,
+            long feedOwnerId,
+            String feedId,
+            int feedType) {
+        if (commentItem == null || TextUtils.isEmpty(feedId)) {
+            MyLog.w(TAG, "deleteComment commentItem or feedId is null");
+            return false;
+        }
+
+        Feeds.DeleteFeedCommnetRequest.Builder builder = Feeds.DeleteFeedCommnetRequest.newBuilder()
+                .setFromUid((int) commentItem.fromUid)
+                .setCommnetId((int) commentItem.commentId)
+                .setFeedId(feedId)
+                .setOwnerId(feedOwnerId);
+        if (feedType == UGC_TYPE_SMALLVIDEO_WORKS) {
+            builder.setFeedType(FEED_TYPE_SMALL_VIDEO);
+        }
+        Feeds.DeleteFeedCommnetRequest request = builder.build();
+        MyLog.d(TAG, "deleteComment request : " + request.toString());
+        PacketData data = new PacketData();
+        data.setCommand(MiLinkCommand.COMMAND_FEEDS_COMMENT_DELETE);
+        data.setData(request.toByteArray());
+
+        PacketData rspData = MiLinkClientAdapter.getsInstance().sendSync(data, MiLinkConstant.TIME_OUT);
+        if (null == rspData) {
+            MyLog.e(TAG, "deleteComment failed, packetData is null");
+            return false;
+        }
+
+        try {
+            Feeds.DeleteFeedCommnetResponse rsp = Feeds.DeleteFeedCommnetResponse.parseFrom(rspData.getData());
+            if (rsp == null) {
+                MyLog.v(TAG, "deleteComment rsp == null");
+                return false;
+            } else {
+                MyLog.v(TAG, "deleteComment rsp : " + rsp.toString());
+                return rsp.getErrCode() == 0;
+            }
+        } catch (InvalidProtocolBufferException e) {
+            MyLog.e(TAG, e);
+        }
+
+        return false;
     }
 }

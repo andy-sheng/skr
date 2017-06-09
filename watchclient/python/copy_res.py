@@ -19,11 +19,12 @@ while i < count:
         print 'usage:'
         print '-s [string source] [string source] ... (note: if use -S, a new empty line will be inserted before each item)'
         print '-p [plurals source] [plurals source] ... (note: if use -P, a new empty line will be inserted before each item)'
+        print '-a [string-array source] [string-array source] ... (note: if use -A, a new empty line will be inserted before each item)'
         print '-i [drawable source] [drawable source] ...(note: if use -I, items in xml drawable will be checked recursively)'
         print '-D [dimen source] [dimen source] ...'
         print '-L [layout source] [layout source] ...'
     elif command.lower() == "-s":
-        copier = CopyStringRes(command == "-S", "string")
+        copier = CopyValueRes(command == "-S", "strings", "string")
         resList = []
         while i < count:
             item = sys.argv[i]
@@ -34,7 +35,18 @@ while i < count:
         print ""
         copier.doCopy(resList)
     elif command.lower() == "-p":
-        copier = CopyStringRes(command == "-P", "plurals")
+        copier = CopyValueRes(command == "-P", "strings", "plurals")
+        resList = []
+        while i < count:
+            item = sys.argv[i]
+            if item[0] == "-":
+                break
+            resList.append(item)
+            i += 1
+        print ""
+        copier.doCopy(resList)
+    elif command.lower() == "-a":
+        copier = CopyValueRes(command == "-A", "arrays", "string-array")
         resList = []
         while i < count:
             item = sys.argv[i]

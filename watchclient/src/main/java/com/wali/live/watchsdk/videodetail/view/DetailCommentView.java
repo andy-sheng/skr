@@ -57,6 +57,7 @@ public class DetailCommentView extends RelativeLayout
 
                 @Override
                 public void onItemLongClick(DetailCommentAdapter.CommentItem item) {
+                    mPresenter.showCommentPopup(getContext(), item);
                 }
             };
 
@@ -133,7 +134,7 @@ public class DetailCommentView extends RelativeLayout
             }
 
             @Override
-            public void onPullCommentDone(
+            public void onUpdateCommentList(
                     Collection<DetailCommentAdapter.CommentItem> hotList,
                     Collection<DetailCommentAdapter.CommentItem> allList,
                     boolean isReverse) {
@@ -195,19 +196,24 @@ public class DetailCommentView extends RelativeLayout
         /**
          * 发送评论
          */
-        void sendComment(String feedsId, DetailCommentAdapter.CommentItem commentItem);
+        void sendComment(String feedId, DetailCommentAdapter.CommentItem commentItem);
 
         /**
          * 收起信息区
          */
         void foldInfoArea();
+
+        /**
+         * 弹起评论删除/举报
+         */
+        void showCommentPopup(Context context, DetailCommentAdapter.CommentItem commentItem);
     }
 
     public interface IView extends IViewProxy {
         /**
          * 拉取评论成功
          */
-        void onPullCommentDone(
+        void onUpdateCommentList(
                 Collection<DetailCommentAdapter.CommentItem> hotList,
                 Collection<DetailCommentAdapter.CommentItem> allList,
                 boolean isReverse);

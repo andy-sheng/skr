@@ -4,4 +4,14 @@
         <item>總榜</item>
         <item>本場</item>
     </string-array>
+    <string-array name="feeds_long_click_my_comment">
+        <item>複製</item>
+        <item>刪除</item>
+        <item>取消</item>
+    </string-array>
+    <string-array name="feeds_long_click_onther_comment">
+        <item>檢舉</item>
+        <item>複製</item>
+        <item>取消</item>
+    </string-array>
 </resources>

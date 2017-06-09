@@ -87,4 +87,7 @@
     <string name="feeds_hot_all" formatted="false">全部评论</string>
     <string name="feeds_comment_no_more">没有更多评论</string>
     <string name="commend_failed">评论发送失败</string>
+    <string name="sixin_message_item_content_menu_copy_success">复制成功</string>
+    <string name="feeds_comment_delete_dialog_title">确认删除该评论</string>
+    <string name="feeds_comment_delete_failed">评论删除失败</string>
 </resources>

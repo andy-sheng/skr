@@ -1,9 +1,13 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.SparseArray;
 
+import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
@@ -53,7 +57,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
 
     private Subscription mPullSubscription;
     private int mTotalCnt = 0;
-    private boolean mIsReverse = false;
+    private volatile boolean mIsReverse = false;
 
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
     private final PullCommentHelper mNewerPuller = new PullCommentHelper(true);
@@ -80,7 +84,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 mTotalCnt = helper.mTotalCnt;
                 mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
             }
-            mView.onPullCommentDone(helper.mHotList, helper.mAllList, !helper.mIsAsc);
+            mView.onUpdateCommentList(helper.mHotList, helper.mAllList, !helper.mIsAsc);
             if (!helper.mHasMore && helper.mCanShowNoMore) {
                 helper.mCanShowNoMore = false;
                 ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_no_more);
@@ -177,9 +181,9 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
     }
 
     @Override
-    public void sendComment(final String feedsId, final DetailCommentAdapter.CommentItem commentItem) {
-        if (TextUtils.isEmpty(mMyRoomData.getRoomId()) || TextUtils.isEmpty(feedsId) ||
-                !mMyRoomData.getRoomId().equals(feedsId)) {
+    public void sendComment(final String feedId, final DetailCommentAdapter.CommentItem commentItem) {
+        if (TextUtils.isEmpty(mMyRoomData.getRoomId()) || TextUtils.isEmpty(feedId) ||
+                !mMyRoomData.getRoomId().equals(feedId)) {
             return;
         }
         final long ownerId = mMyRoomData.getUid();
@@ -188,7 +192,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                     @Override
                     public DetailCommentAdapter.CommentItem call(Integer integer) {
                         DetailCommentAdapter.CommentItem result = FeedsCommentUtils.sendComment(
-                                commentItem, ownerId, feedsId, 0, 0);
+                                commentItem, ownerId, feedId, 0, 0);
                         mOlderPuller.addSendItem(result);
                         return result;
                     }
@@ -227,9 +231,122 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 });
     }
 
+    public void deleteComment(final DetailCommentAdapter.CommentItem commentItem) {
+        if (TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+            return;
+        }
+        final long ownerId = mMyRoomData.getUid();
+        final String feedId = mMyRoomData.getRoomId();
+        Observable.just(0)
+                .map(new Func1<Integer, PullCommentHelper>() {
+                    @Override
+                    public PullCommentHelper call(Integer integer) {
+                        boolean result = FeedsCommentUtils.deleteComment(
+                                commentItem, ownerId, feedId, 0);
+                        if (result) {
+                            PullCommentHelper helper = mIsReverse ? mOlderPuller : mNewerPuller;
+                            helper.removeItem(commentItem);
+                            return helper;
+                        }
+                        return null;
+                    }
+                })
+                .retryWhen(new RxRetryAssist()) // 增加一次重试
+                .subscribeOn(Schedulers.from(mExecutor))
+                .compose(this.<PullCommentHelper>bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<PullCommentHelper>() {
+                    @Override
+                    public void call(PullCommentHelper helper) {
+                        if (mView == null) {
+                            return;
+                        }
+                        if (helper == null) {
+                            ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_delete_failed);
+                            return;
+                        }
+                        --mTotalCnt;
+                        mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+                        mView.onUpdateCommentList(helper.mHotList, helper.mAllList, !helper.mIsAsc);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        MyLog.e(TAG, "sendComment failed, exception=" + throwable);
+                        ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_delete_failed);
+                    }
+                });
+    }
+
     @Override
     public void foldInfoArea() {
         mComponentController.onEvent(MSG_FOLD_INFO_AREA);
+    }
+
+    @Override
+    public void showCommentPopup(final Context context, final DetailCommentAdapter.CommentItem commentItem) {
+        if (commentItem == null) {
+            MyLog.w(TAG, "onLongClickComment commentItem is null");
+            return;
+        }
+
+        final int MENU_COPY = 0, MENU_DELETE = 1, MENU_CANCEL = 2;
+
+        String[] items = context.getResources().getStringArray(R.array.feeds_long_click_onther_comment);
+        final SparseArray<Integer> itemsMap = new SparseArray<>();
+        if (commentItem.fromUid == MyUserInfoManager.getInstance().getUuid() ||
+                mMyRoomData.getUid() == MyUserInfoManager.getInstance().getUuid()) { // 评论作者和Feeds作者 可以删除评论
+            items = context.getResources().getStringArray(R.array.feeds_long_click_my_comment);
+            itemsMap.put(0, MENU_COPY);
+            itemsMap.put(1, MENU_DELETE);
+            itemsMap.put(2, MENU_CANCEL);
+        } else {
+            itemsMap.put(1, MENU_COPY);
+            itemsMap.put(2, MENU_CANCEL);
+        }
+        MyAlertDialog.Builder builder = new MyAlertDialog.Builder(context);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int item = itemsMap.get(which);
+
+                switch (item) {
+                    case MENU_COPY: // 复制
+                        FeedsCommentUtils.copyToClipboard(commentItem.content, true);
+                        ToastUtils.showToast(context, R.string.sixin_message_item_content_menu_copy_success);
+                        break;
+                    case MENU_DELETE: // 刪除
+                        showDeleteConfirmDialog(context, commentItem);
+                        break;
+                    case MENU_CANCEL: // 取消
+                    default:
+                        break;
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    private void showDeleteConfirmDialog(final Context context, final DetailCommentAdapter.CommentItem commentItem) {
+        final MyAlertDialog.Builder builder = new MyAlertDialog.Builder(context);
+        builder.setMessage(R.string.feeds_comment_delete_dialog_title);
+
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() { // 确认删除
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                deleteComment(commentItem);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() { // 取消
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        MyAlertDialog dialog = builder.setAutoDismiss(false).setCancelable(true).create();
+        dialog.show();
     }
 
     @Nullable
@@ -278,6 +395,11 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 }
                 mAllList.addFirst(commentItem);
             }
+        }
+
+        private void removeItem(DetailCommentAdapter.CommentItem commentItem) {
+            mHotList.remove(commentItem);
+            mAllList.remove(commentItem);
         }
 
         private PullCommentHelper pullMore(final int limit) {

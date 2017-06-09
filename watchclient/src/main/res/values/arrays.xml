@@ -4,4 +4,14 @@
         <item>Overall</item>
         <item>This session</item>
     </string-array>
+    <string-array name="feeds_long_click_my_comment">
+        <item>Copy</item>
+        <item>Delete</item>
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="feeds_long_click_onther_comment">
+        <item>Report</item>
+        <item>Copy</item>
+        <item>Cancel</item>
+    </string-array>
 </resources>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#coding: UTF-8
+# coding: UTF-8
 
 import os
 import shutil
@@ -14,13 +14,14 @@ dst_res_path = "../src/main/res"
 
 if not os.path.exists(org_res_path):
     print "error: org res path not found, please modify org_res_path in " \
-            + os.path.basename(__file__)
+          + os.path.basename(__file__)
     exit()
 
 if not os.path.exists(dst_res_path):
     print "error: dst res path not found, please modify dst_res_path in " \
           + os.path.basename(__file__)
     exit()
+
 
 # 图片资源拷贝
 class CopyDrawableRes:
@@ -116,13 +117,17 @@ class CopyDrawableRes:
 
         pass
 
-# 字符串资源拷贝
-class CopyStringRes:
-    addExtraLine = False # 是否字符串前增加空行
-    subType = "string" # 字符串类别，默认为string
 
-    def __init__(self, addExtraLine, subType):
+# 字符串资源拷贝
+class CopyValueRes:
+    addExtraLine = False  # 是否字符串前增加空行
+    subPath = 'strings'  # 资源路径，默认为strings
+    subType = 'string'  # 资源类别，默认为string
+
+    def __init__(self, addExtraLine, subPath, subType):
         self.addExtraLine = addExtraLine
+        if subPath and subPath.strip():
+            self.subPath = subPath
         if subType and subType.strip():
             self.subType = subType
         pass
@@ -131,15 +136,15 @@ class CopyStringRes:
         pass
 
     def doCopy(self, itemList):
-        print "\ncopy string resource of " + self.subType + " for: " + "".join(itemList)
+        print "\ncopy value resource in " + self.subPath + " of " + self.subType + " for: " + "".join(itemList)
         if not itemList or len(itemList) == 0:
             return
         print "copy default"
-        self.__doCopy("/values/strings.xml", itemList)
+        self.__doCopy('/values/' + self.subPath + '.xml', itemList)
         print "copy zh-rCN"
-        self.__doCopy("/values-zh-rCN/strings.xml", itemList)
+        self.__doCopy('/values-zh-rCN/' + self.subPath + '.xml', itemList)
         print "copy zh-rTW"
-        self.__doCopy("/values-zh-rTW/strings.xml", itemList)
+        self.__doCopy('/values-zh-rTW/' + self.subPath + '.xml', itemList)
         pass
 
     def __doCopy(self, resPath, resList):
@@ -163,7 +168,7 @@ class CopyStringRes:
         out = open(dstFile, "w")
 
         # 定位在文件末尾的写入位置
-        dstPos = dstData.rfind("</resources>")
+        dstPos = dstData.rfind('</resources>')
         if dstPos == -1:
             print "warning: cannot find </resources>"
             return
@@ -183,7 +188,7 @@ class CopyStringRes:
                 continue
             end = srcData.find(tailor, start)
             content = '    ' + srcData[start:(end + len(tailor))] + '\n'
-            if self.addExtraLine: # 增加空行
+            if self.addExtraLine:  # 增加空行
                 content = '\n' + content
                 pass
             # print 'content: "' + content + '"\nwrite before: "' + dstData[dstPos:] + '"'
@@ -198,9 +203,9 @@ class CopyStringRes:
             out.close()
         pass
 
+
 # layout资源拷贝
 class CopyLayoutRes:
-
     def __init__(self):
         pass
 
@@ -212,13 +217,12 @@ class CopyLayoutRes:
         if not itemList or len(itemList) == 0:
             return
         for srcItem in itemList:
-           print "copy layout " + srcItem
-           ret = self.__doCopy("/layout/", srcItem)
-           if not ret:
-               print "copy /layout/ " + srcItem
-               self.__doCopy("/layout/", srcItem)
+            print "copy layout " + srcItem
+            ret = self.__doCopy("/layout/", srcItem)
+            if not ret:
+                print "copy /layout/ " + srcItem
+                self.__doCopy("/layout/", srcItem)
         pass
-
 
     def __doCopy(self, resPath, fileName):
         srcFile = org_res_path + resPath + fileName + '.xml'
