@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
-import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.videodetail.adapter.DetailCommentAdapter;
 
@@ -47,7 +46,7 @@ public class DetailCommentView extends RelativeLayout
 
                 @Override
                 public void onClickName(long uid) {
-                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, uid, null);
+                    mPresenter.showPersonalInfo(uid);
                 }
 
                 @Override
@@ -207,6 +206,11 @@ public class DetailCommentView extends RelativeLayout
          * 弹起评论删除/举报
          */
         void showCommentPopup(Context context, DetailCommentAdapter.CommentItem commentItem);
+
+        /**
+         * 显示个人信息页
+         */
+        void showPersonalInfo(long uid);
     }
 
     public interface IView extends IViewProxy {

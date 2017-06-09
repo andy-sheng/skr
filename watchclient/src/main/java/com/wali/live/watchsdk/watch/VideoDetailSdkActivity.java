@@ -12,6 +12,7 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
+import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.videodetail.VideoDetailController;
 import com.wali.live.watchsdk.videodetail.VideoDetailView;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
@@ -19,6 +20,8 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 
 /**
  * Created by yangli on 2017/5/26.
@@ -81,6 +84,9 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
         mComponentController = new VideoDetailController(mMyRoomData);
         mSdkView = new VideoDetailView(this, mComponentController);
         mSdkView.setupSdkView();
+
+        Action action = new Action();
+        mComponentController.registerAction(MSG_SHOW_PERSONAL_INFO, action);
     }
 
     @Override
@@ -170,5 +176,21 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
         Intent intent = new Intent(activity, VideoDetailSdkActivity.class);
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
         activity.startActivity(intent);
+    }
+
+    private class Action implements ComponentPresenter.IAction {
+        @Override
+        public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
+            switch (source) {
+                case MSG_SHOW_PERSONAL_INFO:
+                    FloatPersonInfoFragment.openFragment(VideoDetailSdkActivity.this, (long) params.getItem(0),
+                            mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(),
+                            null, mMyRoomData.getEnterRoomTime());
+                    return true;
+                default:
+                    break;
+            }
+            return false;
+        }
     }
 }

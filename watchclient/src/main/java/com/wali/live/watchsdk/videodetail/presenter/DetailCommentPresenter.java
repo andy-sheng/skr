@@ -38,6 +38,7 @@ import static com.wali.live.component.ComponentController.MSG_COMMENT_TOTAL_CNT;
 import static com.wali.live.component.ComponentController.MSG_FOLD_INFO_AREA;
 import static com.wali.live.component.ComponentController.MSG_SEND_COMMENT;
 import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
+import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.watchsdk.feeds.FeedsCommentUtils.FEEDS_COMMENT_PULL_TYPE_ALL_HYBIRD;
 
 /**
@@ -326,6 +327,13 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             }
         });
         builder.create().show();
+    }
+
+    @Override
+    public void showPersonalInfo(long uid) {
+        if (uid > 0) {
+            mComponentController.onEvent(MSG_SHOW_PERSONAL_INFO, new Params().putItem(uid));
+        }
     }
 
     private void showDeleteConfirmDialog(final Context context, final DetailCommentAdapter.CommentItem commentItem) {
