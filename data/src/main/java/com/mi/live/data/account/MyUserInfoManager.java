@@ -225,7 +225,6 @@ public class MyUserInfoManager {
      * 得到User
      */
     public User getUser() {
-        MyLog.w(TAG, "getUser");
         if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
             return mMyInfo;
         }
