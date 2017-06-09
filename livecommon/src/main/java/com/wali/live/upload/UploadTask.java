@@ -73,7 +73,7 @@ public class UploadTask {
 
                     @Override
                     public void onTaskProgress(double v) {
-                        MyLog.w(TAG, "onTaskProgress =" + v);
+                        MyLog.v(TAG, "onTaskProgress =" + v);
                         super.onTaskProgress(v);
                     }
                 }, authType);
