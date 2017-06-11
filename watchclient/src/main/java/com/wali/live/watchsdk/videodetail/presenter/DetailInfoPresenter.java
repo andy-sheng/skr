@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.videodetail.presenter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.LruCache;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -27,12 +28,14 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
+import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
 
@@ -49,12 +52,16 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
 
     private RoomBaseDataModel mMyRoomData;
 
+    private Subscription mFeedsSubscription;
+    private final LruCache<String, FeedsInfo> mFeedsInfoCache = new LruCache<>(10);
+
     public DetailInfoPresenter(
             @NonNull IComponentController componentController,
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
         mMyRoomData = roomData;
         EventBus.getDefault().register(this);
+        registerAction(MSG_NEW_DETAIL_REPLAY);
     }
 
     @Override
@@ -85,7 +92,9 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
 
     @Override
     public void syncUserInfo() {
-        Observable.just(mMyRoomData.getUid())
+        final long userId = mMyRoomData.getUid();
+        MyLog.w(TAG, "syncUserInfo userId=" + userId);
+        Observable.just(userId)
                 .map(new Func1<Long, User>() {
                     @Override
                     public User call(Long userId) {
@@ -115,43 +124,52 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
 
     @Override
     public void syncFeedsInfo() {
-        MyLog.d(TAG, "syncFeedsInfo");
+        if (mFeedsSubscription != null && !mFeedsSubscription.isUnsubscribed()) {
+            mFeedsSubscription.unsubscribe();
+        }
         final String feedId = mMyRoomData.getRoomId();
         final long ownerId = mMyRoomData.getUid();
-        Observable.just(0)
-                .map(new Func1<Integer, Feeds.GetFeedInfoResponse>() {
+        MyLog.w(TAG, "syncFeedsInfo feedId=" + feedId + ", ownerId=" + ownerId);
+        mFeedsSubscription = Observable.just(0)
+                .map(new Func1<Integer, FeedsInfo>() {
                     @Override
-                    public Feeds.GetFeedInfoResponse call(Integer integer) {
-                        return FeedsInfoUtils.fetchFeedsInfo(feedId, ownerId, false);
+                    public FeedsInfo call(Integer integer) {
+                        String cacheKey = feedId + "_" + ownerId;
+                        FeedsInfo outInfo = mFeedsInfoCache.get(cacheKey);
+                        if (outInfo != null) {
+                            return outInfo;
+                        }
+                        Feeds.GetFeedInfoResponse rsp = FeedsInfoUtils.fetchFeedsInfo(feedId, ownerId, false);
+                        if (rsp == null || rsp.getRet() != ErrorCode.CODE_SUCCESS) {
+                            return null;
+                        }
+                        outInfo = new FeedsInfo();
+                        try {
+                            Feeds.FeedInfo feedInfo = rsp.getFeedInfo();
+                            outInfo.timestamp = feedInfo.getFeedCteateTime();
+                            outInfo.mySelfLike = feedInfo.getFeedLikeContent().getMyselfLike();
+                            LiveShowProto.BackInfo backInfo = feedInfo.getFeedContent().getBackInfo();
+                            outInfo.title = backInfo.getBaTitle();
+                            outInfo.viewerCnt = backInfo.getViewerCnt();
+                            outInfo.coverUrl = backInfo.getCoverUrl();
+                            mFeedsInfoCache.put(cacheKey, outInfo);
+                        } catch (Exception e) {
+                            MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
+                        }
+                        return outInfo;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Feeds.GetFeedInfoResponse>bindUntilEvent(PresenterEvent.DESTROY))
-                .subscribe(new Action1<Feeds.GetFeedInfoResponse>() {
+                .compose(this.<FeedsInfo>bindUntilEvent(PresenterEvent.DESTROY))
+                .subscribe(new Action1<FeedsInfo>() {
                     @Override
-                    public void call(Feeds.GetFeedInfoResponse rsp) {
-                        if (mView != null) {
-                            if (rsp != null && rsp.getRet() == ErrorCode.CODE_SUCCESS) {
-                                Feeds.FeedInfo feedInfo = rsp.getFeedInfo();
-                                String title = "";
-                                boolean mySelfLike = false;
-                                long timestamp = 0;
-                                int viewerCnt = 0;
-                                String coverUrl = "";
-                                try {
-                                    timestamp = feedInfo.getFeedCteateTime();
-                                    mySelfLike = feedInfo.getFeedLikeContent().getMyselfLike();
-                                    LiveShowProto.BackInfo backInfo = feedInfo.getFeedContent().getBackInfo();
-                                    title = backInfo.getBaTitle();
-                                    viewerCnt = backInfo.getViewerCnt();
-                                    coverUrl = backInfo.getCoverUrl();
-                                } catch (Exception e) {
-                                    MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
-                                }
-                                mComponentController.onEvent(MSG_UPDATE_LIKE_STATUS, new Params().putItem(mySelfLike));
-                                mView.onFeedsInfo(mMyRoomData.getUid(), title, timestamp, viewerCnt, coverUrl);
-                            }
+                    public void call(FeedsInfo outInfo) {
+                        if (mView != null && outInfo != null) {
+                            mComponentController.onEvent(MSG_UPDATE_LIKE_STATUS, new Params()
+                                    .putItem(outInfo.mySelfLike));
+                            mView.onFeedsInfo(mMyRoomData.getUid(), outInfo.title, outInfo.timestamp,
+                                    outInfo.viewerCnt, outInfo.coverUrl);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -173,6 +191,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
     @Override
     public void followUser() {
         final long targetUid = mMyRoomData.getUid();
+        MyLog.w(TAG, "followUser targetUid=" + targetUid);
         Observable.just(0)
                 .map(new Func1<Integer, Integer>() {
                     @Override
@@ -199,6 +218,10 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                 });
     }
 
+    private void onNewVideo() {
+        syncFeedsInfo();
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {
@@ -213,10 +236,21 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                 return false;
             }
             switch (source) {
+                case MSG_NEW_DETAIL_REPLAY:
+                    onNewVideo();
+                    break;
                 default:
                     break;
             }
             return false;
         }
+    }
+
+    public static class FeedsInfo {
+        String title = "";
+        boolean mySelfLike = false;
+        long timestamp = 0;
+        int viewerCnt = 0;
+        String coverUrl = "";
     }
 }

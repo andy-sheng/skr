@@ -364,6 +364,24 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         dialog.show();
     }
 
+    private void onNewVideo() {
+        if (mTotalCnt != 0) {
+            mTotalCnt = 0;
+            mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+        }
+        if (mIsReverse) {
+            mIsReverse = false;
+            mView.setReverseLayout(mIsReverse);
+        }
+        mNewerPuller.reset();
+        mOlderPuller.reset();
+        mView.onUpdateCommentList(mNewerPuller.mHotList, mNewerPuller.mAllList, !mNewerPuller.mIsAsc);
+        if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
+            mPullSubscription.unsubscribe();
+        }
+        pullNewerComments();
+    }
+
     @Nullable
     @Override
     protected IAction createAction() {
@@ -383,7 +401,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                             params.getItem(1));
                     break;
                 case MSG_NEW_DETAIL_REPLAY:
-                    pullNewerComments();
+                    onNewVideo();
                     break;
                 default:
                     break;
@@ -393,9 +411,9 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
     }
 
     public class PullCommentHelper {
-        private long mCommentTs;
         private boolean mIsAsc;
-        private int mTotalCnt;
+        private int mTotalCnt = 0;
+        private long mCommentTs = 0;
         private volatile boolean mHasMore = true;
         private volatile boolean mCanShowNoMore;
 
@@ -404,6 +422,14 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
 
         public PullCommentHelper(boolean isAsc) {
             mIsAsc = isAsc;
+        }
+
+        private void reset() {
+            mTotalCnt = 0;
+            mCommentTs = 0;
+            mHasMore = true;
+            mHotList.clear();
+            mAllList.clear();
         }
 
         private void addSendItem(DetailCommentAdapter.CommentItem commentItem) {

@@ -17,7 +17,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.wali.live.component.ComponentController.MSG_HIDE_INPUT_VIEW;
+import static com.wali.live.component.ComponentController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.ComponentController.MSG_SEND_COMMENT;
+import static com.wali.live.component.ComponentController.MSG_SHOW_COMMENT_INPUT;
 
 /**
  * Created by yangli on 2017/6/6.
@@ -31,9 +34,9 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
 
     public CommentInputPresenter(@NonNull IComponentController componentController) {
         super(componentController);
-        registerAction(ComponentController.MSG_ON_BACK_PRESSED);
-        registerAction(ComponentController.MSG_SHOW_COMMENT_INPUT);
-        registerAction(ComponentController.MSG_HIDE_INPUT_VIEW);
+        registerAction(MSG_ON_BACK_PRESSED);
+        registerAction(MSG_SHOW_COMMENT_INPUT);
+        registerAction(MSG_HIDE_INPUT_VIEW);
         EventBus.getDefault().register(this);
     }
 
@@ -111,9 +114,9 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
                 return false;
             }
             switch (source) {
-                case ComponentController.MSG_ON_BACK_PRESSED:
+                case MSG_ON_BACK_PRESSED:
                     return mView.processBackPress();
-                case ComponentController.MSG_SHOW_COMMENT_INPUT: {
+                case MSG_SHOW_COMMENT_INPUT: {
                     mFeedsIdToReply = params.getItem(0);
                     mCommentToReply = params.getItem(1);
                     String hint;
@@ -129,7 +132,7 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
                     mView.setHint(hint);
                     return mView.showInputView();
                 }
-                case ComponentController.MSG_HIDE_INPUT_VIEW:
+                case MSG_HIDE_INPUT_VIEW:
                     mFeedsIdToReply = null;
                     mCommentToReply = null;
                     mView.setHint("");
