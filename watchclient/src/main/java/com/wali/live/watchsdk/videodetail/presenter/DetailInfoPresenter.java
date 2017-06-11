@@ -21,6 +21,7 @@ import com.wali.live.proto.LiveShowProto;
 import com.wali.live.utils.relation.RelationUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.feeds.FeedsInfoUtils;
+import com.wali.live.watchsdk.videodetail.VideoDetailController;
 import com.wali.live.watchsdk.videodetail.view.DetailInfoView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -110,8 +111,11 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                         if (mView != null) {
                             mView.onUserInfo(user);
                         }
-                        if (TextUtils.isEmpty(mMyRoomData.getNickName()) && user != null) {
-                            mMyRoomData.setNickname(user.getNickname());
+                        if (user != null) {
+                            if (TextUtils.isEmpty(mMyRoomData.getNickName())) {
+                                mMyRoomData.setNickname(user.getNickname());
+                            }
+                            mComponentController.onEvent(VideoDetailController.MSG_COMPLETE_USER_INFO);
                         }
                     }
                 }, new Action1<Throwable>() {

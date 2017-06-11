@@ -21,6 +21,7 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.wali.live.component.ComponentController.MSG_PLAYER_FULL_SCREEN;
 import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 
 /**
@@ -30,6 +31,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
 
     private VideoDetailController mComponentController;
     private VideoDetailView mSdkView;
+    private boolean mVideoPlayerEnable = true; //詳情頁播放器work。
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
 
         Action action = new Action();
         mComponentController.registerAction(MSG_SHOW_PERSONAL_INFO, action);
+        mComponentController.registerAction(MSG_PLAYER_FULL_SCREEN, action);
     }
 
     @Override
@@ -114,8 +117,9 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
     //视频event 刷新播放按钮等操作
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.FeedsVideoEvent event) {
-        MyLog.w(TAG, "onEventMainThread  mIsForeground" + mIsForeground + " event.type=" + event.mType);
-        if (!mIsForeground) {
+        MyLog.w(TAG, "onEventMainThread  mVideoPlayerEnable=" + mVideoPlayerEnable
+                + " event.type=" + event.mType);
+        if (!mVideoPlayerEnable) {
             return;
         }
         switch (event.mType) {
@@ -161,7 +165,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
         switch (requestCode) {
             case ReplaySdkActivity.REQUEST_REPLAY:
                 if (data != null) {
-                    mIsForeground = true;
+                    mVideoPlayerEnable = true;
                     long timeStamp = data.getLongExtra(ReplaySdkActivity.EXT_REPLAYED_TIME, 0);
                     mComponentController.onEvent(VideoDetailController.MSG_PLAYER_SEEK,
                             new ComponentPresenter.Params().putItem(timeStamp));
@@ -187,6 +191,9 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
                             mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(),
                             null, mMyRoomData.getEnterRoomTime());
                     return true;
+                case MSG_PLAYER_FULL_SCREEN:
+                    mVideoPlayerEnable = false;
+                    break;
                 default:
                     break;
             }

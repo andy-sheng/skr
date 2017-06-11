@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
@@ -29,11 +30,16 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
     private TextView mEmptyView;
     private View mLoadingView;
     private RecyclerView mRecyclerView;
-
     private DetailReplayAdapter mAdapter;
 
     @Nullable
     protected IPresenter mPresenter;
+
+    public void setMyRoomData(RoomBaseDataModel myRoomData) {
+        if (mAdapter != null && myRoomData != null) {
+            mAdapter.setMyRoomData(myRoomData);
+        }
+    }
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -119,6 +125,11 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
             public void onShowEmptyView(boolean isShow) {
                 mEmptyView.setVisibility(isShow ? View.VISIBLE : ViewGroup.GONE);
             }
+
+            @Override
+            public void updateAllReplayView() {
+                mAdapter.notifyDataSetChanged();
+            }
         }
         return new ComponentView();
     }
@@ -157,5 +168,10 @@ public class DetailReplayView extends RelativeLayout implements IComponentView<D
          * 显示/隐藏空页面
          */
         void onShowEmptyView(boolean isShow);
+
+        /**
+         * 刷新回放整体的页面
+         */
+        void updateAllReplayView();
     }
 }

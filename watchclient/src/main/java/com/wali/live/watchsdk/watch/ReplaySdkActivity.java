@@ -90,8 +90,9 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     /**
      * data放在这里，不要乱放-
      */
-    List<HotSpotProto.HotSpotInfo> spotInfoList = new ArrayList<>();
-    long mReplayStartTime = 0;
+    private boolean mIsEnd = false;
+    private List<HotSpotProto.HotSpotInfo> spotInfoList = new ArrayList<>();
+    private long mReplayStartTime = 0;
     protected Timer mTimer;//每秒拉取弹幕的timer
     private CustomHandlerThread mHandlerThread = new CustomHandlerThread("ReplayFeedsVideoPlayer") {
         @Override
@@ -236,13 +237,20 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
         setResult(RESULT_OK, intent);
         super.finish();
         overridePendingTransition(0, R.anim.zoom_out);
+        if (!mIsEnd) {
+            stopPlayer();
+            mIsEnd = true;
+        }
     }
 
     @Override
     protected void onDestroy() {
         MyLog.w(TAG, "onDestroy");
         super.onDestroy();
-        stopPlayer();
+        if (!mIsEnd) {
+            stopPlayer();
+            mIsEnd = true;
+        }
         unregisterReceiver();
         if (null != mRoomChatMsgManager) {
             mRoomChatMsgManager.clearAllCache();
@@ -427,6 +435,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
 
     private void stopPlayer() {
         if (mReplayVideoPresenter != null) {
+            mIsEnd = true;
             mReplayVideoPresenter.destroy();
         }
     }

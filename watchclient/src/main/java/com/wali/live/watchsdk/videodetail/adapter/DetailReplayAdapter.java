@@ -12,6 +12,7 @@ import com.base.image.fresco.image.ImageFactory;
 import com.base.utils.date.DateTimeUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
@@ -24,6 +25,11 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
         DetailReplayAdapter.ReplayHolder, DetailReplayAdapter.IReplayClickListener> {
     private static final String TAG = "DetailReplayAdapter";
     private static final int CORNER_RADIUS = 8;
+    private RoomBaseDataModel mMyRoomData;
+
+    public void setMyRoomData(RoomBaseDataModel myRoomData) {
+        mMyRoomData = myRoomData;
+    }
 
     @Override
     public ReplayHolder newViewHolder(int viewType) {
@@ -31,9 +37,8 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
         return new ReplayHolder(view);
     }
 
-    public static class ReplayHolder extends ClickItemAdapter.BaseHolder<ReplayInfoItem,
+    public class ReplayHolder extends ClickItemAdapter.BaseHolder<ReplayInfoItem,
             DetailReplayAdapter.IReplayClickListener> {
-        private IReplayClickListener mReplayListener;
         private BaseImageView mCoverIv;
         private BaseImageView mAvatarIv;
         private TextView mNameTv;
@@ -52,16 +57,15 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
         }
 
         @Override
-        public void bindView(final ReplayInfoItem item, IReplayClickListener iReplayClickListener) {
-            mReplayListener = iReplayClickListener;
+        public void bindView(final ReplayInfoItem item, final IReplayClickListener iReplayClickListener) {
             if (!TextUtils.isEmpty(item.mLiveCover)) {
                 loadAvatarCornerByUrl(mCoverIv, AvatarUtils.getImgUrlByAvatarSize(item.mLiveCover,
                         AvatarUtils.SIZE_TYPE_AVATAR_SMALL), false, R.drawable.avatar_default_b, CORNER_RADIUS);
             } else {
-                AvatarUtils.loadAvatarByUidTsCorner(mCoverIv, item.mUuid, item.mAvatar, CORNER_RADIUS, 0, 0);
+                AvatarUtils.loadAvatarByUidTsCorner(mCoverIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(), CORNER_RADIUS, 0, 0);
             }
-            AvatarUtils.loadAvatarByUidTs(mAvatarIv, item.mUuid, item.mAvatar, true);
-            mNameTv.setText(item.mNickName);
+            AvatarUtils.loadAvatarByUidTs(mAvatarIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(), true);
+            mNameTv.setText(mMyRoomData.getNickName());
             if (TextUtils.isEmpty(item.mLiveTitle)) {
                 mDescriptionTv.setVisibility(View.GONE);
             } else {
@@ -77,13 +81,12 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mReplayListener != null) {
-                        mReplayListener.onItemClick(item);
+                    if (iReplayClickListener != null) {
+                        iReplayClickListener.onItemClick(item);
                     }
                 }
             });
         }
-
 
         private void loadAvatarCornerByUrl(final SimpleDraweeView draweeView, final String url,
                                            final boolean isCircle, int loadingAvatarResId,
@@ -105,9 +108,6 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
     }
 
     public static class ReplayInfoItem extends ClickItemAdapter.BaseItem {
-        public long mUuid;         //用户id
-        public String mNickName;   //昵称
-        public long mAvatar;       //头像
         public String mLiveId;     //房间id
         public int mViewerCnt;     //观众数
         public String mUrl;        //回放地址
@@ -116,12 +116,9 @@ public class DetailReplayAdapter extends ClickItemAdapter<DetailReplayAdapter.Re
         public String mShareUrl;    //分享url
         public long mStartTime;    //开始时间
 
-        public ReplayInfoItem(long uuid, String nickName, long avatar, String liveId, int viewerCnt,
+        public ReplayInfoItem(String liveId, int viewerCnt,
                               String url, String liveTitle, String liveCover, String shareUrl,
                               long startTime) {
-            mUuid = uuid;
-            mNickName = nickName;
-            mAvatar = avatar;
             mLiveId = liveId;
             mViewerCnt = viewerCnt;
             mUrl = url;

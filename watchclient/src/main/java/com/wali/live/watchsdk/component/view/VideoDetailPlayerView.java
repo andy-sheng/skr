@@ -27,7 +27,8 @@ import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
  * @module 详情页播放器view
  */
 public class VideoDetailPlayerView extends RelativeLayout
-        implements IComponentView<VideoDetailPlayerView.IPresenter, VideoDetailPlayerView.IView>, View.OnClickListener {
+        implements IComponentView<VideoDetailPlayerView.IPresenter, VideoDetailPlayerView.IView>,
+        View.OnClickListener {
     private static final String TAG = "VideoDetailPlayerView";
 
     private RoomBaseDataModel mMyRoomData;
@@ -42,6 +43,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     private BaseImageView mCoverIv;
     private ImageView mBackIv;
     private View mPlayerContainer;
+    private boolean mIsComplete = false;
 
     public VideoDetailPlayerView(Context context) {
         this(context, null);
@@ -82,7 +84,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.float_video_view, this);
         {
-            mLoadingProgressBar = $(R.id.loading_iv);
+            mLoadingProgressBar = $(R.id.loading_bar);
             mDetailSeekBar = $(R.id.detail_seek_bar);
             mCoverIv = $(R.id.cover_iv);
             mPlayBtn = $(R.id.play_button);
@@ -94,7 +96,8 @@ public class VideoDetailPlayerView extends RelativeLayout
         }
         {
             mVideoPlayerView = $(R.id.video_player_texture_view);
-            mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this.getContext(), mVideoPlayerView, mDetailSeekBar, null, false);
+            mVideoPlayerPresenterEx = new VideoPlayerPresenterEx(this.getContext(),
+                    mVideoPlayerView, mDetailSeekBar, null, false);
             mVideoPlayerPresenterEx.setSeekBarHideDelay(4000);
             mVideoPlayerPresenterEx.setSeekBarFullScreenBtnVisible(true);
         }
@@ -162,7 +165,8 @@ public class VideoDetailPlayerView extends RelativeLayout
         if (mCoverIv.getVisibility() != VISIBLE) {
             mCoverIv.setVisibility(VISIBLE);
         }
-        pausePlayer();
+        showPlayBtn(true);
+//        pausePlayer(); //VideoDetailSdkActivity的onPause里面执行了pausePlayer.这里拿掉。
     }
 
     private void onPlayingState() {
@@ -171,6 +175,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         if (mCoverIv.getVisibility() == VISIBLE) {
             mCoverIv.setVisibility(GONE);
         }
+        showPlayBtn(false);
     }
 
     private long getPlayingTime() {
@@ -184,7 +189,12 @@ public class VideoDetailPlayerView extends RelativeLayout
     private void seekVideoPlayer(long playedTime) {
         MyLog.w(TAG, "seekVideoPlayer playedTime=" + playedTime);
         if (mVideoPlayerPresenterEx != null) {
-            mVideoPlayerPresenterEx.resume();
+            if (playedTime == 0) {
+                //已经播放完毕
+                mIsComplete = true;
+                return;
+            }
+            showLoadingView();
             mVideoPlayerPresenterEx.seekTo(playedTime);
         }
     }
@@ -259,7 +269,13 @@ public class VideoDetailPlayerView extends RelativeLayout
         if (i == R.id.back_iv) {
             mPresenter.onBackPress();
         } else if (i == R.id.play_button) {
-            resumePlayer();
+            if (mIsComplete) {
+                mIsComplete = false;
+                resetPlayer();
+                startPlayer();
+            } else {
+                resumePlayer();
+            }
         } else if (i == R.id.player_container) {
             mVideoPlayerPresenterEx.onSeekBarContainerClick();
         }

@@ -27,6 +27,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.component.ComponentController.MSG_COMPLETE_USER_INFO;
+
 /**
  * Created by zyh on 2017/06/06.
  *
@@ -42,6 +44,7 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
             , RoomBaseDataModel myRoomData) {
         super(componentController);
         this.mMyRoomData = myRoomData;
+        registerAction(MSG_COMPLETE_USER_INFO);
     }
 
     @Override
@@ -50,22 +53,23 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
             mSubscription.unsubscribe();
         }
         MyLog.w(TAG, "pullReplayList");
-        mSubscription = Observable.just(0).map(new Func1<Integer, List<DetailReplayAdapter.ReplayInfoItem>>() {
+        mSubscription = Observable.just(0).map(new Func1<Integer,
+                List<DetailReplayAdapter.ReplayInfoItem>>() {
             @Override
             public List<DetailReplayAdapter.ReplayInfoItem> call(Integer integer) {
-                Live2Proto.HistoryLiveRsp rsp = FeedsCommentUtils.getHistoryShowList(UserAccountManager.getInstance().getUuidAsLong(),
+                Live2Proto.HistoryLiveRsp rsp = FeedsCommentUtils.getHistoryShowList(
+                        UserAccountManager.getInstance().getUuidAsLong(),
                         mMyRoomData.getUid());
                 if (rsp == null || rsp.getRetCode() != ErrorCode.CODE_SUCCESS
                         || rsp.getHisLiveList() == null) {
                     return null;
                 }
-                List<DetailReplayAdapter.ReplayInfoItem> list = new ArrayList<DetailReplayAdapter.ReplayInfoItem>();
+                List<DetailReplayAdapter.ReplayInfoItem> list =
+                        new ArrayList<DetailReplayAdapter.ReplayInfoItem>();
                 for (Live2Proto.HisLive hisLive : rsp.getHisLiveList()) {
-                    String coverUrl = (hisLive.getLiveCover() == null) ? "" : hisLive.getLiveCover().getCoverUrl();
+                    String coverUrl = (hisLive.getLiveCover() == null) ? "" :
+                            hisLive.getLiveCover().getCoverUrl();
                     list.add(new DetailReplayAdapter.ReplayInfoItem(
-                            mMyRoomData.getUid(),
-                            mMyRoomData.getNickName(),
-                            mMyRoomData.getAvatarTs(),
                             hisLive.getLiveId(),
                             hisLive.getViewerCnt(),
                             hisLive.getUrl(),
@@ -85,6 +89,8 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
                         if (itemList == null) {
                             mView.onPullReplayFailed();
                         } else {
+                            mComponentController.onEvent(VideoDetailController.MSG_REPLAY_TOTAL_CNT,
+                                    new Params().putItem(itemList.size()));
                             mView.onPullReplayDone(itemList);
                         }
                     }
@@ -108,7 +114,7 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
         }
         mMyRoomData.setVideoUrl(replayInfoItem.mUrl);
         mMyRoomData.setRoomId(replayInfoItem.mLiveId);
-        mComponentController.onEvent(VideoDetailController.MSG_NEW_DETAIL_REPLAY, new Params().putItem(replayInfoItem));
+        mComponentController.onEvent(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
     }
 
     @Nullable
@@ -125,6 +131,9 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
                 return false;
             }
             switch (source) {
+                case MSG_COMPLETE_USER_INFO:
+                    mView.updateAllReplayView();
+                    break;
                 default:
                     break;
             }

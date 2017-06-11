@@ -30,9 +30,11 @@
             android:background="@drawable/attention_play_btn"/>
 
         <RelativeLayout
-            android:layout_width="184dp"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/play_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_dimen_270"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/margin_30"
+            android:layout_marginRight="@dimen/margin_30"
             android:layout_toRightOf="@+id/cover_iv"
             android:gravity="center_vertical">
 
@@ -74,9 +76,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/description_tv"
-                android:layout_marginTop="6.67dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/margin_12"
+                android:paddingTop="@dimen/margin_20">
 
                 <TextView
                     android:id="@+id/back_tv_left"
@@ -86,11 +89,11 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:textColor="@color/color_black_trans_50"
-                    android:textSize="@dimen/text_size_40"/>
+                    android:textSize="@dimen/text_size_36"/>
 
                 <ImageView
                     android:layout_width="1dp"
-                    android:layout_height="@dimen/text_size_34"
+                    android:layout_height="@dimen/text_size_40"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/margin_15"
                     android:layout_marginRight="@dimen/margin_15"
@@ -104,7 +107,7 @@
                     android:singleLine="true"
                     android:text="日期"
                     android:textColor="@color/color_black_trans_50"
-                    android:textSize="@dimen/text_size_40"/>
+                    android:textSize="@dimen/text_size_36"/>
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

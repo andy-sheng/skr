@@ -53,6 +53,7 @@ public class DetailTabPresenter extends ComponentPresenter<DetailTabView.IView>
                     mView.updateCommentTotalCnt((int) params.getItem(0));
                     break;
                 case MSG_REPLAY_TOTAL_CNT:
+                    mView.updateReplayTotalCnt((int) params.getItem(0));
                     break;
                 case MSG_FOLD_INFO_AREA:
                     mView.onFoldInfoArea();
