@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -34,6 +33,7 @@ import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.common.view.ErrorView;
 import com.wali.live.income.exchange.ExchangeGemActivity;
@@ -323,6 +323,7 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             MyLog.e(TAG, "mBalanceViewHolder maybe null, balance:" + balance + "virtualBalance: " + virtualBalance);
             return;
         }
+        MyUserInfoManager.getInstance().setDiamonds(RechargeInfo.getUsableGemCount(), RechargeInfo.getUsableVirtualGemCount());
         mBalanceViewHolder.mTotalDiamondCount.setText(String.valueOf(balance + virtualBalance));
         mBalanceViewHolder.mBalanceGold.setText(String.valueOf(balance));
         mBalanceViewHolder.mBalanceSilver.setText(String.valueOf(virtualBalance));
@@ -429,12 +430,12 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         mStep2PayWayViewHolder = payWayViewHolder;
         applyStep2SelectedPayWay(false, RechargePresenter.getCurPayWay(), payWayViewHolder, true);
 
-        if(RechargeConfig.getPayWaysSize() == 1){
+        if (RechargeConfig.getPayWaysSize() == 1) {
             mStep2PayWayViewHolder.mArrow.setVisibility(View.GONE);
             mStep2PayWayViewHolder.mOtherPayWayTipTv.setVisibility(View.GONE);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)mStep2PayWayViewHolder.mPayWayTv.getLayoutParams();
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mStep2PayWayViewHolder.mPayWayTv.getLayoutParams();
             layoutParams.leftMargin = 30;
-        }else {
+        } else {
             RxView.clicks(payWayViewHolder.itemView)
                     .throttleFirst(RECHARGE_CLICK_INTERVAL, TimeUnit.SECONDS)
                     .subscribe(new Action1<Void>() {
@@ -478,7 +479,6 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     /**
-     *
      * @param isNeedNotify
      * @param payWay
      * @param payWayViewHolder
@@ -612,15 +612,15 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private void scribeAppNotInstall(@NonNull final String packageName, @NonNull final PayWay payWay) {
         Observable.create(new Observable.OnSubscribe<Object>() {
-                @Override
-                public void call(Subscriber<? super Object> subscriber) {
-                    if (!CommonUtils.isAppInstalled(mContext, packageName)) {
-                        StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, getRechargeTemplate(APP_NOT_INSTALL, payWay), TIMES, "1");
-                    }
-                    subscriber.onNext(0);
-                    subscriber.onCompleted();
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                if (!CommonUtils.isAppInstalled(mContext, packageName)) {
+                    StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY, getRechargeTemplate(APP_NOT_INSTALL, payWay), TIMES, "1");
                 }
-            }).subscribeOn(Schedulers.io())
+                subscriber.onNext(0);
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
@@ -1092,9 +1092,9 @@ class Step2PayWayViewHolder extends RecyclerView.ViewHolder {
 
     Step2PayWayViewHolder(View itemView) {
         super(itemView);
-        mPayWayTv = (TextView)itemView.findViewById(R.id.pay_way_tv);
-        mOtherPayWayTipTv = (TextView)itemView.findViewById(R.id.other_pay_way_tip_tv);
-        mArrow = (ImageView)itemView.findViewById(R.id.arrow);
+        mPayWayTv = (TextView) itemView.findViewById(R.id.pay_way_tv);
+        mOtherPayWayTipTv = (TextView) itemView.findViewById(R.id.other_pay_way_tip_tv);
+        mArrow = (ImageView) itemView.findViewById(R.id.arrow);
     }
 }
 
@@ -1104,8 +1104,8 @@ class Step1PayWayViewHolder extends RecyclerView.ViewHolder {
 
     Step1PayWayViewHolder(View itemView) {
         super(itemView);
-        mPayWayIcon = (ImageView)itemView.findViewById(R.id.pay_way_iv);
-        mPayWayName = (TextView)itemView.findViewById(R.id.pay_way_name);
+        mPayWayIcon = (ImageView) itemView.findViewById(R.id.pay_way_iv);
+        mPayWayName = (TextView) itemView.findViewById(R.id.pay_way_name);
     }
 }
 
@@ -1116,9 +1116,9 @@ class PriceGridViewHolder extends RecyclerView.ViewHolder {
 
     PriceGridViewHolder(View itemView) {
         super(itemView);
-        mGridView = (GridView)itemView.findViewById(R.id.grid_view);
-        mPayBtn = (TextView)itemView.findViewById(R.id.pay_btn);
-        mBigAmountTip = (TextView)itemView.findViewById(R.id.big_amount_tip);
+        mGridView = (GridView) itemView.findViewById(R.id.grid_view);
+        mPayBtn = (TextView) itemView.findViewById(R.id.pay_btn);
+        mBigAmountTip = (TextView) itemView.findViewById(R.id.big_amount_tip);
     }
 }
 
@@ -1127,7 +1127,7 @@ class ErrorViewHolder extends RecyclerView.ViewHolder {
 
     ErrorViewHolder(View itemView) {
         super(itemView);
-        mErrorView = (ErrorView)itemView.findViewById(R.id.price_list_error_view);
+        mErrorView = (ErrorView) itemView.findViewById(R.id.price_list_error_view);
     }
 }
 

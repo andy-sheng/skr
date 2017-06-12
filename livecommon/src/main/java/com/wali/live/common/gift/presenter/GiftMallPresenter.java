@@ -447,7 +447,6 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 mGiftMallView.setIsBigGiftBtnShowFlag(false);
                             }
                         } else {
-
                             if (buyGiftWithCard.gift.getCanContinuous()) {
                                 unsubscribeSountDownSubscription();
 
