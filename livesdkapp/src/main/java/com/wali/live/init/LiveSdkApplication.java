@@ -26,6 +26,7 @@ public class LiveSdkApplication extends Application {
 
     @Override
     public void onCreate() {
+        MyLog.w(TAG, "onCreate");
         super.onCreate();
         initializeLeakDetection();
         InitManager.init(this, sRefWatcher);
