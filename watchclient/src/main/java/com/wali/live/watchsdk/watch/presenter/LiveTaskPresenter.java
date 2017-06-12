@@ -13,7 +13,6 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.data.LiveShow;
 import com.mi.live.data.manager.UserInfoManager;
-import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.push.SendBarrageManager;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.push.model.BarrageMsgType;
@@ -108,22 +107,15 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 
     @Override
     public void enterLive() {
-        //匿名模式不要进入房间,否则有bug
-        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
-            pullRoomMessage();
-            queryLiveShowById(mMyRoomData.getUid(), mMyRoomData.getRoomId());
-            return;
-        }
         if (mHasEnter) {
             return;
         }
-        /**
-         * 加上这句，否则会触发离开房间逻辑
-         */
+        // 加上这句，否则会触发离开房间逻辑
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
         if (mEnterRoomSubscription != null && !mEnterRoomSubscription.isUnsubscribed()) {
             return;
         }
+        MyLog.w(TAG, "enterLive");
         mEnterRoomSubscription = LiveRoomQuery.enterRoom(mMyRoomData.getUid(), mMyRoomData.getRoomId(), "")
                 .compose(mRxActivity.<EnterRoomInfo>bindUntilEvent())
                 .retryWhen(new RxRetryAssist())
@@ -156,7 +148,7 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
                         if (mView != null && enterRoomInfo.getRetCode() == ErrorCode.CODE_SUCCESS) {
                             mView.enterLive(enterRoomInfo);
                         } else if (mView != null && enterRoomInfo.getRetCode() == ErrorCode.CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM) {
-                            MyLog.w(TAG,"CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM");
+                            MyLog.w(TAG, "CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM");
                             EventBus.getDefault().post(new EventClass.KickEvent());
                         } else {
                             BarrageMsg.LiveEndMsgExt ext = new BarrageMsg.LiveEndMsgExt();
