@@ -11,12 +11,14 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
+import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.event.EventClass;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.proto.ListProto;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.proto.SecurityProto;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.AarCallback;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
@@ -271,6 +273,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
         MyLog.w(TAG, "loginByMiAccountSso channelId=" + channelId);
+        reportLoginEntrance(channelId, miid);
+
         secureOperate(channelId, packageName, channelSecret, new SecureLoginCallback() {
             @Override
             public void postSuccess() {
@@ -298,6 +302,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                         onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                         return;
                                     }
+
                                     MyLog.w(TAG, "miSsoLogin retCode=" + miSsoLoginRsp.getRetCode());
                                     if (miSsoLoginRsp.getRetCode() == ErrorCode.CODE_ACCOUT_FORBIDDEN) {
                                         onEventLogin(channelId, MiLiveSdkEvent.FAILED);
@@ -306,6 +311,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                                         onEventLogin(channelId, MiLiveSdkEvent.FAILED);
                                         return;
                                     }
+
+                                    reportLoginSuccess(channelId, miid);
                                     UploadService.toUpload(new UploadService.UploadInfo(miSsoLoginRsp, channelId));
                                     onEventLogin(channelId, MiLiveSdkEvent.SUCCESS);
                                 } catch (Exception e) {
@@ -329,6 +336,26 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 onEventLogin(channelId, MiLiveSdkEvent.FAILED);
             }
         });
+    }
+
+    private void reportLoginEntrance(int channelId, long miid) {
+        try {
+            String key = String.format(StatisticsKey.KEY_SDK_LOGIN_ENTRANCE, channelId, miid);
+            MyLog.w(TAG, "reportLoginEntrance key=" + key);
+            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+        } catch (Exception e) {
+            MyLog.e(TAG, "reportLoginEntrance e", e);
+        }
+    }
+
+    private void reportLoginSuccess(int channelId, long miid) {
+        try {
+            String key = String.format(StatisticsKey.KEY_SDK_LOGIN_SUCCESS, channelId, miid);
+            MyLog.w(TAG, "reportLoginSuccess key=" + key);
+            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+        } catch (Exception e) {
+            MyLog.e(TAG, "reportLoginSuccess e", e);
+        }
     }
 
     @Override

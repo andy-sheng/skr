@@ -7,7 +7,9 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
+import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.LiveSdkActivity;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.watch.ReplaySdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -53,7 +55,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         }
         String action = intent.getAction();
 
-        int channelId = intent.getIntExtra(EXTRA_CHANNEL_ID, 0);
+        final int channelId = intent.getIntExtra(EXTRA_CHANNEL_ID, 0);
         String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
         String channelSecret = intent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
@@ -92,6 +94,8 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
+                                reportReplay(channelId);
+
                                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                                         .setLiveType(liveType)
                                         .setGameId(gameId)
@@ -108,6 +112,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
+                                reportLive(channelId);
                                 LiveSdkActivity.openActivity(JumpSdkActivity.this, location, enableShare, false);
                             }
                         }, true);
@@ -119,6 +124,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
+                                reportLive(channelId);
                                 LiveSdkActivity.openActivity(JumpSdkActivity.this, location, enableShare, true);
                             }
                         }, true);
@@ -128,6 +134,26 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 finish();
                 break;
             }
+        }
+    }
+
+    private void reportReplay(int channelId) {
+        try {
+            String key = String.format(StatisticsKey.KEY_REPLAY_COUNT, channelId);
+            MyLog.w(TAG, "reportReplay key=" + key);
+            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+        } catch (Exception e) {
+            MyLog.e(TAG, "reportReplay e", e);
+        }
+    }
+
+    private void reportLive(int channelId) {
+        try {
+            String key = String.format(StatisticsKey.KEY_LIVE_COUNT, channelId);
+            MyLog.w(TAG, "reportLive key=" + key);
+            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+        } catch (Exception e) {
+            MyLog.e(TAG, "reportLive e", e);
         }
     }
 }
