@@ -25,9 +25,6 @@ import com.wali.live.watchsdk.list.ChannelLiveCaller;
 import com.wali.live.watchsdk.list.RelationCaller;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
-import com.wali.live.watchsdk.watch.ReplaySdkActivity;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -270,7 +267,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-
     @Override
     public void loginByMiAccountSso(final int channelId, String packageName, String channelSecret,
                                     final long miid, final String serviceToken) throws RemoteException {
@@ -410,21 +406,17 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openWatch(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                          final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean enableShare,
-                          final boolean needFinish) {
+                          final ICommonCallBack callback, final boolean needFinish) {
         MyLog.w(TAG, "openWatch by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
                 MyLog.w(TAG, "openWatch by activity success callback");
-                // 直接跳转
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                        .setLiveType(liveType)
-                        .setGameId(gameId)
-                        .setEnableShare(enableShare)
-                        .build();
-                WatchSdkActivity.openActivity(activity, roomInfo);
+                // 上层回调跳转
+                if (callback != null) {
+                    callback.process(null);
+                }
                 if (needFinish) {
                     activity.finish();
                 }
@@ -449,21 +441,17 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     public void openReplay(final Activity activity, final int channelId, final String packageName, String channelSecret,
-                           final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId, final boolean enableShare,
-                           final boolean needFinish) {
+                           final ICommonCallBack callback, final boolean needFinish) {
         MyLog.w(TAG, "openReplay by activity channelId=" + channelId);
 
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
                 MyLog.w(TAG, "openReplay by activity success callback");
-                // 直接跳转
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                        .setLiveType(liveType)
-                        .setGameId(gameId)
-                        .setEnableShare(enableShare)
-                        .build();
-                ReplaySdkActivity.openActivity(activity, roomInfo);
+                // 上层回调跳转
+                if (callback != null) {
+                    callback.process(null);
+                }
                 if (needFinish) {
                     activity.finish();
                 }
@@ -563,7 +551,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
             return;
         }
-        rx.Observable.just(null)
+        rx.Observable.just(0)
                 .map(new Func1<Object, Integer>() {
                     @Override
                     public Integer call(Object o) {
