@@ -50,33 +50,34 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
             mSubscription.unsubscribe();
         }
         MyLog.w(TAG, "pullReplayList");
-        mSubscription = Observable.just(0).map(new Func1<Integer, List<DetailReplayAdapter.ReplayInfoItem>>() {
-            @Override
-            public List<DetailReplayAdapter.ReplayInfoItem> call(Integer integer) {
-                Live2Proto.HistoryLiveRsp rsp = FeedsCommentUtils.getHistoryShowList(UserAccountManager.getInstance().getUuidAsLong(),
-                        mMyRoomData.getUid());
-                if (rsp == null || rsp.getRetCode() != ErrorCode.CODE_SUCCESS
-                        || rsp.getHisLiveList() == null) {
-                    return null;
-                }
-                List<DetailReplayAdapter.ReplayInfoItem> list = new ArrayList<DetailReplayAdapter.ReplayInfoItem>();
-                for (Live2Proto.HisLive hisLive : rsp.getHisLiveList()) {
-                    String coverUrl = (hisLive.getLiveCover() == null) ? "" : hisLive.getLiveCover().getCoverUrl();
-                    list.add(new DetailReplayAdapter.ReplayInfoItem(
-                            mMyRoomData.getUid(),
-                            mMyRoomData.getNickName(),
-                            mMyRoomData.getAvatarTs(),
-                            hisLive.getLiveId(),
-                            hisLive.getViewerCnt(),
-                            hisLive.getUrl(),
-                            hisLive.getLiveTitle(),
-                            coverUrl,
-                            hisLive.getShareUrl(),
-                            hisLive.getStartTime()));
-                }
-                return list;
-            }
-        }).subscribeOn(Schedulers.io())
+        mSubscription = Observable.just(0)
+                .map(new Func1<Integer, List<DetailReplayAdapter.ReplayInfoItem>>() {
+                    @Override
+                    public List<DetailReplayAdapter.ReplayInfoItem> call(Integer integer) {
+                        Live2Proto.HistoryLiveRsp rsp = FeedsCommentUtils.getHistoryShowList(
+                                UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid());
+                        if (rsp == null || rsp.getRetCode() != ErrorCode.CODE_SUCCESS
+                                || rsp.getHisLiveList() == null) {
+                            return null;
+                        }
+                        List<DetailReplayAdapter.ReplayInfoItem> list = new ArrayList<DetailReplayAdapter.ReplayInfoItem>();
+                        for (Live2Proto.HisLive hisLive : rsp.getHisLiveList()) {
+                            String coverUrl = (hisLive.getLiveCover() == null) ? "" : hisLive.getLiveCover().getCoverUrl();
+                            list.add(new DetailReplayAdapter.ReplayInfoItem(
+                                    mMyRoomData.getUid(),
+                                    mMyRoomData.getNickName(),
+                                    mMyRoomData.getAvatarTs(),
+                                    hisLive.getLiveId(),
+                                    hisLive.getViewerCnt(),
+                                    hisLive.getUrl(),
+                                    hisLive.getLiveTitle(),
+                                    coverUrl,
+                                    hisLive.getShareUrl(),
+                                    hisLive.getStartTime()));
+                        }
+                        return list;
+                    }
+                }).subscribeOn(Schedulers.io())
                 .compose(this.<List<DetailReplayAdapter.ReplayInfoItem>>bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<DetailReplayAdapter.ReplayInfoItem>>() {
@@ -108,7 +109,8 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
         }
         mMyRoomData.setVideoUrl(replayInfoItem.mUrl);
         mMyRoomData.setRoomId(replayInfoItem.mLiveId);
-        mComponentController.onEvent(VideoDetailController.MSG_NEW_DETAIL_REPLAY, new Params().putItem(replayInfoItem));
+        mComponentController.onEvent(VideoDetailController.MSG_NEW_DETAIL_REPLAY, new Params()
+                .putItem(replayInfoItem));
     }
 
     @Nullable
