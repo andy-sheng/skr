@@ -365,10 +365,10 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
     }
 
     private void onNewVideo() {
-        if (mTotalCnt != 0) {
-            mTotalCnt = 0;
-            mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
-        }
+//        if (mTotalCnt != 0) {
+//            mTotalCnt = 0;
+//            mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
+//        }
         if (mIsReverse) {
             mIsReverse = false;
             mView.setReverseLayout(mIsReverse);

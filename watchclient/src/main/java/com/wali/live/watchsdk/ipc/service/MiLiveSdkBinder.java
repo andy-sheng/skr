@@ -25,7 +25,7 @@ import com.wali.live.watchsdk.list.ChannelLiveCaller;
 import com.wali.live.watchsdk.list.RelationCaller;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
-import com.wali.live.watchsdk.watch.ReplaySdkActivity;
+import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -463,7 +463,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         .setGameId(gameId)
                         .setEnableShare(enableShare)
                         .build();
-                ReplaySdkActivity.openActivity(activity, roomInfo);
+                // ReplaySdkActivity.openActivity(activity, roomInfo);
+                VideoDetailSdkActivity.openActivity(activity, roomInfo);
                 if (needFinish) {
                     activity.finish();
                 }

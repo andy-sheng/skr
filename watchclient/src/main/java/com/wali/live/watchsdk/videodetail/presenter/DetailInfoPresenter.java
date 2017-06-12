@@ -3,7 +3,6 @@ package com.wali.live.watchsdk.videodetail.presenter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.LruCache;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -54,7 +53,6 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
     private RoomBaseDataModel mMyRoomData;
 
     private Subscription mFeedsSubscription;
-    private final LruCache<String, FeedsInfo> mFeedsInfoCache = new LruCache<>(10);
 
     public DetailInfoPresenter(
             @NonNull IComponentController componentController,
@@ -138,16 +136,11 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                 .map(new Func1<Integer, FeedsInfo>() {
                     @Override
                     public FeedsInfo call(Integer integer) {
-                        String cacheKey = feedId + "_" + ownerId;
-                        FeedsInfo outInfo = mFeedsInfoCache.get(cacheKey);
-                        if (outInfo != null) {
-                            return outInfo;
-                        }
                         Feeds.GetFeedInfoResponse rsp = FeedsInfoUtils.fetchFeedsInfo(feedId, ownerId, false);
                         if (rsp == null || rsp.getRet() != ErrorCode.CODE_SUCCESS) {
                             return null;
                         }
-                        outInfo = new FeedsInfo();
+                        FeedsInfo outInfo = new FeedsInfo();
                         try {
                             Feeds.FeedInfo feedInfo = rsp.getFeedInfo();
                             outInfo.timestamp = feedInfo.getFeedCteateTime();
@@ -156,7 +149,6 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                             outInfo.title = backInfo.getBaTitle();
                             outInfo.viewerCnt = backInfo.getViewerCnt();
                             outInfo.coverUrl = backInfo.getCoverUrl();
-                            mFeedsInfoCache.put(cacheKey, outInfo);
                         } catch (Exception e) {
                             MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
                         }
