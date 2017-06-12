@@ -104,10 +104,10 @@ public class VideoPlayerPresenterEx implements
         public void onPrepared() {
             MyLog.v(TAG, " onPrepared mPreSeekTo=" + mPreSeekTo + " ");
             if (mVideoPlayerPresenter != null && mVideoPlayerPresenter.isEnableReconnect()) {
+                EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_PLAYING));
                 hideLoading();
                 mIsAlreadyPrepared = true;
                 setSeekBarContainerVisible(true);
-                EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_PLAYING));
                 mPlayedTime = 0;
                 mTotalTime = mVideoPlayerPresenter.getDuration();
                 if (mPreSeekTo > 0) {
@@ -344,7 +344,7 @@ public class VideoPlayerPresenterEx implements
         mIsActivate = false;
     }
 
-    public void reset(){
+    public void reset() {
         mVideoPlayerPresenter.reset();
     }
 
@@ -530,7 +530,7 @@ public class VideoPlayerPresenterEx implements
     public void seekTo(long playedTime) {
         if (mVideoPlayerPresenter != null) {
             mVideoPlayerPresenter.seekTo(playedTime);
-            EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_START));
+            resume();
         }
     }
 

@@ -75,8 +75,10 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             DetailReplayView view = new DetailReplayView(mRootView.getContext());
             DetailReplayPresenter presenter = new DetailReplayPresenter(componentController, roomData);
             presenter.setComponentView(view.getViewProxy());
+            view.setMyRoomData(roomData);
             view.setPresenter(presenter);
-            mMessageAdapter.addView(mRootView.getResources().getString(R.string.feeds_detail_label_replay), view);
+            mMessageAdapter.addView(String.format(mRootView.getResources().getString(
+                    R.string.feeds_detail_label_replay), "0"), view);
         }
         mSlidingTabLayout.setCustomTabView(R.layout.feeds_detail_slide_tab_view, R.id.tab_tv);
         mSlidingTabLayout.setCustomTabColorizer(
@@ -116,6 +118,13 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             }
 
             @Override
+            public void updateReplayTotalCnt(int cnt) {
+                mMessageAdapter.updatePageTitle(1, String.format(mRootView.getResources()
+                        .getString(R.string.feeds_detail_label_replay), "" + cnt));
+                mSlidingTabLayout.notifyDataChange();
+            }
+
+            @Override
             public void onFoldInfoArea() {
                 mAppBarLayout.setExpanded(false);
             }
@@ -131,6 +140,13 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
          * 更新评论总数
          */
         void updateCommentTotalCnt(int cnt);
+
+        /**
+         * 更新评论总数
+         *
+         * @param cnt
+         */
+        void updateReplayTotalCnt(int cnt);
 
         /**
          * 收起信息区
