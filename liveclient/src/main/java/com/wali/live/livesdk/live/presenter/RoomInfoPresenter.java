@@ -62,7 +62,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
      * 开始上传封面
      */
     public void startLiveCover(long zuid, String liveId) {
-        MyLog.d(TAG, "start zuid=" + zuid + ", liveId=" + liveId);
+        MyLog.w(TAG, "start zuid=" + zuid + ", liveId=" + liveId);
         mPlayerId = zuid;
         mLiveId = liveId;
 
@@ -72,7 +72,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
 
     private void startTimer() {
         stopTimer();
-        MyLog.d(TAG, "restartTimer");
+        MyLog.w(TAG, "restartTimer");
         mTimerSubscription = Observable.interval(1, 3, TimeUnit.MINUTES)
                 .compose(this.<Long>bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Action1<Long>() {
@@ -111,7 +111,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
     }
 
     private void uploadFile(String path) {
-        MyLog.d(TAG, "uploadFile path=" + path);
+        MyLog.w(TAG, "uploadFile path=" + path);
         final Attachment att = new Attachment();
         att.setType(Attachment.TYPE_IMAGE);
         att.setLocalPath(path);
@@ -119,21 +119,21 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
         UploadTask.uploadPhoto(att, Attachment.AUTH_TYPE_USER_PIC, new TaskCallBackWrapper() {
             public void process(Object object) {
                 boolean isSuccess = (Boolean) object;
-                MyLog.d(TAG, "uploadFile isSuccess=" + isSuccess);
+                MyLog.w(TAG, "uploadFile isSuccess=" + isSuccess);
                 FileIOUtils.deletePath(att.getLocalPath());
             }
 
             public void processWithMore(Object... objects) {
                 if (objects == null || objects.length < 2) {
-                    MyLog.d(TAG, "uploadFile processWithMore param is too short");
+                    MyLog.w(TAG, "uploadFile processWithMore param is too short");
                     return;
                 }
                 boolean isSuccess = (Boolean) objects[0];
-                MyLog.d(TAG, "uploadFile isSuccess=" + isSuccess);
+                MyLog.w(TAG, "uploadFile isSuccess=" + isSuccess);
                 FileIOUtils.deletePath(att.getLocalPath());
                 if (isSuccess) {
                     mUrl = (String) objects[1];
-                    MyLog.d(TAG, "uploadFile processWithMore url=" + mUrl);
+                    MyLog.w(TAG, "uploadFile processWithMore url=" + mUrl);
                     roomInfoToServer();
                 }
             }
@@ -162,6 +162,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
                             MyLog.e(TAG, e);
                         }
 
+                        MyLog.w(TAG, "startRoomInfo packageName=" + mPackageName);
                         ChangeRoomInfoRsp rsp = new RoomInfoChangeRequest(mPlayerId, mLiveId, mUrl, mPackageName).syncRsp();
                         if (rsp == null) {
                             subscriber.onError(new Exception("ChangeRoomInfoRsp is null"));
@@ -184,7 +185,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
                             }
 
                             int retCode = changeRoomInfoRsp.getRetCode();
-                            MyLog.d(TAG, "ChangeRoomInfoRsp errCode=" + retCode);
+                            MyLog.w(TAG, "ChangeRoomInfoRsp errCode=" + retCode);
                             return retCode == ErrorCode.CODE_SUCCESS;
                         }
                         return false;
@@ -196,12 +197,12 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean aBoolean) {
-                        MyLog.d(TAG, "ChangeRoomInfoRsp onNext=" + aBoolean);
+                        MyLog.w(TAG, "ChangeRoomInfoRsp onNext=" + aBoolean);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        MyLog.d(TAG, "ChangeRoomInfoRsp onError=" + throwable.getMessage());
+                        MyLog.w(TAG, "ChangeRoomInfoRsp onError=" + throwable.getMessage());
                     }
                 });
     }
