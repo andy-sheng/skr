@@ -238,6 +238,12 @@
 
     </RelativeLayout>
 
+    <View
+        android:id="@+id/touch_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <!--输入框-->
     <com.wali.live.watchsdk.component.view.InputAreaView
         android:id="@+id/input_area_view"

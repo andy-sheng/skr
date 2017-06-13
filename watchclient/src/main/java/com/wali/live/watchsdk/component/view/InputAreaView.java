@@ -52,17 +52,15 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
     protected boolean mIsLandscape = false;
 
     protected InputFilter[] mNormalFilter;
-    protected
     @Nullable
-    InputFilter[] mFlyBarrageFilter;
+    protected InputFilter[] mFlyBarrageFilter;
 
     protected View mInputContainer;
     protected View mPlaceHolderContainer; // 用于软件键盘弹出占位和表情选择容器
     protected EditText mInputView;
     protected TextView mSendBtn;
-    protected
     @Nullable
-    View mBarrageSwitchBtn; // 飘屏弹幕开关
+    protected View mBarrageSwitchBtn; // 飘屏弹幕开关
 
     protected ImageView mShowSmileyBtn;
     protected SmileyPicker mSmileyPicker;
