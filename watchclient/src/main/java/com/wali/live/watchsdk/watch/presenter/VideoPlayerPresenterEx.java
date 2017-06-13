@@ -185,7 +185,7 @@ public class VideoPlayerPresenterEx implements
             if (CommonUtils.isFastDoubleClick() || !mIsAlreadyPrepared) {
                 return;
             }
-            if (mVideoPlayerPresenter.isPlaying()) {
+            if (mIsPlaying) {
                 pause();
             } else {
                 resume();
@@ -227,12 +227,12 @@ public class VideoPlayerPresenterEx implements
                     mPlayedTime = 0;
                 }
 
-                if (!mVideoPlayerPresenter.isPlaying()) {
+                if (!mIsPlaying) {
                     mVideoPlayerPresenter.start();
                     setPlayBtnSelected(true);
                 }
                 mVideoPlayerPresenter.seekTo(mPlayedTime);
-                MyLog.v(TAG, "onStopTrackingTouch " + mVideoPlayerPresenter.isPlaying() + " " + mVideoPlayerPresenter.isPaused());
+                MyLog.v(TAG, "onStopTrackingTouch " + mIsPlaying);
                 MyLog.v(TAG, "onStopTrackingTouch mPlayedTime：" + mPlayedTime);
                 EventBus.getDefault().post(new EventClass.FeedsVideoEvent(false, EventClass.FeedsVideoEvent.TYPE_START));
             }
