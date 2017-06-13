@@ -209,9 +209,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Override
     protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
-        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
-            viewerTopFromServer(mMyRoomData);
-        } else {
+        if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
             MyUserInfoManager.getInstance().syncSelfDetailInfo();
         }
         mLiveTaskPresenter.enterLive();
