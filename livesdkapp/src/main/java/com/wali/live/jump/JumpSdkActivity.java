@@ -7,8 +7,13 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.callback.ICommonCallBack;
 import com.mi.live.data.location.Location;
+import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.LiveSdkActivity;
+import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
+import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
+import com.wali.live.watchsdk.watch.WatchSdkActivity;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 /**
  * Created by lan on 17/2/21.
@@ -50,42 +55,64 @@ public class JumpSdkActivity extends BaseSdkActivity {
         }
         String action = intent.getAction();
 
-        int channelId = intent.getIntExtra(EXTRA_CHANNEL_ID, 0);
+        final int channelId = intent.getIntExtra(EXTRA_CHANNEL_ID, 0);
         String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
         String channelSecret = intent.getStringExtra(EXTRA_CHANNEL_SECRET);
+
+        final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+        MyLog.d(TAG, action + " enableShare=" + enableShare);
         switch (action) {
             case ACTION_OPEN_WATCH: {
-                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
-                String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
-                String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
-                int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
-                String gameId = intent.getStringExtra(EXTRA_GAME_ID);
-                boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
-                MyLog.d(TAG, "openWatch enableShare=" + enableShare);
+                final long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
+                final String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
+                final String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
+                final int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
+                final String gameId = intent.getStringExtra(EXTRA_GAME_ID);
+
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType, gameId, enableShare, true);
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                        .setLiveType(liveType)
+                                        .setGameId(gameId)
+                                        .setEnableShare(enableShare)
+                                        .build();
+                                WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
+                            }
+                        }, true);
                 break;
             }
             case ACTION_OPEN_REPLAY: {
-                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
-                String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
-                String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
-                int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
-                String gameId = intent.getStringExtra(EXTRA_GAME_ID);
-                boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
-                MyLog.d(TAG, "openReplay enableShare=" + enableShare);
+                final long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, 0);
+                final String liveId = intent.getStringExtra(EXTRA_LIVE_ID);
+                final String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
+                final int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
+                final String gameId = intent.getStringExtra(EXTRA_GAME_ID);
+
                 MiLiveSdkBinder.getInstance().openReplay(this, channelId, packageName, channelSecret,
-                        playerId, liveId, videoUrl, liveType, gameId, enableShare, true);
+                        new ICommonCallBack() {
+                            @Override
+                            public void process(Object objects) {
+                                reportReplay(channelId);
+
+                                RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                        .setLiveType(liveType)
+                                        .setGameId(gameId)
+                                        .setEnableShare(enableShare)
+                                        .build();
+                                VideoDetailSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
+                            }
+                        }, true);
                 break;
             }
             case ACTION_OPEN_NORMAL_LIVE: {
                 final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
-                final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
-                MyLog.d(TAG, "openReplay enableShare=" + enableShare);
                 MiLiveSdkBinder.getInstance().openNormalLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
+                                reportLive(channelId);
                                 LiveSdkActivity.openActivity(JumpSdkActivity.this, location, enableShare, false);
                             }
                         }, true);
@@ -93,12 +120,11 @@ public class JumpSdkActivity extends BaseSdkActivity {
             }
             case ACTION_OPEN_GAME_LIVE: {
                 final Location location = intent.getParcelableExtra(EXTRA_LOCATION);
-                final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
-                MyLog.d(TAG, "openReplay enableShare=" + enableShare);
                 MiLiveSdkBinder.getInstance().openGameLive(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
+                                reportLive(channelId);
                                 LiveSdkActivity.openActivity(JumpSdkActivity.this, location, enableShare, true);
                             }
                         }, true);
@@ -108,6 +134,26 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 finish();
                 break;
             }
+        }
+    }
+
+    private void reportReplay(int channelId) {
+        try {
+            String key = String.format(StatisticsKey.KEY_REPLAY_COUNT, channelId);
+            MyLog.w(TAG, "reportReplay key=" + key);
+            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+        } catch (Exception e) {
+            MyLog.e(TAG, "reportReplay e", e);
+        }
+    }
+
+    private void reportLive(int channelId) {
+        try {
+            String key = String.format(StatisticsKey.KEY_LIVE_COUNT, channelId);
+            MyLog.w(TAG, "reportLive key=" + key);
+            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+        } catch (Exception e) {
+            MyLog.e(TAG, "reportLive e", e);
         }
     }
 }

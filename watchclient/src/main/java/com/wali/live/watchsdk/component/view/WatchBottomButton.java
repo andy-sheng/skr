@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
-import com.base.log.MyLog;
 import com.mi.live.data.account.HostChannelManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.view.BaseBottomButton;
@@ -161,7 +160,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     int time = (int) animation.getAnimatedValue();
-                    MyLog.d(TAG, "time=" + time);
                     if (time <= 50) {
                         mGameBtn.setRotation(-1f * time / 5 * 2);
                     } else if (time <= 100) {

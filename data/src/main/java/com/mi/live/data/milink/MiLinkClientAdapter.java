@@ -173,6 +173,7 @@ public class MiLinkClientAdapter {
     private static final String[] accessCommand = new String[]{
             MiLinkCommand.COMMAND_ACCOUNT_VERIFY_ASSISTANT,
             MiLinkCommand.COMMAND_LIVE_ROOM_INFO,
+            MiLinkCommand.COMMAND_LIVE_ENTER,
             MiLinkCommand.COMMAND_LIVE_VIEWER_TOP,
             MiLinkCommand.COMMAND_LIVE_VIEWERINFO,
             MiLinkCommand.COMMAND_LIVE_ROOM_INFO_CHANGE,

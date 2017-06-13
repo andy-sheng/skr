@@ -88,7 +88,7 @@ public class MultiCdnIpSelectionHelper {
     }
 
     public final String getOriginalStreamUrl() {
-        StringBuilder stringBuilder =  new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder("");
         if (!isEmpty(mSavedOriginalUdpStreamUrlList)) {
             for (LiveCommonProto.UpStreamUrl upStreamUrl : mSavedOriginalUdpStreamUrlList) {
                 if (stringBuilder.length() == 0) {
@@ -110,7 +110,9 @@ public class MultiCdnIpSelectionHelper {
         return stringBuilder.toString();
     }
 
-    public final @NonNull RtmpServerInfo[] getRtmpServerInfos() {
+    public final
+    @NonNull
+    RtmpServerInfo[] getRtmpServerInfos() {
         RtmpServerInfo[] rtmpServerInfos = new RtmpServerInfo[mCdnItemList.size()];
         int i = 0;
         for (MultiCdnIpSelectionHelper.CdnItem cdnItem : mCdnItemList) {
@@ -155,15 +157,18 @@ public class MultiCdnIpSelectionHelper {
         if (mIsNetworkAvail != isAvailable) { // TODO Yangli 讨论是否插入网络连接状态变化的点
             MyLog.w(TAG, "onNetworkStatus " + isAvailable);
             mIsNetworkAvail = isAvailable;
-            if (mIsNetworkAvail) {
-                // 网络真正变化时才重新拉取IP
-                if (TextUtils.isEmpty(mNetworkId) || TextUtils.isEmpty(networkId) || !mNetworkId.equals(networkId)) {
-                    MyLog.w(TAG, "onNetworkStatus mNetworkId" + networkId);
-                    mNetworkId = networkId;
-                    clearAllIpPort();
-                    fetchIpSetForHost(mCdnItemList);
-                }
-            } else if (mIsStuttering) {
+            if (!mIsNetworkAvail && mIsStuttering) {
+                // 若网络断开，则停止当前卡顿，同时重置卡顿状态
+                updateStutterStatus(false);
+            }
+        }
+        if (mIsNetworkAvail && (TextUtils.isEmpty(mNetworkId) || TextUtils.isEmpty(networkId) ||
+                !mNetworkId.equals(networkId))) { // 网络真正变化时才重新拉取IP
+            MyLog.w(TAG, "onNetworkStatus networkId=" + networkId);
+            mNetworkId = networkId;
+            clearAllIpPort();
+            fetchIpSetForHost(mCdnItemList);
+            if (mIsStuttering) {
                 // 若网络断开，则停止当前卡顿，同时重置卡顿状态
                 updateStutterStatus(false);
             }
@@ -212,7 +217,8 @@ public class MultiCdnIpSelectionHelper {
     }
 
     public void setOriginalStreamUrl(List<LiveCommonProto.UpStreamUrl> originalStreamUrlList, String originalUdpStreamUrl) {
-        MyLog.w(TAG, "setOriginalStreamUrl originalStreamUrlList=" + originalStreamUrlList + ", originalUdpStreamUrl=" + originalUdpStreamUrl);
+        MyLog.w(TAG, "setOriginalStreamUrl originalStreamUrlList=" + originalStreamUrlList +
+                ", originalUdpStreamUrl=" + originalUdpStreamUrl);
         mSavedOriginalStreamUrlList = originalStreamUrlList;
         mSavedOriginalUdpStreamUrlList.clear();
         if (!TextUtils.isEmpty(originalUdpStreamUrl)) {

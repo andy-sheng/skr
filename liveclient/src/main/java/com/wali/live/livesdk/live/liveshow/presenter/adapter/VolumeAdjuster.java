@@ -48,6 +48,7 @@ public class VolumeAdjuster implements View.OnClickListener {
         mCurrVolume = volume;
         if (mSeekBar != null) {
             mSeekBar.setPercent(mCurrVolume / 100f);
+            mMinimizeBtn.setSelected(mCurrVolume == 0 ? true : false);
         }
     }
 

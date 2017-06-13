@@ -262,7 +262,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     public void onEvent(MiLinkEvent.StatusLogined event) {
         // 登录成功了
         if (event != null) {
-            MyLog.d(TAG, "StatusLogined");
+            MyLog.w(TAG, "StatusLogined");
             trySendDataWithServerOnce();
         }
     }

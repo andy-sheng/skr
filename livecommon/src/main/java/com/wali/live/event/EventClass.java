@@ -2,6 +2,7 @@ package com.wali.live.event;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.wali.live.common.model.CommentModel;
 import com.wali.live.pay.constant.PayWay;
@@ -16,13 +17,19 @@ public abstract class EventClass {
      */
     public static class NetWorkChangeEvent {
         private NetworkReceiver.NetState netState;
+        private String netId;
 
-        public NetWorkChangeEvent(NetworkReceiver.NetState state) {
+        public NetWorkChangeEvent(NetworkReceiver.NetState state, String netId) {
             this.netState = state;
+            this.netId = netId;
         }
 
         public NetworkReceiver.NetState getNetState() {
             return netState;
+        }
+
+        public String getNetworkId() {
+            return TextUtils.isEmpty(netId) ? ("" + netState) : (netState + "_" + netId);
         }
     }
 
@@ -271,7 +278,7 @@ public abstract class EventClass {
         }
     }
 
-    public static class KickEvent{
+    public static class KickEvent {
 
     }
 

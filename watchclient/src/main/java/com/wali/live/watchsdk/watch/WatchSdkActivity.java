@@ -31,6 +31,7 @@ import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.rx.RxRetryAssist;
 import com.jakewharton.rxbinding.view.RxView;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
@@ -208,8 +209,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     @Override
     protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
-        if (MiLinkClientAdapter.getsInstance().isTouristMode()) {
-            viewerTopFromServer(mMyRoomData);
+        if (!MiLinkClientAdapter.getsInstance().isTouristMode()) {
+            MyUserInfoManager.getInstance().syncSelfDetailInfo();
         }
         mLiveTaskPresenter.enterLive();
         startPlayer();
@@ -363,8 +364,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         mRoomTextMsgPresenter = new RoomTextMsgPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomTextMsgPresenter);
 
-        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true);
+        mRoomManagerPresenter = new RoomManagerPresenter(this, mRoomChatMsgManager, true, mMyRoomData);
         addPushProcessor(mRoomManagerPresenter);
+        mRoomManagerPresenter.syncOwnerInfo(mMyRoomData.getUid(), true); // 拉取一下主播信息，同步观看端是否是管理员
 
         mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData, mComponentController);
         addBindActivityLifeCycle(mGiftMallPresenter, true);
@@ -975,7 +977,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                 new DialogUtils.IDialogCallback() {
                     @Override
                     public void process(DialogInterface dialogInterface, int i) {
-                            finish();
+                        finish();
                     }
                 },
                 null);

@@ -258,6 +258,8 @@ public class WidgetView extends RelativeLayout
 
     public interface IPresenter {
         long getUid();
+
+        String getRoomId();
     }
 
     public interface IView extends IViewProxy {

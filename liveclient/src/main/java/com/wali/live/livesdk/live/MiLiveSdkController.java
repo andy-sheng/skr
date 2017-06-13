@@ -17,6 +17,9 @@ import com.wali.live.watchsdk.IMiLiveSdk;
 import com.wali.live.watchsdk.init.InitManager;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.ipc.service.ThirdPartLoginData;
+import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
+import com.wali.live.watchsdk.watch.WatchSdkActivity;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -166,31 +169,69 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
+    public void openWatch(final Activity activity, final long playerId, final String liveId, final String videoUrl, final int liveType) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, null, mEnableShare, false);
+                new ICommonCallBack() {
+                    @Override
+                    public void process(Object objects) {
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                .setLiveType(liveType)
+                                .setEnableShare(mEnableShare)
+                                .build();
+                        WatchSdkActivity.openActivity(activity, roomInfo);
+                    }
+                }, false);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType) {
+    public void openReplay(final Activity activity, final long playerId, final String liveId, final String videoUrl, final int liveType) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, null, mEnableShare, false);
+                new ICommonCallBack() {
+                    @Override
+                    public void process(Object objects) {
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                .setLiveType(liveType)
+                                .setEnableShare(mEnableShare)
+                                .build();
+                        VideoDetailSdkActivity.openActivity(activity, roomInfo);
+                    }
+                }, false);
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
+    public void openWatch(final Activity activity, final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openWatch(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, gameId, mEnableShare, false);
+                new ICommonCallBack() {
+                    @Override
+                    public void process(Object objects) {
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                .setLiveType(liveType)
+                                .setGameId(gameId)
+                                .setEnableShare(mEnableShare)
+                                .build();
+                        WatchSdkActivity.openActivity(activity, roomInfo);
+                    }
+                }, false);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId) {
+    public void openReplay(final Activity activity, final long playerId, final String liveId, final String videoUrl, final int liveType, final String gameId) {
         checkHasInit();
         MiLiveSdkBinder.getInstance().openReplay(activity, mChannelId, mPackageName, mChannelSecret,
-                playerId, liveId, videoUrl, liveType, gameId, mEnableShare, false);
+                new ICommonCallBack() {
+                    @Override
+                    public void process(Object objects) {
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                .setLiveType(liveType)
+                                .setGameId(gameId)
+                                .setEnableShare(mEnableShare)
+                                .build();
+                        VideoDetailSdkActivity.openActivity(activity, roomInfo);
+                    }
+                }, false);
     }
 
     @Override

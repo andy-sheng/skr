@@ -6,6 +6,7 @@ import com.base.utils.rx.RxRetryAssist;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.manager.model.LiveRoomManagerModel;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -63,6 +64,7 @@ public class RoomPreparePresenter extends BaseRxPresenter<IRoomPrepareView> {
             mView.setManagerCount(-1);
             return;
         }
+        LiveRoomCharacterManager.getInstance().clear();
         Observable
                 .create(new Observable.OnSubscribe<Integer>() {
                     @Override

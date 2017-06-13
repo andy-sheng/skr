@@ -295,4 +295,8 @@ public class RxPermissions {
             subject.onCompleted();
         }
     }
+
+    public void clearSubjects() {
+        mSubjects.clear();
+    }
 }

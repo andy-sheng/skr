@@ -26,7 +26,6 @@ import com.base.utils.toast.ToastUtils;
 import com.base.view.BackTitleBar;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
-import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.pay.activity.RechargeActivity;
 import com.wali.live.pay.fragment.RechargeRecordFragment;
 import com.wali.live.pay.model.Diamond;
@@ -46,11 +45,6 @@ import rx.functions.Action1;
 
 import static com.wali.live.pay.constant.PayConstant.RECHARGE_STEP_FIRST;
 import static com.wali.live.pay.constant.PayConstant.RECHARGE_STEP_SECOND;
-import static com.wali.live.statistics.StatisticsKey.AC_APP;
-import static com.wali.live.statistics.StatisticsKey.KEY;
-import static com.wali.live.statistics.StatisticsKey.Recharge.VISIT;
-import static com.wali.live.statistics.StatisticsKey.TIMES;
-import static com.wali.live.statistics.StatisticsKeyUtils.getRechargeTemplate;
 
 /**
  * 充值界面<br/>
@@ -65,7 +59,6 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
     public static RechargeFragment openFragment(@NonNull FragmentActivity fragmentActivity, @IdRes int containerId, Bundle bundle, boolean hasAnimation) {
         return (RechargeFragment) FragmentNaviUtils.addFragment(fragmentActivity, containerId, RechargeFragment.class, bundle, true, hasAnimation, true);
     }
-
 
     //////////////////////////////////////////////////////
     /////////////////////非静态成员变量/////////////////////
@@ -93,7 +86,6 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
     @Override
     protected void bindView() {
         StatisticsKeyUtils.RechargeScribeParam.param = getArguments();
-
         mRechargePresenter.setView(this);
 
         BackTitleBar titleBar = (BackTitleBar) mRootView.findViewById(R.id.title_bar);
@@ -181,7 +173,6 @@ public class RechargeFragment extends BaseEventBusFragment implements IRechargeV
         }
         mRechargeAdapter = null;
     }
-
 
     /**
      * 是否重载状态栏，如果不重载，则用该Fragment所附着的Activity的设置

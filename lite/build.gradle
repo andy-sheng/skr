@@ -23,12 +23,9 @@ android {
             java.srcDirs = ['src/main/java', 'src/main/java-gen']
         }
     }
-
-    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
-//    compile fileTree(dir: 'libs', include: ['*.jar'])
     // 引擎相关
     compile files('libs/broadcaster.jar')
     compile files('libs/webrtc.jar')
@@ -36,6 +33,7 @@ dependencies {
     compile files('libs/xplatform_util.jar')
     compile files('libs/player.jar')
 
+    // milink
     compile files('libs/milinksdk-3.1.5.jar')
     compile files('libs/protobuf-java-2.6.0.jar')
 
@@ -45,9 +43,17 @@ dependencies {
     compile files('libs/greendao-2.0.0.jar')
 
     compile files('libs/slf4j-api-1.7.21.jar')
+
+    // rx
     compile files('libs/rxandroid-1.1.0.jar')
     compile files('libs/rxjava-1.0.14.jar')
     compile files('libs/rxlifecycle-0.4.0.jar')
+
+    // 金山云
+    compile files('libs/ks3-android-sdk-v-1.4.6.jar')
+
+    // apache http
+    compile files('libs/org.apache.http.legacy.jar')
 
     provided files('libs/unity.jar')
 

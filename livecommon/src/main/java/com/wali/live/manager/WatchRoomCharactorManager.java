@@ -161,7 +161,9 @@ public class WatchRoomCharactorManager {
      * @return
      */
     public boolean hasManagerPower(long anchorId) {
-        return isInspector() || LiveRoomCharacterManager.getInstance().isTopRank(anchorId, MyUserInfoManager.getInstance().getUser().getUid()) || isManager(MyUserInfoManager.getInstance().getUser().getUid());
+        return isInspector() || LiveRoomCharacterManager.getInstance().isTopRank(
+                anchorId, MyUserInfoManager.getInstance().getUser().getUid()) ||
+                isManager(MyUserInfoManager.getInstance().getUser().getUid());
     }
 
     /**

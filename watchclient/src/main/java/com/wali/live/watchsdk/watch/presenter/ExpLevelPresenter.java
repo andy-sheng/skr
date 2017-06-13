@@ -65,7 +65,7 @@ public class ExpLevelPresenter extends RxLifeCyclePresenter {
                     @Override
                     public ExpLevelProto.UpdateExpRsp call(Integer integer) {
                         int expShareType = parseShareTypeToExpType(snsType);
-                        if (expShareType != -1) {
+                        if (expShareType == -1) {
                             return null;
                         }
                         ExpLevelProto.UpdateExpReq.Builder builder = ExpLevelProto.UpdateExpReq.newBuilder();

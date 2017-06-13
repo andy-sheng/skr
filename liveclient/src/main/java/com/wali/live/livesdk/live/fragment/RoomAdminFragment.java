@@ -19,6 +19,7 @@ import com.base.fragment.FragmentDataListener;
 import com.base.fragment.MyRxFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.network.Network;
@@ -127,6 +128,7 @@ public class RoomAdminFragment extends MyRxFragment implements FragmentDataListe
         super.onCreate(savedInstanceState);
         setupForbidManagePresenter();
         EventBus.getDefault().register(this);
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
     }
 
     @Override

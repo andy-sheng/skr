@@ -28,6 +28,7 @@ import com.base.event.SdkEventClass;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
@@ -340,6 +341,7 @@ public class FloatPersonInfoFragment extends BaseFragment implements View.OnClic
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         setupForbidManagePresenter();
+        KeyboardUtils.hideKeyboardImmediately(getActivity());
     }
 
     @Override

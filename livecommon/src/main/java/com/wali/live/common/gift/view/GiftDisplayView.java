@@ -86,7 +86,7 @@ public class GiftDisplayView extends RelativeLayout {
         mGiftDisplayRecycleViewAdapter = new GiftDisplayRecycleViewAdapter(context,false,l);
         mGiftDisplayRecycleView.setAdapter(mGiftDisplayRecycleViewAdapter);
         mGiftDisplayRecycleView.setLayoutManager(fourColumGridManager);
-        mGiftDisplayRecycleView.addItemDecoration(new GiftDisplayDividerItemDecoration(GiftDisplayDividerItemDecoration.GRID_LIST));
+//        mGiftDisplayRecycleView.addItemDecoration(new GiftDisplayDividerItemDecoration(GiftDisplayDividerItemDecoration.GRID_LIST));
         mGiftDisplayRecycleView.setHasFixedSize(true);
 
 //        GridLayoutManager fourColumGridManager = new GridLayoutManager(getContext(), 4);

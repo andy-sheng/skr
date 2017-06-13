@@ -38,6 +38,7 @@ public class GiftPacketHandler implements MiLinkPacketDispatcher.PacketDataHandl
                     response = PayProto.GiftCardPush.parseFrom(data.getData());
                     MyLog.w("GiftPackageHandler", "GiftCardPush:" + response);
                 } catch (InvalidProtocolBufferException e) {
+                    MyLog.e("GiftPackageHandler", e);
                 }
                 EventBus.getDefault().post(new GiftEventClass.GiftCardPush(response));
             }

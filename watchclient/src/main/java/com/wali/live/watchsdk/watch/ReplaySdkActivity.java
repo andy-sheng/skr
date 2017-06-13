@@ -391,9 +391,9 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
                     @Override
                     public void call(Void aVoid) {
                         if (mLandscape) {
-                            forcePortrait();
+                            tempForcePortrait();
                         } else {
-                            forceLandscape();
+                            tempForceLandscape();
                         }
                     }
                 });

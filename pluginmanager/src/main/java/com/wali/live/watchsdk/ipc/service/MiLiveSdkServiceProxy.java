@@ -21,7 +21,7 @@ import java.util.List;
  * Created by chengsimin on 2016/12/27.
  */
 public class MiLiveSdkServiceProxy implements ServiceConnection {
-    public final static String TAG = MiLiveSdkServiceProxy.class.getSimpleName();
+    public final static String TAG = "MiLiveSdkServiceProxy";
 
     private Intent mIntent;
     private IMiLiveSdkService mRemoteService;
@@ -41,7 +41,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     private IMiLiveSdkEventCallback mLiveSdkEventCallback = new IMiLiveSdkEventCallback.Stub() {
         @Override
         public void onEventLogin(int code) throws RemoteException {
-            Logger.d(TAG, "onEventLoginResult:" + code);
+            Logger.w(TAG, "onEventLoginResult:" + code);
             if (mCallback != null) {
                 mCallback.notifyLogin(code);
             }
@@ -49,7 +49,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventLogoff(int code) throws RemoteException {
-            Logger.d(TAG, "onEventLogoff:" + code);
+            Logger.w(TAG, "onEventLogoff:" + code);
             if (mCallback != null) {
                 mCallback.notifyLogoff(code);
             }
@@ -57,7 +57,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventWantLogin() throws RemoteException {
-            Logger.d(TAG, "onEventWantLogin");
+            Logger.w(TAG, "onEventWantLogin");
             if (mCallback != null) {
                 mCallback.notifyWantLogin();
             }
@@ -65,7 +65,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventVerifyFailure(int code) throws RemoteException {
-            Logger.d(TAG, "onEventVerifyFailure code=" + code);
+            Logger.w(TAG, "onEventVerifyFailure code=" + code);
             if (mCallback != null) {
                 mCallback.notifyVerifyFailure(code);
             }
@@ -73,7 +73,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventOtherAppActive() throws RemoteException {
-            Logger.d(TAG, "onEventOtherAppActive");
+            Logger.w(TAG, "onEventOtherAppActive");
             if (mCallback != null) {
                 mCallback.notifyOtherAppActive();
             }
@@ -81,7 +81,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventGetRecommendLives(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
-            Logger.d(TAG, "onEventGetRecommendLives errCode=" + errCode);
+            Logger.w(TAG, "onEventGetRecommendLives errCode=" + errCode);
             if (mChannelCallback != null) {
                 mChannelCallback.notifyGetChannelLives(errCode, liveInfos);
                 mChannelCallback = null;
@@ -90,6 +90,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventGetFollowingUserList(int errCode, List<UserInfo> userInfos, int total, long timeStamp) throws RemoteException {
+            Logger.w(TAG, "onEventGetFollowingUserList");
             if (mFollowingListCallback != null) {
                 mFollowingListCallback.notifyGetFollowingUserList(errCode, userInfos, total, timeStamp);
                 mFollowingListCallback = null;
@@ -98,6 +99,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventGetFollowingLiveList(int errCode, List<LiveInfo> liveInfos) throws RemoteException {
+            Logger.w(TAG, "onEventGetFollowingLiveList");
             if (mFollowingLivesCallback != null) {
                 mFollowingLivesCallback.notifyGetFollowingLiveList(errCode, liveInfos);
                 mFollowingLivesCallback = null;
@@ -106,6 +108,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
         @Override
         public void onEventShare(ShareInfo shareInfo) throws RemoteException {
+            Logger.w(TAG, "onEventVerifyFailure");
             if (mCallback != null) {
                 mCallback.notifyWantShare(shareInfo);
             }
@@ -273,7 +276,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void getFollowingUsers(boolean isBothWay, long timeStamp, IMiLiveSdk.IFollowingUsersCallback followingUsersCallback) {
-        Logger.d(TAG, "getFollowingUsers");
+        Logger.w(TAG, "getFollowingUsers");
         if (followingUsersCallback == null) {
             Logger.w(TAG, "getFollowingUsers callback is null");
             return;
@@ -292,7 +295,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void getFollowingLives(IMiLiveSdk.IFollowingLivesCallback followingLivesCallback) {
-        Logger.d(TAG, "getFollowingLives");
+        Logger.w(TAG, "getFollowingLives");
         if (followingLivesCallback == null) {
             Logger.w(TAG, "getFollowingLives callback is null");
             return;

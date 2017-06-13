@@ -29,7 +29,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class IOUtils {
-
     private static final int EOF = -1;
     private static final int DEFAULT_BUFFER_SIZE = 1024;
 

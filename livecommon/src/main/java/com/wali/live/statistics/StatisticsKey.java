@@ -303,8 +303,6 @@ public class StatisticsKey {
     public static final String KEY_TV_REPLAY_TIME = "tvchannel-replay-seetimes-%s";
     public static final String KEY_TV_CLICK_BARRAGE = "tvchannel-live-barrage-%s-%s";
 
-    public static final String KEY_WIDGET_CLICK = "live_widget_%s_%s_%s";
-
     public static final String KEY_RANKING_CLICK_TOTAL = "key_live_click_total_vanscoin";
     public static final String KEY_RANKING_CLICK_CURRENT = "key_live_click_room_vanscoin";
     public static final String KEY_RANKING_SHOW = "key_rank_show_room_coinrank";
@@ -844,4 +842,19 @@ public class StatisticsKey {
 
     // 游戏标签时长
     public static final String KEY_GAME_TAG_TIME = "tag-sdk-%s-times";
+
+    // 挂件点击打点
+    public static final String KEY_WIDGET_CLICK = "widget_click-%s-%s-%s";
+
+    // 开播人数统计：sdk_live-{channelId}-{userId}
+    public static final String KEY_LIVE_COUNT = "sdk_live-%s";
+    // 观看人数统计：sdk_watch-{channelId}-{userId} 删除，由服务器统计
+    // 回放人数统计：sdk_replay-{channelId}-{userId}
+    public static final String KEY_REPLAY_COUNT = "sdk_replay-%s";
+
+    // 登录入口：sdk_login_entrance-{channelId}-{miid}
+    public static final String KEY_SDK_LOGIN_ENTRANCE = "sdk_login_entrance-%s-%s";
+    // 登录成功：sdk_login_success-{channelId}-{miid}
+    public static final String KEY_SDK_LOGIN_SUCCESS = "sdk_login_success-%s-%s";
+
 }

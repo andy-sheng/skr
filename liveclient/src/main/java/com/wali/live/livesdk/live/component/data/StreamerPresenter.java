@@ -17,11 +17,13 @@ import com.mi.live.engine.streamer.IStreamer;
 import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.dns.IDnsStatusListener;
+import com.wali.live.event.EventClass;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.component.utils.MagicParamUtils;
 import com.wali.live.livesdk.live.dns.MultiCdnIpSelectionHelper;
 import com.wali.live.livesdk.live.livegame.LiveComponentController;
 import com.wali.live.proto.LiveCommonProto;
+import com.wali.live.receiver.NetworkReceiver;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -294,6 +296,18 @@ public class StreamerPresenter extends BaseStreamerPresenter<StreamerPresenter.R
             return;
         }
         mStreamer.resume();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
+        if (event != null) {
+            NetworkReceiver.NetState netCode = event.getNetState();
+            if (netCode != NetworkReceiver.NetState.NET_NO) {
+                mIpSelectionHelper.onNetworkStatus(true, event.getNetworkId());
+            } else {
+                mIpSelectionHelper.onNetworkStatus(false, null);
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

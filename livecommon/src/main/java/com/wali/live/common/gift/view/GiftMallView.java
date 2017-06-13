@@ -323,7 +323,7 @@ public class GiftMallView extends RelativeLayout implements IBindActivityLIfeCyc
             mGiftDisplayRecycleViewAdapter = new GiftDisplayRecycleViewAdapter(getContext(), true, mGiftItemListener);
             mGiftDisplayRecycleView.setAdapter(mGiftDisplayRecycleViewAdapter);
             mGiftDisplayRecycleView.setLayoutManager(new LinearLayoutManager(getRxActivity(), LinearLayoutManager.HORIZONTAL, false));
-            mGiftDisplayRecycleView.addItemDecoration(new GiftDisplayDividerItemDecoration(GiftDisplayDividerItemDecoration.HORIZONTAL_LIST));
+//            mGiftDisplayRecycleView.addItemDecoration(new GiftDisplayDividerItemDecoration(GiftDisplayDividerItemDecoration.HORIZONTAL_LIST));
             mGiftDisplayRecycleView.setHasFixedSize(true);
         }
         mGiftBottomPanel = (RelativeLayout) findViewById(R.id.gift_bottom_panel);
