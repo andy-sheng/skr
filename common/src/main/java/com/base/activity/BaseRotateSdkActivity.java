@@ -85,7 +85,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
                     }
                     mLastScreenOrientation = mScreenOrientation;
                     mScreenOrientation = currScreenOrientation;
-                    if (!mOpenOrientation) {
+                    if (!mOpenOrientation || !isRotateOn()) {
                         return;
                     }
                     if (mScreenOrientation != mLastScreenOrientation) {
