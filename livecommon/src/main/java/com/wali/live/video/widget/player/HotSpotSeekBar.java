@@ -37,6 +37,16 @@ public class HotSpotSeekBar extends RotatedSeekBar {
 //        points.add(600606l);
 //        points.add(982993l);
 //        points.add(1507995l);
+
+        init();
+    }
+
+    private void init() {
+        mFill_paint = new Paint();
+        mFill_paint.setStrokeWidth(4);
+        mFill_paint.setStyle(Paint.Style.FILL);
+        mFill_paint.setAntiAlias(true);
+        mFill_paint.setColor(getResources().getColor(R.color.white));
     }
 
     public void setTotalDuration(long duration) {
@@ -87,12 +97,6 @@ public class HotSpotSeekBar extends RotatedSeekBar {
             canvas.drawLine(mDstRectFT.left, mY, mDstRectFT.right, mY, mPaint);
         }
 
-        mFill_paint = new Paint();
-        mFill_paint.setStrokeWidth(4);
-        mFill_paint.setStyle(Paint.Style.FILL);
-        mFill_paint.setAntiAlias(true);
-        mFill_paint.setColor(getResources().getColor(R.color.white));
-
         if (start == 0) {
             start = mDstRectFT.left;
         }
@@ -113,7 +117,6 @@ public class HotSpotSeekBar extends RotatedSeekBar {
                 canvas.drawBitmap(mThumb, mSrcRectBtn, mDstRectBtn, mPaint);
             }
         }
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         super.onDraw(canvas);
     }
 
@@ -127,9 +130,6 @@ public class HotSpotSeekBar extends RotatedSeekBar {
 
     /**
      * 重写onMeasure
-     *
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
