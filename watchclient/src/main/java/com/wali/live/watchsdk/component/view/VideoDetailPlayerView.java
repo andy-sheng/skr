@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.component.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -10,12 +12,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.base.dialog.MyAlertDialog;
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
+import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.watchsdk.R;
@@ -77,7 +82,9 @@ public class VideoDetailPlayerView extends RelativeLayout
         mMyRoomData = myRoomData;
         if (mMyRoomData != null) {
             AvatarUtils.loadAvatarByUid(mCoverIv, mMyRoomData.getUid(), false);
-            startPlayer();
+            if (!check4GNet()) {
+                startPlayer();
+            }
         }
     }
 
@@ -197,6 +204,30 @@ public class VideoDetailPlayerView extends RelativeLayout
             showLoadingView();
             mVideoPlayerPresenterEx.seekTo(playedTime);
         }
+    }
+
+    private boolean check4GNet() {
+        if (AppNetworkUtils.is4g()) {
+            MyAlertDialog alertDialog = new MyAlertDialog.Builder(this.getContext()).create();
+            alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startPlayer();
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.setCancelable(false);
+            alertDialog.show();
+            return true;
+        }
+        return false;
     }
 
     @Override

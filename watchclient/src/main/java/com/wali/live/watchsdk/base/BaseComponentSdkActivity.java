@@ -8,7 +8,6 @@ import android.util.SparseArray;
 
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.dialog.MyAlertDialog;
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -22,7 +21,6 @@ import com.mi.milink.sdk.base.CustomHandlerThread;
 import com.wali.live.common.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
 import com.wali.live.event.EventClass;
-import com.wali.live.receiver.NetworkReceiver;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.active.KeepActiveProcessor;
 import com.wali.live.watchsdk.login.LoginPresenter;
@@ -58,20 +56,6 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     private MyAlertDialog mLogOffDialog;
 
     private boolean hasKicked;
-
-    protected boolean is4g() {
-        NetworkReceiver.NetState netCode = NetworkReceiver.getCurrentNetStateCode(GlobalData.app());
-        if (netCode != NetworkReceiver.NetState.NET_NO) {
-            MyLog.w(TAG, "onNetStateChanged netCode = " + netCode);
-            //优先处理错误情况
-            if (netCode == NetworkReceiver.NetState.NET_2G ||
-                    netCode == NetworkReceiver.NetState.NET_3G ||
-                    netCode == NetworkReceiver.NetState.NET_4G) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public static boolean isActive() {
         return activeNum.get() != 0;

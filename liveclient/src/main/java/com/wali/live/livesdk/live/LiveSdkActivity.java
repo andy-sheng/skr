@@ -92,6 +92,7 @@ import com.wali.live.proto.LiveProto;
 import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
+import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
@@ -337,7 +338,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     }
 
     private boolean check4GNet() {
-        if (is4g()) {
+        if (AppNetworkUtils.is4g()) {
             if (mTrafficDialog == null) {
                 mTrafficDialog = DialogUtils.showAlertDialog(this, getResources().getString(R.string.warm_prompt),
                         getResources().getString(R.string.network_change_tip), getResources().getString(R.string.i_know));

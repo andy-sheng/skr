@@ -2,9 +2,11 @@ package com.wali.live.utils;
 
 import android.text.TextUtils;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.network.DnsPodUtils;
 import com.base.utils.network.Ping;
+import com.wali.live.receiver.NetworkReceiver;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ import java.util.concurrent.TimeUnit;
  * Created by chengsimin on 16/9/23.
  */
 public class AppNetworkUtils {
+    private static final String STAG = "AppNetworkUtils";
+
     /**
      * 同步
      */
@@ -179,5 +183,18 @@ public class AppNetworkUtils {
 
         }
         return address;
+    }
+
+    public static boolean is4g() {
+        NetworkReceiver.NetState netCode = NetworkReceiver.getCurrentNetStateCode(GlobalData.app());
+        if (netCode != NetworkReceiver.NetState.NET_NO) {
+            MyLog.w(STAG, "onNetStateChanged netCode = " + netCode);
+            if (netCode == NetworkReceiver.NetState.NET_2G ||
+                    netCode == NetworkReceiver.NetState.NET_3G ||
+                    netCode == NetworkReceiver.NetState.NET_4G) {
+                return true;
+            }
+        }
+        return false;
     }
 }

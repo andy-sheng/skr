@@ -41,6 +41,7 @@ import com.wali.live.proto.LiveMessageProto;
 import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
+import com.wali.live.utils.AppNetworkUtils;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.video.widget.player.ReplaySeekBar;
 import com.wali.live.watchsdk.R;
@@ -587,7 +588,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     }
 
     private boolean check4GNet() {
-        if (is4g()) {
+        if (AppNetworkUtils.is4g()) {
             MyAlertDialog alertDialog = new MyAlertDialog.Builder(this).create();
             alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
