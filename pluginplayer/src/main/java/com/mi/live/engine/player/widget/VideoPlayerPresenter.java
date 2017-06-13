@@ -275,6 +275,14 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
         }
     }
 
+    public void mute(boolean isMute) {
+        if (isMute) {
+            mPlayer.setVolume(0, 0);
+        } else {
+            mPlayer.setVolume(1, 1);
+        }
+    }
+
     private boolean stopOtherMusic() {
         // 关闭其他音乐
         if (null == mAudioManager) {
