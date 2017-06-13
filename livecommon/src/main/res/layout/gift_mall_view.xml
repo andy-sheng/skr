@@ -15,7 +15,7 @@
         <RelativeLayout
             android:id="@+id/gift_display_bottom"
             android:layout_width="match_parent"
-            android:layout_height="56.66dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true">
 
             <TextView
@@ -24,10 +24,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
-                android:gravity="center"
-                android:text="10"
                 android:drawablePadding="6.66dp"
                 android:drawableRight="@drawable/live_icon_golden_diamond_big"
+                android:gravity="center"
+                android:text="10"
                 android:textColor="@color/color_white"
                 android:textSize="15sp" />
 
@@ -37,11 +37,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="13.33dp"
-                android:gravity="center"
-                android:text="0"
                 android:layout_toRightOf="@id/diamond_max_tv"
                 android:drawablePadding="6.66dp"
                 android:drawableRight="@drawable/live_icon_argentum_diamond_big"
+                android:gravity="center"
+                android:text="0"
                 android:textColor="@color/color_white"
                 android:textSize="15sp" />
 
@@ -56,8 +56,8 @@
                 android:drawableRight="@drawable/live_icon_more_big_normal"
                 android:gravity="center"
                 android:padding="10dp"
-                android:textColor="@color/color_fed533"
                 android:text="@string/recharge"
+                android:textColor="@color/color_fed533"
                 android:textSize="15sp" />
 
             <TextView
@@ -70,18 +70,23 @@
                 android:background="@drawable/gift_send_btn_bg"
                 android:enabled="false"
                 android:gravity="center"
+                android:text="@string/send_gift"
                 android:textColor="@color/gift_send_btn_bg_color"
-                android:textSize="13.33dp"
-                android:text="@string/send_gift" />
+                android:textSize="13.33dp" />
         </RelativeLayout>
 
         <com.wali.live.common.view.ViewPagerWithCircleIndicator
             android:id="@+id/gift_display_viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@id/gift_display_bottom" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dimen_1"
             android:layout_above="@id/gift_display_bottom"
-            android:layout_marginBottom="-20dp"
-            android:paddingBottom="20dp" />
+            android:layout_alignBottom="@+id/gift_display_viewpager"
+            android:background="@color/color_white_trans_20" />
 
         <com.wali.live.common.view.ErrorView
             android:id="@+id/gift_list_error_view"
