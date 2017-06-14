@@ -89,10 +89,6 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                 mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
             }
             mView.onUpdateCommentList(helper.mHotList, helper.mAllList, !helper.mIsAsc);
-            if (!helper.mHasMore && helper.mCanShowNoMore) {
-                helper.mCanShowNoMore = false;
-                ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_no_more);
-            }
         } else {
             mView.onPullCommentFailed();
         }
@@ -104,6 +100,10 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             return;
         }
         if (!mNewerPuller.mHasMore) {
+            if (mNewerPuller.mCanShowNoMore) {
+                mNewerPuller.mCanShowNoMore = false;
+                ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_no_more);
+            }
             return;
         }
         MyLog.w(TAG, "pullNewerComments");
@@ -142,6 +142,10 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             return;
         }
         if (!mOlderPuller.mHasMore) {
+            if (mOlderPuller.mCanShowNoMore) {
+                mOlderPuller.mCanShowNoMore = false;
+                ToastUtils.showToast(mView.getRealView().getContext(), R.string.feeds_comment_no_more);
+            }
             return;
         }
         MyLog.w(TAG, "pullOlderComments");
@@ -415,7 +419,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         private int mTotalCnt = 0;
         private long mCommentTs = 0;
         private volatile boolean mHasMore = true;
-        private volatile boolean mCanShowNoMore;
+        private volatile boolean mCanShowNoMore = true;
 
         private Deque<DetailCommentAdapter.CommentItem> mHotList = new ArrayDeque<>();
         private Deque<DetailCommentAdapter.CommentItem> mAllList = new ArrayDeque<>();
@@ -428,6 +432,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             mTotalCnt = 0;
             mCommentTs = 0;
             mHasMore = true;
+            mCanShowNoMore = true;
             mHotList.clear();
             mAllList.clear();
         }
@@ -463,7 +468,6 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             if (commentInfoList == null) {
                 return this;
             }
-            mCanShowNoMore = !commentInfoList.isEmpty();
             Deque<DetailCommentAdapter.CommentItem> outList;
             for (Feeds.CommentInfo commentInfo : commentInfoList) {
                 DetailCommentAdapter.CommentItem commentItem = new DetailCommentAdapter.CommentItem(
