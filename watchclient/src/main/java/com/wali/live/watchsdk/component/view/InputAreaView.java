@@ -64,6 +64,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
 
     protected ImageView mShowSmileyBtn;
     protected SmileyPicker mSmileyPicker;
+    protected boolean mIsKeyboardShowed = false;
 
     @Override
     public void onClick(View view) {
@@ -265,6 +266,8 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         if (mIsShowSmileyPicker) {
             hideSmileyPicker();
             hideInputViewDirectly();
+        } else if (!mIsKeyboardShowed) {
+            hideInputViewDirectly();
         } else {
             KeyboardUtils.hideKeyboard((Activity) getContext());
         }
@@ -277,6 +280,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             mIsInputMode = false;
             KeyboardUtils.hideKeyboardThenReturnResult((Activity) getContext());
             setVisibility(View.INVISIBLE);
+            adjustPlaceHolder(0);
             mInputContainer.setVisibility(View.GONE);
             mPlaceHolderContainer.setVisibility(View.GONE);
             if (mPresenter != null) {
@@ -354,6 +358,11 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             }
 
             @Override
+            public boolean isInputViewShowed() {
+                return mIsInputMode;
+            }
+
+            @Override
             public boolean showInputView() {
                 return InputAreaView.this.showInputView(mKeyboardHeight);
             }
@@ -373,6 +382,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                 if (getVisibility() != View.VISIBLE) {
                     return;
                 }
+                mIsKeyboardShowed = true;
                 if (mKeyboardHeight != keyboardHeight) {
                     mKeyboardHeight = keyboardHeight;
                     MyLog.d(TAG, "onKeyboardShowed mKeyboardHeight=" + mKeyboardHeight);
@@ -387,6 +397,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
                 if (getVisibility() != View.VISIBLE) {
                     return;
                 }
+                mIsKeyboardShowed = false;
                 if (!mIsShowSmileyPicker) {
                     hideInputViewDirectly();
                 }
@@ -437,6 +448,11 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
          * 响应返回键事件
          */
         boolean processBackPress();
+
+        /**
+         * 输入框 是否已显示
+         */
+        boolean isInputViewShowed();
 
         /**
          * 显示输入框

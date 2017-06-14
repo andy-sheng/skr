@@ -38,11 +38,20 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
     protected static final int ITEM_TYPE_COMMENT = 2;
 
     private final SpannableStringBuilder mCommentSpan = new SpannableStringBuilder();
+    private long mLastClickTs = 0;
 
     private final LabelItem mHotLabel = new LabelItem(ITEM_TYPE_HOT_LABEL);
     private final LabelItem mAllLabel = new LabelItem(ITEM_TYPE_ALL_LABEL);
 
-    public boolean isEmpty() {
+    private final boolean canProcessClick() {
+        if (System.currentTimeMillis() - mLastClickTs < 500) {
+            return false;
+        }
+        mLastClickTs = System.currentTimeMillis();
+        return true;
+    }
+
+    public final boolean isEmpty() {
         return mItems.isEmpty();
     }
 
@@ -90,7 +99,7 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             }
             case ITEM_TYPE_COMMENT: {
                 View view = mInflater.inflate(R.layout.detail_comment_item, null);
-                return new CommentHolder(view, mCommentSpan);
+                return new CommentHolder(view);
             }
             default:
                 break;
@@ -156,34 +165,73 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         }
     }
 
-    protected static class CommentHolder extends ClickItemAdapter.BaseHolder<
-            CommentItem, ICommentClickListener> {
+    protected class CommentHolder extends ClickItemAdapter.BaseHolder<CommentItem, Object>
+            implements View.OnClickListener, View.OnCreateContextMenuListener {
         private TextView mCommentTv;
         private TextView mLevelTv;
-        private DetailCommentAdapter.ICommentClickListener mListener;
-        private SpannableStringBuilder mCommentSpan;
 
-        public CommentHolder(View view, SpannableStringBuilder commentSpan) {
+        private CommentItem mItem;
+
+        private final ClickableSpan mFromNameClickListener = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                MyLog.d(TAG, "itemView onClickFromName");
+                if (mListener != null && canProcessClick()) {
+                    mListener.onClickName(mItem.fromUid);
+                }
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        };
+
+        private final ClickableSpan mToNameClickListener = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                MyLog.d(TAG, "itemView onClickToName");
+                if (mListener != null && canProcessClick()) {
+                    mListener.onClickName(mItem.toUid);
+                }
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        };
+
+        @Override
+        public void onClick(View v) {
+            MyLog.d(TAG, "itemView onItemClick");
+            if (mListener != null && canProcessClick()) {
+                mListener.onItemClick(mItem);
+            }
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            MyLog.d(TAG, "itemView onItemLongClick");
+            if (mListener != null && canProcessClick()) {
+                mListener.onItemLongClick(mItem);
+            }
+        }
+
+        public CommentHolder(View view) {
             super(view);
-            mCommentSpan = commentSpan;
             mCommentTv = $(R.id.comment_tv);
             mLevelTv = $(R.id.level_tv);
             mCommentTv.setTextColor(getResources().getColor(R.color.color_black_trans_90));
         }
 
         @Override
-        public void bindView(final CommentItem item, DetailCommentAdapter.ICommentClickListener listener) {
-            mListener = listener;
-            bindLevelView(item);
-            bindComment(item);
-            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-                @Override
-                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                    if (mListener != null) {
-                        mListener.onItemLongClick(item);
-                    }
-                }
-            });
+        public void bindView(CommentItem item, Object listener) {
+            mItem = item;
+            bindLevelView(mItem);
+            bindComment(mItem);
+            mCommentTv.setOnCreateContextMenuListener(this);
+            mCommentTv.setOnClickListener(this);
         }
 
         private void bindLevelView(CommentItem item) {
@@ -202,9 +250,8 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
         }
 
         private void appendTextWithSpan(CharSequence content, @ColorRes int colorId, ClickableSpan clickableSpan) {
-            int start = mCommentSpan.length();
+            int start = mCommentSpan.length(), end = start + content.length();
             mCommentSpan.append(content);
-            int end = mCommentSpan.length();
             if (colorId != 0) {
                 mCommentSpan.setSpan(new ForegroundColorSpan(getResources().getColor(colorId)),
                         start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -214,65 +261,23 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
             }
         }
 
-        private void bindComment(final CommentItem item) {
+        private void bindComment(CommentItem item) {
             mCommentSpan.clear();
             mCommentSpan.clearSpans();
-            // 评论者
-            String name = item.fromNickName;
-            if (TextUtils.isEmpty(name)) {
-                name = String.valueOf(item.fromUid);
-            }
-            appendTextWithSpan(name, R.color.color_5191d2, new ClickableSpan() {
-                @Override
-                public void onClick(View widget) {
-                    MyLog.d(TAG, "itemView onClickName");
-                    if (mListener != null) {
-                        mListener.onClickName(item.fromUid);
-                    }
-                }
-
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    ds.setUnderlineText(false);
-                }
-            });
-            // 评论对象
+            // 添加 评论者 并设置点击事件
+            String fromNickName = !TextUtils.isEmpty(item.fromNickName) ? item.fromNickName :
+                    String.valueOf(item.fromUid);
+            appendTextWithSpan(fromNickName, R.color.color_5191d2, mFromNameClickListener);
+            // 添加 评论对象 并设置点击事件
             if (item.toUid > 0) {
-                if (TextUtils.isEmpty(item.toNickName)) {
-                    item.toNickName = String.valueOf(item.toUid);
-                }
-                mCommentSpan.append(" " + getResources().getString(R.string.recomment_text) + " "); // 回复两个字
-                appendTextWithSpan(item.toNickName, R.color.color_5191d2, new ClickableSpan() {
-                    @Override
-                    public void onClick(View widget) {
-                        MyLog.d(TAG, "itemView onClickName");
-                        if (mListener != null) {
-                            mListener.onClickName(item.toUid);
-                        }
-                    }
-
-                    @Override
-                    public void updateDrawState(TextPaint ds) {
-                        ds.setUnderlineText(false);
-                    }
-                });
+                mCommentSpan.append(" ").append(getResources().getString(R.string.recomment_text))
+                        .append(" "); // 回复两个字
+                String toNickName = !TextUtils.isEmpty(item.toNickName) ? item.toNickName :
+                        String.valueOf(item.toUid);
+                appendTextWithSpan(toNickName, R.color.color_5191d2, mToNameClickListener);
             }
-            mCommentSpan.append(": ");
-            // 评论内容
-            appendTextWithSpan(item.content, 0, new ClickableSpan() {
-                @Override
-                public void onClick(View widget) {
-                    MyLog.d(TAG, "itemView onItemClick");
-                    if (mListener != null) {
-                        mListener.onItemClick(item);
-                    }
-                }
-
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    ds.setUnderlineText(false);
-                }
-            });
+            // 添加 评论内容
+            mCommentSpan.append(": ").append(item.content);
             mCommentSpan.setSpan(new LeadingMarginSpan.Standard(DisplayUtils.dip2px(31), 0),
                     0, mCommentSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mCommentTv.setText(mCommentSpan);

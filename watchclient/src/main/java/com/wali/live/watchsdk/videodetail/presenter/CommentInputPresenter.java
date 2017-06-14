@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.videodetail.presenter;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -32,6 +33,17 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
     private String mFeedsIdToReply;
     private DetailCommentAdapter.CommentItem mCommentToReply;
 
+    private long mShowInputTs = 0;
+    private final Handler mUiHandler = new Handler();
+    private final Runnable mHideInputDelay = new Runnable() {
+        @Override
+        public void run() {
+            if (mView != null) {
+                mView.hideInputView();
+            }
+        }
+    };
+
     public CommentInputPresenter(@NonNull IComponentController componentController) {
         super(componentController);
         registerAction(MSG_ON_BACK_PRESSED);
@@ -62,6 +74,8 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
                 break;
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
                 mView.onKeyboardHidden();
+                break;
+            default:
                 break;
         }
     }
@@ -130,13 +144,27 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
                         hint = mView.getRealView().getResources().getString(R.string.write_comment);
                     }
                     mView.setHint(hint);
-                    return mView.showInputView();
+                    mUiHandler.removeCallbacks(mHideInputDelay);
+                    if (mView.showInputView()) {
+                        mShowInputTs = System.currentTimeMillis();
+                        return true;
+                    }
+                    break;
                 }
                 case MSG_HIDE_INPUT_VIEW:
-                    mFeedsIdToReply = null;
-                    mCommentToReply = null;
-                    mView.setHint("");
-                    return mView.hideInputView();
+                    if (mView.isInputViewShowed()) {
+                        mFeedsIdToReply = null;
+                        mCommentToReply = null;
+                        mView.setHint("");
+                        mUiHandler.removeCallbacks(mHideInputDelay);
+                        if (System.currentTimeMillis() - mShowInputTs < 500) {
+                            mUiHandler.postDelayed(mHideInputDelay, 300);
+                        } else {
+                            mView.hideInputView();
+                        }
+                        return true;
+                    }
+                    break;
                 default:
                     break;
             }
