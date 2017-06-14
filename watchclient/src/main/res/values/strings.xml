@@ -94,4 +94,5 @@
     <string name="feeds_comment_delete_dialog_title">Delete the comment?</string>
     <string name="feeds_comment_delete_failed">Couldn\'t remove comments</string>
     <string name="open_same_video_hint">Replaying…</string>
+    <string name="live_lottery_no_comment_toast">No comments yet</string>
 </resources>

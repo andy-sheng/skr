@@ -34,7 +34,7 @@ public class DetailCommentView extends RelativeLayout
     @Nullable
     protected IPresenter mPresenter;
 
-    private TextView mEmptyView;
+    private View mEmptyView;
     private View mLoadingView;
     private RecyclerView mRecyclerView;
 
@@ -96,6 +96,13 @@ public class DetailCommentView extends RelativeLayout
         mEmptyView = $(R.id.empty_view);
         mLoadingView = $(R.id.loading_view);
         mRecyclerView = $(R.id.recycler_view);
+
+        $click(mEmptyView, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.reloadComments();
+            }
+        });
 
         mAdapter = new DetailCommentAdapter();
         mAdapter.setClickListener(mCommentClickListener);
@@ -186,6 +193,11 @@ public class DetailCommentView extends RelativeLayout
          * 拉取更多更老的评论
          */
         void pullOlderComments();
+
+        /**
+         * 重新拉取评论
+         */
+        void reloadComments();
 
         /**
          * 回复评论

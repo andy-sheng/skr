@@ -91,4 +91,5 @@
     <string name="sixin_message_item_content_menu_copy_success">复制成功</string>
     <string name="feeds_comment_delete_dialog_title">确认删除该评论</string>
     <string name="feeds_comment_delete_failed">评论删除失败</string>
+    <string name="live_lottery_no_comment_toast">暂时没有评论</string>
 </resources>

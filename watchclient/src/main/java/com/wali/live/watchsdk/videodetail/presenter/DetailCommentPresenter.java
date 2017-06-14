@@ -183,6 +183,21 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
     }
 
     @Override
+    public void reloadComments() {
+        if (mIsReverse) {
+            mIsReverse = false;
+            mView.setReverseLayout(mIsReverse);
+        }
+        mNewerPuller.reset();
+        mOlderPuller.reset();
+        mView.onUpdateCommentList(mNewerPuller.mHotList, mNewerPuller.mAllList, !mNewerPuller.mIsAsc);
+        if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
+            mPullSubscription.unsubscribe();
+        }
+        pullNewerComments();
+    }
+
+    @Override
     public void showCommentInput(DetailCommentAdapter.CommentItem commentItem) {
         if (commentItem == null || commentItem.fromUid == MyUserInfoManager.getInstance().getUuid()) {
             // 不能回复自己的评论
@@ -368,24 +383,6 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         dialog.show();
     }
 
-    private void onNewVideo() {
-//        if (mTotalCnt != 0) {
-//            mTotalCnt = 0;
-//            mComponentController.onEvent(MSG_COMMENT_TOTAL_CNT, new Params().putItem(mTotalCnt));
-//        }
-        if (mIsReverse) {
-            mIsReverse = false;
-            mView.setReverseLayout(mIsReverse);
-        }
-        mNewerPuller.reset();
-        mOlderPuller.reset();
-        mView.onUpdateCommentList(mNewerPuller.mHotList, mNewerPuller.mAllList, !mNewerPuller.mIsAsc);
-        if (mPullSubscription != null && !mPullSubscription.isUnsubscribed()) {
-            mPullSubscription.unsubscribe();
-        }
-        pullNewerComments();
-    }
-
     @Nullable
     @Override
     protected IAction createAction() {
@@ -405,7 +402,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                             params.getItem(1));
                     break;
                 case MSG_NEW_DETAIL_REPLAY:
-                    onNewVideo();
+                    reloadComments();
                     break;
                 default:
                     break;
