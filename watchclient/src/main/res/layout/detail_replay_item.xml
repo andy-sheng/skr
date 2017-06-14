@@ -32,10 +32,11 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_dimen_270"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/cover_iv"
             android:layout_marginLeft="@dimen/margin_30"
             android:layout_marginRight="@dimen/margin_30"
-            android:layout_toRightOf="@+id/cover_iv"
+            android:layout_toEndOf="@+id/cover_iv"
+            android:layout_toLeftOf="@+id/play_iv"
             android:gravity="center_vertical">
 
             <com.base.image.fresco.BaseImageView

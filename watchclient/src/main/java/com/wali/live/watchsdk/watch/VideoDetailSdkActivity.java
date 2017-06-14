@@ -130,6 +130,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
                 mComponentController.onEvent(VideoDetailController.MSG_PLAYER_SHOW_BTN);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_COMPLETION:
+                mComponentController.onEvent(VideoDetailController.MSG_PLAYER_COMPLETED);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
                 break;

@@ -16,6 +16,8 @@ import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
+import com.base.utils.network.NetworkUtils;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.engine.player.widget.VideoPlayerTextureView;
 import com.wali.live.component.view.IComponentView;
@@ -49,6 +51,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     private ImageView mBackIv;
     private View mPlayerContainer;
     private boolean mIsComplete = false;
+    private boolean mIsNeedStartPlayer = false;
 
     public VideoDetailPlayerView(Context context) {
         this(context, null);
@@ -81,9 +84,13 @@ public class VideoDetailPlayerView extends RelativeLayout
     public void setMyRoomData(RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
         if (mMyRoomData != null) {
-            AvatarUtils.loadAvatarByUid(mCoverIv, mMyRoomData.getUid(), false);
-            if (!check4GNet()) {
+            AvatarUtils.loadAvatarByUidTs(mCoverIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, false);
+            if (NetworkUtils.hasNetwork(this.getContext()) && !check4GNet()) {
                 startPlayer();
+            } else {
+                mIsNeedStartPlayer = true;
+                showPlayBtn(true);
+                ToastUtils.showToast(getContext(), R.string.network_disable);
             }
         }
     }
@@ -173,7 +180,6 @@ public class VideoDetailPlayerView extends RelativeLayout
             mCoverIv.setVisibility(VISIBLE);
         }
         showPlayBtn(true);
-//        pausePlayer(); //VideoDetailSdkActivity的onPause里面执行了pausePlayer.这里拿掉。
     }
 
     private void onPlayingState() {
@@ -198,7 +204,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         if (mVideoPlayerPresenterEx != null) {
             if (playedTime == 0) {
                 //已经播放完毕
-                mIsComplete = true;
+                mIsNeedStartPlayer = true;
                 return;
             }
             showLoadingView();
@@ -206,8 +212,17 @@ public class VideoDetailPlayerView extends RelativeLayout
         }
     }
 
+    private void onCompleteState() {
+        if (mCoverIv.getVisibility() != VISIBLE) {
+            mCoverIv.setVisibility(VISIBLE);
+        }
+        showPlayBtn(true);
+        mIsNeedStartPlayer = true;
+    }
+
     private boolean check4GNet() {
         if (AppNetworkUtils.is4g()) {
+            showPlayBtn(true);
             MyAlertDialog alertDialog = new MyAlertDialog.Builder(this.getContext()).create();
             alertDialog.setMessage(GlobalData.app().getString(R.string.live_traffic_tip));
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
@@ -217,9 +232,10 @@ public class VideoDetailPlayerView extends RelativeLayout
                     dialog.dismiss();
                 }
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getString(R.string.live_traffic_negative), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    mPresenter.onBackPress();
                     dialog.dismiss();
                 }
             });
@@ -290,6 +306,11 @@ public class VideoDetailPlayerView extends RelativeLayout
             public void onResetPlayer() {
                 VideoDetailPlayerView.this.resetPlayer();
             }
+
+            @Override
+            public void onCompleteState() {
+                VideoDetailPlayerView.this.onCompleteState();
+            }
         }
         return new ComponentView();
     }
@@ -300,8 +321,12 @@ public class VideoDetailPlayerView extends RelativeLayout
         if (i == R.id.back_iv) {
             mPresenter.onBackPress();
         } else if (i == R.id.play_button) {
-            if (mIsComplete) {
-                mIsComplete = false;
+            if (!NetworkUtils.hasNetwork(getContext())) {
+                ToastUtils.showToast(getContext(), R.string.network_disable);
+                return;
+            }
+            if (mIsNeedStartPlayer) {
+                mIsNeedStartPlayer = false;
                 resetPlayer();
                 startPlayer();
             } else {
@@ -313,28 +338,72 @@ public class VideoDetailPlayerView extends RelativeLayout
     }
 
     public interface IPresenter {
+        /**
+         * 结束activity接口
+         */
         void onBackPress();
     }
 
     public interface IView extends IViewProxy {
-        void onPlaying();
-
-        void showPlayBtn(boolean show);
-
+        /**
+         * 播放器打开
+         */
         void onStartPlayer();
 
+        /**
+         * 播放器续播
+         */
         void onResumePlayer();
 
+        /**
+         * 播放器暂停
+         */
         void onPausePlayer();
 
-        void onClickFullScreen();
-
+        /**
+         * 播放器关闭以及资源释放
+         */
         void onStopPlayer();
 
-        long onGetPlayingTime();
-
+        /**
+         * 播放器的seek接口
+         *
+         * @param playedTime
+         */
         void onSeekPlayer(long playedTime);
 
+        /**
+         * 播放器的重置接口
+         */
         void onResetPlayer();
+
+        /**
+         * 播放器获取当前播放时间
+         *
+         * @return
+         */
+        long onGetPlayingTime();
+
+        /**
+         * 点击全屏按钮，更新ui接口
+         */
+        void onClickFullScreen();
+
+        /**
+         * 播放器正在播放更新ui接口
+         */
+        void onPlaying();
+
+        /**
+         * 暂停按钮的展示与隐藏
+         *
+         * @param show
+         */
+        void showPlayBtn(boolean show);
+
+        /**
+         * 播放完成ui更新接口
+         */
+        void onCompleteState();
     }
 }

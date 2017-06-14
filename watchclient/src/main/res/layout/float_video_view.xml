@@ -48,9 +48,9 @@
         android:layout_height="@dimen/view_dimen_140"
         android:layout_centerInParent="true"
         android:background="@null"
-        android:src="@drawable/video_detail_play_btn"/>
+        android:src="@drawable/video_detail_play_btn"
+        android:visibility="gone"/>
 
-    <!--style="@android:style/Widget.ProgressBar.Inverse"-->
     <ProgressBar
         android:id="@+id/loading_bar"
         android:layout_width="wrap_content"

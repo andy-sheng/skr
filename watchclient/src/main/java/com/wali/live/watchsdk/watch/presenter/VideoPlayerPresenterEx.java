@@ -119,7 +119,7 @@ public class VideoPlayerPresenterEx implements
 
         @Override
         public void onCompletion() {
-            MyLog.v(TAG, " onCompletion");
+            MyLog.w(TAG, " onCompletion");
             mIsCompletion = true;
             mPlayedTime = mTotalTime;
             if (mSeekBar != null) {

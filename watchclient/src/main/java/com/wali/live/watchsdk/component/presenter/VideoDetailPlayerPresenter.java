@@ -38,6 +38,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
         registerAction(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
         registerAction(VideoDetailController.MSG_PLAYER_SHOW_BTN);
         registerAction(VideoDetailController.MSG_PLAYER_HIDE_BTN);
+        registerAction(VideoDetailController.MSG_PLAYER_COMPLETED);
     }
 
     @Nullable
@@ -95,6 +96,9 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                     break;
                 case VideoDetailController.MSG_PLAYER_HIDE_BTN:
                     mView.showPlayBtn(false);
+                    break;
+                case VideoDetailController.MSG_PLAYER_COMPLETED:
+                    mView.onCompleteState();
                 default:
                     break;
             }
