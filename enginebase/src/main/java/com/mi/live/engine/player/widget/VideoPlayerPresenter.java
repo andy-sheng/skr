@@ -380,6 +380,9 @@ public class VideoPlayerPresenter implements IPlayerPresenter {
                     MyLog.v(TAG, "MEDIA_INFO_RELOADED playState=" + mCurrentState);
                     break;
                 default:
+                    if (mPlayer != null && mPlayer.isPlaying()) {
+                        mCurrentState = STATE_PLAYING;
+                    }
                     break;
             }
             if (mPlayerCallBack != null) {
