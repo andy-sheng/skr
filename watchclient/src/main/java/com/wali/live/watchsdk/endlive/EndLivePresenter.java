@@ -103,7 +103,7 @@ public abstract class EndLivePresenter {
 
                     @Override
                     public void onNext(RelationProto.FollowResponse result) {
-                        mEndLiveView.followResult(result.getCode() == 0);
+                        mEndLiveView.followResult(result.getCode());
                     }
                 });
     }

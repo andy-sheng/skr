@@ -18,7 +18,7 @@ public interface IUserEndLiveView {
     void showSecondAvatar(RoomRecommend.RecommendRoom roomData);
     void showThirdAvatar(RoomRecommend.RecommendRoom roomData);
     void showFourthAvatar(RoomRecommend.RecommendRoom roomData);
-    void followResult(boolean result);
+    void followResult(int errCode);
     void getRoomListResult(List<RoomRecommend.RecommendRoom> result);
     <T> Observable.Transformer<T, T> bindUntilEvent();
 }
