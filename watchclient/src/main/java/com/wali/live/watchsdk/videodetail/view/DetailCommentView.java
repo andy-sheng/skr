@@ -97,13 +97,6 @@ public class DetailCommentView extends RelativeLayout
         mLoadingView = $(R.id.loading_view);
         mRecyclerView = $(R.id.recycler_view);
 
-        $click(mEmptyView, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.reloadComments();
-            }
-        });
-
         mAdapter = new DetailCommentAdapter();
         mAdapter.setClickListener(mCommentClickListener);
         mRecyclerView.setAdapter(mAdapter);
