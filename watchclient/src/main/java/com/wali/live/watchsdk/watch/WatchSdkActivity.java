@@ -81,12 +81,14 @@ import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.SdkEndLivePresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
+import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomSytemMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
+import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
@@ -109,7 +111,7 @@ import static android.view.View.GONE;
  * Created by lan on 16/11/25.
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener,
-        ForbidManagePresenter.IForbidManageProvider, IActionCallBack {
+        ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
     /**
      * view放在这里
      */
@@ -213,7 +215,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
             MyUserInfoManager.getInstance().syncSelfDetailInfo();
         }
         mLiveTaskPresenter.enterLive();
-        startPlayer();
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
+            getVideoUrlFromServer();
+        } else {
+            startPlayer();
+        }
+    }
+
+    private void getVideoUrlFromServer() {
+        VideoShowPresenter videoShowPresenter = new VideoShowPresenter(this);
+        addPresent(videoShowPresenter);
+        videoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
     }
 
     @Override
@@ -318,7 +330,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private void startPlayer() {
         if (mVideoPlayerPresenterEx != null) {
             if (!mVideoPlayerPresenterEx.isActivate()) {
-                mVideoPlayerPresenterEx.play(mRoomInfo.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
+                mVideoPlayerPresenterEx.play(mMyRoomData.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
                 mVideoPlayerPresenterEx.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
             }
         }
@@ -664,6 +676,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     private IWatchView mWatchView = new IWatchView() {
         @Override
         public void enterLive(EnterRoomInfo roomInfo) {
+            if (roomInfo != null) {
+                updateVideoUrl(roomInfo.getDownStreamUrl());
+            }
             WatchRoomCharactorManager.getInstance().clear();
             syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
             if (mComponentController != null) {
@@ -931,6 +946,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         return false;
     }
 
+
     @Override
     public void processAction(String action, int errCode, Object... objects) {
         MyLog.w(TAG, "processAction : " + action + " , errCode : " + errCode);
@@ -981,5 +997,14 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
                     }
                 },
                 null);
+    }
+
+    @Override
+    public void updateVideoUrl(String videoUrl) {
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())
+                && !TextUtils.isEmpty(videoUrl)) {
+            mMyRoomData.setVideoUrl(videoUrl);
+            startPlayer();
+        }
     }
 }

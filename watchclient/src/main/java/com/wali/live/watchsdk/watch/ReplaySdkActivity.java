@@ -55,10 +55,12 @@ import com.wali.live.watchsdk.watch.presenter.GameModePresenter;
 import com.wali.live.watchsdk.watch.presenter.TouchPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
 import com.wali.live.watchsdk.watch.presenter.VideoPlayerPresenterEx;
+import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomStatusPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomTextMsgPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomViewerPresenter;
+import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 import com.wali.live.watchsdk.watch.view.TouchDelegateView;
 import com.wali.live.watchsdk.watchtop.view.WatchTopInfoSingleView;
 
@@ -78,7 +80,8 @@ import rx.functions.Action1;
  * Created by yurui on 2016/12/13.
  */
 
-public class ReplaySdkActivity extends BaseComponentSdkActivity implements FloatPersonInfoFragment.FloatPersonInfoClickListener, IActionCallBack {
+public class ReplaySdkActivity extends BaseComponentSdkActivity implements
+        FloatPersonInfoFragment.FloatPersonInfoClickListener, IActionCallBack, IWatchVideoView {
     protected final static String TAG = "ReplaySdkActivity";
 
     private static final int MSG_ROOM_INFO = 108;               //主播拉取房间信息
@@ -161,8 +164,18 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     @Override
     protected void trySendDataWithServerOnce() {
         mUserInfoPresenter.updateOwnerInfo();
-        startPlayer();
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
+            getVideoUrlFromServer();
+        } else {
+            startPlayer();
+        }
         startGetBarrageTimer();
+    }
+
+    private void getVideoUrlFromServer() {
+        VideoShowPresenter videoShowPresenter = new VideoShowPresenter(this);
+        addPresent(videoShowPresenter);
+        videoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
     }
 
     @Override
@@ -402,7 +415,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
     private void startPlayer() {
         if (mReplayVideoPresenter != null) {
             if (!mReplayVideoPresenter.isActivate()) {
-                mReplayVideoPresenter.play(mRoomInfo.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
+                mReplayVideoPresenter.play(mMyRoomData.getVideoUrl());//, mVideoContainer, false, VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE, true, true);
                 mReplayVideoPresenter.setTransMode(VideoPlayerTextureView.TRANS_MODE_CENTER_INSIDE);
             }
         }
@@ -419,6 +432,15 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements Float
             mTimer = new Timer();
             syncSystemMessage();
             mTimer.schedule(new TickTimerTask(), 0, 1000);
+        }
+    }
+
+    @Override
+    public void updateVideoUrl(String videoUrl) {
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())
+                && !TextUtils.isEmpty(videoUrl)) {
+            mMyRoomData.setVideoUrl(videoUrl);
+            startPlayer();
         }
     }
 
