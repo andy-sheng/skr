@@ -2,9 +2,10 @@ package com.wali.live.watchsdk.videodetail.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.style.BackgroundColorSpan;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
-import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -28,19 +29,23 @@ public class SpanClickView extends android.support.v7.widget.AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        boolean superResult = super.onTouchEvent(event);
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-            mIsClickSpan = getSelectionStart() != -1;
-            mHasCreateContextMenu = false;
-        }
-        return superResult;
-    }
+    private final BackgroundColorSpan mBgColorSpan = new BackgroundColorSpan(0x19000000);
 
     @Override
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
+        if (pressed) {
+            mIsClickSpan = false;
+            mHasCreateContextMenu = false;
+            int start = getSelectionStart(), end = getSelectionEnd();
+            if (start != -1 && end > start) {
+                mIsClickSpan = true;
+                ((Spannable) getText()).setSpan(mBgColorSpan, start, end,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        } else {
+            ((Spannable) getText()).removeSpan(mBgColorSpan);
+        }
         ((View) getParent()).setBackgroundColor(pressed && !mIsClickSpan ? 0x19000000 : 0); // color_black_trans_10 : transparent
     }
 
