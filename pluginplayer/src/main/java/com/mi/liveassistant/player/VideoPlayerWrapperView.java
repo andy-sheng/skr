@@ -126,6 +126,13 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         }
     }
 
+    public boolean isMute() {
+        if (mVideoPlayerPresenter != null) {
+            return mVideoPlayerPresenter.isMute();
+        }
+        return false;
+    }
+
     private void startReconnect() {
         MyLog.w(TAG, "startReconnect");
         mHandler.removeMessages(MSG_RELOAD_VIDEO);

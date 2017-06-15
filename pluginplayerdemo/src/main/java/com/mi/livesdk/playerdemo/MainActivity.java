@@ -13,8 +13,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView mPlayBtn;
     private TextView mMuteBtn;
 
-    private boolean mIsMute;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayerWrapperView.play("http://v2.zb.mi.com/live/12886020_1493803428.flv?playui=0");
+                mPlayerWrapperView.play("http://v2.zb.mi.com/live/100415_1497519404.flv?playui=0");
             }
         });
 
@@ -35,13 +33,12 @@ public class MainActivity extends AppCompatActivity {
         mMuteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mIsMute = !mIsMute;
-                mPlayerWrapperView.mute(mIsMute);
-
-                mMuteBtn.setText("mute:" + (mIsMute ? "on" : "off"));
+                boolean isMute = !mPlayerWrapperView.isMute();
+                mPlayerWrapperView.mute(isMute);
+                mMuteBtn.setText("mute:" + (isMute ? "on" : "off"));
             }
         });
-        mMuteBtn.setText("mute:" + (mIsMute ? "on" : "off"));
+        mMuteBtn.setText("mute:" + (mPlayerWrapperView.isMute() ? "on" : "off"));
     }
 
     @Override
