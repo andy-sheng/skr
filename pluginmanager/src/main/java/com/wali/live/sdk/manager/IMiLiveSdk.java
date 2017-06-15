@@ -156,6 +156,13 @@ public interface IMiLiveSdk {
     void getFollowingLiveList(IFollowingLivesCallback callback);
 
     /**
+     * 统计打点
+     *
+     * @version 205025
+     */
+    void statistic(String key, long time, IAssistantCallback callback);
+
+    /**
      * 判断该手机中是否安装的直播助手
      */
     boolean hasInstallLiveSdk();
