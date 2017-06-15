@@ -305,6 +305,14 @@ public class GalileoPlayer implements IPlayer {
     }
 
     @Override
+    public boolean isMute() {
+        if (mIjkMediaPlayer != null) {
+            return mIjkMediaPlayer.isMute();
+        }
+        return false;
+    }
+
+    @Override
     public void setBufferSize(int size) {
 
     }
