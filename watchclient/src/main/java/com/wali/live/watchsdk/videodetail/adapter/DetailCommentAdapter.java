@@ -25,6 +25,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.adapter.ClickItemAdapter;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 /**
  * Created by yangli on 2017/6/2.
@@ -138,6 +139,11 @@ public class DetailCommentAdapter extends ClickItemAdapter<DetailCommentAdapter.
                 this.content = SmileyParser.getInstance().addSmileySpans(GlobalData.app(), content,
                         DisplayUtils.dip2px(16), true, false, true);
             }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return super.equals(o) || commentId == ((CommentItem) o).commentId;
         }
     }
 

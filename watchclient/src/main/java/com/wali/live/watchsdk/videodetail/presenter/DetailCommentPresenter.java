@@ -54,7 +54,7 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
         implements DetailCommentView.IPresenter {
     private static final String TAG = "DetailCommentPresenter";
 
-    private final static int PULL_COMMENT_LIMIT = 30; // 单次拉取评论的条数
+    private final static int PULL_COMMENT_LIMIT = 12; // 单次拉取评论的条数
 
     private RoomBaseDataModel mMyRoomData;
 
@@ -156,6 +156,32 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                     @Override
                     public PullCommentHelper call(Integer integer) {
                         return mOlderPuller.pullMore(feedId, PULL_COMMENT_LIMIT);
+                    }
+                })
+                .map(new Func1<PullCommentHelper, PullCommentHelper>() {
+                    @Override
+                    public PullCommentHelper call(PullCommentHelper helper) {
+                        if (helper == null) {
+                            return null;
+                        }
+                        // 如果反向拉取与之前正向拉取的数据重合了，则表明评论全部拉取完成，合并两个列表
+                        if (mNewerPuller.mCommentTs != 0 && mOlderPuller.mCommentTs != 0 &&
+                                mNewerPuller.mCommentTs > mOlderPuller.mCommentTs) {
+                            while (!mNewerPuller.mHotList.isEmpty()) {
+                                DetailCommentAdapter.CommentItem item = mNewerPuller.mHotList.removeLast();
+                                if (!mOlderPuller.mHotList.contains(item)) {
+                                    mOlderPuller.mHotList.addLast(item);
+                                }
+                            }
+                            while (!mNewerPuller.mAllList.isEmpty()) {
+                                DetailCommentAdapter.CommentItem item = mNewerPuller.mAllList.removeLast();
+                                if (!mOlderPuller.mAllList.contains(item)) {
+                                    mOlderPuller.mAllList.addLast(item);
+                                }
+                            }
+                            mOlderPuller.mHasMore = false;
+                        }
+                        return mOlderPuller;
                     }
                 })
                 .subscribeOn(Schedulers.from(mExecutor))
@@ -436,9 +462,6 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
 
         private void addSendItem(DetailCommentAdapter.CommentItem commentItem) {
             if (commentItem != null) {
-                if (mCommentTs == 0) {
-                    mCommentTs = commentItem.createTime;
-                }
                 mAllList.addFirst(commentItem);
             }
         }
@@ -476,7 +499,9 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
                         commentInfo.getToNickname(),
                         commentInfo.getContent());
                 outList = commentInfo.getIsGood() ? mHotList : mAllList;
-                outList.addLast(commentItem);
+                if (!outList.contains(commentItem)) {
+                    outList.addLast(commentItem);
+                }
             }
             return this;
         }
