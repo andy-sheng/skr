@@ -98,6 +98,8 @@ public class VideoPlayerPresenterEx implements
     private int mBufferingCount = 0;
     protected BaseIpSelectionHelper mIpSelectionHelper;
 
+    private boolean mIsPlayerEnable = true; //此播放器是否work的标记位, LIVEASSAND-92 bugfix需要用到
+
     VideoPlayerCallBackWrapper mIPlayerCallBack = new VideoPlayerCallBackWrapper() {
 
         @Override
@@ -687,7 +689,7 @@ public class VideoPlayerPresenterEx implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.NetWorkChangeEvent event) {
         MyLog.w(TAG, "EventClass.NetWorkChangeEvent");
-        if (null != event) {
+        if (null != event && mIsPlayerEnable) {
             NetworkReceiver.NetState netCode = event.getNetState();
             if (netCode != NetworkReceiver.NetState.NET_NO) {
                 //优先处理错误情况
@@ -698,5 +700,9 @@ public class VideoPlayerPresenterEx implements
                 }
             }
         }
+    }
+
+    public void setPlayerEnable(boolean playerEnable) {
+        mIsPlayerEnable = playerEnable;
     }
 }

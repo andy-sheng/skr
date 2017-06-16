@@ -38,6 +38,8 @@ public class VideoDetailPlayerView extends RelativeLayout
         View.OnClickListener {
     private static final String TAG = "VideoDetailPlayerView";
 
+    private final static int PLAYER_START = 0;
+    private final static int PLAYER_SEEK = 1;
     private RoomBaseDataModel mMyRoomData;
     @Nullable
     protected IPresenter mPresenter;
@@ -50,7 +52,6 @@ public class VideoDetailPlayerView extends RelativeLayout
     private BaseImageView mCoverIv;
     private ImageView mBackIv;
     private View mPlayerContainer;
-    private boolean mIsComplete = false;
     private boolean mIsNeedStartPlayer = false;
 
     public VideoDetailPlayerView(Context context) {
@@ -85,7 +86,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         mMyRoomData = myRoomData;
         if (mMyRoomData != null) {
             AvatarUtils.loadAvatarByUidTs(mCoverIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, false);
-            if (NetworkUtils.hasNetwork(this.getContext()) && !check4GNet()) {
+            if (NetworkUtils.hasNetwork(this.getContext()) && !check4GNet(PLAYER_START, 0)) {
                 startPlayer();
             } else {
                 mIsNeedStartPlayer = true;
@@ -180,6 +181,7 @@ public class VideoDetailPlayerView extends RelativeLayout
             mCoverIv.setVisibility(VISIBLE);
         }
         showPlayBtn(true);
+        mVideoPlayerPresenterEx.setPlayerEnable(false);
     }
 
     private void onPlayingState() {
@@ -202,13 +204,16 @@ public class VideoDetailPlayerView extends RelativeLayout
     private void seekVideoPlayer(long playedTime) {
         MyLog.w(TAG, "seekVideoPlayer playedTime=" + playedTime);
         if (mVideoPlayerPresenterEx != null) {
+            mVideoPlayerPresenterEx.setPlayerEnable(true);
             if (playedTime == 0) {
                 //已经播放完毕
                 mIsNeedStartPlayer = true;
                 return;
             }
-            showLoadingView();
-            mVideoPlayerPresenterEx.seekTo(playedTime);
+            if (!check4GNet(PLAYER_SEEK, playedTime)) {
+                showLoadingView();
+                mVideoPlayerPresenterEx.seekTo(playedTime);
+            }
         }
     }
 
@@ -220,7 +225,7 @@ public class VideoDetailPlayerView extends RelativeLayout
         mIsNeedStartPlayer = true;
     }
 
-    private boolean check4GNet() {
+    private boolean check4GNet(final int from, final long playingTime) {
         if (AppNetworkUtils.is4g()) {
             showPlayBtn(true);
             MyAlertDialog alertDialog = new MyAlertDialog.Builder(this.getContext()).create();
@@ -228,7 +233,18 @@ public class VideoDetailPlayerView extends RelativeLayout
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getString(R.string.live_traffic_positive), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    startPlayer();
+                    switch (from) {
+                        case PLAYER_START:
+                            startPlayer();
+                            break;
+                        case PLAYER_SEEK:
+                            showLoadingView();
+                            mVideoPlayerPresenterEx.seekTo(playingTime);
+                            break;
+                        default:
+                            break;
+
+                    }
                     dialog.dismiss();
                 }
             });
