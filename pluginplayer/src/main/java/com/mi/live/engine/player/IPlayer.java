@@ -66,6 +66,8 @@ public interface IPlayer {
 
     long getCurrentPosition();
 
+    boolean isMute();
+
     void setVolume(float volumeL, float volumeR);
 
     void setBufferSize(int size);

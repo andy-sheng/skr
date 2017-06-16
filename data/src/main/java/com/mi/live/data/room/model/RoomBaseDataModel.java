@@ -132,6 +132,7 @@ public class RoomBaseDataModel implements Serializable {
      * 房间id，重要属性
      */
     private String mRoomId;
+    private String mVideoUrl;
 
     private boolean mSupportMagicFace;
 
@@ -257,11 +258,12 @@ public class RoomBaseDataModel implements Serializable {
         if (TextUtils.isEmpty(videoUrl)) {
             return;
         }
+        mVideoUrl = videoUrl;
         mOwner.setViewUrl(videoUrl);
     }
 
     public String getVideoUrl() {
-        return mOwner.getViewUrl();
+        return mVideoUrl;
     }
 
     public void setCity(String city) {

@@ -11,6 +11,7 @@ import com.mi.liveassistant.playerdemo.R;
 public class MainActivity extends AppCompatActivity {
     private VideoPlayerWrapperView mPlayerWrapperView;
     private TextView mPlayBtn;
+    private TextView mMuteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +25,20 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayerWrapperView.play("http://v2.zb.mi.com/live/12886020_1493803428.flv?playui=0");
+                mPlayerWrapperView.play("http://v2.zb.mi.com/live/100415_1497519404.flv?playui=0");
             }
         });
+
+        mMuteBtn = (TextView) findViewById(R.id.mute_btn);
+        mMuteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isMute = !mPlayerWrapperView.isMute();
+                mPlayerWrapperView.mute(isMute);
+                mMuteBtn.setText("mute:" + (isMute ? "on" : "off"));
+            }
+        });
+        mMuteBtn.setText("mute:" + (mPlayerWrapperView.isMute() ? "on" : "off"));
     }
 
     @Override

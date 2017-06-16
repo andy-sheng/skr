@@ -24,7 +24,7 @@ import java.lang.ref.WeakReference;
 public class VideoPlayerWrapperView extends VideoPlayerTextureView implements IDnsStatusListener {
     // 域名解析、重连相关
     public static final int MSG_RELOAD_VIDEO = 100;             // onInfo开始buffer时，reload数据的标记。
-    public static final int PLAYER_KADUN_RELOAD_TIME = 5000;    //毫秒
+    public static final int PLAYER_KADUN_RELOAD_TIME = 5000;    // 毫秒
 
     private WatchIpSelectionHelper mIpSelectionHelper;
 
@@ -117,6 +117,20 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
             mVideoPlayerPresenter.setVideoPlayerCallBack(mIPlayerCallBack);
             resume();
         }
+    }
+
+    public void mute(boolean isMute) {
+        if (mVideoPlayerPresenter != null) {
+            MyLog.w(TAG, "mute=" + isMute);
+            mVideoPlayerPresenter.mute(isMute);
+        }
+    }
+
+    public boolean isMute() {
+        if (mVideoPlayerPresenter != null) {
+            return mVideoPlayerPresenter.isMute();
+        }
+        return false;
     }
 
     private void startReconnect() {

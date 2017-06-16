@@ -61,6 +61,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_NOTIFY_SHARE_SUC = "notify_share_suc";
     private static final String ACTION_GET_FOLLOWING_LIVES = "get_following_lives";
 
+    private static final String ACTION_STATISTIC = "statistic";
+
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
     private static final String PREF_FORCE_CHECK_TIME = "pref_force_check_time";
@@ -99,6 +101,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_GET_FOLLOWING_USERS, 205011);
         mMinVersionMap.put(ACTION_NOTIFY_SHARE_SUC, 205014);
         mMinVersionMap.put(ACTION_GET_FOLLOWING_LIVES, 205017);
+
+        mMinVersionMap.put(ACTION_STATISTIC, 205025);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -223,6 +227,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     private boolean checkVersion(String action, IAssistantCallback callback) {
+        if (!mMinVersionMap.containsKey(action)) {
+            Logger.d(TAG, "version action not exist=" + action);
+            return false;
+        }
         int version = mMinVersionMap.get(action);
         // 版本校验失败再重新获取下版本
         if (version > mApkVersion) {
@@ -431,6 +439,14 @@ public class MiLiveSdkController implements IMiLiveSdk {
             return;
         }
         MiLiveSdkServiceProxy.getInstance().getFollowingLives(callback);
+    }
+
+    @Override
+    public void statistic(String key, long time, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_STATISTIC, callback)) {
+            return;
+        }
+        MiLiveSdkServiceProxy.getInstance().statistic(key, time);
     }
 
     @Override

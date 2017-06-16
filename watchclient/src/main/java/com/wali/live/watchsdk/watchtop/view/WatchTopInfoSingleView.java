@@ -180,8 +180,8 @@ public class WatchTopInfoSingleView extends WatchTopInfoBaseView {
                             ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
                         } else if (followResponse.getCode() == 0) {
                             ToastUtils.showToast(getResources().getString(R.string.follow_success));
+                            hideFollowBtn(true);
                         }
-                        hideFollowBtn(true);
                     }
                 }, new Action1<Throwable>() {
                     @Override

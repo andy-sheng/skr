@@ -25,6 +25,7 @@ import com.base.utils.language.LocaleUtil;
 import com.base.utils.toast.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.live.module.common.R;
+import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -471,16 +472,20 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
      * 显示关注主播结果
      */
     @Override
-    public void followResult(boolean result) {
+    public void followResult(int errCode) {
         if (getActivity() != null && !getActivity().isFinishing()) {
-            if (result) {
+            if (errCode == ErrorCode.CODE_SUCCESS) {
                 presenter.sendFollowCommend();
                 ToastUtils.showToast(getActivity(), getString(R.string.endlive_follow_success));
                 setFollowText();
             } else {
                 txtFollow.setClickable(true);
                 txtFollow.setText(R.string.live_ended_concern);
-                ToastUtils.showToast(getActivity(), getString(R.string.follow_failed));
+                if (errCode == ErrorCode.CODE_RELATION_BLACK) {
+                    ToastUtils.showToast(getActivity(), getString(R.string.setting_black_follow_hint));
+                } else {
+                    ToastUtils.showToast(getActivity(), getString(R.string.follow_failed));
+                }
             }
         }
     }

@@ -262,14 +262,17 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
             @Override
             public void postError() {
-
             }
 
             @Override
             public void processFailure() {
-
             }
         });
+    }
+
+    @Override
+    public void statistic(String key, long time) throws RemoteException {
+        StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, time);
     }
 
     @Override

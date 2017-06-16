@@ -61,6 +61,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     private String m_videoUrl;
     private String m_videoHost = "";
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private boolean mIsMute = false; //默认有声音
 
     private void registerCallback() {
         m_pc = new PlayerCallback() {
@@ -444,9 +445,15 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
         MyLog.w(TAG, "setVolume: left=" + v + ", right=" + v1);
         if (v > 0 || v1 > 0) {
             m_player.unMuteAudio();
+            mIsMute = false;
         } else {
             m_player.muteAudio();
+            mIsMute = true;
         }
+    }
+
+    public boolean isMute() {
+        return mIsMute;
     }
 
     @Override
