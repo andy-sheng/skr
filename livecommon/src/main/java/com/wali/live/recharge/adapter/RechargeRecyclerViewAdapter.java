@@ -707,7 +707,8 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private void onGridViewItemClicked(int position) {
         MyLog.d(TAG, "item clicked, position:" + position);
-        if (position < 0 || position >= mRechargeList.size()) {
+        if (position < 0 || position >= mRechargeList.size() ||
+                mPriceGridViewHolder == null || mPriceGridViewHolder.mGridView == null) {
             return;
         }
         if (position != mPopupWindowPosition && mPopupWindowPosition < mRechargeList.size()) {
