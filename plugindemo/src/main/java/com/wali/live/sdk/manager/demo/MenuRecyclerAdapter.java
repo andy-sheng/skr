@@ -59,7 +59,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void run() {
                 MiLiveSdkController.getInstance().openWatch(
-                        mActivity, 21050016, "21050016_1482903828", "http://v2.zb.mi.com/live/21050016_1482903828.flv?playui=0", 6, "47631",
+                        mActivity, 21050016, "21050016_1482903828", null, 6, "47631",
                         new IMiLiveSdk.IAssistantCallback() {
                             @Override
                             public void notifyVersionLow() {
