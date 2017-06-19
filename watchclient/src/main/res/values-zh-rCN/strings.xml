@@ -72,4 +72,7 @@
     <string name="service_token_expired">您的账号于 %s 在其他设备上登录，如非本人操作，您的账号可能已被人盗用</string>
     <string name="forbbiden_message">你的账号（%s）由于违反社区管理规定被封禁，如需申诉请联系＂小米LIVE＂公众号。</string>
 
+    <string name="install">安装</string>
+    <string name="open">打开</string>
+
 </resources>
