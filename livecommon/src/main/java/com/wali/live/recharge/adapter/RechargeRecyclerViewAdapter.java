@@ -33,7 +33,6 @@ import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.live.module.common.R;
-import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.common.view.ErrorView;
 import com.wali.live.income.exchange.ExchangeGemActivity;
@@ -323,7 +322,6 @@ public class RechargeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             MyLog.e(TAG, "mBalanceViewHolder maybe null, balance:" + balance + "virtualBalance: " + virtualBalance);
             return;
         }
-        MyUserInfoManager.getInstance().setDiamonds(RechargeInfo.getUsableGemCount(), RechargeInfo.getUsableVirtualGemCount());
         mBalanceViewHolder.mTotalDiamondCount.setText(String.valueOf(balance + virtualBalance));
         mBalanceViewHolder.mBalanceGold.setText(String.valueOf(balance));
         mBalanceViewHolder.mBalanceSilver.setText(String.valueOf(virtualBalance));
