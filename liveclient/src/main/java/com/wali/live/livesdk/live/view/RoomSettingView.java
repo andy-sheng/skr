@@ -229,6 +229,7 @@ public class RoomSettingView extends LinearLayout {
                 if (rspData != null) {
                     try {
                         LiveProto.UpdateMsgRuleRsp rsp = LiveProto.UpdateMsgRuleRsp.parseFrom(rspData.getData());
+                        MyLog.w(TAG, "update message rule rsp : \n" + rsp.toString());
                         return rsp;
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.e(TAG, e);

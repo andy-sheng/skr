@@ -67,7 +67,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
     public void destroy() {
         super.destroy();
         if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
+            EventBus.getDefault().unregister(this);
         }
     }
 

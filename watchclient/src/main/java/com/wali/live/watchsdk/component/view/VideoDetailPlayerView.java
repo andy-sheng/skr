@@ -225,6 +225,12 @@ public class VideoDetailPlayerView extends RelativeLayout
         mIsNeedStartPlayer = true;
     }
 
+    public void detroy() {
+        if (mVideoPlayerPresenterEx != null) {
+            mVideoPlayerPresenterEx.destroy();
+        }
+    }
+
     private boolean check4GNet(final int from, final long playingTime) {
         if (AppNetworkUtils.is4g()) {
             showPlayBtn(true);
@@ -327,6 +333,11 @@ public class VideoDetailPlayerView extends RelativeLayout
             public void onCompleteState() {
                 VideoDetailPlayerView.this.onCompleteState();
             }
+
+            @Override
+            public void onDestroy() {
+                VideoDetailPlayerView.this.detroy();
+            }
         }
         return new ComponentView();
     }
@@ -421,5 +432,10 @@ public class VideoDetailPlayerView extends RelativeLayout
          * 播放完成ui更新接口
          */
         void onCompleteState();
+
+        /**
+         * 释放资源
+         */
+        void onDestroy();
     }
 }

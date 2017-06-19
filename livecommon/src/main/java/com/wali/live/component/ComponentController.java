@@ -85,16 +85,11 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
 
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;
-    public static final int MSG_PLAYER_PLAYING = MSG_PLAYER_FIRST + 1;
+    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST + 1;
     public static final int MSG_PLAYER_RESUME = MSG_PLAYER_FIRST + 2;
     public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 3;
     public static final int MSG_PLAYER_STOP = MSG_PLAYER_FIRST + 4;
-    public static final int MSG_PLAYER_SEEK = MSG_PLAYER_FIRST + 5;
-    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST + 6;
-    public static final int MSG_PLAYER_BACKPRESS = MSG_PLAYER_FIRST + 7;
-    public static final int MSG_PLAYER_SHOW_BTN = MSG_PLAYER_FIRST + 8;
-    public static final int MSG_PLAYER_HIDE_BTN = MSG_PLAYER_FIRST + 9;
-    public static final int MSG_PLAYER_COMPLETED = MSG_PLAYER_FIRST + 10;
+    public static final int MSG_PLAYER_SEEK_FROM_REPLAY = MSG_PLAYER_FIRST + 5;
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI
