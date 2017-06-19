@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.Keep;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -105,7 +106,14 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
         mVideoPlayerPresenter.setBufferSize(500);
     }
 
-    public void play(String videoUrl) {
+    public boolean checkLibrary() {
+        return GlobalData.isLoaded();
+    }
+
+    public void play(String videoUrl) throws LoadLibraryException {
+        if (!checkLibrary()) {
+            throw new LoadLibraryException("load library fail");
+        }
         if (!TextUtils.isEmpty(videoUrl)) {
             mIpSelectionHelper.setOriginalStreamUrl(videoUrl);
             mIpSelectionHelper.ipSelect();
@@ -204,6 +212,16 @@ public class VideoPlayerWrapperView extends VideoPlayerTextureView implements ID
                 default:
                     break;
             }
+        }
+    }
+
+    @Keep
+    public static class LoadLibraryException extends RuntimeException {
+        public LoadLibraryException() {
+        }
+
+        public LoadLibraryException(String detailMessage) {
+            super(detailMessage);
         }
     }
 }
