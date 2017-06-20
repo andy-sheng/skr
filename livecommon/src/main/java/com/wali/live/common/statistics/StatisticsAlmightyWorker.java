@@ -28,7 +28,6 @@ public class StatisticsAlmightyWorker extends BaseStatisticsWorker {
     private final static String DIARY_FILE_PATH = DIARY_FILE_DIR + File.separator + DIARY_FILE_NAME;
 
     public static final String KEY_KEY = "key";
-    public static final String KEY_RECOMMEND = "recommend";
     public static final String KEY_DATE = "date";
     public static final String KEY_TIMES = "times";
 
@@ -71,12 +70,8 @@ public class StatisticsAlmightyWorker extends BaseStatisticsWorker {
     }
 
     /**
-     * 曝光打点
+     * 定时上报简化接口
      */
-    public void exposeDelay(String key, String recommend, long times) {
-        recordDelay(StatisticsAlmightyWorker.AC_APP, KEY_KEY, key, KEY_RECOMMEND, recommend, KEY_TIMES, String.valueOf(times), KEY_DATE, getDateYYYYMMDD());
-    }
-
     public void recordDelayDefault(String key, long times) {
         recordDelay(StatisticsAlmightyWorker.AC_APP, KEY_KEY, key, KEY_TIMES, String.valueOf(times), KEY_DATE, getDateYYYYMMDD());
     }
@@ -95,6 +90,13 @@ public class StatisticsAlmightyWorker extends BaseStatisticsWorker {
                 }
             });
         }
+    }
+
+    /**
+     * 实时上报简化接口
+     */
+    public void recordImmediatelyDefault(String key, long times) {
+        recordImmediately(StatisticsAlmightyWorker.AC_APP, KEY_KEY, key, KEY_TIMES, String.valueOf(times), KEY_DATE, getDateYYYYMMDD());
     }
 
     @Override
