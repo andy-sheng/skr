@@ -73,7 +73,7 @@ public class RoomInfoPresenter extends RxLifeCyclePresenter {
     private void startTimer() {
         stopTimer();
         MyLog.w(TAG, "restartTimer");
-        mTimerSubscription = Observable.interval(1, 3, TimeUnit.MINUTES)
+        mTimerSubscription = Observable.interval(1, 1, TimeUnit.MINUTES)
                 .compose(this.<Long>bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Action1<Long>() {
                     @Override

@@ -17,8 +17,7 @@
         android:horizontalSpacing="@dimen/view_dimen_30"
         android:numColumns="3"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="@dimen/margin_40">
-    </GridView>
+        android:verticalSpacing="@dimen/margin_40"/>
 
     <TextView
         android:id="@+id/pay_btn"

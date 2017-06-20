@@ -18,10 +18,6 @@ import java.util.concurrent.TimeUnit;
  * @notice 以后都用这个globaldata
  */
 public class GlobalData {
-    private static int REQUEST_CODE_FIRST = 100000;
-
-    private static Object sRequestCodeLock = new Object();
-
     public static final int ASYNC_EXECUTOR_LEVEL_IMAGEWORKER = 0;
 
     public static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
@@ -33,6 +29,8 @@ public class GlobalData {
     public static DisplayMetrics displayMetrics;
     public static int screenWidth = 0;
     public static int screenHeight = 0;
+
+    private static boolean sIsLoaded;
 
     public static Application app() {
         return sApplication;
@@ -46,10 +44,8 @@ public class GlobalData {
         }
     }
 
-    public static int getRequestCode() {
-        synchronized (sRequestCodeLock) {
-            return REQUEST_CODE_FIRST++;
-        }
+    public static boolean isLoaded() {
+        return sIsLoaded;
     }
 
     private static void recordScreenParam(Context context) {
@@ -78,7 +74,13 @@ public class GlobalData {
     }
 
     static {
-        System.loadLibrary("gnustl_shared");
-        System.loadLibrary("broadcast");
+        try {
+            System.loadLibrary("gnustl_shared");
+            System.loadLibrary("broadcast");
+            sIsLoaded = true;
+        } catch (Throwable e) {
+            MyLog.e(e);
+            sIsLoaded = false;
+        }
     }
 }

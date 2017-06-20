@@ -73,7 +73,6 @@
     <dimen name="text_size_190">63.333dip</dimen>
 
 
-
     <dimen name="view_dimen_1">0.34dp</dimen>
     <dimen name="view_dimen_2">0.667dp</dimen>
     <dimen name="view_dimen_3">1dp</dimen>
@@ -99,6 +98,7 @@
     <dimen name="view_dimen_38">12.67dp</dimen>
     <dimen name="view_dimen_40">13.33dip</dimen>
     <dimen name="view_dimen_42">14dip</dimen>
+    <dimen name="view_dimen_44">14.67dip</dimen>
     <dimen name="view_dimen_45">15dip</dimen>
     <dimen name="view_dimen_48">16dip</dimen>
     <dimen name="view_dimen_50">16.67dip</dimen>
@@ -226,7 +226,6 @@
     <dimen name="view_dimen_1260">420dp</dimen>
 
 
-
     <!--landScape-->
     <dimen name="view_dimen_1410">470dp</dimen>
     <dimen name="view_dimen_1510">503.33dp</dimen>
@@ -345,7 +344,6 @@
     <dimen name="margin_3">1dip</dimen>
     <dimen name="margin_2">0.67dip</dimen>
     <dimen name="margin_1">0.33dip</dimen>
-
 
 
     <dimen name="margin_negative_2">-0.67dip</dimen>

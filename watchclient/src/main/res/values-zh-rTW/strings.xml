@@ -72,6 +72,8 @@
 
     <string name="service_token_expired">您的帳號於 %s 在其他設備上登錄，如非本人操作，您的帳號可能已被人盜用</string>
     <string name="forbbiden_message">你的帳號（%s）由於違反社區管理規定被封禁，如需申訴請聯繫＂小米LIVE＂公眾號。</string>
+    <string name="install">安裝</string>
+    <string name="open">打開</string>
 
     <string name="write_comment">寫評論...</string>
     <plurals name="feeds_fans_count_formatter" formatted="false">

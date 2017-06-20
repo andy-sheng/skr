@@ -2,13 +2,17 @@ package com.mi.livesdk.playerdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.mi.liveassistant.player.VideoPlayerWrapperView;
+import com.mi.liveassistant.player.VideoPlayerWrapperView.LoadLibraryException;
 import com.mi.liveassistant.playerdemo.R;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private VideoPlayerWrapperView mPlayerWrapperView;
     private TextView mPlayBtn;
     private TextView mMuteBtn;
@@ -25,7 +29,11 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayerWrapperView.play("http://v2.zb.mi.com/live/100415_1497519404.flv?playui=0");
+                try {
+                    mPlayerWrapperView.play("http://v2.zb.mi.com/live/22469604_1497863853.flv?playui=0");
+                } catch (LoadLibraryException e) {
+                    Log.d(TAG, "load library=" + mPlayerWrapperView.checkLibrary());
+                }
             }
         });
 
@@ -39,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mMuteBtn.setText("mute:" + (mPlayerWrapperView.isMute() ? "on" : "off"));
+
+        Log.d(TAG, "load library=" + mPlayerWrapperView.checkLibrary());
     }
 
     @Override

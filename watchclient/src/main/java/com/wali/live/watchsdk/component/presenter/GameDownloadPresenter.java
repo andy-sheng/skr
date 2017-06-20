@@ -195,6 +195,12 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        mView.destroy();
+    }
+
+    @Override
     public GameViewModel getGameModel() {
         return mGameModel;
     }

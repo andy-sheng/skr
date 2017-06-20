@@ -81,16 +81,26 @@
             android:textColor="@color/color_black_trans_60"
             android:textSize="@dimen/view_dimen_32"/>
 
-        <TextView
-            android:id="@+id/download_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ProgressBar
+            android:id="@+id/download_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="@dimen/view_dimen_200"
+            android:layout_height="@dimen/view_dimen_88"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/recommend_btn_bg"
+            android:max="100"
+            android:progress="100"
+            android:progressDrawable="@drawable/progressbar_color"/>
+
+        <TextView
+            android:id="@+id/download_tv"
+            android:layout_width="@dimen/view_dimen_200"
+            android:layout_height="@dimen/view_dimen_88"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:gravity="center"
             android:text="@string/download"
             android:textColor="@color/color_black_trans_90"
-            android:textSize="@dimen/view_dimen_32"/>
+            android:textSize="@dimen/view_dimen_36"/>
     </RelativeLayout>
 </RelativeLayout>
