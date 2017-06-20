@@ -8,6 +8,7 @@ import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.live.module.common.R;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.milink.MiLinkClientAdapter;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import com.live.module.common.R;
+
 /**
  * @module com.wali.live.message
  * <p>
