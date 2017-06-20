@@ -141,7 +141,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         try {
             String key = String.format(StatisticsKey.KEY_REPLAY_COUNT, channelId);
             MyLog.w(TAG, "reportReplay key=" + key);
-            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+            StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, 1);
         } catch (Exception e) {
             MyLog.e(TAG, "reportReplay e", e);
         }
@@ -151,7 +151,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         try {
             String key = String.format(StatisticsKey.KEY_LIVE_COUNT, channelId);
             MyLog.w(TAG, "reportLive key=" + key);
-            StatisticsAlmightyWorker.getsInstance().recordDelayDefault(key, 1);
+            StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, 1);
         } catch (Exception e) {
             MyLog.e(TAG, "reportLive e", e);
         }
