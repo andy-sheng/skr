@@ -35,6 +35,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
+import static com.wali.live.component.ComponentController.MSG_COMPLETE_STARTTIME;
 import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
@@ -149,6 +150,11 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                             outInfo.title = backInfo.getBaTitle();
                             outInfo.viewerCnt = backInfo.getViewerCnt();
                             outInfo.coverUrl = backInfo.getCoverUrl();
+                            //分享相关需要的信息
+                            mMyRoomData.setShareUrl(backInfo.getShareUrl());
+                            mMyRoomData.setCoverUrl(backInfo.getCoverUrl());
+                            mMyRoomData.setLiveTitle(backInfo.getBaTitle());
+                            mMyRoomData.setViewerCnt(backInfo.getViewerCnt());
                         } catch (Exception e) {
                             MyLog.e(TAG, "syncFeedsInfo failed, exception=" + e);
                         }
@@ -164,6 +170,8 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                         if (mView != null && outInfo != null) {
                             mComponentController.onEvent(MSG_UPDATE_LIKE_STATUS, new Params()
                                     .putItem(outInfo.mySelfLike));
+                            mComponentController.onEvent(MSG_COMPLETE_STARTTIME, new Params()
+                                    .putItem(outInfo.timestamp));
                             mView.onFeedsInfo(mMyRoomData.getUid(), outInfo.title, outInfo.timestamp,
                                     outInfo.viewerCnt, outInfo.coverUrl);
                         }

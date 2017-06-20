@@ -28,6 +28,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
     private RoomBaseDataModel mMyRoomData;
     private Activity mActivity;
     private boolean mVideoPlayerEnable = true; //詳情頁播放器work。
+    private long mStartTime = 0; //回放的创建时间
 
     public VideoDetailPlayerPresenter(@NonNull IComponentController componentController,
                                       RoomBaseDataModel myRoomData,
@@ -42,6 +43,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
         registerAction(VideoDetailController.MSG_PLAYER_FULL_SCREEN);
         registerAction(VideoDetailController.MSG_PLAYER_SEEK_FROM_REPLAY);
         registerAction(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
+        registerAction(VideoDetailController.MSG_COMPLETE_STARTTIME);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
     public void onEventMainThread(EventClass.FeedsVideoEvent event) {
         MyLog.w(TAG, "onEventMainThread  mVideoPlayerEnable=" + mVideoPlayerEnable
                 + " event.type=" + event.mType);
-        if (!mVideoPlayerEnable) {
+        if (!mVideoPlayerEnable || mView == null) {
             return;
         }
         switch (event.mType) {
@@ -91,9 +93,9 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                         .setLiveType(mMyRoomData.getLiveType())
                         .setGameId(mMyRoomData.getGameId())
                         .setEnableShare(mMyRoomData.getEnableShare())
-                        .setStartTime(mView.onGetPlayingTime())
+                        .setStartTime(mStartTime)
                         .build();
-                ReplaySdkActivity.openActivity(mActivity, roomInfo);
+                ReplaySdkActivity.openActivity(mActivity, roomInfo, mView.onGetPlayingTime());
                 mView.onClickFullScreen();
                 mVideoPlayerEnable = false;
                 break;
@@ -136,6 +138,9 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                     break;
                 case VideoDetailController.MSG_PLAYER_STOP:
                     mView.onStopPlayer();
+                    break;
+                case VideoDetailController.MSG_COMPLETE_STARTTIME:
+                    mStartTime = (long) params.getItem(0);
                     break;
                 default:
                     break;

@@ -82,6 +82,7 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_FOLD_INFO_AREA = MSG_DETAIL_VIDEO_FIRST + 5;  // 收起 信息区
     public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 6;  // 点击回放每一条
     public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 7;  // 点击回放每一条
+    public static final int MSG_COMPLETE_STARTTIME = MSG_DETAIL_VIDEO_FIRST + 8;  // 回放的start时间
 
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;

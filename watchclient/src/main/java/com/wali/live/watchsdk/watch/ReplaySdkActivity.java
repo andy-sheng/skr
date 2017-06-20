@@ -97,6 +97,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
     private boolean mIsEnd = false;
     private List<HotSpotProto.HotSpotInfo> spotInfoList = new ArrayList<>();
     private long mReplayStartTime = 0;
+    private long mPrePlayedTime = 0;
     protected Timer mTimer;//每秒拉取弹幕的timer
     private CustomHandlerThread mHandlerThread = new CustomHandlerThread("ReplayFeedsVideoPlayer") {
         @Override
@@ -303,7 +304,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
 //        mFeedsVideoPlayer.setTempForceOrientListener(this);
         mReplayVideoPresenter.setSeekBarHideDelay(4000);
         mReplayVideoPresenter.setSeekBarFullScreenBtnVisible(false);
-        mReplayVideoPresenter.setPreSeekTo(mReplayStartTime);
+        mReplayVideoPresenter.setPreSeekTo(mPrePlayedTime);
 
         // 点击事件代理，左右滑动隐藏组件的逻辑
         mTouchPresenter = new TouchPresenter(mTouchDelegateView);
@@ -347,8 +348,8 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
         if (data == null) {
             return;
         }
-
         mRoomInfo = (RoomInfo) data.getParcelableExtra(EXTRA_ROOM_INFO);
+        mPrePlayedTime = data.getLongExtra(EXT_REPLAYED_TIME, 0);
         if (mRoomInfo == null) {
             MyLog.e(TAG, "mRoomInfo is null");
             finish();
@@ -656,9 +657,10 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
         }
     }
 
-    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
+    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo, long playedTime) {
         Intent intent = new Intent(activity, ReplaySdkActivity.class);
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
+        intent.putExtra(EXT_REPLAYED_TIME, playedTime);
         activity.startActivityForResult(intent, REQUEST_REPLAY);
     }
 

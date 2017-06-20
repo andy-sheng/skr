@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.ComponentController;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.feeds.FeedsLikeUtils;
 import com.wali.live.watchsdk.videodetail.view.DetailBottomView;
+import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -88,7 +88,7 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
 
     @Override
     public void showSharePanel() {
-        mComponentController.onEvent(ComponentController.MSG_SHOW_SHARE_PANEL);
+        SnsShareHelper.getInstance().shareToSns(-1, mMyRoomData);
     }
 
     @Nullable
