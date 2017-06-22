@@ -6,4 +6,8 @@ package com.wali.live.watchsdk.watch.view;
 
 public interface IWatchVideoView {
     void updateVideoUrl(String videoUrl);
+
+    void updateRoomInfo(String roomId, String videoUrl);
+
+    void notifyLiveEnd();
 }

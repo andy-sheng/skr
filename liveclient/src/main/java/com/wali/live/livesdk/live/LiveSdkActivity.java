@@ -1353,6 +1353,17 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UserInfoEvent userInfoEvent) {
+        MyLog.w(TAG, "userInfoEvent");
+        mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
+    }
+
+    @Override
+    public void onKickEvent(String msg) {
+        stopRecord(msg, true);
+    }
+
     /**
      * 秀场直播
      */
@@ -1373,16 +1384,5 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         }
         intent.putExtra(EXTRA_IS_GAME_LIVE, isGameLive);
         activity.startActivity(intent);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(UserInfoEvent userInfoEvent) {
-        MyLog.w(TAG, "userInfoEvent");
-        mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
-    }
-
-    @Override
-    public void onKickEvent(String msg) {
-        stopRecord(msg, true);
     }
 }

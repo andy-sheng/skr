@@ -970,13 +970,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
-    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
-        Intent intent = new Intent(activity, WatchSdkActivity.class);
-        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
-        activity.startActivity(intent);
-    }
-
-
     @Override
     public void onKickEvent(String msg) {
         stopPlayer();
@@ -1002,10 +995,30 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     @Override
     public void updateVideoUrl(String videoUrl) {
-        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())
-                && !TextUtils.isEmpty(videoUrl)) {
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
             mMyRoomData.setVideoUrl(videoUrl);
             startPlayer();
         }
+    }
+
+    @Override
+    public void updateRoomInfo(String roomId, String videoUrl) {
+        // 更新房间id，更新拉流地址，同时因为之前没有房间id，所以再次进一次房间
+        mMyRoomData.setRoomId(roomId);
+        updateVideoUrl(videoUrl);
+        if (mLiveTaskPresenter != null) {
+            mLiveTaskPresenter.enterLive();
+        }
+    }
+
+    @Override
+    public void notifyLiveEnd() {
+        showEndLiveFragment(true);
+    }
+
+    public static void openActivity(@NonNull Activity activity, RoomInfo roomInfo) {
+        Intent intent = new Intent(activity, WatchSdkActivity.class);
+        intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
+        activity.startActivity(intent);
     }
 }

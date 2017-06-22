@@ -110,12 +110,15 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
         if (mHasEnter) {
             return;
         }
+        MyLog.w(TAG, "enterLive roomId=" + mMyRoomData.getRoomId());
+        if (TextUtils.isEmpty(mMyRoomData.getRoomId())) {
+            return;
+        }
         // 加上这句，否则会触发离开房间逻辑
         RoomInfoGlobalCache.getsInstance().enterCurrentRoom(mMyRoomData.getRoomId());
         if (mEnterRoomSubscription != null && !mEnterRoomSubscription.isUnsubscribed()) {
             return;
         }
-        MyLog.w(TAG, "enterLive");
         mEnterRoomSubscription = LiveRoomQuery.enterRoom(mMyRoomData.getUid(), mMyRoomData.getRoomId(), "")
                 .compose(mRxActivity.<EnterRoomInfo>bindUntilEvent())
                 .retryWhen(new RxRetryAssist())

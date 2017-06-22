@@ -16,8 +16,6 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.XiaoMiOAuth;
-import com.mi.live.data.data.LiveShow;
-import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
@@ -193,39 +191,15 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(mInputEditText.getText())) {
+                String input = mInputEditText.getText().toString();
+                if (TextUtils.isEmpty(input)) {
                     ToastUtils.showToast("主播id不能为空");
                     return;
                 }
-                Observable.just(0).map(new Func1<Integer, Object>() {
-                    @Override
-                    public Object call(Integer integer) {
-                        LiveShow liveShow = UserInfoManager.getLiveShowByUserId(Long.parseLong(mInputEditText.getText().toString()));
-                        if (liveShow == null) {
-                            return null;
-                        }
-                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(liveShow.getUid(), liveShow.getLiveId(), liveShow.getUrl())
-                                .setAvatar(liveShow.getAvatar())
-                                .setCoverUrl(liveShow.getCoverUrl())
-                                .setLiveType(0)
-                                .build();
-                        WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
-                        return null;
-                    }
-                }).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Object>() {
-                            @Override
-                            public void call(Object o) {
-
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                MyLog.e(TAG, throwable);
-                            }
-                        });
-
+                RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
+                        .setLiveType(0)
+                        .build();
+                WatchSdkActivity.openActivity(MainActivity.this, roomInfo);
             }
         });
     }

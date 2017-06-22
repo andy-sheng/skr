@@ -182,7 +182,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
     private void getVideoUrlFromServer() {
         VideoShowPresenter videoShowPresenter = new VideoShowPresenter(this);
         addPresent(videoShowPresenter);
-        videoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        videoShowPresenter.getVideoUrlOnly(mMyRoomData.getUid(), mMyRoomData.getRoomId());
     }
 
     @Override
@@ -465,11 +465,18 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
 
     @Override
     public void updateVideoUrl(String videoUrl) {
-        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())
-                && !TextUtils.isEmpty(videoUrl)) {
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl()) && !TextUtils.isEmpty(videoUrl)) {
             mMyRoomData.setVideoUrl(videoUrl);
             startPlayer();
         }
+    }
+
+    @Override
+    public void updateRoomInfo(String roomId, String videoUrl) {
+    }
+
+    @Override
+    public void notifyLiveEnd() {
     }
 
     //定时拉取消息 显示弹幕 push等
