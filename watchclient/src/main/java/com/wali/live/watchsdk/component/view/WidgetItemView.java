@@ -151,6 +151,12 @@ public class WidgetItemView extends LinearLayout {
         }
     }
 
+    public void updateDisplayItemTv(int widgetID, String counter, boolean needShow) {
+        if (needShow) {
+            mItemTv.setText(counter);
+        }
+    }
+
     /**
      * 初始化运营位信息
      *
@@ -271,7 +277,6 @@ public class WidgetItemView extends LinearLayout {
                                 } else {
                                     mTxtCounter = 0;
                                 }
-
                                 if (data.get(mTxtCounter).hasText()) {
                                     tv.setText(data.get(mTxtCounter).getText());
                                     if (data.get(mTxtCounter).hasTextColor()) {
