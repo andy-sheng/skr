@@ -97,6 +97,13 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
         }
     }
 
+    public void updateWidgetList(BarrageMsg.WidgetClickMessage msg) {
+        if (msg != null) {
+            mView.updateWidgetView(msg.widgetID, msg.counter);
+        }
+
+    }
+
     public void destroy() {
         super.destroy();
         mView.destroyView();
@@ -128,6 +135,8 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
             if (mAttachmentStamp < attachmentStamp) {
                 mAttachmentStamp = attachmentStamp;
                 final BarrageMsg.attachMessageExt msgExt = (BarrageMsg.attachMessageExt) msg.getMsgExt();
+                MyLog.w("WidgetCounterPresenter", "BarrageMsgType.B_MSG_TYPE_ATTACHMENT " +
+                        "msg=" + msg.toString());
                 final List<LiveCommonProto.NewWidgetItem> widgetList = new ArrayList<>();
                 for (LiveMessageProto.NewWidgetMessageItem newWidgetMessageItem : msgExt.newWidgetList) {
                     if (!newWidgetMessageItem.getIsDelete()) {
@@ -144,6 +153,16 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                     }
                 });
             }
+        } else if (msg.getMsgType() == BarrageMsgType.B_MSG_TYPE_ATTACHMENT_COUNTER) {
+            final BarrageMsg.WidgetClickMessage msgExt = (BarrageMsg.WidgetClickMessage) msg.getMsgExt();
+            MyLog.w("WidgetCounterPresenter", "BarrageMsgType.B_MSG_TYPE_ATTACHMENT_COUNTER  msgExt.widgetID="
+                    + msgExt.widgetID + " msgExt.counter=" + msgExt.counter);
+            mUIHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    updateWidgetList(msgExt);
+                }
+            });
         }
     }
 
@@ -252,7 +271,8 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
     @Override
     public int[] getAcceptMsgType() {
         return new int[]{
-                BarrageMsgType.B_MSG_TYPE_ATTACHMENT
+                BarrageMsgType.B_MSG_TYPE_ATTACHMENT,
+                BarrageMsgType.B_MSG_TYPE_ATTACHMENT_COUNTER
         };
     }
 
@@ -294,7 +314,6 @@ public class WidgetPresenter extends ComponentPresenter<WidgetView.IView>
                                             MyLog.e(TAG, throwable);
                                         }
                                     });
-                            ;
                         }
                     }
                     break;

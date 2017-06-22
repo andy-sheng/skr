@@ -16,7 +16,9 @@ import com.wali.live.component.view.IViewProxy;
 import com.wali.live.proto.LiveCommonProto;
 import com.wali.live.watchsdk.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenyong on 2017/03/24.
@@ -41,6 +43,7 @@ public class WidgetView extends RelativeLayout
     private WidgetItemView mRightBottomWiv;
 
     private boolean mNeedShow = true;
+    private Map<Integer, Integer> mWidgetIDs = new HashMap<>();
 
     public WidgetView(Context context) {
         this(context, null, 0);
@@ -86,6 +89,7 @@ public class WidgetView extends RelativeLayout
     private void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list) {
         for (int i = 0; i < list.size(); i++) {
             LiveCommonProto.NewWidgetItem info = list.get(i);
+            mWidgetIDs.put(info.getWidgetID(), info.getPosition());
             switch (info.getPosition()) {
                 case 0://左上角
                     setLeftTopInfo(info);
@@ -215,6 +219,28 @@ public class WidgetView extends RelativeLayout
         }
     }
 
+    private void updateWidgetView(int widgetID, String counter) {
+        if (mWidgetIDs.containsKey(widgetID)) {
+            switch (mWidgetIDs.get(widgetID)) {
+                case 0:
+                    mLeftTopWiv.updateDisplayItemTv(widgetID, counter, mNeedShow);
+                    break;
+                case 1:
+                    mRightTopWiv.updateDisplayItemTv(widgetID, counter, mNeedShow);
+                    break;
+                case 2:
+                    mLeftBottomWiv.updateDisplayItemTv(widgetID, counter, mNeedShow);
+                    break;
+                case 3:
+                    mRightBottomWiv.updateDisplayItemTv(widgetID, counter, mNeedShow);
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     @Override
     public IView getViewProxy() {
         /**
@@ -252,6 +278,11 @@ public class WidgetView extends RelativeLayout
                 WidgetView.this.destroyView();
             }
 
+            @Override
+            public void updateWidgetView(int widgetID, String counter) {
+                WidgetView.this.updateWidgetView(widgetID, counter);
+            }
+
         }
         return new ComponentView();
     }
@@ -272,5 +303,7 @@ public class WidgetView extends RelativeLayout
         void showWidgetView(@NonNull List<LiveCommonProto.NewWidgetItem> list);
 
         void destroyView();
+
+        void updateWidgetView(int widgetID, String counter);
     }
 }
