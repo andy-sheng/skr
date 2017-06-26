@@ -349,7 +349,6 @@ public class GetConfigManager {
         Observable.create(new Observable.OnSubscribe<List<LevelItem>>() {
             @Override
             public void call(Subscriber<? super List<LevelItem>> subscriber) {
-                int level = 0;
                 List<LevelItem> data = new ArrayList<>();
                 List<CertificationItem> dataCertification = new ArrayList<>();
                 try {
@@ -357,7 +356,7 @@ public class GetConfigManager {
                     if (root.has("zhibo_biz")) {
                         JSONObject disStr = root.getJSONObject("zhibo_biz");
                         if (disStr.has("display_level") && root.has("zhibo_level_icon_map_and_v2")) {
-                            level = disStr.getInt("display_level");
+                            int level = disStr.getInt("display_level");
                             JSONObject iconMap = root.getJSONObject("zhibo_level_icon_map_and_v2");
                             for (int i = 1; i <= level; i++) {
                                 if (iconMap.has("level_icon_map_" + i)) {
