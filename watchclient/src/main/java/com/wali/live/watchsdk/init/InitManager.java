@@ -14,6 +14,7 @@ import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.version.VersionManager;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.gift.handler.GiftPacketHandler;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.milink.sdk.base.Global;
@@ -22,8 +23,8 @@ import com.mi.milink.sdk.data.ClientAppInfo;
 import com.mi.milink.sdk.debug.MiLinkLog;
 import com.squareup.leakcanary.RefWatcher;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
-import com.wali.live.pay.handler.PayPacketHandler;
 import com.wali.live.dns.PreDnsManager;
+import com.wali.live.pay.handler.PayPacketHandler;
 import com.wali.live.utils.ReplayBarrageMessageManager;
 import com.wali.live.watchsdk.fresco.FrescoManager;
 import com.wali.live.watchsdk.log.LogHandler;
@@ -89,6 +90,7 @@ public class InitManager {
                 public void run() {
                     initLogger();
                     SDCardUtils.generateDirectory();
+                    GetConfigManager.getInstance();
                 }
             });
         }
@@ -113,7 +115,7 @@ public class InitManager {
     }
 
     private static ClientAppInfo getClientAppInfo() {
-        MyLog.d(TAG,"milinkAppId="+Constants.MILINK_APP_ID);
+        MyLog.d(TAG, "milinkAppId=" + Constants.MILINK_APP_ID);
         return new ClientAppInfo.Builder(Constants.MILINK_APP_ID)
                 .setAppName(Constants.APPNAME)
                 .setPackageName(sPackageName)
