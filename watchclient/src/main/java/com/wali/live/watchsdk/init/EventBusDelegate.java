@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.init;
 
 import com.base.log.MyLog;
+import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.wali.live.feedback.FeedBackController;
 import com.wali.live.task.ITaskCallBack;
@@ -90,5 +91,10 @@ public class EventBusDelegate {
             }
         });
         MyLog.w("RequestUpload Over");
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(MiLinkEvent.StatusConnected event) {
+        GetConfigManager.getInstance();
     }
 }

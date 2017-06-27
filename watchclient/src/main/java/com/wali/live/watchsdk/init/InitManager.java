@@ -14,7 +14,6 @@ import com.base.utils.sdcard.SDCardUtils;
 import com.base.utils.version.VersionManager;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.gift.handler.GiftPacketHandler;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.milink.sdk.base.Global;
@@ -90,7 +89,6 @@ public class InitManager {
                 public void run() {
                     initLogger();
                     SDCardUtils.generateDirectory();
-                    GetConfigManager.getInstance();
                 }
             });
         }
