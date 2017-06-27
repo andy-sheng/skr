@@ -665,6 +665,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
         mCountDownView = $(R.id.count_down_view);
 
         mLastTicket = mMyRoomData.getTicket();
+        mMyRoomData.setInitTicket(mLastTicket);
 
         // 用根View的点击事件代替mTouchDelegateView
         $(R.id.main_act_container).setOnClickListener(new View.OnClickListener() {

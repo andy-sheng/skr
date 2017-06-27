@@ -210,11 +210,11 @@ public class GetConfigManager {
         }
         if (defaultItem == null) {
             defaultItem = new CertificationItem();
-            if(certificationType == User.CERTIFICATION_TV){
+            if (certificationType == User.CERTIFICATION_TV) {
                 defaultItem.certificationType = User.CERTIFICATION_TV;
                 defaultItem.certificationDrawable = GlobalData.app().getResources().getDrawable(R.drawable.certification_type_6);
                 defaultItem.certificationDrawableLiveComment = GlobalData.app().getResources().getDrawable(R.drawable.certification_type_6);
-            }else{
+            } else {
                 defaultItem.certificationType = -1;
                 defaultItem.certificationDrawable = GlobalData.app().getResources().getDrawable(R.drawable.certification_type_1_3);
                 defaultItem.certificationDrawableLiveComment = GlobalData.app().getResources().getDrawable(R.drawable.certification_type_1_3);
@@ -342,7 +342,7 @@ public class GetConfigManager {
     private Subscription mParseJsonConfigSubscription;
 
     public void parseJsonConfig(final String str) {
- 
+
         if (mParseJsonConfigSubscription != null && !mParseJsonConfigSubscription.isUnsubscribed()) {
             return;
         }
@@ -356,7 +356,7 @@ public class GetConfigManager {
                     JSONObject root = new JSONObject(str);
                     if (root.has("zhibo_biz")) {
                         JSONObject disStr = root.getJSONObject("zhibo_biz");
-                        if (disStr.has("display_level")) {
+                        if (disStr.has("display_level") && root.has("zhibo_level_icon_map_and_v2")) {
                             level = disStr.getInt("display_level");
                             JSONObject iconMap = root.getJSONObject("zhibo_level_icon_map_and_v2");
                             for (int i = 1; i <= level; i++) {
@@ -811,7 +811,6 @@ public class GetConfigManager {
     }
 
 
-
     public static class LevelItem {
         public int min;
         public int max;
@@ -965,12 +964,12 @@ public class GetConfigManager {
         return results;
     }
 
-    private void parseHostsData(){
-        String hosts = PreferenceUtils.getSettingString(GlobalData.app(),CONFIG_SCHEME_HOSTS,"");
-        if(!TextUtils.isEmpty(hosts)){
+    private void parseHostsData() {
+        String hosts = PreferenceUtils.getSettingString(GlobalData.app(), CONFIG_SCHEME_HOSTS, "");
+        if (!TextUtils.isEmpty(hosts)) {
             String[] hostsList = hosts.split(",");
-            if(hostsList!=null&& hostsList.length>0){
-                for(String item:hostsList){
+            if (hostsList != null && hostsList.length > 0) {
+                for (String item : hostsList) {
                     mHosts.add(item);
                 }
             }
@@ -991,9 +990,13 @@ public class GetConfigManager {
     }
 
     public static class WithdrawConfig {
-        /**Android没用到*/
+        /**
+         * Android没用到
+         */
         final boolean mWithdrawEnable;
-        /**默认允许H5提现，但必须有H5Url才能真正通过H5提现*/
+        /**
+         * 默认允许H5提现，但必须有H5Url才能真正通过H5提现
+         */
         final boolean mH5WithdrawEnable;
         @Nullable
         public final String mWeChatH5WithdrawUrl;
@@ -1036,5 +1039,5 @@ public class GetConfigManager {
     public WithdrawConfig getWithdrawConfig() {
         return mWithdrawConfig;
     }
-    
+
 }
