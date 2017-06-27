@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.schema.processor;
+package com.wali.live.watchsdk.scheme.processor;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +8,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
-import com.wali.live.watchsdk.schema.SchemeConstants;
-import com.wali.live.watchsdk.schema.processor.complex.RoomProcessor;
+import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.webview.HalfWebViewActivity;
 import com.wali.live.watchsdk.webview.WebViewActivity;
 
@@ -32,9 +31,6 @@ public class WaliliveProcessor {
         }
         MyLog.d(TAG, "process host=" + host);
         switch (host) {
-            case SchemeConstants.HOST_ROOM:
-                RoomProcessor.processHostRoom(uri, activity, finishActivity);
-                return true;
             case SchemeConstants.HOST_OPEN_URL:
                 processHostOpenUrl(uri, activity);
                 break;
@@ -57,12 +53,12 @@ public class WaliliveProcessor {
     }
 
     public static void processHostOpenUrl(Uri uri, @NonNull Activity activity) {
-        if (!isLegalPath(uri, "processHostOpenUrl", SchemeConstants.PATH_WINDOW_TYPE)) {
+        if (!isLegalPath(uri, "processHostOpenUrl", SchemeConstants.PATH_NEW_WINDOW)) {
             return;
         }
 
-        String url = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_URI_WEBVIEW_RUL));
-        boolean isHalf = uri.getBooleanQueryParameter(SchemeConstants.PARAM_URI_WEBVIEW_ISHALF, false);
+        String url = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_WEBVIEW_RUL));
+        boolean isHalf = uri.getBooleanQueryParameter(SchemeConstants.PARAM_WEBVIEW_ISHALF, false);
 
         Intent intent = new Intent(activity, isHalf ? HalfWebViewActivity.class : WebViewActivity.class);
         intent.putExtra(WebViewActivity.EXTRA_URL, url);

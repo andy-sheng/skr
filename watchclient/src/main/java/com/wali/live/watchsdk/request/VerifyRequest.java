@@ -1,7 +1,5 @@
 package com.wali.live.watchsdk.request;
 
-import android.text.TextUtils;
-
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
@@ -25,10 +23,8 @@ public class VerifyRequest extends BaseRequest {
     private void generateRequest(int channelId, String packageName, String channelSecret) {
         VerifyAssistantReq.Builder builder = generateBuilder()
                 .setChannelId(String.valueOf(channelId))
-                .setPackageName(packageName);
-        if (!TextUtils.isEmpty(channelSecret)) {
-            builder.setChannelSecret(channelSecret);
-        }
+                .setPackageName(packageName)
+                .setChannelSecret(channelSecret);
         mRequest = builder.build();
     }
 

@@ -575,11 +575,13 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    private void secureOperate(final int channelId, final String packageName, final String channelSecret, final ISecureCallBack callback) {
+    public void secureOperate(final int channelId, final String packageName, final String channelSecret, final ISecureCallBack callback) {
+        if (callback == null) {
+            MyLog.w(TAG, " secureOperate callback is null");
+            return;
+        }
         if (mAuthMap.containsKey(channelId) && mAuthMap.get(channelId).equals(packageName)) {
-            if (callback != null) {
-                callback.process(channelId, packageName);
-            }
+            callback.process(channelId, packageName);
             return;
         }
         rx.Observable.just(0)
@@ -613,9 +615,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                     public void onNext(Integer integer) {
                         MyLog.w(TAG, "onNext integer=" + integer);
                         if (integer != null && integer == 0) {
-                            if (callback != null) {
-                                callback.process(channelId, packageName);
-                            }
+                            callback.process(channelId, packageName);
                             mAuthMap.put(channelId, packageName);
                             return;
                         }

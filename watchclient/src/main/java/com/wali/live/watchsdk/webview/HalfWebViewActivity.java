@@ -42,7 +42,7 @@ import com.wali.live.event.EventClass;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.schema.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeConstants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -296,7 +296,6 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
     }
 
     private void showErrorView(String description, final String url) {
-
         if (!TextUtils.isEmpty(url)) {
             //walilive://user/info?uuid=100432
             if (url.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
@@ -462,7 +461,6 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
      * JSBridge
      */
     private class JavaScriptInterface {
-
         Context mContext;
 
         /**

@@ -46,7 +46,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         processIntent();
     }
 
-    private void processIntent() {
+    protected void processIntent() {
         Intent intent = getIntent();
         if (intent == null) {
             MyLog.w(TAG, "processIntent intent is null");
@@ -60,6 +60,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
         String channelSecret = intent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
         final boolean enableShare = intent.getBooleanExtra(EXTRA_ENABLE_SHARE, false);
+
         MyLog.d(TAG, action + " enableShare=" + enableShare);
         switch (action) {
             case ACTION_OPEN_WATCH: {

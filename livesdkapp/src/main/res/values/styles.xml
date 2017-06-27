@@ -8,11 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TransparentTheme" parent="AppTheme">
-        <item name="android:windowBackground">@color/color_transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-
     <style name="michannel_type">
         <item name="android:layout_marginRight">@dimen/view_dimen_20</item>
         <item name="android:layout_marginTop">@dimen/view_dimen_20</item>

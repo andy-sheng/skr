@@ -1,8 +1,6 @@
-package com.wali.live.watchsdk.schema;
+package com.wali.live.watchsdk.scheme;
 
 import android.net.Uri;
-
-import com.wali.live.michannel.ChannelParam;
 
 /**
  * Created by lan on 16/10/26.
@@ -27,26 +25,5 @@ public class SchemeUtils {
 //            MyLog.e(e);
         }
         return defaultValue;
-    }
-
-    public static long getChannelIdFromParam(ChannelParam param) {
-        if (param != null) {
-            return param.getChannelId();
-        }
-        return 0;
-    }
-
-    public static long getSubListIdFromParam(ChannelParam param) {
-        if (param != null) {
-            return param.getSubListId();
-        }
-        return 0;
-    }
-
-    public static String getSectionTitleFromParam(ChannelParam param) {
-        if (param != null) {
-            return param.getSectionTitle();
-        }
-        return String.valueOf(0);
     }
 }

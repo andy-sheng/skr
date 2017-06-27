@@ -39,7 +39,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.schema.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeConstants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -192,8 +192,8 @@ public class WidgetItemView extends LinearLayout {
             if (unit.hasLinkUrl()) {
                 // 如果有
                 Uri uri = Uri.parse(unit.getLinkUrl());
-                String shopType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_TYPE);
-                String shopShowType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_SHOW_TYPE);
+                String shopType = uri.getQueryParameter(SchemeConstants.PARAM_SHOP_TYPE);
+                String shopShowType = uri.getQueryParameter(SchemeConstants.PARAM_SHOP_SHOW_TYPE);
 
                 MyLog.d(TAG, "shop type=" + shopType + ", shop show type=" + shopShowType);
                 if (shopType != null && shopShowType != null) {

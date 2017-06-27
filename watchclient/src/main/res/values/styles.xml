@@ -5,6 +5,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="TransparentTheme" parent="AppThemeLive">
+        <item name="android:windowBackground">@color/color_transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <style name="Theme.CustomDialog" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

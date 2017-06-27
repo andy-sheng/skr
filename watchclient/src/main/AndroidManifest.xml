@@ -1,5 +1,5 @@
-<manifest package="com.wali.live.watchsdk"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.wali.live.watchsdk">
 
     <!--账号权限-->
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
@@ -71,21 +71,13 @@
             android:theme="@style/Theme.CustomDialog"
             android:windowSoftInputMode="stateHidden"/>
 
-        <!-- banner活动 -->
         <activity
-            android:name="com.wali.live.watchsdk.schema.SchemeActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:name="com.wali.live.watchsdk.scheme.SchemeSdkActivity"
+            android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:relinquishTaskIdentity="true"
+            android:noHistory="true"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.wali.live.sdk"
-            android:theme="@style/Theme.PopupMessage">
-
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+            android:theme="@style/TransparentTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -93,34 +85,14 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="walilivesdk"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="live.mi.com"
-                    android:scheme="http"/>
-                <data
-                    android:host="live.mi.com"
-                    android:scheme="https"/>
+                <data android:scheme="livesdk"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="walilivesdk.view"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:scheme="walilivesdk"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="walilivesdk.openlive"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-
-                <data android:scheme="livesdkopen"/>
+                <data android:scheme="livesdk"/>
             </intent-filter>
         </activity>
 

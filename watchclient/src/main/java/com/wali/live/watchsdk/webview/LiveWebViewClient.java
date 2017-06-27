@@ -15,8 +15,8 @@ import android.webkit.WebViewClient;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.config.GetConfigManager;
-import com.wali.live.watchsdk.schema.SchemeActivity;
-import com.wali.live.watchsdk.schema.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -85,9 +85,13 @@ public class LiveWebViewClient extends WebViewClient {
         if (TextUtils.isEmpty(url)) {
             return false;
         }
-        if (url.startsWith(SchemeConstants.SCHEME_WALILIVE) || url.startsWith(SchemeConstants.SCHEME_GAME) || url.startsWith(SchemeConstants.SCHEME_TAMLL) || GetConfigManager.getInstance().isValidHost(url)) {
+        if (url.startsWith(SchemeConstants.SCHEME_WALILIVE) ||
+                // TODO 暂时注释掉，SchemeSdkActivity没有处理的相关逻辑
+//                url.startsWith(SchemeConstants.SCHEME_GAME) ||
+//                url.startsWith(SchemeConstants.SCHEME_TAMLL) ||
+                GetConfigManager.getInstance().isValidHost(url)) {
             Uri uri = Uri.parse(url);
-            SchemeActivity.openActivity(mBaseActivity.get(), uri);
+            SchemeSdkActivity.openActivity(mBaseActivity.get(), uri);
         } else {
             view.loadUrl(url);
             mWebViewCount++;

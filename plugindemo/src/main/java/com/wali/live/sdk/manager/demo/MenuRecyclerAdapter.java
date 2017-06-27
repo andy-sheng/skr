@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -58,19 +59,23 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("跳转到直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                MiLiveSdkController.getInstance().openWatch(
-                        mActivity, 21050016, "21050016_1482903828", null, 6, "47631",
-                        new IMiLiveSdk.IAssistantCallback() {
-                            @Override
-                            public void notifyVersionLow() {
-                                ToastUtils.showToast("notifyVersionLow");
-                            }
+                String uri = "livesdk://room/join?channel_id=50001&package_name=com.wali.live.sdk.manager.demo&player_id=21050016";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
 
-                            @Override
-                            public void notifyNotInstall() {
-                                ToastUtils.showToast("notifyNotInstall");
-                            }
-                        });
+//                MiLiveSdkController.getInstance().openWatch(
+//                        mActivity, 21050016, "21050016_1482903828", null, 6, "47631",
+//                        new IMiLiveSdk.IAssistantCallback() {
+//                            @Override
+//                            public void notifyVersionLow() {
+//                                ToastUtils.showToast("notifyVersionLow");
+//                            }
+//
+//                            @Override
+//                            public void notifyNotInstall() {
+//                                ToastUtils.showToast("notifyNotInstall");
+//                            }
+//                        });
             }
         }));
         mDataList.add(new Bean("跳转到回放(Intent)", new Runnable() {

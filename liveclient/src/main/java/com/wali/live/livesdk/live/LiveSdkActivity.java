@@ -98,8 +98,8 @@ import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.ranking.RankingPagerFragment;
-import com.wali.live.watchsdk.schema.SchemeActivity;
-import com.wali.live.watchsdk.schema.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 import com.wali.live.watchsdk.watch.presenter.push.GiftPresenter;
 import com.wali.live.watchsdk.watch.presenter.push.RoomManagerPresenter;
@@ -1195,12 +1195,12 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
                 if (scheme.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
                     Uri uri = Uri.parse(scheme);
                     if (uri.getScheme().equals(SchemeConstants.SCHEME_WALILIVE)) {
-                        String type = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_TYPE);
-                        String showType = uri.getQueryParameter(SchemeConstants.PARAMETER_SHOP_SHOW_TYPE);
+                        String type = uri.getQueryParameter(SchemeConstants.PARAM_SHOP_TYPE);
+                        String showType = uri.getQueryParameter(SchemeConstants.PARAM_SHOP_SHOW_TYPE);
 
                         MyLog.d(TAG, "type=" + type + ", showType=" + showType);
                         if (type == null || showType == null) {
-                            SchemeActivity.openActivity(this, uri);
+                            SchemeSdkActivity.openActivity(this, uri);
                         }
                     }
                 } else {

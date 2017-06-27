@@ -38,7 +38,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.schema.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 
 import org.greenrobot.eventbus.Subscribe;

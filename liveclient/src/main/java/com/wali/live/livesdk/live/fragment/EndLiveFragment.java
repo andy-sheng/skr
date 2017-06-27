@@ -2,7 +2,6 @@ package com.wali.live.livesdk.live.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
-import com.base.activity.RxActivity;
 import com.base.dialog.DialogUtils;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -30,7 +28,6 @@ import com.mi.live.data.user.User;
 import com.wali.live.livesdk.R;
 import com.wali.live.livesdk.live.task.IActionCallBack;
 import com.wali.live.utils.AvatarUtils;
-import com.wali.live.watchsdk.schema.processor.WaliliveProcessor;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;
 
 /**
@@ -200,8 +197,6 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.back_btn) {
-            String uri = "walilive://channel/channel_id=0";
-            WaliliveProcessor.process(Uri.parse(uri), null, (RxActivity) getActivity(), false);
             processShare();
             getActivity().finish();
         } else if (i == R.id.delete_btn) {
@@ -252,6 +247,12 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         return null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        MyLog.d(TAG, "onActivityResult " + requestCode + " , resultCode=" + resultCode + " , data =" + data);
     }
 
     public static Bundle getBundle(long ownerId, String roomId, long avatarTs, int viewerCnt, int liveType, int ticket, String shareUrl,
@@ -337,11 +338,5 @@ public class EndLiveFragment extends BaseFragment implements View.OnClickListene
         Bundle bundle = getBundle(ownerId, roomId, avatarTs, viewerCnt, liveType, ticket, shareUrl, location, owner, liveCoverUrl, liveTitle);
         bundle.putBoolean(EXTRA_FAILURE, true);
         return (EndLiveFragment) FragmentNaviUtils.addFragment(activity, layoutId, EndLiveFragment.class, bundle, true, false, true);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        MyLog.d(TAG, "onActivityResult " + requestCode + " , resultCode=" + resultCode + " , data =" + data);
     }
 }

@@ -3,10 +3,11 @@ package com.wali.live.watchsdk.auth;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import com.wali.live.watchsdk.R;
+
 import com.base.dialog.MyAlertDialog;
 import com.mi.live.data.account.HostChannelManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 
 /**
