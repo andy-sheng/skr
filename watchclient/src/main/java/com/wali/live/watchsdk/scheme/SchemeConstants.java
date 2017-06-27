@@ -26,17 +26,19 @@ public class SchemeConstants {
     // 跳转到直播间
     public static final String HOST_ROOM = "room";
     public static final String PATH_JOIN = "/join";
-    public static final String PARAM_LIVE_ID = "live_id";
-    public static final String PARAM_PLAYER_ID = "player_id";
-    public static final String PARAM_VIDEO_URL = "video_url";
-    public static final String PARAM_LIVE_TYPE = "live_type";
+    public static final String PARAM_LIVE_ID = "liveid";
+    public static final String PARAM_PLAYER_ID = "playerid";
+    public static final String PARAM_VIDEO_URL = "videourl";
+    public static final String PARAM_TYPE = "type";
 
     /**
      * 跳转到回放页
      * <p>
      * path is same as {@link #PATH_JOIN}
-     * param(roomId) is same as{@link #PARAM_LIVE_ID}
+     * param(liveId) is same as{@link #PARAM_LIVE_ID}
+     * param(playerId) is same as{@link #PARAM_PLAYER_ID}
      * param(videoUrl) is same as{@link #PARAM_VIDEO_URL}
+     * param(type) is same as{@link #PARAM_TYPE}
      */
     public final static String HOST_PLAYBACK = "playback";
 

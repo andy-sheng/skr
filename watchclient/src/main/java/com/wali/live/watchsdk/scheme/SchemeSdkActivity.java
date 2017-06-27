@@ -104,6 +104,7 @@ public class SchemeSdkActivity extends BaseSdkActivity {
                 }
             });
         } else if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
+            // 内部处理，不对外暴露
             String host = uri.getHost();
             MyLog.w(TAG, "process host=" + host);
             if (TextUtils.isEmpty(host)) {
