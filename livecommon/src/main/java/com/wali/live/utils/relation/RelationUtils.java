@@ -332,7 +332,7 @@ public class RelationUtils {
             if (responseData != null) {
                 RankProto.GetRankRoomTotalTicketResponse response = RankProto.GetRankRoomTotalTicketResponse.parseFrom(responseData.getData());
                 MyLog.v(TAG, "GetRankRoomTotalTicketRequest responseData=" + response);
-                int ticket = 0;
+                int ticket = -1;
                 if (response.getRetCode() == 0) {
                     ticket = response.getTotalTicket();
                 }
@@ -341,7 +341,7 @@ public class RelationUtils {
         } catch (InvalidProtocolBufferException e) {
             MyLog.e(e);
         }
-        return 0;
+        return -1;
     }
 
     /**

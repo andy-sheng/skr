@@ -175,6 +175,9 @@ public class RankRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     public void setTotalNum(int totalNum) {
+        if (totalNum <= mTotalNum) {
+            return;
+        }
         mTotalNum = totalNum;
         notifyItemChanged(0);
     }

@@ -93,7 +93,9 @@ public class CurrentRankingFragment extends BaseRankingFragment {
 
                     @Override
                     public void onNext(Integer result) {
-                        setRoomTicket(result);
+                        if (result >= 0) {
+                            setRoomTicket(result);
+                        }
                     }
                 });
     }

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,9 +106,7 @@ public abstract class BaseRankingFragment extends MyRxFragment {
         });
         mVoteRankingAdapter = new RankRecyclerViewAdapter((RxActivity) getActivity(), mFragmentType);
         mVoteRankingAdapter.setShowTotalNumHeader(true);
-        if (!TextUtils.isEmpty(mFragmentType) && mFragmentType.equals(RankRecyclerViewAdapter.TOTAL_RANK)) {
-            mVoteRankingAdapter.setTotalNum(mTicketNum);
-        }
+        mVoteRankingAdapter.setTotalNum(mTicketNum);
         mRecyclerView.setAdapter(mVoteRankingAdapter);
         mVoteRankingAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
