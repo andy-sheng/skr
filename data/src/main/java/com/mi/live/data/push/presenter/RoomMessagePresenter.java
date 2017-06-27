@@ -39,6 +39,7 @@ import rx.schedulers.Schedulers;
 public class RoomMessagePresenter implements Presenter {
     public static final String TAG = "RoomMessagePresenter";
     public static final int PUSH_MODE = 0;
+
     public static final int PULL_MODE = 1;
     /**
      * 绘制间隔
