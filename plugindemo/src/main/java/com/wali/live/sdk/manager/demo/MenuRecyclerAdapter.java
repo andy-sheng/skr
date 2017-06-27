@@ -59,23 +59,19 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("跳转到直播(Intent)", new Runnable() {
             @Override
             public void run() {
-                String uri = "livesdk://room/join?channel_id=50001&package_name=com.wali.live.sdk.manager.demo&player_id=21050016";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                mActivity.startActivity(intent);
+                MiLiveSdkController.getInstance().openWatch(
+                        mActivity, 21050016, "21050016_1482903828", null, 6, "47631",
+                        new IMiLiveSdk.IAssistantCallback() {
+                            @Override
+                            public void notifyVersionLow() {
+                                ToastUtils.showToast("notifyVersionLow");
+                            }
 
-//                MiLiveSdkController.getInstance().openWatch(
-//                        mActivity, 21050016, "21050016_1482903828", null, 6, "47631",
-//                        new IMiLiveSdk.IAssistantCallback() {
-//                            @Override
-//                            public void notifyVersionLow() {
-//                                ToastUtils.showToast("notifyVersionLow");
-//                            }
-//
-//                            @Override
-//                            public void notifyNotInstall() {
-//                                ToastUtils.showToast("notifyNotInstall");
-//                            }
-//                        });
+                            @Override
+                            public void notifyNotInstall() {
+                                ToastUtils.showToast("notifyNotInstall");
+                            }
+                        });
             }
         }));
         mDataList.add(new Bean("跳转到回放(Intent)", new Runnable() {
@@ -253,6 +249,34 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         ToastUtils.showToast("notifyNotInstall");
                     }
                 });
+            }
+        }));
+
+        mDataList.add(new Bean("跳转到直播(Scheme)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://room/join?channel_id=50001&package_name=com.wali.live.sdk.manager.demo&playerid=21050016";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
+            }
+        }));
+
+        mDataList.add(new Bean("跳转到回放(Scheme)", new Runnable() {
+            @Override
+            public void run() {
+                long playerId = 22869193l;
+                String liveId = "22869193_1480938327";
+                String url = Uri.encode("http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1");
+                int type = 6;
+
+                String uri = String.format("livesdk://playback/join?channel_id=50001&package_name=com.wali.live.sdk.manager.demo" +
+                                "&playerid=%s" +
+                                "&liveid=%s" +
+                                "&videourl=%s" +
+                                "&type=%s",
+                        playerId, liveId, url, type);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                mActivity.startActivity(intent);
             }
         }));
     }
