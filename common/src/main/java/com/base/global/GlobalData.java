@@ -59,8 +59,9 @@ public class GlobalData {
 
     private static void recordScreenParam(Context context) {
         displayMetrics = context.getResources().getDisplayMetrics();
-        screenWidth = displayMetrics.widthPixels;
-        screenHeight = displayMetrics.heightPixels;
+        // Mi6偶现宽高反了，为了修复此问题，取小的为宽，大的为高
+        screenWidth = Math.min(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        screenHeight = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
 
     private static void initialize() {
