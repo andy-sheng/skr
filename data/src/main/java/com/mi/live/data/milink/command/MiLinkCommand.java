@@ -474,4 +474,7 @@ public class MiLinkCommand {
 
     public static final String COMMAND_EXCHANGEGAME = "zhibo.bank.exchangeGameTicket";                            //票换钻
     public static final String COMMAND_GET_EXCHANGEGAME_LIST = "zhibo.bank.getExchangeGameTicketList";            //查询尚票和钻的兑换列表
+
+    // 打点统计，复用频道打点
+    public static final String COMMAND_STATISTICS_RECOMMEND_TAG = "zhibo.ai.recommendflag";
 }

@@ -210,7 +210,8 @@ public class MiLinkClientAdapter {
             MiLinkCommand.COMMAND_FACE_BEAUTY_PARAMS,
             MiLinkCommand.COMMAND_FEEDS_GET_FEED_INFO,
             MiLinkCommand.COMMAND_FEEDS_COMMENT_QUERY,
-            MiLinkCommand.COMMAND_LIST_HISTORY
+            MiLinkCommand.COMMAND_LIST_HISTORY,
+            MiLinkCommand.COMMAND_STATISTICS_RECOMMEND_TAG,
     };
 
     public void sendAsync(PacketData packet, int timeout, final SendPacketListener l) {

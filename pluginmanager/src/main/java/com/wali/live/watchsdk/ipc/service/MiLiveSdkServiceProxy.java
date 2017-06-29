@@ -33,6 +33,9 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
 
     private boolean mClearAccountFlag = false;
 
+    private String mStatisticsKey = null;
+    private long mStatisticsTime = 0;
+
     private IMiLiveSdk.ICallback mCallback;
     private IMiLiveSdk.IChannelAssistantCallback mChannelCallback;
     private IMiLiveSdk.IFollowingUsersCallback mFollowingListCallback;
@@ -179,6 +182,11 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             if (mThirdPartLoginData != null) {
                 mRemoteService.thirdPartLogin(GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), mThirdPartLoginData);
                 mThirdPartLoginData = null;
+            }
+            if (mStatisticsKey != null) {
+                mRemoteService.statistic(mStatisticsKey, mStatisticsTime);
+                mStatisticsKey = null;
+                mStatisticsTime = 0;
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -364,12 +372,16 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     public void statistic(String key, long time) {
         Logger.w(TAG, "statistic key=" + key);
         if (mRemoteService == null) {
+            mStatisticsKey = key;
+            mStatisticsTime = time;
             bindService();
         } else {
             try {
                 mRemoteService.statistic(key, time);
             } catch (RemoteException e) {
                 if (e instanceof DeadObjectException) {
+                    mStatisticsKey = key;
+                    mStatisticsTime = time;
                     bindService();
                 }
             }

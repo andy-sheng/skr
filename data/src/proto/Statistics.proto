@@ -1,0 +1,70 @@
+/****************************************
+*推荐打点信息milink上报pb
+*****************************************/
+
+package com.mi.live.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "StatisticsProto";
+
+//milink打点业务数据包(请求)
+message LiveRecvFlagReq{
+       repeated LiveRecvFlagItem items = 1;
+}
+
+/*
+*打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈(不喜欢)
+*小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+*直播小助手：200
+*/
+message LiveRecvFlagItem{
+       optional uint64 date      = 1; //用户产生行为的时间（毫秒）
+       optional uint32 type      = 2; //打点类型
+       optional bytes extData    = 3; //对应打点类型的扩展信息
+       optional string recommend = 4; //服务器下发的打点字串
+}
+
+//type=3 extData填充内容
+message GiftDetail{
+       optional uint32 giftId    = 1; //礼物id
+       optional uint32 giftWorth = 2; //礼物价值
+}
+
+//type=4或102 extData填充内容
+message LeaveRoom{
+       optional uint64 enterTime = 1; //进入房间时间
+       optional uint64 leaveTime = 2; //离开房间时间
+}
+
+//type=5 extData填充内容
+message FollowRoom{
+       optional uint64 enterTime = 1; //进入房间时间
+       optional uint64 followTime = 2; //关注主播时间
+}
+
+//type=6 extData填充内容
+message LikeFeedback{
+       optional uint64 zuid    = 1; //不喜欢主播的id
+       optional string roomId  = 2; //不喜欢直播的房间id
+}
+
+//type=103 extData填充内容
+message VideoLike{
+       optional uint64 befCount = 1; //点赞前的点赞数
+}
+
+//type=104 extData填充内容
+message VideoComment{
+       optional string content = 1; //评论的内容
+}
+
+//type=200 extData填充内容
+message LiveHelper{
+       optional uint32  channelId = 1; //渠道id
+       optional string  extStr = 2; //扩展信息
+}
+
+//返回数据pb
+message LiveRecvFlagRsp{
+       required uint32 retCode = 1; //0=成功
+}

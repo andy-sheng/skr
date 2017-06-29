@@ -5,3 +5,5 @@ protoc --java_out=$genPath ./RankList.proto
 protoc --java_out=$genPath ./Rank.proto
 protoc --java_out=$genPath ./LiveShow.proto
 protoc --java_out=$genPath ./Feeds.proto
+protoc --java_out=$genPath ./Relation.proto
+protoc --java_out=$genPath ./Statistics.proto

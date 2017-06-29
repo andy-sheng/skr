@@ -122,6 +122,58 @@ public final class LiveShowProto {
      * </pre>
      */
     int getGender();
+
+    /**
+     * <code>optional string certification = 7;</code>
+     *
+     * <pre>
+     *认证信息
+     * </pre>
+     */
+    boolean hasCertification();
+    /**
+     * <code>optional string certification = 7;</code>
+     *
+     * <pre>
+     *认证信息
+     * </pre>
+     */
+    java.lang.String getCertification();
+    /**
+     * <code>optional string certification = 7;</code>
+     *
+     * <pre>
+     *认证信息
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCertificationBytes();
+
+    /**
+     * <code>optional string sign = 8;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    boolean hasSign();
+    /**
+     * <code>optional string sign = 8;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    java.lang.String getSign();
+    /**
+     * <code>optional string sign = 8;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getSignBytes();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.UserShow}
@@ -208,6 +260,18 @@ public final class LiveShowProto {
             case 48: {
               bitField0_ |= 0x00000020;
               gender_ = input.readUInt32();
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              certification_ = bs;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              sign_ = bs;
               break;
             }
           }
@@ -419,6 +483,114 @@ public final class LiveShowProto {
       return gender_;
     }
 
+    public static final int CERTIFICATION_FIELD_NUMBER = 7;
+    private java.lang.Object certification_;
+    /**
+     * <code>optional string certification = 7;</code>
+     *
+     * <pre>
+     *认证信息
+     * </pre>
+     */
+    public boolean hasCertification() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string certification = 7;</code>
+     *
+     * <pre>
+     *认证信息
+     * </pre>
+     */
+    public java.lang.String getCertification() {
+      java.lang.Object ref = certification_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          certification_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string certification = 7;</code>
+     *
+     * <pre>
+     *认证信息
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCertificationBytes() {
+      java.lang.Object ref = certification_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        certification_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SIGN_FIELD_NUMBER = 8;
+    private java.lang.Object sign_;
+    /**
+     * <code>optional string sign = 8;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    public boolean hasSign() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string sign = 8;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    public java.lang.String getSign() {
+      java.lang.Object ref = sign_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sign_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string sign = 8;</code>
+     *
+     * <pre>
+     *签名
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getSignBytes() {
+      java.lang.Object ref = sign_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sign_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       uId_ = 0L;
       nickname_ = "";
@@ -426,6 +598,8 @@ public final class LiveShowProto {
       level_ = 0;
       certType_ = 0;
       gender_ = 0;
+      certification_ = "";
+      sign_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -462,6 +636,12 @@ public final class LiveShowProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeUInt32(6, gender_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getCertificationBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getSignBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -494,6 +674,14 @@ public final class LiveShowProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(6, gender_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getCertificationBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getSignBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -628,6 +816,10 @@ public final class LiveShowProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         gender_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
+        certification_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        sign_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -680,6 +872,14 @@ public final class LiveShowProto {
           to_bitField0_ |= 0x00000020;
         }
         result.gender_ = gender_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.certification_ = certification_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.sign_ = sign_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -715,6 +915,16 @@ public final class LiveShowProto {
         }
         if (other.hasGender()) {
           setGender(other.getGender());
+        }
+        if (other.hasCertification()) {
+          bitField0_ |= 0x00000040;
+          certification_ = other.certification_;
+          onChanged();
+        }
+        if (other.hasSign()) {
+          bitField0_ |= 0x00000080;
+          sign_ = other.sign_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1083,6 +1293,206 @@ public final class LiveShowProto {
       public Builder clearGender() {
         bitField0_ = (bitField0_ & ~0x00000020);
         gender_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object certification_ = "";
+      /**
+       * <code>optional string certification = 7;</code>
+       *
+       * <pre>
+       *认证信息
+       * </pre>
+       */
+      public boolean hasCertification() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string certification = 7;</code>
+       *
+       * <pre>
+       *认证信息
+       * </pre>
+       */
+      public java.lang.String getCertification() {
+        java.lang.Object ref = certification_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certification_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string certification = 7;</code>
+       *
+       * <pre>
+       *认证信息
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCertificationBytes() {
+        java.lang.Object ref = certification_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          certification_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string certification = 7;</code>
+       *
+       * <pre>
+       *认证信息
+       * </pre>
+       */
+      public Builder setCertification(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        certification_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certification = 7;</code>
+       *
+       * <pre>
+       *认证信息
+       * </pre>
+       */
+      public Builder clearCertification() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        certification_ = getDefaultInstance().getCertification();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certification = 7;</code>
+       *
+       * <pre>
+       *认证信息
+       * </pre>
+       */
+      public Builder setCertificationBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        certification_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sign_ = "";
+      /**
+       * <code>optional string sign = 8;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public boolean hasSign() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string sign = 8;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public java.lang.String getSign() {
+        java.lang.Object ref = sign_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sign_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string sign = 8;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getSignBytes() {
+        java.lang.Object ref = sign_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sign_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string sign = 8;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public Builder setSign(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        sign_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string sign = 8;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public Builder clearSign() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        sign_ = getDefaultInstance().getSign();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string sign = 8;</code>
+       *
+       * <pre>
+       *签名
+       * </pre>
+       */
+      public Builder setSignBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        sign_ = value;
         onChanged();
         return this;
       }
@@ -14150,6 +14560,23 @@ public final class LiveShowProto {
      */
     com.wali.live.proto.LiveShowProto.ChannelShowOrBuilder getChannelsOrBuilder(
         int index);
+
+    /**
+     * <code>optional uint64 defChannelId = 4;</code>
+     *
+     * <pre>
+     *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+     * </pre>
+     */
+    boolean hasDefChannelId();
+    /**
+     * <code>optional uint64 defChannelId = 4;</code>
+     *
+     * <pre>
+     *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+     * </pre>
+     */
+    long getDefChannelId();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetChannelsRsp}
@@ -14219,6 +14646,11 @@ public final class LiveShowProto {
                 mutable_bitField0_ |= 0x00000004;
               }
               channels_.add(input.readMessage(com.wali.live.proto.LiveShowProto.ChannelShow.PARSER, extensionRegistry));
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000004;
+              defChannelId_ = input.readUInt64();
               break;
             }
           }
@@ -14365,10 +14797,34 @@ public final class LiveShowProto {
       return channels_.get(index);
     }
 
+    public static final int DEFCHANNELID_FIELD_NUMBER = 4;
+    private long defChannelId_;
+    /**
+     * <code>optional uint64 defChannelId = 4;</code>
+     *
+     * <pre>
+     *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+     * </pre>
+     */
+    public boolean hasDefChannelId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint64 defChannelId = 4;</code>
+     *
+     * <pre>
+     *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+     * </pre>
+     */
+    public long getDefChannelId() {
+      return defChannelId_;
+    }
+
     private void initFields() {
       ret_ = 0;
       fcId_ = 0L;
       channels_ = java.util.Collections.emptyList();
+      defChannelId_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -14402,6 +14858,9 @@ public final class LiveShowProto {
       for (int i = 0; i < channels_.size(); i++) {
         output.writeMessage(3, channels_.get(i));
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(4, defChannelId_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -14422,6 +14881,10 @@ public final class LiveShowProto {
       for (int i = 0; i < channels_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, channels_.get(i));
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, defChannelId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14551,6 +15014,8 @@ public final class LiveShowProto {
         } else {
           channelsBuilder_.clear();
         }
+        defChannelId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -14596,6 +15061,10 @@ public final class LiveShowProto {
         } else {
           result.channels_ = channelsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.defChannelId_ = defChannelId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14643,6 +15112,9 @@ public final class LiveShowProto {
               channelsBuilder_.addAllMessages(other.channels_);
             }
           }
+        }
+        if (other.hasDefChannelId()) {
+          setDefChannelId(other.getDefChannelId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -15087,6 +15559,54 @@ public final class LiveShowProto {
           channels_ = null;
         }
         return channelsBuilder_;
+      }
+
+      private long defChannelId_ ;
+      /**
+       * <code>optional uint64 defChannelId = 4;</code>
+       *
+       * <pre>
+       *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+       * </pre>
+       */
+      public boolean hasDefChannelId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 defChannelId = 4;</code>
+       *
+       * <pre>
+       *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+       * </pre>
+       */
+      public long getDefChannelId() {
+        return defChannelId_;
+      }
+      /**
+       * <code>optional uint64 defChannelId = 4;</code>
+       *
+       * <pre>
+       *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+       * </pre>
+       */
+      public Builder setDefChannelId(long value) {
+        bitField0_ |= 0x00000008;
+        defChannelId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 defChannelId = 4;</code>
+       *
+       * <pre>
+       *默认展示频道(当不存在此频道，客户端走自己默认逻辑)
+       * </pre>
+       */
+      public Builder clearDefChannelId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        defChannelId_ = 0L;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetChannelsRsp)
@@ -26387,69 +26907,71 @@ public final class LiveShowProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016LiveShow.proto\022\023com.wali.live.proto\"j\n" +
-      "\010UserShow\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickname\030\002 \001(\t" +
-      "\022\016\n\006avatar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022\020\n\010certT" +
-      "ype\030\005 \001(\r\022\016\n\006gender\030\006 \001(\r\"\232\002\n\010LiveShow\022\014" +
-      "\n\004liId\030\001 \002(\t\022+\n\004user\030\002 \002(\0132\035.com.wali.li" +
-      "ve.proto.UserShow\022\020\n\010location\030\003 \001(\t\022\021\n\tv" +
-      "iewerCnt\030\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\016\n\006liType\030\006 " +
-      "\001(\r\022\017\n\007liTitle\030\007 \001(\t\022\020\n\010shareUrl\030\010 \001(\t\022\021" +
-      "\n\tstartTime\030\t \001(\004\022+\n\006pkInfo\030\n \001(\0132\033.com." +
-      "wali.live.proto.PKLive\022\020\n\010coverUrl\030\013 \001(\t",
-      "\022\013\n\003tag\030\r \001(\t\022\017\n\007appType\030\016 \001(\r\"E\n\006PKLive" +
-      "\022\016\n\006liveId\030\001 \001(\t\022+\n\004user\030\002 \001(\0132\035.com.wal" +
-      "i.live.proto.UserShow\"H\n\007TagShow\022\017\n\007tagN" +
-      "ame\030\001 \001(\t\022,\n\005lives\030\002 \003(\0132\035.com.wali.live" +
-      ".proto.LiveShow\"\264\001\n\010BackInfo\022\014\n\004baId\030\001 \002" +
-      "(\t\022\021\n\tviewerCnt\030\002 \001(\r\022\013\n\003url\030\003 \001(\t\022\021\n\tst" +
-      "artTime\030\004 \001(\004\022\017\n\007endTime\030\005 \001(\004\022\017\n\007baTitl" +
-      "e\030\006 \001(\t\022\020\n\010shareUrl\030\007 \001(\t\022\020\n\010coverUrl\030\010 " +
-      "\001(\t\022\014\n\004addr\030\t \001(\t\022\023\n\013replay_type\030\n \001(\r\"e" +
-      "\n\010BackShow\022+\n\004user\030\001 \002(\0132\035.com.wali.live",
-      ".proto.UserShow\022,\n\005infos\030\002 \003(\0132\035.com.wal" +
-      "i.live.proto.BackInfo\"j\n\016SingleBackShow\022" +
-      "+\n\004user\030\001 \002(\0132\035.com.wali.live.proto.User" +
-      "Show\022+\n\004back\030\002 \002(\0132\035.com.wali.live.proto" +
-      ".BackInfo\"-\n\tFreshInfo\022\016\n\006isAuto\030\001 \001(\010\022\020" +
-      "\n\010interval\030\002 \001(\004\"\246\001\n\013ChannelShow\022\013\n\003cId\030" +
-      "\001 \002(\004\022\r\n\005cName\030\002 \002(\t\022\020\n\010hasChild\030\003 \001(\010\022\017" +
-      "\n\007liveCnt\030\004 \001(\r\022\016\n\006uiType\030\005 \001(\r\022-\n\005fresh" +
-      "\030\006 \001(\0132\036.com.wali.live.proto.FreshInfo\022\013" +
-      "\n\003url\030\007 \001(\t\022\014\n\004flag\030\010 \001(\r\"\035\n\016GetConcerns",
-      "Req\022\013\n\003uId\030\001 \002(\004\"\206\001\n\016GetConcernsRsp\022\013\n\003r" +
-      "et\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022,\n\005lives\030\003 \003(\0132\035.c" +
-      "om.wali.live.proto.LiveShow\022,\n\005backs\030\004 \003" +
-      "(\0132\035.com.wali.live.proto.BackShow\"\036\n\016Get" +
-      "ChannelsReq\022\014\n\004fcId\030\001 \002(\004\"_\n\016GetChannels" +
-      "Rsp\022\013\n\003ret\030\001 \002(\r\022\014\n\004fcId\030\002 \001(\004\0222\n\010channe" +
-      "ls\030\003 \003(\0132 .com.wali.live.proto.ChannelSh" +
-      "ow\"*\n\013GetLivesReq\022\013\n\003cId\030\001 \002(\004\022\016\n\006gender" +
-      "\030\002 \001(\r\"U\n\013GetLivesRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003cI" +
-      "d\030\002 \001(\004\022,\n\005lives\030\003 \003(\0132\035.com.wali.live.p",
-      "roto.LiveShow\"\032\n\013GetBacksReq\022\013\n\003uId\030\001 \002(" +
-      "\004\"T\n\013GetBacksRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002 \001" +
-      "(\004\022+\n\004back\030\003 \001(\0132\035.com.wali.live.proto.B" +
-      "ackShow\"\035\n\016GetConcBackReq\022\013\n\003uId\030\001 \002(\004\"W" +
-      "\n\016GetConcBackRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002 \001" +
-      "(\004\022+\n\004back\030\003 \003(\0132\035.com.wali.live.proto.B" +
-      "ackShow\"\'\n\nDelBackReq\022\013\n\003uId\030\001 \002(\004\022\014\n\004ba" +
-      "Id\030\002 \003(\t\"&\n\nDelBackRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003u" +
-      "Id\030\002 \001(\004\"-\n\016GetTagLivesReq\022\013\n\003cId\030\001 \002(\004\022" +
-      "\016\n\006gender\030\002 \001(\r\"V\n\016GetTagLivesRsp\022\013\n\003ret",
-      "\030\001 \002(\r\022\013\n\003cId\030\002 \001(\004\022*\n\004tags\030\003 \003(\0132\034.com." +
-      "wali.live.proto.TagShow\"U\n\017GetTopicLiveR" +
-      "eq\022\r\n\005topic\030\001 \002(\t\022\020\n\010liveType\030\002 \001(\r\022\017\n\007p" +
-      "ageNum\030\003 \001(\r\022\020\n\010sortType\030\004 \001(\r\"\240\001\n\017GetTo" +
-      "picLiveRsp\022\013\n\003ret\030\001 \002(\r\022\r\n\005topic\030\002 \001(\t\022," +
-      "\n\005lives\030\003 \003(\0132\035.com.wali.live.proto.Live" +
-      "Show\0222\n\005backs\030\004 \003(\0132#.com.wali.live.prot" +
-      "o.SingleBackShow\022\017\n\007pageCnt\030\005 \001(\r\"\"\n\022Get" +
-      "SignInStatusReq\022\014\n\004uuid\030\001 \002(\004\"|\n\022GetSign" +
-      "InStatusRsp\022\017\n\007retCode\030\001 \002(\r\022\025\n\rdisplayS",
-      "tatus\030\002 \001(\r\022\024\n\014signInStatus\030\003 \001(\r\022\021\n\tsig" +
-      "nInUrl\030\004 \001(\t\022\025\n\rqueryInterval\030\005 \001(\rB$\n\023c" +
-      "om.wali.live.protoB\rLiveShowProto"
+      "\n\016LiveShow.proto\022\023com.wali.live.proto\"\217\001" +
+      "\n\010UserShow\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickname\030\002 \001(" +
+      "\t\022\016\n\006avatar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022\020\n\010cert" +
+      "Type\030\005 \001(\r\022\016\n\006gender\030\006 \001(\r\022\025\n\rcertificat" +
+      "ion\030\007 \001(\t\022\014\n\004sign\030\010 \001(\t\"\232\002\n\010LiveShow\022\014\n\004" +
+      "liId\030\001 \002(\t\022+\n\004user\030\002 \002(\0132\035.com.wali.live" +
+      ".proto.UserShow\022\020\n\010location\030\003 \001(\t\022\021\n\tvie" +
+      "werCnt\030\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\016\n\006liType\030\006 \001(" +
+      "\r\022\017\n\007liTitle\030\007 \001(\t\022\020\n\010shareUrl\030\010 \001(\t\022\021\n\t" +
+      "startTime\030\t \001(\004\022+\n\006pkInfo\030\n \001(\0132\033.com.wa",
+      "li.live.proto.PKLive\022\020\n\010coverUrl\030\013 \001(\t\022\013" +
+      "\n\003tag\030\r \001(\t\022\017\n\007appType\030\016 \001(\r\"E\n\006PKLive\022\016" +
+      "\n\006liveId\030\001 \001(\t\022+\n\004user\030\002 \001(\0132\035.com.wali." +
+      "live.proto.UserShow\"H\n\007TagShow\022\017\n\007tagNam" +
+      "e\030\001 \001(\t\022,\n\005lives\030\002 \003(\0132\035.com.wali.live.p" +
+      "roto.LiveShow\"\264\001\n\010BackInfo\022\014\n\004baId\030\001 \002(\t" +
+      "\022\021\n\tviewerCnt\030\002 \001(\r\022\013\n\003url\030\003 \001(\t\022\021\n\tstar" +
+      "tTime\030\004 \001(\004\022\017\n\007endTime\030\005 \001(\004\022\017\n\007baTitle\030" +
+      "\006 \001(\t\022\020\n\010shareUrl\030\007 \001(\t\022\020\n\010coverUrl\030\010 \001(" +
+      "\t\022\014\n\004addr\030\t \001(\t\022\023\n\013replay_type\030\n \001(\r\"e\n\010",
+      "BackShow\022+\n\004user\030\001 \002(\0132\035.com.wali.live.p" +
+      "roto.UserShow\022,\n\005infos\030\002 \003(\0132\035.com.wali." +
+      "live.proto.BackInfo\"j\n\016SingleBackShow\022+\n" +
+      "\004user\030\001 \002(\0132\035.com.wali.live.proto.UserSh" +
+      "ow\022+\n\004back\030\002 \002(\0132\035.com.wali.live.proto.B" +
+      "ackInfo\"-\n\tFreshInfo\022\016\n\006isAuto\030\001 \001(\010\022\020\n\010" +
+      "interval\030\002 \001(\004\"\246\001\n\013ChannelShow\022\013\n\003cId\030\001 " +
+      "\002(\004\022\r\n\005cName\030\002 \002(\t\022\020\n\010hasChild\030\003 \001(\010\022\017\n\007" +
+      "liveCnt\030\004 \001(\r\022\016\n\006uiType\030\005 \001(\r\022-\n\005fresh\030\006" +
+      " \001(\0132\036.com.wali.live.proto.FreshInfo\022\013\n\003",
+      "url\030\007 \001(\t\022\014\n\004flag\030\010 \001(\r\"\035\n\016GetConcernsRe" +
+      "q\022\013\n\003uId\030\001 \002(\004\"\206\001\n\016GetConcernsRsp\022\013\n\003ret" +
+      "\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022,\n\005lives\030\003 \003(\0132\035.com" +
+      ".wali.live.proto.LiveShow\022,\n\005backs\030\004 \003(\013" +
+      "2\035.com.wali.live.proto.BackShow\"\036\n\016GetCh" +
+      "annelsReq\022\014\n\004fcId\030\001 \002(\004\"u\n\016GetChannelsRs" +
+      "p\022\013\n\003ret\030\001 \002(\r\022\014\n\004fcId\030\002 \001(\004\0222\n\010channels" +
+      "\030\003 \003(\0132 .com.wali.live.proto.ChannelShow" +
+      "\022\024\n\014defChannelId\030\004 \001(\004\"*\n\013GetLivesReq\022\013\n" +
+      "\003cId\030\001 \002(\004\022\016\n\006gender\030\002 \001(\r\"U\n\013GetLivesRs",
+      "p\022\013\n\003ret\030\001 \002(\r\022\013\n\003cId\030\002 \001(\004\022,\n\005lives\030\003 \003" +
+      "(\0132\035.com.wali.live.proto.LiveShow\"\032\n\013Get" +
+      "BacksReq\022\013\n\003uId\030\001 \002(\004\"T\n\013GetBacksRsp\022\013\n\003" +
+      "ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022+\n\004back\030\003 \001(\0132\035.c" +
+      "om.wali.live.proto.BackShow\"\035\n\016GetConcBa" +
+      "ckReq\022\013\n\003uId\030\001 \002(\004\"W\n\016GetConcBackRsp\022\013\n\003" +
+      "ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\022+\n\004back\030\003 \003(\0132\035.c" +
+      "om.wali.live.proto.BackShow\"\'\n\nDelBackRe" +
+      "q\022\013\n\003uId\030\001 \002(\004\022\014\n\004baId\030\002 \003(\t\"&\n\nDelBackR" +
+      "sp\022\013\n\003ret\030\001 \002(\r\022\013\n\003uId\030\002 \001(\004\"-\n\016GetTagLi",
+      "vesReq\022\013\n\003cId\030\001 \002(\004\022\016\n\006gender\030\002 \001(\r\"V\n\016G" +
+      "etTagLivesRsp\022\013\n\003ret\030\001 \002(\r\022\013\n\003cId\030\002 \001(\004\022" +
+      "*\n\004tags\030\003 \003(\0132\034.com.wali.live.proto.TagS" +
+      "how\"U\n\017GetTopicLiveReq\022\r\n\005topic\030\001 \002(\t\022\020\n" +
+      "\010liveType\030\002 \001(\r\022\017\n\007pageNum\030\003 \001(\r\022\020\n\010sort" +
+      "Type\030\004 \001(\r\"\240\001\n\017GetTopicLiveRsp\022\013\n\003ret\030\001 " +
+      "\002(\r\022\r\n\005topic\030\002 \001(\t\022,\n\005lives\030\003 \003(\0132\035.com." +
+      "wali.live.proto.LiveShow\0222\n\005backs\030\004 \003(\0132" +
+      "#.com.wali.live.proto.SingleBackShow\022\017\n\007" +
+      "pageCnt\030\005 \001(\r\"\"\n\022GetSignInStatusReq\022\014\n\004u",
+      "uid\030\001 \002(\004\"|\n\022GetSignInStatusRsp\022\017\n\007retCo" +
+      "de\030\001 \002(\r\022\025\n\rdisplayStatus\030\002 \001(\r\022\024\n\014signI" +
+      "nStatus\030\003 \001(\r\022\021\n\tsignInUrl\030\004 \001(\t\022\025\n\rquer" +
+      "yInterval\030\005 \001(\rB$\n\023com.wali.live.protoB\r" +
+      "LiveShowProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -26468,7 +26990,7 @@ public final class LiveShowProto {
     internal_static_com_wali_live_proto_UserShow_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UserShow_descriptor,
-        new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", "Gender", });
+        new java.lang.String[] { "UId", "Nickname", "Avatar", "Level", "CertType", "Gender", "Certification", "Sign", });
     internal_static_com_wali_live_proto_LiveShow_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_wali_live_proto_LiveShow_fieldAccessorTable = new
@@ -26540,7 +27062,7 @@ public final class LiveShowProto {
     internal_static_com_wali_live_proto_GetChannelsRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetChannelsRsp_descriptor,
-        new java.lang.String[] { "Ret", "FcId", "Channels", });
+        new java.lang.String[] { "Ret", "FcId", "Channels", "DefChannelId", });
     internal_static_com_wali_live_proto_GetLivesReq_descriptor =
       getDescriptor().getMessageTypes().get(13);
     internal_static_com_wali_live_proto_GetLivesReq_fieldAccessorTable = new

@@ -279,6 +279,13 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mActivity.startActivity(intent);
             }
         }));
+
+        mDataList.add(new Bean("活跃打点测试", new Runnable() {
+            @Override
+            public void run() {
+                MiLiveSdkController.getInstance().statistic("sdk_view-50010", 1, null);
+            }
+        }));
     }
 
     public void oauthLogin() {
