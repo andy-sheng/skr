@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.statistics.request;
 
+import com.base.log.MyLog;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.live.data.api.request.BaseRequest;
 import com.mi.live.data.milink.command.MiLinkCommand;
@@ -20,14 +21,15 @@ public class LiveRecvRequest extends BaseRequest {
 
     private void build(MilinkStatisticsItem item) {
         LiveRecvFlagItem flagItem = LiveRecvFlagItem.newBuilder()
-                .setDate(item.getTime())
+                .setDate(item.getDate())
                 .setType(item.getType())
-                .setExtData(item.getExtBytes())
+                .setLog(item.getCommonLog())
                 .build();
 
         mRequest = LiveRecvFlagReq.newBuilder()
                 .addItems(flagItem)
                 .build();
+        MyLog.d(TAG, "request=" + mRequest);
     }
 
     @Override

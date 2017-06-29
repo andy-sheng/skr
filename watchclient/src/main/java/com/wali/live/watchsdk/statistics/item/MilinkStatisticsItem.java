@@ -1,31 +1,32 @@
 package com.wali.live.watchsdk.statistics.item;
 
 import com.google.protobuf.ByteString;
+import com.wali.live.proto.StatisticsProto;
 
 public abstract class MilinkStatisticsItem {
-    protected long mTime;
-    protected int mType;
-    protected ByteString mExtBytes;
-    protected String mRecommend;       // 暂时不用
+    // 外层应用类型
+    public static final int LIVE_SDK_TYPE = 200;
 
-    public MilinkStatisticsItem(long time, int type) {
-        mTime = time;
+    protected long mDate;
+    protected int mType;
+    protected ByteString mExtBytes;     // 不用，直播频道使用
+    protected String mRecommend;        // 不用，直播频道使用
+    protected StatisticsProto.CommonLog mCommonLog;
+
+    public MilinkStatisticsItem(long date, int type) {
+        mDate = date;
         mType = type;
     }
 
-    public long getTime() {
-        return mTime;
+    public long getDate() {
+        return mDate;
     }
 
     public int getType() {
         return mType;
     }
 
-    public ByteString getExtBytes() {
-        return mExtBytes;
-    }
-
-    public String getRecommend() {
-        return mRecommend;
+    public StatisticsProto.CommonLog getCommonLog() {
+        return mCommonLog;
     }
 }

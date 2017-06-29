@@ -272,15 +272,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void statistic(String key, long time) throws RemoteException {
         MyLog.w(TAG, "statistic key" + key);
         StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, time);
-
-        // 丑陋的获取下channelId
-        try {
-            String channelId = key.substring(key.lastIndexOf("-") + 1);
-            MyLog.d(TAG, "channelId=" + channelId);
-            MilinkStatistics.getInstance().statisticsGameActive(Integer.valueOf(channelId), key);
-        } catch (Exception e) {
-            MyLog.e(TAG, "statistic exception=" + e);
-        }
+        MilinkStatistics.getInstance().statisticsGameActive(key, time);
     }
 
     @Override
