@@ -18,7 +18,10 @@ public class SchemeConstants {
      */
     public static final String SCHEME_WALILIVE = "walilive";
 
-    // 安全验证参数
+    /**
+     * 安全验证参数
+     * Todo 是否改成intent extra，不放在scheme，放在intent里？
+     */
     public static final String PARAM_CHANNEL_ID = "channel_id";
     public static final String PARAM_PACKAGE_NAME = "package_name";
     public static final String PARAM_CHANNEL_SECRET = "channel_secret";
@@ -48,6 +51,7 @@ public class SchemeConstants {
      * param(channelId) is same as{@link #PARAM_CHANNEL_ID}: 共用channelId，节约参数
      */
     public static final String HOST_CHANNEL = "channel";
+    public static final String PATH_ENTER = "enter";
 
     /**
      * 购物相关，目前挂件部分使用了参数，先留着

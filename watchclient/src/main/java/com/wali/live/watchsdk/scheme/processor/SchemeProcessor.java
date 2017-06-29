@@ -38,6 +38,9 @@ public class SchemeProcessor {
             case SchemeConstants.HOST_PLAYBACK:
                 processHostPlayback(uri, activity);
                 break;
+            case SchemeConstants.HOST_CHANNEL:
+                processHostChannel(uri, activity);
+                break;
             default:
                 return false;
         }
@@ -73,6 +76,10 @@ public class SchemeProcessor {
     }
 
     private static void processHostPlayback(Uri uri, Activity activity) {
+        if (!isLegalPath(uri, "processHostPlayback", SchemeConstants.PATH_JOIN)) {
+            return;
+        }
+
         long playerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_PLAYER_ID, 0);
         String liveId = uri.getQueryParameter(SchemeConstants.PARAM_LIVE_ID);
         String videoUrl = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL));
@@ -82,5 +89,17 @@ public class SchemeProcessor {
                 .setLiveType(liveType)
                 .build();
         VideoDetailSdkActivity.openActivity(activity, roomInfo);
+    }
+
+    private static void processHostChannel(Uri uri, Activity activity) {
+        if (!isLegalPath(uri, "processHostChannel", SchemeConstants.PATH_ENTER)) {
+            return;
+        }
+
+        int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
+        MyLog.w(TAG, "channel id=" + channelId);
+        if (channelId != 0) {
+            //TODO enter to ChannelActivity
+        }
     }
 }
