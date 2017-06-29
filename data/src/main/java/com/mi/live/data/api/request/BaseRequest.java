@@ -34,6 +34,14 @@ public abstract class BaseRequest {
         return getClass().getSimpleName();
     }
 
+    /**
+     * @description default structure
+     */
+    public BaseRequest(String command, String action) {
+        mCommand = command;
+        mAction = action;
+    }
+
     public BaseRequest(String command, String action, String channelId) {
         mCommand = command;
         mAction = action;
