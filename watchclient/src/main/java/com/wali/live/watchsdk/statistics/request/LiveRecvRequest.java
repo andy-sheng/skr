@@ -14,7 +14,7 @@ import com.wali.live.watchsdk.statistics.item.MilinkStatisticsItem;
 public class LiveRecvRequest extends BaseRequest {
 
     public LiveRecvRequest(MilinkStatisticsItem item) {
-        super(MiLinkCommand.COMMAND_STATISTICS_RECOMMEND_TAG, "LiveRecvFlag", null);
+        super(MiLinkCommand.COMMAND_STATISTICS_RECOMMEND_TAG, "LiveRecvFlag");
         build(item);
     }
 
