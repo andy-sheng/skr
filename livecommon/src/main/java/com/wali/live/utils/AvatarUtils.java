@@ -7,6 +7,7 @@ import android.util.LruCache;
 
 import com.base.global.GlobalData;
 import com.base.image.fresco.FrescoWorker;
+import com.base.image.fresco.IFrescoCallBack;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.image.fresco.processor.BlurPostprocessor;
@@ -22,6 +23,8 @@ import java.io.File;
 
 /**
  * Created by linjinbin on 16/2/25.
+ * <p>
+ * TODO 重复方法有点多
  */
 public class AvatarUtils {
     private final static String TAG = AvatarUtils.class.getSimpleName();
@@ -268,6 +271,35 @@ public class AvatarUtils {
         FrescoWorker.loadImage(draweeView, avatarImg);
     }
 
+    private static void loadAvatarByUrl(final SimpleDraweeView draweeView, final String url, final boolean isCircle, final boolean isBlur, int loadingAvatarResId, int width, int height, IFrescoCallBack callback) {
+//        MyLog.v(TAG, "loadAvatarByUid url = " + url);
+        BaseImage avatarImg;
+        if (TextUtils.isEmpty(url)) {
+            avatarImg = ImageFactory.newResImage(loadingAvatarResId).build();
+        } else {
+            avatarImg = ImageFactory.newHttpImage(url).setWidth(width).setHeight(height)
+                    .setIsCircle(isCircle)
+                    .setFailureDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
+                            loadingAvatarResId) : null)
+                    .setFailureScaleType(
+                            isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP)
+                    .build();
+        }
+        // 设置模糊,模糊效果不设置加载图
+        if (isBlur) {
+            avatarImg.setPostprocessor(new BlurPostprocessor());
+        } else {
+            avatarImg.setLoadingDrawable(loadingAvatarResId > 0 ? GlobalData.app().getResources().getDrawable(
+                    loadingAvatarResId) : null);
+            avatarImg.setLoadingScaleType(
+                    isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
+        }
+        if (callback != null) {
+            avatarImg.setCallBack(callback);
+        }
+        FrescoWorker.loadImage(draweeView, avatarImg);
+    }
+
     /**
      * 加载本地图片用作头像
      *
@@ -300,8 +332,12 @@ public class AvatarUtils {
         loadAvatarByUrl(draweeView, url, isCircle, false, loadingAvatarResId);
     }
 
-    public static void loadCoverByUrl(final SimpleDraweeView draweeView, final String url, boolean isCircle, int loadingAvatarResId, int width, int heigh) {
-        loadAvatarByUrl(draweeView, url, isCircle, false, loadingAvatarResId, width, heigh);
+    public static void loadCoverByUrl(final SimpleDraweeView draweeView, final String url, boolean isCircle, int loadingAvatarResId, int width, int height) {
+        loadAvatarByUrl(draweeView, url, isCircle, false, loadingAvatarResId, width, height);
+    }
+
+    public static void loadCoverByUrl(final SimpleDraweeView draweeView, final String url, boolean isCircle, int loadingAvatarResId, int width, int height, IFrescoCallBack callBack) {
+        loadAvatarByUrl(draweeView, url, isCircle, false, loadingAvatarResId, width, height, callBack);
     }
 
     private static void loadAvatarByRes(final SimpleDraweeView draweeView, final int resId, final boolean isCircle, final boolean isBlur) {
