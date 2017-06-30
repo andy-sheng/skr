@@ -91,6 +91,7 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 3;
     public static final int MSG_PLAYER_STOP = MSG_PLAYER_FIRST + 4;
     public static final int MSG_PLAYER_SEEK_FROM_REPLAY = MSG_PLAYER_FIRST + 5;
+    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 6;
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI

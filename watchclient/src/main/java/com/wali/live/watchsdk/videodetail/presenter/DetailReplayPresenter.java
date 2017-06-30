@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
@@ -106,7 +107,7 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
 
     @Override
     public void onClickReplayItem(DetailReplayAdapter.ReplayInfoItem replayInfoItem) {
-        if (replayInfoItem == null) {
+        if (replayInfoItem == null || TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
             return;
         }
         if (mMyRoomData.getVideoUrl().equals(replayInfoItem.mUrl)) {
