@@ -2,7 +2,6 @@ package com.wali.live.watchsdk.component.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.annotation.IdRes;
@@ -18,16 +17,17 @@ import android.widget.TextView;
 
 import com.base.activity.RxActivity;
 import com.base.image.fresco.BaseImageView;
+import com.base.image.fresco.IFrescoCallBack;
 import com.base.log.MyLog;
 import com.base.thread.ThreadPool;
 import com.base.utils.display.DisplayUtils;
-import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.ui.ColorFormatter;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.jakewharton.rxbinding.view.RxView;
@@ -43,18 +43,14 @@ import com.wali.live.watchsdk.scheme.SchemeConstants;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by lan on 17/4/6.
@@ -201,16 +197,11 @@ public class WidgetItemView extends LinearLayout {
                     return;
                 }
 
-                if (unit.hasIcon() || unit.hasText()) {
-                    RxView.clicks(unit.hasIcon() ? iv : tv)
-                            .throttleFirst(500, TimeUnit.MILLISECONDS)
-                            .subscribe(new Action1<Void>() {
-                                @Override
-                                public void call(Void aVoid) {
-                                    UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT, unit.getLinkUrl(), unit.getUrlNeedParam(), unit.getOpenType(), mPresenter.getUid());
-                                    sendClick(info.getWidgetID(), "iconClick");
-                                }
-                            });
+                if (unit.hasIcon()) {
+                    setClickEvent(iv, unit, info);
+                }
+                if (unit.hasText()) {
+                    setClickEvent(tv, unit, info);
                 }
             }
 
@@ -387,83 +378,27 @@ public class WidgetItemView extends LinearLayout {
     }
 
     /**
-     * 加载网络图片
+     * 设置图片点击事件
      */
-    public void loadImgFromNet(final String icon, final BaseImageView imageView, final int posFlag) {
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                String str = loadImageFromNetwork(icon);
-                if (str != null) {
-                    String[] params = str.split(",");
-                    if (Integer.parseInt(params[0]) > 0 && Integer.parseInt(params[1]) > 0) {
-                        subscriber.onNext(str);
-                        subscriber.onCompleted();
-                    } else {
-                        subscriber.onError(new Throwable("not get params"));
-                    }
-                } else {
-                    subscriber.onError(new Throwable("not get params"));
-                }
-            }
-        }).retryWhen(
-                new RxRetryAssist(10, 2, false))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<String>() {
+    private void setClickEvent(View clickView, final LiveCommonProto.NewWidgetUnit unit, final LiveCommonProto.NewWidgetItem info) {
+        RxView.clicks(clickView)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
                     @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        if (s != null) {
-                            imageView.setVisibility(VISIBLE);
-                            String[] params = s.split(",");
-
-                            int screenWidth = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenWidth() : DisplayUtils.getScreenHeight();
-                            int screenHeight = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenHeight() : DisplayUtils.getScreenWidth();
-
-                            int width = Integer.parseInt(params[0]) * screenWidth / 1080;
-                            int height = Integer.parseInt(params[1]) * screenHeight / 1920;
-
-                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
-                            if ((posFlag & 0x1) == 1) {
-                                lp.gravity = Gravity.RIGHT;
-                            }
-                            imageView.setLayoutParams(lp);
-                            AvatarUtils.loadCoverByUrl(imageView, icon, false, 0, width, height);
-                        }
+                    public void call(Void aVoid) {
+                        UserActionEvent.post(UserActionEvent.EVENT_TYPE_CLICK_ATTACHMENT,
+                                unit.getLinkUrl(), unit.getUrlNeedParam(), unit.getOpenType(), mPresenter.getUid());
+                        sendClick(info.getWidgetID(), "iconClick");
                     }
                 });
     }
 
     /**
-     * 运营位显示图片时先去网络获取图片的宽高信息
+     * 加载网络图片
      */
-    private String loadImageFromNetwork(String urlStr) {
-        try {
-            URL url = new URL(urlStr);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            InputStream in = con.getInputStream();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(in, null, options);
-
-            int height = options.outHeight;
-            int width = options.outWidth;
-            String s = width + "," + height;
-            in.close();
-            return s;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public void loadImgFromNet(final String icon, final BaseImageView imageView, final int posFlag) {
+        MyLog.w(TAG, "loadImgFromNet url = " + icon);
+        AvatarUtils.loadCoverByUrl(imageView, icon, false, 0, 240, 200, new WidgetFrescoCallBack(posFlag, imageView));
     }
 
     /**
@@ -486,6 +421,52 @@ public class WidgetItemView extends LinearLayout {
         }
         if (mShowSubscription != null && !mShowSubscription.isUnsubscribed()) {
             mShowSubscription.unsubscribe();
+        }
+    }
+
+    private static class WidgetFrescoCallBack implements IFrescoCallBack {
+        private int mPosFlag;
+        private SoftReference<BaseImageView> mIvRef;
+
+        protected WidgetFrescoCallBack(int posFlag, BaseImageView iv) {
+            mPosFlag = posFlag;
+            mIvRef = new SoftReference<>(iv);
+        }
+
+        @Override
+        public void process(Object object) {
+        }
+
+        @Override
+        public void processWithInfo(ImageInfo info) {
+            if (null != info) {
+                int infoWidth = info.getWidth();
+                int infoHeight = info.getHeight();
+                MyLog.w(TAG, "processWithInfo width = " + info.getWidth() + " , height = " + info.getHeight());
+
+                if (infoWidth > 0 && infoHeight > 0 && mIvRef.get() != null) {
+                    MyLog.w(TAG, "processWithInfo call internal");
+                    
+                    int screenWidth = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenWidth() : DisplayUtils.getScreenHeight();
+                    int screenHeight = DisplayUtils.getScreenHeight() > DisplayUtils.getScreenWidth() ? DisplayUtils.getScreenHeight() : DisplayUtils.getScreenWidth();
+
+                    int width = infoWidth * screenWidth / 1080;
+                    int height = infoHeight * screenHeight / 1920;
+
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
+                    if ((mPosFlag & 0x1) == 1) {
+                        lp.gravity = Gravity.RIGHT;
+                    }
+                    mIvRef.get().setLayoutParams(lp);
+                }
+            } else {
+                MyLog.e(TAG, "loadImgFromNet fail ,info is null");
+            }
+        }
+
+        @Override
+        public void processWithFailure() {
+            MyLog.w(TAG, "processWithFailure");
         }
     }
 }
