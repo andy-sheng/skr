@@ -60,6 +60,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
     protected IChannelPresenter mPresenter;
     protected long mChannelId = 201;
+    protected LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +99,11 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
                     public Boolean call(Integer integer) {
                         String code = XiaoMiOAuth.getOAuthCode(MainActivity.this);
                         if (!TextUtils.isEmpty(code)) {
-                            LoginPresenter loginPresenter = new LoginPresenter(MainActivity.this);
-                            loginPresenter.miLoginByCode(code);
-                            addPresent(loginPresenter);
+                            if (mLoginPresenter == null) {
+                                mLoginPresenter = new LoginPresenter(MainActivity.this);
+                                addPresent(mLoginPresenter);
+                            }
+                            mLoginPresenter.miLoginByCode(code);
                             return true;
                         }
                         return false;
