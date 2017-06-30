@@ -256,6 +256,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             mMyRoomData.setCity(mLocation.getCity());
         }
         mMyRoomData.setEnableShare(mEnableShare);
+        mMyRoomData.setLiveType(mIsGameLive ? LiveManager.TYPE_LIVE_GAME : LiveManager.TYPE_LIVE_PUBLIC);
         if (UserAccountManager.getInstance().hasAccount()) {
             mMyRoomData.setUser(MyUserInfoManager.getInstance().getUser());
             mMyRoomData.setUid(UserAccountManager.getInstance().getUuidAsLong());
