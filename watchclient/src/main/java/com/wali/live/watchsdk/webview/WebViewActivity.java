@@ -39,6 +39,8 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
+import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -312,8 +314,12 @@ public class WebViewActivity extends BaseSdkActivity implements View.OnClickList
 
     private void showErrorView(String description, final String url) {
         if (!TextUtils.isEmpty(url)) {
-            if (url.startsWith(SchemeConstants.SCHEME_WALILIVE)) {
+            if (url.startsWith(SchemeConstants.SCHEME_LIVESDK)) {
                 openUrlWithBrowserIntent(url, this);
+                return;
+            } else if (url.startsWith(SchemeConstants.SCHEME_WALILIVE) ||
+                    url.startsWith(GamecenterConstants.SCHEME_GAMECENTER)) {
+                SchemeSdkActivity.openActivity(this, Uri.parse(url));
                 return;
             } else {
                 int httpIndex = url.indexOf("http");
