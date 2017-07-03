@@ -11,6 +11,8 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.callback.ISecureCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
+import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
+import com.wali.live.watchsdk.scheme.gamecenter.GamecenterProcessor;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
 import com.wali.live.watchsdk.scheme.processor.WaliliveProcessor;
 
@@ -72,14 +74,14 @@ public class SchemeSdkActivity extends BaseSdkActivity {
             return;
         }
 
-        if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)) {
-            final String host = uri.getHost();
-            MyLog.w(TAG, "process host=" + host);
-            if (TextUtils.isEmpty(host)) {
-                finish();
-                return;
-            }
+        final String host = uri.getHost();
+        MyLog.w(TAG, "process host=" + host);
+        if (TextUtils.isEmpty(host)) {
+            finish();
+            return;
+        }
 
+        if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)) {
             int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
             String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
             String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
@@ -105,14 +107,14 @@ public class SchemeSdkActivity extends BaseSdkActivity {
             });
         } else if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
             // 内部处理，不对外暴露
-            String host = uri.getHost();
-            MyLog.w(TAG, "process host=" + host);
-            if (TextUtils.isEmpty(host)) {
-                finish();
-                return;
-            }
-
             if (WaliliveProcessor.process(uri, host, this, true)) {
+                // activity finish 内置处理
+            } else {
+                finish();
+            }
+        } else if (scheme.equals(GamecenterConstants.SCHEME_GAMECENTER)) {
+            // 内部处理，不对外暴露
+            if (GamecenterProcessor.process(uri, host, this, true)) {
                 // activity finish 内置处理
             } else {
                 finish();
