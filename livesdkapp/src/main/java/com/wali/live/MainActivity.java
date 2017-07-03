@@ -2,6 +2,7 @@ package com.wali.live;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,7 +29,7 @@ import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.login.LoginPresenter;
-import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
+import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -125,15 +126,16 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
             @Override
             public void onClick(View v) {
                 // http://playback.ks.zb.mi.com/record/live/100067_1490154994/hls/100067_1490154994.m3u8?playui=0
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
-                        "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
-                        .setLiveType(6)
-                        .setEnableShare(true)
-                        .build();
-                VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
+//                RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
+//                        "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
+//                        .setLiveType(6)
+//                        .setEnableShare(true)
+//                        .build();
+//                VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
+
+                SchemeSdkActivity.openActivity(MainActivity.this, Uri.parse("migamecenter://openlive?liveId=18109355&roomId=18109355_1497501557&isLive=1&gameId=3333"));
             }
         });
-
     }
 
     private void initData() {

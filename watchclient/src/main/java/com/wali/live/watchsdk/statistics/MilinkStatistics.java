@@ -3,8 +3,8 @@ package com.wali.live.watchsdk.statistics;
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.StatisticsProto;
-import com.wali.live.watchsdk.statistics.item.LiveHelperItem;
 import com.wali.live.watchsdk.statistics.item.MilinkStatisticsItem;
+import com.wali.live.watchsdk.statistics.item.SimpleStatisticsItem;
 import com.wali.live.watchsdk.statistics.request.LiveRecvRequest;
 
 import org.json.JSONException;
@@ -33,10 +33,13 @@ public class MilinkStatistics {
         return sInstance;
     }
 
-    public void statisticsGameActive(int channelId, String key) {
-        long time = System.currentTimeMillis();
+    public void statisticsGameActive(String key, long time) {
+        long date = System.currentTimeMillis();
         try {
-            MilinkStatisticsItem item = new LiveHelperItem(time, LiveHelperItem.GAME_ACTIVE_TYPE, channelId, key);
+            MilinkStatisticsItem item = new SimpleStatisticsItem(date,
+                    MilinkStatisticsItem.LIVE_SDK_TYPE,
+                    SimpleStatisticsItem.GAME_ACTIVE_BIZTYPE,
+                    key, time);
             statisticsInternal(item);
         } catch (JSONException e) {
             MyLog.e(TAG, e);

@@ -10,6 +10,7 @@ public class SchemeConstants {
 
     /**
      * @notice Scheme : LiveSdk
+     * @description 尽量和直播scheme保持一致
      */
     public static final String SCHEME_LIVESDK = "livesdk";
 

@@ -717,7 +717,7 @@ public final class StatisticsProto {
      * <code>optional uint32 type = 2;</code>
      *
      * <pre>
-     *打点类型
+     *来源类型
      * </pre>
      */
     boolean hasType();
@@ -725,7 +725,7 @@ public final class StatisticsProto {
      * <code>optional uint32 type = 2;</code>
      *
      * <pre>
-     *打点类型
+     *来源类型
      * </pre>
      */
     int getType();
@@ -734,7 +734,7 @@ public final class StatisticsProto {
      * <code>optional bytes extData = 3;</code>
      *
      * <pre>
-     *对应打点类型的扩展信息
+     *对应打点类型的扩展信息（非通用）
      * </pre>
      */
     boolean hasExtData();
@@ -742,7 +742,7 @@ public final class StatisticsProto {
      * <code>optional bytes extData = 3;</code>
      *
      * <pre>
-     *对应打点类型的扩展信息
+     *对应打点类型的扩展信息（非通用）
      * </pre>
      */
     com.google.protobuf.ByteString getExtData();
@@ -751,7 +751,7 @@ public final class StatisticsProto {
      * <code>optional string recommend = 4;</code>
      *
      * <pre>
-     *服务器下发的打点字串
+     *服务器下发的打点字串（非通用）
      * </pre>
      */
     boolean hasRecommend();
@@ -759,7 +759,7 @@ public final class StatisticsProto {
      * <code>optional string recommend = 4;</code>
      *
      * <pre>
-     *服务器下发的打点字串
+     *服务器下发的打点字串（非通用）
      * </pre>
      */
     java.lang.String getRecommend();
@@ -767,11 +767,36 @@ public final class StatisticsProto {
      * <code>optional string recommend = 4;</code>
      *
      * <pre>
-     *服务器下发的打点字串
+     *服务器下发的打点字串（非通用）
      * </pre>
      */
     com.google.protobuf.ByteString
         getRecommendBytes();
+
+    /**
+     * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+     *
+     * <pre>
+     *打点具体内容
+     * </pre>
+     */
+    boolean hasLog();
+    /**
+     * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+     *
+     * <pre>
+     *打点具体内容
+     * </pre>
+     */
+    com.wali.live.proto.StatisticsProto.CommonLog getLog();
+    /**
+     * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+     *
+     * <pre>
+     *打点具体内容
+     * </pre>
+     */
+    com.wali.live.proto.StatisticsProto.CommonLogOrBuilder getLogOrBuilder();
   }
   /**
    * Protobuf type {@code com.mi.live.proto.LiveRecvFlagItem}
@@ -779,7 +804,7 @@ public final class StatisticsProto {
    * <pre>
    *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈(不喜欢)
    *小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
-   *直播小助手：200
+   *直播小助手：type=200  pc端type=300
    * </pre>
    */
   public static final class LiveRecvFlagItem extends
@@ -852,6 +877,19 @@ public final class StatisticsProto {
               recommend_ = bs;
               break;
             }
+            case 42: {
+              com.wali.live.proto.StatisticsProto.CommonLog.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                subBuilder = log_.toBuilder();
+              }
+              log_ = input.readMessage(com.wali.live.proto.StatisticsProto.CommonLog.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(log_);
+                log_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000010;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -921,7 +959,7 @@ public final class StatisticsProto {
      * <code>optional uint32 type = 2;</code>
      *
      * <pre>
-     *打点类型
+     *来源类型
      * </pre>
      */
     public boolean hasType() {
@@ -931,7 +969,7 @@ public final class StatisticsProto {
      * <code>optional uint32 type = 2;</code>
      *
      * <pre>
-     *打点类型
+     *来源类型
      * </pre>
      */
     public int getType() {
@@ -944,7 +982,7 @@ public final class StatisticsProto {
      * <code>optional bytes extData = 3;</code>
      *
      * <pre>
-     *对应打点类型的扩展信息
+     *对应打点类型的扩展信息（非通用）
      * </pre>
      */
     public boolean hasExtData() {
@@ -954,7 +992,7 @@ public final class StatisticsProto {
      * <code>optional bytes extData = 3;</code>
      *
      * <pre>
-     *对应打点类型的扩展信息
+     *对应打点类型的扩展信息（非通用）
      * </pre>
      */
     public com.google.protobuf.ByteString getExtData() {
@@ -967,7 +1005,7 @@ public final class StatisticsProto {
      * <code>optional string recommend = 4;</code>
      *
      * <pre>
-     *服务器下发的打点字串
+     *服务器下发的打点字串（非通用）
      * </pre>
      */
     public boolean hasRecommend() {
@@ -977,7 +1015,7 @@ public final class StatisticsProto {
      * <code>optional string recommend = 4;</code>
      *
      * <pre>
-     *服务器下发的打点字串
+     *服务器下发的打点字串（非通用）
      * </pre>
      */
     public java.lang.String getRecommend() {
@@ -998,7 +1036,7 @@ public final class StatisticsProto {
      * <code>optional string recommend = 4;</code>
      *
      * <pre>
-     *服务器下发的打点字串
+     *服务器下发的打点字串（非通用）
      * </pre>
      */
     public com.google.protobuf.ByteString
@@ -1015,11 +1053,45 @@ public final class StatisticsProto {
       }
     }
 
+    public static final int LOG_FIELD_NUMBER = 5;
+    private com.wali.live.proto.StatisticsProto.CommonLog log_;
+    /**
+     * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+     *
+     * <pre>
+     *打点具体内容
+     * </pre>
+     */
+    public boolean hasLog() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+     *
+     * <pre>
+     *打点具体内容
+     * </pre>
+     */
+    public com.wali.live.proto.StatisticsProto.CommonLog getLog() {
+      return log_;
+    }
+    /**
+     * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+     *
+     * <pre>
+     *打点具体内容
+     * </pre>
+     */
+    public com.wali.live.proto.StatisticsProto.CommonLogOrBuilder getLogOrBuilder() {
+      return log_;
+    }
+
     private void initFields() {
       date_ = 0L;
       type_ = 0;
       extData_ = com.google.protobuf.ByteString.EMPTY;
       recommend_ = "";
+      log_ = com.wali.live.proto.StatisticsProto.CommonLog.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1046,6 +1118,9 @@ public final class StatisticsProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, getRecommendBytes());
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeMessage(5, log_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1070,6 +1145,10 @@ public final class StatisticsProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, getRecommendBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, log_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1155,7 +1234,7 @@ public final class StatisticsProto {
      * <pre>
      *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈(不喜欢)
      *小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
-     *直播小助手：200
+     *直播小助手：type=200  pc端type=300
      * </pre>
      */
     public static final class Builder extends
@@ -1186,6 +1265,7 @@ public final class StatisticsProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getLogFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1202,6 +1282,12 @@ public final class StatisticsProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         recommend_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
+        if (logBuilder_ == null) {
+          log_ = com.wali.live.proto.StatisticsProto.CommonLog.getDefaultInstance();
+        } else {
+          logBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -1246,6 +1332,14 @@ public final class StatisticsProto {
           to_bitField0_ |= 0x00000008;
         }
         result.recommend_ = recommend_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        if (logBuilder_ == null) {
+          result.log_ = log_;
+        } else {
+          result.log_ = logBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1275,6 +1369,9 @@ public final class StatisticsProto {
           bitField0_ |= 0x00000008;
           recommend_ = other.recommend_;
           onChanged();
+        }
+        if (other.hasLog()) {
+          mergeLog(other.getLog());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1356,7 +1453,7 @@ public final class StatisticsProto {
        * <code>optional uint32 type = 2;</code>
        *
        * <pre>
-       *打点类型
+       *来源类型
        * </pre>
        */
       public boolean hasType() {
@@ -1366,7 +1463,7 @@ public final class StatisticsProto {
        * <code>optional uint32 type = 2;</code>
        *
        * <pre>
-       *打点类型
+       *来源类型
        * </pre>
        */
       public int getType() {
@@ -1376,7 +1473,7 @@ public final class StatisticsProto {
        * <code>optional uint32 type = 2;</code>
        *
        * <pre>
-       *打点类型
+       *来源类型
        * </pre>
        */
       public Builder setType(int value) {
@@ -1389,7 +1486,7 @@ public final class StatisticsProto {
        * <code>optional uint32 type = 2;</code>
        *
        * <pre>
-       *打点类型
+       *来源类型
        * </pre>
        */
       public Builder clearType() {
@@ -1404,7 +1501,7 @@ public final class StatisticsProto {
        * <code>optional bytes extData = 3;</code>
        *
        * <pre>
-       *对应打点类型的扩展信息
+       *对应打点类型的扩展信息（非通用）
        * </pre>
        */
       public boolean hasExtData() {
@@ -1414,7 +1511,7 @@ public final class StatisticsProto {
        * <code>optional bytes extData = 3;</code>
        *
        * <pre>
-       *对应打点类型的扩展信息
+       *对应打点类型的扩展信息（非通用）
        * </pre>
        */
       public com.google.protobuf.ByteString getExtData() {
@@ -1424,7 +1521,7 @@ public final class StatisticsProto {
        * <code>optional bytes extData = 3;</code>
        *
        * <pre>
-       *对应打点类型的扩展信息
+       *对应打点类型的扩展信息（非通用）
        * </pre>
        */
       public Builder setExtData(com.google.protobuf.ByteString value) {
@@ -1440,7 +1537,7 @@ public final class StatisticsProto {
        * <code>optional bytes extData = 3;</code>
        *
        * <pre>
-       *对应打点类型的扩展信息
+       *对应打点类型的扩展信息（非通用）
        * </pre>
        */
       public Builder clearExtData() {
@@ -1455,7 +1552,7 @@ public final class StatisticsProto {
        * <code>optional string recommend = 4;</code>
        *
        * <pre>
-       *服务器下发的打点字串
+       *服务器下发的打点字串（非通用）
        * </pre>
        */
       public boolean hasRecommend() {
@@ -1465,7 +1562,7 @@ public final class StatisticsProto {
        * <code>optional string recommend = 4;</code>
        *
        * <pre>
-       *服务器下发的打点字串
+       *服务器下发的打点字串（非通用）
        * </pre>
        */
       public java.lang.String getRecommend() {
@@ -1486,7 +1583,7 @@ public final class StatisticsProto {
        * <code>optional string recommend = 4;</code>
        *
        * <pre>
-       *服务器下发的打点字串
+       *服务器下发的打点字串（非通用）
        * </pre>
        */
       public com.google.protobuf.ByteString
@@ -1506,7 +1603,7 @@ public final class StatisticsProto {
        * <code>optional string recommend = 4;</code>
        *
        * <pre>
-       *服务器下发的打点字串
+       *服务器下发的打点字串（非通用）
        * </pre>
        */
       public Builder setRecommend(
@@ -1523,7 +1620,7 @@ public final class StatisticsProto {
        * <code>optional string recommend = 4;</code>
        *
        * <pre>
-       *服务器下发的打点字串
+       *服务器下发的打点字串（非通用）
        * </pre>
        */
       public Builder clearRecommend() {
@@ -1536,7 +1633,7 @@ public final class StatisticsProto {
        * <code>optional string recommend = 4;</code>
        *
        * <pre>
-       *服务器下发的打点字串
+       *服务器下发的打点字串（非通用）
        * </pre>
        */
       public Builder setRecommendBytes(
@@ -1550,6 +1647,158 @@ public final class StatisticsProto {
         return this;
       }
 
+      private com.wali.live.proto.StatisticsProto.CommonLog log_ = com.wali.live.proto.StatisticsProto.CommonLog.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.StatisticsProto.CommonLog, com.wali.live.proto.StatisticsProto.CommonLog.Builder, com.wali.live.proto.StatisticsProto.CommonLogOrBuilder> logBuilder_;
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public boolean hasLog() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public com.wali.live.proto.StatisticsProto.CommonLog getLog() {
+        if (logBuilder_ == null) {
+          return log_;
+        } else {
+          return logBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public Builder setLog(com.wali.live.proto.StatisticsProto.CommonLog value) {
+        if (logBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          log_ = value;
+          onChanged();
+        } else {
+          logBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public Builder setLog(
+          com.wali.live.proto.StatisticsProto.CommonLog.Builder builderForValue) {
+        if (logBuilder_ == null) {
+          log_ = builderForValue.build();
+          onChanged();
+        } else {
+          logBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public Builder mergeLog(com.wali.live.proto.StatisticsProto.CommonLog value) {
+        if (logBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              log_ != com.wali.live.proto.StatisticsProto.CommonLog.getDefaultInstance()) {
+            log_ =
+              com.wali.live.proto.StatisticsProto.CommonLog.newBuilder(log_).mergeFrom(value).buildPartial();
+          } else {
+            log_ = value;
+          }
+          onChanged();
+        } else {
+          logBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public Builder clearLog() {
+        if (logBuilder_ == null) {
+          log_ = com.wali.live.proto.StatisticsProto.CommonLog.getDefaultInstance();
+          onChanged();
+        } else {
+          logBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public com.wali.live.proto.StatisticsProto.CommonLog.Builder getLogBuilder() {
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return getLogFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      public com.wali.live.proto.StatisticsProto.CommonLogOrBuilder getLogOrBuilder() {
+        if (logBuilder_ != null) {
+          return logBuilder_.getMessageOrBuilder();
+        } else {
+          return log_;
+        }
+      }
+      /**
+       * <code>optional .com.mi.live.proto.CommonLog log = 5;</code>
+       *
+       * <pre>
+       *打点具体内容
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.StatisticsProto.CommonLog, com.wali.live.proto.StatisticsProto.CommonLog.Builder, com.wali.live.proto.StatisticsProto.CommonLogOrBuilder> 
+          getLogFieldBuilder() {
+        if (logBuilder_ == null) {
+          logBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.StatisticsProto.CommonLog, com.wali.live.proto.StatisticsProto.CommonLog.Builder, com.wali.live.proto.StatisticsProto.CommonLogOrBuilder>(
+                  getLog(),
+                  getParentForChildren(),
+                  isClean());
+          log_ = null;
+        }
+        return logBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.mi.live.proto.LiveRecvFlagItem)
     }
 
@@ -1559,6 +1808,648 @@ public final class StatisticsProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.mi.live.proto.LiveRecvFlagItem)
+  }
+
+  public interface CommonLogOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.live.proto.CommonLog)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 bizType = 1;</code>
+     *
+     * <pre>
+     *各自业务的打点类型
+     * </pre>
+     */
+    boolean hasBizType();
+    /**
+     * <code>optional uint32 bizType = 1;</code>
+     *
+     * <pre>
+     *各自业务的打点类型
+     * </pre>
+     */
+    int getBizType();
+
+    /**
+     * <code>optional string extStr = 2;</code>
+     *
+     * <pre>
+     *打点的详情（json串）
+     * </pre>
+     */
+    boolean hasExtStr();
+    /**
+     * <code>optional string extStr = 2;</code>
+     *
+     * <pre>
+     *打点的详情（json串）
+     * </pre>
+     */
+    java.lang.String getExtStr();
+    /**
+     * <code>optional string extStr = 2;</code>
+     *
+     * <pre>
+     *打点的详情（json串）
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getExtStrBytes();
+  }
+  /**
+   * Protobuf type {@code com.mi.live.proto.CommonLog}
+   *
+   * <pre>
+   *通用打点pb
+   * </pre>
+   */
+  public static final class CommonLog extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.live.proto.CommonLog)
+      CommonLogOrBuilder {
+    // Use CommonLog.newBuilder() to construct.
+    private CommonLog(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private CommonLog(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final CommonLog defaultInstance;
+    public static CommonLog getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public CommonLog getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private CommonLog(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              bizType_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              extStr_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_CommonLog_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_CommonLog_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.StatisticsProto.CommonLog.class, com.wali.live.proto.StatisticsProto.CommonLog.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<CommonLog> PARSER =
+        new com.google.protobuf.AbstractParser<CommonLog>() {
+      public CommonLog parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new CommonLog(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CommonLog> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int BIZTYPE_FIELD_NUMBER = 1;
+    private int bizType_;
+    /**
+     * <code>optional uint32 bizType = 1;</code>
+     *
+     * <pre>
+     *各自业务的打点类型
+     * </pre>
+     */
+    public boolean hasBizType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 bizType = 1;</code>
+     *
+     * <pre>
+     *各自业务的打点类型
+     * </pre>
+     */
+    public int getBizType() {
+      return bizType_;
+    }
+
+    public static final int EXTSTR_FIELD_NUMBER = 2;
+    private java.lang.Object extStr_;
+    /**
+     * <code>optional string extStr = 2;</code>
+     *
+     * <pre>
+     *打点的详情（json串）
+     * </pre>
+     */
+    public boolean hasExtStr() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string extStr = 2;</code>
+     *
+     * <pre>
+     *打点的详情（json串）
+     * </pre>
+     */
+    public java.lang.String getExtStr() {
+      java.lang.Object ref = extStr_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          extStr_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string extStr = 2;</code>
+     *
+     * <pre>
+     *打点的详情（json串）
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getExtStrBytes() {
+      java.lang.Object ref = extStr_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        extStr_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      bizType_ = 0;
+      extStr_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, bizType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getExtStrBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, bizType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getExtStrBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.StatisticsProto.CommonLog parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.StatisticsProto.CommonLog prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mi.live.proto.CommonLog}
+     *
+     * <pre>
+     *通用打点pb
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.live.proto.CommonLog)
+        com.wali.live.proto.StatisticsProto.CommonLogOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_CommonLog_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_CommonLog_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.StatisticsProto.CommonLog.class, com.wali.live.proto.StatisticsProto.CommonLog.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.StatisticsProto.CommonLog.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        bizType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        extStr_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_CommonLog_descriptor;
+      }
+
+      public com.wali.live.proto.StatisticsProto.CommonLog getDefaultInstanceForType() {
+        return com.wali.live.proto.StatisticsProto.CommonLog.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.StatisticsProto.CommonLog build() {
+        com.wali.live.proto.StatisticsProto.CommonLog result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.StatisticsProto.CommonLog buildPartial() {
+        com.wali.live.proto.StatisticsProto.CommonLog result = new com.wali.live.proto.StatisticsProto.CommonLog(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bizType_ = bizType_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.extStr_ = extStr_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.StatisticsProto.CommonLog) {
+          return mergeFrom((com.wali.live.proto.StatisticsProto.CommonLog)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.StatisticsProto.CommonLog other) {
+        if (other == com.wali.live.proto.StatisticsProto.CommonLog.getDefaultInstance()) return this;
+        if (other.hasBizType()) {
+          setBizType(other.getBizType());
+        }
+        if (other.hasExtStr()) {
+          bitField0_ |= 0x00000002;
+          extStr_ = other.extStr_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.StatisticsProto.CommonLog parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.StatisticsProto.CommonLog) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int bizType_ ;
+      /**
+       * <code>optional uint32 bizType = 1;</code>
+       *
+       * <pre>
+       *各自业务的打点类型
+       * </pre>
+       */
+      public boolean hasBizType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 bizType = 1;</code>
+       *
+       * <pre>
+       *各自业务的打点类型
+       * </pre>
+       */
+      public int getBizType() {
+        return bizType_;
+      }
+      /**
+       * <code>optional uint32 bizType = 1;</code>
+       *
+       * <pre>
+       *各自业务的打点类型
+       * </pre>
+       */
+      public Builder setBizType(int value) {
+        bitField0_ |= 0x00000001;
+        bizType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 bizType = 1;</code>
+       *
+       * <pre>
+       *各自业务的打点类型
+       * </pre>
+       */
+      public Builder clearBizType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bizType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object extStr_ = "";
+      /**
+       * <code>optional string extStr = 2;</code>
+       *
+       * <pre>
+       *打点的详情（json串）
+       * </pre>
+       */
+      public boolean hasExtStr() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string extStr = 2;</code>
+       *
+       * <pre>
+       *打点的详情（json串）
+       * </pre>
+       */
+      public java.lang.String getExtStr() {
+        java.lang.Object ref = extStr_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            extStr_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string extStr = 2;</code>
+       *
+       * <pre>
+       *打点的详情（json串）
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getExtStrBytes() {
+        java.lang.Object ref = extStr_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          extStr_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string extStr = 2;</code>
+       *
+       * <pre>
+       *打点的详情（json串）
+       * </pre>
+       */
+      public Builder setExtStr(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        extStr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string extStr = 2;</code>
+       *
+       * <pre>
+       *打点的详情（json串）
+       * </pre>
+       */
+      public Builder clearExtStr() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        extStr_ = getDefaultInstance().getExtStr();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string extStr = 2;</code>
+       *
+       * <pre>
+       *打点的详情（json串）
+       * </pre>
+       */
+      public Builder setExtStrBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        extStr_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.live.proto.CommonLog)
+    }
+
+    static {
+      defaultInstance = new CommonLog(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mi.live.proto.CommonLog)
   }
 
   public interface GiftDetailOrBuilder extends
@@ -4813,648 +5704,6 @@ public final class StatisticsProto {
     // @@protoc_insertion_point(class_scope:com.mi.live.proto.VideoComment)
   }
 
-  public interface LiveHelperOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.mi.live.proto.LiveHelper)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional uint32 channelId = 1;</code>
-     *
-     * <pre>
-     *渠道id
-     * </pre>
-     */
-    boolean hasChannelId();
-    /**
-     * <code>optional uint32 channelId = 1;</code>
-     *
-     * <pre>
-     *渠道id
-     * </pre>
-     */
-    int getChannelId();
-
-    /**
-     * <code>optional string extStr = 2;</code>
-     *
-     * <pre>
-     *扩展信息
-     * </pre>
-     */
-    boolean hasExtStr();
-    /**
-     * <code>optional string extStr = 2;</code>
-     *
-     * <pre>
-     *扩展信息
-     * </pre>
-     */
-    java.lang.String getExtStr();
-    /**
-     * <code>optional string extStr = 2;</code>
-     *
-     * <pre>
-     *扩展信息
-     * </pre>
-     */
-    com.google.protobuf.ByteString
-        getExtStrBytes();
-  }
-  /**
-   * Protobuf type {@code com.mi.live.proto.LiveHelper}
-   *
-   * <pre>
-   *type=200 extData填充内容
-   * </pre>
-   */
-  public static final class LiveHelper extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.mi.live.proto.LiveHelper)
-      LiveHelperOrBuilder {
-    // Use LiveHelper.newBuilder() to construct.
-    private LiveHelper(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private LiveHelper(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final LiveHelper defaultInstance;
-    public static LiveHelper getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public LiveHelper getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private LiveHelper(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              channelId_ = input.readUInt32();
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              extStr_ = bs;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_LiveHelper_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_LiveHelper_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.wali.live.proto.StatisticsProto.LiveHelper.class, com.wali.live.proto.StatisticsProto.LiveHelper.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<LiveHelper> PARSER =
-        new com.google.protobuf.AbstractParser<LiveHelper>() {
-      public LiveHelper parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LiveHelper(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<LiveHelper> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int CHANNELID_FIELD_NUMBER = 1;
-    private int channelId_;
-    /**
-     * <code>optional uint32 channelId = 1;</code>
-     *
-     * <pre>
-     *渠道id
-     * </pre>
-     */
-    public boolean hasChannelId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional uint32 channelId = 1;</code>
-     *
-     * <pre>
-     *渠道id
-     * </pre>
-     */
-    public int getChannelId() {
-      return channelId_;
-    }
-
-    public static final int EXTSTR_FIELD_NUMBER = 2;
-    private java.lang.Object extStr_;
-    /**
-     * <code>optional string extStr = 2;</code>
-     *
-     * <pre>
-     *扩展信息
-     * </pre>
-     */
-    public boolean hasExtStr() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string extStr = 2;</code>
-     *
-     * <pre>
-     *扩展信息
-     * </pre>
-     */
-    public java.lang.String getExtStr() {
-      java.lang.Object ref = extStr_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          extStr_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string extStr = 2;</code>
-     *
-     * <pre>
-     *扩展信息
-     * </pre>
-     */
-    public com.google.protobuf.ByteString
-        getExtStrBytes() {
-      java.lang.Object ref = extStr_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        extStr_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      channelId_ = 0;
-      extStr_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt32(1, channelId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getExtStrBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, channelId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getExtStrBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.wali.live.proto.StatisticsProto.LiveHelper parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.wali.live.proto.StatisticsProto.LiveHelper prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.mi.live.proto.LiveHelper}
-     *
-     * <pre>
-     *type=200 extData填充内容
-     * </pre>
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.mi.live.proto.LiveHelper)
-        com.wali.live.proto.StatisticsProto.LiveHelperOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_LiveHelper_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_LiveHelper_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.wali.live.proto.StatisticsProto.LiveHelper.class, com.wali.live.proto.StatisticsProto.LiveHelper.Builder.class);
-      }
-
-      // Construct using com.wali.live.proto.StatisticsProto.LiveHelper.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        channelId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        extStr_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.wali.live.proto.StatisticsProto.internal_static_com_mi_live_proto_LiveHelper_descriptor;
-      }
-
-      public com.wali.live.proto.StatisticsProto.LiveHelper getDefaultInstanceForType() {
-        return com.wali.live.proto.StatisticsProto.LiveHelper.getDefaultInstance();
-      }
-
-      public com.wali.live.proto.StatisticsProto.LiveHelper build() {
-        com.wali.live.proto.StatisticsProto.LiveHelper result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.wali.live.proto.StatisticsProto.LiveHelper buildPartial() {
-        com.wali.live.proto.StatisticsProto.LiveHelper result = new com.wali.live.proto.StatisticsProto.LiveHelper(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.channelId_ = channelId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.extStr_ = extStr_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.wali.live.proto.StatisticsProto.LiveHelper) {
-          return mergeFrom((com.wali.live.proto.StatisticsProto.LiveHelper)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.wali.live.proto.StatisticsProto.LiveHelper other) {
-        if (other == com.wali.live.proto.StatisticsProto.LiveHelper.getDefaultInstance()) return this;
-        if (other.hasChannelId()) {
-          setChannelId(other.getChannelId());
-        }
-        if (other.hasExtStr()) {
-          bitField0_ |= 0x00000002;
-          extStr_ = other.extStr_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.wali.live.proto.StatisticsProto.LiveHelper parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.wali.live.proto.StatisticsProto.LiveHelper) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private int channelId_ ;
-      /**
-       * <code>optional uint32 channelId = 1;</code>
-       *
-       * <pre>
-       *渠道id
-       * </pre>
-       */
-      public boolean hasChannelId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional uint32 channelId = 1;</code>
-       *
-       * <pre>
-       *渠道id
-       * </pre>
-       */
-      public int getChannelId() {
-        return channelId_;
-      }
-      /**
-       * <code>optional uint32 channelId = 1;</code>
-       *
-       * <pre>
-       *渠道id
-       * </pre>
-       */
-      public Builder setChannelId(int value) {
-        bitField0_ |= 0x00000001;
-        channelId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 channelId = 1;</code>
-       *
-       * <pre>
-       *渠道id
-       * </pre>
-       */
-      public Builder clearChannelId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        channelId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object extStr_ = "";
-      /**
-       * <code>optional string extStr = 2;</code>
-       *
-       * <pre>
-       *扩展信息
-       * </pre>
-       */
-      public boolean hasExtStr() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string extStr = 2;</code>
-       *
-       * <pre>
-       *扩展信息
-       * </pre>
-       */
-      public java.lang.String getExtStr() {
-        java.lang.Object ref = extStr_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            extStr_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string extStr = 2;</code>
-       *
-       * <pre>
-       *扩展信息
-       * </pre>
-       */
-      public com.google.protobuf.ByteString
-          getExtStrBytes() {
-        java.lang.Object ref = extStr_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          extStr_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string extStr = 2;</code>
-       *
-       * <pre>
-       *扩展信息
-       * </pre>
-       */
-      public Builder setExtStr(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        extStr_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string extStr = 2;</code>
-       *
-       * <pre>
-       *扩展信息
-       * </pre>
-       */
-      public Builder clearExtStr() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        extStr_ = getDefaultInstance().getExtStr();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string extStr = 2;</code>
-       *
-       * <pre>
-       *扩展信息
-       * </pre>
-       */
-      public Builder setExtStrBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        extStr_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:com.mi.live.proto.LiveHelper)
-    }
-
-    static {
-      defaultInstance = new LiveHelper(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:com.mi.live.proto.LiveHelper)
-  }
-
   public interface LiveRecvFlagRspOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.mi.live.proto.LiveRecvFlagRsp)
       com.google.protobuf.MessageOrBuilder {
@@ -5911,6 +6160,11 @@ public final class StatisticsProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_live_proto_LiveRecvFlagItem_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_live_proto_CommonLog_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mi_live_proto_CommonLog_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_live_proto_GiftDetail_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -5941,11 +6195,6 @@ public final class StatisticsProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mi_live_proto_VideoComment_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mi_live_proto_LiveHelper_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mi_live_proto_LiveHelper_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mi_live_proto_LiveRecvFlagRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -5961,17 +6210,18 @@ public final class StatisticsProto {
     java.lang.String[] descriptorData = {
       "\n\020Statistics.proto\022\021com.mi.live.proto\"E\n" +
       "\017LiveRecvFlagReq\0222\n\005items\030\001 \003(\0132#.com.mi" +
-      ".live.proto.LiveRecvFlagItem\"R\n\020LiveRecv" +
+      ".live.proto.LiveRecvFlagItem\"}\n\020LiveRecv" +
       "FlagItem\022\014\n\004date\030\001 \001(\004\022\014\n\004type\030\002 \001(\r\022\017\n\007" +
-      "extData\030\003 \001(\014\022\021\n\trecommend\030\004 \001(\t\"/\n\nGift" +
-      "Detail\022\016\n\006giftId\030\001 \001(\r\022\021\n\tgiftWorth\030\002 \001(" +
-      "\r\"1\n\tLeaveRoom\022\021\n\tenterTime\030\001 \001(\004\022\021\n\tlea" +
-      "veTime\030\002 \001(\004\"3\n\nFollowRoom\022\021\n\tenterTime\030" +
-      "\001 \001(\004\022\022\n\nfollowTime\030\002 \001(\004\",\n\014LikeFeedbac" +
-      "k\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roomId\030\002 \001(\t\"\035\n\tVideo",
-      "Like\022\020\n\010befCount\030\001 \001(\004\"\037\n\014VideoComment\022\017" +
-      "\n\007content\030\001 \001(\t\"/\n\nLiveHelper\022\021\n\tchannel" +
-      "Id\030\001 \001(\r\022\016\n\006extStr\030\002 \001(\t\"\"\n\017LiveRecvFlag" +
+      "extData\030\003 \001(\014\022\021\n\trecommend\030\004 \001(\t\022)\n\003log\030" +
+      "\005 \001(\0132\034.com.mi.live.proto.CommonLog\",\n\tC" +
+      "ommonLog\022\017\n\007bizType\030\001 \001(\r\022\016\n\006extStr\030\002 \001(" +
+      "\t\"/\n\nGiftDetail\022\016\n\006giftId\030\001 \001(\r\022\021\n\tgiftW" +
+      "orth\030\002 \001(\r\"1\n\tLeaveRoom\022\021\n\tenterTime\030\001 \001" +
+      "(\004\022\021\n\tleaveTime\030\002 \001(\004\"3\n\nFollowRoom\022\021\n\te",
+      "nterTime\030\001 \001(\004\022\022\n\nfollowTime\030\002 \001(\004\",\n\014Li" +
+      "keFeedback\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roomId\030\002 \001(\t" +
+      "\"\035\n\tVideoLike\022\020\n\010befCount\030\001 \001(\004\"\037\n\014Video" +
+      "Comment\022\017\n\007content\030\001 \001(\t\"\"\n\017LiveRecvFlag" +
       "Rsp\022\017\n\007retCode\030\001 \002(\rB&\n\023com.wali.live.pr" +
       "otoB\017StatisticsProto"
     };
@@ -5998,49 +6248,49 @@ public final class StatisticsProto {
     internal_static_com_mi_live_proto_LiveRecvFlagItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_LiveRecvFlagItem_descriptor,
-        new java.lang.String[] { "Date", "Type", "ExtData", "Recommend", });
-    internal_static_com_mi_live_proto_GiftDetail_descriptor =
+        new java.lang.String[] { "Date", "Type", "ExtData", "Recommend", "Log", });
+    internal_static_com_mi_live_proto_CommonLog_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_com_mi_live_proto_CommonLog_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_live_proto_CommonLog_descriptor,
+        new java.lang.String[] { "BizType", "ExtStr", });
+    internal_static_com_mi_live_proto_GiftDetail_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_com_mi_live_proto_GiftDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_GiftDetail_descriptor,
         new java.lang.String[] { "GiftId", "GiftWorth", });
     internal_static_com_mi_live_proto_LeaveRoom_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_mi_live_proto_LeaveRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_LeaveRoom_descriptor,
         new java.lang.String[] { "EnterTime", "LeaveTime", });
     internal_static_com_mi_live_proto_FollowRoom_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_mi_live_proto_FollowRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_FollowRoom_descriptor,
         new java.lang.String[] { "EnterTime", "FollowTime", });
     internal_static_com_mi_live_proto_LikeFeedback_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_mi_live_proto_LikeFeedback_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_LikeFeedback_descriptor,
         new java.lang.String[] { "Zuid", "RoomId", });
     internal_static_com_mi_live_proto_VideoLike_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_mi_live_proto_VideoLike_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_VideoLike_descriptor,
         new java.lang.String[] { "BefCount", });
     internal_static_com_mi_live_proto_VideoComment_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_com_mi_live_proto_VideoComment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_mi_live_proto_VideoComment_descriptor,
         new java.lang.String[] { "Content", });
-    internal_static_com_mi_live_proto_LiveHelper_descriptor =
-      getDescriptor().getMessageTypes().get(8);
-    internal_static_com_mi_live_proto_LiveHelper_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_mi_live_proto_LiveHelper_descriptor,
-        new java.lang.String[] { "ChannelId", "ExtStr", });
     internal_static_com_mi_live_proto_LiveRecvFlagRsp_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_com_mi_live_proto_LiveRecvFlagRsp_fieldAccessorTable = new
