@@ -94,4 +94,12 @@
     <string name="feeds_comment_delete_failed">評論刪除失敗</string>
     <string name="open_same_video_hint">現正播放該重播</string>
     <string name="live_lottery_no_comment_toast">暫時沒有評論</string>
+    <string name="location_unknown_new">未知星球</string>
+    <string name="ten_thousand">萬</string>
+    <plurals name="channel_view_count">
+        <item quantity="other">%s人看過</item>
+    </plurals>
+    <plurals name="channel_viewer_count">
+        <item quantity="other">%s人</item>
+    </plurals>
 </resources>

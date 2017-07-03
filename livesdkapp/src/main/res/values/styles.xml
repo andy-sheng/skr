@@ -8,24 +8,4 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="michannel_type">
-        <item name="android:layout_marginRight">@dimen/view_dimen_20</item>
-        <item name="android:layout_marginTop">@dimen/view_dimen_20</item>
-        <item name="android:gravity">center</item>
-        <item name="android:paddingLeft">@dimen/view_dimen_12</item>
-        <item name="android:paddingRight">@dimen/view_dimen_12</item>
-        <item name="android:textColor">@color/color_black_trans_70</item>
-        <item name="android:textSize">@dimen/text_size_30</item>
-    </style>
-
-    <style name="michannel_title">
-        <item name="android:textColor">@color/color_black_trans_90</item>
-        <item name="android:textSize">@dimen/text_size_40</item>
-    </style>
-
-    <style name="michannel_display">
-        <item name="android:textColor">@color/color_black_trans_50</item>
-        <item name="android:textSize">@dimen/text_size_36</item>
-    </style>
-
 </resources>

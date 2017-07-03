@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/split_area"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f2f2f2"/>
+
+    <include
+        android:id="@+id/title_area"
+        layout="@layout/michannel_head_item"
+        android:layout_width="match_parent"
+        android:layout_height="37.33dp"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/content_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_30"
+        android:paddingBottom="@dimen/view_dimen_20">
+
+        <com.base.image.fresco.view.TintableImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="match_parent"
+            android:layout_height="163.3dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/avatar_iv"
+            android:background="@drawable/home_new_human_bg"/>
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/avatar_iv"
+            android:layout_marginBottom="3.33dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:layout_marginTop="3.33dp"
+            android:maxLines="2"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/text_size_40"/>
+
+        <TextView
+            android:id="@+id/display_tv"
+            style="@style/michannel_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_tv"
+            android:layout_marginBottom="3.33dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/type_tv"
+            style="@style/michannel_type_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/channel_live"/>
+
+        <TextView
+            android:id="@+id/count_tv"
+            style="@style/michannel_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/avatar_iv"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -95,4 +95,14 @@ public class SchemeConstants {
     // 获取从H5跳转获取界面
     public final static String PARAM_WEBVIEW_RUL = "url";
     public final static String PARAM_WEBVIEW_ISHALF = "ishalf";
+
+    //跳转到咨询详情页,walilive专有.
+    //eg:uri=walilive://feed/newsinfo?feedid=6212263_1492610945&ownerid=6212263&feed_type=3
+    public static final String HOST_FEED = "feed";
+    public static final String PATH_NEWS_INFO = "/newsinfo";
+    public static final String PARAM_FEED_ID = "feedid";
+    public static final String PARAM_OWENER_ID = "ownerid";
+    public static final String PARAM_FEEDS_TYPE = "feed_type";
+    public static final String PARAM_EXT_TYPE = "ext_type";
+    public static final String PARAM_OPEN_FROM = "feeds_open_from";
 }

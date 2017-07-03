@@ -96,7 +96,6 @@ public class VideoDetailPlayerView extends RelativeLayout
                 mIsNeedStartPlayer = true;
                 showPlayBtn(true);
             }
-
         }
     }
 
@@ -138,7 +137,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     }
 
     private void startPlayer() {
-        MyLog.w(TAG, "startPlayer");
+        MyLog.w(TAG, "startPlayer url=" + mMyRoomData.getVideoUrl());
         mCoverIv.setVisibility(VISIBLE);
         showLoadingView();
         if (mVideoPlayerPresenterEx != null) {

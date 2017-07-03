@@ -94,4 +94,13 @@
     <string name="feeds_comment_delete_dialog_title">确认删除该评论</string>
     <string name="feeds_comment_delete_failed">评论删除失败</string>
     <string name="live_lottery_no_comment_toast">暂时没有评论</string>
+    <string name="channel_live">直播</string>
+    <string name="location_unknown_new">未知星球</string>
+    <string name="ten_thousand">万</string>
+    <plurals name="channel_view_count">
+        <item quantity="other">%s人看过</item>
+    </plurals>
+    <plurals name="channel_viewer_count">
+        <item quantity="other">%s人</item>
+    </plurals>
 </resources>

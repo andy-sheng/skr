@@ -83,6 +83,7 @@
     <dimen name="view_dimen_14">4.66dp</dimen>
     <dimen name="view_dimen_15">5dp</dimen>
     <dimen name="view_dimen_16">5.33dp</dimen>
+    <dimen name="view_dimen_18">6dp</dimen>
     <dimen name="view_dimen_20">6.33dp</dimen>
     <dimen name="view_dimen_21">7dp</dimen>
     <dimen name="view_dimen_22">7.33dp</dimen>

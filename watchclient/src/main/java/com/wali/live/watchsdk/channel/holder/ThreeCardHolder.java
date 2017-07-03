@@ -1,0 +1,81 @@
+package com.wali.live.watchsdk.channel.holder;
+
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.base.utils.display.DisplayUtils;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
+
+import java.util.Arrays;
+
+/**
+ * Created by lan on 16/6/28.
+ *
+ * @module 频道
+ * @description 并列3个方形图片的item
+ */
+public class ThreeCardHolder extends RepeatHolder {
+    protected View mArrayArea;
+
+    public ThreeCardHolder(View itemView) {
+        super(itemView);
+    }
+
+    @Override
+    protected void initContentViewId() {
+        mViewSize = 3;
+        mParentIds = new int[]{
+                R.id.single_card_1,
+                R.id.single_card_2,
+                R.id.single_card_3,
+        };
+        mIvIds = new int[mViewSize];
+        Arrays.fill(mIvIds, R.id.avatar_iv);
+        mTvIds = new int[mViewSize];
+        Arrays.fill(mTvIds, R.id.name_tv);
+    }
+
+    @Override
+    protected void initContentView() {
+        super.initContentView();
+        mArrayArea = $(R.id.array_area);
+    }
+
+    @Override
+    protected boolean isChangeImageSize() {
+        return false;
+    }
+
+    @Override
+    protected boolean isCircle() {
+        return false;
+    }
+
+    @Override
+    protected ScalingUtils.ScaleType getScaleType() {
+        return ScalingUtils.ScaleType.CENTER_CROP;
+    }
+
+    @Override
+    protected void bindLiveModel(ChannelLiveViewModel viewModel) {
+        super.bindLiveModel(viewModel);
+
+        int height;
+        if (mViewModel.isFullColumn()) {
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mArrayArea.getLayoutParams();
+            lp.rightMargin = lp.leftMargin = 0;
+
+            height = (DisplayUtils.getScreenWidth() - DisplayUtils.dip2px(1f) * 2) / 3;
+        } else {
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mArrayArea.getLayoutParams();
+            lp.rightMargin = lp.leftMargin = SIDE_MARGIN;
+
+            height = (DisplayUtils.getScreenWidth() - SIDE_MARGIN * 2 - MIDDLE_MARGIN_THREE * 2) / 3;
+        }
+        for (int i = 0; i < mViewSize; i++) {
+            mImageViews[i].getLayoutParams().height = height;
+        }
+    }
+}

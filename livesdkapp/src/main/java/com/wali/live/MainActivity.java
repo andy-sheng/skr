@@ -20,13 +20,14 @@ import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.R;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.channel.adapter.ChannelRecyclerAdapter;
-import com.wali.live.channel.presenter.ChannelPresenter;
-import com.wali.live.channel.presenter.IChannelPresenter;
-import com.wali.live.channel.presenter.IChannelView;
-import com.wali.live.channel.viewmodel.BaseViewModel;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.channel.ChannelSdkActivity;
+import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
+import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
+import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
+import com.wali.live.watchsdk.channel.presenter.IChannelView;
+import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
@@ -44,8 +45,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
-//import com.wali.live.livesdk.live.LiveSdkActivity;
 
 /**
  * Created by lan on 16/11/25.
@@ -69,10 +68,8 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
         initViews();
         initPresenters();
-
         initData();
         getChannelFromServer();
-
         $(R.id.show_live_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,13 +124,19 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.replay_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // http://playback.ks.zb.mi.com/record/live/100067_1490154994/hls/100067_1490154994.m3u8?playui=0
                 RoomInfo roomInfo = RoomInfo.Builder.newInstance(101743, "101743_1471260348",
                         "http://playback.ks.zb.mi.com/record/live/101743_1471260348/hls/101743_1471260348.m3u8?playui=1")
                         .setLiveType(6)
                         .setEnableShare(true)
                         .build();
                 VideoDetailSdkActivity.openActivity(MainActivity.this, roomInfo);
+            }
+        });
+
+        ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChannelSdkActivity.openActivity(MainActivity.this);
             }
         });
     }
@@ -187,7 +190,6 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
 
         mRecyclerAdapter = new ChannelRecyclerAdapter(this, mChannelId);
         mRecyclerView.setAdapter(mRecyclerAdapter);
-
         mInputEditText = $(R.id.live_input_tv);
 
         $(R.id.watch_btn).setOnClickListener(new View.OnClickListener() {

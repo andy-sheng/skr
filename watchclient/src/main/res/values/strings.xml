@@ -96,4 +96,15 @@
     <string name="feeds_comment_delete_failed">Couldn\'t remove comments</string>
     <string name="open_same_video_hint">Replaying…</string>
     <string name="live_lottery_no_comment_toast">No comments yet</string>
+    <string name="location_unknown_new">Unknown planet</string>
+    <string name="michannel_type_live">Live</string>
+    <string name="ten_thousand">0K</string>
+    <plurals name="channel_view_count">
+        <item quantity="one"> %s viewer</item>
+        <item quantity="other"> %s viewers</item>
+    </plurals>
+    <plurals name="channel_viewer_count">
+        <item quantity="one">%s viewer</item>
+        <item quantity="other">%s viewers</item>
+    </plurals>
 </resources>
