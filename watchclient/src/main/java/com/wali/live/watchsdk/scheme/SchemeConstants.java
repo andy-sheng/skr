@@ -52,7 +52,7 @@ public class SchemeConstants {
      * param(channelId) is same as{@link #PARAM_CHANNEL_ID}: 共用channelId，节约参数
      */
     public static final String HOST_CHANNEL = "channel";
-    public static final String PATH_ENTER = "enter";
+    public static final String PARAM_CHANNELID = "channelid";
 
     /**
      * 购物相关，目前挂件部分使用了参数，先留着

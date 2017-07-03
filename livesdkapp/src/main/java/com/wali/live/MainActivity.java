@@ -2,6 +2,7 @@ package com.wali.live;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,7 +23,6 @@ import com.mi.liveassistant.R;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
-import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
@@ -136,7 +136,9 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChannelSdkActivity.openActivity(MainActivity.this);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("livesdk://channel?channel_id=50001&package_name=com.wali.live.sdk.manager.demo" +
+                        "&channelid=111001"));
+                startActivity(intent);
             }
         });
     }

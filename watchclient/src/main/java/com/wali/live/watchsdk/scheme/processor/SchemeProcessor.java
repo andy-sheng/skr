@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -92,14 +93,10 @@ public class SchemeProcessor {
     }
 
     private static void processHostChannel(Uri uri, Activity activity) {
-        if (!isLegalPath(uri, "processHostChannel", SchemeConstants.PATH_ENTER)) {
-            return;
-        }
-
-        int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
+        long channelId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_CHANNELID, 0);
         MyLog.w(TAG, "channel id=" + channelId);
         if (channelId != 0) {
-            //TODO enter to ChannelActivity
+            ChannelSdkActivity.openActivity(activity, channelId);
         }
     }
 }

@@ -30,6 +30,8 @@ import java.util.List;
  * Created by lan on 16/11/25.
  */
 public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView {
+    private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
+
     protected BackTitleBar mBackTitleBar;
     protected SwipeRefreshLayout mRefreshLayout;
     protected RecyclerView mRecyclerView;
@@ -37,16 +39,27 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
     protected ChannelRecyclerAdapter mRecyclerAdapter;
 
     protected IChannelPresenter mPresenter;
-    protected long mChannelId = 111001;
+    protected long mChannelId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.channelsdk_layout);
 
+        initData();
         initViews();
         initPresenters();
         getChannelFromServer();
+    }
+
+    private void initData() {
+        Intent data = getIntent();
+        if (data == null) {
+            MyLog.w(TAG, "data is null");
+            finish();
+            return;
+        }
+        mChannelId = data.getLongExtra(EXTRA_CHANNEL_ID, 0);
     }
 
     private void initViews() {
@@ -118,8 +131,9 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
         }
     }
 
-    public static void openActivity(@NonNull Activity activity) {
+    public static void openActivity(@NonNull Activity activity, long channelId) {
         Intent intent = new Intent(activity, ChannelSdkActivity.class);
+        intent.putExtra(EXTRA_CHANNEL_ID, channelId);
         activity.startActivity(intent);
     }
 }
