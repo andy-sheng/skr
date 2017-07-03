@@ -138,6 +138,7 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
     protected ReplaySeekBar mReplaySeekBar;
 
     private PhoneStateReceiver mPhoneStateReceiver;
+    protected VideoShowPresenter mVideoShowPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,9 +181,11 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
     }
 
     private void getVideoUrlFromServer() {
-        VideoShowPresenter videoShowPresenter = new VideoShowPresenter(this);
-        addPresent(videoShowPresenter);
-        videoShowPresenter.getVideoUrlOnly(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        if (mVideoShowPresenter == null) {
+            mVideoShowPresenter = new VideoShowPresenter(this);
+            addPresent(mVideoShowPresenter);
+        }
+        mVideoShowPresenter.getVideoUrlOnly(mMyRoomData.getUid(), mMyRoomData.getRoomId());
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -85,14 +86,17 @@ public class VideoDetailPlayerView extends RelativeLayout
     public void setMyRoomData(RoomBaseDataModel myRoomData) {
         mMyRoomData = myRoomData;
         if (mMyRoomData != null) {
-            AvatarUtils.loadAvatarByUidTs(mCoverIv, mMyRoomData.getUid(), mMyRoomData.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, false);
-            if (NetworkUtils.hasNetwork(this.getContext()) && !check4GNet(PLAYER_START, 0)) {
+            AvatarUtils.loadAvatarByUidTs(mCoverIv, mMyRoomData.getUid(),
+                    mMyRoomData.getAvatarTs(), AvatarUtils.SIZE_TYPE_AVATAR_LARGE, false);
+            if (!TextUtils.isEmpty(mMyRoomData.getVideoUrl())
+                    && NetworkUtils.hasNetwork(this.getContext())
+                    && !check4GNet(PLAYER_START, 0)) {
                 startPlayer();
             } else {
                 mIsNeedStartPlayer = true;
                 showPlayBtn(true);
-                ToastUtils.showToast(getContext(), R.string.network_disable);
             }
+
         }
     }
 

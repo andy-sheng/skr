@@ -44,6 +44,7 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
         registerAction(VideoDetailController.MSG_PLAYER_SEEK_FROM_REPLAY);
         registerAction(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
         registerAction(VideoDetailController.MSG_COMPLETE_STARTTIME);
+        registerAction(VideoDetailController.MSG_PLAYER_START);
     }
 
     @Override
@@ -141,6 +142,9 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                     break;
                 case VideoDetailController.MSG_COMPLETE_STARTTIME:
                     mStartTime = (long) params.getItem(0);
+                    break;
+                case VideoDetailController.MSG_PLAYER_START:
+                    mView.onStartPlayer();
                     break;
                 default:
                     break;

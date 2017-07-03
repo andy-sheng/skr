@@ -150,6 +150,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
 
     private PhoneStateReceiver mPhoneStateReceiver;
     private RoomSytemMsgPresenter mRoomSytemMsgPresenter;
+    private VideoShowPresenter mVideoShowPresenter;
 
     protected CustomHandlerThread mHandlerThread = new CustomHandlerThread("WatchActivity") {
         @Override
@@ -224,9 +225,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
     }
 
     private void getVideoUrlFromServer() {
-        VideoShowPresenter videoShowPresenter = new VideoShowPresenter(this);
-        addPresent(videoShowPresenter);
-        videoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
+        if (mVideoShowPresenter == null) {
+            mVideoShowPresenter = new VideoShowPresenter(this);
+            addPresent(mVideoShowPresenter);
+        }
+        mVideoShowPresenter.getVideoUrlByRoomId(mMyRoomData.getUid(), mMyRoomData.getRoomId());
     }
 
     @Override

@@ -54,6 +54,7 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
     private static AtomicInteger activeNum = new AtomicInteger(0);
 
     private MyAlertDialog mLogOffDialog;
+    private ExpLevelPresenter mExpLevelPresenter;
 
     private boolean hasKicked;
 
@@ -266,9 +267,11 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
             onEventShare(event);
             if (event.state == EventClass.ShareEvent.TYPE_SUCCESS) {
                 //update experience
-                ExpLevelPresenter expLevelPresenter = new ExpLevelPresenter();
-                addPresent(expLevelPresenter);
-                expLevelPresenter.updateExperience(ExpLevelPresenter.SHARE_TYPE, event.getSnsType());
+                if (mExpLevelPresenter == null) {
+                    mExpLevelPresenter = new ExpLevelPresenter();
+                    addPresent(mExpLevelPresenter);
+                }
+                mExpLevelPresenter.updateExperience(ExpLevelPresenter.SHARE_TYPE, event.getSnsType());
             }
         }
     }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.WindowManager;
 
 import com.base.log.MyLog;
@@ -16,6 +17,8 @@ import com.wali.live.watchsdk.videodetail.VideoDetailController;
 import com.wali.live.watchsdk.videodetail.VideoDetailView;
 import com.wali.live.watchsdk.watch.event.WatchOrReplayActivityCreated;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
+import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
+import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -24,10 +27,11 @@ import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO
 /**
  * Created by yangli on 2017/5/26.
  */
-public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
+public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements IWatchVideoView {
 
     private VideoDetailController mComponentController;
     private VideoDetailView mSdkView;
+    private VideoShowPresenter mVideoShowPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +78,12 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
         // 填充 mMyRoomData
         mMyRoomData.setRoomId(mRoomInfo.getLiveId());
         mMyRoomData.setUid(mRoomInfo.getPlayerId());
-        mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
         mMyRoomData.setLiveType(mRoomInfo.getLiveType());
+        if (!TextUtils.isEmpty(mRoomInfo.getVideoUrl())) {
+            mMyRoomData.setVideoUrl(mRoomInfo.getVideoUrl());
+        } else {
+            getVideoUrlFromServer();
+        }
     }
 
     private void initView() {
@@ -91,6 +99,14 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
     protected void onPause() {
         super.onPause();
         mComponentController.onEvent(VideoDetailController.MSG_PLAYER_PAUSE);
+    }
+
+    private void getVideoUrlFromServer() {
+        if (mVideoShowPresenter == null) {
+            mVideoShowPresenter = new VideoShowPresenter(this);
+            addPresent(mVideoShowPresenter);
+        }
+        mVideoShowPresenter.getVideoUrlOnly(mMyRoomData.getUid(), mMyRoomData.getRoomId());
     }
 
     @Override
@@ -140,6 +156,25 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity {
         Intent intent = new Intent(activity, VideoDetailSdkActivity.class);
         intent.putExtra(EXTRA_ROOM_INFO, roomInfo);
         activity.startActivity(intent);
+    }
+
+    @Override
+    public void updateVideoUrl(String videoUrl) {
+        if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())
+                && !TextUtils.isEmpty(videoUrl)) {
+            mMyRoomData.setVideoUrl(videoUrl);
+            mComponentController.onEvent(VideoDetailController.MSG_PLAYER_START);
+        }
+    }
+
+    @Override
+    public void updateRoomInfo(String roomId, String videoUrl) {
+
+    }
+
+    @Override
+    public void notifyLiveEnd() {
+
     }
 
     private class Action implements ComponentPresenter.IAction {
