@@ -590,7 +590,6 @@ public class ReplaySdkActivity extends BaseComponentSdkActivity implements
                 case EventClass.FeedsVideoEvent.TYPE_COMPLETION:
                     break;
                 case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
-                case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN:
                     break;
                 case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                     break;

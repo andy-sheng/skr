@@ -1,7 +1,6 @@
 package com.wali.live.video.widget.player;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -22,11 +21,8 @@ import java.util.List;
 public class ReplaySeekBar extends VideoPlayBaseSeekBar {
 
     protected HotSpotSeekBar mSeekBar;
-
     protected View mPlayBtn;
-
     protected View mFullScreenBtn;
-
     protected TextView mCurTimeTv;
     protected TextView mTotalTimeTv;
 
@@ -53,7 +49,6 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
             }
         }
 
-
         @Override
         public void onStopTrackingTouch(RotatedSeekBar rotatedSeekBar) {
             if (mListener != null) {
@@ -61,7 +56,6 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
             }
         }
     };
-
 
     public ReplaySeekBar(Context context) {
         this(context, null);
@@ -73,14 +67,7 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
 
     @Override
     public int getLayoutResId(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ReplaySeekBar);
-        boolean detailReplayFlag = typedArray.getBoolean(R.styleable.ReplaySeekBar_detail_replay, false);
-        typedArray.recycle();
-        if (detailReplayFlag) {
-            return R.layout.detail_seekbar_container;
-        } else {
-            return R.layout.replay_seekbar_container;
-        }
+        return R.layout.detail_seekbar_container;
     }
 
     @Override
@@ -109,7 +96,7 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
                 break;
             case CLICK_TAG_FULLSCREEN:
                 if (mListener != null) {
-                    mListener.onClickFullScreenBtn();
+                    mListener.onClickFullScreenBtn(mFullScreenBtn.isSelected());
                 }
                 break;
         }
@@ -161,6 +148,13 @@ public class ReplaySeekBar extends VideoPlayBaseSeekBar {
     @Override
     public void setHotSpotInfoList(List<HotSpotProto.HotSpotInfo> list) {
         mSeekBar.setHotSpotInfoList(list);
+    }
+
+    @Override
+    public void setFullscreen(boolean isFullScreen) {
+        if (isFullScreen != mFullScreenBtn.isSelected()) {
+            mFullScreenBtn.setSelected(isFullScreen);
+        }
     }
 }
 

@@ -149,13 +149,6 @@ public class VideoDetailPlayerView extends RelativeLayout
         }
     }
 
-    private void stopPlayer() {
-        MyLog.w(TAG, "stopPlayer");
-        if (mVideoPlayerPresenterEx != null) {
-            mVideoPlayerPresenterEx.destroy();
-        }
-    }
-
     private void pausePlayer() {
         MyLog.w(TAG, "pausePlayer");
         if (mVideoPlayerPresenterEx != null) {
@@ -179,15 +172,6 @@ public class VideoDetailPlayerView extends RelativeLayout
         }
     }
 
-    private void clickFullScreen() {
-        MyLog.w(TAG, "clickFullScreen");
-        if (mCoverIv.getVisibility() != VISIBLE) {
-            mCoverIv.setVisibility(VISIBLE);
-        }
-        showPlayBtn(true);
-        mVideoPlayerPresenterEx.setPlayerEnable(false);
-    }
-
     private void onPlayingState() {
         MyLog.w(TAG, "onPlayingState");
         hideLoadingView();
@@ -205,22 +189,6 @@ public class VideoDetailPlayerView extends RelativeLayout
         return 0;
     }
 
-    private void seekVideoPlayer(long playedTime) {
-        MyLog.w(TAG, "seekVideoPlayer playedTime=" + playedTime);
-        if (mVideoPlayerPresenterEx != null) {
-            mVideoPlayerPresenterEx.setPlayerEnable(true);
-            if (playedTime == 0) {
-                //已经播放完毕
-                mIsNeedStartPlayer = true;
-                return;
-            }
-            if (!check4GNet(PLAYER_SEEK, playedTime)) {
-                showLoadingView();
-                mVideoPlayerPresenterEx.seekTo(playedTime);
-            }
-        }
-    }
-
     private void onCompleteState() {
         if (mCoverIv.getVisibility() != VISIBLE) {
             mCoverIv.setVisibility(VISIBLE);
@@ -229,10 +197,26 @@ public class VideoDetailPlayerView extends RelativeLayout
         mIsNeedStartPlayer = true;
     }
 
-    public void detroy() {
+    public void destroy() {
         if (mVideoPlayerPresenterEx != null) {
             mVideoPlayerPresenterEx.destroy();
         }
+    }
+
+    public void switchToFullScreen(boolean fullScreen) {
+        if (mDetailSeekBar != null) {
+            mDetailSeekBar.setFullscreen(fullScreen);
+        }
+    }
+
+    public void showOrHideFullScreenBtn(boolean isShow) {
+        if (mDetailSeekBar != null) {
+            mDetailSeekBar.showOrHideFullScreenBtn(isShow);
+        }
+    }
+
+    public void onSeekBarContainerClick() {
+        mVideoPlayerPresenterEx.onSeekBarContainerClick();
     }
 
     private boolean check4GNet(final int from, final long playingTime) {
@@ -289,11 +273,6 @@ public class VideoDetailPlayerView extends RelativeLayout
             }
 
             @Override
-            public void onClickFullScreen() {
-                VideoDetailPlayerView.this.clickFullScreen();
-            }
-
-            @Override
             public void showPlayBtn(boolean show) {
                 VideoDetailPlayerView.this.showPlayBtn(show);
             }
@@ -304,18 +283,8 @@ public class VideoDetailPlayerView extends RelativeLayout
             }
 
             @Override
-            public void onResumePlayer() {
-                VideoDetailPlayerView.this.resumePlayer();
-            }
-
-            @Override
             public void onPausePlayer() {
                 VideoDetailPlayerView.this.pausePlayer();
-            }
-
-            @Override
-            public void onStopPlayer() {
-                VideoDetailPlayerView.this.stopPlayer();
             }
 
             @Override
@@ -323,10 +292,6 @@ public class VideoDetailPlayerView extends RelativeLayout
                 return VideoDetailPlayerView.this.getPlayingTime();
             }
 
-            @Override
-            public void onSeekPlayer(long playedTime) {
-                VideoDetailPlayerView.this.seekVideoPlayer(playedTime);
-            }
 
             @Override
             public void onResetPlayer() {
@@ -340,7 +305,7 @@ public class VideoDetailPlayerView extends RelativeLayout
 
             @Override
             public void onDestroy() {
-                VideoDetailPlayerView.this.detroy();
+                VideoDetailPlayerView.this.destroy();
             }
         }
         return new ComponentView();
@@ -349,9 +314,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.back_iv) {
-            mPresenter.onBackPress();
-        } else if (i == R.id.play_button) {
+        if (i == R.id.play_button) {
             if (!NetworkUtils.hasNetwork(getContext())) {
                 ToastUtils.showToast(getContext(), R.string.network_disable);
                 return;
@@ -382,26 +345,9 @@ public class VideoDetailPlayerView extends RelativeLayout
         void onStartPlayer();
 
         /**
-         * 播放器续播
-         */
-        void onResumePlayer();
-
-        /**
          * 播放器暂停
          */
         void onPausePlayer();
-
-        /**
-         * 播放器关闭以及资源释放
-         */
-        void onStopPlayer();
-
-        /**
-         * 播放器的seek接口
-         *
-         * @param playedTime
-         */
-        void onSeekPlayer(long playedTime);
 
         /**
          * 播放器的重置接口
@@ -414,11 +360,6 @@ public class VideoDetailPlayerView extends RelativeLayout
          * @return
          */
         long onGetPlayingTime();
-
-        /**
-         * 点击全屏按钮，更新ui接口
-         */
-        void onClickFullScreen();
 
         /**
          * 播放器正在播放更新ui接口

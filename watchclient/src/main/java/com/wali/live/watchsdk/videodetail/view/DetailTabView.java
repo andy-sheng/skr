@@ -1,22 +1,22 @@
 package com.wali.live.watchsdk.videodetail.view;
 
+import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Pair;
 import android.view.View;
 
 import com.base.utils.display.DisplayUtils;
 import com.base.view.SlidingTabLayout;
-import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.component.view.IComponentView;
 import com.wali.live.component.view.IViewProxy;
-import com.wali.live.watchsdk.videodetail.presenter.DetailReplayPresenter;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.adapter.CommonTabPagerAdapter;
-import com.wali.live.watchsdk.videodetail.presenter.DetailCommentPresenter;
+
+import java.util.List;
 
 /**
  * Created by yangli on 2017/06/02.
@@ -51,35 +51,17 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     @Override
     public void setPresenter(@Nullable IPresenter iPresenter) {
         mPresenter = iPresenter;
+        if (mPresenter != null) {
+            mPresenter.syncTabPageList(mRootView.getContext());
+        }
     }
 
-    public DetailTabView(
-            View rootView,
-            @NonNull ComponentPresenter.IComponentController componentController,
-            @NonNull RoomBaseDataModel roomData) {
+    public DetailTabView(@NonNull View rootView) {
         mRootView = rootView;
         mAppBarLayout = $(R.id.app_bar_layout);
         mSlidingTabLayout = $(R.id.detail_tab);
         mViewPager = $(R.id.detail_pager);
 
-        mMessageAdapter = new CommonTabPagerAdapter();
-        {
-            DetailCommentView view = new DetailCommentView(mRootView.getContext());
-            DetailCommentPresenter presenter = new DetailCommentPresenter(componentController, roomData);
-            presenter.setComponentView(view.getViewProxy());
-            view.setPresenter(presenter);
-            mMessageAdapter.addView(String.format(mRootView.getResources().getString(
-                    R.string.feeds_detail_label_comment), "0"), view);
-        }
-        {
-            DetailReplayView view = new DetailReplayView(mRootView.getContext());
-            DetailReplayPresenter presenter = new DetailReplayPresenter(componentController, roomData);
-            presenter.setComponentView(view.getViewProxy());
-            view.setMyRoomData(roomData);
-            view.setPresenter(presenter);
-            mMessageAdapter.addView(String.format(mRootView.getResources().getString(
-                    R.string.feeds_detail_label_replay), "0"), view);
-        }
         mSlidingTabLayout.setCustomTabView(R.layout.feeds_detail_slide_tab_view, R.id.tab_tv);
         mSlidingTabLayout.setCustomTabColorizer(
                 new SlidingTabLayout.TabColorizer() {
@@ -95,6 +77,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         mSlidingTabLayout.setIndicatorWidth(DisplayUtils.dip2px(12));
         mSlidingTabLayout.setIndicatorBottomMargin(DisplayUtils.dip2px(4));
 
+        mMessageAdapter = new CommonTabPagerAdapter();
         mViewPager.setAdapter(mMessageAdapter);
         mSlidingTabLayout.setViewPager(mViewPager);
     }
@@ -108,6 +91,15 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             @Override
             public <T extends View> T getRealView() {
                 return null;
+            }
+
+            @Override
+            public void onTabPageList(List<Pair<String, ? extends View>> tabPageList) {
+                mMessageAdapter.removeAll();
+                for (Pair<String, ? extends View> elem : tabPageList) {
+                    mMessageAdapter.addView(elem.first, elem.second);
+                }
+                mMessageAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -133,18 +125,31 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
     }
 
     public interface IPresenter {
+        /**
+         * 同步Tab的展示列表
+         */
+        void syncTabPageList(Context context);
     }
 
     public interface IView extends IViewProxy {
         /**
-         * 更新评论总数
+         * 更新TAB页面列表
+         *
+         * @param tabPageList <标题，页面>对列表
          */
-        void updateCommentTotalCnt(int cnt);
+        void onTabPageList(List<Pair<String, ? extends View>> tabPageList);
 
         /**
          * 更新评论总数
          *
-         * @param cnt
+         * @param cnt 评论数目
+         */
+        void updateCommentTotalCnt(int cnt);
+
+        /**
+         * 更新回放总数
+         *
+         * @param cnt 回放数目
          */
         void updateReplayTotalCnt(int cnt);
 

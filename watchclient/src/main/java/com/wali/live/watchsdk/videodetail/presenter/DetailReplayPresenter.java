@@ -45,6 +45,10 @@ public class DetailReplayPresenter extends ComponentPresenter<DetailReplayView.I
             , RoomBaseDataModel myRoomData) {
         super(componentController);
         this.mMyRoomData = myRoomData;
+    }
+
+    @Override
+    public void startPresenter() {
         registerAction(MSG_COMPLETE_USER_INFO);
     }
 

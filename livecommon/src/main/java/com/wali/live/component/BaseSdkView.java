@@ -27,7 +27,7 @@ import java.util.List;
  * @mail yanglijd@gmail.com
  */
 public abstract class BaseSdkView<T extends ComponentController> {
-    private static final String TAG = "BaseSdkView";
+    protected final String TAG = getTAG();
 
     @NonNull
     protected Activity mActivity;
@@ -39,14 +39,20 @@ public abstract class BaseSdkView<T extends ComponentController> {
 
     @Nullable
     @CheckResult
-    protected final <V extends View> V $(@IdRes int id) {
+    protected <V extends View> V $(@IdRes int id) {
         return (V) mActivity.findViewById(id);
     }
 
     @Nullable
     @CheckResult
-    protected final <V extends View> V $(@NonNull ViewGroup viewGroup, @IdRes int id) {
-        return (V) viewGroup.findViewById(id);
+    protected final <V extends View> V $(@NonNull View view, @IdRes int id) {
+        return (V) view.findViewById(id);
+    }
+
+    protected final void $click(View v, View.OnClickListener clickListener) {
+        if (v != null) {
+            v.setOnClickListener(clickListener);
+        }
     }
 
     protected final void addViewToSet(int[] idSet, List<View>... listSet) {
@@ -92,8 +98,8 @@ public abstract class BaseSdkView<T extends ComponentController> {
     protected final void addComponentView(
             @NonNull IComponentView view,
             @NonNull ComponentPresenter presenter) {
-        view.setPresenter(presenter);
         presenter.setComponentView(view.getViewProxy());
+        view.setPresenter(presenter);
         mComponentViewSet.add(view);
         mComponentPresenterSet.add(presenter);
     }
@@ -102,6 +108,8 @@ public abstract class BaseSdkView<T extends ComponentController> {
             @NonNull ComponentPresenter presenter) {
         mComponentPresenterSet.add(presenter);
     }
+
+    protected abstract String getTAG();
 
     public BaseSdkView(@NonNull Activity activity,
                        @NonNull T componentController) {
@@ -113,6 +121,18 @@ public abstract class BaseSdkView<T extends ComponentController> {
      * 初始化SdkView
      */
     public abstract void setupSdkView();
+
+    /**
+     * 启动SdkView
+     */
+    public void startSdkView() {
+    }
+
+    /**
+     * 停止SdkView
+     */
+    public void stopSdkView() {
+    }
 
     /**
      * 销毁SdkView，并释放资源
@@ -169,6 +189,11 @@ public abstract class BaseSdkView<T extends ComponentController> {
             mComponentController.registerAction(ComponentController.MSG_INPUT_VIEW_SHOWED, this);
             mComponentController.registerAction(ComponentController.MSG_INPUT_VIEW_HIDDEN, this);
             mComponentController.registerAction(ComponentController.MSG_BACKGROUND_CLICK, this);
+        }
+
+        @CallSuper
+        public void unregisterAction() {
+            mComponentController.unregisterAction(this);
         }
     }
 

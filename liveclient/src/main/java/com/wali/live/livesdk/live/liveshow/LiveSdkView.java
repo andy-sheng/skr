@@ -44,7 +44,6 @@ import java.util.List;
  * @module 秀场直播页面
  */
 public class LiveSdkView extends BaseSdkView<LiveComponentController> {
-    private static final String TAG = "LiveSdkView";
 
     @NonNull
     protected final Action mAction = new Action();
@@ -62,6 +61,11 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     protected RelativeLayout mFloatContainer;
 
     protected boolean mIsLandscape = false;
+
+    @Override
+    protected String getTAG() {
+        return "LiveSdkView";
+    }
 
     public LiveSdkView(
             @NonNull Activity activity,

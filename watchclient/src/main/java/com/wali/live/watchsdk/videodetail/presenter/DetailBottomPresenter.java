@@ -38,6 +38,10 @@ public class DetailBottomPresenter extends ComponentPresenter<DetailBottomView.I
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
         mMyRoomData = roomData;
+    }
+
+    @Override
+    public void startPresenter() {
         registerAction(MSG_UPDATE_LIKE_STATUS);
     }
 

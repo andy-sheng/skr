@@ -86,8 +86,8 @@
                 android:layout_width="15.33dp"
                 android:layout_height="15.33dp"
                 android:layout_centerVertical="true"
-                android:background="@drawable/video_fullscreen_icon"
-                android:duplicateParentState="true"/>
+                android:duplicateParentState="true"
+                android:background="@drawable/video_fullscreen_icon"/>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -5,12 +5,6 @@
                 android:layout_height="match_parent"
                 android:soundEffectsEnabled="false">
 
-    <com.wali.live.watchsdk.watch.view.TouchDelegateView
-        android:id="@+id/touch_delegate_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
-
     <View
         android:id="@+id/touch_view"
         android:layout_width="match_parent"
@@ -100,7 +94,6 @@
         android:layout_width="wrap_content"
         android:layout_height="140dp"
         android:layout_above="@id/live_comment_view"
-
         android:layout_marginBottom="61.33dip"/>
 
     <com.wali.live.common.flybarrage.view.FlyBarrageViewGroup
