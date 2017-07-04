@@ -19,14 +19,6 @@ public class SchemeConstants {
      */
     public static final String SCHEME_WALILIVE = "walilive";
 
-    /**
-     * 安全验证参数
-     * Todo 是否改成intent extra，不放在scheme，放在intent里？
-     */
-    public static final String PARAM_CHANNEL_ID = "channel_id";
-    public static final String PARAM_PACKAGE_NAME = "package_name";
-    public static final String PARAM_CHANNEL_SECRET = "channel_secret";
-
     // 跳转到直播间
     public static final String HOST_ROOM = "room";
     public static final String PATH_JOIN = "/join";
@@ -48,11 +40,9 @@ public class SchemeConstants {
 
     /**
      * 跳转到频道
-     * <p>
-     * param(channelId) is same as{@link #PARAM_CHANNEL_ID}: 共用channelId，节约参数
      */
     public static final String HOST_CHANNEL = "channel";
-    public static final String PARAM_CHANNELID = "channelid";
+    public static final String PARAM_CHANNEL_ID = "channel_id";
 
     /**
      * 购物相关，目前挂件部分使用了参数，先留着

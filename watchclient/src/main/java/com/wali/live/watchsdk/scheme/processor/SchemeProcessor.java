@@ -93,7 +93,7 @@ public class SchemeProcessor {
     }
 
     private static void processHostChannel(Uri uri, Activity activity) {
-        long channelId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_CHANNELID, 0);
+        long channelId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
         MyLog.w(TAG, "channel id=" + channelId);
         if (channelId != 0) {
             ChannelSdkActivity.openActivity(activity, channelId);

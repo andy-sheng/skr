@@ -20,6 +20,11 @@ import com.wali.live.watchsdk.scheme.processor.WaliliveProcessor;
  * Created by lan on 17/2/21.
  */
 public class SchemeSdkActivity extends BaseSdkActivity {
+    private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
+    private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
+    private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
+
+    private Intent mIntent;
     private Uri mUri;
     private Handler mHandler = new Handler();
 
@@ -41,13 +46,13 @@ public class SchemeSdkActivity extends BaseSdkActivity {
     }
 
     private void process() {
-        Intent intent = getIntent();
-        if (intent == null) {
+        mIntent = getIntent();
+        if (mIntent == null) {
             MyLog.w(TAG, "process intent is null");
             finish();
             return;
         }
-        mUri = intent.getData();
+        mUri = mIntent.getData();
         if (mUri == null) {
             MyLog.w(TAG, "process intent data uri is null");
             finish();
@@ -82,9 +87,9 @@ public class SchemeSdkActivity extends BaseSdkActivity {
         }
 
         if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)) {
-            int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
-            String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
-            String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
+            int channelId = mIntent.getIntExtra(EXTRA_CHANNEL_ID, 0);
+            String packageName = mIntent.getStringExtra(EXTRA_PACKAGE_NAME);
+            String channelSecret = mIntent.getStringExtra(EXTRA_CHANNEL_SECRET);
             if (channelSecret == null) {
                 channelSecret = "";
             }
