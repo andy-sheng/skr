@@ -50,13 +50,14 @@ public abstract class VideoPlayBaseSeekBar extends RelativeLayout implements Vie
     public interface VideoPlaySeekBarListener extends SeekBar.OnSeekBarChangeListener {
         void onClickPlayBtn();
 
-        void onClickFullScreenBtn();
+        void onClickFullScreenBtn(boolean smallScreen);
     }
-
 
     //热点相关方法
     public abstract void addPoints(long point);
 
     public abstract void setHotSpotInfoList(List<HotSpotProto.HotSpotInfo> list);
+
+    public abstract void setFullscreen(boolean isFullScreen);
 }
 

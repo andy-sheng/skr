@@ -45,9 +45,10 @@ public abstract class EventClass {
         public static final int TYPE_START = 1;
         public static final int TYPE_STOP = 2;
         public static final int TYPE_COMPLETION = 3;
-        public static final int TYPE_FULLSCREEN = 4;
-        public static final int TYPE_PLAYING = 5;
-        public static final int TYPE_ERROR = 6;
+        public static final int TYPE_SMALL_TO_FULLSCREEN = 4;
+        public static final int TYPE_FULLSCREEN_TO_SMALL = 5;
+        public static final int TYPE_PLAYING = 6;
+        public static final int TYPE_ERROR = 7;
 
         public static final int TYPE_ON_CLICK_ROTATE = 1000;
         public static final int TYPE_SET_SEEK = 1001;

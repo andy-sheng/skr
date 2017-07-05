@@ -82,16 +82,15 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_FOLD_INFO_AREA = MSG_DETAIL_VIDEO_FIRST + 5;  // 收起 信息区
     public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 6;  // 点击回放每一条
     public static final int MSG_COMPLETE_USER_INFO = MSG_DETAIL_VIDEO_FIRST + 7;  // 点击回放每一条
-    public static final int MSG_COMPLETE_STARTTIME = MSG_DETAIL_VIDEO_FIRST + 8;  // 回放的start时间
+    public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 8; // 更新 回放的录制时间(用于拉取房间消息/弹幕)
+    public static final int MSG_PLAYER_ROTATE_ORIENTATION = MSG_DETAIL_VIDEO_FIRST + 9; //方向变换事件
 
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;
-    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST + 1;
-    public static final int MSG_PLAYER_RESUME = MSG_PLAYER_FIRST + 2;
+    public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST;
+    public static final int MSG_PLAYER_DETAIL_SCREEN = MSG_PLAYER_FIRST + 1;
+    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 2;
     public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 3;
-    public static final int MSG_PLAYER_STOP = MSG_PLAYER_FIRST + 4;
-    public static final int MSG_PLAYER_SEEK_FROM_REPLAY = MSG_PLAYER_FIRST + 5;
-    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 6;
 
     private static final int MSG_MORE_FIRST = 90000;
     public static final int MSG_FORCE_ROTATE_SCREEN = MSG_MORE_FIRST + 1; // 强制旋转UI

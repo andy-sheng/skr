@@ -26,11 +26,7 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
 
     public LiveCommentPresenter(@NonNull IComponentController componentController) {
         super(componentController);
-        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
-        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
-        registerAction(ComponentController.MSG_BOTTOM_POPUP_SHOWED);
-        registerAction(ComponentController.MSG_BOTTOM_POPUP_HIDDEN);
-        EventBus.getDefault().register(this);
+        startPresenter();
         // TEST
 //        Observable.interval(3, 5, TimeUnit.SECONDS)
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -48,6 +44,25 @@ public class LiveCommentPresenter extends ComponentPresenter<LiveCommentView.IVi
 //                    public void call(Throwable throwable) {
 //                    }
 //                });
+    }
+
+    @Override
+    public void startPresenter() {
+        registerAction(ComponentController.MSG_ON_ORIENT_PORTRAIT);
+        registerAction(ComponentController.MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(ComponentController.MSG_BOTTOM_POPUP_SHOWED);
+        registerAction(ComponentController.MSG_BOTTOM_POPUP_HIDDEN);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override

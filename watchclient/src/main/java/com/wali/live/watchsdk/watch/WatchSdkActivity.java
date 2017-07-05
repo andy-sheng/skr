@@ -822,15 +822,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity implements FloatP
         }
     }
 
-    private boolean fragmentBackPressed(Fragment fragment) {
-        if (fragment != null && fragment instanceof FragmentListener) {
-            if (((FragmentListener) fragment).onBackPressed()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();

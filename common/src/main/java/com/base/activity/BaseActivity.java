@@ -76,6 +76,12 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
         }
     }
 
+    protected void removePresent(Presenter presenter) {
+        if (presenter != null) {
+            mPresenterSet.remove(presenter);
+        }
+    }
+
     protected void addBindActivityLifeCycle(IBindActivityLIfeCycle bindActivityLIfeCycle, boolean onActivityCreated) {
         if (bindActivityLIfeCycle != null) {
             if (onActivityCreated) {
@@ -376,8 +382,14 @@ public abstract class BaseActivity extends RxActivity implements IStatusBarOpera
     }
 
     // 不想使用ButterKnife，可以使用下面方法简化代码
-    public <V extends View> V $(int id) {
+    protected final <V extends View> V $(int id) {
         return (V) findViewById(id);
+    }
+
+    protected final void $click(View v, View.OnClickListener clickListener) {
+        if (v != null) {
+            v.setOnClickListener(clickListener);
+        }
     }
 
     public static int getActCnt() {

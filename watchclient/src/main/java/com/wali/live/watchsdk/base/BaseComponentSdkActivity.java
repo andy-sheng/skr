@@ -3,11 +3,13 @@ package com.wali.live.watchsdk.base;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.dialog.MyAlertDialog;
+import com.base.fragment.FragmentListener;
 import com.base.log.MyLog;
 import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -114,7 +116,30 @@ public abstract class BaseComponentSdkActivity extends BaseRotateSdkActivity {
         addPresent(processor);
     }
 
+    public void removePushProcessor(IPushMsgProcessor processor) {
+        if (processor == null) {
+            return;
+        }
+        for (int msgType : processor.getAcceptMsgType()) {
+            HashSet<IPushMsgProcessor> set = mIPushMsgProcessorMap.get(msgType);
+            if (set != null) {
+                set.remove(processor);
+            }
+        }
+        //取消activity生命周期管理
+        removePresent(processor);
+    }
+
     private LoginPresenter mLoginPresenter;
+
+    protected final boolean fragmentBackPressed(Fragment fragment) {
+        if (fragment != null && fragment instanceof FragmentListener) {
+            if (((FragmentListener) fragment).onBackPressed()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

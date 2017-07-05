@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.component.presenter;
+package com.wali.live.watchsdk.videodetail.presenter;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -9,13 +9,16 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.event.EventClass;
 import com.wali.live.watchsdk.component.view.VideoDetailPlayerView;
-import com.wali.live.watchsdk.videodetail.VideoDetailController;
-import com.wali.live.watchsdk.watch.ReplaySdkActivity;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
+import static com.wali.live.component.ComponentController.MSG_PLAYER_DETAIL_SCREEN;
+import static com.wali.live.component.ComponentController.MSG_PLAYER_FULL_SCREEN;
+import static com.wali.live.component.ComponentController.MSG_PLAYER_PAUSE;
+import static com.wali.live.component.ComponentController.MSG_PLAYER_START;
 
 /**
  * Created by zyh on 2017/05/31.
@@ -28,23 +31,26 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
     private RoomBaseDataModel mMyRoomData;
     private Activity mActivity;
     private boolean mVideoPlayerEnable = true; //詳情頁播放器work。
-    private long mStartTime = 0; //回放的创建时间
 
-    public VideoDetailPlayerPresenter(@NonNull IComponentController componentController,
-                                      RoomBaseDataModel myRoomData,
-                                      Activity activity) {
+    public long getCurrentPosition() {
+        return mView != null ? mView.onGetPlayingTime() : 0;
+    }
+
+    public VideoDetailPlayerPresenter(
+            @NonNull IComponentController componentController,
+            RoomBaseDataModel myRoomData,
+            Activity activity) {
         super(componentController);
         mMyRoomData = myRoomData;
         mActivity = activity;
+        registerAction();
         EventBus.getDefault().register(this);
-        registerAction(VideoDetailController.MSG_PLAYER_RESUME);
-        registerAction(VideoDetailController.MSG_PLAYER_PAUSE);
-        registerAction(VideoDetailController.MSG_PLAYER_STOP);
-        registerAction(VideoDetailController.MSG_PLAYER_FULL_SCREEN);
-        registerAction(VideoDetailController.MSG_PLAYER_SEEK_FROM_REPLAY);
-        registerAction(VideoDetailController.MSG_NEW_DETAIL_REPLAY);
-        registerAction(VideoDetailController.MSG_COMPLETE_STARTTIME);
-        registerAction(VideoDetailController.MSG_PLAYER_START);
+    }
+
+    public void registerAction() {
+        registerAction(MSG_PLAYER_START);
+        registerAction(MSG_PLAYER_PAUSE);
+        registerAction(MSG_NEW_DETAIL_REPLAY);
     }
 
     @Override
@@ -89,16 +95,11 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                 break;
             case EventClass.FeedsVideoEvent.TYPE_ON_CLOSE_ENDLIVE:
                 break;
-            case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN:
-                RoomInfo roomInfo = RoomInfo.Builder.newInstance(mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl())
-                        .setLiveType(mMyRoomData.getLiveType())
-                        .setGameId(mMyRoomData.getGameId())
-                        .setEnableShare(mMyRoomData.getEnableShare())
-                        .setStartTime(mStartTime)
-                        .build();
-                ReplaySdkActivity.openActivity(mActivity, roomInfo, mView.onGetPlayingTime());
-                mView.onClickFullScreen();
-                mVideoPlayerEnable = false;
+            case EventClass.FeedsVideoEvent.TYPE_SMALL_TO_FULLSCREEN:
+                mComponentController.onEvent(MSG_PLAYER_FULL_SCREEN);
+                break;
+            case EventClass.FeedsVideoEvent.TYPE_FULLSCREEN_TO_SMALL:
+                mComponentController.onEvent(MSG_PLAYER_DETAIL_SCREEN);
                 break;
             case EventClass.FeedsVideoEvent.TYPE_PLAYING:
                 mView.onPlaying();
@@ -122,28 +123,14 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
                 return false;
             }
             switch (source) {
-                case VideoDetailController.MSG_NEW_DETAIL_REPLAY:
-                    mView.onResetPlayer();
+                case MSG_PLAYER_START:
                     mView.onStartPlayer();
                     break;
-                case VideoDetailController.MSG_PLAYER_SEEK_FROM_REPLAY:
-                    //从大屏切换过来需要设定标记位，必须。
-                    mVideoPlayerEnable = true;
-                    mView.onSeekPlayer((long) params.getItem(0));
-                    break;
-                case VideoDetailController.MSG_PLAYER_RESUME:
-                    mView.onResumePlayer();
-                    break;
-                case VideoDetailController.MSG_PLAYER_PAUSE:
+                case MSG_PLAYER_PAUSE:
                     mView.onPausePlayer();
                     break;
-                case VideoDetailController.MSG_PLAYER_STOP:
-                    mView.onStopPlayer();
-                    break;
-                case VideoDetailController.MSG_COMPLETE_STARTTIME:
-                    mStartTime = (long) params.getItem(0);
-                    break;
-                case VideoDetailController.MSG_PLAYER_START:
+                case MSG_NEW_DETAIL_REPLAY:
+                    mView.onResetPlayer();
                     mView.onStartPlayer();
                     break;
                 default:

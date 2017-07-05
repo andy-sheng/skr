@@ -52,7 +52,10 @@ import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.mi.live.data.milink.constant.MiLinkConstant;
+import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.mi.live.data.query.model.MessageRule;
+import com.mi.live.data.repository.RoomMessageRepository;
+import com.mi.live.data.repository.datasource.RoomMessageStore;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.mi.milink.sdk.aidl.PacketData;
@@ -189,6 +192,7 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
     protected BaseLiveController mComponentController;
     protected BaseSdkView mSdkView;
 
+    protected RoomMessagePresenter mPullRoomMessagePresenter;
     protected ExecutorService mHeartbeatService;
     protected boolean mIsPaused = false;
 
@@ -965,6 +969,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             }
             mUIHandler.sendEmptyMessage(MSG_HEARTBEAT);
             mUIHandler.sendEmptyMessageDelayed(MSG_HEARTBEAT_TIMEOUT, HEARTBEAT_TIMEOUT);
+            if (mPullRoomMessagePresenter == null) {
+                mPullRoomMessagePresenter = new RoomMessagePresenter(
+                        mMyRoomData, new RoomMessageRepository(new RoomMessageStore()), this);
+            }
+            mPullRoomMessagePresenter.startWork();
             mStreamerPresenter.startLive();
             mComponentController.onStartLive();
         }
@@ -986,6 +995,11 @@ public class LiveSdkActivity extends BaseComponentSdkActivity implements Fragmen
             if (mHeartbeatService != null) {
                 mHeartbeatService.shutdownNow();
                 mHeartbeatService = null;
+            }
+            if (mPullRoomMessagePresenter != null) {
+                mPullRoomMessagePresenter.stopWork();
+                mPullRoomMessagePresenter.destroy();
+                mPullRoomMessagePresenter = null;
             }
             mStreamerPresenter.stopLive();
             mComponentController.onStopLive(wasKicked);

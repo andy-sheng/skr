@@ -46,10 +46,24 @@ public class CommentInputPresenter extends ComponentPresenter<InputAreaView.IVie
 
     public CommentInputPresenter(@NonNull IComponentController componentController) {
         super(componentController);
+    }
+
+    @Override
+    public void startPresenter() {
         registerAction(MSG_ON_BACK_PRESSED);
         registerAction(MSG_SHOW_COMMENT_INPUT);
         registerAction(MSG_HIDE_INPUT_VIEW);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override

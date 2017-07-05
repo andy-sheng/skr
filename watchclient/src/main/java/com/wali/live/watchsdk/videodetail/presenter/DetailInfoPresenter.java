@@ -35,10 +35,10 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.mi.live.data.event.FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
-import static com.wali.live.component.ComponentController.MSG_COMPLETE_STARTTIME;
 import static com.wali.live.component.ComponentController.MSG_NEW_DETAIL_REPLAY;
 import static com.wali.live.component.ComponentController.MSG_SHOW_PERSONAL_INFO;
 import static com.wali.live.component.ComponentController.MSG_UPDATE_LIKE_STATUS;
+import static com.wali.live.component.ComponentController.MSG_UPDATE_START_TIME;
 
 /**
  * Created by yangli on 2017/06/01.
@@ -60,8 +60,22 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
         mMyRoomData = roomData;
-        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void startPresenter() {
         registerAction(MSG_NEW_DETAIL_REPLAY);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
@@ -114,6 +128,10 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                             if (TextUtils.isEmpty(mMyRoomData.getNickName())) {
                                 mMyRoomData.setNickname(user.getNickname());
                             }
+                            mMyRoomData.getUser().setIsFocused(user.isFocused());
+                            mMyRoomData.getUser().setAvatar(user.getAvatar());
+                            mMyRoomData.setTicket(user.getLiveTicketNum());
+                            mMyRoomData.getUser().setSign(user.getSign());
                             mComponentController.onEvent(VideoDetailController.MSG_COMPLETE_USER_INFO);
                         }
                     }
@@ -170,7 +188,7 @@ public class DetailInfoPresenter extends ComponentPresenter<DetailInfoView.IView
                         if (mView != null && outInfo != null) {
                             mComponentController.onEvent(MSG_UPDATE_LIKE_STATUS, new Params()
                                     .putItem(outInfo.mySelfLike));
-                            mComponentController.onEvent(MSG_COMPLETE_STARTTIME, new Params()
+                            mComponentController.onEvent(MSG_UPDATE_START_TIME, new Params()
                                     .putItem(outInfo.timestamp));
                             mView.onFeedsInfo(mMyRoomData.getUid(), outInfo.title, outInfo.timestamp,
                                     outInfo.viewerCnt, outInfo.coverUrl);

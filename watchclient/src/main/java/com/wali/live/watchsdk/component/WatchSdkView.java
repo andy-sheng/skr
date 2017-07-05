@@ -46,7 +46,6 @@ import java.util.List;
  * @module 游戏直播页面
  */
 public class WatchSdkView extends BaseSdkView<WatchComponentController> {
-    private static final String TAG = "WatchSdkView";
 
     @NonNull
     protected final Action mAction = new Action();
@@ -64,6 +63,11 @@ public class WatchSdkView extends BaseSdkView<WatchComponentController> {
 
     protected boolean mIsGameMode = false;
     protected boolean mIsLandscape = false;
+
+    @Override
+    protected String getTAG() {
+        return "WatchSdkView";
+    }
 
     public WatchSdkView(
             @NonNull Activity activity,

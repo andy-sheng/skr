@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
@@ -7,7 +8,6 @@
     android:background="@color/color_white"
     android:soundEffectsEnabled="false">
 
-    <!--沉浸式状态栏-->
     <View
         android:id="@+id/status_bar"
         android:layout_width="match_parent"
@@ -15,17 +15,20 @@
         android:layout_alignParentTop="true"
         android:background="@color/black" />
 
-    <com.wali.live.watchsdk.component.view.VideoDetailPlayerView
-        android:id="@+id/video_detail_player_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/status_bar" />
+    <ImageView
+        android:id="@+id/back_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_dimen_80"
+        android:layout_marginTop="@dimen/margin_70"
+        android:paddingLeft="@dimen/margin_30"
+        android:src="@drawable/topbar_icon_all_back_white_bg"/>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_button_view"
-        android:layout_below="@id/video_detail_player_view">
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/video_view">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar_layout"

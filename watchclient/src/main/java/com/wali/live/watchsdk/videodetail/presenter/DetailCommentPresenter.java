@@ -71,6 +71,10 @@ public class DetailCommentPresenter extends ComponentPresenter<DetailCommentView
             @NonNull RoomBaseDataModel roomData) {
         super(componentController);
         mMyRoomData = roomData;
+    }
+
+    @Override
+    public void startPresenter() {
         registerAction(MSG_SEND_COMMENT);
         registerAction(MSG_NEW_DETAIL_REPLAY);
     }

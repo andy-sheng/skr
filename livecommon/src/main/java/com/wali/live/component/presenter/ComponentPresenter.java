@@ -1,5 +1,6 @@
 package com.wali.live.component.presenter;
 
+import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,6 +53,20 @@ public abstract class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
     }
 
     /**
+     * 开始工作
+     */
+    public void startPresenter() {
+    }
+
+    /**
+     * 停止工作
+     */
+    @CallSuper
+    public void stopPresenter() {
+        unregisterAction();
+    }
+
+    /**
      * 实例化该Presenter响应其他Presenter发出的EVENT_*事件时的响应处理对象
      */
     @Nullable
@@ -64,7 +79,8 @@ public abstract class ComponentPresenter<VIEW> extends RxLifeCyclePresenter {
     public static class Params {
         private List<Object> params;
 
-        public Params() {}
+        public Params() {
+        }
 
         public Params putItem(Object object) {
             if (params == null) {

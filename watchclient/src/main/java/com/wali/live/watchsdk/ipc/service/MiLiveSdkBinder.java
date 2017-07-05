@@ -27,6 +27,7 @@ import com.wali.live.watchsdk.list.ChannelLiveCaller;
 import com.wali.live.watchsdk.list.RelationCaller;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -271,8 +272,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public void statistic(String key, long time) throws RemoteException {
         MyLog.w(TAG, "statistic key" + key);
         StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, time);
-        // TODO 等服务器上线
-        // MilinkStatistics.getInstance().statistitive(key, time);
+        MilinkStatistics.getInstance().statisticsGameActive(key, time);
     }
 
     @Override

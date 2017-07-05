@@ -36,7 +36,6 @@ import java.util.List;
  * @module 游戏直播页面
  */
 public class LiveSdkView extends BaseSdkView<LiveComponentController> {
-    private static final String TAG = "LiveSdkView";
 
     @NonNull
     protected final Action mAction = new Action();
@@ -51,6 +50,11 @@ public class LiveSdkView extends BaseSdkView<LiveComponentController> {
     protected GiftContinueViewGroup mGiftContinueViewGroup;
 
     protected boolean mIsLandscape = false;
+
+    @Override
+    protected String getTAG() {
+        return "LiveSdkView";
+    }
 
     public LiveSdkView(
             @NonNull Activity activity,
