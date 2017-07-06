@@ -25,11 +25,12 @@ public abstract class BaseHolder<VM extends BaseViewModel> extends RecyclerView.
     protected static final int MIDDLE_MARGIN_TWO = DisplayUtils.dip2px(6.67f);
     // 一排三个时， view内的中间边距
     protected static final int MIDDLE_MARGIN_THREE = DisplayUtils.dip2px(5f);
-
     // 长图图片的宽高比
     protected static final float IMAGE_RATIO = 9f / 16;
     // 高图图片的宽高比
     protected static final float HIGH_IMAGE_RATIO = 9f / 14;
+    // 高图图片的宽高比
+    protected static final float NEW_IMAGE_RATIO = 3f / 4;
 
     protected VM mViewModel;
 
@@ -37,7 +38,6 @@ public abstract class BaseHolder<VM extends BaseViewModel> extends RecyclerView.
 
     public BaseHolder(View itemView) {
         super(itemView);
-//        itemView.setBackgroundColor(itemView.getResources().getColor(R.color.color_white));
 
         initView();
     }

@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,16 +7,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
+import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.LiveItem;
+import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 /**
  * Created by lan on 16/6/28.
@@ -79,35 +82,25 @@ public class DefaultCardHolder extends FixedHolder {
         mCoverIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(item.getSchemeUri())) {
-                    Uri uri = Uri.parse(item.getSchemeUri());
-
-                    long playerId = Long.parseLong(uri.getQueryParameter("playerid"));
-                    String liveId = uri.getQueryParameter("liveid");
-                    String videoUrl = uri.getQueryParameter("videourl");
-
-                    WatchSdkActivity.openActivity((Activity) itemView.getContext(),
-                            RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
-                                    .setAvatar(item.getUser().getAvatar())
-                                    .setCoverUrl(item.getImageUrl())
-                                    .build());
-                }
+                jumpItem(item);
             }
         });
+
         resetItem();
         String title = item.getLineOneText();
-
-        if (item instanceof ChannelLiveViewModel.BaseLiveItem) {
-            bindBaseLiveItem((ChannelLiveViewModel.BaseLiveItem) item);
-            title = ((ChannelLiveViewModel.BaseLiveItem) item).getTitleText();
+        if (item instanceof BaseLiveItem) {
+            bindBaseLiveItem((BaseLiveItem) item);
+            title = ((BaseLiveItem) item).getTitleText();
         }
         // 有标题或者有标签
-        if (!TextUtils.isEmpty(title)) {
-            mTitleTv.setText(title);
+        if (!TextUtils.isEmpty(title) || (item.getLabel() != null && !item.getLabel().isEmpty())) {
             mTitleTv.setVisibility(View.VISIBLE);
+            bindLabel(item.getLabel(), title, mTitleTv);
         } else {
             mTitleTv.setVisibility(View.GONE);
         }
+
+        bindLeftWidgetInfo(item, mLeftLabelIv);
 
         if (item.getUser() == null) {
             mTopInfoRl.setVisibility(View.GONE);
@@ -121,7 +114,7 @@ public class DefaultCardHolder extends FixedHolder {
         mAvatarIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //person info
             }
         });
         // 徽章角标
@@ -135,6 +128,37 @@ public class DefaultCardHolder extends FixedHolder {
         mNameTv.setText(item.getUser().getNickname());
     }
 
+
+    /**
+     * 左上角标签 配图片 对应ListWidgetInfo
+     */
+    private void bindLeftWidgetInfo(ChannelLiveViewModel.BaseItem item, BaseImageView leftLabelIv) {
+        if (leftLabelIv == null) {
+            return;
+        }
+        CommonChannelProto.ListWidgetInfo widgetInfo = item.getWidgetInfo();
+        if (widgetInfo != null) {
+            String iconUrl = widgetInfo.getIconUrl();
+            final String jumpUrl = widgetInfo.getJumpSchemeUri();
+            if (!TextUtils.isEmpty(iconUrl)) {
+                leftLabelIv.setVisibility(View.VISIBLE);
+                bindImage(leftLabelIv, iconUrl, false, DisplayUtils.dip2px(160f),
+                        DisplayUtils.dip2px(80f), ScalingUtils.ScaleType.FIT_START);
+                leftLabelIv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!TextUtils.isEmpty(jumpUrl)) {
+                            SchemeSdkActivity.openActivity((BaseSdkActivity)
+                                    itemView.getContext(), Uri.parse(jumpUrl));
+                        } else {
+                            MyLog.e(TAG, "leftLabelIv onClick jumpUrl is empty");
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     private void resetItem() {
         mShopTv.setVisibility(View.GONE);
         mCountTv.setVisibility(View.GONE);
@@ -144,7 +168,7 @@ public class DefaultCardHolder extends FixedHolder {
         mTopInfoRl.setVisibility(View.VISIBLE); // 顶部区域默认显示，除非user is null
     }
 
-    private void bindBaseLiveItem(ChannelLiveViewModel.BaseLiveItem item) {
+    private void bindBaseLiveItem(BaseLiveItem item) {
         mCountTv.setText(String.valueOf(item.getCountString()));
         mCountTv.setVisibility(View.VISIBLE);
 
@@ -156,6 +180,16 @@ public class DefaultCardHolder extends FixedHolder {
             mLocationTv.setText(GlobalData.app().getString(R.string.location_unknown_new));
         }
         mLocationTv.setVisibility(View.VISIBLE);
+
+        if (item instanceof LiveItem) {
+            bindLiveItem((LiveItem) item);
+        }
     }
 
+    private void bindLiveItem(LiveItem item) {
+        if (item.isShowShop() && item.getShopCnt() >= 0) {
+            mShopTv.setText(GlobalData.app().getString(R.string.channel_shop_cnt, item.getShopCnt()));
+            mShopTv.setVisibility(View.VISIBLE);
+        }
+    }
 }

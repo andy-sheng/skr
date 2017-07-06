@@ -13,8 +13,12 @@ import com.wali.live.proto.CommonChannelProto.ChannelItem;
 import com.wali.live.proto.CommonChannelProto.LiveInfo;
 import com.wali.live.proto.CommonChannelProto.LiveOrReplayItemInfo;
 import com.wali.live.proto.CommonChannelProto.UiTemplateLiveOrReplayInfo;
+import com.wali.live.proto.CommonChannelProto.UserInfo;
+import com.wali.live.proto.CommonChannelProto.VideoInfo;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.helper.ModelHelper;
+import com.wali.live.watchsdk.channel.util.BannerManger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,8 @@ import java.util.List;
 public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
     private static final String TAG = ChannelLiveViewModel.class.getSimpleName();
     private List<BaseItem> mItemDatas;
+
+    private List<ChannelBannerViewModel.Banner> mBannerItems;
 
     private boolean mThreeCardTwoLine;
 
@@ -51,7 +57,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
     protected void parseTemplate(ChannelItem protoItem) throws Exception {
         mUiType = protoItem.getUiType();
         mFullColumn = protoItem.getFullColumn();
-
+        mSectionId = protoItem.getSectionId();
         mThreeCardTwoLine = mUiType == ChannelUiType.TYPE_THREE_CARD;
         parseUI(UiTemplateLiveOrReplayInfo.parseFrom(protoItem.getUiData()));
     }
@@ -61,6 +67,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         mHeadUri = protoItem.getHeaderViewAllUri();
         mHeadType = protoItem.getHeaderUiType();
         mSubHead = protoItem.getSubHeaderName();
+
         parseLive(protoItem.getItemsList());
     }
 
@@ -68,11 +75,20 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         if (mItemDatas == null) {
             mItemDatas = new ArrayList<>();
         }
+
         for (LiveOrReplayItemInfo protoItem : protoItemList) {
             if (protoItem.getType() == BaseItem.ITEM_TYPE_LIVE) {
                 mItemDatas.add(new LiveItem(protoItem));
             } else if (protoItem.getType() == BaseItem.ITEM_TYPE_BACK) {
                 mItemDatas.add(new BackItem(protoItem));
+            } else if (protoItem.getType() == BaseItem.ITEM_TYPE_USER) {
+                mItemDatas.add(new UserItem(protoItem));
+            } else if (protoItem.getType() == BaseItem.ITEM_TYPE_VIDEO) {
+                mItemDatas.add(new VideoItem(protoItem));
+            } else if (protoItem.getType() == BaseItem.ITEM_TYPE_TV) {
+                mItemDatas.add(new TVItem(protoItem));
+            } else if (protoItem.getType() == BaseItem.ITEM_TYPE_SIMPLE) {
+                mItemDatas.add(new SimpleItem(protoItem));
             } else {
                 throw new Exception("ChannelLiveViewModel parseLive unknown type=" + protoItem.getType());
             }
@@ -87,6 +103,20 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         return mItemDatas;
     }
 
+    public List<ChannelBannerViewModel.Banner> getBannerItems() {
+        if (mBannerItems == null) {
+            mBannerItems = new ArrayList();
+            for (BaseItem item : mItemDatas) {
+                try {
+                    mBannerItems.add(new ChannelBannerViewModel.Banner(item));
+                } catch (Exception e) {
+                    MyLog.e(TAG, e);
+                }
+            }
+        }
+        return mBannerItems;
+    }
+
     public BaseItem getFirstItem() {
         if (mItemDatas == null || mItemDatas.size() == 0) {
             return null;
@@ -98,6 +128,11 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         return new ChannelLiveViewModel(uiType);
     }
 
+    @Override
+    public boolean isNeedRemove() {
+        return false;
+    }
+
     public static abstract class BaseItem<GM extends GeneratedMessage> extends BaseJumpItem {
         public static final int ITEM_TYPE_LIVE = 1;
         public static final int ITEM_TYPE_BACK = 2;
@@ -105,6 +140,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         public static final int ITEM_TYPE_VIDEO = 4;
         public static final int ITEM_TYPE_TV = 5;
         public static final int ITEM_TYPE_SIMPLE = 6;
+        public static final int ITEM_TYPE_BUTTON = 7; // 小视频创建button
 
         // 共有的
         protected int mType;
@@ -112,10 +148,18 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected String mLineOneText;
         protected String mLineTwoText;
         protected String mImgUrl;
+        protected String mImgUrl2;
         protected long mPublishTime;
+        protected String mUpLeftText;
+        protected CommonChannelProto.ListWidgetInfo mWidgetInfo; // 左边的icon
+        protected RichText mTopLeft;
+        protected CommonChannelProto.MiddleInfo mMiddleInfo;
+        protected List<RichText> mLabel;
 
         protected User mUser;
         protected boolean mIsFocused;
+
+        private BannerManger.BannerItem mBannerItem;
 
         protected BaseItem() {
             mImgUrl = TestConstants.TEST_IMG_URL;
@@ -133,7 +177,24 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             mLineOneText = protoItem.getDownText1();
             mLineTwoText = protoItem.getDownText2();
             mImgUrl = protoItem.getImgUrl();
+            mImgUrl2 = protoItem.getImgUrl2();
             mPublishTime = protoItem.getPublishTime();
+            mUpLeftText = protoItem.getUpLeftText();
+            if (protoItem.hasWidget()) {
+                mWidgetInfo = protoItem.getWidget();
+            }
+            if (protoItem.hasTopLeft()) {
+                mTopLeft = new RichText(protoItem.getTopLeft());
+            }
+            if (protoItem.hasMiddle()) {
+                mMiddleInfo = protoItem.getMiddle();
+            }
+            if (protoItem.getLabelList() != null && !protoItem.getLabelList().isEmpty()) {
+                mLabel = new ArrayList<>();
+                for (CommonChannelProto.RichText richText : protoItem.getLabelList()) {
+                    mLabel.add(new RichText(richText));
+                }
+            }
         }
 
         public int getType() {
@@ -158,6 +219,14 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return mPublishTime;
         }
 
+        public String getUpLeftText() {
+            return mUpLeftText;
+        }
+
+        public String getImgUrl2() {
+            return mImgUrl2;
+        }
+
         public User getUser() {
             return mUser;
         }
@@ -178,16 +247,58 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             mIsFocused = isFocused;
         }
 
+        public CommonChannelProto.ListWidgetInfo getWidgetInfo() {
+            return mWidgetInfo;
+        }
+
+        public CommonChannelProto.MiddleInfo getMiddleInfo() {
+            return mMiddleInfo;
+        }
+
+        public List<RichText> getLabel() {
+            return mLabel;
+        }
+
+        public void setLabel(List<RichText> mLabel) {
+            this.mLabel = mLabel;
+        }
+
+        public RichText getTopLeft() {
+            return mTopLeft;
+        }
+
+        public String getUserNickName() {
+            if (mUser != null) {
+                return mUser.getNickname();
+            }
+            return "";
+        }
+
+        public BannerManger.BannerItem toBannerItem() {
+            if (mBannerItem == null) {
+                mBannerItem = new BannerManger.BannerItem();
+                mBannerItem.picUrl = mImgUrl;
+                mBannerItem.skipUrl = mSchemeUri;
+            }
+            return mBannerItem;
+        }
+
         public static BaseItem newTestInstance(int type) {
             if (type == BaseItem.ITEM_TYPE_LIVE) {
                 return LiveItem.newTestInstance();
             } else if (type == BaseItem.ITEM_TYPE_BACK) {
                 return BackItem.newTestInstance();
+            } else if (type == BaseItem.ITEM_TYPE_USER) {
+                return UserItem.newTestInstance();
+            } else if (type == BaseItem.ITEM_TYPE_VIDEO) {
+                return VideoItem.newTestInstance();
+            } else if (type == BaseItem.ITEM_TYPE_TV) {
+                return TVItem.newTestInstance();
+            } else if (type == BaseItem.ITEM_TYPE_SIMPLE) {
+                return SimpleItem.newTestInstance();
             }
             return null;
         }
-
-
     }
 
     public static class BaseLiveItem extends BaseItem {
@@ -198,6 +309,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected String mVideoUrl;
         protected String mCoverUrl;
         protected String mLocation;
+        protected int distance;
 
         protected boolean mIsEnterRoom;
         protected String mCountString;
@@ -255,9 +367,9 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         @Override
         public String getImageUrl(int sizeType) {
             if (!TextUtils.isEmpty(mImgUrl)) {
-                return mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+                return mImgUrl.contains(AvatarUtils.IMG_URL_POSTFIX) ? mImgUrl : mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
             } else if (!TextUtils.isEmpty(mCoverUrl)) {
-                return mCoverUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+                return mCoverUrl.contains(AvatarUtils.IMG_URL_POSTFIX) ? mCoverUrl : mCoverUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
             } else {
                 return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
             }
@@ -284,6 +396,22 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         public String getDisplayText() {
             return mLineTwoText;
         }
+
+        /**
+         * 添加开普勒文案
+         */
+        public String getLocationText() {
+            String display = getLocation();
+            if (!TextUtils.isEmpty(display)) {
+                return display;
+            } else {
+                return GlobalData.app().getResources().getString(R.string.live_location_unknown);
+            }
+        }
+
+        public int getDistance() {
+            return distance;
+        }
     }
 
     public static class LiveItem extends BaseLiveItem {
@@ -295,6 +423,8 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         private boolean mShowShop;
         private int mShopCnt;
 
+        private String mExposeTag;      //曝光打点tag
+
         private int mAppType = 0;
         private int mLiveType = 0;
 
@@ -305,6 +435,13 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         public LiveItem(LiveOrReplayItemInfo protoItem) throws Exception {
             super(protoItem);
             parse(LiveInfo.parseFrom(protoItem.getItems()));
+
+            if (!TextUtils.isEmpty(mSchemeUri)) {
+                mIsEnterRoom = ModelHelper.isLiveScheme(mSchemeUri);
+            } else {
+                mIsEnterRoom = true;
+            }
+            distance = protoItem.getDistance();
             mCountString = parseCountString(true, mViewerCnt);
         }
 
@@ -319,6 +456,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             mLocation = protoItem.getLocation();
             mStartTime = protoItem.getStartTime();
 
+            mExposeTag = protoItem.getTag();
             mAppType = protoItem.getAppType();
             mLiveType = protoItem.getLiveType();
 
@@ -386,6 +524,13 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         public BackItem(LiveOrReplayItemInfo protoItem) throws Exception {
             super(protoItem);
             parse(BackInfo.parseFrom(protoItem.getItems()));
+
+            if (!TextUtils.isEmpty(mSchemeUri)) {
+                mIsEnterRoom = ModelHelper.isPlaybackScheme(mSchemeUri);
+            } else {
+                mIsEnterRoom = true;
+            }
+
             mCountString = parseCountString(false, mViewerCnt);
         }
 
@@ -420,17 +565,298 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         }
     }
 
+    public static class UserItem extends BaseItem {
+        private UserItem() {
+            super();
+        }
+
+        public UserItem(LiveOrReplayItemInfo protoItem) throws Exception {
+            super(protoItem);
+            parse(UserInfo.parseFrom(protoItem.getItems()));
+        }
+
+        public void parse(UserInfo protoItem) {
+            mUser = new User(protoItem);
+        }
+
+        @Override
+        public String getImageUrl() {
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+        }
+
+        @Override
+        public String getImageUrl(int sizeType) {
+            if (!TextUtils.isEmpty(mImgUrl)) {
+                return mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+            } else {
+                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
+            }
+        }
+
+        @Override
+        public String getNameText() {
+            if (!TextUtils.isEmpty(mLineOneText)) {
+                return mLineOneText;
+            } else {
+                return mUser.getNickname();
+            }
+        }
+
+        @Override
+        public String getDisplayText() {
+            if (!TextUtils.isEmpty(mLineTwoText)) {
+                return mLineTwoText;
+            } else {
+                return mUser.getSign();
+            }
+        }
+
+        public static UserItem newTestInstance() {
+            return new UserItem();
+        }
+    }
+
+    public static class VideoItem extends BaseItem {
+        private String mId;
+        private long mViewCount;
+
+        private String mCountString;
+
+        private VideoItem() {
+            super();
+        }
+
+        public VideoItem(LiveOrReplayItemInfo protoItem) throws Exception {
+            super(protoItem);
+            parse(VideoInfo.parseFrom(protoItem.getItems()));
+        }
+
+        public void parse(VideoInfo protoItem) {
+            mId = protoItem.getId();
+            mViewCount = protoItem.getViewCount();
+            mUser = new User(protoItem.getUserInfo());
+
+            mCountString = parseCountString(false, (int) mViewCount);
+        }
+
+        @Override
+        public String getImageUrl() {
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+        }
+
+        @Override
+        public String getImageUrl(int sizeType) {
+            if (!TextUtils.isEmpty(mImgUrl)) {
+                return mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+            } else {
+                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
+            }
+        }
+
+        @Override
+        public String getNameText() {
+            return mLineOneText;
+        }
+
+        @Override
+        public String getDisplayText() {
+            return mLineTwoText;
+        }
+
+        public String getId() {
+            return mId;
+        }
+
+        public long getViewCount() {
+            return mViewCount;
+        }
+
+        public String getCountString() {
+            return mCountString;
+        }
+
+        public static VideoItem newTestInstance() {
+            return new VideoItem();
+        }
+    }
+
+    public static class TVItem extends BaseItem {
+        private TVItem() {
+            super();
+        }
+
+        public TVItem(LiveOrReplayItemInfo protoItem) throws Exception {
+            super(protoItem);
+            parse(UserInfo.parseFrom(protoItem.getItems()));
+        }
+
+        public void parse(UserInfo protoItem) {
+            mUser = new User(protoItem);
+        }
+
+        @Override
+        public String getImageUrl() {
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+        }
+
+        @Override
+        public String getImageUrl(int sizeType) {
+            if (!TextUtils.isEmpty(mImgUrl)) {
+                return mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+            } else {
+                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
+            }
+        }
+
+        @Override
+        public String getNameText() {
+            if (!TextUtils.isEmpty(mLineOneText)) {
+                return mLineOneText;
+            } else {
+                return mUser.getNickname();
+            }
+        }
+
+        @Override
+        public String getDisplayText() {
+            if (!TextUtils.isEmpty(mLineTwoText)) {
+                return mLineTwoText;
+            } else {
+                return mUser.getSign();
+            }
+        }
+
+        public static TVItem newTestInstance() {
+            return new TVItem();
+        }
+    }
+
+    public static class SimpleItem extends BaseItem {
+        private SimpleItem() {
+            super();
+        }
+
+        public SimpleItem(LiveOrReplayItemInfo protoItem) {
+            super(protoItem);
+        }
+
+        @Override
+        public String getImageUrl() {
+            return getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE);
+        }
+
+        @Override
+        public String getImageUrl(int sizeType) {
+            if (!TextUtils.isEmpty(mImgUrl)) {
+                return mImgUrl + AvatarUtils.getAvatarSizeAppend(sizeType);
+            } else if (mUser != null) {
+                return AvatarUtils.getAvatarUrlByUidTsAndFormat(mUser.getUid(), sizeType, mUser.getAvatar(), false);
+            } else {
+                return TestConstants.TEST_IMG_URL;
+            }
+        }
+
+        @Override
+        public String getNameText() {
+            if (!TextUtils.isEmpty(mLineOneText)) {
+                return mLineOneText;
+            } else if (mUser != null) {
+                return mUser.getNickname();
+            }
+            return null;
+        }
+
+        @Override
+        public String getDisplayText() {
+            if (!TextUtils.isEmpty(mLineTwoText)) {
+                return mLineTwoText;
+            } else if (mUser != null) {
+                return mUser.getSign();
+            }
+            return null;
+        }
+
+        public static SimpleItem newTestInstance() {
+            return new SimpleItem();
+        }
+    }
 
     public static String parseCountString(boolean live, int count) {
         String sCount = String.valueOf(count);
         if (count > 10000) {
             String unit = GlobalData.app().getResources().getString(R.string.ten_thousand);
-            sCount = String.format("%.1f" + unit, (float) (count / 10000.0));
+            sCount = String .format("%.1f" + unit, (float) (count / 10000.0));
         }
         if (!live) {
             return GlobalData.app().getResources().getQuantityString(R.plurals.channel_view_count, count, sCount);
         } else {
             return GlobalData.app().getResources().getQuantityString(R.plurals.channel_viewer_count, count, sCount);
+        }
+    }
+
+    public static class RichText {
+        // 对应bgId
+        public static final int[] LEFT_LABEL_BG = {
+                R.drawable.shape_channel_left_top_label_bg,
+                R.drawable.shape_channel_left_top_label_bg_orange,
+                R.drawable.home_anchor_lebel,
+                R.drawable.home_headlines_label_one,
+                R.drawable.home_headlines_label_two,
+                R.drawable.home_headlines_label_three,
+                R.drawable.shape_channel_left_top_bg_orange,
+                R.drawable.shape_channel_left_top_label_purple};
+        private String text;
+        private String jumpUrl;
+        private int bgID;
+        private String iconUrl;
+
+        public RichText(CommonChannelProto.RichText richText) {
+            text = richText.getText();
+            jumpUrl = richText.getJumpSchemeUri();
+            bgID = richText.getBgImageID();
+            iconUrl = richText.getIconUrl();
+        }
+
+        public RichText(String text, String jumpUrl, int bgID) {
+            this.text = text;
+            this.jumpUrl = jumpUrl;
+            this.bgID = bgID;
+        }
+
+        public RichText() {
+
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String getJumpUrl() {
+            return jumpUrl;
+        }
+
+        public void setJumpUrl(String jumpUrl) {
+            this.jumpUrl = jumpUrl;
+        }
+
+        public int getBgID() {
+            return bgID;
+        }
+
+        public void setBgID(int bgID) {
+            this.bgID = bgID;
+        }
+
+        public String getIconUrl() {
+            return iconUrl;
+        }
+
+        public void setIconUrl(String iconUrl) {
+            this.iconUrl = iconUrl;
         }
     }
 }

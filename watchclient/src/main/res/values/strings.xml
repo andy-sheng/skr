@@ -107,4 +107,16 @@
         <item quantity="one">%s viewer</item>
         <item quantity="other">%s viewers</item>
     </plurals>
+    <string name="ticket_watermark">Tickets</string>
+    <string name="michannel_forecast">Preview</string>
+    <string name="michannel_notice">Book</string>
+    <string name="michannel_default_title">More games</string>
+    <string name="anchor_rank">Daily popular hosts</string>
+    <string name="read_count">Viewed %1$d times</string>
+    <string name="michannel_fans_cnt">Fan: %s</string>
+    <string name="fold_view_show_all">Show all</string>
+    <string name="pack_up">Collapse</string>
+    <string name="channel_shop_cnt">%d people want to buy</string>
+    <string name="install_mi_video">Install Mi video first</string>
+    <string name="all_people">All</string>
 </resources>

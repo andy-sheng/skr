@@ -91,6 +91,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 /**
@@ -106,6 +107,8 @@ public abstract class CommonUtils {
     private static final Pattern HANZI_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5]");
     private static final Pattern HANZI_STRING_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5]+");
     private static final Pattern LETTER_STRING_PATTERN = Pattern.compile("[A-Za-z]+");
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
+
 
     private static MyAlertDialog mDialog = null;
 
@@ -1911,5 +1914,21 @@ public abstract class CommonUtils {
         return rv;
     }
 
+    public static int generateViewId() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            for (; ; ) {
+                final int result = sNextGeneratedId.get();
+                // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+                int newValue = result + 1;
+                if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
+                if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                    return result;
+                }
+            }
+
+        } else {
+            return View.generateViewId();
+        }
+    }
 
 }

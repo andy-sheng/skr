@@ -65,12 +65,13 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
     private void initViews() {
         mBackTitleBar = $(R.id.title_bar);
         mBackTitleBar.setTitle(R.string.channel_live);
-        mBackTitleBar.getBackBtn().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mBackTitleBar.getBackBtn().setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
         mRefreshLayout = $(R.id.swipe_refresh_layout);
         mRecyclerView = $(R.id.recycler_view);
 

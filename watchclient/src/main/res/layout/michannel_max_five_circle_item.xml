@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/split_area"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f2f2f2"/>
+
+    <include
+        android:id="@+id/title_area"
+        layout="@layout/michannel_head_item"
+        android:layout_width="match_parent"
+        android:layout_height="37.33dp"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/content_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_35"
+        android:paddingLeft="@dimen/margin_54"
+        android:paddingRight="@dimen/margin_54"
+        android:paddingTop="@dimen/margin_18">
+
+        <include
+            android:id="@+id/single_circle_1"
+            layout="@layout/michannel_single_circle_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+
+        <include
+            android:id="@+id/single_circle_2"
+            layout="@layout/michannel_single_circle_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <include
+            android:id="@+id/single_circle_3"
+            layout="@layout/michannel_single_circle_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+
+        <include
+            android:id="@+id/single_circle_4"
+            layout="@layout/michannel_single_circle_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <include
+            android:id="@+id/single_circle_5"
+            layout="@layout/michannel_single_circle_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>
+
+
+

@@ -35,6 +35,8 @@ public class AvatarUtils {
     public static final int SIZE_TYPE_AVATAR_LARGE = 3;          //大图：480
     public static final int SIZE_TYPE_AVATAR_XLARGE = 4;         //超大：640
 
+    public static final String IMG_URL_POSTFIX = "@style@"; //img  url 的后缀,如果有后缀,不再去拼接@style
+
     final static int MAX_CACHE_SIZE = 500;
     private static final LruCache<Long, Long> mAvatarTimeCache = new LruCache<>(MAX_CACHE_SIZE);
 

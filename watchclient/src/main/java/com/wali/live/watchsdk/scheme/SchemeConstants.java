@@ -45,12 +45,32 @@ public class SchemeConstants {
     public static final String PARAM_CHANNEL_ID = "channel_id";
 
     /**
+     * 跳转到频道二级页面
+     */
+    public static final String HOST_RECOMMEND = "recommend";
+    public static final String PATH_SUB_LIST = "/sublist";
+    public static final String PATH_VIDEO_SUB_LIST = "/video_sublist";
+    public static final String PARAM_LIST_ID = "id";
+    public static final String PARAM_LIST_TITLE = "title";
+    public static final String PARAM_LIST_CHANNEL_ID = "channelid";
+    public static final String PARAM_LIST_KEY = "key";
+    public static final String PARAM_LIST_KEY_ID = "key_id";
+    public static final String PARAM_LIST_ANIMATION = "animation";
+    public static final String PARAM_LIST_SOURCE = "source";
+    public static final String PARAM_SELECT = "select";
+    public static final String PARAM_RET_PAGE = "ret_page";
+
+    /**
      * 购物相关，目前挂件部分使用了参数，先留着
      */
     public static final String HOST_SHOP = "shopping";
-    // 跳转到主播购物列表
+    /**
+     * 跳转到主播购物列表
+     */
     public static final String PATH_LIVELIST = "/livelist";
-    // 商城打开京东或淘宝
+    /**
+     * 商城打开京东或淘宝
+     */
     public final static String PATH_ENTER_SHOP = "/entershop";
     public final static String PARAM_SHOP_TYPE = "type";
     public final static String PARAM_SHOP_SHOW_TYPE = "showtype";
@@ -61,33 +81,51 @@ public class SchemeConstants {
     public final static String PARAM_SHOP_ROOMID = "lid";
     public final static String PARAM_SHOP_PID = "pid";
 
-    // 跳转到充值页
+    /**
+     * 跳转到充值页
+     */
     public final static String HOST_RECHARGE = "recharge";
 
-    // 跳转到余额页
+    /**
+     * 跳转到余额页
+     */
     public final static String HOST_BALANCE = "balance";
 
-    // 跳转到提现页
+    /**
+     * 跳转到提现页
+     */
     public final static String HOST_WITHDRAW = "withdraw";
 
-    // 跳转到兑现钻石页
+    /**
+     * 跳转到兑现钻石页
+     */
     public final static String HOST_EXCHANGE = "exchange";
 
-    // 跳转到收益页
+    /**
+     * 跳转到收益页
+     */
     public final static String HOST_PROFIT = "profit";
 
-    // 来源，区分从外部应用打开
+    /**
+     * 来源，区分从外部应用打开
+     */
     public final static String PARAM_OPEN_SOURCE = "source";
 
-    // 跳转到网页
+    /**
+     * 跳转到网页
+     */
     public static final String HOST_OPEN_URL = "openurl";
     public static final String PATH_NEW_WINDOW = "/newwindow";
-    // 获取从H5跳转获取界面
+    /**
+     * 获取从H5跳转获取界面
+     */
     public final static String PARAM_WEBVIEW_RUL = "url";
     public final static String PARAM_WEBVIEW_ISHALF = "ishalf";
 
-    //跳转到咨询详情页,walilive专有.
-    //eg:uri=walilive://feed/newsinfo?feedid=6212263_1492610945&ownerid=6212263&feed_type=3
+    /**
+     * 跳转到咨询详情页,walilive专有.
+     * eg:uri=walilive://feed/newsinfo?feedid=6212263_1492610945&ownerid=6212263&feed_type=3
+     */
     public static final String HOST_FEED = "feed";
     public static final String PATH_NEWS_INFO = "/newsinfo";
     public static final String PARAM_FEED_ID = "feedid";
@@ -95,4 +133,12 @@ public class SchemeConstants {
     public static final String PARAM_FEEDS_TYPE = "feed_type";
     public static final String PARAM_EXT_TYPE = "ext_type";
     public static final String PARAM_OPEN_FROM = "feeds_open_from";
+
+    public static final String HOST_LIVE_MI = "live.mi.com";
+    public static final String HOST_ACTIVITY_ZB_MI = "activity.zb.mi.com";
+
+    /**
+     * 广告的数据
+     */
+    public static final String EXTRA_BANNER_INFO = "extra_banner_info";
 }

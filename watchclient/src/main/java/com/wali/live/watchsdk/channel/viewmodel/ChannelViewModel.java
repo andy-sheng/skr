@@ -2,7 +2,7 @@ package com.wali.live.watchsdk.channel.viewmodel;
 
 import android.text.TextUtils;
 
-import com.base.utils.display.DisplayUtils;
+import com.base.global.GlobalData;
 import com.google.protobuf.GeneratedMessage;
 
 /**
@@ -14,11 +14,15 @@ import com.google.protobuf.GeneratedMessage;
 public abstract class ChannelViewModel<GM extends GeneratedMessage> extends BaseViewModel {
     protected int mUiType;
     protected boolean mFullColumn;
+    protected int mSectionId;
 
     protected String mHead;
     protected String mHeadUri;
     protected String mSubHead;
     protected int mHeadType;
+
+    protected int mGroupPosition;
+    protected boolean mIsLast;
 
     protected int mImageWidth;
     protected int mImageHeight;
@@ -49,6 +53,54 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
         return mFullColumn;
     }
 
+    public int getSectionId() {
+        return mSectionId;
+    }
+
+    public String getHead() {
+        return mHead;
+    }
+
+    public String getHeadUri() {
+        return mHeadUri;
+    }
+
+    public int getGroupPosition() {
+        return mGroupPosition;
+    }
+
+    public void setGroupPosition(int groupPosition) {
+        mGroupPosition = groupPosition;
+    }
+
+    public boolean isFirst() {
+        return mGroupPosition == 0;
+    }
+
+    public boolean isLast() {
+        return mIsLast;
+    }
+
+    public void setLast(boolean isLast) {
+        mIsLast = isLast;
+    }
+
+    public int getHeadType() {
+        return mHeadType;
+    }
+
+    public boolean hasHead() {
+        return !TextUtils.isEmpty(mHead) || !TextUtils.isEmpty(mHeadUri) || !TextUtils.isEmpty(mSubHead);
+    }
+
+    public boolean hasSubHead() {
+        return mHeadType == 1;
+    }
+
+    public String getSubHead() {
+        return mSubHead;
+    }
+
     public void setImageSize(int width, int height) {
         if (mImageWidth == width && mImageHeight == height) {
             return;
@@ -58,7 +110,7 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
 
         if (mImageWidth != 0) {
             mRatio = 1f * mImageHeight / mImageWidth;
-            mFrameHeight = (int) (mRatio * DisplayUtils.getScreenWidth());
+            mFrameHeight = (int) (mRatio * GlobalData.screenWidth);
         } else {
             mFrameHeight = 0;
         }
@@ -72,43 +124,5 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
         return mFrameHeight;
     }
 
-    public String getHead() {
-        return mHead;
-    }
-
-    public void setHead(String head) {
-        mHead = head;
-    }
-
-    public String getHeadUri() {
-        return mHeadUri;
-    }
-
-    public void setHeadUri(String headUri) {
-        mHeadUri = headUri;
-    }
-
-    public int getHeadType() {
-        return mHeadType;
-    }
-
-    public void setHeadType(int headType) {
-        mHeadType = headType;
-    }
-
-    public String getSubHead() {
-        return mSubHead;
-    }
-
-    public void setSubHead(String subHead) {
-        mSubHead = subHead;
-    }
-
-    public boolean hasHead() {
-        return !TextUtils.isEmpty(mHead) || !TextUtils.isEmpty(mHeadUri) || !TextUtils.isEmpty(mSubHead);
-    }
-
-    public boolean hasSubHead() {
-        return mHeadType == 1;
-    }
+    public abstract boolean isNeedRemove();
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/split_area"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f2f2f2"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/title_area"
+        layout="@layout/michannel_head_item"
+        android:layout_width="match_parent"
+        android:layout_height="37.33dp"
+        android:layout_below="@id/split_area"
+        android:visibility="gone"/>
+
+    <com.wali.live.michannel.view.ChannelVideoBannerView
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/title_area"/>
+
+    <com.wali.live.michannel.view.BannerVideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/title_area"/>
+</RelativeLayout>
+
+

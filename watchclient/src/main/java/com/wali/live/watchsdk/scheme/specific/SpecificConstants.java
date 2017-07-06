@@ -1,9 +1,9 @@
-package com.wali.live.watchsdk.scheme.gamecenter;
+package com.wali.live.watchsdk.scheme.specific;
 
 /**
  * Created by lan on 2017/7/3.
  */
-public class GamecenterConstants {
+public class SpecificConstants {
     /**
      * @notice Scheme : GameCenter
      * @example migamecenter://openlive?liveId=18109355&roomId=18109355_1497501557&isLive=1&gameId=3333
@@ -15,6 +15,12 @@ public class GamecenterConstants {
     public static final String PARAM_PLAYER_ID = "liveId";
     public static final String PARAM_IS_LIVE = "isLive";
     public static final String PARAM_GAME_ID = "gameId";
+
+    /**
+     * @notice SCHEME : HTTP
+     */
+    public static final String SCHEME_HTTP = "http";
+    public static final String SCHEME_HTTPS = "https";
 
     /**
      * @description {@link #PARAM_IS_LIVE}

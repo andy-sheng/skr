@@ -1,12 +1,17 @@
 package com.wali.live.watchsdk.channel.holder;
 
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.BaseSdkActivity;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
+import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 /**
  * Created by lan on 16/6/28.
@@ -16,9 +21,12 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
  */
 public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
 
+    public final int HEAD_TYPE_LEFT = 2; // title样式 ,表示标题和箭头在左上角
+
     protected View mHeadArea;
     protected TextView mHeadTv;
     protected TextView mSubHeadTv;
+    protected TextView mMoreTv;
     protected View mSplitLine;
     protected View mSplitArea;
 
@@ -42,8 +50,10 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
         if (mHeadArea != null) {
             mHeadArea.getLayoutParams().height = DisplayUtils.dip2px(43.33f);
         }
+
         mHeadTv = $(R.id.head_tv);
         mSubHeadTv = $(R.id.sub_head_tv);
+        mMoreTv = $(R.id.more_tv);
         mSplitLine = $(R.id.split_line);
         if (mSplitLine != null) {
             mSplitLine.setVisibility(View.GONE);
@@ -64,13 +74,13 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
     }
 
     private void bindTitleView() {
-        // 如果有标题，显示标题
+        // 处理分隔区域，现在由服务器下发分割线，所以不再需要特殊处理
+        // 如果有标题，显示标题；有更多，显示更多
         if (mHeadArea == null) {
             return;
         }
         if (mViewModel.hasHead()) {
             mHeadArea.setVisibility(View.VISIBLE);
-            mSplitArea.setVisibility(mPosition == 0 ? View.GONE : View.VISIBLE);
             mHeadTv.setText(mViewModel.getHead());
 
             if (mViewModel.hasSubHead()) {
@@ -79,9 +89,47 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
             } else {
                 mSubHeadTv.setVisibility(View.GONE);
             }
-            
-            itemView.setOnClickListener(null);
-            mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+            if (!TextUtils.isEmpty(mViewModel.getHeadUri())) {
+                if (mViewModel.hasSubHead()) {
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            jumpMore();
+                        }
+                    });
+                    mMoreTv.setVisibility(View.GONE);
+
+                    mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.home_more, 0);
+                    mHeadTv.setCompoundDrawablePadding(DisplayUtils.dip2px(3.33f));
+                } else if (mViewModel.getHeadType() == HEAD_TYPE_LEFT) {
+                    mMoreTv.setVisibility(View.GONE);
+                    mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.more_right_arrow_bg, 0);
+                    mHeadTv.setCompoundDrawablePadding(DisplayUtils.dip2px(1.33f));
+                    mHeadTv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            jumpMore();
+                        }
+                    });
+                    itemView.setOnClickListener(null);
+                } else {
+                    mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    itemView.setOnClickListener(null);
+                    mMoreTv.setVisibility(View.VISIBLE);
+                    mMoreTv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            jumpMore();
+                        }
+                    });
+                }
+            } else {
+                mMoreTv.setVisibility(View.GONE);
+                itemView.setOnClickListener(null);
+
+                mHeadTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }
 
             // 调整位置
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mHeadTv.getLayoutParams();
@@ -106,7 +154,15 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
             }
         } else {
             mHeadArea.setVisibility(View.GONE);
-            mSplitArea.setVisibility(View.GONE);
+        }
+    }
+
+    private void jumpMore() {
+        if (!TextUtils.isEmpty(mViewModel.getHeadUri())) {
+            SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
+                    Uri.parse(mViewModel.getHeadUri()));
+        } else {
+            MyLog.e(TAG, "HeadHolder jumpMore uri is empty");
         }
     }
 }

@@ -317,4 +317,5 @@
     <string name="record_success">Credited into account</string>
     <string name="record_fail">Couldn\'t transfer</string>
     <string name="no_support_magic_gift_tips">This gift isn\'t supported on host version</string>
+
 </resources>

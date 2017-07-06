@@ -17,6 +17,23 @@
         android:textSize="@dimen/text_size_42"/>
 
     <TextView
+        android:id="@+id/more_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="6.67dp"
+        android:layout_marginRight="@dimen/margin_20"
+        android:gravity="right|center_vertical"
+        android:layout_toRightOf="@+id/head_tv"
+        android:drawableRight="@drawable/more_right_arrow_bg"
+        android:padding="3.33dp"
+        android:text="@string/more"
+        android:textColor="@color/color_black_tran_70"
+        android:textSize="@dimen/text_size_34"/>
+
+
+    <TextView
         android:id="@+id/sub_head_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

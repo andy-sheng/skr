@@ -103,4 +103,16 @@
     <plurals name="channel_viewer_count">
         <item quantity="other">%s人</item>
     </plurals>
+    <string name="michannel_forecast">预告</string>
+    <string name="ticket_watermark">门票</string>
+    <string name="michannel_notice">预约</string>
+    <string name="live_location_unknown">未知星球</string>
+    <string name="read_count">%1$d阅读</string>
+    <string name="michannel_fans_cnt">粉丝：%s</string>
+    <string name="fold_view_show_all">显示全部</string>
+    <string name="pack_up">收起</string>
+    <string name="channel_shop_cnt">%d 想买</string>
+    <string name="install_mi_video">请安装小米视频</string>
+    <string name="all_people">全部</string>
+
 </resources>

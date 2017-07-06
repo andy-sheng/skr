@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
-import com.base.utils.Constants;
+import com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -47,6 +47,14 @@ public class WaliliveProcessor {
                 break;
             case SchemeConstants.HOST_PLAYBACK:
                 processHostPlayback(uri, activity);
+                break;
+            case SchemeConstants.HOST_RECOMMEND:
+                if (isLegalPath(uri, "processHostSubList", SchemeConstants.PATH_SUB_LIST)) {
+                    processHostSubList(uri, activity);
+                } else {
+                    //小视频二级页暂时不考虑
+                    return false;
+                }
                 break;
             default:
                 return false;
@@ -89,10 +97,9 @@ public class WaliliveProcessor {
         long ownerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_OWENER_ID, 0);
         int feedsType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_FEEDS_TYPE, 0);
 
-        if (feedsType == Constants.SCHEMA_FEEDS_TYPE_PLAYBACK || feedsType == Constants.SCHEMA_FEEDS_TYPE_VEIDO) {
-            VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, "")
-                    .build());
-        }
+        //这里拿掉区分type的
+        VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, "")
+                .build());
     }
 
     private static void processHostRoom(Uri uri, Activity activity) {
@@ -115,7 +122,7 @@ public class WaliliveProcessor {
         if (!isLegalPath(uri, "processHostPlayback", SchemeConstants.PATH_JOIN)) {
             return;
         }
-        
+
         long playerId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_PLAYER_ID, 0);
         String liveId = uri.getQueryParameter(SchemeConstants.PARAM_LIVE_ID);
         String videoUrl = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_VIDEO_URL));
@@ -125,5 +132,23 @@ public class WaliliveProcessor {
                 .setLiveType(liveType)
                 .build();
         VideoDetailSdkActivity.openActivity(activity, roomInfo);
+    }
+
+    /**
+     * 跳转到频道二级页面
+     */
+    public static void processHostSubList(Uri uri, @NonNull Activity activity) {
+        int id = Integer.valueOf(uri.getQueryParameter(SchemeConstants.PARAM_LIST_ID));
+        String title = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_LIST_TITLE));
+        int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_CHANNEL_ID, 0);
+
+        String key = uri.getQueryParameter(SchemeConstants.PARAM_LIST_KEY);
+
+        int keyId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_KEY_ID, 0);
+        int animation = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_ANIMATION, 0);
+        int source = SchemeUtils.getInt(uri, SchemeConstants.PARAM_LIST_SOURCE, 0);
+        int select = SchemeUtils.getInt(uri, SchemeConstants.PARAM_SELECT, 0);
+
+        SubChannelActivity.openActivity(activity, id, title, channelId, key, keyId, animation, source, select);
     }
 }

@@ -1,19 +1,17 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
-import com.base.log.MyLog;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseItem;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
 
 /**
  * Created by lan on 16/6/28.
@@ -42,6 +40,12 @@ public class LargeCardHolder extends FixedHolder {
         mCountTv = $(R.id.count_tv);
     }
 
+    @Override
+    protected void initTitleView() {
+        super.initTitleView();
+        mSplitLine.setVisibility(View.GONE);
+    }
+
     protected void changeImageSize() {
         ViewGroup.MarginLayoutParams mlp;
         mlp = (ViewGroup.MarginLayoutParams) mAvatarIv.getLayoutParams();
@@ -60,31 +64,50 @@ public class LargeCardHolder extends FixedHolder {
 
     @Override
     protected void bindLiveModel(ChannelLiveViewModel model) {
-        final ChannelLiveViewModel.BaseItem item = model.getFirstItem();
+        final BaseItem item = model.getFirstItem();
         if (item == null) {
             return;
         }
-        bindImageWithBorder(mAvatarIv, item.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_XLARGE),
-                false, 640, 640, ScalingUtils.ScaleType.CENTER_CROP);
-        mAvatarIv.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
-                                Uri.parse(item.getSchemeUri()));
-                    }
-                });
+        bindImageWithBorder(mAvatarIv, item.getImageUrl(AvatarUtils.SIZE_TYPE_AVATAR_XLARGE), false, 640, 640, ScalingUtils.ScaleType.CENTER_CROP);
+        mAvatarIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpItem(item);
+            }
+        });
 
         bindText(mNameTv, item.getLineOneText());
         bindText(mDisplayTv, item.getLineTwoText());
+        if (item.getUser() != null) {
+            mNameTv.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //person info
+                        }
+                    }
+            );
+            mDisplayTv.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //person info
+                        }
+                    }
+            );
+        } else {
+            mNameTv.setOnClickListener(null);
+            mDisplayTv.setOnClickListener(null);
+        }
+
         bindText(mTypeTv, item.getUpRightText());
-        if (item instanceof ChannelLiveViewModel.BaseLiveItem) {
-            bindBaseLiveItem((ChannelLiveViewModel.BaseLiveItem) item);
+
+        if (item instanceof BaseLiveItem) {
+            bindBaseLiveItem((BaseLiveItem) item);
         }
     }
 
-    private void bindBaseLiveItem(ChannelLiveViewModel.BaseLiveItem item) {
-        MyLog.w(TAG, "item.getCountString()= " + item.getCountString());
+    private void bindBaseLiveItem(BaseLiveItem item) {
         bindText(mCountTv, item.getCountString());
     }
 }

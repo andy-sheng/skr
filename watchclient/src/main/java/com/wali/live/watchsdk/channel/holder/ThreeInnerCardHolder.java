@@ -4,11 +4,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.base.log.MyLog;
+import com.base.image.fresco.BaseImageView;
 import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
-import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseItem;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.VideoItem;
+import com.wali.live.watchsdk.R;
 
 import java.util.Arrays;
 
@@ -25,14 +28,16 @@ public class ThreeInnerCardHolder extends RepeatHolder {
     protected int[] mTypeTvIds;
     protected int[] mDisplayTvIds;
     protected int[] mCountTvIds;
+    protected int[] mShadowTvIds;
     protected int[] mUserNickNameTvIds;
-    protected int mBottomContainerId;
-    protected View[] mBottomContainers;
+    protected int[] mMiddleTvIds;
 
     protected TextView[] mTypeTvs;
     protected TextView[] mDisplayTvs;
     protected TextView[] mCountTvs;
+    protected TextView[] mShadowTvs;
     protected TextView[] mUserNickNameTvs;
+    protected TextView[] mMiddleTvs;
 
     public ThreeInnerCardHolder(View itemView) {
         super(itemView);
@@ -56,9 +61,16 @@ public class ThreeInnerCardHolder extends RepeatHolder {
         Arrays.fill(mDisplayTvIds, R.id.display_tv);
         mCountTvIds = new int[mViewSize];
         Arrays.fill(mCountTvIds, R.id.count_tv);
+        mShadowTvIds = new int[mViewSize];
+        Arrays.fill(mShadowTvIds, R.id.shadow_tv);
         mBottomContainerId = R.id.bottom_container;
         mUserNickNameTvIds = new int[mViewSize];
         Arrays.fill(mUserNickNameTvIds, R.id.user_name_tv);
+        mMiddleTvIds = new int[mViewSize];
+        Arrays.fill(mMiddleTvIds, R.id.middle_text);
+        mLeftLabelTvId = R.id.left_label;
+        mMarkTvId = R.id.mark_tv;
+        mLeftLabelIvId = R.id.anchor_activity_icon;
     }
 
     @Override
@@ -68,15 +80,25 @@ public class ThreeInnerCardHolder extends RepeatHolder {
         mTypeTvs = new TextView[mViewSize];
         mDisplayTvs = new TextView[mViewSize];
         mCountTvs = new TextView[mViewSize];
+        mMarkTvs = new TextView[mViewSize];
+        mShadowTvs = new TextView[mViewSize];
         mBottomContainers = new View[mViewSize];
         mUserNickNameTvs = new TextView[mViewSize];
+        mMiddleTvs = new TextView[mViewSize];
+        mLeftLabelTvs = new TextView[mViewSize];
+        mLeftLabelIvs = new BaseImageView[mViewSize];
 
         for (int i = 0; i < mViewSize; i++) {
             mTypeTvs[i] = $(mParentViews[i], mTypeTvIds[i]);
             mDisplayTvs[i] = $(mParentViews[i], mDisplayTvIds[i]);
             mCountTvs[i] = $(mParentViews[i], mCountTvIds[i]);
+            mMarkTvs[i] = $(mParentViews[i], mMarkTvId);
+            mShadowTvs[i] = $(mParentViews[i], mShadowTvIds[i]);
             mBottomContainers[i] = $(mParentViews[i], mBottomContainerId);
             mUserNickNameTvs[i] = $(mParentViews[i], mUserNickNameTvIds[i]);
+            mMiddleTvs[i] = $(mParentViews[i], mMiddleTvIds[i]);
+            mLeftLabelTvs[i] = $(mParentViews[i], mLeftLabelTvId);
+            mLeftLabelIvs[i] = $(mParentViews[i], mLeftLabelIvId);
         }
 
         mMarginArea = $(R.id.margin_area);
@@ -125,13 +147,39 @@ public class ThreeInnerCardHolder extends RepeatHolder {
     }
 
     @Override
-    protected void bindItemOnLiveModel(ChannelLiveViewModel.BaseItem item, int i) {
+    protected void bindItemOnLiveModel(BaseItem item, int i) {
         super.bindItemOnLiveModel(item, i);
         bindText(mTypeTvs[i], item.getUpRightText());
         bindText(mDisplayTvs[i], item.getDisplayText());
-        if (item.getUser() != null) {
-            bindText(mUserNickNameTvs[i], item.getUser().getNickname());
+        bindText(mUserNickNameTvs[i], item.getUserNickName());
+        bindText(mMiddleTvs[i], item.getMiddleInfo() != null ? item.getMiddleInfo().getText1() : "");
+        bindLeftLabel(item, i);
+        if (mLeftLabelTvs[i].getVisibility() != View.VISIBLE) {
+            bindLeftWidgetInfo(item, i);
         }
-        MyLog.w(TAG, "1=" + item.getLineOneText() + " 2=" + item.getLineTwoText());
+    }
+
+    @Override
+    protected void resetItem(int i) {
+        mCountTvs[i].setVisibility(View.GONE);
+        mMarkTvs[i].setVisibility(View.GONE);
+        mShadowTvs[i].setVisibility(View.GONE);
+        mLeftLabelTvs[i].setVisibility(View.GONE);
+        mBottomContainers[i].setVisibility(View.GONE);
+        mLeftLabelIvs[i].setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void bindBaseLiveItem(BaseLiveItem item, int i) {
+/*        mCountTvs[i].setText(item.getCountString());
+        mCountTvs[i].setVisibility(View.VISIBLE);*/
+        mShadowTvs[i].setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void bindVideoItem(VideoItem item, int i) {
+/*        mCountTvs[i].setText(item.getCountString());
+        mCountTvs[i].setVisibility(View.VISIBLE);*/
+        mShadowTvs[i].setVisibility(View.VISIBLE);
     }
 }

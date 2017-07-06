@@ -17,7 +17,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.config.GetConfigManager;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
-import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
+import com.wali.live.watchsdk.scheme.specific.SpecificConstants;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -88,7 +88,7 @@ public class LiveWebViewClient extends WebViewClient {
         }
         if (url.startsWith(SchemeConstants.SCHEME_LIVESDK) ||
                 url.startsWith(SchemeConstants.SCHEME_WALILIVE) ||
-                url.startsWith(GamecenterConstants.SCHEME_GAMECENTER) ||
+                url.startsWith(SpecificConstants.SCHEME_GAMECENTER) ||
                 GetConfigManager.getInstance().isValidHost(url)) {
             Uri uri = Uri.parse(url);
             SchemeSdkActivity.openActivity(mBaseActivity.get(), uri);

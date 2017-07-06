@@ -8,6 +8,121 @@ public final class CommonChannelProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  /**
+   * Protobuf enum {@code com.wali.live.proto.BarMessageType}
+   */
+  public enum BarMessageType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>OP = 1;</code>
+     *
+     * <pre>
+     * 运营
+     * </pre>
+     */
+    OP(0, 1),
+    /**
+     * <code>SYS = 2;</code>
+     *
+     * <pre>
+     * 系统
+     * </pre>
+     */
+    SYS(1, 2),
+    /**
+     * <code>NTF = 3;</code>
+     *
+     * <pre>
+     * 即时
+     * </pre>
+     */
+    NTF(2, 3),
+    ;
+
+    /**
+     * <code>OP = 1;</code>
+     *
+     * <pre>
+     * 运营
+     * </pre>
+     */
+    public static final int OP_VALUE = 1;
+    /**
+     * <code>SYS = 2;</code>
+     *
+     * <pre>
+     * 系统
+     * </pre>
+     */
+    public static final int SYS_VALUE = 2;
+    /**
+     * <code>NTF = 3;</code>
+     *
+     * <pre>
+     * 即时
+     * </pre>
+     */
+    public static final int NTF_VALUE = 3;
+
+
+    public final int getNumber() { return value; }
+
+    public static BarMessageType valueOf(int value) {
+      switch (value) {
+        case 1: return OP;
+        case 2: return SYS;
+        case 3: return NTF;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<BarMessageType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<BarMessageType>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<BarMessageType>() {
+            public BarMessageType findValueByNumber(int number) {
+              return BarMessageType.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final BarMessageType[] VALUES = values();
+
+    public static BarMessageType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private BarMessageType(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:com.wali.live.proto.BarMessageType)
+  }
+
   public interface ChannelBannerOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ChannelBanner)
       com.google.protobuf.MessageOrBuilder {
@@ -15257,6 +15372,23 @@ public final class CommonChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getLabelOrBuilder(
         int index);
+
+    /**
+     * <code>optional uint32 distance = 15;</code>
+     *
+     * <pre>
+     *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+     * </pre>
+     */
+    boolean hasDistance();
+    /**
+     * <code>optional uint32 distance = 15;</code>
+     *
+     * <pre>
+     *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+     * </pre>
+     */
+    int getDistance();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.LiveOrReplayItemInfo}
@@ -15412,6 +15544,11 @@ public final class CommonChannelProto {
                 mutable_bitField0_ |= 0x00002000;
               }
               label_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.RichText.PARSER, extensionRegistry));
+              break;
+            }
+            case 120: {
+              bitField0_ |= 0x00002000;
+              distance_ = input.readUInt32();
               break;
             }
           }
@@ -16058,6 +16195,29 @@ public final class CommonChannelProto {
       return label_.get(index);
     }
 
+    public static final int DISTANCE_FIELD_NUMBER = 15;
+    private int distance_;
+    /**
+     * <code>optional uint32 distance = 15;</code>
+     *
+     * <pre>
+     *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+     * </pre>
+     */
+    public boolean hasDistance() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional uint32 distance = 15;</code>
+     *
+     * <pre>
+     *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+     * </pre>
+     */
+    public int getDistance() {
+      return distance_;
+    }
+
     private void initFields() {
       type_ = 0;
       items_ = com.google.protobuf.ByteString.EMPTY;
@@ -16073,6 +16233,7 @@ public final class CommonChannelProto {
       topLeft_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
       middle_ = com.wali.live.proto.CommonChannelProto.MiddleInfo.getDefaultInstance();
       label_ = java.util.Collections.emptyList();
+      distance_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -16136,6 +16297,9 @@ public final class CommonChannelProto {
       }
       for (int i = 0; i < label_.size(); i++) {
         output.writeMessage(14, label_.get(i));
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeUInt32(15, distance_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -16201,6 +16365,10 @@ public final class CommonChannelProto {
       for (int i = 0; i < label_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(14, label_.get(i));
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(15, distance_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -16367,6 +16535,8 @@ public final class CommonChannelProto {
         } else {
           labelBuilder_.clear();
         }
+        distance_ = 0;
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
 
@@ -16468,6 +16638,10 @@ public final class CommonChannelProto {
         } else {
           result.label_ = labelBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        result.distance_ = distance_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -16562,6 +16736,9 @@ public final class CommonChannelProto {
               labelBuilder_.addAllMessages(other.label_);
             }
           }
+        }
+        if (other.hasDistance()) {
+          setDistance(other.getDistance());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -18213,6 +18390,54 @@ public final class CommonChannelProto {
         return labelBuilder_;
       }
 
+      private int distance_ ;
+      /**
+       * <code>optional uint32 distance = 15;</code>
+       *
+       * <pre>
+       *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+       * </pre>
+       */
+      public boolean hasDistance() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional uint32 distance = 15;</code>
+       *
+       * <pre>
+       *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+       * </pre>
+       */
+      public int getDistance() {
+        return distance_;
+      }
+      /**
+       * <code>optional uint32 distance = 15;</code>
+       *
+       * <pre>
+       *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+       * </pre>
+       */
+      public Builder setDistance(int value) {
+        bitField0_ |= 0x00004000;
+        distance_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 distance = 15;</code>
+       *
+       * <pre>
+       *距离，单位：米[样式7距离&gt;0时，右下角优先展示距离]
+       * </pre>
+       */
+      public Builder clearDistance() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        distance_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveOrReplayItemInfo)
     }
 
@@ -18296,6 +18521,32 @@ public final class CommonChannelProto {
      * </pre>
      */
     int getBgImageID();
+
+    /**
+     * <code>optional string iconUrl = 4;</code>
+     *
+     * <pre>
+     *图标地址[优先展示小图片，等同于ListWidgetInfo]
+     * </pre>
+     */
+    boolean hasIconUrl();
+    /**
+     * <code>optional string iconUrl = 4;</code>
+     *
+     * <pre>
+     *图标地址[优先展示小图片，等同于ListWidgetInfo]
+     * </pre>
+     */
+    java.lang.String getIconUrl();
+    /**
+     * <code>optional string iconUrl = 4;</code>
+     *
+     * <pre>
+     *图标地址[优先展示小图片，等同于ListWidgetInfo]
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getIconUrlBytes();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.RichText}
@@ -18368,6 +18619,12 @@ public final class CommonChannelProto {
             case 24: {
               bitField0_ |= 0x00000004;
               bgImageID_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              iconUrl_ = bs;
               break;
             }
           }
@@ -18541,10 +18798,65 @@ public final class CommonChannelProto {
       return bgImageID_;
     }
 
+    public static final int ICONURL_FIELD_NUMBER = 4;
+    private java.lang.Object iconUrl_;
+    /**
+     * <code>optional string iconUrl = 4;</code>
+     *
+     * <pre>
+     *图标地址[优先展示小图片，等同于ListWidgetInfo]
+     * </pre>
+     */
+    public boolean hasIconUrl() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string iconUrl = 4;</code>
+     *
+     * <pre>
+     *图标地址[优先展示小图片，等同于ListWidgetInfo]
+     * </pre>
+     */
+    public java.lang.String getIconUrl() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          iconUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string iconUrl = 4;</code>
+     *
+     * <pre>
+     *图标地址[优先展示小图片，等同于ListWidgetInfo]
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getIconUrlBytes() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        iconUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       text_ = "";
       jumpSchemeUri_ = "";
       bgImageID_ = 0;
+      iconUrl_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -18568,6 +18880,9 @@ public final class CommonChannelProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeUInt32(3, bgImageID_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getIconUrlBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -18588,6 +18903,10 @@ public final class CommonChannelProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(3, bgImageID_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getIconUrlBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -18716,6 +19035,8 @@ public final class CommonChannelProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         bgImageID_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        iconUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -18756,6 +19077,10 @@ public final class CommonChannelProto {
           to_bitField0_ |= 0x00000004;
         }
         result.bgImageID_ = bgImageID_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.iconUrl_ = iconUrl_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -18784,6 +19109,11 @@ public final class CommonChannelProto {
         }
         if (other.hasBgImageID()) {
           setBgImageID(other.getBgImageID());
+        }
+        if (other.hasIconUrl()) {
+          bitField0_ |= 0x00000008;
+          iconUrl_ = other.iconUrl_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -19056,6 +19386,106 @@ public final class CommonChannelProto {
       public Builder clearBgImageID() {
         bitField0_ = (bitField0_ & ~0x00000004);
         bgImageID_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object iconUrl_ = "";
+      /**
+       * <code>optional string iconUrl = 4;</code>
+       *
+       * <pre>
+       *图标地址[优先展示小图片，等同于ListWidgetInfo]
+       * </pre>
+       */
+      public boolean hasIconUrl() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string iconUrl = 4;</code>
+       *
+       * <pre>
+       *图标地址[优先展示小图片，等同于ListWidgetInfo]
+       * </pre>
+       */
+      public java.lang.String getIconUrl() {
+        java.lang.Object ref = iconUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            iconUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 4;</code>
+       *
+       * <pre>
+       *图标地址[优先展示小图片，等同于ListWidgetInfo]
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getIconUrlBytes() {
+        java.lang.Object ref = iconUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          iconUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 4;</code>
+       *
+       * <pre>
+       *图标地址[优先展示小图片，等同于ListWidgetInfo]
+       * </pre>
+       */
+      public Builder setIconUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        iconUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 4;</code>
+       *
+       * <pre>
+       *图标地址[优先展示小图片，等同于ListWidgetInfo]
+       * </pre>
+       */
+      public Builder clearIconUrl() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        iconUrl_ = getDefaultInstance().getIconUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 4;</code>
+       *
+       * <pre>
+       *图标地址[优先展示小图片，等同于ListWidgetInfo]
+       * </pre>
+       */
+      public Builder setIconUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        iconUrl_ = value;
         onChanged();
         return this;
       }
@@ -27447,6 +27877,25567 @@ public final class CommonChannelProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.BackInfo)
   }
 
+  public interface VideoInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string id = 1;</code>
+     *
+     * <pre>
+     *小视频id
+     * </pre>
+     */
+    boolean hasId();
+    /**
+     * <code>required string id = 1;</code>
+     *
+     * <pre>
+     *小视频id
+     * </pre>
+     */
+    java.lang.String getId();
+    /**
+     * <code>required string id = 1;</code>
+     *
+     * <pre>
+     *小视频id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <code>optional uint64 view_count = 2;</code>
+     *
+     * <pre>
+     *小视频观看次数
+     * </pre>
+     */
+    boolean hasViewCount();
+    /**
+     * <code>optional uint64 view_count = 2;</code>
+     *
+     * <pre>
+     *小视频观看次数
+     * </pre>
+     */
+    long getViewCount();
+
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    boolean hasUserInfo();
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo();
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.VideoInfo}
+   *
+   * <pre>
+   *小视频信息
+   * </pre>
+   */
+  public static final class VideoInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoInfo)
+      VideoInfoOrBuilder {
+    // Use VideoInfo.newBuilder() to construct.
+    private VideoInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private VideoInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final VideoInfo defaultInstance;
+    public static VideoInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public VideoInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private VideoInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              id_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              viewCount_ = input.readUInt64();
+              break;
+            }
+            case 26: {
+              com.wali.live.proto.CommonChannelProto.UserInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = userInfo_.toBuilder();
+              }
+              userInfo_ = input.readMessage(com.wali.live.proto.CommonChannelProto.UserInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userInfo_);
+                userInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.VideoInfo.class, com.wali.live.proto.CommonChannelProto.VideoInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<VideoInfo> PARSER =
+        new com.google.protobuf.AbstractParser<VideoInfo>() {
+      public VideoInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new VideoInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<VideoInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.Object id_;
+    /**
+     * <code>required string id = 1;</code>
+     *
+     * <pre>
+     *小视频id
+     * </pre>
+     */
+    public boolean hasId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string id = 1;</code>
+     *
+     * <pre>
+     *小视频id
+     * </pre>
+     */
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          id_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string id = 1;</code>
+     *
+     * <pre>
+     *小视频id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VIEW_COUNT_FIELD_NUMBER = 2;
+    private long viewCount_;
+    /**
+     * <code>optional uint64 view_count = 2;</code>
+     *
+     * <pre>
+     *小视频观看次数
+     * </pre>
+     */
+    public boolean hasViewCount() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 view_count = 2;</code>
+     *
+     * <pre>
+     *小视频观看次数
+     * </pre>
+     */
+    public long getViewCount() {
+      return viewCount_;
+    }
+
+    public static final int USER_INFO_FIELD_NUMBER = 3;
+    private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_;
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    public boolean hasUserInfo() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo() {
+      return userInfo_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
+      return userInfo_;
+    }
+
+    private void initFields() {
+      id_ = "";
+      viewCount_ = 0L;
+      userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (hasUserInfo()) {
+        if (!getUserInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, viewCount_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, userInfo_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, viewCount_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, userInfo_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.VideoInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.VideoInfo}
+     *
+     * <pre>
+     *小视频信息
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoInfo)
+        com.wali.live.proto.CommonChannelProto.VideoInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.VideoInfo.class, com.wali.live.proto.CommonChannelProto.VideoInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.VideoInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getUserInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        id_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        viewCount_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (userInfoBuilder_ == null) {
+          userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+        } else {
+          userInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoInfo_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.VideoInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoInfo build() {
+        com.wali.live.proto.CommonChannelProto.VideoInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoInfo buildPartial() {
+        com.wali.live.proto.CommonChannelProto.VideoInfo result = new com.wali.live.proto.CommonChannelProto.VideoInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.id_ = id_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.viewCount_ = viewCount_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (userInfoBuilder_ == null) {
+          result.userInfo_ = userInfo_;
+        } else {
+          result.userInfo_ = userInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.VideoInfo) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.VideoInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.VideoInfo other) {
+        if (other == com.wali.live.proto.CommonChannelProto.VideoInfo.getDefaultInstance()) return this;
+        if (other.hasId()) {
+          bitField0_ |= 0x00000001;
+          id_ = other.id_;
+          onChanged();
+        }
+        if (other.hasViewCount()) {
+          setViewCount(other.getViewCount());
+        }
+        if (other.hasUserInfo()) {
+          mergeUserInfo(other.getUserInfo());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasId()) {
+          
+          return false;
+        }
+        if (hasUserInfo()) {
+          if (!getUserInfo().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.VideoInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.VideoInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object id_ = "";
+      /**
+       * <code>required string id = 1;</code>
+       *
+       * <pre>
+       *小视频id
+       * </pre>
+       */
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string id = 1;</code>
+       *
+       * <pre>
+       *小视频id
+       * </pre>
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            id_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string id = 1;</code>
+       *
+       * <pre>
+       *小视频id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string id = 1;</code>
+       *
+       * <pre>
+       *小视频id
+       * </pre>
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string id = 1;</code>
+       *
+       * <pre>
+       *小视频id
+       * </pre>
+       */
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string id = 1;</code>
+       *
+       * <pre>
+       *小视频id
+       * </pre>
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long viewCount_ ;
+      /**
+       * <code>optional uint64 view_count = 2;</code>
+       *
+       * <pre>
+       *小视频观看次数
+       * </pre>
+       */
+      public boolean hasViewCount() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 view_count = 2;</code>
+       *
+       * <pre>
+       *小视频观看次数
+       * </pre>
+       */
+      public long getViewCount() {
+        return viewCount_;
+      }
+      /**
+       * <code>optional uint64 view_count = 2;</code>
+       *
+       * <pre>
+       *小视频观看次数
+       * </pre>
+       */
+      public Builder setViewCount(long value) {
+        bitField0_ |= 0x00000002;
+        viewCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 view_count = 2;</code>
+       *
+       * <pre>
+       *小视频观看次数
+       * </pre>
+       */
+      public Builder clearViewCount() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        viewCount_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public boolean hasUserInfo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo() {
+        if (userInfoBuilder_ == null) {
+          return userInfo_;
+        } else {
+          return userInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder setUserInfo(com.wali.live.proto.CommonChannelProto.UserInfo value) {
+        if (userInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userInfo_ = value;
+          onChanged();
+        } else {
+          userInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder setUserInfo(
+          com.wali.live.proto.CommonChannelProto.UserInfo.Builder builderForValue) {
+        if (userInfoBuilder_ == null) {
+          userInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          userInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder mergeUserInfo(com.wali.live.proto.CommonChannelProto.UserInfo value) {
+        if (userInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              userInfo_ != com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance()) {
+            userInfo_ =
+              com.wali.live.proto.CommonChannelProto.UserInfo.newBuilder(userInfo_).mergeFrom(value).buildPartial();
+          } else {
+            userInfo_ = value;
+          }
+          onChanged();
+        } else {
+          userInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder clearUserInfo() {
+        if (userInfoBuilder_ == null) {
+          userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          userInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfo.Builder getUserInfoBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getUserInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
+        if (userInfoBuilder_ != null) {
+          return userInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return userInfo_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user_info = 3;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> 
+          getUserInfoFieldBuilder() {
+        if (userInfoBuilder_ == null) {
+          userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder>(
+                  getUserInfo(),
+                  getParentForChildren(),
+                  isClean());
+          userInfo_ = null;
+        }
+        return userInfoBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoInfo)
+    }
+
+    static {
+      defaultInstance = new VideoInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoInfo)
+  }
+
+  public interface NavigationDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NavigationData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *导航标签名 话题
+     * </pre>
+     */
+    boolean hasName();
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *导航标签名 话题
+     * </pre>
+     */
+    java.lang.String getName();
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *导航标签名 话题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图
+     * </pre>
+     */
+    boolean hasBgImgUrl();
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图
+     * </pre>
+     */
+    java.lang.String getBgImgUrl();
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getBgImgUrlBytes();
+
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *小图标
+     * </pre>
+     */
+    boolean hasIconUrl();
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *小图标
+     * </pre>
+     */
+    java.lang.String getIconUrl();
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *小图标
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getIconUrlBytes();
+
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+     * </pre>
+     */
+    boolean hasJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+     * </pre>
+     */
+    java.lang.String getJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getJumpSchemeUriBytes();
+
+    /**
+     * <code>optional uint32 textColor = 5;</code>
+     *
+     * <pre>
+     *文本颜色[话题用到],0=客户端默认颜色,1=金色
+     * </pre>
+     */
+    boolean hasTextColor();
+    /**
+     * <code>optional uint32 textColor = 5;</code>
+     *
+     * <pre>
+     *文本颜色[话题用到],0=客户端默认颜色,1=金色
+     * </pre>
+     */
+    int getTextColor();
+
+    /**
+     * <code>optional string hexColorCode = 6;</code>
+     *
+     * <pre>
+     *十六进制颜色码，如#FFFFFF
+     * </pre>
+     */
+    boolean hasHexColorCode();
+    /**
+     * <code>optional string hexColorCode = 6;</code>
+     *
+     * <pre>
+     *十六进制颜色码，如#FFFFFF
+     * </pre>
+     */
+    java.lang.String getHexColorCode();
+    /**
+     * <code>optional string hexColorCode = 6;</code>
+     *
+     * <pre>
+     *十六进制颜色码，如#FFFFFF
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHexColorCodeBytes();
+
+    /**
+     * <code>optional string text1 = 7;</code>
+     *
+     * <pre>
+     *导航新增text1
+     * </pre>
+     */
+    boolean hasText1();
+    /**
+     * <code>optional string text1 = 7;</code>
+     *
+     * <pre>
+     *导航新增text1
+     * </pre>
+     */
+    java.lang.String getText1();
+    /**
+     * <code>optional string text1 = 7;</code>
+     *
+     * <pre>
+     *导航新增text1
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getText1Bytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.NavigationData}
+   *
+   * <pre>
+   *type=20, 27, 30（圈子新增）
+   * </pre>
+   */
+  public static final class NavigationData extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NavigationData)
+      NavigationDataOrBuilder {
+    // Use NavigationData.newBuilder() to construct.
+    private NavigationData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private NavigationData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final NavigationData defaultInstance;
+    public static NavigationData getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public NavigationData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NavigationData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              name_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              bgImgUrl_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              iconUrl_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              jumpSchemeUri_ = bs;
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              textColor_ = input.readUInt32();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              hexColorCode_ = bs;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              text1_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.NavigationData.class, com.wali.live.proto.CommonChannelProto.NavigationData.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<NavigationData> PARSER =
+        new com.google.protobuf.AbstractParser<NavigationData>() {
+      public NavigationData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NavigationData(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NavigationData> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NAME_FIELD_NUMBER = 1;
+    private java.lang.Object name_;
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *导航标签名 话题
+     * </pre>
+     */
+    public boolean hasName() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *导航标签名 话题
+     * </pre>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          name_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *导航标签名 话题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BGIMGURL_FIELD_NUMBER = 2;
+    private java.lang.Object bgImgUrl_;
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图
+     * </pre>
+     */
+    public boolean hasBgImgUrl() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图
+     * </pre>
+     */
+    public java.lang.String getBgImgUrl() {
+      java.lang.Object ref = bgImgUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bgImgUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getBgImgUrlBytes() {
+      java.lang.Object ref = bgImgUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bgImgUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ICONURL_FIELD_NUMBER = 3;
+    private java.lang.Object iconUrl_;
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *小图标
+     * </pre>
+     */
+    public boolean hasIconUrl() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *小图标
+     * </pre>
+     */
+    public java.lang.String getIconUrl() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          iconUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *小图标
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getIconUrlBytes() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        iconUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int JUMPSCHEMEURI_FIELD_NUMBER = 4;
+    private java.lang.Object jumpSchemeUri_;
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+     * </pre>
+     */
+    public boolean hasJumpSchemeUri() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+     * </pre>
+     */
+    public java.lang.String getJumpSchemeUri() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          jumpSchemeUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getJumpSchemeUriBytes() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        jumpSchemeUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TEXTCOLOR_FIELD_NUMBER = 5;
+    private int textColor_;
+    /**
+     * <code>optional uint32 textColor = 5;</code>
+     *
+     * <pre>
+     *文本颜色[话题用到],0=客户端默认颜色,1=金色
+     * </pre>
+     */
+    public boolean hasTextColor() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint32 textColor = 5;</code>
+     *
+     * <pre>
+     *文本颜色[话题用到],0=客户端默认颜色,1=金色
+     * </pre>
+     */
+    public int getTextColor() {
+      return textColor_;
+    }
+
+    public static final int HEXCOLORCODE_FIELD_NUMBER = 6;
+    private java.lang.Object hexColorCode_;
+    /**
+     * <code>optional string hexColorCode = 6;</code>
+     *
+     * <pre>
+     *十六进制颜色码，如#FFFFFF
+     * </pre>
+     */
+    public boolean hasHexColorCode() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string hexColorCode = 6;</code>
+     *
+     * <pre>
+     *十六进制颜色码，如#FFFFFF
+     * </pre>
+     */
+    public java.lang.String getHexColorCode() {
+      java.lang.Object ref = hexColorCode_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          hexColorCode_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string hexColorCode = 6;</code>
+     *
+     * <pre>
+     *十六进制颜色码，如#FFFFFF
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHexColorCodeBytes() {
+      java.lang.Object ref = hexColorCode_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        hexColorCode_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TEXT1_FIELD_NUMBER = 7;
+    private java.lang.Object text1_;
+    /**
+     * <code>optional string text1 = 7;</code>
+     *
+     * <pre>
+     *导航新增text1
+     * </pre>
+     */
+    public boolean hasText1() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string text1 = 7;</code>
+     *
+     * <pre>
+     *导航新增text1
+     * </pre>
+     */
+    public java.lang.String getText1() {
+      java.lang.Object ref = text1_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          text1_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string text1 = 7;</code>
+     *
+     * <pre>
+     *导航新增text1
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getText1Bytes() {
+      java.lang.Object ref = text1_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        text1_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      name_ = "";
+      bgImgUrl_ = "";
+      iconUrl_ = "";
+      jumpSchemeUri_ = "";
+      textColor_ = 0;
+      hexColorCode_ = "";
+      text1_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getNameBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getBgImgUrlBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getIconUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getJumpSchemeUriBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt32(5, textColor_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getHexColorCodeBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getText1Bytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getNameBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getBgImgUrlBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getIconUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getJumpSchemeUriBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, textColor_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getHexColorCodeBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getText1Bytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NavigationData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.NavigationData prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.NavigationData}
+     *
+     * <pre>
+     *type=20, 27, 30（圈子新增）
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NavigationData)
+        com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.NavigationData.class, com.wali.live.proto.CommonChannelProto.NavigationData.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.NavigationData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        name_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bgImgUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        iconUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        jumpSchemeUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        textColor_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        hexColorCode_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        text1_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NavigationData_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.NavigationData getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.NavigationData.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.NavigationData build() {
+        com.wali.live.proto.CommonChannelProto.NavigationData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.NavigationData buildPartial() {
+        com.wali.live.proto.CommonChannelProto.NavigationData result = new com.wali.live.proto.CommonChannelProto.NavigationData(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.name_ = name_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bgImgUrl_ = bgImgUrl_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.iconUrl_ = iconUrl_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.jumpSchemeUri_ = jumpSchemeUri_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.textColor_ = textColor_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.hexColorCode_ = hexColorCode_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.text1_ = text1_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.NavigationData) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.NavigationData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.NavigationData other) {
+        if (other == com.wali.live.proto.CommonChannelProto.NavigationData.getDefaultInstance()) return this;
+        if (other.hasName()) {
+          bitField0_ |= 0x00000001;
+          name_ = other.name_;
+          onChanged();
+        }
+        if (other.hasBgImgUrl()) {
+          bitField0_ |= 0x00000002;
+          bgImgUrl_ = other.bgImgUrl_;
+          onChanged();
+        }
+        if (other.hasIconUrl()) {
+          bitField0_ |= 0x00000004;
+          iconUrl_ = other.iconUrl_;
+          onChanged();
+        }
+        if (other.hasJumpSchemeUri()) {
+          bitField0_ |= 0x00000008;
+          jumpSchemeUri_ = other.jumpSchemeUri_;
+          onChanged();
+        }
+        if (other.hasTextColor()) {
+          setTextColor(other.getTextColor());
+        }
+        if (other.hasHexColorCode()) {
+          bitField0_ |= 0x00000020;
+          hexColorCode_ = other.hexColorCode_;
+          onChanged();
+        }
+        if (other.hasText1()) {
+          bitField0_ |= 0x00000040;
+          text1_ = other.text1_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.NavigationData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.NavigationData) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *导航标签名 话题
+       * </pre>
+       */
+      public boolean hasName() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *导航标签名 话题
+       * </pre>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *导航标签名 话题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *导航标签名 话题
+       * </pre>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *导航标签名 话题
+       * </pre>
+       */
+      public Builder clearName() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *导航标签名 话题
+       * </pre>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object bgImgUrl_ = "";
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图
+       * </pre>
+       */
+      public boolean hasBgImgUrl() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图
+       * </pre>
+       */
+      public java.lang.String getBgImgUrl() {
+        java.lang.Object ref = bgImgUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bgImgUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getBgImgUrlBytes() {
+        java.lang.Object ref = bgImgUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bgImgUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图
+       * </pre>
+       */
+      public Builder setBgImgUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bgImgUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图
+       * </pre>
+       */
+      public Builder clearBgImgUrl() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bgImgUrl_ = getDefaultInstance().getBgImgUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图
+       * </pre>
+       */
+      public Builder setBgImgUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bgImgUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object iconUrl_ = "";
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *小图标
+       * </pre>
+       */
+      public boolean hasIconUrl() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *小图标
+       * </pre>
+       */
+      public java.lang.String getIconUrl() {
+        java.lang.Object ref = iconUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            iconUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *小图标
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getIconUrlBytes() {
+        java.lang.Object ref = iconUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          iconUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *小图标
+       * </pre>
+       */
+      public Builder setIconUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        iconUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *小图标
+       * </pre>
+       */
+      public Builder clearIconUrl() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        iconUrl_ = getDefaultInstance().getIconUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *小图标
+       * </pre>
+       */
+      public Builder setIconUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        iconUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object jumpSchemeUri_ = "";
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+       * </pre>
+       */
+      public boolean hasJumpSchemeUri() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+       * </pre>
+       */
+      public java.lang.String getJumpSchemeUri() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getJumpSchemeUriBytes() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          jumpSchemeUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+       * </pre>
+       */
+      public Builder setJumpSchemeUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+       * </pre>
+       */
+      public Builder clearJumpSchemeUri() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        jumpSchemeUri_ = getDefaultInstance().getJumpSchemeUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme 话题跳转uri(考虑需求经常变，这里可配置其他类型uri，如电视台，h5等)
+       * </pre>
+       */
+      public Builder setJumpSchemeUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int textColor_ ;
+      /**
+       * <code>optional uint32 textColor = 5;</code>
+       *
+       * <pre>
+       *文本颜色[话题用到],0=客户端默认颜色,1=金色
+       * </pre>
+       */
+      public boolean hasTextColor() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint32 textColor = 5;</code>
+       *
+       * <pre>
+       *文本颜色[话题用到],0=客户端默认颜色,1=金色
+       * </pre>
+       */
+      public int getTextColor() {
+        return textColor_;
+      }
+      /**
+       * <code>optional uint32 textColor = 5;</code>
+       *
+       * <pre>
+       *文本颜色[话题用到],0=客户端默认颜色,1=金色
+       * </pre>
+       */
+      public Builder setTextColor(int value) {
+        bitField0_ |= 0x00000010;
+        textColor_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 textColor = 5;</code>
+       *
+       * <pre>
+       *文本颜色[话题用到],0=客户端默认颜色,1=金色
+       * </pre>
+       */
+      public Builder clearTextColor() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        textColor_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object hexColorCode_ = "";
+      /**
+       * <code>optional string hexColorCode = 6;</code>
+       *
+       * <pre>
+       *十六进制颜色码，如#FFFFFF
+       * </pre>
+       */
+      public boolean hasHexColorCode() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string hexColorCode = 6;</code>
+       *
+       * <pre>
+       *十六进制颜色码，如#FFFFFF
+       * </pre>
+       */
+      public java.lang.String getHexColorCode() {
+        java.lang.Object ref = hexColorCode_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            hexColorCode_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string hexColorCode = 6;</code>
+       *
+       * <pre>
+       *十六进制颜色码，如#FFFFFF
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHexColorCodeBytes() {
+        java.lang.Object ref = hexColorCode_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          hexColorCode_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string hexColorCode = 6;</code>
+       *
+       * <pre>
+       *十六进制颜色码，如#FFFFFF
+       * </pre>
+       */
+      public Builder setHexColorCode(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        hexColorCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string hexColorCode = 6;</code>
+       *
+       * <pre>
+       *十六进制颜色码，如#FFFFFF
+       * </pre>
+       */
+      public Builder clearHexColorCode() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        hexColorCode_ = getDefaultInstance().getHexColorCode();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string hexColorCode = 6;</code>
+       *
+       * <pre>
+       *十六进制颜色码，如#FFFFFF
+       * </pre>
+       */
+      public Builder setHexColorCodeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        hexColorCode_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object text1_ = "";
+      /**
+       * <code>optional string text1 = 7;</code>
+       *
+       * <pre>
+       *导航新增text1
+       * </pre>
+       */
+      public boolean hasText1() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string text1 = 7;</code>
+       *
+       * <pre>
+       *导航新增text1
+       * </pre>
+       */
+      public java.lang.String getText1() {
+        java.lang.Object ref = text1_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text1_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string text1 = 7;</code>
+       *
+       * <pre>
+       *导航新增text1
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getText1Bytes() {
+        java.lang.Object ref = text1_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          text1_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string text1 = 7;</code>
+       *
+       * <pre>
+       *导航新增text1
+       * </pre>
+       */
+      public Builder setText1(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        text1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text1 = 7;</code>
+       *
+       * <pre>
+       *导航新增text1
+       * </pre>
+       */
+      public Builder clearText1() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        text1_ = getDefaultInstance().getText1();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text1 = 7;</code>
+       *
+       * <pre>
+       *导航新增text1
+       * </pre>
+       */
+      public Builder setText1Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        text1_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NavigationData)
+    }
+
+    static {
+      defaultInstance = new NavigationData(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NavigationData)
+  }
+
+  public interface UiTemplateNavigationOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateNavigation)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData> 
+        getItemDatasList();
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.NavigationData getItemDatas(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    int getItemDatasCount();
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder> 
+        getItemDatasOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder getItemDatasOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.UiTemplateNavigation}
+   */
+  public static final class UiTemplateNavigation extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateNavigation)
+      UiTemplateNavigationOrBuilder {
+    // Use UiTemplateNavigation.newBuilder() to construct.
+    private UiTemplateNavigation(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UiTemplateNavigation(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UiTemplateNavigation defaultInstance;
+    public static UiTemplateNavigation getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UiTemplateNavigation getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UiTemplateNavigation(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                itemDatas_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.NavigationData>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              itemDatas_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.NavigationData.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.class, com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UiTemplateNavigation> PARSER =
+        new com.google.protobuf.AbstractParser<UiTemplateNavigation>() {
+      public UiTemplateNavigation parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UiTemplateNavigation(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UiTemplateNavigation> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int ITEMDATAS_FIELD_NUMBER = 1;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData> itemDatas_;
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData> getItemDatasList() {
+      return itemDatas_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder> 
+        getItemDatasOrBuilderList() {
+      return itemDatas_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    public int getItemDatasCount() {
+      return itemDatas_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.NavigationData getItemDatas(int index) {
+      return itemDatas_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+     *
+     * <pre>
+     *导航数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder getItemDatasOrBuilder(
+        int index) {
+      return itemDatas_.get(index);
+    }
+
+    private void initFields() {
+      itemDatas_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < itemDatas_.size(); i++) {
+        output.writeMessage(1, itemDatas_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < itemDatas_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, itemDatas_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.UiTemplateNavigation prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.UiTemplateNavigation}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateNavigation)
+        com.wali.live.proto.CommonChannelProto.UiTemplateNavigationOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.class, com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getItemDatasFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (itemDatasBuilder_ == null) {
+          itemDatas_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          itemDatasBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateNavigation getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateNavigation build() {
+        com.wali.live.proto.CommonChannelProto.UiTemplateNavigation result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateNavigation buildPartial() {
+        com.wali.live.proto.CommonChannelProto.UiTemplateNavigation result = new com.wali.live.proto.CommonChannelProto.UiTemplateNavigation(this);
+        int from_bitField0_ = bitField0_;
+        if (itemDatasBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.itemDatas_ = itemDatas_;
+        } else {
+          result.itemDatas_ = itemDatasBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.UiTemplateNavigation) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.UiTemplateNavigation)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.UiTemplateNavigation other) {
+        if (other == com.wali.live.proto.CommonChannelProto.UiTemplateNavigation.getDefaultInstance()) return this;
+        if (itemDatasBuilder_ == null) {
+          if (!other.itemDatas_.isEmpty()) {
+            if (itemDatas_.isEmpty()) {
+              itemDatas_ = other.itemDatas_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureItemDatasIsMutable();
+              itemDatas_.addAll(other.itemDatas_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.itemDatas_.isEmpty()) {
+            if (itemDatasBuilder_.isEmpty()) {
+              itemDatasBuilder_.dispose();
+              itemDatasBuilder_ = null;
+              itemDatas_ = other.itemDatas_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              itemDatasBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getItemDatasFieldBuilder() : null;
+            } else {
+              itemDatasBuilder_.addAllMessages(other.itemDatas_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.UiTemplateNavigation parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.UiTemplateNavigation) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData> itemDatas_ =
+        java.util.Collections.emptyList();
+      private void ensureItemDatasIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          itemDatas_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.NavigationData>(itemDatas_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.NavigationData, com.wali.live.proto.CommonChannelProto.NavigationData.Builder, com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder> itemDatasBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData> getItemDatasList() {
+        if (itemDatasBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(itemDatas_);
+        } else {
+          return itemDatasBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public int getItemDatasCount() {
+        if (itemDatasBuilder_ == null) {
+          return itemDatas_.size();
+        } else {
+          return itemDatasBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.NavigationData getItemDatas(int index) {
+        if (itemDatasBuilder_ == null) {
+          return itemDatas_.get(index);
+        } else {
+          return itemDatasBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder setItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.NavigationData value) {
+        if (itemDatasBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemDatasIsMutable();
+          itemDatas_.set(index, value);
+          onChanged();
+        } else {
+          itemDatasBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder setItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.NavigationData.Builder builderForValue) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemDatasBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder addItemDatas(com.wali.live.proto.CommonChannelProto.NavigationData value) {
+        if (itemDatasBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemDatasIsMutable();
+          itemDatas_.add(value);
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder addItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.NavigationData value) {
+        if (itemDatasBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemDatasIsMutable();
+          itemDatas_.add(index, value);
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder addItemDatas(
+          com.wali.live.proto.CommonChannelProto.NavigationData.Builder builderForValue) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.add(builderForValue.build());
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder addItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.NavigationData.Builder builderForValue) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder addAllItemDatas(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.NavigationData> values) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, itemDatas_);
+          onChanged();
+        } else {
+          itemDatasBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder clearItemDatas() {
+        if (itemDatasBuilder_ == null) {
+          itemDatas_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          itemDatasBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public Builder removeItemDatas(int index) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.remove(index);
+          onChanged();
+        } else {
+          itemDatasBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.NavigationData.Builder getItemDatasBuilder(
+          int index) {
+        return getItemDatasFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder getItemDatasOrBuilder(
+          int index) {
+        if (itemDatasBuilder_ == null) {
+          return itemDatas_.get(index);  } else {
+          return itemDatasBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder> 
+           getItemDatasOrBuilderList() {
+        if (itemDatasBuilder_ != null) {
+          return itemDatasBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(itemDatas_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.NavigationData.Builder addItemDatasBuilder() {
+        return getItemDatasFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.NavigationData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.NavigationData.Builder addItemDatasBuilder(
+          int index) {
+        return getItemDatasFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.NavigationData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NavigationData itemDatas = 1;</code>
+       *
+       * <pre>
+       *导航数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.NavigationData.Builder> 
+           getItemDatasBuilderList() {
+        return getItemDatasFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.NavigationData, com.wali.live.proto.CommonChannelProto.NavigationData.Builder, com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder> 
+          getItemDatasFieldBuilder() {
+        if (itemDatasBuilder_ == null) {
+          itemDatasBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.NavigationData, com.wali.live.proto.CommonChannelProto.NavigationData.Builder, com.wali.live.proto.CommonChannelProto.NavigationDataOrBuilder>(
+                  itemDatas_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          itemDatas_ = null;
+        }
+        return itemDatasBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateNavigation)
+    }
+
+    static {
+      defaultInstance = new UiTemplateNavigation(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateNavigation)
+  }
+
+  public interface UiTemplateNoticeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateNotice)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> 
+        getNoticeItemsList();
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.NoticeData getNoticeItems(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    int getNoticeItemsCount();
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> 
+        getNoticeItemsOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
+        int index);
+
+    /**
+     * <code>optional string headerViewAllUri = 2;</code>
+     *
+     * <pre>
+     *查看全部的uri，如果没有这个字段不展示查看全部
+     * </pre>
+     */
+    boolean hasHeaderViewAllUri();
+    /**
+     * <code>optional string headerViewAllUri = 2;</code>
+     *
+     * <pre>
+     *查看全部的uri，如果没有这个字段不展示查看全部
+     * </pre>
+     */
+    java.lang.String getHeaderViewAllUri();
+    /**
+     * <code>optional string headerViewAllUri = 2;</code>
+     *
+     * <pre>
+     *查看全部的uri，如果没有这个字段不展示查看全部
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getHeaderViewAllUriBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.UiTemplateNotice}
+   *
+   * <pre>
+   *type=23
+   * </pre>
+   */
+  public static final class UiTemplateNotice extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateNotice)
+      UiTemplateNoticeOrBuilder {
+    // Use UiTemplateNotice.newBuilder() to construct.
+    private UiTemplateNotice(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UiTemplateNotice(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UiTemplateNotice defaultInstance;
+    public static UiTemplateNotice getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UiTemplateNotice getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UiTemplateNotice(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                noticeItems_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.NoticeData>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              noticeItems_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.NoticeData.PARSER, extensionRegistry));
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              headerViewAllUri_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          noticeItems_ = java.util.Collections.unmodifiableList(noticeItems_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.UiTemplateNotice.class, com.wali.live.proto.CommonChannelProto.UiTemplateNotice.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UiTemplateNotice> PARSER =
+        new com.google.protobuf.AbstractParser<UiTemplateNotice>() {
+      public UiTemplateNotice parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UiTemplateNotice(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UiTemplateNotice> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NOTICEITEMS_FIELD_NUMBER = 1;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> noticeItems_;
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> getNoticeItemsList() {
+      return noticeItems_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> 
+        getNoticeItemsOrBuilderList() {
+      return noticeItems_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    public int getNoticeItemsCount() {
+      return noticeItems_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.NoticeData getNoticeItems(int index) {
+      return noticeItems_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
+        int index) {
+      return noticeItems_.get(index);
+    }
+
+    public static final int HEADERVIEWALLURI_FIELD_NUMBER = 2;
+    private java.lang.Object headerViewAllUri_;
+    /**
+     * <code>optional string headerViewAllUri = 2;</code>
+     *
+     * <pre>
+     *查看全部的uri，如果没有这个字段不展示查看全部
+     * </pre>
+     */
+    public boolean hasHeaderViewAllUri() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string headerViewAllUri = 2;</code>
+     *
+     * <pre>
+     *查看全部的uri，如果没有这个字段不展示查看全部
+     * </pre>
+     */
+    public java.lang.String getHeaderViewAllUri() {
+      java.lang.Object ref = headerViewAllUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          headerViewAllUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string headerViewAllUri = 2;</code>
+     *
+     * <pre>
+     *查看全部的uri，如果没有这个字段不展示查看全部
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getHeaderViewAllUriBytes() {
+      java.lang.Object ref = headerViewAllUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        headerViewAllUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      noticeItems_ = java.util.Collections.emptyList();
+      headerViewAllUri_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < noticeItems_.size(); i++) {
+        output.writeMessage(1, noticeItems_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(2, getHeaderViewAllUriBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < noticeItems_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, noticeItems_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getHeaderViewAllUriBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateNotice parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.UiTemplateNotice prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.UiTemplateNotice}
+     *
+     * <pre>
+     *type=23
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateNotice)
+        com.wali.live.proto.CommonChannelProto.UiTemplateNoticeOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.UiTemplateNotice.class, com.wali.live.proto.CommonChannelProto.UiTemplateNotice.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.UiTemplateNotice.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getNoticeItemsFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (noticeItemsBuilder_ == null) {
+          noticeItems_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          noticeItemsBuilder_.clear();
+        }
+        headerViewAllUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateNotice getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.UiTemplateNotice.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateNotice build() {
+        com.wali.live.proto.CommonChannelProto.UiTemplateNotice result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateNotice buildPartial() {
+        com.wali.live.proto.CommonChannelProto.UiTemplateNotice result = new com.wali.live.proto.CommonChannelProto.UiTemplateNotice(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (noticeItemsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            noticeItems_ = java.util.Collections.unmodifiableList(noticeItems_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.noticeItems_ = noticeItems_;
+        } else {
+          result.noticeItems_ = noticeItemsBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.headerViewAllUri_ = headerViewAllUri_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.UiTemplateNotice) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.UiTemplateNotice)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.UiTemplateNotice other) {
+        if (other == com.wali.live.proto.CommonChannelProto.UiTemplateNotice.getDefaultInstance()) return this;
+        if (noticeItemsBuilder_ == null) {
+          if (!other.noticeItems_.isEmpty()) {
+            if (noticeItems_.isEmpty()) {
+              noticeItems_ = other.noticeItems_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureNoticeItemsIsMutable();
+              noticeItems_.addAll(other.noticeItems_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.noticeItems_.isEmpty()) {
+            if (noticeItemsBuilder_.isEmpty()) {
+              noticeItemsBuilder_.dispose();
+              noticeItemsBuilder_ = null;
+              noticeItems_ = other.noticeItems_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              noticeItemsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getNoticeItemsFieldBuilder() : null;
+            } else {
+              noticeItemsBuilder_.addAllMessages(other.noticeItems_);
+            }
+          }
+        }
+        if (other.hasHeaderViewAllUri()) {
+          bitField0_ |= 0x00000002;
+          headerViewAllUri_ = other.headerViewAllUri_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.UiTemplateNotice parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.UiTemplateNotice) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> noticeItems_ =
+        java.util.Collections.emptyList();
+      private void ensureNoticeItemsIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          noticeItems_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.NoticeData>(noticeItems_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.NoticeData, com.wali.live.proto.CommonChannelProto.NoticeData.Builder, com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> noticeItemsBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData> getNoticeItemsList() {
+        if (noticeItemsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(noticeItems_);
+        } else {
+          return noticeItemsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public int getNoticeItemsCount() {
+        if (noticeItemsBuilder_ == null) {
+          return noticeItems_.size();
+        } else {
+          return noticeItemsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.NoticeData getNoticeItems(int index) {
+        if (noticeItemsBuilder_ == null) {
+          return noticeItems_.get(index);
+        } else {
+          return noticeItemsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder setNoticeItems(
+          int index, com.wali.live.proto.CommonChannelProto.NoticeData value) {
+        if (noticeItemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNoticeItemsIsMutable();
+          noticeItems_.set(index, value);
+          onChanged();
+        } else {
+          noticeItemsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder setNoticeItems(
+          int index, com.wali.live.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
+        if (noticeItemsBuilder_ == null) {
+          ensureNoticeItemsIsMutable();
+          noticeItems_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          noticeItemsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder addNoticeItems(com.wali.live.proto.CommonChannelProto.NoticeData value) {
+        if (noticeItemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNoticeItemsIsMutable();
+          noticeItems_.add(value);
+          onChanged();
+        } else {
+          noticeItemsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder addNoticeItems(
+          int index, com.wali.live.proto.CommonChannelProto.NoticeData value) {
+        if (noticeItemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNoticeItemsIsMutable();
+          noticeItems_.add(index, value);
+          onChanged();
+        } else {
+          noticeItemsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder addNoticeItems(
+          com.wali.live.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
+        if (noticeItemsBuilder_ == null) {
+          ensureNoticeItemsIsMutable();
+          noticeItems_.add(builderForValue.build());
+          onChanged();
+        } else {
+          noticeItemsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder addNoticeItems(
+          int index, com.wali.live.proto.CommonChannelProto.NoticeData.Builder builderForValue) {
+        if (noticeItemsBuilder_ == null) {
+          ensureNoticeItemsIsMutable();
+          noticeItems_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          noticeItemsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder addAllNoticeItems(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.NoticeData> values) {
+        if (noticeItemsBuilder_ == null) {
+          ensureNoticeItemsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, noticeItems_);
+          onChanged();
+        } else {
+          noticeItemsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder clearNoticeItems() {
+        if (noticeItemsBuilder_ == null) {
+          noticeItems_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          noticeItemsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public Builder removeNoticeItems(int index) {
+        if (noticeItemsBuilder_ == null) {
+          ensureNoticeItemsIsMutable();
+          noticeItems_.remove(index);
+          onChanged();
+        } else {
+          noticeItemsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.NoticeData.Builder getNoticeItemsBuilder(
+          int index) {
+        return getNoticeItemsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder getNoticeItemsOrBuilder(
+          int index) {
+        if (noticeItemsBuilder_ == null) {
+          return noticeItems_.get(index);  } else {
+          return noticeItemsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> 
+           getNoticeItemsOrBuilderList() {
+        if (noticeItemsBuilder_ != null) {
+          return noticeItemsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(noticeItems_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.NoticeData.Builder addNoticeItemsBuilder() {
+        return getNoticeItemsFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.NoticeData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.NoticeData.Builder addNoticeItemsBuilder(
+          int index) {
+        return getNoticeItemsFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.NoticeData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.NoticeData noticeItems = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.NoticeData.Builder> 
+           getNoticeItemsBuilderList() {
+        return getNoticeItemsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.NoticeData, com.wali.live.proto.CommonChannelProto.NoticeData.Builder, com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder> 
+          getNoticeItemsFieldBuilder() {
+        if (noticeItemsBuilder_ == null) {
+          noticeItemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.NoticeData, com.wali.live.proto.CommonChannelProto.NoticeData.Builder, com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder>(
+                  noticeItems_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          noticeItems_ = null;
+        }
+        return noticeItemsBuilder_;
+      }
+
+      private java.lang.Object headerViewAllUri_ = "";
+      /**
+       * <code>optional string headerViewAllUri = 2;</code>
+       *
+       * <pre>
+       *查看全部的uri，如果没有这个字段不展示查看全部
+       * </pre>
+       */
+      public boolean hasHeaderViewAllUri() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string headerViewAllUri = 2;</code>
+       *
+       * <pre>
+       *查看全部的uri，如果没有这个字段不展示查看全部
+       * </pre>
+       */
+      public java.lang.String getHeaderViewAllUri() {
+        java.lang.Object ref = headerViewAllUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headerViewAllUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string headerViewAllUri = 2;</code>
+       *
+       * <pre>
+       *查看全部的uri，如果没有这个字段不展示查看全部
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getHeaderViewAllUriBytes() {
+        java.lang.Object ref = headerViewAllUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          headerViewAllUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string headerViewAllUri = 2;</code>
+       *
+       * <pre>
+       *查看全部的uri，如果没有这个字段不展示查看全部
+       * </pre>
+       */
+      public Builder setHeaderViewAllUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        headerViewAllUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string headerViewAllUri = 2;</code>
+       *
+       * <pre>
+       *查看全部的uri，如果没有这个字段不展示查看全部
+       * </pre>
+       */
+      public Builder clearHeaderViewAllUri() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        headerViewAllUri_ = getDefaultInstance().getHeaderViewAllUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string headerViewAllUri = 2;</code>
+       *
+       * <pre>
+       *查看全部的uri，如果没有这个字段不展示查看全部
+       * </pre>
+       */
+      public Builder setHeaderViewAllUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        headerViewAllUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateNotice)
+    }
+
+    static {
+      defaultInstance = new UiTemplateNotice(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateNotice)
+  }
+
+  public interface NoticeDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.NoticeData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string noticeId = 1;</code>
+     *
+     * <pre>
+     *预告ID
+     * </pre>
+     */
+    boolean hasNoticeId();
+    /**
+     * <code>optional string noticeId = 1;</code>
+     *
+     * <pre>
+     *预告ID
+     * </pre>
+     */
+    java.lang.String getNoticeId();
+    /**
+     * <code>optional string noticeId = 1;</code>
+     *
+     * <pre>
+     *预告ID
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNoticeIdBytes();
+
+    /**
+     * <code>optional uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *主播ID
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>optional uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *主播ID
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>optional uint64 beginTime = 3;</code>
+     *
+     * <pre>
+     *预告开始时间
+     * </pre>
+     */
+    boolean hasBeginTime();
+    /**
+     * <code>optional uint64 beginTime = 3;</code>
+     *
+     * <pre>
+     *预告开始时间
+     * </pre>
+     */
+    long getBeginTime();
+
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    boolean hasTitle();
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    java.lang.String getTitle();
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTitleBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.NoticeData}
+   */
+  public static final class NoticeData extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.NoticeData)
+      NoticeDataOrBuilder {
+    // Use NoticeData.newBuilder() to construct.
+    private NoticeData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private NoticeData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final NoticeData defaultInstance;
+    public static NoticeData getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public NoticeData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NoticeData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              noticeId_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              beginTime_ = input.readUInt64();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              title_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.NoticeData.class, com.wali.live.proto.CommonChannelProto.NoticeData.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<NoticeData> PARSER =
+        new com.google.protobuf.AbstractParser<NoticeData>() {
+      public NoticeData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NoticeData(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NoticeData> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NOTICEID_FIELD_NUMBER = 1;
+    private java.lang.Object noticeId_;
+    /**
+     * <code>optional string noticeId = 1;</code>
+     *
+     * <pre>
+     *预告ID
+     * </pre>
+     */
+    public boolean hasNoticeId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string noticeId = 1;</code>
+     *
+     * <pre>
+     *预告ID
+     * </pre>
+     */
+    public java.lang.String getNoticeId() {
+      java.lang.Object ref = noticeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          noticeId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string noticeId = 1;</code>
+     *
+     * <pre>
+     *预告ID
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNoticeIdBytes() {
+      java.lang.Object ref = noticeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        noticeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ZUID_FIELD_NUMBER = 2;
+    private long zuid_;
+    /**
+     * <code>optional uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *主播ID
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 zuid = 2;</code>
+     *
+     * <pre>
+     *主播ID
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int BEGINTIME_FIELD_NUMBER = 3;
+    private long beginTime_;
+    /**
+     * <code>optional uint64 beginTime = 3;</code>
+     *
+     * <pre>
+     *预告开始时间
+     * </pre>
+     */
+    public boolean hasBeginTime() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint64 beginTime = 3;</code>
+     *
+     * <pre>
+     *预告开始时间
+     * </pre>
+     */
+    public long getBeginTime() {
+      return beginTime_;
+    }
+
+    public static final int TITLE_FIELD_NUMBER = 4;
+    private java.lang.Object title_;
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public boolean hasTitle() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public java.lang.String getTitle() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          title_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string title = 4;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTitleBytes() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        title_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      noticeId_ = "";
+      zuid_ = 0L;
+      beginTime_ = 0L;
+      title_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getNoticeIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, zuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt64(3, beginTime_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getTitleBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getNoticeIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, zuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, beginTime_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getTitleBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.NoticeData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.NoticeData prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.NoticeData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.NoticeData)
+        com.wali.live.proto.CommonChannelProto.NoticeDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.NoticeData.class, com.wali.live.proto.CommonChannelProto.NoticeData.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.NoticeData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        noticeId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        beginTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        title_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_NoticeData_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.NoticeData getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.NoticeData.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.NoticeData build() {
+        com.wali.live.proto.CommonChannelProto.NoticeData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.NoticeData buildPartial() {
+        com.wali.live.proto.CommonChannelProto.NoticeData result = new com.wali.live.proto.CommonChannelProto.NoticeData(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.noticeId_ = noticeId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.beginTime_ = beginTime_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.title_ = title_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.NoticeData) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.NoticeData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.NoticeData other) {
+        if (other == com.wali.live.proto.CommonChannelProto.NoticeData.getDefaultInstance()) return this;
+        if (other.hasNoticeId()) {
+          bitField0_ |= 0x00000001;
+          noticeId_ = other.noticeId_;
+          onChanged();
+        }
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasBeginTime()) {
+          setBeginTime(other.getBeginTime());
+        }
+        if (other.hasTitle()) {
+          bitField0_ |= 0x00000008;
+          title_ = other.title_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.NoticeData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.NoticeData) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object noticeId_ = "";
+      /**
+       * <code>optional string noticeId = 1;</code>
+       *
+       * <pre>
+       *预告ID
+       * </pre>
+       */
+      public boolean hasNoticeId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string noticeId = 1;</code>
+       *
+       * <pre>
+       *预告ID
+       * </pre>
+       */
+      public java.lang.String getNoticeId() {
+        java.lang.Object ref = noticeId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            noticeId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string noticeId = 1;</code>
+       *
+       * <pre>
+       *预告ID
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNoticeIdBytes() {
+        java.lang.Object ref = noticeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          noticeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string noticeId = 1;</code>
+       *
+       * <pre>
+       *预告ID
+       * </pre>
+       */
+      public Builder setNoticeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        noticeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string noticeId = 1;</code>
+       *
+       * <pre>
+       *预告ID
+       * </pre>
+       */
+      public Builder clearNoticeId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        noticeId_ = getDefaultInstance().getNoticeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string noticeId = 1;</code>
+       *
+       * <pre>
+       *预告ID
+       * </pre>
+       */
+      public Builder setNoticeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        noticeId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long zuid_ ;
+      /**
+       * <code>optional uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *主播ID
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *主播ID
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>optional uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *主播ID
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000002;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 zuid = 2;</code>
+       *
+       * <pre>
+       *主播ID
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long beginTime_ ;
+      /**
+       * <code>optional uint64 beginTime = 3;</code>
+       *
+       * <pre>
+       *预告开始时间
+       * </pre>
+       */
+      public boolean hasBeginTime() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint64 beginTime = 3;</code>
+       *
+       * <pre>
+       *预告开始时间
+       * </pre>
+       */
+      public long getBeginTime() {
+        return beginTime_;
+      }
+      /**
+       * <code>optional uint64 beginTime = 3;</code>
+       *
+       * <pre>
+       *预告开始时间
+       * </pre>
+       */
+      public Builder setBeginTime(long value) {
+        bitField0_ |= 0x00000004;
+        beginTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 beginTime = 3;</code>
+       *
+       * <pre>
+       *预告开始时间
+       * </pre>
+       */
+      public Builder clearBeginTime() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        beginTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object title_ = "";
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public boolean hasTitle() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public java.lang.String getTitle() {
+        java.lang.Object ref = title_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTitleBytes() {
+        java.lang.Object ref = title_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          title_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder clearTitle() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        title_ = getDefaultInstance().getTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 4;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.NoticeData)
+    }
+
+    static {
+      defaultInstance = new NoticeData(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.NoticeData)
+  }
+
+  public interface UiTemplateRankingOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UiTemplateRanking)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> 
+        getItemDatasList();
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.RankingItemData getItemDatas(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    int getItemDatasCount();
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> 
+        getItemDatasOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
+        int index);
+
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *uitemplate跳转schemaUri
+     * </pre>
+     */
+    boolean hasJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *uitemplate跳转schemaUri
+     * </pre>
+     */
+    java.lang.String getJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *uitemplate跳转schemaUri
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getJumpSchemeUriBytes();
+
+    /**
+     * <code>optional string text1 = 3;</code>
+     */
+    boolean hasText1();
+    /**
+     * <code>optional string text1 = 3;</code>
+     */
+    java.lang.String getText1();
+    /**
+     * <code>optional string text1 = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getText1Bytes();
+
+    /**
+     * <code>optional string text2 = 4;</code>
+     */
+    boolean hasText2();
+    /**
+     * <code>optional string text2 = 4;</code>
+     */
+    java.lang.String getText2();
+    /**
+     * <code>optional string text2 = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getText2Bytes();
+
+    /**
+     * <code>optional uint32 iconStyle = 5;</code>
+     *
+     * <pre>
+     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+     * </pre>
+     */
+    boolean hasIconStyle();
+    /**
+     * <code>optional uint32 iconStyle = 5;</code>
+     *
+     * <pre>
+     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+     * </pre>
+     */
+    int getIconStyle();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.UiTemplateRanking}
+   *
+   * <pre>
+   *uitype=29
+   * </pre>
+   */
+  public static final class UiTemplateRanking extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UiTemplateRanking)
+      UiTemplateRankingOrBuilder {
+    // Use UiTemplateRanking.newBuilder() to construct.
+    private UiTemplateRanking(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UiTemplateRanking(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UiTemplateRanking defaultInstance;
+    public static UiTemplateRanking getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UiTemplateRanking getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UiTemplateRanking(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                itemDatas_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.RankingItemData>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              itemDatas_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.RankingItemData.PARSER, extensionRegistry));
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              jumpSchemeUri_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              text1_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              text2_ = bs;
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              iconStyle_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.UiTemplateRanking.class, com.wali.live.proto.CommonChannelProto.UiTemplateRanking.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UiTemplateRanking> PARSER =
+        new com.google.protobuf.AbstractParser<UiTemplateRanking>() {
+      public UiTemplateRanking parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UiTemplateRanking(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UiTemplateRanking> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ITEMDATAS_FIELD_NUMBER = 1;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> itemDatas_;
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> getItemDatasList() {
+      return itemDatas_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> 
+        getItemDatasOrBuilderList() {
+      return itemDatas_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    public int getItemDatasCount() {
+      return itemDatas_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.RankingItemData getItemDatas(int index) {
+      return itemDatas_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
+        int index) {
+      return itemDatas_.get(index);
+    }
+
+    public static final int JUMPSCHEMEURI_FIELD_NUMBER = 2;
+    private java.lang.Object jumpSchemeUri_;
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *uitemplate跳转schemaUri
+     * </pre>
+     */
+    public boolean hasJumpSchemeUri() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *uitemplate跳转schemaUri
+     * </pre>
+     */
+    public java.lang.String getJumpSchemeUri() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          jumpSchemeUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *uitemplate跳转schemaUri
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getJumpSchemeUriBytes() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        jumpSchemeUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TEXT1_FIELD_NUMBER = 3;
+    private java.lang.Object text1_;
+    /**
+     * <code>optional string text1 = 3;</code>
+     */
+    public boolean hasText1() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string text1 = 3;</code>
+     */
+    public java.lang.String getText1() {
+      java.lang.Object ref = text1_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          text1_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string text1 = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getText1Bytes() {
+      java.lang.Object ref = text1_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        text1_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TEXT2_FIELD_NUMBER = 4;
+    private java.lang.Object text2_;
+    /**
+     * <code>optional string text2 = 4;</code>
+     */
+    public boolean hasText2() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string text2 = 4;</code>
+     */
+    public java.lang.String getText2() {
+      java.lang.Object ref = text2_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          text2_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string text2 = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getText2Bytes() {
+      java.lang.Object ref = text2_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        text2_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ICONSTYLE_FIELD_NUMBER = 5;
+    private int iconStyle_;
+    /**
+     * <code>optional uint32 iconStyle = 5;</code>
+     *
+     * <pre>
+     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+     * </pre>
+     */
+    public boolean hasIconStyle() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 iconStyle = 5;</code>
+     *
+     * <pre>
+     *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+     * </pre>
+     */
+    public int getIconStyle() {
+      return iconStyle_;
+    }
+
+    private void initFields() {
+      itemDatas_ = java.util.Collections.emptyList();
+      jumpSchemeUri_ = "";
+      text1_ = "";
+      text2_ = "";
+      iconStyle_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      for (int i = 0; i < getItemDatasCount(); i++) {
+        if (!getItemDatas(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < itemDatas_.size(); i++) {
+        output.writeMessage(1, itemDatas_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(2, getJumpSchemeUriBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(3, getText1Bytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(4, getText2Bytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(5, iconStyle_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < itemDatas_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, itemDatas_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getJumpSchemeUriBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getText1Bytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getText2Bytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, iconStyle_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.UiTemplateRanking parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.UiTemplateRanking prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.UiTemplateRanking}
+     *
+     * <pre>
+     *uitype=29
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UiTemplateRanking)
+        com.wali.live.proto.CommonChannelProto.UiTemplateRankingOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.UiTemplateRanking.class, com.wali.live.proto.CommonChannelProto.UiTemplateRanking.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.UiTemplateRanking.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getItemDatasFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (itemDatasBuilder_ == null) {
+          itemDatas_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          itemDatasBuilder_.clear();
+        }
+        jumpSchemeUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        text1_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        text2_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        iconStyle_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateRanking getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.UiTemplateRanking.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateRanking build() {
+        com.wali.live.proto.CommonChannelProto.UiTemplateRanking result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.UiTemplateRanking buildPartial() {
+        com.wali.live.proto.CommonChannelProto.UiTemplateRanking result = new com.wali.live.proto.CommonChannelProto.UiTemplateRanking(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (itemDatasBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            itemDatas_ = java.util.Collections.unmodifiableList(itemDatas_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.itemDatas_ = itemDatas_;
+        } else {
+          result.itemDatas_ = itemDatasBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.jumpSchemeUri_ = jumpSchemeUri_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.text1_ = text1_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.text2_ = text2_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.iconStyle_ = iconStyle_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.UiTemplateRanking) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.UiTemplateRanking)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.UiTemplateRanking other) {
+        if (other == com.wali.live.proto.CommonChannelProto.UiTemplateRanking.getDefaultInstance()) return this;
+        if (itemDatasBuilder_ == null) {
+          if (!other.itemDatas_.isEmpty()) {
+            if (itemDatas_.isEmpty()) {
+              itemDatas_ = other.itemDatas_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureItemDatasIsMutable();
+              itemDatas_.addAll(other.itemDatas_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.itemDatas_.isEmpty()) {
+            if (itemDatasBuilder_.isEmpty()) {
+              itemDatasBuilder_.dispose();
+              itemDatasBuilder_ = null;
+              itemDatas_ = other.itemDatas_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              itemDatasBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getItemDatasFieldBuilder() : null;
+            } else {
+              itemDatasBuilder_.addAllMessages(other.itemDatas_);
+            }
+          }
+        }
+        if (other.hasJumpSchemeUri()) {
+          bitField0_ |= 0x00000002;
+          jumpSchemeUri_ = other.jumpSchemeUri_;
+          onChanged();
+        }
+        if (other.hasText1()) {
+          bitField0_ |= 0x00000004;
+          text1_ = other.text1_;
+          onChanged();
+        }
+        if (other.hasText2()) {
+          bitField0_ |= 0x00000008;
+          text2_ = other.text2_;
+          onChanged();
+        }
+        if (other.hasIconStyle()) {
+          setIconStyle(other.getIconStyle());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        for (int i = 0; i < getItemDatasCount(); i++) {
+          if (!getItemDatas(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.UiTemplateRanking parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.UiTemplateRanking) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> itemDatas_ =
+        java.util.Collections.emptyList();
+      private void ensureItemDatasIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          itemDatas_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.RankingItemData>(itemDatas_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.RankingItemData, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder, com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> itemDatasBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData> getItemDatasList() {
+        if (itemDatasBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(itemDatas_);
+        } else {
+          return itemDatasBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public int getItemDatasCount() {
+        if (itemDatasBuilder_ == null) {
+          return itemDatas_.size();
+        } else {
+          return itemDatasBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.RankingItemData getItemDatas(int index) {
+        if (itemDatasBuilder_ == null) {
+          return itemDatas_.get(index);
+        } else {
+          return itemDatasBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder setItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.RankingItemData value) {
+        if (itemDatasBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemDatasIsMutable();
+          itemDatas_.set(index, value);
+          onChanged();
+        } else {
+          itemDatasBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder setItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemDatasBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder addItemDatas(com.wali.live.proto.CommonChannelProto.RankingItemData value) {
+        if (itemDatasBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemDatasIsMutable();
+          itemDatas_.add(value);
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder addItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.RankingItemData value) {
+        if (itemDatasBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemDatasIsMutable();
+          itemDatas_.add(index, value);
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder addItemDatas(
+          com.wali.live.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.add(builderForValue.build());
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder addItemDatas(
+          int index, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder builderForValue) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemDatasBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder addAllItemDatas(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.RankingItemData> values) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, itemDatas_);
+          onChanged();
+        } else {
+          itemDatasBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder clearItemDatas() {
+        if (itemDatasBuilder_ == null) {
+          itemDatas_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          itemDatasBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public Builder removeItemDatas(int index) {
+        if (itemDatasBuilder_ == null) {
+          ensureItemDatasIsMutable();
+          itemDatas_.remove(index);
+          onChanged();
+        } else {
+          itemDatasBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.RankingItemData.Builder getItemDatasBuilder(
+          int index) {
+        return getItemDatasFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder getItemDatasOrBuilder(
+          int index) {
+        if (itemDatasBuilder_ == null) {
+          return itemDatas_.get(index);  } else {
+          return itemDatasBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> 
+           getItemDatasOrBuilderList() {
+        if (itemDatasBuilder_ != null) {
+          return itemDatasBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(itemDatas_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.RankingItemData.Builder addItemDatasBuilder() {
+        return getItemDatasFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.RankingItemData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.RankingItemData.Builder addItemDatasBuilder(
+          int index) {
+        return getItemDatasFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.RankingItemData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.RankingItemData itemDatas = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.RankingItemData.Builder> 
+           getItemDatasBuilderList() {
+        return getItemDatasFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.RankingItemData, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder, com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder> 
+          getItemDatasFieldBuilder() {
+        if (itemDatasBuilder_ == null) {
+          itemDatasBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.RankingItemData, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder, com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder>(
+                  itemDatas_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          itemDatas_ = null;
+        }
+        return itemDatasBuilder_;
+      }
+
+      private java.lang.Object jumpSchemeUri_ = "";
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *uitemplate跳转schemaUri
+       * </pre>
+       */
+      public boolean hasJumpSchemeUri() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *uitemplate跳转schemaUri
+       * </pre>
+       */
+      public java.lang.String getJumpSchemeUri() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *uitemplate跳转schemaUri
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getJumpSchemeUriBytes() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          jumpSchemeUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *uitemplate跳转schemaUri
+       * </pre>
+       */
+      public Builder setJumpSchemeUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *uitemplate跳转schemaUri
+       * </pre>
+       */
+      public Builder clearJumpSchemeUri() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        jumpSchemeUri_ = getDefaultInstance().getJumpSchemeUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *uitemplate跳转schemaUri
+       * </pre>
+       */
+      public Builder setJumpSchemeUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object text1_ = "";
+      /**
+       * <code>optional string text1 = 3;</code>
+       */
+      public boolean hasText1() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string text1 = 3;</code>
+       */
+      public java.lang.String getText1() {
+        java.lang.Object ref = text1_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text1_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string text1 = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getText1Bytes() {
+        java.lang.Object ref = text1_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          text1_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string text1 = 3;</code>
+       */
+      public Builder setText1(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        text1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text1 = 3;</code>
+       */
+      public Builder clearText1() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        text1_ = getDefaultInstance().getText1();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text1 = 3;</code>
+       */
+      public Builder setText1Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        text1_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object text2_ = "";
+      /**
+       * <code>optional string text2 = 4;</code>
+       */
+      public boolean hasText2() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string text2 = 4;</code>
+       */
+      public java.lang.String getText2() {
+        java.lang.Object ref = text2_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text2_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string text2 = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getText2Bytes() {
+        java.lang.Object ref = text2_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          text2_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string text2 = 4;</code>
+       */
+      public Builder setText2(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        text2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text2 = 4;</code>
+       */
+      public Builder clearText2() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        text2_ = getDefaultInstance().getText2();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text2 = 4;</code>
+       */
+      public Builder setText2Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        text2_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int iconStyle_ ;
+      /**
+       * <code>optional uint32 iconStyle = 5;</code>
+       *
+       * <pre>
+       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+       * </pre>
+       */
+      public boolean hasIconStyle() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint32 iconStyle = 5;</code>
+       *
+       * <pre>
+       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+       * </pre>
+       */
+      public int getIconStyle() {
+        return iconStyle_;
+      }
+      /**
+       * <code>optional uint32 iconStyle = 5;</code>
+       *
+       * <pre>
+       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+       * </pre>
+       */
+      public Builder setIconStyle(int value) {
+        bitField0_ |= 0x00000010;
+        iconStyle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 iconStyle = 5;</code>
+       *
+       * <pre>
+       *目前用于控制uitype=29用户头像左上角是否显示小图标，默认0=无，1=排名
+       * </pre>
+       */
+      public Builder clearIconStyle() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        iconStyle_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UiTemplateRanking)
+    }
+
+    static {
+      defaultInstance = new UiTemplateRanking(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UiTemplateRanking)
+  }
+
+  public interface RankingItemDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.RankingItemData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    boolean hasUserInfo();
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo();
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder();
+
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *item跳转schemeUri
+     * </pre>
+     */
+    boolean hasJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *item跳转schemeUri
+     * </pre>
+     */
+    java.lang.String getJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *item跳转schemeUri
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getJumpSchemeUriBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.RankingItemData}
+   */
+  public static final class RankingItemData extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.RankingItemData)
+      RankingItemDataOrBuilder {
+    // Use RankingItemData.newBuilder() to construct.
+    private RankingItemData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RankingItemData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RankingItemData defaultInstance;
+    public static RankingItemData getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RankingItemData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RankingItemData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.wali.live.proto.CommonChannelProto.UserInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = userInfo_.toBuilder();
+              }
+              userInfo_ = input.readMessage(com.wali.live.proto.CommonChannelProto.UserInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userInfo_);
+                userInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              jumpSchemeUri_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.RankingItemData.class, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RankingItemData> PARSER =
+        new com.google.protobuf.AbstractParser<RankingItemData>() {
+      public RankingItemData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RankingItemData(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RankingItemData> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int USERINFO_FIELD_NUMBER = 1;
+    private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_;
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    public boolean hasUserInfo() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo() {
+      return userInfo_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+     *
+     * <pre>
+     *用户资料
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
+      return userInfo_;
+    }
+
+    public static final int JUMPSCHEMEURI_FIELD_NUMBER = 2;
+    private java.lang.Object jumpSchemeUri_;
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *item跳转schemeUri
+     * </pre>
+     */
+    public boolean hasJumpSchemeUri() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *item跳转schemeUri
+     * </pre>
+     */
+    public java.lang.String getJumpSchemeUri() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          jumpSchemeUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 2;</code>
+     *
+     * <pre>
+     *item跳转schemeUri
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getJumpSchemeUriBytes() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        jumpSchemeUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+      jumpSchemeUri_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasUserInfo()) {
+        if (!getUserInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, userInfo_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getJumpSchemeUriBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, userInfo_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getJumpSchemeUriBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.RankingItemData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.RankingItemData prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.RankingItemData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.RankingItemData)
+        com.wali.live.proto.CommonChannelProto.RankingItemDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.RankingItemData.class, com.wali.live.proto.CommonChannelProto.RankingItemData.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.RankingItemData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getUserInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (userInfoBuilder_ == null) {
+          userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+        } else {
+          userInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        jumpSchemeUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_RankingItemData_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.RankingItemData getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.RankingItemData.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.RankingItemData build() {
+        com.wali.live.proto.CommonChannelProto.RankingItemData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.RankingItemData buildPartial() {
+        com.wali.live.proto.CommonChannelProto.RankingItemData result = new com.wali.live.proto.CommonChannelProto.RankingItemData(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (userInfoBuilder_ == null) {
+          result.userInfo_ = userInfo_;
+        } else {
+          result.userInfo_ = userInfoBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.jumpSchemeUri_ = jumpSchemeUri_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.RankingItemData) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.RankingItemData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.RankingItemData other) {
+        if (other == com.wali.live.proto.CommonChannelProto.RankingItemData.getDefaultInstance()) return this;
+        if (other.hasUserInfo()) {
+          mergeUserInfo(other.getUserInfo());
+        }
+        if (other.hasJumpSchemeUri()) {
+          bitField0_ |= 0x00000002;
+          jumpSchemeUri_ = other.jumpSchemeUri_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasUserInfo()) {
+          if (!getUserInfo().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.RankingItemData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.RankingItemData) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.wali.live.proto.CommonChannelProto.UserInfo userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userInfoBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public boolean hasUserInfo() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfo getUserInfo() {
+        if (userInfoBuilder_ == null) {
+          return userInfo_;
+        } else {
+          return userInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder setUserInfo(com.wali.live.proto.CommonChannelProto.UserInfo value) {
+        if (userInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userInfo_ = value;
+          onChanged();
+        } else {
+          userInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder setUserInfo(
+          com.wali.live.proto.CommonChannelProto.UserInfo.Builder builderForValue) {
+        if (userInfoBuilder_ == null) {
+          userInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          userInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder mergeUserInfo(com.wali.live.proto.CommonChannelProto.UserInfo value) {
+        if (userInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              userInfo_ != com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance()) {
+            userInfo_ =
+              com.wali.live.proto.CommonChannelProto.UserInfo.newBuilder(userInfo_).mergeFrom(value).buildPartial();
+          } else {
+            userInfo_ = value;
+          }
+          onChanged();
+        } else {
+          userInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public Builder clearUserInfo() {
+        if (userInfoBuilder_ == null) {
+          userInfo_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          userInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfo.Builder getUserInfoBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getUserInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserInfoOrBuilder() {
+        if (userInfoBuilder_ != null) {
+          return userInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return userInfo_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo userInfo = 1;</code>
+       *
+       * <pre>
+       *用户资料
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> 
+          getUserInfoFieldBuilder() {
+        if (userInfoBuilder_ == null) {
+          userInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder>(
+                  getUserInfo(),
+                  getParentForChildren(),
+                  isClean());
+          userInfo_ = null;
+        }
+        return userInfoBuilder_;
+      }
+
+      private java.lang.Object jumpSchemeUri_ = "";
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *item跳转schemeUri
+       * </pre>
+       */
+      public boolean hasJumpSchemeUri() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *item跳转schemeUri
+       * </pre>
+       */
+      public java.lang.String getJumpSchemeUri() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *item跳转schemeUri
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getJumpSchemeUriBytes() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          jumpSchemeUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *item跳转schemeUri
+       * </pre>
+       */
+      public Builder setJumpSchemeUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *item跳转schemeUri
+       * </pre>
+       */
+      public Builder clearJumpSchemeUri() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        jumpSchemeUri_ = getDefaultInstance().getJumpSchemeUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 2;</code>
+       *
+       * <pre>
+       *item跳转schemeUri
+       * </pre>
+       */
+      public Builder setJumpSchemeUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.RankingItemData)
+    }
+
+    static {
+      defaultInstance = new RankingItemData(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.RankingItemData)
+  }
+
+  public interface LiveRecvFlagReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveRecvFlagReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> 
+        getItemsList();
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    int getItemsCount();
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
+        getItemsOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.LiveRecvFlagReq}
+   *
+   * <pre>
+   * ======== recommendflag milink 打点 =======
+   * </pre>
+   */
+  public static final class LiveRecvFlagReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveRecvFlagReq)
+      LiveRecvFlagReqOrBuilder {
+    // Use LiveRecvFlagReq.newBuilder() to construct.
+    private LiveRecvFlagReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LiveRecvFlagReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LiveRecvFlagReq defaultInstance;
+    public static LiveRecvFlagReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LiveRecvFlagReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LiveRecvFlagReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                items_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              items_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          items_ = java.util.Collections.unmodifiableList(items_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LiveRecvFlagReq> PARSER =
+        new com.google.protobuf.AbstractParser<LiveRecvFlagReq>() {
+      public LiveRecvFlagReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LiveRecvFlagReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LiveRecvFlagReq> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int ITEMS_FIELD_NUMBER = 1;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> items_;
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> getItemsList() {
+      return items_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
+        getItemsOrBuilderList() {
+      return items_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    public int getItemsCount() {
+      return items_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index) {
+      return items_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
+        int index) {
+      return items_.get(index);
+    }
+
+    private void initFields() {
+      items_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < items_.size(); i++) {
+        output.writeMessage(1, items_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < items_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, items_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.LiveRecvFlagReq}
+     *
+     * <pre>
+     * ======== recommendflag milink 打点 =======
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveRecvFlagReq)
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getItemsFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (itemsBuilder_ == null) {
+          items_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          itemsBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq build() {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq buildPartial() {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq result = new com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq(this);
+        int from_bitField0_ = bitField0_;
+        if (itemsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            items_ = java.util.Collections.unmodifiableList(items_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.items_ = items_;
+        } else {
+          result.items_ = itemsBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq other) {
+        if (other == com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq.getDefaultInstance()) return this;
+        if (itemsBuilder_ == null) {
+          if (!other.items_.isEmpty()) {
+            if (items_.isEmpty()) {
+              items_ = other.items_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureItemsIsMutable();
+              items_.addAll(other.items_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.items_.isEmpty()) {
+            if (itemsBuilder_.isEmpty()) {
+              itemsBuilder_.dispose();
+              itemsBuilder_ = null;
+              items_ = other.items_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              itemsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getItemsFieldBuilder() : null;
+            } else {
+              itemsBuilder_.addAllMessages(other.items_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.LiveRecvFlagReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> items_ =
+        java.util.Collections.emptyList();
+      private void ensureItemsIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          items_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem>(items_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> itemsBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> getItemsList() {
+        if (itemsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(items_);
+        } else {
+          return itemsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public int getItemsCount() {
+        if (itemsBuilder_ == null) {
+          return items_.size();
+        } else {
+          return itemsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getItems(int index) {
+        if (itemsBuilder_ == null) {
+          return items_.get(index);
+        } else {
+          return itemsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder setItems(
+          int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem value) {
+        if (itemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemsIsMutable();
+          items_.set(index, value);
+          onChanged();
+        } else {
+          itemsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder setItems(
+          int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder addItems(com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem value) {
+        if (itemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemsIsMutable();
+          items_.add(value);
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder addItems(
+          int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem value) {
+        if (itemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemsIsMutable();
+          items_.add(index, value);
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder addItems(
+          com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.add(builderForValue.build());
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder addItems(
+          int index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder builderForValue) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder addAllItems(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem> values) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, items_);
+          onChanged();
+        } else {
+          itemsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder clearItems() {
+        if (itemsBuilder_ == null) {
+          items_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          itemsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public Builder removeItems(int index) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.remove(index);
+          onChanged();
+        } else {
+          itemsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder getItemsBuilder(
+          int index) {
+        return getItemsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder getItemsOrBuilder(
+          int index) {
+        if (itemsBuilder_ == null) {
+          return items_.get(index);  } else {
+          return itemsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
+           getItemsOrBuilderList() {
+        if (itemsBuilder_ != null) {
+          return itemsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(items_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder addItemsBuilder() {
+        return getItemsFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder addItemsBuilder(
+          int index) {
+        return getItemsFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.LiveRecvFlagItem items = 1;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder> 
+           getItemsBuilderList() {
+        return getItemsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder> 
+          getItemsFieldBuilder() {
+        if (itemsBuilder_ == null) {
+          itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder>(
+                  items_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          items_ = null;
+        }
+        return itemsBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveRecvFlagReq)
+    }
+
+    static {
+      defaultInstance = new LiveRecvFlagReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveRecvFlagReq)
+  }
+
+  public interface LiveRecvFlagItemOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveRecvFlagItem)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 date = 1;</code>
+     *
+     * <pre>
+     *用户产生行为的时间（毫秒）
+     * </pre>
+     */
+    boolean hasDate();
+    /**
+     * <code>optional uint64 date = 1;</code>
+     *
+     * <pre>
+     *用户产生行为的时间（毫秒）
+     * </pre>
+     */
+    long getDate();
+
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+     * </pre>
+     */
+    boolean hasType();
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+     * </pre>
+     */
+    int getType();
+
+    /**
+     * <code>optional bytes extData = 3;</code>
+     *
+     * <pre>
+     *对应打点类型的扩展信息
+     * </pre>
+     */
+    boolean hasExtData();
+    /**
+     * <code>optional bytes extData = 3;</code>
+     *
+     * <pre>
+     *对应打点类型的扩展信息
+     * </pre>
+     */
+    com.google.protobuf.ByteString getExtData();
+
+    /**
+     * <code>optional string recommend = 4;</code>
+     *
+     * <pre>
+     *服务器下发的打点字串
+     * </pre>
+     */
+    boolean hasRecommend();
+    /**
+     * <code>optional string recommend = 4;</code>
+     *
+     * <pre>
+     *服务器下发的打点字串
+     * </pre>
+     */
+    java.lang.String getRecommend();
+    /**
+     * <code>optional string recommend = 4;</code>
+     *
+     * <pre>
+     *服务器下发的打点字串
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRecommendBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.LiveRecvFlagItem}
+   */
+  public static final class LiveRecvFlagItem extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveRecvFlagItem)
+      LiveRecvFlagItemOrBuilder {
+    // Use LiveRecvFlagItem.newBuilder() to construct.
+    private LiveRecvFlagItem(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LiveRecvFlagItem(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LiveRecvFlagItem defaultInstance;
+    public static LiveRecvFlagItem getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LiveRecvFlagItem getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LiveRecvFlagItem(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              date_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              type_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              extData_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              recommend_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LiveRecvFlagItem> PARSER =
+        new com.google.protobuf.AbstractParser<LiveRecvFlagItem>() {
+      public LiveRecvFlagItem parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LiveRecvFlagItem(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LiveRecvFlagItem> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int DATE_FIELD_NUMBER = 1;
+    private long date_;
+    /**
+     * <code>optional uint64 date = 1;</code>
+     *
+     * <pre>
+     *用户产生行为的时间（毫秒）
+     * </pre>
+     */
+    public boolean hasDate() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 date = 1;</code>
+     *
+     * <pre>
+     *用户产生行为的时间（毫秒）
+     * </pre>
+     */
+    public long getDate() {
+      return date_;
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 2;
+    private int type_;
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+     * </pre>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 type = 2;</code>
+     *
+     * <pre>
+     *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+     * </pre>
+     */
+    public int getType() {
+      return type_;
+    }
+
+    public static final int EXTDATA_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString extData_;
+    /**
+     * <code>optional bytes extData = 3;</code>
+     *
+     * <pre>
+     *对应打点类型的扩展信息
+     * </pre>
+     */
+    public boolean hasExtData() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bytes extData = 3;</code>
+     *
+     * <pre>
+     *对应打点类型的扩展信息
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getExtData() {
+      return extData_;
+    }
+
+    public static final int RECOMMEND_FIELD_NUMBER = 4;
+    private java.lang.Object recommend_;
+    /**
+     * <code>optional string recommend = 4;</code>
+     *
+     * <pre>
+     *服务器下发的打点字串
+     * </pre>
+     */
+    public boolean hasRecommend() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string recommend = 4;</code>
+     *
+     * <pre>
+     *服务器下发的打点字串
+     * </pre>
+     */
+    public java.lang.String getRecommend() {
+      java.lang.Object ref = recommend_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          recommend_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string recommend = 4;</code>
+     *
+     * <pre>
+     *服务器下发的打点字串
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRecommendBytes() {
+      java.lang.Object ref = recommend_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        recommend_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      date_ = 0L;
+      type_ = 0;
+      extData_ = com.google.protobuf.ByteString.EMPTY;
+      recommend_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, date_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, type_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, extData_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getRecommendBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, date_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, type_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, extData_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getRecommendBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.LiveRecvFlagItem}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveRecvFlagItem)
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagItemOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        date_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        extData_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        recommend_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem build() {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem buildPartial() {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem result = new com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.date_ = date_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.extData_ = extData_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.recommend_ = recommend_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem other) {
+        if (other == com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem.getDefaultInstance()) return this;
+        if (other.hasDate()) {
+          setDate(other.getDate());
+        }
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasExtData()) {
+          setExtData(other.getExtData());
+        }
+        if (other.hasRecommend()) {
+          bitField0_ |= 0x00000008;
+          recommend_ = other.recommend_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.LiveRecvFlagItem) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long date_ ;
+      /**
+       * <code>optional uint64 date = 1;</code>
+       *
+       * <pre>
+       *用户产生行为的时间（毫秒）
+       * </pre>
+       */
+      public boolean hasDate() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 date = 1;</code>
+       *
+       * <pre>
+       *用户产生行为的时间（毫秒）
+       * </pre>
+       */
+      public long getDate() {
+        return date_;
+      }
+      /**
+       * <code>optional uint64 date = 1;</code>
+       *
+       * <pre>
+       *用户产生行为的时间（毫秒）
+       * </pre>
+       */
+      public Builder setDate(long value) {
+        bitField0_ |= 0x00000001;
+        date_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 date = 1;</code>
+       *
+       * <pre>
+       *用户产生行为的时间（毫秒）
+       * </pre>
+       */
+      public Builder clearDate() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        date_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+       * </pre>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+       * </pre>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+       * </pre>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000002;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 type = 2;</code>
+       *
+       * <pre>
+       *打点类型, 1=曝光 2=点击 3=送礼物 4=出房间 5=关注主播 6=喜好反馈 小视频打点类型  100=曝光 101=点击 102=观看 103=点赞 104=评论 105=分享
+       * </pre>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString extData_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes extData = 3;</code>
+       *
+       * <pre>
+       *对应打点类型的扩展信息
+       * </pre>
+       */
+      public boolean hasExtData() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bytes extData = 3;</code>
+       *
+       * <pre>
+       *对应打点类型的扩展信息
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getExtData() {
+        return extData_;
+      }
+      /**
+       * <code>optional bytes extData = 3;</code>
+       *
+       * <pre>
+       *对应打点类型的扩展信息
+       * </pre>
+       */
+      public Builder setExtData(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        extData_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes extData = 3;</code>
+       *
+       * <pre>
+       *对应打点类型的扩展信息
+       * </pre>
+       */
+      public Builder clearExtData() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        extData_ = getDefaultInstance().getExtData();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object recommend_ = "";
+      /**
+       * <code>optional string recommend = 4;</code>
+       *
+       * <pre>
+       *服务器下发的打点字串
+       * </pre>
+       */
+      public boolean hasRecommend() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string recommend = 4;</code>
+       *
+       * <pre>
+       *服务器下发的打点字串
+       * </pre>
+       */
+      public java.lang.String getRecommend() {
+        java.lang.Object ref = recommend_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            recommend_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string recommend = 4;</code>
+       *
+       * <pre>
+       *服务器下发的打点字串
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRecommendBytes() {
+        java.lang.Object ref = recommend_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          recommend_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string recommend = 4;</code>
+       *
+       * <pre>
+       *服务器下发的打点字串
+       * </pre>
+       */
+      public Builder setRecommend(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        recommend_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string recommend = 4;</code>
+       *
+       * <pre>
+       *服务器下发的打点字串
+       * </pre>
+       */
+      public Builder clearRecommend() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        recommend_ = getDefaultInstance().getRecommend();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string recommend = 4;</code>
+       *
+       * <pre>
+       *服务器下发的打点字串
+       * </pre>
+       */
+      public Builder setRecommendBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        recommend_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveRecvFlagItem)
+    }
+
+    static {
+      defaultInstance = new LiveRecvFlagItem(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveRecvFlagItem)
+  }
+
+  public interface GiftDetailOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GiftDetail)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 giftId = 1;</code>
+     *
+     * <pre>
+     *礼物id
+     * </pre>
+     */
+    boolean hasGiftId();
+    /**
+     * <code>optional uint32 giftId = 1;</code>
+     *
+     * <pre>
+     *礼物id
+     * </pre>
+     */
+    int getGiftId();
+
+    /**
+     * <code>optional uint32 giftWorth = 2;</code>
+     *
+     * <pre>
+     *礼物价值
+     * </pre>
+     */
+    boolean hasGiftWorth();
+    /**
+     * <code>optional uint32 giftWorth = 2;</code>
+     *
+     * <pre>
+     *礼物价值
+     * </pre>
+     */
+    int getGiftWorth();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GiftDetail}
+   *
+   * <pre>
+   *type=3 extData填充内容
+   * </pre>
+   */
+  public static final class GiftDetail extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GiftDetail)
+      GiftDetailOrBuilder {
+    // Use GiftDetail.newBuilder() to construct.
+    private GiftDetail(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GiftDetail(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GiftDetail defaultInstance;
+    public static GiftDetail getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GiftDetail getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GiftDetail(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              giftId_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              giftWorth_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GiftDetail.class, com.wali.live.proto.CommonChannelProto.GiftDetail.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GiftDetail> PARSER =
+        new com.google.protobuf.AbstractParser<GiftDetail>() {
+      public GiftDetail parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GiftDetail(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GiftDetail> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int GIFTID_FIELD_NUMBER = 1;
+    private int giftId_;
+    /**
+     * <code>optional uint32 giftId = 1;</code>
+     *
+     * <pre>
+     *礼物id
+     * </pre>
+     */
+    public boolean hasGiftId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 giftId = 1;</code>
+     *
+     * <pre>
+     *礼物id
+     * </pre>
+     */
+    public int getGiftId() {
+      return giftId_;
+    }
+
+    public static final int GIFTWORTH_FIELD_NUMBER = 2;
+    private int giftWorth_;
+    /**
+     * <code>optional uint32 giftWorth = 2;</code>
+     *
+     * <pre>
+     *礼物价值
+     * </pre>
+     */
+    public boolean hasGiftWorth() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 giftWorth = 2;</code>
+     *
+     * <pre>
+     *礼物价值
+     * </pre>
+     */
+    public int getGiftWorth() {
+      return giftWorth_;
+    }
+
+    private void initFields() {
+      giftId_ = 0;
+      giftWorth_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, giftId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, giftWorth_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, giftId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, giftWorth_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GiftDetail parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GiftDetail prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GiftDetail}
+     *
+     * <pre>
+     *type=3 extData填充内容
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GiftDetail)
+        com.wali.live.proto.CommonChannelProto.GiftDetailOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GiftDetail.class, com.wali.live.proto.CommonChannelProto.GiftDetail.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GiftDetail.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        giftId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        giftWorth_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GiftDetail_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GiftDetail getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GiftDetail.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GiftDetail build() {
+        com.wali.live.proto.CommonChannelProto.GiftDetail result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GiftDetail buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GiftDetail result = new com.wali.live.proto.CommonChannelProto.GiftDetail(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.giftId_ = giftId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.giftWorth_ = giftWorth_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GiftDetail) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GiftDetail)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GiftDetail other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GiftDetail.getDefaultInstance()) return this;
+        if (other.hasGiftId()) {
+          setGiftId(other.getGiftId());
+        }
+        if (other.hasGiftWorth()) {
+          setGiftWorth(other.getGiftWorth());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GiftDetail parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GiftDetail) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int giftId_ ;
+      /**
+       * <code>optional uint32 giftId = 1;</code>
+       *
+       * <pre>
+       *礼物id
+       * </pre>
+       */
+      public boolean hasGiftId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 giftId = 1;</code>
+       *
+       * <pre>
+       *礼物id
+       * </pre>
+       */
+      public int getGiftId() {
+        return giftId_;
+      }
+      /**
+       * <code>optional uint32 giftId = 1;</code>
+       *
+       * <pre>
+       *礼物id
+       * </pre>
+       */
+      public Builder setGiftId(int value) {
+        bitField0_ |= 0x00000001;
+        giftId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 giftId = 1;</code>
+       *
+       * <pre>
+       *礼物id
+       * </pre>
+       */
+      public Builder clearGiftId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        giftId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int giftWorth_ ;
+      /**
+       * <code>optional uint32 giftWorth = 2;</code>
+       *
+       * <pre>
+       *礼物价值
+       * </pre>
+       */
+      public boolean hasGiftWorth() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 giftWorth = 2;</code>
+       *
+       * <pre>
+       *礼物价值
+       * </pre>
+       */
+      public int getGiftWorth() {
+        return giftWorth_;
+      }
+      /**
+       * <code>optional uint32 giftWorth = 2;</code>
+       *
+       * <pre>
+       *礼物价值
+       * </pre>
+       */
+      public Builder setGiftWorth(int value) {
+        bitField0_ |= 0x00000002;
+        giftWorth_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 giftWorth = 2;</code>
+       *
+       * <pre>
+       *礼物价值
+       * </pre>
+       */
+      public Builder clearGiftWorth() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        giftWorth_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GiftDetail)
+    }
+
+    static {
+      defaultInstance = new GiftDetail(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GiftDetail)
+  }
+
+  public interface LeaveRoomOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LeaveRoom)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    boolean hasEnterTime();
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    long getEnterTime();
+
+    /**
+     * <code>optional uint64 leaveTime = 2;</code>
+     *
+     * <pre>
+     *离开房间时间
+     * </pre>
+     */
+    boolean hasLeaveTime();
+    /**
+     * <code>optional uint64 leaveTime = 2;</code>
+     *
+     * <pre>
+     *离开房间时间
+     * </pre>
+     */
+    long getLeaveTime();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.LeaveRoom}
+   *
+   * <pre>
+   *type=4 或102 extData填充内容
+   * </pre>
+   */
+  public static final class LeaveRoom extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LeaveRoom)
+      LeaveRoomOrBuilder {
+    // Use LeaveRoom.newBuilder() to construct.
+    private LeaveRoom(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LeaveRoom(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LeaveRoom defaultInstance;
+    public static LeaveRoom getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LeaveRoom getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LeaveRoom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              enterTime_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              leaveTime_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.LeaveRoom.class, com.wali.live.proto.CommonChannelProto.LeaveRoom.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LeaveRoom> PARSER =
+        new com.google.protobuf.AbstractParser<LeaveRoom>() {
+      public LeaveRoom parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LeaveRoom(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LeaveRoom> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ENTERTIME_FIELD_NUMBER = 1;
+    private long enterTime_;
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    public boolean hasEnterTime() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    public long getEnterTime() {
+      return enterTime_;
+    }
+
+    public static final int LEAVETIME_FIELD_NUMBER = 2;
+    private long leaveTime_;
+    /**
+     * <code>optional uint64 leaveTime = 2;</code>
+     *
+     * <pre>
+     *离开房间时间
+     * </pre>
+     */
+    public boolean hasLeaveTime() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 leaveTime = 2;</code>
+     *
+     * <pre>
+     *离开房间时间
+     * </pre>
+     */
+    public long getLeaveTime() {
+      return leaveTime_;
+    }
+
+    private void initFields() {
+      enterTime_ = 0L;
+      leaveTime_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, enterTime_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, leaveTime_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, enterTime_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, leaveTime_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LeaveRoom parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.LeaveRoom prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.LeaveRoom}
+     *
+     * <pre>
+     *type=4 或102 extData填充内容
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LeaveRoom)
+        com.wali.live.proto.CommonChannelProto.LeaveRoomOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.LeaveRoom.class, com.wali.live.proto.CommonChannelProto.LeaveRoom.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.LeaveRoom.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        enterTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        leaveTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LeaveRoom getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.LeaveRoom.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LeaveRoom build() {
+        com.wali.live.proto.CommonChannelProto.LeaveRoom result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LeaveRoom buildPartial() {
+        com.wali.live.proto.CommonChannelProto.LeaveRoom result = new com.wali.live.proto.CommonChannelProto.LeaveRoom(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.enterTime_ = enterTime_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.leaveTime_ = leaveTime_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.LeaveRoom) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.LeaveRoom)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.LeaveRoom other) {
+        if (other == com.wali.live.proto.CommonChannelProto.LeaveRoom.getDefaultInstance()) return this;
+        if (other.hasEnterTime()) {
+          setEnterTime(other.getEnterTime());
+        }
+        if (other.hasLeaveTime()) {
+          setLeaveTime(other.getLeaveTime());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.LeaveRoom parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.LeaveRoom) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long enterTime_ ;
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public boolean hasEnterTime() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public long getEnterTime() {
+        return enterTime_;
+      }
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public Builder setEnterTime(long value) {
+        bitField0_ |= 0x00000001;
+        enterTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public Builder clearEnterTime() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        enterTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long leaveTime_ ;
+      /**
+       * <code>optional uint64 leaveTime = 2;</code>
+       *
+       * <pre>
+       *离开房间时间
+       * </pre>
+       */
+      public boolean hasLeaveTime() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 leaveTime = 2;</code>
+       *
+       * <pre>
+       *离开房间时间
+       * </pre>
+       */
+      public long getLeaveTime() {
+        return leaveTime_;
+      }
+      /**
+       * <code>optional uint64 leaveTime = 2;</code>
+       *
+       * <pre>
+       *离开房间时间
+       * </pre>
+       */
+      public Builder setLeaveTime(long value) {
+        bitField0_ |= 0x00000002;
+        leaveTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 leaveTime = 2;</code>
+       *
+       * <pre>
+       *离开房间时间
+       * </pre>
+       */
+      public Builder clearLeaveTime() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        leaveTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LeaveRoom)
+    }
+
+    static {
+      defaultInstance = new LeaveRoom(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LeaveRoom)
+  }
+
+  public interface FollowRoomOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.FollowRoom)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    boolean hasEnterTime();
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    long getEnterTime();
+
+    /**
+     * <code>optional uint64 followTime = 2;</code>
+     *
+     * <pre>
+     *关注主播时间
+     * </pre>
+     */
+    boolean hasFollowTime();
+    /**
+     * <code>optional uint64 followTime = 2;</code>
+     *
+     * <pre>
+     *关注主播时间
+     * </pre>
+     */
+    long getFollowTime();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.FollowRoom}
+   *
+   * <pre>
+   *type=5 extData填充内容
+   * </pre>
+   */
+  public static final class FollowRoom extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.FollowRoom)
+      FollowRoomOrBuilder {
+    // Use FollowRoom.newBuilder() to construct.
+    private FollowRoom(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private FollowRoom(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final FollowRoom defaultInstance;
+    public static FollowRoom getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public FollowRoom getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FollowRoom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              enterTime_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              followTime_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.FollowRoom.class, com.wali.live.proto.CommonChannelProto.FollowRoom.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<FollowRoom> PARSER =
+        new com.google.protobuf.AbstractParser<FollowRoom>() {
+      public FollowRoom parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FollowRoom(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FollowRoom> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ENTERTIME_FIELD_NUMBER = 1;
+    private long enterTime_;
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    public boolean hasEnterTime() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 enterTime = 1;</code>
+     *
+     * <pre>
+     *进入房间时间
+     * </pre>
+     */
+    public long getEnterTime() {
+      return enterTime_;
+    }
+
+    public static final int FOLLOWTIME_FIELD_NUMBER = 2;
+    private long followTime_;
+    /**
+     * <code>optional uint64 followTime = 2;</code>
+     *
+     * <pre>
+     *关注主播时间
+     * </pre>
+     */
+    public boolean hasFollowTime() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 followTime = 2;</code>
+     *
+     * <pre>
+     *关注主播时间
+     * </pre>
+     */
+    public long getFollowTime() {
+      return followTime_;
+    }
+
+    private void initFields() {
+      enterTime_ = 0L;
+      followTime_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, enterTime_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, followTime_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, enterTime_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, followTime_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.FollowRoom parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.FollowRoom prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.FollowRoom}
+     *
+     * <pre>
+     *type=5 extData填充内容
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.FollowRoom)
+        com.wali.live.proto.CommonChannelProto.FollowRoomOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.FollowRoom.class, com.wali.live.proto.CommonChannelProto.FollowRoom.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.FollowRoom.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        enterTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        followTime_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_FollowRoom_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.FollowRoom getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.FollowRoom.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.FollowRoom build() {
+        com.wali.live.proto.CommonChannelProto.FollowRoom result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.FollowRoom buildPartial() {
+        com.wali.live.proto.CommonChannelProto.FollowRoom result = new com.wali.live.proto.CommonChannelProto.FollowRoom(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.enterTime_ = enterTime_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.followTime_ = followTime_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.FollowRoom) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.FollowRoom)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.FollowRoom other) {
+        if (other == com.wali.live.proto.CommonChannelProto.FollowRoom.getDefaultInstance()) return this;
+        if (other.hasEnterTime()) {
+          setEnterTime(other.getEnterTime());
+        }
+        if (other.hasFollowTime()) {
+          setFollowTime(other.getFollowTime());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.FollowRoom parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.FollowRoom) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long enterTime_ ;
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public boolean hasEnterTime() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public long getEnterTime() {
+        return enterTime_;
+      }
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public Builder setEnterTime(long value) {
+        bitField0_ |= 0x00000001;
+        enterTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 enterTime = 1;</code>
+       *
+       * <pre>
+       *进入房间时间
+       * </pre>
+       */
+      public Builder clearEnterTime() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        enterTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long followTime_ ;
+      /**
+       * <code>optional uint64 followTime = 2;</code>
+       *
+       * <pre>
+       *关注主播时间
+       * </pre>
+       */
+      public boolean hasFollowTime() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 followTime = 2;</code>
+       *
+       * <pre>
+       *关注主播时间
+       * </pre>
+       */
+      public long getFollowTime() {
+        return followTime_;
+      }
+      /**
+       * <code>optional uint64 followTime = 2;</code>
+       *
+       * <pre>
+       *关注主播时间
+       * </pre>
+       */
+      public Builder setFollowTime(long value) {
+        bitField0_ |= 0x00000002;
+        followTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 followTime = 2;</code>
+       *
+       * <pre>
+       *关注主播时间
+       * </pre>
+       */
+      public Builder clearFollowTime() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        followTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.FollowRoom)
+    }
+
+    static {
+      defaultInstance = new FollowRoom(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.FollowRoom)
+  }
+
+  public interface LikeFeedbackOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LikeFeedback)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *不喜欢主播的id
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>optional uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *不喜欢主播的id
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>optional string roomId = 2;</code>
+     *
+     * <pre>
+     *不喜欢直播的房间id
+     * </pre>
+     */
+    boolean hasRoomId();
+    /**
+     * <code>optional string roomId = 2;</code>
+     *
+     * <pre>
+     *不喜欢直播的房间id
+     * </pre>
+     */
+    java.lang.String getRoomId();
+    /**
+     * <code>optional string roomId = 2;</code>
+     *
+     * <pre>
+     *不喜欢直播的房间id
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRoomIdBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.LikeFeedback}
+   *
+   * <pre>
+   *type=6 extData填充内容
+   * </pre>
+   */
+  public static final class LikeFeedback extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LikeFeedback)
+      LikeFeedbackOrBuilder {
+    // Use LikeFeedback.newBuilder() to construct.
+    private LikeFeedback(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LikeFeedback(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LikeFeedback defaultInstance;
+    public static LikeFeedback getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LikeFeedback getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LikeFeedback(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              roomId_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.LikeFeedback.class, com.wali.live.proto.CommonChannelProto.LikeFeedback.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LikeFeedback> PARSER =
+        new com.google.protobuf.AbstractParser<LikeFeedback>() {
+      public LikeFeedback parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LikeFeedback(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LikeFeedback> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ZUID_FIELD_NUMBER = 1;
+    private long zuid_;
+    /**
+     * <code>optional uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *不喜欢主播的id
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *不喜欢主播的id
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int ROOMID_FIELD_NUMBER = 2;
+    private java.lang.Object roomId_;
+    /**
+     * <code>optional string roomId = 2;</code>
+     *
+     * <pre>
+     *不喜欢直播的房间id
+     * </pre>
+     */
+    public boolean hasRoomId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string roomId = 2;</code>
+     *
+     * <pre>
+     *不喜欢直播的房间id
+     * </pre>
+     */
+    public java.lang.String getRoomId() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          roomId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string roomId = 2;</code>
+     *
+     * <pre>
+     *不喜欢直播的房间id
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRoomIdBytes() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        roomId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      zuid_ = 0L;
+      roomId_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getRoomIdBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getRoomIdBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LikeFeedback parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.LikeFeedback prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.LikeFeedback}
+     *
+     * <pre>
+     *type=6 extData填充内容
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LikeFeedback)
+        com.wali.live.proto.CommonChannelProto.LikeFeedbackOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.LikeFeedback.class, com.wali.live.proto.CommonChannelProto.LikeFeedback.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.LikeFeedback.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        roomId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LikeFeedback getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.LikeFeedback.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LikeFeedback build() {
+        com.wali.live.proto.CommonChannelProto.LikeFeedback result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LikeFeedback buildPartial() {
+        com.wali.live.proto.CommonChannelProto.LikeFeedback result = new com.wali.live.proto.CommonChannelProto.LikeFeedback(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.roomId_ = roomId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.LikeFeedback) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.LikeFeedback)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.LikeFeedback other) {
+        if (other == com.wali.live.proto.CommonChannelProto.LikeFeedback.getDefaultInstance()) return this;
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasRoomId()) {
+          bitField0_ |= 0x00000002;
+          roomId_ = other.roomId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.LikeFeedback parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.LikeFeedback) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long zuid_ ;
+      /**
+       * <code>optional uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *不喜欢主播的id
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *不喜欢主播的id
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>optional uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *不喜欢主播的id
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000001;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *不喜欢主播的id
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object roomId_ = "";
+      /**
+       * <code>optional string roomId = 2;</code>
+       *
+       * <pre>
+       *不喜欢直播的房间id
+       * </pre>
+       */
+      public boolean hasRoomId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string roomId = 2;</code>
+       *
+       * <pre>
+       *不喜欢直播的房间id
+       * </pre>
+       */
+      public java.lang.String getRoomId() {
+        java.lang.Object ref = roomId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 2;</code>
+       *
+       * <pre>
+       *不喜欢直播的房间id
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRoomIdBytes() {
+        java.lang.Object ref = roomId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          roomId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string roomId = 2;</code>
+       *
+       * <pre>
+       *不喜欢直播的房间id
+       * </pre>
+       */
+      public Builder setRoomId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 2;</code>
+       *
+       * <pre>
+       *不喜欢直播的房间id
+       * </pre>
+       */
+      public Builder clearRoomId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        roomId_ = getDefaultInstance().getRoomId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string roomId = 2;</code>
+       *
+       * <pre>
+       *不喜欢直播的房间id
+       * </pre>
+       */
+      public Builder setRoomIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LikeFeedback)
+    }
+
+    static {
+      defaultInstance = new LikeFeedback(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LikeFeedback)
+  }
+
+  public interface VideoLikeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoLike)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 befCount = 1;</code>
+     *
+     * <pre>
+     *点赞前的点赞数
+     * </pre>
+     */
+    boolean hasBefCount();
+    /**
+     * <code>optional uint64 befCount = 1;</code>
+     *
+     * <pre>
+     *点赞前的点赞数
+     * </pre>
+     */
+    long getBefCount();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.VideoLike}
+   *
+   * <pre>
+   *type=103 extData填充内容
+   * </pre>
+   */
+  public static final class VideoLike extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoLike)
+      VideoLikeOrBuilder {
+    // Use VideoLike.newBuilder() to construct.
+    private VideoLike(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private VideoLike(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final VideoLike defaultInstance;
+    public static VideoLike getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public VideoLike getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private VideoLike(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              befCount_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.VideoLike.class, com.wali.live.proto.CommonChannelProto.VideoLike.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<VideoLike> PARSER =
+        new com.google.protobuf.AbstractParser<VideoLike>() {
+      public VideoLike parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new VideoLike(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<VideoLike> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int BEFCOUNT_FIELD_NUMBER = 1;
+    private long befCount_;
+    /**
+     * <code>optional uint64 befCount = 1;</code>
+     *
+     * <pre>
+     *点赞前的点赞数
+     * </pre>
+     */
+    public boolean hasBefCount() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 befCount = 1;</code>
+     *
+     * <pre>
+     *点赞前的点赞数
+     * </pre>
+     */
+    public long getBefCount() {
+      return befCount_;
+    }
+
+    private void initFields() {
+      befCount_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, befCount_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, befCount_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoLike parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.VideoLike prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.VideoLike}
+     *
+     * <pre>
+     *type=103 extData填充内容
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoLike)
+        com.wali.live.proto.CommonChannelProto.VideoLikeOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.VideoLike.class, com.wali.live.proto.CommonChannelProto.VideoLike.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.VideoLike.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        befCount_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoLike_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoLike getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.VideoLike.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoLike build() {
+        com.wali.live.proto.CommonChannelProto.VideoLike result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoLike buildPartial() {
+        com.wali.live.proto.CommonChannelProto.VideoLike result = new com.wali.live.proto.CommonChannelProto.VideoLike(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.befCount_ = befCount_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.VideoLike) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.VideoLike)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.VideoLike other) {
+        if (other == com.wali.live.proto.CommonChannelProto.VideoLike.getDefaultInstance()) return this;
+        if (other.hasBefCount()) {
+          setBefCount(other.getBefCount());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.VideoLike parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.VideoLike) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long befCount_ ;
+      /**
+       * <code>optional uint64 befCount = 1;</code>
+       *
+       * <pre>
+       *点赞前的点赞数
+       * </pre>
+       */
+      public boolean hasBefCount() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 befCount = 1;</code>
+       *
+       * <pre>
+       *点赞前的点赞数
+       * </pre>
+       */
+      public long getBefCount() {
+        return befCount_;
+      }
+      /**
+       * <code>optional uint64 befCount = 1;</code>
+       *
+       * <pre>
+       *点赞前的点赞数
+       * </pre>
+       */
+      public Builder setBefCount(long value) {
+        bitField0_ |= 0x00000001;
+        befCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 befCount = 1;</code>
+       *
+       * <pre>
+       *点赞前的点赞数
+       * </pre>
+       */
+      public Builder clearBefCount() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        befCount_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoLike)
+    }
+
+    static {
+      defaultInstance = new VideoLike(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoLike)
+  }
+
+  public interface VideoCommentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoComment)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string content = 1;</code>
+     *
+     * <pre>
+     *评论的内容
+     * </pre>
+     */
+    boolean hasContent();
+    /**
+     * <code>optional string content = 1;</code>
+     *
+     * <pre>
+     *评论的内容
+     * </pre>
+     */
+    java.lang.String getContent();
+    /**
+     * <code>optional string content = 1;</code>
+     *
+     * <pre>
+     *评论的内容
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getContentBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.VideoComment}
+   *
+   * <pre>
+   *type=104 extData填充内容
+   * </pre>
+   */
+  public static final class VideoComment extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoComment)
+      VideoCommentOrBuilder {
+    // Use VideoComment.newBuilder() to construct.
+    private VideoComment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private VideoComment(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final VideoComment defaultInstance;
+    public static VideoComment getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public VideoComment getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private VideoComment(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              content_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.VideoComment.class, com.wali.live.proto.CommonChannelProto.VideoComment.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<VideoComment> PARSER =
+        new com.google.protobuf.AbstractParser<VideoComment>() {
+      public VideoComment parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new VideoComment(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<VideoComment> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int CONTENT_FIELD_NUMBER = 1;
+    private java.lang.Object content_;
+    /**
+     * <code>optional string content = 1;</code>
+     *
+     * <pre>
+     *评论的内容
+     * </pre>
+     */
+    public boolean hasContent() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string content = 1;</code>
+     *
+     * <pre>
+     *评论的内容
+     * </pre>
+     */
+    public java.lang.String getContent() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          content_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string content = 1;</code>
+     *
+     * <pre>
+     *评论的内容
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getContentBytes() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        content_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      content_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getContentBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getContentBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoComment parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.VideoComment prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.VideoComment}
+     *
+     * <pre>
+     *type=104 extData填充内容
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoComment)
+        com.wali.live.proto.CommonChannelProto.VideoCommentOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.VideoComment.class, com.wali.live.proto.CommonChannelProto.VideoComment.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.VideoComment.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        content_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoComment_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoComment getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.VideoComment.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoComment build() {
+        com.wali.live.proto.CommonChannelProto.VideoComment result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoComment buildPartial() {
+        com.wali.live.proto.CommonChannelProto.VideoComment result = new com.wali.live.proto.CommonChannelProto.VideoComment(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.content_ = content_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.VideoComment) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.VideoComment)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.VideoComment other) {
+        if (other == com.wali.live.proto.CommonChannelProto.VideoComment.getDefaultInstance()) return this;
+        if (other.hasContent()) {
+          bitField0_ |= 0x00000001;
+          content_ = other.content_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.VideoComment parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.VideoComment) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object content_ = "";
+      /**
+       * <code>optional string content = 1;</code>
+       *
+       * <pre>
+       *评论的内容
+       * </pre>
+       */
+      public boolean hasContent() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string content = 1;</code>
+       *
+       * <pre>
+       *评论的内容
+       * </pre>
+       */
+      public java.lang.String getContent() {
+        java.lang.Object ref = content_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            content_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string content = 1;</code>
+       *
+       * <pre>
+       *评论的内容
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getContentBytes() {
+        java.lang.Object ref = content_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          content_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string content = 1;</code>
+       *
+       * <pre>
+       *评论的内容
+       * </pre>
+       */
+      public Builder setContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        content_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string content = 1;</code>
+       *
+       * <pre>
+       *评论的内容
+       * </pre>
+       */
+      public Builder clearContent() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        content_ = getDefaultInstance().getContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string content = 1;</code>
+       *
+       * <pre>
+       *评论的内容
+       * </pre>
+       */
+      public Builder setContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        content_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoComment)
+    }
+
+    static {
+      defaultInstance = new VideoComment(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoComment)
+  }
+
+  public interface LiveRecvFlagRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.LiveRecvFlagRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0=成功
+     * </pre>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0=成功
+     * </pre>
+     */
+    int getRetCode();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.LiveRecvFlagRsp}
+   */
+  public static final class LiveRecvFlagRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.LiveRecvFlagRsp)
+      LiveRecvFlagRspOrBuilder {
+    // Use LiveRecvFlagRsp.newBuilder() to construct.
+    private LiveRecvFlagRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LiveRecvFlagRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LiveRecvFlagRsp defaultInstance;
+    public static LiveRecvFlagRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LiveRecvFlagRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LiveRecvFlagRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LiveRecvFlagRsp> PARSER =
+        new com.google.protobuf.AbstractParser<LiveRecvFlagRsp>() {
+      public LiveRecvFlagRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LiveRecvFlagRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LiveRecvFlagRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0=成功
+     * </pre>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     *
+     * <pre>
+     *0=成功
+     * </pre>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.LiveRecvFlagRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.LiveRecvFlagRsp)
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.class, com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp build() {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp buildPartial() {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp result = new com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp other) {
+        if (other == com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.LiveRecvFlagRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0=成功
+       * </pre>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0=成功
+       * </pre>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0=成功
+       * </pre>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       *
+       * <pre>
+       *0=成功
+       * </pre>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveRecvFlagRsp)
+    }
+
+    static {
+      defaultInstance = new LiveRecvFlagRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.LiveRecvFlagRsp)
+  }
+
+  public interface BarMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.BarMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     */
+    boolean hasBmt();
+    /**
+     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.BarMessageType getBmt();
+
+    /**
+     * <code>optional string content = 2;</code>
+     */
+    boolean hasContent();
+    /**
+     * <code>optional string content = 2;</code>
+     */
+    java.lang.String getContent();
+    /**
+     * <code>optional string content = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getContentBytes();
+
+    /**
+     * <code>optional string schema = 3;</code>
+     */
+    boolean hasSchema();
+    /**
+     * <code>optional string schema = 3;</code>
+     */
+    java.lang.String getSchema();
+    /**
+     * <code>optional string schema = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getSchemaBytes();
+
+    /**
+     * <code>optional uint64 start = 4;</code>
+     */
+    boolean hasStart();
+    /**
+     * <code>optional uint64 start = 4;</code>
+     */
+    long getStart();
+
+    /**
+     * <code>optional uint64 end = 5;</code>
+     */
+    boolean hasEnd();
+    /**
+     * <code>optional uint64 end = 5;</code>
+     */
+    long getEnd();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.BarMessage}
+   */
+  public static final class BarMessage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.BarMessage)
+      BarMessageOrBuilder {
+    // Use BarMessage.newBuilder() to construct.
+    private BarMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private BarMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final BarMessage defaultInstance;
+    public static BarMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public BarMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BarMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              com.wali.live.proto.CommonChannelProto.BarMessageType value = com.wali.live.proto.CommonChannelProto.BarMessageType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                bmt_ = value;
+              }
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              content_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              schema_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              start_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              end_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.BarMessage.class, com.wali.live.proto.CommonChannelProto.BarMessage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<BarMessage> PARSER =
+        new com.google.protobuf.AbstractParser<BarMessage>() {
+      public BarMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BarMessage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BarMessage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int BMT_FIELD_NUMBER = 1;
+    private com.wali.live.proto.CommonChannelProto.BarMessageType bmt_;
+    /**
+     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     */
+    public boolean hasBmt() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.BarMessageType getBmt() {
+      return bmt_;
+    }
+
+    public static final int CONTENT_FIELD_NUMBER = 2;
+    private java.lang.Object content_;
+    /**
+     * <code>optional string content = 2;</code>
+     */
+    public boolean hasContent() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string content = 2;</code>
+     */
+    public java.lang.String getContent() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          content_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string content = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getContentBytes() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        content_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SCHEMA_FIELD_NUMBER = 3;
+    private java.lang.Object schema_;
+    /**
+     * <code>optional string schema = 3;</code>
+     */
+    public boolean hasSchema() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string schema = 3;</code>
+     */
+    public java.lang.String getSchema() {
+      java.lang.Object ref = schema_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          schema_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string schema = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSchemaBytes() {
+      java.lang.Object ref = schema_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        schema_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int START_FIELD_NUMBER = 4;
+    private long start_;
+    /**
+     * <code>optional uint64 start = 4;</code>
+     */
+    public boolean hasStart() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 start = 4;</code>
+     */
+    public long getStart() {
+      return start_;
+    }
+
+    public static final int END_FIELD_NUMBER = 5;
+    private long end_;
+    /**
+     * <code>optional uint64 end = 5;</code>
+     */
+    public boolean hasEnd() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint64 end = 5;</code>
+     */
+    public long getEnd() {
+      return end_;
+    }
+
+    private void initFields() {
+      bmt_ = com.wali.live.proto.CommonChannelProto.BarMessageType.OP;
+      content_ = "";
+      schema_ = "";
+      start_ = 0L;
+      end_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, bmt_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getContentBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getSchemaBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, start_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt64(5, end_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, bmt_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getContentBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getSchemaBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, start_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, end_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.BarMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.BarMessage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.BarMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.BarMessage)
+        com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.BarMessage.class, com.wali.live.proto.CommonChannelProto.BarMessage.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.BarMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        bmt_ = com.wali.live.proto.CommonChannelProto.BarMessageType.OP;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        content_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        schema_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        start_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        end_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_BarMessage_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.BarMessage getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.BarMessage.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.BarMessage build() {
+        com.wali.live.proto.CommonChannelProto.BarMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.BarMessage buildPartial() {
+        com.wali.live.proto.CommonChannelProto.BarMessage result = new com.wali.live.proto.CommonChannelProto.BarMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bmt_ = bmt_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.content_ = content_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.schema_ = schema_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.start_ = start_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.end_ = end_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.BarMessage) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.BarMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.BarMessage other) {
+        if (other == com.wali.live.proto.CommonChannelProto.BarMessage.getDefaultInstance()) return this;
+        if (other.hasBmt()) {
+          setBmt(other.getBmt());
+        }
+        if (other.hasContent()) {
+          bitField0_ |= 0x00000002;
+          content_ = other.content_;
+          onChanged();
+        }
+        if (other.hasSchema()) {
+          bitField0_ |= 0x00000004;
+          schema_ = other.schema_;
+          onChanged();
+        }
+        if (other.hasStart()) {
+          setStart(other.getStart());
+        }
+        if (other.hasEnd()) {
+          setEnd(other.getEnd());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.BarMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.BarMessage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.wali.live.proto.CommonChannelProto.BarMessageType bmt_ = com.wali.live.proto.CommonChannelProto.BarMessageType.OP;
+      /**
+       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       */
+      public boolean hasBmt() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.BarMessageType getBmt() {
+        return bmt_;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       */
+      public Builder setBmt(com.wali.live.proto.CommonChannelProto.BarMessageType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        bmt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.BarMessageType bmt = 1;</code>
+       */
+      public Builder clearBmt() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bmt_ = com.wali.live.proto.CommonChannelProto.BarMessageType.OP;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object content_ = "";
+      /**
+       * <code>optional string content = 2;</code>
+       */
+      public boolean hasContent() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string content = 2;</code>
+       */
+      public java.lang.String getContent() {
+        java.lang.Object ref = content_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            content_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string content = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getContentBytes() {
+        java.lang.Object ref = content_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          content_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string content = 2;</code>
+       */
+      public Builder setContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        content_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string content = 2;</code>
+       */
+      public Builder clearContent() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        content_ = getDefaultInstance().getContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string content = 2;</code>
+       */
+      public Builder setContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        content_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object schema_ = "";
+      /**
+       * <code>optional string schema = 3;</code>
+       */
+      public boolean hasSchema() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string schema = 3;</code>
+       */
+      public java.lang.String getSchema() {
+        java.lang.Object ref = schema_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            schema_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string schema = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSchemaBytes() {
+        java.lang.Object ref = schema_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          schema_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string schema = 3;</code>
+       */
+      public Builder setSchema(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        schema_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string schema = 3;</code>
+       */
+      public Builder clearSchema() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        schema_ = getDefaultInstance().getSchema();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string schema = 3;</code>
+       */
+      public Builder setSchemaBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        schema_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long start_ ;
+      /**
+       * <code>optional uint64 start = 4;</code>
+       */
+      public boolean hasStart() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 start = 4;</code>
+       */
+      public long getStart() {
+        return start_;
+      }
+      /**
+       * <code>optional uint64 start = 4;</code>
+       */
+      public Builder setStart(long value) {
+        bitField0_ |= 0x00000008;
+        start_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 start = 4;</code>
+       */
+      public Builder clearStart() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        start_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long end_ ;
+      /**
+       * <code>optional uint64 end = 5;</code>
+       */
+      public boolean hasEnd() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint64 end = 5;</code>
+       */
+      public long getEnd() {
+        return end_;
+      }
+      /**
+       * <code>optional uint64 end = 5;</code>
+       */
+      public Builder setEnd(long value) {
+        bitField0_ |= 0x00000010;
+        end_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 end = 5;</code>
+       */
+      public Builder clearEnd() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        end_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.BarMessage)
+    }
+
+    static {
+      defaultInstance = new BarMessage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.BarMessage)
+  }
+
+  public interface GetBarMessageRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetBarMessageRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 from = 1;</code>
+     */
+    boolean hasFrom();
+    /**
+     * <code>optional uint64 from = 1;</code>
+     */
+    long getFrom();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetBarMessageRequest}
+   *
+   * <pre>
+   * zhibo.get.barmsg	拉去通知栏消息
+   * </pre>
+   */
+  public static final class GetBarMessageRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetBarMessageRequest)
+      GetBarMessageRequestOrBuilder {
+    // Use GetBarMessageRequest.newBuilder() to construct.
+    private GetBarMessageRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetBarMessageRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetBarMessageRequest defaultInstance;
+    public static GetBarMessageRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetBarMessageRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetBarMessageRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              from_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.class, com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetBarMessageRequest> PARSER =
+        new com.google.protobuf.AbstractParser<GetBarMessageRequest>() {
+      public GetBarMessageRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetBarMessageRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetBarMessageRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FROM_FIELD_NUMBER = 1;
+    private long from_;
+    /**
+     * <code>optional uint64 from = 1;</code>
+     */
+    public boolean hasFrom() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint64 from = 1;</code>
+     */
+    public long getFrom() {
+      return from_;
+    }
+
+    private void initFields() {
+      from_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, from_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, from_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetBarMessageRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetBarMessageRequest}
+     *
+     * <pre>
+     * zhibo.get.barmsg	拉去通知栏消息
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetBarMessageRequest)
+        com.wali.live.proto.CommonChannelProto.GetBarMessageRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.class, com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        from_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetBarMessageRequest getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetBarMessageRequest build() {
+        com.wali.live.proto.CommonChannelProto.GetBarMessageRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetBarMessageRequest buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetBarMessageRequest result = new com.wali.live.proto.CommonChannelProto.GetBarMessageRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.from_ = from_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetBarMessageRequest) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetBarMessageRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetBarMessageRequest other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetBarMessageRequest.getDefaultInstance()) return this;
+        if (other.hasFrom()) {
+          setFrom(other.getFrom());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetBarMessageRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetBarMessageRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long from_ ;
+      /**
+       * <code>optional uint64 from = 1;</code>
+       */
+      public boolean hasFrom() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint64 from = 1;</code>
+       */
+      public long getFrom() {
+        return from_;
+      }
+      /**
+       * <code>optional uint64 from = 1;</code>
+       */
+      public Builder setFrom(long value) {
+        bitField0_ |= 0x00000001;
+        from_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 from = 1;</code>
+       */
+      public Builder clearFrom() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        from_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetBarMessageRequest)
+    }
+
+    static {
+      defaultInstance = new GetBarMessageRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBarMessageRequest)
+  }
+
+  public interface GetBarMessageResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetBarMessageResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    boolean hasRet();
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    int getRet();
+
+    /**
+     * <code>optional string err_msg = 2;</code>
+     */
+    boolean hasErrMsg();
+    /**
+     * <code>optional string err_msg = 2;</code>
+     */
+    java.lang.String getErrMsg();
+    /**
+     * <code>optional string err_msg = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrMsgBytes();
+
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> 
+        getBarMsgList();
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.BarMessage getBarMsg(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    int getBarMsgCount();
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> 
+        getBarMsgOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder getBarMsgOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetBarMessageResponse}
+   */
+  public static final class GetBarMessageResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetBarMessageResponse)
+      GetBarMessageResponseOrBuilder {
+    // Use GetBarMessageResponse.newBuilder() to construct.
+    private GetBarMessageResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetBarMessageResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetBarMessageResponse defaultInstance;
+    public static GetBarMessageResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetBarMessageResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetBarMessageResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ret_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              errMsg_ = bs;
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                barMsg_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.BarMessage>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              barMsg_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.BarMessage.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          barMsg_ = java.util.Collections.unmodifiableList(barMsg_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.class, com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetBarMessageResponse> PARSER =
+        new com.google.protobuf.AbstractParser<GetBarMessageResponse>() {
+      public GetBarMessageResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetBarMessageResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetBarMessageResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_FIELD_NUMBER = 1;
+    private int ret_;
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    public boolean hasRet() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 ret = 1;</code>
+     */
+    public int getRet() {
+      return ret_;
+    }
+
+    public static final int ERR_MSG_FIELD_NUMBER = 2;
+    private java.lang.Object errMsg_;
+    /**
+     * <code>optional string err_msg = 2;</code>
+     */
+    public boolean hasErrMsg() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string err_msg = 2;</code>
+     */
+    public java.lang.String getErrMsg() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          errMsg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string err_msg = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrMsgBytes() {
+      java.lang.Object ref = errMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BAR_MSG_FIELD_NUMBER = 3;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> barMsg_;
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> getBarMsgList() {
+      return barMsg_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> 
+        getBarMsgOrBuilderList() {
+      return barMsg_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    public int getBarMsgCount() {
+      return barMsg_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.BarMessage getBarMsg(int index) {
+      return barMsg_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder getBarMsgOrBuilder(
+        int index) {
+      return barMsg_.get(index);
+    }
+
+    private void initFields() {
+      ret_ = 0;
+      errMsg_ = "";
+      barMsg_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, ret_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getErrMsgBytes());
+      }
+      for (int i = 0; i < barMsg_.size(); i++) {
+        output.writeMessage(3, barMsg_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, ret_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getErrMsgBytes());
+      }
+      for (int i = 0; i < barMsg_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, barMsg_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetBarMessageResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetBarMessageResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetBarMessageResponse)
+        com.wali.live.proto.CommonChannelProto.GetBarMessageResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.class, com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getBarMsgFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ret_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        errMsg_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (barMsgBuilder_ == null) {
+          barMsg_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          barMsgBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetBarMessageResponse getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetBarMessageResponse build() {
+        com.wali.live.proto.CommonChannelProto.GetBarMessageResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetBarMessageResponse buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetBarMessageResponse result = new com.wali.live.proto.CommonChannelProto.GetBarMessageResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ret_ = ret_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.errMsg_ = errMsg_;
+        if (barMsgBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            barMsg_ = java.util.Collections.unmodifiableList(barMsg_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.barMsg_ = barMsg_;
+        } else {
+          result.barMsg_ = barMsgBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetBarMessageResponse) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetBarMessageResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetBarMessageResponse other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetBarMessageResponse.getDefaultInstance()) return this;
+        if (other.hasRet()) {
+          setRet(other.getRet());
+        }
+        if (other.hasErrMsg()) {
+          bitField0_ |= 0x00000002;
+          errMsg_ = other.errMsg_;
+          onChanged();
+        }
+        if (barMsgBuilder_ == null) {
+          if (!other.barMsg_.isEmpty()) {
+            if (barMsg_.isEmpty()) {
+              barMsg_ = other.barMsg_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensureBarMsgIsMutable();
+              barMsg_.addAll(other.barMsg_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.barMsg_.isEmpty()) {
+            if (barMsgBuilder_.isEmpty()) {
+              barMsgBuilder_.dispose();
+              barMsgBuilder_ = null;
+              barMsg_ = other.barMsg_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              barMsgBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getBarMsgFieldBuilder() : null;
+            } else {
+              barMsgBuilder_.addAllMessages(other.barMsg_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetBarMessageResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetBarMessageResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int ret_ ;
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public boolean hasRet() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public int getRet() {
+        return ret_;
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public Builder setRet(int value) {
+        bitField0_ |= 0x00000001;
+        ret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 ret = 1;</code>
+       */
+      public Builder clearRet() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ret_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object errMsg_ = "";
+      /**
+       * <code>optional string err_msg = 2;</code>
+       */
+      public boolean hasErrMsg() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       */
+      public java.lang.String getErrMsg() {
+        java.lang.Object ref = errMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            errMsg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrMsgBytes() {
+        java.lang.Object ref = errMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          errMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       */
+      public Builder setErrMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       */
+      public Builder clearErrMsg() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        errMsg_ = getDefaultInstance().getErrMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string err_msg = 2;</code>
+       */
+      public Builder setErrMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        errMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> barMsg_ =
+        java.util.Collections.emptyList();
+      private void ensureBarMsgIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          barMsg_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.BarMessage>(barMsg_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.BarMessage, com.wali.live.proto.CommonChannelProto.BarMessage.Builder, com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> barMsgBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage> getBarMsgList() {
+        if (barMsgBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(barMsg_);
+        } else {
+          return barMsgBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public int getBarMsgCount() {
+        if (barMsgBuilder_ == null) {
+          return barMsg_.size();
+        } else {
+          return barMsgBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.BarMessage getBarMsg(int index) {
+        if (barMsgBuilder_ == null) {
+          return barMsg_.get(index);
+        } else {
+          return barMsgBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder setBarMsg(
+          int index, com.wali.live.proto.CommonChannelProto.BarMessage value) {
+        if (barMsgBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBarMsgIsMutable();
+          barMsg_.set(index, value);
+          onChanged();
+        } else {
+          barMsgBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder setBarMsg(
+          int index, com.wali.live.proto.CommonChannelProto.BarMessage.Builder builderForValue) {
+        if (barMsgBuilder_ == null) {
+          ensureBarMsgIsMutable();
+          barMsg_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          barMsgBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder addBarMsg(com.wali.live.proto.CommonChannelProto.BarMessage value) {
+        if (barMsgBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBarMsgIsMutable();
+          barMsg_.add(value);
+          onChanged();
+        } else {
+          barMsgBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder addBarMsg(
+          int index, com.wali.live.proto.CommonChannelProto.BarMessage value) {
+        if (barMsgBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureBarMsgIsMutable();
+          barMsg_.add(index, value);
+          onChanged();
+        } else {
+          barMsgBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder addBarMsg(
+          com.wali.live.proto.CommonChannelProto.BarMessage.Builder builderForValue) {
+        if (barMsgBuilder_ == null) {
+          ensureBarMsgIsMutable();
+          barMsg_.add(builderForValue.build());
+          onChanged();
+        } else {
+          barMsgBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder addBarMsg(
+          int index, com.wali.live.proto.CommonChannelProto.BarMessage.Builder builderForValue) {
+        if (barMsgBuilder_ == null) {
+          ensureBarMsgIsMutable();
+          barMsg_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          barMsgBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder addAllBarMsg(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.BarMessage> values) {
+        if (barMsgBuilder_ == null) {
+          ensureBarMsgIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, barMsg_);
+          onChanged();
+        } else {
+          barMsgBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder clearBarMsg() {
+        if (barMsgBuilder_ == null) {
+          barMsg_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          barMsgBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public Builder removeBarMsg(int index) {
+        if (barMsgBuilder_ == null) {
+          ensureBarMsgIsMutable();
+          barMsg_.remove(index);
+          onChanged();
+        } else {
+          barMsgBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.BarMessage.Builder getBarMsgBuilder(
+          int index) {
+        return getBarMsgFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder getBarMsgOrBuilder(
+          int index) {
+        if (barMsgBuilder_ == null) {
+          return barMsg_.get(index);  } else {
+          return barMsgBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> 
+           getBarMsgOrBuilderList() {
+        if (barMsgBuilder_ != null) {
+          return barMsgBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(barMsg_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.BarMessage.Builder addBarMsgBuilder() {
+        return getBarMsgFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.BarMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.BarMessage.Builder addBarMsgBuilder(
+          int index) {
+        return getBarMsgFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.BarMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.BarMessage bar_msg = 3;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.BarMessage.Builder> 
+           getBarMsgBuilderList() {
+        return getBarMsgFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.BarMessage, com.wali.live.proto.CommonChannelProto.BarMessage.Builder, com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder> 
+          getBarMsgFieldBuilder() {
+        if (barMsgBuilder_ == null) {
+          barMsgBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.BarMessage, com.wali.live.proto.CommonChannelProto.BarMessage.Builder, com.wali.live.proto.CommonChannelProto.BarMessageOrBuilder>(
+                  barMsg_,
+                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  getParentForChildren(),
+                  isClean());
+          barMsg_ = null;
+        }
+        return barMsgBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetBarMessageResponse)
+    }
+
+    static {
+      defaultInstance = new GetBarMessageResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBarMessageResponse)
+  }
+
+  public interface GetWaterfallListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallListReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    boolean hasUid();
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    long getUid();
+
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    boolean hasOperType();
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    int getOperType();
+
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频首页频道id
+     * </pre>
+     */
+    boolean hasChannelId();
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频首页频道id
+     * </pre>
+     */
+    int getChannelId();
+
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+     * </pre>
+     */
+    boolean hasParam();
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+     * </pre>
+     */
+    com.google.protobuf.ByteString getParam();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetWaterfallListReq}
+   *
+   * <pre>
+   ****************** zhibo.recommend.videolist 拉小视频列表  *****************
+   * </pre>
+   */
+  public static final class GetWaterfallListReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallListReq)
+      GetWaterfallListReqOrBuilder {
+    // Use GetWaterfallListReq.newBuilder() to construct.
+    private GetWaterfallListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetWaterfallListReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetWaterfallListReq defaultInstance;
+    public static GetWaterfallListReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetWaterfallListReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetWaterfallListReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              operType_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              channelId_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              param_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetWaterfallListReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetWaterfallListReq>() {
+      public GetWaterfallListReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetWaterfallListReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetWaterfallListReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UID_FIELD_NUMBER = 1;
+    private long uid_;
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    public long getUid() {
+      return uid_;
+    }
+
+    public static final int OPER_TYPE_FIELD_NUMBER = 2;
+    private int operType_;
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    public boolean hasOperType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    public int getOperType() {
+      return operType_;
+    }
+
+    public static final int CHANNEL_ID_FIELD_NUMBER = 3;
+    private int channelId_;
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频首页频道id
+     * </pre>
+     */
+    public boolean hasChannelId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频首页频道id
+     * </pre>
+     */
+    public int getChannelId() {
+      return channelId_;
+    }
+
+    public static final int PARAM_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString param_;
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+     * </pre>
+     */
+    public boolean hasParam() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getParam() {
+      return param_;
+    }
+
+    private void initFields() {
+      uid_ = 0L;
+      operType_ = 0;
+      channelId_ = 0;
+      param_ = com.google.protobuf.ByteString.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, operType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, channelId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, param_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, operType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, channelId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, param_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetWaterfallListReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetWaterfallListReq}
+     *
+     * <pre>
+     ****************** zhibo.recommend.videolist 拉小视频列表  *****************
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallListReq)
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        operType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        channelId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        param_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallListReq getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallListReq build() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallListReq buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListReq result = new com.wali.live.proto.CommonChannelProto.GetWaterfallListReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uid_ = uid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.operType_ = operType_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.channelId_ = channelId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.param_ = param_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetWaterfallListReq) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetWaterfallListReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetWaterfallListReq other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetWaterfallListReq.getDefaultInstance()) return this;
+        if (other.hasUid()) {
+          setUid(other.getUid());
+        }
+        if (other.hasOperType()) {
+          setOperType(other.getOperType());
+        }
+        if (other.hasChannelId()) {
+          setChannelId(other.getChannelId());
+        }
+        if (other.hasParam()) {
+          setParam(other.getParam());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetWaterfallListReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uid_ ;
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public long getUid() {
+        return uid_;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public Builder setUid(long value) {
+        bitField0_ |= 0x00000001;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int operType_ ;
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public boolean hasOperType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public int getOperType() {
+        return operType_;
+      }
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public Builder setOperType(int value) {
+        bitField0_ |= 0x00000002;
+        operType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public Builder clearOperType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        operType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int channelId_ ;
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频首页频道id
+       * </pre>
+       */
+      public boolean hasChannelId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频首页频道id
+       * </pre>
+       */
+      public int getChannelId() {
+        return channelId_;
+      }
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频首页频道id
+       * </pre>
+       */
+      public Builder setChannelId(int value) {
+        bitField0_ |= 0x00000004;
+        channelId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频首页频道id
+       * </pre>
+       */
+      public Builder clearChannelId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        channelId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString param_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+       * </pre>
+       */
+      public boolean hasParam() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getParam() {
+        return param_;
+      }
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+       * </pre>
+       */
+      public Builder setParam(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        param_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。app第一次安装或者清掉缓存后不用填，
+       * </pre>
+       */
+      public Builder clearParam() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        param_ = getDefaultInstance().getParam();
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallListReq)
+    }
+
+    static {
+      defaultInstance = new GetWaterfallListReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallListReq)
+  }
+
+  public interface GetWaterfallListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallListRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    boolean hasRet();
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    int getRet();
+
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> 
+        getElemList();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.WatElement getElem(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    int getElemCount();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+        getElemOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+        int index);
+
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    boolean hasParam();
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    com.google.protobuf.ByteString getParam();
+
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    boolean hasHasMore();
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    boolean getHasMore();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetWaterfallListRsp}
+   */
+  public static final class GetWaterfallListRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallListRsp)
+      GetWaterfallListRspOrBuilder {
+    // Use GetWaterfallListRsp.newBuilder() to construct.
+    private GetWaterfallListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetWaterfallListRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetWaterfallListRsp defaultInstance;
+    public static GetWaterfallListRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetWaterfallListRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetWaterfallListRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ret_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                elem_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.WatElement>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              elem_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.WatElement.PARSER, extensionRegistry));
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000002;
+              param_ = input.readBytes();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000004;
+              hasMore_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          elem_ = java.util.Collections.unmodifiableList(elem_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetWaterfallListRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetWaterfallListRsp>() {
+      public GetWaterfallListRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetWaterfallListRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetWaterfallListRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_FIELD_NUMBER = 1;
+    private int ret_;
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public boolean hasRet() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public int getRet() {
+      return ret_;
+    }
+
+    public static final int ELEM_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_;
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> getElemList() {
+      return elem_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+        getElemOrBuilderList() {
+      return elem_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public int getElemCount() {
+      return elem_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.WatElement getElem(int index) {
+      return elem_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+        int index) {
+      return elem_.get(index);
+    }
+
+    public static final int PARAM_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString param_;
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    public boolean hasParam() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getParam() {
+      return param_;
+    }
+
+    public static final int HAS_MORE_FIELD_NUMBER = 4;
+    private boolean hasMore_;
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    public boolean hasHasMore() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    public boolean getHasMore() {
+      return hasMore_;
+    }
+
+    private void initFields() {
+      ret_ = 0;
+      elem_ = java.util.Collections.emptyList();
+      param_ = com.google.protobuf.ByteString.EMPTY;
+      hasMore_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRet()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getElemCount(); i++) {
+        if (!getElem(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, ret_);
+      }
+      for (int i = 0; i < elem_.size(); i++) {
+        output.writeMessage(2, elem_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(3, param_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(4, hasMore_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, ret_);
+      }
+      for (int i = 0; i < elem_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, elem_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, param_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, hasMore_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetWaterfallListRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallListRsp)
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getElemFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ret_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (elemBuilder_ == null) {
+          elem_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          elemBuilder_.clear();
+        }
+        param_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        hasMore_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp build() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp result = new com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ret_ = ret_;
+        if (elemBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            elem_ = java.util.Collections.unmodifiableList(elem_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.elem_ = elem_;
+        } else {
+          result.elem_ = elemBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.param_ = param_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.hasMore_ = hasMore_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp.getDefaultInstance()) return this;
+        if (other.hasRet()) {
+          setRet(other.getRet());
+        }
+        if (elemBuilder_ == null) {
+          if (!other.elem_.isEmpty()) {
+            if (elem_.isEmpty()) {
+              elem_ = other.elem_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureElemIsMutable();
+              elem_.addAll(other.elem_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.elem_.isEmpty()) {
+            if (elemBuilder_.isEmpty()) {
+              elemBuilder_.dispose();
+              elemBuilder_ = null;
+              elem_ = other.elem_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              elemBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getElemFieldBuilder() : null;
+            } else {
+              elemBuilder_.addAllMessages(other.elem_);
+            }
+          }
+        }
+        if (other.hasParam()) {
+          setParam(other.getParam());
+        }
+        if (other.hasHasMore()) {
+          setHasMore(other.getHasMore());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRet()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getElemCount(); i++) {
+          if (!getElem(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetWaterfallListRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int ret_ ;
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public boolean hasRet() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public int getRet() {
+        return ret_;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder setRet(int value) {
+        bitField0_ |= 0x00000001;
+        ret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder clearRet() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ret_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_ =
+        java.util.Collections.emptyList();
+      private void ensureElemIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          elem_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.WatElement>(elem_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> elemBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> getElemList() {
+        if (elemBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(elem_);
+        } else {
+          return elemBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public int getElemCount() {
+        if (elemBuilder_ == null) {
+          return elem_.size();
+        } else {
+          return elemBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement getElem(int index) {
+        if (elemBuilder_ == null) {
+          return elem_.get(index);
+        } else {
+          return elemBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder setElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.set(index, value);
+          onChanged();
+        } else {
+          elemBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder setElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.add(value);
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.add(index, value);
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.add(builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addAllElem(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.WatElement> values) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, elem_);
+          onChanged();
+        } else {
+          elemBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder clearElem() {
+        if (elemBuilder_ == null) {
+          elem_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          elemBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder removeElem(int index) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.remove(index);
+          onChanged();
+        } else {
+          elemBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder getElemBuilder(
+          int index) {
+        return getElemFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+          int index) {
+        if (elemBuilder_ == null) {
+          return elem_.get(index);  } else {
+          return elemBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+           getElemOrBuilderList() {
+        if (elemBuilder_ != null) {
+          return elemBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(elem_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder addElemBuilder() {
+        return getElemFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder addElemBuilder(
+          int index) {
+        return getElemFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement.Builder> 
+           getElemBuilderList() {
+        return getElemFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+          getElemFieldBuilder() {
+        if (elemBuilder_ == null) {
+          elemBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder>(
+                  elem_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          elem_ = null;
+        }
+        return elemBuilder_;
+      }
+
+      private com.google.protobuf.ByteString param_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public boolean hasParam() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getParam() {
+        return param_;
+      }
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public Builder setParam(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        param_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public Builder clearParam() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        param_ = getDefaultInstance().getParam();
+        onChanged();
+        return this;
+      }
+
+      private boolean hasMore_ ;
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public boolean hasHasMore() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public boolean getHasMore() {
+        return hasMore_;
+      }
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public Builder setHasMore(boolean value) {
+        bitField0_ |= 0x00000008;
+        hasMore_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public Builder clearHasMore() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        hasMore_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallListRsp)
+    }
+
+    static {
+      defaultInstance = new GetWaterfallListRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallListRsp)
+  }
+
+  public interface WatElementOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.WatElement)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 data_type = 1;</code>
+     *
+     * <pre>
+     *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+     * </pre>
+     */
+    boolean hasDataType();
+    /**
+     * <code>required uint32 data_type = 1;</code>
+     *
+     * <pre>
+     *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+     * </pre>
+     */
+    int getDataType();
+
+    /**
+     * <code>required bytes data = 2;</code>
+     *
+     * <pre>
+     *数据内容, data_type：4=VideoData，6=ImageData
+     * </pre>
+     */
+    boolean hasData();
+    /**
+     * <code>required bytes data = 2;</code>
+     *
+     * <pre>
+     *数据内容, data_type：4=VideoData，6=ImageData
+     * </pre>
+     */
+    com.google.protobuf.ByteString getData();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.WatElement}
+   */
+  public static final class WatElement extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.WatElement)
+      WatElementOrBuilder {
+    // Use WatElement.newBuilder() to construct.
+    private WatElement(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private WatElement(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final WatElement defaultInstance;
+    public static WatElement getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public WatElement getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private WatElement(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              dataType_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              data_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.WatElement.class, com.wali.live.proto.CommonChannelProto.WatElement.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<WatElement> PARSER =
+        new com.google.protobuf.AbstractParser<WatElement>() {
+      public WatElement parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new WatElement(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<WatElement> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int DATA_TYPE_FIELD_NUMBER = 1;
+    private int dataType_;
+    /**
+     * <code>required uint32 data_type = 1;</code>
+     *
+     * <pre>
+     *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+     * </pre>
+     */
+    public boolean hasDataType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 data_type = 1;</code>
+     *
+     * <pre>
+     *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+     * </pre>
+     */
+    public int getDataType() {
+      return dataType_;
+    }
+
+    public static final int DATA_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString data_;
+    /**
+     * <code>required bytes data = 2;</code>
+     *
+     * <pre>
+     *数据内容, data_type：4=VideoData，6=ImageData
+     * </pre>
+     */
+    public boolean hasData() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required bytes data = 2;</code>
+     *
+     * <pre>
+     *数据内容, data_type：4=VideoData，6=ImageData
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getData() {
+      return data_;
+    }
+
+    private void initFields() {
+      dataType_ = 0;
+      data_ = com.google.protobuf.ByteString.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasDataType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasData()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, dataType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, data_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, dataType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, data_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.WatElement parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.WatElement prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.WatElement}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.WatElement)
+        com.wali.live.proto.CommonChannelProto.WatElementOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.WatElement.class, com.wali.live.proto.CommonChannelProto.WatElement.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.WatElement.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        dataType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        data_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_WatElement_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.WatElement getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.WatElement build() {
+        com.wali.live.proto.CommonChannelProto.WatElement result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.WatElement buildPartial() {
+        com.wali.live.proto.CommonChannelProto.WatElement result = new com.wali.live.proto.CommonChannelProto.WatElement(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.dataType_ = dataType_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.data_ = data_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.WatElement) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.WatElement)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.WatElement other) {
+        if (other == com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance()) return this;
+        if (other.hasDataType()) {
+          setDataType(other.getDataType());
+        }
+        if (other.hasData()) {
+          setData(other.getData());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasDataType()) {
+          
+          return false;
+        }
+        if (!hasData()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.WatElement parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.WatElement) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int dataType_ ;
+      /**
+       * <code>required uint32 data_type = 1;</code>
+       *
+       * <pre>
+       *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+       * </pre>
+       */
+      public boolean hasDataType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 data_type = 1;</code>
+       *
+       * <pre>
+       *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+       * </pre>
+       */
+      public int getDataType() {
+        return dataType_;
+      }
+      /**
+       * <code>required uint32 data_type = 1;</code>
+       *
+       * <pre>
+       *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+       * </pre>
+       */
+      public Builder setDataType(int value) {
+        bitField0_ |= 0x00000001;
+        dataType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 data_type = 1;</code>
+       *
+       * <pre>
+       *数据类型[同模板协议LiveOrReplayItemInfo中的type],目前只有2种类型，4=feeds小视频,6=可跳转图文 7 = ButtonData 小视频创建button
+       * </pre>
+       */
+      public Builder clearDataType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        dataType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>required bytes data = 2;</code>
+       *
+       * <pre>
+       *数据内容, data_type：4=VideoData，6=ImageData
+       * </pre>
+       */
+      public boolean hasData() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required bytes data = 2;</code>
+       *
+       * <pre>
+       *数据内容, data_type：4=VideoData，6=ImageData
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getData() {
+        return data_;
+      }
+      /**
+       * <code>required bytes data = 2;</code>
+       *
+       * <pre>
+       *数据内容, data_type：4=VideoData，6=ImageData
+       * </pre>
+       */
+      public Builder setData(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        data_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bytes data = 2;</code>
+       *
+       * <pre>
+       *数据内容, data_type：4=VideoData，6=ImageData
+       * </pre>
+       */
+      public Builder clearData() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        data_ = getDefaultInstance().getData();
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.WatElement)
+    }
+
+    static {
+      defaultInstance = new WatElement(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.WatElement)
+  }
+
+  public interface VideoDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string feed_id = 1;</code>
+     *
+     * <pre>
+     *视频对应的feedId
+     * </pre>
+     */
+    boolean hasFeedId();
+    /**
+     * <code>optional string feed_id = 1;</code>
+     *
+     * <pre>
+     *视频对应的feedId
+     * </pre>
+     */
+    java.lang.String getFeedId();
+    /**
+     * <code>optional string feed_id = 1;</code>
+     *
+     * <pre>
+     *视频对应的feedId
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getFeedIdBytes();
+
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    boolean hasJumpUri();
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    java.lang.String getJumpUri();
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getJumpUriBytes();
+
+    /**
+     * <code>optional string cover_url = 3;</code>
+     *
+     * <pre>
+     *视频封面
+     * </pre>
+     */
+    boolean hasCoverUrl();
+    /**
+     * <code>optional string cover_url = 3;</code>
+     *
+     * <pre>
+     *视频封面
+     * </pre>
+     */
+    java.lang.String getCoverUrl();
+    /**
+     * <code>optional string cover_url = 3;</code>
+     *
+     * <pre>
+     *视频封面
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCoverUrlBytes();
+
+    /**
+     * <code>optional uint32 width = 4;</code>
+     *
+     * <pre>
+     *图片或者小视频宽度
+     * </pre>
+     */
+    boolean hasWidth();
+    /**
+     * <code>optional uint32 width = 4;</code>
+     *
+     * <pre>
+     *图片或者小视频宽度
+     * </pre>
+     */
+    int getWidth();
+
+    /**
+     * <code>optional uint32 height = 5;</code>
+     *
+     * <pre>
+     *图片或者小视频高度
+     * </pre>
+     */
+    boolean hasHeight();
+    /**
+     * <code>optional uint32 height = 5;</code>
+     *
+     * <pre>
+     *图片或者小视频高度
+     * </pre>
+     */
+    int getHeight();
+
+    /**
+     * <code>optional string title = 6;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    boolean hasTitle();
+    /**
+     * <code>optional string title = 6;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    java.lang.String getTitle();
+    /**
+     * <code>optional string title = 6;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTitleBytes();
+
+    /**
+     * <code>optional uint64 like_count = 7;</code>
+     *
+     * <pre>
+     *点赞数
+     * </pre>
+     */
+    boolean hasLikeCount();
+    /**
+     * <code>optional uint64 like_count = 7;</code>
+     *
+     * <pre>
+     *点赞数
+     * </pre>
+     */
+    long getLikeCount();
+
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     *
+     * <pre>
+     *用户资料[同模板协议UserInfo]
+     * </pre>
+     */
+    boolean hasUser();
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     *
+     * <pre>
+     *用户资料[同模板协议UserInfo]
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.UserInfo getUser();
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     *
+     * <pre>
+     *用户资料[同模板协议UserInfo]
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserOrBuilder();
+
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    boolean hasMark();
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.RichText getMark();
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getMarkOrBuilder();
+
+    /**
+     * <code>optional bool is_liked = 10;</code>
+     *
+     * <pre>
+     *用户是否已经赞过
+     * </pre>
+     */
+    boolean hasIsLiked();
+    /**
+     * <code>optional bool is_liked = 10;</code>
+     *
+     * <pre>
+     *用户是否已经赞过
+     * </pre>
+     */
+    boolean getIsLiked();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.VideoData}
+   */
+  public static final class VideoData extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoData)
+      VideoDataOrBuilder {
+    // Use VideoData.newBuilder() to construct.
+    private VideoData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private VideoData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final VideoData defaultInstance;
+    public static VideoData getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public VideoData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private VideoData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              feedId_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              jumpUri_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              coverUrl_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              width_ = input.readUInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              height_ = input.readUInt32();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              title_ = bs;
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              likeCount_ = input.readUInt64();
+              break;
+            }
+            case 66: {
+              com.wali.live.proto.CommonChannelProto.UserInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                subBuilder = user_.toBuilder();
+              }
+              user_ = input.readMessage(com.wali.live.proto.CommonChannelProto.UserInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(user_);
+                user_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000080;
+              break;
+            }
+            case 74: {
+              com.wali.live.proto.CommonChannelProto.RichText.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                subBuilder = mark_.toBuilder();
+              }
+              mark_ = input.readMessage(com.wali.live.proto.CommonChannelProto.RichText.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(mark_);
+                mark_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000100;
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              isLiked_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.VideoData.class, com.wali.live.proto.CommonChannelProto.VideoData.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<VideoData> PARSER =
+        new com.google.protobuf.AbstractParser<VideoData>() {
+      public VideoData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new VideoData(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<VideoData> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FEED_ID_FIELD_NUMBER = 1;
+    private java.lang.Object feedId_;
+    /**
+     * <code>optional string feed_id = 1;</code>
+     *
+     * <pre>
+     *视频对应的feedId
+     * </pre>
+     */
+    public boolean hasFeedId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string feed_id = 1;</code>
+     *
+     * <pre>
+     *视频对应的feedId
+     * </pre>
+     */
+    public java.lang.String getFeedId() {
+      java.lang.Object ref = feedId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          feedId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string feed_id = 1;</code>
+     *
+     * <pre>
+     *视频对应的feedId
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getFeedIdBytes() {
+      java.lang.Object ref = feedId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        feedId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int JUMP_URI_FIELD_NUMBER = 2;
+    private java.lang.Object jumpUri_;
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    public boolean hasJumpUri() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    public java.lang.String getJumpUri() {
+      java.lang.Object ref = jumpUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          jumpUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getJumpUriBytes() {
+      java.lang.Object ref = jumpUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        jumpUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int COVER_URL_FIELD_NUMBER = 3;
+    private java.lang.Object coverUrl_;
+    /**
+     * <code>optional string cover_url = 3;</code>
+     *
+     * <pre>
+     *视频封面
+     * </pre>
+     */
+    public boolean hasCoverUrl() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string cover_url = 3;</code>
+     *
+     * <pre>
+     *视频封面
+     * </pre>
+     */
+    public java.lang.String getCoverUrl() {
+      java.lang.Object ref = coverUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          coverUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string cover_url = 3;</code>
+     *
+     * <pre>
+     *视频封面
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCoverUrlBytes() {
+      java.lang.Object ref = coverUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        coverUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WIDTH_FIELD_NUMBER = 4;
+    private int width_;
+    /**
+     * <code>optional uint32 width = 4;</code>
+     *
+     * <pre>
+     *图片或者小视频宽度
+     * </pre>
+     */
+    public boolean hasWidth() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 width = 4;</code>
+     *
+     * <pre>
+     *图片或者小视频宽度
+     * </pre>
+     */
+    public int getWidth() {
+      return width_;
+    }
+
+    public static final int HEIGHT_FIELD_NUMBER = 5;
+    private int height_;
+    /**
+     * <code>optional uint32 height = 5;</code>
+     *
+     * <pre>
+     *图片或者小视频高度
+     * </pre>
+     */
+    public boolean hasHeight() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional uint32 height = 5;</code>
+     *
+     * <pre>
+     *图片或者小视频高度
+     * </pre>
+     */
+    public int getHeight() {
+      return height_;
+    }
+
+    public static final int TITLE_FIELD_NUMBER = 6;
+    private java.lang.Object title_;
+    /**
+     * <code>optional string title = 6;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public boolean hasTitle() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string title = 6;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public java.lang.String getTitle() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          title_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string title = 6;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTitleBytes() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        title_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LIKE_COUNT_FIELD_NUMBER = 7;
+    private long likeCount_;
+    /**
+     * <code>optional uint64 like_count = 7;</code>
+     *
+     * <pre>
+     *点赞数
+     * </pre>
+     */
+    public boolean hasLikeCount() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional uint64 like_count = 7;</code>
+     *
+     * <pre>
+     *点赞数
+     * </pre>
+     */
+    public long getLikeCount() {
+      return likeCount_;
+    }
+
+    public static final int USER_FIELD_NUMBER = 8;
+    private com.wali.live.proto.CommonChannelProto.UserInfo user_;
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     *
+     * <pre>
+     *用户资料[同模板协议UserInfo]
+     * </pre>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     *
+     * <pre>
+     *用户资料[同模板协议UserInfo]
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.UserInfo getUser() {
+      return user_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+     *
+     * <pre>
+     *用户资料[同模板协议UserInfo]
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserOrBuilder() {
+      return user_;
+    }
+
+    public static final int MARK_FIELD_NUMBER = 9;
+    private com.wali.live.proto.CommonChannelProto.RichText mark_;
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    public boolean hasMark() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.RichText getMark() {
+      return mark_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getMarkOrBuilder() {
+      return mark_;
+    }
+
+    public static final int IS_LIKED_FIELD_NUMBER = 10;
+    private boolean isLiked_;
+    /**
+     * <code>optional bool is_liked = 10;</code>
+     *
+     * <pre>
+     *用户是否已经赞过
+     * </pre>
+     */
+    public boolean hasIsLiked() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional bool is_liked = 10;</code>
+     *
+     * <pre>
+     *用户是否已经赞过
+     * </pre>
+     */
+    public boolean getIsLiked() {
+      return isLiked_;
+    }
+
+    private void initFields() {
+      feedId_ = "";
+      jumpUri_ = "";
+      coverUrl_ = "";
+      width_ = 0;
+      height_ = 0;
+      title_ = "";
+      likeCount_ = 0L;
+      user_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+      mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+      isLiked_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasUser()) {
+        if (!getUser().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getFeedIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getJumpUriBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getCoverUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, width_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeUInt32(5, height_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getTitleBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeUInt64(7, likeCount_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeMessage(8, user_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeMessage(9, mark_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBool(10, isLiked_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getFeedIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getJumpUriBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getCoverUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, width_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, height_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getTitleBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(7, likeCount_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, user_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, mark_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(10, isLiked_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.VideoData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.VideoData prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.VideoData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoData)
+        com.wali.live.proto.CommonChannelProto.VideoDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.VideoData.class, com.wali.live.proto.CommonChannelProto.VideoData.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.VideoData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getUserFieldBuilder();
+          getMarkFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        feedId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        jumpUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        coverUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        width_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        height_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        title_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        likeCount_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        if (userBuilder_ == null) {
+          user_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+        } else {
+          userBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000080);
+        if (markBuilder_ == null) {
+          mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+        } else {
+          markBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000100);
+        isLiked_ = false;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_VideoData_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoData getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.VideoData.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoData build() {
+        com.wali.live.proto.CommonChannelProto.VideoData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.VideoData buildPartial() {
+        com.wali.live.proto.CommonChannelProto.VideoData result = new com.wali.live.proto.CommonChannelProto.VideoData(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.feedId_ = feedId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.jumpUri_ = jumpUri_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.coverUrl_ = coverUrl_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.width_ = width_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.height_ = height_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.title_ = title_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.likeCount_ = likeCount_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        if (userBuilder_ == null) {
+          result.user_ = user_;
+        } else {
+          result.user_ = userBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        if (markBuilder_ == null) {
+          result.mark_ = mark_;
+        } else {
+          result.mark_ = markBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.isLiked_ = isLiked_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.VideoData) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.VideoData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.VideoData other) {
+        if (other == com.wali.live.proto.CommonChannelProto.VideoData.getDefaultInstance()) return this;
+        if (other.hasFeedId()) {
+          bitField0_ |= 0x00000001;
+          feedId_ = other.feedId_;
+          onChanged();
+        }
+        if (other.hasJumpUri()) {
+          bitField0_ |= 0x00000002;
+          jumpUri_ = other.jumpUri_;
+          onChanged();
+        }
+        if (other.hasCoverUrl()) {
+          bitField0_ |= 0x00000004;
+          coverUrl_ = other.coverUrl_;
+          onChanged();
+        }
+        if (other.hasWidth()) {
+          setWidth(other.getWidth());
+        }
+        if (other.hasHeight()) {
+          setHeight(other.getHeight());
+        }
+        if (other.hasTitle()) {
+          bitField0_ |= 0x00000020;
+          title_ = other.title_;
+          onChanged();
+        }
+        if (other.hasLikeCount()) {
+          setLikeCount(other.getLikeCount());
+        }
+        if (other.hasUser()) {
+          mergeUser(other.getUser());
+        }
+        if (other.hasMark()) {
+          mergeMark(other.getMark());
+        }
+        if (other.hasIsLiked()) {
+          setIsLiked(other.getIsLiked());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasUser()) {
+          if (!getUser().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.VideoData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.VideoData) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object feedId_ = "";
+      /**
+       * <code>optional string feed_id = 1;</code>
+       *
+       * <pre>
+       *视频对应的feedId
+       * </pre>
+       */
+      public boolean hasFeedId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string feed_id = 1;</code>
+       *
+       * <pre>
+       *视频对应的feedId
+       * </pre>
+       */
+      public java.lang.String getFeedId() {
+        java.lang.Object ref = feedId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            feedId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string feed_id = 1;</code>
+       *
+       * <pre>
+       *视频对应的feedId
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getFeedIdBytes() {
+        java.lang.Object ref = feedId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          feedId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string feed_id = 1;</code>
+       *
+       * <pre>
+       *视频对应的feedId
+       * </pre>
+       */
+      public Builder setFeedId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        feedId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string feed_id = 1;</code>
+       *
+       * <pre>
+       *视频对应的feedId
+       * </pre>
+       */
+      public Builder clearFeedId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        feedId_ = getDefaultInstance().getFeedId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string feed_id = 1;</code>
+       *
+       * <pre>
+       *视频对应的feedId
+       * </pre>
+       */
+      public Builder setFeedIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        feedId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object jumpUri_ = "";
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public boolean hasJumpUri() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public java.lang.String getJumpUri() {
+        java.lang.Object ref = jumpUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getJumpUriBytes() {
+        java.lang.Object ref = jumpUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          jumpUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public Builder setJumpUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public Builder clearJumpUri() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        jumpUri_ = getDefaultInstance().getJumpUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public Builder setJumpUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object coverUrl_ = "";
+      /**
+       * <code>optional string cover_url = 3;</code>
+       *
+       * <pre>
+       *视频封面
+       * </pre>
+       */
+      public boolean hasCoverUrl() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string cover_url = 3;</code>
+       *
+       * <pre>
+       *视频封面
+       * </pre>
+       */
+      public java.lang.String getCoverUrl() {
+        java.lang.Object ref = coverUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coverUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string cover_url = 3;</code>
+       *
+       * <pre>
+       *视频封面
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCoverUrlBytes() {
+        java.lang.Object ref = coverUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          coverUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string cover_url = 3;</code>
+       *
+       * <pre>
+       *视频封面
+       * </pre>
+       */
+      public Builder setCoverUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        coverUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string cover_url = 3;</code>
+       *
+       * <pre>
+       *视频封面
+       * </pre>
+       */
+      public Builder clearCoverUrl() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        coverUrl_ = getDefaultInstance().getCoverUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string cover_url = 3;</code>
+       *
+       * <pre>
+       *视频封面
+       * </pre>
+       */
+      public Builder setCoverUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        coverUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int width_ ;
+      /**
+       * <code>optional uint32 width = 4;</code>
+       *
+       * <pre>
+       *图片或者小视频宽度
+       * </pre>
+       */
+      public boolean hasWidth() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 width = 4;</code>
+       *
+       * <pre>
+       *图片或者小视频宽度
+       * </pre>
+       */
+      public int getWidth() {
+        return width_;
+      }
+      /**
+       * <code>optional uint32 width = 4;</code>
+       *
+       * <pre>
+       *图片或者小视频宽度
+       * </pre>
+       */
+      public Builder setWidth(int value) {
+        bitField0_ |= 0x00000008;
+        width_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 width = 4;</code>
+       *
+       * <pre>
+       *图片或者小视频宽度
+       * </pre>
+       */
+      public Builder clearWidth() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        width_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int height_ ;
+      /**
+       * <code>optional uint32 height = 5;</code>
+       *
+       * <pre>
+       *图片或者小视频高度
+       * </pre>
+       */
+      public boolean hasHeight() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional uint32 height = 5;</code>
+       *
+       * <pre>
+       *图片或者小视频高度
+       * </pre>
+       */
+      public int getHeight() {
+        return height_;
+      }
+      /**
+       * <code>optional uint32 height = 5;</code>
+       *
+       * <pre>
+       *图片或者小视频高度
+       * </pre>
+       */
+      public Builder setHeight(int value) {
+        bitField0_ |= 0x00000010;
+        height_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 height = 5;</code>
+       *
+       * <pre>
+       *图片或者小视频高度
+       * </pre>
+       */
+      public Builder clearHeight() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        height_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object title_ = "";
+      /**
+       * <code>optional string title = 6;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public boolean hasTitle() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string title = 6;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public java.lang.String getTitle() {
+        java.lang.Object ref = title_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 6;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTitleBytes() {
+        java.lang.Object ref = title_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          title_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 6;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 6;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder clearTitle() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        title_ = getDefaultInstance().getTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 6;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long likeCount_ ;
+      /**
+       * <code>optional uint64 like_count = 7;</code>
+       *
+       * <pre>
+       *点赞数
+       * </pre>
+       */
+      public boolean hasLikeCount() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional uint64 like_count = 7;</code>
+       *
+       * <pre>
+       *点赞数
+       * </pre>
+       */
+      public long getLikeCount() {
+        return likeCount_;
+      }
+      /**
+       * <code>optional uint64 like_count = 7;</code>
+       *
+       * <pre>
+       *点赞数
+       * </pre>
+       */
+      public Builder setLikeCount(long value) {
+        bitField0_ |= 0x00000040;
+        likeCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 like_count = 7;</code>
+       *
+       * <pre>
+       *点赞数
+       * </pre>
+       */
+      public Builder clearLikeCount() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        likeCount_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.CommonChannelProto.UserInfo user_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> userBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfo getUser() {
+        if (userBuilder_ == null) {
+          return user_;
+        } else {
+          return userBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public Builder setUser(com.wali.live.proto.CommonChannelProto.UserInfo value) {
+        if (userBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          user_ = value;
+          onChanged();
+        } else {
+          userBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public Builder setUser(
+          com.wali.live.proto.CommonChannelProto.UserInfo.Builder builderForValue) {
+        if (userBuilder_ == null) {
+          user_ = builderForValue.build();
+          onChanged();
+        } else {
+          userBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public Builder mergeUser(com.wali.live.proto.CommonChannelProto.UserInfo value) {
+        if (userBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) == 0x00000080) &&
+              user_ != com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance()) {
+            user_ =
+              com.wali.live.proto.CommonChannelProto.UserInfo.newBuilder(user_).mergeFrom(value).buildPartial();
+          } else {
+            user_ = value;
+          }
+          onChanged();
+        } else {
+          userBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public Builder clearUser() {
+        if (userBuilder_ == null) {
+          user_ = com.wali.live.proto.CommonChannelProto.UserInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          userBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000080);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfo.Builder getUserBuilder() {
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return getUserFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder getUserOrBuilder() {
+        if (userBuilder_ != null) {
+          return userBuilder_.getMessageOrBuilder();
+        } else {
+          return user_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserInfo user = 8;</code>
+       *
+       * <pre>
+       *用户资料[同模板协议UserInfo]
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder> 
+          getUserFieldBuilder() {
+        if (userBuilder_ == null) {
+          userBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.UserInfo, com.wali.live.proto.CommonChannelProto.UserInfo.Builder, com.wali.live.proto.CommonChannelProto.UserInfoOrBuilder>(
+                  getUser(),
+                  getParentForChildren(),
+                  isClean());
+          user_ = null;
+        }
+        return userBuilder_;
+      }
+
+      private com.wali.live.proto.CommonChannelProto.RichText mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> markBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public boolean hasMark() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.RichText getMark() {
+        if (markBuilder_ == null) {
+          return mark_;
+        } else {
+          return markBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder setMark(com.wali.live.proto.CommonChannelProto.RichText value) {
+        if (markBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          mark_ = value;
+          onChanged();
+        } else {
+          markBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder setMark(
+          com.wali.live.proto.CommonChannelProto.RichText.Builder builderForValue) {
+        if (markBuilder_ == null) {
+          mark_ = builderForValue.build();
+          onChanged();
+        } else {
+          markBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder mergeMark(com.wali.live.proto.CommonChannelProto.RichText value) {
+        if (markBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+              mark_ != com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance()) {
+            mark_ =
+              com.wali.live.proto.CommonChannelProto.RichText.newBuilder(mark_).mergeFrom(value).buildPartial();
+          } else {
+            mark_ = value;
+          }
+          onChanged();
+        } else {
+          markBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder clearMark() {
+        if (markBuilder_ == null) {
+          mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+          onChanged();
+        } else {
+          markBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.RichText.Builder getMarkBuilder() {
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return getMarkFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getMarkOrBuilder() {
+        if (markBuilder_ != null) {
+          return markBuilder_.getMessageOrBuilder();
+        } else {
+          return mark_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 9;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> 
+          getMarkFieldBuilder() {
+        if (markBuilder_ == null) {
+          markBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder>(
+                  getMark(),
+                  getParentForChildren(),
+                  isClean());
+          mark_ = null;
+        }
+        return markBuilder_;
+      }
+
+      private boolean isLiked_ ;
+      /**
+       * <code>optional bool is_liked = 10;</code>
+       *
+       * <pre>
+       *用户是否已经赞过
+       * </pre>
+       */
+      public boolean hasIsLiked() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional bool is_liked = 10;</code>
+       *
+       * <pre>
+       *用户是否已经赞过
+       * </pre>
+       */
+      public boolean getIsLiked() {
+        return isLiked_;
+      }
+      /**
+       * <code>optional bool is_liked = 10;</code>
+       *
+       * <pre>
+       *用户是否已经赞过
+       * </pre>
+       */
+      public Builder setIsLiked(boolean value) {
+        bitField0_ |= 0x00000200;
+        isLiked_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_liked = 10;</code>
+       *
+       * <pre>
+       *用户是否已经赞过
+       * </pre>
+       */
+      public Builder clearIsLiked() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        isLiked_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoData)
+    }
+
+    static {
+      defaultInstance = new VideoData(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoData)
+  }
+
+  public interface ImageDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ImageData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string image_url = 1;</code>
+     *
+     * <pre>
+     *封面url
+     * </pre>
+     */
+    boolean hasImageUrl();
+    /**
+     * <code>optional string image_url = 1;</code>
+     *
+     * <pre>
+     *封面url
+     * </pre>
+     */
+    java.lang.String getImageUrl();
+    /**
+     * <code>optional string image_url = 1;</code>
+     *
+     * <pre>
+     *封面url
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getImageUrlBytes();
+
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    boolean hasJumpUri();
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    java.lang.String getJumpUri();
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getJumpUriBytes();
+
+    /**
+     * <code>optional uint32 width = 3;</code>
+     *
+     * <pre>
+     *图片宽度
+     * </pre>
+     */
+    boolean hasWidth();
+    /**
+     * <code>optional uint32 width = 3;</code>
+     *
+     * <pre>
+     *图片宽度
+     * </pre>
+     */
+    int getWidth();
+
+    /**
+     * <code>optional uint32 height = 4;</code>
+     *
+     * <pre>
+     *图片高度
+     * </pre>
+     */
+    boolean hasHeight();
+    /**
+     * <code>optional uint32 height = 4;</code>
+     *
+     * <pre>
+     *图片高度
+     * </pre>
+     */
+    int getHeight();
+
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    boolean hasTitle();
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    java.lang.String getTitle();
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTitleBytes();
+
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    boolean hasMark();
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.RichText getMark();
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getMarkOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ImageData}
+   */
+  public static final class ImageData extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ImageData)
+      ImageDataOrBuilder {
+    // Use ImageData.newBuilder() to construct.
+    private ImageData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ImageData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ImageData defaultInstance;
+    public static ImageData getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ImageData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ImageData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              imageUrl_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              jumpUri_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              width_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              height_ = input.readUInt32();
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              title_ = bs;
+              break;
+            }
+            case 50: {
+              com.wali.live.proto.CommonChannelProto.RichText.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = mark_.toBuilder();
+              }
+              mark_ = input.readMessage(com.wali.live.proto.CommonChannelProto.RichText.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(mark_);
+                mark_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000020;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.ImageData.class, com.wali.live.proto.CommonChannelProto.ImageData.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ImageData> PARSER =
+        new com.google.protobuf.AbstractParser<ImageData>() {
+      public ImageData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ImageData(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ImageData> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int IMAGE_URL_FIELD_NUMBER = 1;
+    private java.lang.Object imageUrl_;
+    /**
+     * <code>optional string image_url = 1;</code>
+     *
+     * <pre>
+     *封面url
+     * </pre>
+     */
+    public boolean hasImageUrl() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string image_url = 1;</code>
+     *
+     * <pre>
+     *封面url
+     * </pre>
+     */
+    public java.lang.String getImageUrl() {
+      java.lang.Object ref = imageUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          imageUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string image_url = 1;</code>
+     *
+     * <pre>
+     *封面url
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getImageUrlBytes() {
+      java.lang.Object ref = imageUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        imageUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int JUMP_URI_FIELD_NUMBER = 2;
+    private java.lang.Object jumpUri_;
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    public boolean hasJumpUri() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    public java.lang.String getJumpUri() {
+      java.lang.Object ref = jumpUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          jumpUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string jump_uri = 2;</code>
+     *
+     * <pre>
+     *跳转schema
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getJumpUriBytes() {
+      java.lang.Object ref = jumpUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        jumpUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WIDTH_FIELD_NUMBER = 3;
+    private int width_;
+    /**
+     * <code>optional uint32 width = 3;</code>
+     *
+     * <pre>
+     *图片宽度
+     * </pre>
+     */
+    public boolean hasWidth() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 width = 3;</code>
+     *
+     * <pre>
+     *图片宽度
+     * </pre>
+     */
+    public int getWidth() {
+      return width_;
+    }
+
+    public static final int HEIGHT_FIELD_NUMBER = 4;
+    private int height_;
+    /**
+     * <code>optional uint32 height = 4;</code>
+     *
+     * <pre>
+     *图片高度
+     * </pre>
+     */
+    public boolean hasHeight() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 height = 4;</code>
+     *
+     * <pre>
+     *图片高度
+     * </pre>
+     */
+    public int getHeight() {
+      return height_;
+    }
+
+    public static final int TITLE_FIELD_NUMBER = 5;
+    private java.lang.Object title_;
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public boolean hasTitle() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public java.lang.String getTitle() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          title_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string title = 5;</code>
+     *
+     * <pre>
+     *标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTitleBytes() {
+      java.lang.Object ref = title_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        title_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MARK_FIELD_NUMBER = 6;
+    private com.wali.live.proto.CommonChannelProto.RichText mark_;
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    public boolean hasMark() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.RichText getMark() {
+      return mark_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+     *
+     * <pre>
+     *封面运营角标[同模板协议RichText]
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getMarkOrBuilder() {
+      return mark_;
+    }
+
+    private void initFields() {
+      imageUrl_ = "";
+      jumpUri_ = "";
+      width_ = 0;
+      height_ = 0;
+      title_ = "";
+      mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getImageUrlBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getJumpUriBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, width_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, height_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getTitleBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(6, mark_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getImageUrlBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getJumpUriBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, width_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, height_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getTitleBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, mark_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ImageData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.ImageData prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ImageData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ImageData)
+        com.wali.live.proto.CommonChannelProto.ImageDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.ImageData.class, com.wali.live.proto.CommonChannelProto.ImageData.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.ImageData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getMarkFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        imageUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        jumpUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        width_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        height_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        title_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        if (markBuilder_ == null) {
+          mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+        } else {
+          markBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ImageData_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.ImageData getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.ImageData.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.ImageData build() {
+        com.wali.live.proto.CommonChannelProto.ImageData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.ImageData buildPartial() {
+        com.wali.live.proto.CommonChannelProto.ImageData result = new com.wali.live.proto.CommonChannelProto.ImageData(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.imageUrl_ = imageUrl_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.jumpUri_ = jumpUri_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.width_ = width_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.height_ = height_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.title_ = title_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (markBuilder_ == null) {
+          result.mark_ = mark_;
+        } else {
+          result.mark_ = markBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.ImageData) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.ImageData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.ImageData other) {
+        if (other == com.wali.live.proto.CommonChannelProto.ImageData.getDefaultInstance()) return this;
+        if (other.hasImageUrl()) {
+          bitField0_ |= 0x00000001;
+          imageUrl_ = other.imageUrl_;
+          onChanged();
+        }
+        if (other.hasJumpUri()) {
+          bitField0_ |= 0x00000002;
+          jumpUri_ = other.jumpUri_;
+          onChanged();
+        }
+        if (other.hasWidth()) {
+          setWidth(other.getWidth());
+        }
+        if (other.hasHeight()) {
+          setHeight(other.getHeight());
+        }
+        if (other.hasTitle()) {
+          bitField0_ |= 0x00000010;
+          title_ = other.title_;
+          onChanged();
+        }
+        if (other.hasMark()) {
+          mergeMark(other.getMark());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.ImageData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.ImageData) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object imageUrl_ = "";
+      /**
+       * <code>optional string image_url = 1;</code>
+       *
+       * <pre>
+       *封面url
+       * </pre>
+       */
+      public boolean hasImageUrl() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string image_url = 1;</code>
+       *
+       * <pre>
+       *封面url
+       * </pre>
+       */
+      public java.lang.String getImageUrl() {
+        java.lang.Object ref = imageUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            imageUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string image_url = 1;</code>
+       *
+       * <pre>
+       *封面url
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getImageUrlBytes() {
+        java.lang.Object ref = imageUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          imageUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string image_url = 1;</code>
+       *
+       * <pre>
+       *封面url
+       * </pre>
+       */
+      public Builder setImageUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        imageUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string image_url = 1;</code>
+       *
+       * <pre>
+       *封面url
+       * </pre>
+       */
+      public Builder clearImageUrl() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        imageUrl_ = getDefaultInstance().getImageUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string image_url = 1;</code>
+       *
+       * <pre>
+       *封面url
+       * </pre>
+       */
+      public Builder setImageUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        imageUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object jumpUri_ = "";
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public boolean hasJumpUri() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public java.lang.String getJumpUri() {
+        java.lang.Object ref = jumpUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getJumpUriBytes() {
+        java.lang.Object ref = jumpUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          jumpUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public Builder setJumpUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public Builder clearJumpUri() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        jumpUri_ = getDefaultInstance().getJumpUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jump_uri = 2;</code>
+       *
+       * <pre>
+       *跳转schema
+       * </pre>
+       */
+      public Builder setJumpUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        jumpUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int width_ ;
+      /**
+       * <code>optional uint32 width = 3;</code>
+       *
+       * <pre>
+       *图片宽度
+       * </pre>
+       */
+      public boolean hasWidth() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 width = 3;</code>
+       *
+       * <pre>
+       *图片宽度
+       * </pre>
+       */
+      public int getWidth() {
+        return width_;
+      }
+      /**
+       * <code>optional uint32 width = 3;</code>
+       *
+       * <pre>
+       *图片宽度
+       * </pre>
+       */
+      public Builder setWidth(int value) {
+        bitField0_ |= 0x00000004;
+        width_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 width = 3;</code>
+       *
+       * <pre>
+       *图片宽度
+       * </pre>
+       */
+      public Builder clearWidth() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        width_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int height_ ;
+      /**
+       * <code>optional uint32 height = 4;</code>
+       *
+       * <pre>
+       *图片高度
+       * </pre>
+       */
+      public boolean hasHeight() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 height = 4;</code>
+       *
+       * <pre>
+       *图片高度
+       * </pre>
+       */
+      public int getHeight() {
+        return height_;
+      }
+      /**
+       * <code>optional uint32 height = 4;</code>
+       *
+       * <pre>
+       *图片高度
+       * </pre>
+       */
+      public Builder setHeight(int value) {
+        bitField0_ |= 0x00000008;
+        height_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 height = 4;</code>
+       *
+       * <pre>
+       *图片高度
+       * </pre>
+       */
+      public Builder clearHeight() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        height_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object title_ = "";
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public boolean hasTitle() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public java.lang.String getTitle() {
+        java.lang.Object ref = title_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTitleBytes() {
+        java.lang.Object ref = title_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          title_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder clearTitle() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        title_ = getDefaultInstance().getTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string title = 5;</code>
+       *
+       * <pre>
+       *标题
+       * </pre>
+       */
+      public Builder setTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        title_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.wali.live.proto.CommonChannelProto.RichText mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> markBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public boolean hasMark() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.RichText getMark() {
+        if (markBuilder_ == null) {
+          return mark_;
+        } else {
+          return markBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder setMark(com.wali.live.proto.CommonChannelProto.RichText value) {
+        if (markBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          mark_ = value;
+          onChanged();
+        } else {
+          markBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder setMark(
+          com.wali.live.proto.CommonChannelProto.RichText.Builder builderForValue) {
+        if (markBuilder_ == null) {
+          mark_ = builderForValue.build();
+          onChanged();
+        } else {
+          markBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder mergeMark(com.wali.live.proto.CommonChannelProto.RichText value) {
+        if (markBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              mark_ != com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance()) {
+            mark_ =
+              com.wali.live.proto.CommonChannelProto.RichText.newBuilder(mark_).mergeFrom(value).buildPartial();
+          } else {
+            mark_ = value;
+          }
+          onChanged();
+        } else {
+          markBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public Builder clearMark() {
+        if (markBuilder_ == null) {
+          mark_ = com.wali.live.proto.CommonChannelProto.RichText.getDefaultInstance();
+          onChanged();
+        } else {
+          markBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.RichText.Builder getMarkBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getMarkFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.RichTextOrBuilder getMarkOrBuilder() {
+        if (markBuilder_ != null) {
+          return markBuilder_.getMessageOrBuilder();
+        } else {
+          return mark_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.RichText mark = 6;</code>
+       *
+       * <pre>
+       *封面运营角标[同模板协议RichText]
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder> 
+          getMarkFieldBuilder() {
+        if (markBuilder_ == null) {
+          markBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.RichText, com.wali.live.proto.CommonChannelProto.RichText.Builder, com.wali.live.proto.CommonChannelProto.RichTextOrBuilder>(
+                  getMark(),
+                  getParentForChildren(),
+                  isClean());
+          mark_ = null;
+        }
+        return markBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ImageData)
+    }
+
+    static {
+      defaultInstance = new ImageData(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ImageData)
+  }
+
+  public interface ButtonDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ButtonData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string button_text = 1;</code>
+     *
+     * <pre>
+     *button文案
+     * </pre>
+     */
+    boolean hasButtonText();
+    /**
+     * <code>optional string button_text = 1;</code>
+     *
+     * <pre>
+     *button文案
+     * </pre>
+     */
+    java.lang.String getButtonText();
+    /**
+     * <code>optional string button_text = 1;</code>
+     *
+     * <pre>
+     *button文案
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getButtonTextBytes();
+
+    /**
+     * <code>optional string button_uri = 2;</code>
+     *
+     * <pre>
+     *点击button跳转scheme
+     * </pre>
+     */
+    boolean hasButtonUri();
+    /**
+     * <code>optional string button_uri = 2;</code>
+     *
+     * <pre>
+     *点击button跳转scheme
+     * </pre>
+     */
+    java.lang.String getButtonUri();
+    /**
+     * <code>optional string button_uri = 2;</code>
+     *
+     * <pre>
+     *点击button跳转scheme
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getButtonUriBytes();
+
+    /**
+     * <code>optional string image_url = 3;</code>
+     *
+     * <pre>
+     *头图
+     * </pre>
+     */
+    boolean hasImageUrl();
+    /**
+     * <code>optional string image_url = 3;</code>
+     *
+     * <pre>
+     *头图
+     * </pre>
+     */
+    java.lang.String getImageUrl();
+    /**
+     * <code>optional string image_url = 3;</code>
+     *
+     * <pre>
+     *头图
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getImageUrlBytes();
+
+    /**
+     * <code>optional string text = 4;</code>
+     *
+     * <pre>
+     *文案
+     * </pre>
+     */
+    boolean hasText();
+    /**
+     * <code>optional string text = 4;</code>
+     *
+     * <pre>
+     *文案
+     * </pre>
+     */
+    java.lang.String getText();
+    /**
+     * <code>optional string text = 4;</code>
+     *
+     * <pre>
+     *文案
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getTextBytes();
+
+    /**
+     * <code>optional string jump_uri = 5;</code>
+     *
+     * <pre>
+     *点击封面跳转scheme
+     * </pre>
+     */
+    boolean hasJumpUri();
+    /**
+     * <code>optional string jump_uri = 5;</code>
+     *
+     * <pre>
+     *点击封面跳转scheme
+     * </pre>
+     */
+    java.lang.String getJumpUri();
+    /**
+     * <code>optional string jump_uri = 5;</code>
+     *
+     * <pre>
+     *点击封面跳转scheme
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getJumpUriBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ButtonData}
+   */
+  public static final class ButtonData extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ButtonData)
+      ButtonDataOrBuilder {
+    // Use ButtonData.newBuilder() to construct.
+    private ButtonData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ButtonData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ButtonData defaultInstance;
+    public static ButtonData getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ButtonData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ButtonData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              buttonText_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              buttonUri_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              imageUrl_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              text_ = bs;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              jumpUri_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.ButtonData.class, com.wali.live.proto.CommonChannelProto.ButtonData.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ButtonData> PARSER =
+        new com.google.protobuf.AbstractParser<ButtonData>() {
+      public ButtonData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ButtonData(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ButtonData> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int BUTTON_TEXT_FIELD_NUMBER = 1;
+    private java.lang.Object buttonText_;
+    /**
+     * <code>optional string button_text = 1;</code>
+     *
+     * <pre>
+     *button文案
+     * </pre>
+     */
+    public boolean hasButtonText() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string button_text = 1;</code>
+     *
+     * <pre>
+     *button文案
+     * </pre>
+     */
+    public java.lang.String getButtonText() {
+      java.lang.Object ref = buttonText_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          buttonText_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string button_text = 1;</code>
+     *
+     * <pre>
+     *button文案
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getButtonTextBytes() {
+      java.lang.Object ref = buttonText_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        buttonText_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BUTTON_URI_FIELD_NUMBER = 2;
+    private java.lang.Object buttonUri_;
+    /**
+     * <code>optional string button_uri = 2;</code>
+     *
+     * <pre>
+     *点击button跳转scheme
+     * </pre>
+     */
+    public boolean hasButtonUri() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string button_uri = 2;</code>
+     *
+     * <pre>
+     *点击button跳转scheme
+     * </pre>
+     */
+    public java.lang.String getButtonUri() {
+      java.lang.Object ref = buttonUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          buttonUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string button_uri = 2;</code>
+     *
+     * <pre>
+     *点击button跳转scheme
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getButtonUriBytes() {
+      java.lang.Object ref = buttonUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        buttonUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IMAGE_URL_FIELD_NUMBER = 3;
+    private java.lang.Object imageUrl_;
+    /**
+     * <code>optional string image_url = 3;</code>
+     *
+     * <pre>
+     *头图
+     * </pre>
+     */
+    public boolean hasImageUrl() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string image_url = 3;</code>
+     *
+     * <pre>
+     *头图
+     * </pre>
+     */
+    public java.lang.String getImageUrl() {
+      java.lang.Object ref = imageUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          imageUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string image_url = 3;</code>
+     *
+     * <pre>
+     *头图
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getImageUrlBytes() {
+      java.lang.Object ref = imageUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        imageUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TEXT_FIELD_NUMBER = 4;
+    private java.lang.Object text_;
+    /**
+     * <code>optional string text = 4;</code>
+     *
+     * <pre>
+     *文案
+     * </pre>
+     */
+    public boolean hasText() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string text = 4;</code>
+     *
+     * <pre>
+     *文案
+     * </pre>
+     */
+    public java.lang.String getText() {
+      java.lang.Object ref = text_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          text_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string text = 4;</code>
+     *
+     * <pre>
+     *文案
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getTextBytes() {
+      java.lang.Object ref = text_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        text_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int JUMP_URI_FIELD_NUMBER = 5;
+    private java.lang.Object jumpUri_;
+    /**
+     * <code>optional string jump_uri = 5;</code>
+     *
+     * <pre>
+     *点击封面跳转scheme
+     * </pre>
+     */
+    public boolean hasJumpUri() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string jump_uri = 5;</code>
+     *
+     * <pre>
+     *点击封面跳转scheme
+     * </pre>
+     */
+    public java.lang.String getJumpUri() {
+      java.lang.Object ref = jumpUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          jumpUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string jump_uri = 5;</code>
+     *
+     * <pre>
+     *点击封面跳转scheme
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getJumpUriBytes() {
+      java.lang.Object ref = jumpUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        jumpUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      buttonText_ = "";
+      buttonUri_ = "";
+      imageUrl_ = "";
+      text_ = "";
+      jumpUri_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getButtonTextBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getButtonUriBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getImageUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getTextBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getJumpUriBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getButtonTextBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getButtonUriBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getImageUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getTextBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getJumpUriBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.ButtonData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.ButtonData prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ButtonData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ButtonData)
+        com.wali.live.proto.CommonChannelProto.ButtonDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.ButtonData.class, com.wali.live.proto.CommonChannelProto.ButtonData.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.ButtonData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        buttonText_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        buttonUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        imageUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        text_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        jumpUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_ButtonData_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.ButtonData getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.ButtonData.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.ButtonData build() {
+        com.wali.live.proto.CommonChannelProto.ButtonData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.ButtonData buildPartial() {
+        com.wali.live.proto.CommonChannelProto.ButtonData result = new com.wali.live.proto.CommonChannelProto.ButtonData(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.buttonText_ = buttonText_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.buttonUri_ = buttonUri_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.imageUrl_ = imageUrl_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.text_ = text_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.jumpUri_ = jumpUri_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.ButtonData) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.ButtonData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.ButtonData other) {
+        if (other == com.wali.live.proto.CommonChannelProto.ButtonData.getDefaultInstance()) return this;
+        if (other.hasButtonText()) {
+          bitField0_ |= 0x00000001;
+          buttonText_ = other.buttonText_;
+          onChanged();
+        }
+        if (other.hasButtonUri()) {
+          bitField0_ |= 0x00000002;
+          buttonUri_ = other.buttonUri_;
+          onChanged();
+        }
+        if (other.hasImageUrl()) {
+          bitField0_ |= 0x00000004;
+          imageUrl_ = other.imageUrl_;
+          onChanged();
+        }
+        if (other.hasText()) {
+          bitField0_ |= 0x00000008;
+          text_ = other.text_;
+          onChanged();
+        }
+        if (other.hasJumpUri()) {
+          bitField0_ |= 0x00000010;
+          jumpUri_ = other.jumpUri_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.ButtonData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.ButtonData) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object buttonText_ = "";
+      /**
+       * <code>optional string button_text = 1;</code>
+       *
+       * <pre>
+       *button文案
+       * </pre>
+       */
+      public boolean hasButtonText() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string button_text = 1;</code>
+       *
+       * <pre>
+       *button文案
+       * </pre>
+       */
+      public java.lang.String getButtonText() {
+        java.lang.Object ref = buttonText_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            buttonText_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string button_text = 1;</code>
+       *
+       * <pre>
+       *button文案
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getButtonTextBytes() {
+        java.lang.Object ref = buttonText_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          buttonText_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string button_text = 1;</code>
+       *
+       * <pre>
+       *button文案
+       * </pre>
+       */
+      public Builder setButtonText(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        buttonText_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string button_text = 1;</code>
+       *
+       * <pre>
+       *button文案
+       * </pre>
+       */
+      public Builder clearButtonText() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        buttonText_ = getDefaultInstance().getButtonText();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string button_text = 1;</code>
+       *
+       * <pre>
+       *button文案
+       * </pre>
+       */
+      public Builder setButtonTextBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        buttonText_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object buttonUri_ = "";
+      /**
+       * <code>optional string button_uri = 2;</code>
+       *
+       * <pre>
+       *点击button跳转scheme
+       * </pre>
+       */
+      public boolean hasButtonUri() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string button_uri = 2;</code>
+       *
+       * <pre>
+       *点击button跳转scheme
+       * </pre>
+       */
+      public java.lang.String getButtonUri() {
+        java.lang.Object ref = buttonUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            buttonUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string button_uri = 2;</code>
+       *
+       * <pre>
+       *点击button跳转scheme
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getButtonUriBytes() {
+        java.lang.Object ref = buttonUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          buttonUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string button_uri = 2;</code>
+       *
+       * <pre>
+       *点击button跳转scheme
+       * </pre>
+       */
+      public Builder setButtonUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        buttonUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string button_uri = 2;</code>
+       *
+       * <pre>
+       *点击button跳转scheme
+       * </pre>
+       */
+      public Builder clearButtonUri() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        buttonUri_ = getDefaultInstance().getButtonUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string button_uri = 2;</code>
+       *
+       * <pre>
+       *点击button跳转scheme
+       * </pre>
+       */
+      public Builder setButtonUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        buttonUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object imageUrl_ = "";
+      /**
+       * <code>optional string image_url = 3;</code>
+       *
+       * <pre>
+       *头图
+       * </pre>
+       */
+      public boolean hasImageUrl() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string image_url = 3;</code>
+       *
+       * <pre>
+       *头图
+       * </pre>
+       */
+      public java.lang.String getImageUrl() {
+        java.lang.Object ref = imageUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            imageUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string image_url = 3;</code>
+       *
+       * <pre>
+       *头图
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getImageUrlBytes() {
+        java.lang.Object ref = imageUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          imageUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string image_url = 3;</code>
+       *
+       * <pre>
+       *头图
+       * </pre>
+       */
+      public Builder setImageUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        imageUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string image_url = 3;</code>
+       *
+       * <pre>
+       *头图
+       * </pre>
+       */
+      public Builder clearImageUrl() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        imageUrl_ = getDefaultInstance().getImageUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string image_url = 3;</code>
+       *
+       * <pre>
+       *头图
+       * </pre>
+       */
+      public Builder setImageUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        imageUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object text_ = "";
+      /**
+       * <code>optional string text = 4;</code>
+       *
+       * <pre>
+       *文案
+       * </pre>
+       */
+      public boolean hasText() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string text = 4;</code>
+       *
+       * <pre>
+       *文案
+       * </pre>
+       */
+      public java.lang.String getText() {
+        java.lang.Object ref = text_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            text_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string text = 4;</code>
+       *
+       * <pre>
+       *文案
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getTextBytes() {
+        java.lang.Object ref = text_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          text_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string text = 4;</code>
+       *
+       * <pre>
+       *文案
+       * </pre>
+       */
+      public Builder setText(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        text_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text = 4;</code>
+       *
+       * <pre>
+       *文案
+       * </pre>
+       */
+      public Builder clearText() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        text_ = getDefaultInstance().getText();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string text = 4;</code>
+       *
+       * <pre>
+       *文案
+       * </pre>
+       */
+      public Builder setTextBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        text_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object jumpUri_ = "";
+      /**
+       * <code>optional string jump_uri = 5;</code>
+       *
+       * <pre>
+       *点击封面跳转scheme
+       * </pre>
+       */
+      public boolean hasJumpUri() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string jump_uri = 5;</code>
+       *
+       * <pre>
+       *点击封面跳转scheme
+       * </pre>
+       */
+      public java.lang.String getJumpUri() {
+        java.lang.Object ref = jumpUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string jump_uri = 5;</code>
+       *
+       * <pre>
+       *点击封面跳转scheme
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getJumpUriBytes() {
+        java.lang.Object ref = jumpUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          jumpUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string jump_uri = 5;</code>
+       *
+       * <pre>
+       *点击封面跳转scheme
+       * </pre>
+       */
+      public Builder setJumpUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        jumpUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jump_uri = 5;</code>
+       *
+       * <pre>
+       *点击封面跳转scheme
+       * </pre>
+       */
+      public Builder clearJumpUri() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        jumpUri_ = getDefaultInstance().getJumpUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jump_uri = 5;</code>
+       *
+       * <pre>
+       *点击封面跳转scheme
+       * </pre>
+       */
+      public Builder setJumpUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        jumpUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ButtonData)
+    }
+
+    static {
+      defaultInstance = new ButtonData(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ButtonData)
+  }
+
+  public interface GetWaterfallSubListReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallSubListReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    boolean hasUid();
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    long getUid();
+
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    boolean hasOperType();
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    int getOperType();
+
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频二级页的频道id
+     * </pre>
+     */
+    boolean hasChannelId();
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频二级页的频道id
+     * </pre>
+     */
+    int getChannelId();
+
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+     * </pre>
+     */
+    boolean hasParam();
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+     * </pre>
+     */
+    com.google.protobuf.ByteString getParam();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListReq}
+   */
+  public static final class GetWaterfallSubListReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallSubListReq)
+      GetWaterfallSubListReqOrBuilder {
+    // Use GetWaterfallSubListReq.newBuilder() to construct.
+    private GetWaterfallSubListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetWaterfallSubListReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetWaterfallSubListReq defaultInstance;
+    public static GetWaterfallSubListReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetWaterfallSubListReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetWaterfallSubListReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              operType_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              channelId_ = input.readUInt32();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              param_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetWaterfallSubListReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetWaterfallSubListReq>() {
+      public GetWaterfallSubListReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetWaterfallSubListReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetWaterfallSubListReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UID_FIELD_NUMBER = 1;
+    private long uid_;
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *拉列表的用户id
+     * </pre>
+     */
+    public long getUid() {
+      return uid_;
+    }
+
+    public static final int OPER_TYPE_FIELD_NUMBER = 2;
+    private int operType_;
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    public boolean hasOperType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 oper_type = 2;</code>
+     *
+     * <pre>
+     *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+     * </pre>
+     */
+    public int getOperType() {
+      return operType_;
+    }
+
+    public static final int CHANNEL_ID_FIELD_NUMBER = 3;
+    private int channelId_;
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频二级页的频道id
+     * </pre>
+     */
+    public boolean hasChannelId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 channel_id = 3;</code>
+     *
+     * <pre>
+     *小视频二级页的频道id
+     * </pre>
+     */
+    public int getChannelId() {
+      return channelId_;
+    }
+
+    public static final int PARAM_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString param_;
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+     * </pre>
+     */
+    public boolean hasParam() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bytes param = 4;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getParam() {
+      return param_;
+    }
+
+    private void initFields() {
+      uid_ = 0L;
+      operType_ = 0;
+      channelId_ = 0;
+      param_ = com.google.protobuf.ByteString.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, operType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, channelId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, param_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, operType_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, channelId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, param_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallSubListReq)
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        operType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        channelId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        param_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq build() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq result = new com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uid_ = uid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.operType_ = operType_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.channelId_ = channelId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.param_ = param_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq.getDefaultInstance()) return this;
+        if (other.hasUid()) {
+          setUid(other.getUid());
+        }
+        if (other.hasOperType()) {
+          setOperType(other.getOperType());
+        }
+        if (other.hasChannelId()) {
+          setChannelId(other.getChannelId());
+        }
+        if (other.hasParam()) {
+          setParam(other.getParam());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetWaterfallSubListReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uid_ ;
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public long getUid() {
+        return uid_;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public Builder setUid(long value) {
+        bitField0_ |= 0x00000001;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *拉列表的用户id
+       * </pre>
+       */
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int operType_ ;
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public boolean hasOperType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public int getOperType() {
+        return operType_;
+      }
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public Builder setOperType(int value) {
+        bitField0_ |= 0x00000002;
+        operType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 oper_type = 2;</code>
+       *
+       * <pre>
+       *拉列表类型。默认0=第一屏或下滑刷新，1=上滑加载更多
+       * </pre>
+       */
+      public Builder clearOperType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        operType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int channelId_ ;
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频二级页的频道id
+       * </pre>
+       */
+      public boolean hasChannelId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频二级页的频道id
+       * </pre>
+       */
+      public int getChannelId() {
+        return channelId_;
+      }
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频二级页的频道id
+       * </pre>
+       */
+      public Builder setChannelId(int value) {
+        bitField0_ |= 0x00000004;
+        channelId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 channel_id = 3;</code>
+       *
+       * <pre>
+       *小视频二级页的频道id
+       * </pre>
+       */
+      public Builder clearChannelId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        channelId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString param_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+       * </pre>
+       */
+      public boolean hasParam() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getParam() {
+        return param_;
+      }
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+       * </pre>
+       */
+      public Builder setParam(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        param_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes param = 4;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，透传给服务器]。第一屏不用填，下一屏填rsp中的param
+       * </pre>
+       */
+      public Builder clearParam() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        param_ = getDefaultInstance().getParam();
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallSubListReq)
+    }
+
+    static {
+      defaultInstance = new GetWaterfallSubListReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallSubListReq)
+  }
+
+  public interface GetWaterfallSubListRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetWaterfallSubListRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    boolean hasRet();
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    int getRet();
+
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> 
+        getElemList();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.WatElement getElem(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    int getElemCount();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+        getElemOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+        int index);
+
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    boolean hasParam();
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    com.google.protobuf.ByteString getParam();
+
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    boolean hasHasMore();
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    boolean getHasMore();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListRsp}
+   */
+  public static final class GetWaterfallSubListRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetWaterfallSubListRsp)
+      GetWaterfallSubListRspOrBuilder {
+    // Use GetWaterfallSubListRsp.newBuilder() to construct.
+    private GetWaterfallSubListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetWaterfallSubListRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetWaterfallSubListRsp defaultInstance;
+    public static GetWaterfallSubListRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetWaterfallSubListRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetWaterfallSubListRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ret_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                elem_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.WatElement>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              elem_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.WatElement.PARSER, extensionRegistry));
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000002;
+              param_ = input.readBytes();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000004;
+              hasMore_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          elem_ = java.util.Collections.unmodifiableList(elem_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetWaterfallSubListRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetWaterfallSubListRsp>() {
+      public GetWaterfallSubListRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetWaterfallSubListRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetWaterfallSubListRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_FIELD_NUMBER = 1;
+    private int ret_;
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public boolean hasRet() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public int getRet() {
+      return ret_;
+    }
+
+    public static final int ELEM_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_;
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> getElemList() {
+      return elem_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+        getElemOrBuilderList() {
+      return elem_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public int getElemCount() {
+      return elem_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.WatElement getElem(int index) {
+      return elem_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+        int index) {
+      return elem_.get(index);
+    }
+
+    public static final int PARAM_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString param_;
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    public boolean hasParam() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional bytes param = 3;</code>
+     *
+     * <pre>
+     *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getParam() {
+      return param_;
+    }
+
+    public static final int HAS_MORE_FIELD_NUMBER = 4;
+    private boolean hasMore_;
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    public boolean hasHasMore() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool has_more = 4;</code>
+     *
+     * <pre>
+     *是否有更多小视频
+     * </pre>
+     */
+    public boolean getHasMore() {
+      return hasMore_;
+    }
+
+    private void initFields() {
+      ret_ = 0;
+      elem_ = java.util.Collections.emptyList();
+      param_ = com.google.protobuf.ByteString.EMPTY;
+      hasMore_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRet()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getElemCount(); i++) {
+        if (!getElem(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, ret_);
+      }
+      for (int i = 0; i < elem_.size(); i++) {
+        output.writeMessage(2, elem_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(3, param_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(4, hasMore_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, ret_);
+      }
+      for (int i = 0; i < elem_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, elem_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, param_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, hasMore_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetWaterfallSubListRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetWaterfallSubListRsp)
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.class, com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getElemFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ret_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (elemBuilder_ == null) {
+          elem_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          elemBuilder_.clear();
+        }
+        param_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        hasMore_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp build() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp result = new com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ret_ = ret_;
+        if (elemBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            elem_ = java.util.Collections.unmodifiableList(elem_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.elem_ = elem_;
+        } else {
+          result.elem_ = elemBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.param_ = param_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.hasMore_ = hasMore_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp.getDefaultInstance()) return this;
+        if (other.hasRet()) {
+          setRet(other.getRet());
+        }
+        if (elemBuilder_ == null) {
+          if (!other.elem_.isEmpty()) {
+            if (elem_.isEmpty()) {
+              elem_ = other.elem_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureElemIsMutable();
+              elem_.addAll(other.elem_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.elem_.isEmpty()) {
+            if (elemBuilder_.isEmpty()) {
+              elemBuilder_.dispose();
+              elemBuilder_ = null;
+              elem_ = other.elem_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              elemBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getElemFieldBuilder() : null;
+            } else {
+              elemBuilder_.addAllMessages(other.elem_);
+            }
+          }
+        }
+        if (other.hasParam()) {
+          setParam(other.getParam());
+        }
+        if (other.hasHasMore()) {
+          setHasMore(other.getHasMore());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRet()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getElemCount(); i++) {
+          if (!getElem(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetWaterfallSubListRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int ret_ ;
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public boolean hasRet() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public int getRet() {
+        return ret_;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder setRet(int value) {
+        bitField0_ |= 0x00000001;
+        ret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder clearRet() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ret_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_ =
+        java.util.Collections.emptyList();
+      private void ensureElemIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          elem_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.WatElement>(elem_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> elemBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> getElemList() {
+        if (elemBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(elem_);
+        } else {
+          return elemBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public int getElemCount() {
+        if (elemBuilder_ == null) {
+          return elem_.size();
+        } else {
+          return elemBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement getElem(int index) {
+        if (elemBuilder_ == null) {
+          return elem_.get(index);
+        } else {
+          return elemBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder setElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.set(index, value);
+          onChanged();
+        } else {
+          elemBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder setElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.add(value);
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.add(index, value);
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.add(builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addAllElem(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.WatElement> values) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, elem_);
+          onChanged();
+        } else {
+          elemBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder clearElem() {
+        if (elemBuilder_ == null) {
+          elem_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          elemBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder removeElem(int index) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.remove(index);
+          onChanged();
+        } else {
+          elemBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder getElemBuilder(
+          int index) {
+        return getElemFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+          int index) {
+        if (elemBuilder_ == null) {
+          return elem_.get(index);  } else {
+          return elemBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+           getElemOrBuilderList() {
+        if (elemBuilder_ != null) {
+          return elemBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(elem_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder addElemBuilder() {
+        return getElemFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder addElemBuilder(
+          int index) {
+        return getElemFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement.Builder> 
+           getElemBuilderList() {
+        return getElemFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+          getElemFieldBuilder() {
+        if (elemBuilder_ == null) {
+          elemBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder>(
+                  elem_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          elem_ = null;
+        }
+        return elemBuilder_;
+      }
+
+      private com.google.protobuf.ByteString param_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public boolean hasParam() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getParam() {
+        return param_;
+      }
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public Builder setParam(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        param_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes param = 3;</code>
+       *
+       * <pre>
+       *拉列表算法参数[客户端不用关心，下一次请求透传给服务器]
+       * </pre>
+       */
+      public Builder clearParam() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        param_ = getDefaultInstance().getParam();
+        onChanged();
+        return this;
+      }
+
+      private boolean hasMore_ ;
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public boolean hasHasMore() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public boolean getHasMore() {
+        return hasMore_;
+      }
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public Builder setHasMore(boolean value) {
+        bitField0_ |= 0x00000008;
+        hasMore_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool has_more = 4;</code>
+       *
+       * <pre>
+       *是否有更多小视频
+       * </pre>
+       */
+      public Builder clearHasMore() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        hasMore_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetWaterfallSubListRsp)
+    }
+
+    static {
+      defaultInstance = new GetWaterfallSubListRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetWaterfallSubListRsp)
+  }
+
+  public interface GetLikedVideoReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetLikedVideoReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *点赞的用户id
+     * </pre>
+     */
+    boolean hasUid();
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *点赞的用户id
+     * </pre>
+     */
+    long getUid();
+
+    /**
+     * <code>optional uint64 start = 2;</code>
+     *
+     * <pre>
+     *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+     * </pre>
+     */
+    boolean hasStart();
+    /**
+     * <code>optional uint64 start = 2;</code>
+     *
+     * <pre>
+     *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+     * </pre>
+     */
+    long getStart();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetLikedVideoReq}
+   *
+   * <pre>
+   ****************** zhibo.recommend.videolike 分页拉点赞的小视频列表  *****************
+   * </pre>
+   */
+  public static final class GetLikedVideoReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetLikedVideoReq)
+      GetLikedVideoReqOrBuilder {
+    // Use GetLikedVideoReq.newBuilder() to construct.
+    private GetLikedVideoReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetLikedVideoReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetLikedVideoReq defaultInstance;
+    public static GetLikedVideoReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetLikedVideoReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetLikedVideoReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              start_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetLikedVideoReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetLikedVideoReq>() {
+      public GetLikedVideoReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetLikedVideoReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetLikedVideoReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UID_FIELD_NUMBER = 1;
+    private long uid_;
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *点赞的用户id
+     * </pre>
+     */
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uid = 1;</code>
+     *
+     * <pre>
+     *点赞的用户id
+     * </pre>
+     */
+    public long getUid() {
+      return uid_;
+    }
+
+    public static final int START_FIELD_NUMBER = 2;
+    private long start_;
+    /**
+     * <code>optional uint64 start = 2;</code>
+     *
+     * <pre>
+     *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+     * </pre>
+     */
+    public boolean hasStart() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 start = 2;</code>
+     *
+     * <pre>
+     *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+     * </pre>
+     */
+    public long getStart() {
+      return start_;
+    }
+
+    private void initFields() {
+      uid_ = 0L;
+      start_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(2, start_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, start_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetLikedVideoReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetLikedVideoReq}
+     *
+     * <pre>
+     ****************** zhibo.recommend.videolike 分页拉点赞的小视频列表  *****************
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetLikedVideoReq)
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        start_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetLikedVideoReq getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetLikedVideoReq build() {
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetLikedVideoReq buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoReq result = new com.wali.live.proto.CommonChannelProto.GetLikedVideoReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uid_ = uid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.start_ = start_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetLikedVideoReq) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetLikedVideoReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetLikedVideoReq other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetLikedVideoReq.getDefaultInstance()) return this;
+        if (other.hasUid()) {
+          setUid(other.getUid());
+        }
+        if (other.hasStart()) {
+          setStart(other.getStart());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetLikedVideoReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uid_ ;
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *点赞的用户id
+       * </pre>
+       */
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *点赞的用户id
+       * </pre>
+       */
+      public long getUid() {
+        return uid_;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *点赞的用户id
+       * </pre>
+       */
+      public Builder setUid(long value) {
+        bitField0_ |= 0x00000001;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       *
+       * <pre>
+       *点赞的用户id
+       * </pre>
+       */
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long start_ ;
+      /**
+       * <code>optional uint64 start = 2;</code>
+       *
+       * <pre>
+       *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+       * </pre>
+       */
+      public boolean hasStart() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint64 start = 2;</code>
+       *
+       * <pre>
+       *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+       * </pre>
+       */
+      public long getStart() {
+        return start_;
+      }
+      /**
+       * <code>optional uint64 start = 2;</code>
+       *
+       * <pre>
+       *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+       * </pre>
+       */
+      public Builder setStart(long value) {
+        bitField0_ |= 0x00000002;
+        start_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 start = 2;</code>
+       *
+       * <pre>
+       *当前页水位。默认0=第一屏，下一屏用rsp中的next_start
+       * </pre>
+       */
+      public Builder clearStart() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        start_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetLikedVideoReq)
+    }
+
+    static {
+      defaultInstance = new GetLikedVideoReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetLikedVideoReq)
+  }
+
+  public interface GetLikedVideoRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetLikedVideoRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    boolean hasRet();
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    int getRet();
+
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> 
+        getElemList();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.WatElement getElem(int index);
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    int getElemCount();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+        getElemOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+        int index);
+
+    /**
+     * <code>optional uint64 next_start = 3;</code>
+     *
+     * <pre>
+     *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+     * </pre>
+     */
+    boolean hasNextStart();
+    /**
+     * <code>optional uint64 next_start = 3;</code>
+     *
+     * <pre>
+     *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+     * </pre>
+     */
+    long getNextStart();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.GetLikedVideoRsp}
+   */
+  public static final class GetLikedVideoRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetLikedVideoRsp)
+      GetLikedVideoRspOrBuilder {
+    // Use GetLikedVideoRsp.newBuilder() to construct.
+    private GetLikedVideoRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetLikedVideoRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetLikedVideoRsp defaultInstance;
+    public static GetLikedVideoRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetLikedVideoRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetLikedVideoRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              ret_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                elem_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.WatElement>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              elem_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.WatElement.PARSER, extensionRegistry));
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000002;
+              nextStart_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          elem_ = java.util.Collections.unmodifiableList(elem_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetLikedVideoRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetLikedVideoRsp>() {
+      public GetLikedVideoRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetLikedVideoRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetLikedVideoRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RET_FIELD_NUMBER = 1;
+    private int ret_;
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public boolean hasRet() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 ret = 1;</code>
+     *
+     * <pre>
+     *返回码
+     * </pre>
+     */
+    public int getRet() {
+      return ret_;
+    }
+
+    public static final int ELEM_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_;
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> getElemList() {
+      return elem_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+        getElemOrBuilderList() {
+      return elem_;
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public int getElemCount() {
+      return elem_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.WatElement getElem(int index) {
+      return elem_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+     *
+     * <pre>
+     *数据
+     * </pre>
+     */
+    public com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+        int index) {
+      return elem_.get(index);
+    }
+
+    public static final int NEXT_START_FIELD_NUMBER = 3;
+    private long nextStart_;
+    /**
+     * <code>optional uint64 next_start = 3;</code>
+     *
+     * <pre>
+     *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+     * </pre>
+     */
+    public boolean hasNextStart() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint64 next_start = 3;</code>
+     *
+     * <pre>
+     *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+     * </pre>
+     */
+    public long getNextStart() {
+      return nextStart_;
+    }
+
+    private void initFields() {
+      ret_ = 0;
+      elem_ = java.util.Collections.emptyList();
+      nextStart_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRet()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getElemCount(); i++) {
+        if (!getElem(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, ret_);
+      }
+      for (int i = 0; i < elem_.size(); i++) {
+        output.writeMessage(2, elem_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt64(3, nextStart_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, ret_);
+      }
+      for (int i = 0; i < elem_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, elem_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(3, nextStart_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.GetLikedVideoRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetLikedVideoRsp)
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.class, com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getElemFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ret_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (elemBuilder_ == null) {
+          elem_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          elemBuilder_.clear();
+        }
+        nextStart_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.CommonChannelProto.internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp build() {
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp buildPartial() {
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp result = new com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.ret_ = ret_;
+        if (elemBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            elem_ = java.util.Collections.unmodifiableList(elem_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.elem_ = elem_;
+        } else {
+          result.elem_ = elemBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.nextStart_ = nextStart_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp) {
+          return mergeFrom((com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp other) {
+        if (other == com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp.getDefaultInstance()) return this;
+        if (other.hasRet()) {
+          setRet(other.getRet());
+        }
+        if (elemBuilder_ == null) {
+          if (!other.elem_.isEmpty()) {
+            if (elem_.isEmpty()) {
+              elem_ = other.elem_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureElemIsMutable();
+              elem_.addAll(other.elem_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.elem_.isEmpty()) {
+            if (elemBuilder_.isEmpty()) {
+              elemBuilder_.dispose();
+              elemBuilder_ = null;
+              elem_ = other.elem_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              elemBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getElemFieldBuilder() : null;
+            } else {
+              elemBuilder_.addAllMessages(other.elem_);
+            }
+          }
+        }
+        if (other.hasNextStart()) {
+          setNextStart(other.getNextStart());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRet()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getElemCount(); i++) {
+          if (!getElem(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.CommonChannelProto.GetLikedVideoRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int ret_ ;
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public boolean hasRet() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public int getRet() {
+        return ret_;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder setRet(int value) {
+        bitField0_ |= 0x00000001;
+        ret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 ret = 1;</code>
+       *
+       * <pre>
+       *返回码
+       * </pre>
+       */
+      public Builder clearRet() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        ret_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> elem_ =
+        java.util.Collections.emptyList();
+      private void ensureElemIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          elem_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.WatElement>(elem_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> elemBuilder_;
+
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement> getElemList() {
+        if (elemBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(elem_);
+        } else {
+          return elemBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public int getElemCount() {
+        if (elemBuilder_ == null) {
+          return elem_.size();
+        } else {
+          return elemBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement getElem(int index) {
+        if (elemBuilder_ == null) {
+          return elem_.get(index);
+        } else {
+          return elemBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder setElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.set(index, value);
+          onChanged();
+        } else {
+          elemBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder setElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.add(value);
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement value) {
+        if (elemBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureElemIsMutable();
+          elem_.add(index, value);
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.add(builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addElem(
+          int index, com.wali.live.proto.CommonChannelProto.WatElement.Builder builderForValue) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          elemBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder addAllElem(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.WatElement> values) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, elem_);
+          onChanged();
+        } else {
+          elemBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder clearElem() {
+        if (elemBuilder_ == null) {
+          elem_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          elemBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public Builder removeElem(int index) {
+        if (elemBuilder_ == null) {
+          ensureElemIsMutable();
+          elem_.remove(index);
+          onChanged();
+        } else {
+          elemBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder getElemBuilder(
+          int index) {
+        return getElemFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElementOrBuilder getElemOrBuilder(
+          int index) {
+        if (elemBuilder_ == null) {
+          return elem_.get(index);  } else {
+          return elemBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+           getElemOrBuilderList() {
+        if (elemBuilder_ != null) {
+          return elemBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(elem_);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder addElemBuilder() {
+        return getElemFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public com.wali.live.proto.CommonChannelProto.WatElement.Builder addElemBuilder(
+          int index) {
+        return getElemFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.WatElement.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.WatElement elem = 2;</code>
+       *
+       * <pre>
+       *数据
+       * </pre>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.WatElement.Builder> 
+           getElemBuilderList() {
+        return getElemFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder> 
+          getElemFieldBuilder() {
+        if (elemBuilder_ == null) {
+          elemBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.WatElement, com.wali.live.proto.CommonChannelProto.WatElement.Builder, com.wali.live.proto.CommonChannelProto.WatElementOrBuilder>(
+                  elem_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          elem_ = null;
+        }
+        return elemBuilder_;
+      }
+
+      private long nextStart_ ;
+      /**
+       * <code>optional uint64 next_start = 3;</code>
+       *
+       * <pre>
+       *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+       * </pre>
+       */
+      public boolean hasNextStart() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint64 next_start = 3;</code>
+       *
+       * <pre>
+       *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+       * </pre>
+       */
+      public long getNextStart() {
+        return nextStart_;
+      }
+      /**
+       * <code>optional uint64 next_start = 3;</code>
+       *
+       * <pre>
+       *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+       * </pre>
+       */
+      public Builder setNextStart(long value) {
+        bitField0_ |= 0x00000004;
+        nextStart_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 next_start = 3;</code>
+       *
+       * <pre>
+       *下一页的水位。ret=0&amp;next_start=0 表示列表拉完了
+       * </pre>
+       */
+      public Builder clearNextStart() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        nextStart_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetLikedVideoRsp)
+    }
+
+    static {
+      defaultInstance = new GetLikedVideoRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetLikedVideoRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_ChannelBanner_descriptor;
   private static
@@ -27552,6 +53543,151 @@ public final class CommonChannelProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_BackInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_VideoInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_NavigationData_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_UiTemplateNotice_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_NoticeData_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_UiTemplateRanking_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_RankingItemData_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GiftDetail_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_LeaveRoom_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_FollowRoom_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_LikeFeedback_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_VideoLike_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_VideoComment_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_BarMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_WatElement_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_WatElement_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_VideoData_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_VideoData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ImageData_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ImageData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ButtonData_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -27602,7 +53738,7 @@ public final class CommonChannelProto {
       "nfo\0228\n\005items\030\001 \003(\0132).com.wali.live.proto" +
       ".LiveOrReplayItemInfo\022\022\n\nheaderName\030\002 \001(",
       "\t\022\030\n\020headerViewAllUri\030\003 \001(\t\022\025\n\rsubHeader" +
-      "Name\030\004 \001(\t\022\024\n\014headerUiType\030\005 \001(\r\"\223\003\n\024Liv" +
+      "Name\030\004 \001(\t\022\024\n\014headerUiType\030\005 \001(\r\"\245\003\n\024Liv" +
       "eOrReplayItemInfo\022\014\n\004type\030\001 \002(\r\022\r\n\005items" +
       "\030\002 \002(\014\022\025\n\rjumpSchemeUri\030\003 \001(\t\022\023\n\013upRight" +
       "Text\030\004 \001(\t\022\021\n\tdownText1\030\005 \001(\t\022\021\n\tdownTex" +
@@ -27612,30 +53748,97 @@ public final class CommonChannelProto {
       ".ListWidgetInfo\022.\n\007topLeft\030\014 \001(\0132\035.com.w" +
       "ali.live.proto.RichText\022/\n\006middle\030\r \001(\0132",
       "\037.com.wali.live.proto.MiddleInfo\022,\n\005labe" +
-      "l\030\016 \003(\0132\035.com.wali.live.proto.RichText\"B" +
-      "\n\010RichText\022\014\n\004text\030\001 \001(\t\022\025\n\rjumpSchemeUr" +
-      "i\030\002 \001(\t\022\021\n\tbgImageID\030\003 \001(\r\"*\n\nMiddleInfo" +
-      "\022\r\n\005text1\030\001 \001(\t\022\r\n\005text2\030\002 \001(\t\"8\n\016ListWi" +
-      "dgetInfo\022\025\n\rjumpSchemeUri\030\001 \001(\t\022\017\n\007iconU" +
-      "rl\030\002 \001(\t\"C\n\023UiTemplateSeparator\022\r\n\005color" +
-      "\030\001 \001(\r\022\016\n\006height\030\002 \001(\r\022\r\n\005title\030\003 \001(\t\"[\n" +
-      "\tUserBrief\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickname\030\002 \001(" +
-      "\t\022\016\n\006avatar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022\020\n\010cert",
-      "Type\030\005 \001(\r\"2\n\tShopBrief\022\021\n\thideGoods\030\001 \001" +
-      "(\010\022\022\n\ndesiredCnt\030\002 \001(\r\"\216\002\n\010LiveInfo\022\016\n\006l" +
-      "iveId\030\001 \002(\t\022,\n\004user\030\002 \001(\0132\036.com.wali.liv" +
-      "e.proto.UserBrief\022\020\n\010location\030\003 \001(\t\022\021\n\tv" +
-      "iewerCnt\030\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\020\n\010coverUrl\030" +
-      "\006 \001(\t\022\017\n\007liTitle\030\007 \001(\t\022\021\n\tstartTime\030\010 \001(" +
-      "\004\022\013\n\003tag\030\t \001(\t\022,\n\004shop\030\n \001(\0132\036.com.wali." +
-      "live.proto.ShopBrief\022\017\n\007appType\030\013 \001(\r\022\020\n" +
-      "\010liveType\030\014 \001(\r\"\325\001\n\010BackInfo\022\016\n\006backId\030\001" +
-      " \002(\t\022,\n\004user\030\002 \001(\0132\036.com.wali.live.proto",
-      ".UserBrief\022\021\n\tviewerCnt\030\003 \001(\r\022\013\n\003url\030\004 \001" +
-      "(\t\022\021\n\tstartTime\030\005 \001(\004\022\017\n\007endTime\030\006 \001(\004\022\021" +
-      "\n\tbackTitle\030\007 \001(\t\022\020\n\010coverUrl\030\010 \001(\t\022\020\n\010s" +
-      "hareUrl\030\t \001(\t\022\020\n\010location\030\n \001(\tB)\n\023com.w" +
-      "ali.live.protoB\022CommonChannelProto"
+      "l\030\016 \003(\0132\035.com.wali.live.proto.RichText\022\020" +
+      "\n\010distance\030\017 \001(\r\"S\n\010RichText\022\014\n\004text\030\001 \001" +
+      "(\t\022\025\n\rjumpSchemeUri\030\002 \001(\t\022\021\n\tbgImageID\030\003" +
+      " \001(\r\022\017\n\007iconUrl\030\004 \001(\t\"*\n\nMiddleInfo\022\r\n\005t" +
+      "ext1\030\001 \001(\t\022\r\n\005text2\030\002 \001(\t\"8\n\016ListWidgetI" +
+      "nfo\022\025\n\rjumpSchemeUri\030\001 \001(\t\022\017\n\007iconUrl\030\002 " +
+      "\001(\t\"C\n\023UiTemplateSeparator\022\r\n\005color\030\001 \001(" +
+      "\r\022\016\n\006height\030\002 \001(\r\022\r\n\005title\030\003 \001(\t\"[\n\tUser" +
+      "Brief\022\013\n\003uId\030\001 \002(\004\022\020\n\010nickname\030\002 \001(\t\022\016\n\006",
+      "avatar\030\003 \001(\004\022\r\n\005level\030\004 \001(\r\022\020\n\010certType\030" +
+      "\005 \001(\r\"2\n\tShopBrief\022\021\n\thideGoods\030\001 \001(\010\022\022\n" +
+      "\ndesiredCnt\030\002 \001(\r\"\216\002\n\010LiveInfo\022\016\n\006liveId" +
+      "\030\001 \002(\t\022,\n\004user\030\002 \001(\0132\036.com.wali.live.pro" +
+      "to.UserBrief\022\020\n\010location\030\003 \001(\t\022\021\n\tviewer" +
+      "Cnt\030\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\020\n\010coverUrl\030\006 \001(\t" +
+      "\022\017\n\007liTitle\030\007 \001(\t\022\021\n\tstartTime\030\010 \001(\004\022\013\n\003" +
+      "tag\030\t \001(\t\022,\n\004shop\030\n \001(\0132\036.com.wali.live." +
+      "proto.ShopBrief\022\017\n\007appType\030\013 \001(\r\022\020\n\010live" +
+      "Type\030\014 \001(\r\"\325\001\n\010BackInfo\022\016\n\006backId\030\001 \002(\t\022",
+      ",\n\004user\030\002 \001(\0132\036.com.wali.live.proto.User" +
+      "Brief\022\021\n\tviewerCnt\030\003 \001(\r\022\013\n\003url\030\004 \001(\t\022\021\n" +
+      "\tstartTime\030\005 \001(\004\022\017\n\007endTime\030\006 \001(\004\022\021\n\tbac" +
+      "kTitle\030\007 \001(\t\022\020\n\010coverUrl\030\010 \001(\t\022\020\n\010shareU" +
+      "rl\030\t \001(\t\022\020\n\010location\030\n \001(\t\"]\n\tVideoInfo\022" +
+      "\n\n\002id\030\001 \002(\t\022\022\n\nview_count\030\002 \001(\004\0220\n\tuser_" +
+      "info\030\003 \001(\0132\035.com.wali.live.proto.UserInf" +
+      "o\"\220\001\n\016NavigationData\022\014\n\004name\030\001 \001(\t\022\020\n\010bg" +
+      "ImgUrl\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001(\t\022\025\n\rjumpSch" +
+      "emeUri\030\004 \001(\t\022\021\n\ttextColor\030\005 \001(\r\022\024\n\014hexCo",
+      "lorCode\030\006 \001(\t\022\r\n\005text1\030\007 \001(\t\"N\n\024UiTempla" +
+      "teNavigation\0226\n\titemDatas\030\001 \003(\0132#.com.wa" +
+      "li.live.proto.NavigationData\"b\n\020UiTempla" +
+      "teNotice\0224\n\013noticeItems\030\001 \003(\0132\037.com.wali" +
+      ".live.proto.NoticeData\022\030\n\020headerViewAllU" +
+      "ri\030\002 \001(\t\"N\n\nNoticeData\022\020\n\010noticeId\030\001 \001(\t" +
+      "\022\014\n\004zuid\030\002 \001(\004\022\021\n\tbeginTime\030\003 \001(\004\022\r\n\005tit" +
+      "le\030\004 \001(\t\"\224\001\n\021UiTemplateRanking\0227\n\titemDa" +
+      "tas\030\001 \003(\0132$.com.wali.live.proto.RankingI" +
+      "temData\022\025\n\rjumpSchemeUri\030\002 \001(\t\022\r\n\005text1\030",
+      "\003 \001(\t\022\r\n\005text2\030\004 \001(\t\022\021\n\ticonStyle\030\005 \001(\r\"" +
+      "Y\n\017RankingItemData\022/\n\010userInfo\030\001 \001(\0132\035.c" +
+      "om.wali.live.proto.UserInfo\022\025\n\rjumpSchem" +
+      "eUri\030\002 \001(\t\"G\n\017LiveRecvFlagReq\0224\n\005items\030\001" +
+      " \003(\0132%.com.wali.live.proto.LiveRecvFlagI" +
+      "tem\"R\n\020LiveRecvFlagItem\022\014\n\004date\030\001 \001(\004\022\014\n" +
+      "\004type\030\002 \001(\r\022\017\n\007extData\030\003 \001(\014\022\021\n\trecommen" +
+      "d\030\004 \001(\t\"/\n\nGiftDetail\022\016\n\006giftId\030\001 \001(\r\022\021\n" +
+      "\tgiftWorth\030\002 \001(\r\"1\n\tLeaveRoom\022\021\n\tenterTi" +
+      "me\030\001 \001(\004\022\021\n\tleaveTime\030\002 \001(\004\"3\n\nFollowRoo",
+      "m\022\021\n\tenterTime\030\001 \001(\004\022\022\n\nfollowTime\030\002 \001(\004" +
+      "\",\n\014LikeFeedback\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roomId" +
+      "\030\002 \001(\t\"\035\n\tVideoLike\022\020\n\010befCount\030\001 \001(\004\"\037\n" +
+      "\014VideoComment\022\017\n\007content\030\001 \001(\t\"\"\n\017LiveRe" +
+      "cvFlagRsp\022\017\n\007retCode\030\001 \002(\r\"{\n\nBarMessage" +
+      "\0220\n\003bmt\030\001 \001(\0162#.com.wali.live.proto.BarM" +
+      "essageType\022\017\n\007content\030\002 \001(\t\022\016\n\006schema\030\003 " +
+      "\001(\t\022\r\n\005start\030\004 \001(\004\022\013\n\003end\030\005 \001(\004\"$\n\024GetBa" +
+      "rMessageRequest\022\014\n\004from\030\001 \001(\004\"g\n\025GetBarM" +
+      "essageResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_msg\030\002",
+      " \001(\t\0220\n\007bar_msg\030\003 \003(\0132\037.com.wali.live.pr" +
+      "oto.BarMessage\"X\n\023GetWaterfallListReq\022\013\n" +
+      "\003uid\030\001 \002(\004\022\021\n\toper_type\030\002 \001(\r\022\022\n\nchannel" +
+      "_id\030\003 \001(\r\022\r\n\005param\030\004 \001(\014\"r\n\023GetWaterfall" +
+      "ListRsp\022\013\n\003ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com" +
+      ".wali.live.proto.WatElement\022\r\n\005param\030\003 \001" +
+      "(\014\022\020\n\010has_more\030\004 \001(\010\"-\n\nWatElement\022\021\n\tda" +
+      "ta_type\030\001 \002(\r\022\014\n\004data\030\002 \002(\014\"\357\001\n\tVideoDat" +
+      "a\022\017\n\007feed_id\030\001 \001(\t\022\020\n\010jump_uri\030\002 \001(\t\022\021\n\t" +
+      "cover_url\030\003 \001(\t\022\r\n\005width\030\004 \001(\r\022\016\n\006height",
+      "\030\005 \001(\r\022\r\n\005title\030\006 \001(\t\022\022\n\nlike_count\030\007 \001(" +
+      "\004\022+\n\004user\030\010 \001(\0132\035.com.wali.live.proto.Us" +
+      "erInfo\022+\n\004mark\030\t \001(\0132\035.com.wali.live.pro" +
+      "to.RichText\022\020\n\010is_liked\030\n \001(\010\"\213\001\n\tImageD" +
+      "ata\022\021\n\timage_url\030\001 \001(\t\022\020\n\010jump_uri\030\002 \001(\t" +
+      "\022\r\n\005width\030\003 \001(\r\022\016\n\006height\030\004 \001(\r\022\r\n\005title" +
+      "\030\005 \001(\t\022+\n\004mark\030\006 \001(\0132\035.com.wali.live.pro" +
+      "to.RichText\"h\n\nButtonData\022\023\n\013button_text" +
+      "\030\001 \001(\t\022\022\n\nbutton_uri\030\002 \001(\t\022\021\n\timage_url\030" +
+      "\003 \001(\t\022\014\n\004text\030\004 \001(\t\022\020\n\010jump_uri\030\005 \001(\t\"[\n",
+      "\026GetWaterfallSubListReq\022\013\n\003uid\030\001 \002(\004\022\021\n\t" +
+      "oper_type\030\002 \001(\r\022\022\n\nchannel_id\030\003 \001(\r\022\r\n\005p" +
+      "aram\030\004 \001(\014\"u\n\026GetWaterfallSubListRsp\022\013\n\003" +
+      "ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com.wali.live." +
+      "proto.WatElement\022\r\n\005param\030\003 \001(\014\022\020\n\010has_m" +
+      "ore\030\004 \001(\010\".\n\020GetLikedVideoReq\022\013\n\003uid\030\001 \002" +
+      "(\004\022\r\n\005start\030\002 \001(\004\"b\n\020GetLikedVideoRsp\022\013\n" +
+      "\003ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com.wali.live" +
+      ".proto.WatElement\022\022\n\nnext_start\030\003 \001(\004**\n" +
+      "\016BarMessageType\022\006\n\002OP\020\001\022\007\n\003SYS\020\002\022\007\n\003NTF\020",
+      "\003B)\n\023com.wali.live.protoB\022CommonChannelP" +
+      "roto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -27726,13 +53929,13 @@ public final class CommonChannelProto {
     internal_static_com_wali_live_proto_LiveOrReplayItemInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LiveOrReplayItemInfo_descriptor,
-        new java.lang.String[] { "Type", "Items", "JumpSchemeUri", "UpRightText", "DownText1", "DownText2", "ImgUrl", "PublishTime", "UpLeftText", "ImgUrl2", "Widget", "TopLeft", "Middle", "Label", });
+        new java.lang.String[] { "Type", "Items", "JumpSchemeUri", "UpRightText", "DownText1", "DownText2", "ImgUrl", "PublishTime", "UpLeftText", "ImgUrl2", "Widget", "TopLeft", "Middle", "Label", "Distance", });
     internal_static_com_wali_live_proto_RichText_descriptor =
       getDescriptor().getMessageTypes().get(13);
     internal_static_com_wali_live_proto_RichText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RichText_descriptor,
-        new java.lang.String[] { "Text", "JumpSchemeUri", "BgImageID", });
+        new java.lang.String[] { "Text", "JumpSchemeUri", "BgImageID", "IconUrl", });
     internal_static_com_wali_live_proto_MiddleInfo_descriptor =
       getDescriptor().getMessageTypes().get(14);
     internal_static_com_wali_live_proto_MiddleInfo_fieldAccessorTable = new
@@ -27775,6 +53978,180 @@ public final class CommonChannelProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_BackInfo_descriptor,
         new java.lang.String[] { "BackId", "User", "ViewerCnt", "Url", "StartTime", "EndTime", "BackTitle", "CoverUrl", "ShareUrl", "Location", });
+    internal_static_com_wali_live_proto_VideoInfo_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_com_wali_live_proto_VideoInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_VideoInfo_descriptor,
+        new java.lang.String[] { "Id", "ViewCount", "UserInfo", });
+    internal_static_com_wali_live_proto_NavigationData_descriptor =
+      getDescriptor().getMessageTypes().get(22);
+    internal_static_com_wali_live_proto_NavigationData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_NavigationData_descriptor,
+        new java.lang.String[] { "Name", "BgImgUrl", "IconUrl", "JumpSchemeUri", "TextColor", "HexColorCode", "Text1", });
+    internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor =
+      getDescriptor().getMessageTypes().get(23);
+    internal_static_com_wali_live_proto_UiTemplateNavigation_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UiTemplateNavigation_descriptor,
+        new java.lang.String[] { "ItemDatas", });
+    internal_static_com_wali_live_proto_UiTemplateNotice_descriptor =
+      getDescriptor().getMessageTypes().get(24);
+    internal_static_com_wali_live_proto_UiTemplateNotice_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UiTemplateNotice_descriptor,
+        new java.lang.String[] { "NoticeItems", "HeaderViewAllUri", });
+    internal_static_com_wali_live_proto_NoticeData_descriptor =
+      getDescriptor().getMessageTypes().get(25);
+    internal_static_com_wali_live_proto_NoticeData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_NoticeData_descriptor,
+        new java.lang.String[] { "NoticeId", "Zuid", "BeginTime", "Title", });
+    internal_static_com_wali_live_proto_UiTemplateRanking_descriptor =
+      getDescriptor().getMessageTypes().get(26);
+    internal_static_com_wali_live_proto_UiTemplateRanking_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UiTemplateRanking_descriptor,
+        new java.lang.String[] { "ItemDatas", "JumpSchemeUri", "Text1", "Text2", "IconStyle", });
+    internal_static_com_wali_live_proto_RankingItemData_descriptor =
+      getDescriptor().getMessageTypes().get(27);
+    internal_static_com_wali_live_proto_RankingItemData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_RankingItemData_descriptor,
+        new java.lang.String[] { "UserInfo", "JumpSchemeUri", });
+    internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor =
+      getDescriptor().getMessageTypes().get(28);
+    internal_static_com_wali_live_proto_LiveRecvFlagReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_LiveRecvFlagReq_descriptor,
+        new java.lang.String[] { "Items", });
+    internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor =
+      getDescriptor().getMessageTypes().get(29);
+    internal_static_com_wali_live_proto_LiveRecvFlagItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_LiveRecvFlagItem_descriptor,
+        new java.lang.String[] { "Date", "Type", "ExtData", "Recommend", });
+    internal_static_com_wali_live_proto_GiftDetail_descriptor =
+      getDescriptor().getMessageTypes().get(30);
+    internal_static_com_wali_live_proto_GiftDetail_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GiftDetail_descriptor,
+        new java.lang.String[] { "GiftId", "GiftWorth", });
+    internal_static_com_wali_live_proto_LeaveRoom_descriptor =
+      getDescriptor().getMessageTypes().get(31);
+    internal_static_com_wali_live_proto_LeaveRoom_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_LeaveRoom_descriptor,
+        new java.lang.String[] { "EnterTime", "LeaveTime", });
+    internal_static_com_wali_live_proto_FollowRoom_descriptor =
+      getDescriptor().getMessageTypes().get(32);
+    internal_static_com_wali_live_proto_FollowRoom_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_FollowRoom_descriptor,
+        new java.lang.String[] { "EnterTime", "FollowTime", });
+    internal_static_com_wali_live_proto_LikeFeedback_descriptor =
+      getDescriptor().getMessageTypes().get(33);
+    internal_static_com_wali_live_proto_LikeFeedback_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_LikeFeedback_descriptor,
+        new java.lang.String[] { "Zuid", "RoomId", });
+    internal_static_com_wali_live_proto_VideoLike_descriptor =
+      getDescriptor().getMessageTypes().get(34);
+    internal_static_com_wali_live_proto_VideoLike_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_VideoLike_descriptor,
+        new java.lang.String[] { "BefCount", });
+    internal_static_com_wali_live_proto_VideoComment_descriptor =
+      getDescriptor().getMessageTypes().get(35);
+    internal_static_com_wali_live_proto_VideoComment_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_VideoComment_descriptor,
+        new java.lang.String[] { "Content", });
+    internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor =
+      getDescriptor().getMessageTypes().get(36);
+    internal_static_com_wali_live_proto_LiveRecvFlagRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_LiveRecvFlagRsp_descriptor,
+        new java.lang.String[] { "RetCode", });
+    internal_static_com_wali_live_proto_BarMessage_descriptor =
+      getDescriptor().getMessageTypes().get(37);
+    internal_static_com_wali_live_proto_BarMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_BarMessage_descriptor,
+        new java.lang.String[] { "Bmt", "Content", "Schema", "Start", "End", });
+    internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor =
+      getDescriptor().getMessageTypes().get(38);
+    internal_static_com_wali_live_proto_GetBarMessageRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetBarMessageRequest_descriptor,
+        new java.lang.String[] { "From", });
+    internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor =
+      getDescriptor().getMessageTypes().get(39);
+    internal_static_com_wali_live_proto_GetBarMessageResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetBarMessageResponse_descriptor,
+        new java.lang.String[] { "Ret", "ErrMsg", "BarMsg", });
+    internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor =
+      getDescriptor().getMessageTypes().get(40);
+    internal_static_com_wali_live_proto_GetWaterfallListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetWaterfallListReq_descriptor,
+        new java.lang.String[] { "Uid", "OperType", "ChannelId", "Param", });
+    internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(41);
+    internal_static_com_wali_live_proto_GetWaterfallListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetWaterfallListRsp_descriptor,
+        new java.lang.String[] { "Ret", "Elem", "Param", "HasMore", });
+    internal_static_com_wali_live_proto_WatElement_descriptor =
+      getDescriptor().getMessageTypes().get(42);
+    internal_static_com_wali_live_proto_WatElement_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_WatElement_descriptor,
+        new java.lang.String[] { "DataType", "Data", });
+    internal_static_com_wali_live_proto_VideoData_descriptor =
+      getDescriptor().getMessageTypes().get(43);
+    internal_static_com_wali_live_proto_VideoData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_VideoData_descriptor,
+        new java.lang.String[] { "FeedId", "JumpUri", "CoverUrl", "Width", "Height", "Title", "LikeCount", "User", "Mark", "IsLiked", });
+    internal_static_com_wali_live_proto_ImageData_descriptor =
+      getDescriptor().getMessageTypes().get(44);
+    internal_static_com_wali_live_proto_ImageData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ImageData_descriptor,
+        new java.lang.String[] { "ImageUrl", "JumpUri", "Width", "Height", "Title", "Mark", });
+    internal_static_com_wali_live_proto_ButtonData_descriptor =
+      getDescriptor().getMessageTypes().get(45);
+    internal_static_com_wali_live_proto_ButtonData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ButtonData_descriptor,
+        new java.lang.String[] { "ButtonText", "ButtonUri", "ImageUrl", "Text", "JumpUri", });
+    internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor =
+      getDescriptor().getMessageTypes().get(46);
+    internal_static_com_wali_live_proto_GetWaterfallSubListReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetWaterfallSubListReq_descriptor,
+        new java.lang.String[] { "Uid", "OperType", "ChannelId", "Param", });
+    internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor =
+      getDescriptor().getMessageTypes().get(47);
+    internal_static_com_wali_live_proto_GetWaterfallSubListRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetWaterfallSubListRsp_descriptor,
+        new java.lang.String[] { "Ret", "Elem", "Param", "HasMore", });
+    internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor =
+      getDescriptor().getMessageTypes().get(48);
+    internal_static_com_wali_live_proto_GetLikedVideoReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetLikedVideoReq_descriptor,
+        new java.lang.String[] { "Uid", "Start", });
+    internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor =
+      getDescriptor().getMessageTypes().get(49);
+    internal_static_com_wali_live_proto_GetLikedVideoRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_GetLikedVideoRsp_descriptor,
+        new java.lang.String[] { "Ret", "Elem", "NextStart", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

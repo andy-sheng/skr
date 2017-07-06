@@ -136,11 +136,7 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
         ($(R.id.channel_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri = "livesdk://channel?channel_id=111001";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.putExtra("extra_channel_id", 50001);
-                intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
-                startActivity(intent);
+                getChannelById(201);
             }
         });
     }
@@ -256,5 +252,13 @@ public class MainActivity extends BaseSdkActivity implements IChannelView {
     public static void openActivity(@NonNull Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
+    }
+
+    public void getChannelById(int channelId) {
+        String uri = "livesdk://channel?channel_id=" + channelId;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.putExtra("extra_channel_id", 50001);
+        intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
+        startActivity(intent);
     }
 }

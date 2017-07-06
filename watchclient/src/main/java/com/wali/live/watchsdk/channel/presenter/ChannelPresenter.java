@@ -134,10 +134,7 @@ public class ChannelPresenter implements IChannelPresenter {
             }
 
             int uiType = viewModel.getUiType();
-            if (uiType == ChannelUiType.TYPE_TWO_CARD
-                    || uiType == ChannelUiType.TYPE_LARGE_CARD
-                    || uiType == ChannelUiType.TYPE_ONE_CARD_DEFAULT
-                    || uiType == ChannelUiType.TYPE_THREE_NEW) {
+            if (ChannelUiType.ALL_CHANNEL_UI_TYPE.contains(uiType)) {
                 models.add(viewModel);
             }
         }

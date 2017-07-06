@@ -9,7 +9,7 @@ public final class HotChannelProto {
       com.google.protobuf.ExtensionRegistry registry) {
   }
   public interface GetRecommendListReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRecommendListReq)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetRecommendListReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -47,7 +47,7 @@ public final class HotChannelProto {
     int getChannelId();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetRecommendListReq}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendListReq}
    *
    * <pre>
    *****************zhibo.recommend.list************************
@@ -55,7 +55,7 @@ public final class HotChannelProto {
    */
   public static final class GetRecommendListReq extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRecommendListReq)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetRecommendListReq)
       GetRecommendListReqOrBuilder {
     // Use GetRecommendListReq.newBuilder() to construct.
     private GetRecommendListReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -126,12 +126,12 @@ public final class HotChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListReq_descriptor;
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListReq_fieldAccessorTable
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.HotChannelProto.GetRecommendListReq.class, com.wali.live.proto.HotChannelProto.GetRecommendListReq.Builder.class);
     }
@@ -321,7 +321,7 @@ public final class HotChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetRecommendListReq}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendListReq}
      *
      * <pre>
      *****************zhibo.recommend.list************************
@@ -329,16 +329,16 @@ public final class HotChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRecommendListReq)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetRecommendListReq)
         com.wali.live.proto.HotChannelProto.GetRecommendListReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListReq_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListReq_fieldAccessorTable
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.HotChannelProto.GetRecommendListReq.class, com.wali.live.proto.HotChannelProto.GetRecommendListReq.Builder.class);
       }
@@ -376,7 +376,7 @@ public final class HotChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListReq_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListReq_descriptor;
       }
 
       public com.wali.live.proto.HotChannelProto.GetRecommendListReq getDefaultInstanceForType() {
@@ -552,7 +552,7 @@ public final class HotChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRecommendListReq)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetRecommendListReq)
     }
 
     static {
@@ -560,11 +560,11 @@ public final class HotChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRecommendListReq)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetRecommendListReq)
   }
 
   public interface GetRecommendListRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRecommendListRsp)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetRecommendListRsp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -577,35 +577,35 @@ public final class HotChannelProto {
     int getRetCode();
 
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> 
         getItemsList();
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index);
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     int getItemsCount();
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
         getItemsOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetRecommendListRsp}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendListRsp}
    */
   public static final class GetRecommendListRsp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRecommendListRsp)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetRecommendListRsp)
       GetRecommendListRspOrBuilder {
     // Use GetRecommendListRsp.newBuilder() to construct.
     private GetRecommendListRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -682,12 +682,12 @@ public final class HotChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListRsp_descriptor;
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListRsp_fieldAccessorTable
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.HotChannelProto.GetRecommendListRsp.class, com.wali.live.proto.HotChannelProto.GetRecommendListRsp.Builder.class);
     }
@@ -726,32 +726,32 @@ public final class HotChannelProto {
     public static final int ITEMS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> items_;
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> getItemsList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public int getItemsCount() {
       return items_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index) {
       return items_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
         int index) {
@@ -887,20 +887,20 @@ public final class HotChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetRecommendListRsp}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendListRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRecommendListRsp)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetRecommendListRsp)
         com.wali.live.proto.HotChannelProto.GetRecommendListRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListRsp_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListRsp_fieldAccessorTable
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.HotChannelProto.GetRecommendListRsp.class, com.wali.live.proto.HotChannelProto.GetRecommendListRsp.Builder.class);
       }
@@ -943,7 +943,7 @@ public final class HotChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendListRsp_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_descriptor;
       }
 
       public com.wali.live.proto.HotChannelProto.GetRecommendListRsp getDefaultInstanceForType() {
@@ -1102,7 +1102,7 @@ public final class HotChannelProto {
           com.wali.live.proto.CommonChannelProto.ChannelItem, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder, com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> itemsBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> getItemsList() {
         if (itemsBuilder_ == null) {
@@ -1112,7 +1112,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public int getItemsCount() {
         if (itemsBuilder_ == null) {
@@ -1122,7 +1122,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index) {
         if (itemsBuilder_ == null) {
@@ -1132,7 +1132,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem value) {
@@ -1149,7 +1149,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
@@ -1163,7 +1163,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(com.wali.live.proto.CommonChannelProto.ChannelItem value) {
         if (itemsBuilder_ == null) {
@@ -1179,7 +1179,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem value) {
@@ -1196,7 +1196,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(
           com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
@@ -1210,7 +1210,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
@@ -1224,7 +1224,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addAllItems(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.ChannelItem> values) {
@@ -1239,7 +1239,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder clearItems() {
         if (itemsBuilder_ == null) {
@@ -1252,7 +1252,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder removeItems(int index) {
         if (itemsBuilder_ == null) {
@@ -1265,14 +1265,14 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
           int index) {
@@ -1282,7 +1282,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
            getItemsOrBuilderList() {
@@ -1293,14 +1293,14 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.ChannelItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder addItemsBuilder(
           int index) {
@@ -1308,7 +1308,7 @@ public final class HotChannelProto {
             index, com.wali.live.proto.CommonChannelProto.ChannelItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem.Builder> 
            getItemsBuilderList() {
@@ -1329,7 +1329,7 @@ public final class HotChannelProto {
         return itemsBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRecommendListRsp)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetRecommendListRsp)
     }
 
     static {
@@ -1337,11 +1337,11 @@ public final class HotChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRecommendListRsp)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetRecommendListRsp)
   }
 
   public interface GetRecommendSublistReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRecommendSublistReq)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetRecommendSublistReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -1430,9 +1430,39 @@ public final class HotChannelProto {
      * </pre>
      */
     int getSource();
+
+    /**
+     * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+     */
+    boolean hasLocation();
+    /**
+     * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+     */
+    com.wali.live.proto.CommonProto.Location getLocation();
+    /**
+     * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+     */
+    com.wali.live.proto.CommonProto.LocationOrBuilder getLocationOrBuilder();
+
+    /**
+     * <code>optional uint32 gender = 8;</code>
+     *
+     * <pre>
+     *性别刷选 , 默认0 全部,1 男,2 女
+     * </pre>
+     */
+    boolean hasGender();
+    /**
+     * <code>optional uint32 gender = 8;</code>
+     *
+     * <pre>
+     *性别刷选 , 默认0 全部,1 男,2 女
+     * </pre>
+     */
+    int getGender();
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetRecommendSublistReq}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendSublistReq}
    *
    * <pre>
    *更多的跳转schema(wallilive://recommend/sublist?id=1&amp;title=encode(达人))，会带上subListId，
@@ -1441,7 +1471,7 @@ public final class HotChannelProto {
    */
   public static final class GetRecommendSublistReq extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRecommendSublistReq)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetRecommendSublistReq)
       GetRecommendSublistReqOrBuilder {
     // Use GetRecommendSublistReq.newBuilder() to construct.
     private GetRecommendSublistReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -1519,6 +1549,24 @@ public final class HotChannelProto {
               source_ = input.readUInt32();
               break;
             }
+            case 58: {
+              com.wali.live.proto.CommonProto.Location.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                subBuilder = location_.toBuilder();
+              }
+              location_ = input.readMessage(com.wali.live.proto.CommonProto.Location.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(location_);
+                location_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000040;
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              gender_ = input.readUInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1533,12 +1581,12 @@ public final class HotChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistReq_descriptor;
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistReq_fieldAccessorTable
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.HotChannelProto.GetRecommendSublistReq.class, com.wali.live.proto.HotChannelProto.GetRecommendSublistReq.Builder.class);
     }
@@ -1704,6 +1752,50 @@ public final class HotChannelProto {
       return source_;
     }
 
+    public static final int LOCATION_FIELD_NUMBER = 7;
+    private com.wali.live.proto.CommonProto.Location location_;
+    /**
+     * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+     */
+    public boolean hasLocation() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+     */
+    public com.wali.live.proto.CommonProto.Location getLocation() {
+      return location_;
+    }
+    /**
+     * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+     */
+    public com.wali.live.proto.CommonProto.LocationOrBuilder getLocationOrBuilder() {
+      return location_;
+    }
+
+    public static final int GENDER_FIELD_NUMBER = 8;
+    private int gender_;
+    /**
+     * <code>optional uint32 gender = 8;</code>
+     *
+     * <pre>
+     *性别刷选 , 默认0 全部,1 男,2 女
+     * </pre>
+     */
+    public boolean hasGender() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 gender = 8;</code>
+     *
+     * <pre>
+     *性别刷选 , 默认0 全部,1 男,2 女
+     * </pre>
+     */
+    public int getGender() {
+      return gender_;
+    }
+
     private void initFields() {
       uid_ = 0L;
       subListId_ = 0;
@@ -1711,6 +1803,8 @@ public final class HotChannelProto {
       key_ = "";
       keyId_ = 0L;
       source_ = 0;
+      location_ = com.wali.live.proto.CommonProto.Location.getDefaultInstance();
+      gender_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1751,6 +1845,12 @@ public final class HotChannelProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeUInt32(6, source_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeMessage(7, location_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(8, gender_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1783,6 +1883,14 @@ public final class HotChannelProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(6, source_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, location_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, gender_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1863,7 +1971,7 @@ public final class HotChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetRecommendSublistReq}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendSublistReq}
      *
      * <pre>
      *更多的跳转schema(wallilive://recommend/sublist?id=1&amp;title=encode(达人))，会带上subListId，
@@ -1872,16 +1980,16 @@ public final class HotChannelProto {
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRecommendSublistReq)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetRecommendSublistReq)
         com.wali.live.proto.HotChannelProto.GetRecommendSublistReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistReq_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistReq_fieldAccessorTable
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.HotChannelProto.GetRecommendSublistReq.class, com.wali.live.proto.HotChannelProto.GetRecommendSublistReq.Builder.class);
       }
@@ -1898,6 +2006,7 @@ public final class HotChannelProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getLocationFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1918,6 +2027,14 @@ public final class HotChannelProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         source_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
+        if (locationBuilder_ == null) {
+          location_ = com.wali.live.proto.CommonProto.Location.getDefaultInstance();
+        } else {
+          locationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        gender_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -1927,7 +2044,7 @@ public final class HotChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistReq_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_descriptor;
       }
 
       public com.wali.live.proto.HotChannelProto.GetRecommendSublistReq getDefaultInstanceForType() {
@@ -1970,6 +2087,18 @@ public final class HotChannelProto {
           to_bitField0_ |= 0x00000020;
         }
         result.source_ = source_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        if (locationBuilder_ == null) {
+          result.location_ = location_;
+        } else {
+          result.location_ = locationBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.gender_ = gender_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2005,6 +2134,12 @@ public final class HotChannelProto {
         }
         if (other.hasSource()) {
           setSource(other.getSource());
+        }
+        if (other.hasLocation()) {
+          mergeLocation(other.getLocation());
+        }
+        if (other.hasGender()) {
+          setGender(other.getGender());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2333,7 +2468,171 @@ public final class HotChannelProto {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRecommendSublistReq)
+      private com.wali.live.proto.CommonProto.Location location_ = com.wali.live.proto.CommonProto.Location.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonProto.Location, com.wali.live.proto.CommonProto.Location.Builder, com.wali.live.proto.CommonProto.LocationOrBuilder> locationBuilder_;
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public boolean hasLocation() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public com.wali.live.proto.CommonProto.Location getLocation() {
+        if (locationBuilder_ == null) {
+          return location_;
+        } else {
+          return locationBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public Builder setLocation(com.wali.live.proto.CommonProto.Location value) {
+        if (locationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          location_ = value;
+          onChanged();
+        } else {
+          locationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public Builder setLocation(
+          com.wali.live.proto.CommonProto.Location.Builder builderForValue) {
+        if (locationBuilder_ == null) {
+          location_ = builderForValue.build();
+          onChanged();
+        } else {
+          locationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public Builder mergeLocation(com.wali.live.proto.CommonProto.Location value) {
+        if (locationBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+              location_ != com.wali.live.proto.CommonProto.Location.getDefaultInstance()) {
+            location_ =
+              com.wali.live.proto.CommonProto.Location.newBuilder(location_).mergeFrom(value).buildPartial();
+          } else {
+            location_ = value;
+          }
+          onChanged();
+        } else {
+          locationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public Builder clearLocation() {
+        if (locationBuilder_ == null) {
+          location_ = com.wali.live.proto.CommonProto.Location.getDefaultInstance();
+          onChanged();
+        } else {
+          locationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public com.wali.live.proto.CommonProto.Location.Builder getLocationBuilder() {
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return getLocationFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      public com.wali.live.proto.CommonProto.LocationOrBuilder getLocationOrBuilder() {
+        if (locationBuilder_ != null) {
+          return locationBuilder_.getMessageOrBuilder();
+        } else {
+          return location_;
+        }
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.Location location = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.CommonProto.Location, com.wali.live.proto.CommonProto.Location.Builder, com.wali.live.proto.CommonProto.LocationOrBuilder> 
+          getLocationFieldBuilder() {
+        if (locationBuilder_ == null) {
+          locationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.CommonProto.Location, com.wali.live.proto.CommonProto.Location.Builder, com.wali.live.proto.CommonProto.LocationOrBuilder>(
+                  getLocation(),
+                  getParentForChildren(),
+                  isClean());
+          location_ = null;
+        }
+        return locationBuilder_;
+      }
+
+      private int gender_ ;
+      /**
+       * <code>optional uint32 gender = 8;</code>
+       *
+       * <pre>
+       *性别刷选 , 默认0 全部,1 男,2 女
+       * </pre>
+       */
+      public boolean hasGender() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 gender = 8;</code>
+       *
+       * <pre>
+       *性别刷选 , 默认0 全部,1 男,2 女
+       * </pre>
+       */
+      public int getGender() {
+        return gender_;
+      }
+      /**
+       * <code>optional uint32 gender = 8;</code>
+       *
+       * <pre>
+       *性别刷选 , 默认0 全部,1 男,2 女
+       * </pre>
+       */
+      public Builder setGender(int value) {
+        bitField0_ |= 0x00000080;
+        gender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 gender = 8;</code>
+       *
+       * <pre>
+       *性别刷选 , 默认0 全部,1 男,2 女
+       * </pre>
+       */
+      public Builder clearGender() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        gender_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetRecommendSublistReq)
     }
 
     static {
@@ -2341,11 +2640,11 @@ public final class HotChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRecommendSublistReq)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetRecommendSublistReq)
   }
 
   public interface GetRecommendSublistRspOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.GetRecommendSublistRsp)
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetRecommendSublistRsp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -2358,35 +2657,35 @@ public final class HotChannelProto {
     int getRetCode();
 
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> 
         getItemsList();
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index);
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     int getItemsCount();
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
         getItemsOrBuilderList();
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code com.wali.live.proto.GetRecommendSublistRsp}
+   * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendSublistRsp}
    */
   public static final class GetRecommendSublistRsp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.wali.live.proto.GetRecommendSublistRsp)
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetRecommendSublistRsp)
       GetRecommendSublistRspOrBuilder {
     // Use GetRecommendSublistRsp.newBuilder() to construct.
     private GetRecommendSublistRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -2463,12 +2762,12 @@ public final class HotChannelProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistRsp_descriptor;
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistRsp_fieldAccessorTable
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.wali.live.proto.HotChannelProto.GetRecommendSublistRsp.class, com.wali.live.proto.HotChannelProto.GetRecommendSublistRsp.Builder.class);
     }
@@ -2507,32 +2806,32 @@ public final class HotChannelProto {
     public static final int ITEMS_FIELD_NUMBER = 2;
     private java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> items_;
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> getItemsList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
         getItemsOrBuilderList() {
       return items_;
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public int getItemsCount() {
       return items_.size();
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index) {
       return items_.get(index);
     }
     /**
-     * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
      */
     public com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
         int index) {
@@ -2668,20 +2967,20 @@ public final class HotChannelProto {
       return builder;
     }
     /**
-     * Protobuf type {@code com.wali.live.proto.GetRecommendSublistRsp}
+     * Protobuf type {@code com.mi.liveassistant.proto.GetRecommendSublistRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.GetRecommendSublistRsp)
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetRecommendSublistRsp)
         com.wali.live.proto.HotChannelProto.GetRecommendSublistRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistRsp_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistRsp_fieldAccessorTable
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.wali.live.proto.HotChannelProto.GetRecommendSublistRsp.class, com.wali.live.proto.HotChannelProto.GetRecommendSublistRsp.Builder.class);
       }
@@ -2724,7 +3023,7 @@ public final class HotChannelProto {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.wali.live.proto.HotChannelProto.internal_static_com_wali_live_proto_GetRecommendSublistRsp_descriptor;
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_descriptor;
       }
 
       public com.wali.live.proto.HotChannelProto.GetRecommendSublistRsp getDefaultInstanceForType() {
@@ -2883,7 +3182,7 @@ public final class HotChannelProto {
           com.wali.live.proto.CommonChannelProto.ChannelItem, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder, com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> itemsBuilder_;
 
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> getItemsList() {
         if (itemsBuilder_ == null) {
@@ -2893,7 +3192,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public int getItemsCount() {
         if (itemsBuilder_ == null) {
@@ -2903,7 +3202,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index) {
         if (itemsBuilder_ == null) {
@@ -2913,7 +3212,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem value) {
@@ -2930,7 +3229,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder setItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
@@ -2944,7 +3243,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(com.wali.live.proto.CommonChannelProto.ChannelItem value) {
         if (itemsBuilder_ == null) {
@@ -2960,7 +3259,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem value) {
@@ -2977,7 +3276,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(
           com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
@@ -2991,7 +3290,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addItems(
           int index, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
@@ -3005,7 +3304,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder addAllItems(
           java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.ChannelItem> values) {
@@ -3020,7 +3319,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder clearItems() {
         if (itemsBuilder_ == null) {
@@ -3033,7 +3332,7 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public Builder removeItems(int index) {
         if (itemsBuilder_ == null) {
@@ -3046,14 +3345,14 @@ public final class HotChannelProto {
         return this;
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder getItemsBuilder(
           int index) {
         return getItemsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
           int index) {
@@ -3063,7 +3362,7 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
            getItemsOrBuilderList() {
@@ -3074,14 +3373,14 @@ public final class HotChannelProto {
         }
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder addItemsBuilder() {
         return getItemsFieldBuilder().addBuilder(
             com.wali.live.proto.CommonChannelProto.ChannelItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder addItemsBuilder(
           int index) {
@@ -3089,7 +3388,7 @@ public final class HotChannelProto {
             index, com.wali.live.proto.CommonChannelProto.ChannelItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.wali.live.proto.ChannelItem items = 2;</code>
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
        */
       public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem.Builder> 
            getItemsBuilderList() {
@@ -3110,7 +3409,7 @@ public final class HotChannelProto {
         return itemsBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRecommendSublistRsp)
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetRecommendSublistRsp)
     }
 
     static {
@@ -3118,29 +3417,4012 @@ public final class HotChannelProto {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetRecommendSublistRsp)
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetRecommendSublistRsp)
+  }
+
+  public interface GetGameSublistReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetGameSublistReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 uid = 1;</code>
+     */
+    boolean hasUid();
+    /**
+     * <code>required uint64 uid = 1;</code>
+     */
+    long getUid();
+
+    /**
+     * <code>required uint32 channelId = 2;</code>
+     */
+    boolean hasChannelId();
+    /**
+     * <code>required uint32 channelId = 2;</code>
+     */
+    int getChannelId();
+
+    /**
+     * <code>required uint32 subListId = 3;</code>
+     */
+    boolean hasSubListId();
+    /**
+     * <code>required uint32 subListId = 3;</code>
+     */
+    int getSubListId();
+
+    /**
+     * <code>optional uint32 source = 4;</code>
+     *
+     * <pre>
+     *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+     * </pre>
+     */
+    boolean hasSource();
+    /**
+     * <code>optional uint32 source = 4;</code>
+     *
+     * <pre>
+     *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+     * </pre>
+     */
+    int getSource();
+  }
+  /**
+   * Protobuf type {@code com.mi.liveassistant.proto.GetGameSublistReq}
+   *
+   * <pre>
+   *********************zhibo.recommend.gameSublist**************************************&#47;
+   * </pre>
+   */
+  public static final class GetGameSublistReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetGameSublistReq)
+      GetGameSublistReqOrBuilder {
+    // Use GetGameSublistReq.newBuilder() to construct.
+    private GetGameSublistReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetGameSublistReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetGameSublistReq defaultInstance;
+    public static GetGameSublistReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetGameSublistReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetGameSublistReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              uid_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              channelId_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              subListId_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              source_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.HotChannelProto.GetGameSublistReq.class, com.wali.live.proto.HotChannelProto.GetGameSublistReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetGameSublistReq> PARSER =
+        new com.google.protobuf.AbstractParser<GetGameSublistReq>() {
+      public GetGameSublistReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetGameSublistReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetGameSublistReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UID_FIELD_NUMBER = 1;
+    private long uid_;
+    /**
+     * <code>required uint64 uid = 1;</code>
+     */
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 uid = 1;</code>
+     */
+    public long getUid() {
+      return uid_;
+    }
+
+    public static final int CHANNELID_FIELD_NUMBER = 2;
+    private int channelId_;
+    /**
+     * <code>required uint32 channelId = 2;</code>
+     */
+    public boolean hasChannelId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required uint32 channelId = 2;</code>
+     */
+    public int getChannelId() {
+      return channelId_;
+    }
+
+    public static final int SUBLISTID_FIELD_NUMBER = 3;
+    private int subListId_;
+    /**
+     * <code>required uint32 subListId = 3;</code>
+     */
+    public boolean hasSubListId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required uint32 subListId = 3;</code>
+     */
+    public int getSubListId() {
+      return subListId_;
+    }
+
+    public static final int SOURCE_FIELD_NUMBER = 4;
+    private int source_;
+    /**
+     * <code>optional uint32 source = 4;</code>
+     *
+     * <pre>
+     *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+     * </pre>
+     */
+    public boolean hasSource() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 source = 4;</code>
+     *
+     * <pre>
+     *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+     * </pre>
+     */
+    public int getSource() {
+      return source_;
+    }
+
+    private void initFields() {
+      uid_ = 0L;
+      channelId_ = 0;
+      subListId_ = 0;
+      source_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasChannelId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSubListId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, channelId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, subListId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, source_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, uid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, channelId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, subListId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, source_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.HotChannelProto.GetGameSublistReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mi.liveassistant.proto.GetGameSublistReq}
+     *
+     * <pre>
+     *********************zhibo.recommend.gameSublist**************************************&#47;
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetGameSublistReq)
+        com.wali.live.proto.HotChannelProto.GetGameSublistReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.HotChannelProto.GetGameSublistReq.class, com.wali.live.proto.HotChannelProto.GetGameSublistReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.HotChannelProto.GetGameSublistReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        uid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        channelId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        subListId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        source_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistReq_descriptor;
+      }
+
+      public com.wali.live.proto.HotChannelProto.GetGameSublistReq getDefaultInstanceForType() {
+        return com.wali.live.proto.HotChannelProto.GetGameSublistReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.HotChannelProto.GetGameSublistReq build() {
+        com.wali.live.proto.HotChannelProto.GetGameSublistReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.HotChannelProto.GetGameSublistReq buildPartial() {
+        com.wali.live.proto.HotChannelProto.GetGameSublistReq result = new com.wali.live.proto.HotChannelProto.GetGameSublistReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.uid_ = uid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.channelId_ = channelId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.subListId_ = subListId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.source_ = source_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.HotChannelProto.GetGameSublistReq) {
+          return mergeFrom((com.wali.live.proto.HotChannelProto.GetGameSublistReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.HotChannelProto.GetGameSublistReq other) {
+        if (other == com.wali.live.proto.HotChannelProto.GetGameSublistReq.getDefaultInstance()) return this;
+        if (other.hasUid()) {
+          setUid(other.getUid());
+        }
+        if (other.hasChannelId()) {
+          setChannelId(other.getChannelId());
+        }
+        if (other.hasSubListId()) {
+          setSubListId(other.getSubListId());
+        }
+        if (other.hasSource()) {
+          setSource(other.getSource());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUid()) {
+          
+          return false;
+        }
+        if (!hasChannelId()) {
+          
+          return false;
+        }
+        if (!hasSubListId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.HotChannelProto.GetGameSublistReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.HotChannelProto.GetGameSublistReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long uid_ ;
+      /**
+       * <code>required uint64 uid = 1;</code>
+       */
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       */
+      public long getUid() {
+        return uid_;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       */
+      public Builder setUid(long value) {
+        bitField0_ |= 0x00000001;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 uid = 1;</code>
+       */
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        uid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int channelId_ ;
+      /**
+       * <code>required uint32 channelId = 2;</code>
+       */
+      public boolean hasChannelId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required uint32 channelId = 2;</code>
+       */
+      public int getChannelId() {
+        return channelId_;
+      }
+      /**
+       * <code>required uint32 channelId = 2;</code>
+       */
+      public Builder setChannelId(int value) {
+        bitField0_ |= 0x00000002;
+        channelId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 channelId = 2;</code>
+       */
+      public Builder clearChannelId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        channelId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int subListId_ ;
+      /**
+       * <code>required uint32 subListId = 3;</code>
+       */
+      public boolean hasSubListId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required uint32 subListId = 3;</code>
+       */
+      public int getSubListId() {
+        return subListId_;
+      }
+      /**
+       * <code>required uint32 subListId = 3;</code>
+       */
+      public Builder setSubListId(int value) {
+        bitField0_ |= 0x00000004;
+        subListId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 subListId = 3;</code>
+       */
+      public Builder clearSubListId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        subListId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int source_ ;
+      /**
+       * <code>optional uint32 source = 4;</code>
+       *
+       * <pre>
+       *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+       * </pre>
+       */
+      public boolean hasSource() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 source = 4;</code>
+       *
+       * <pre>
+       *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+       * </pre>
+       */
+      public int getSource() {
+        return source_;
+      }
+      /**
+       * <code>optional uint32 source = 4;</code>
+       *
+       * <pre>
+       *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+       * </pre>
+       */
+      public Builder setSource(int value) {
+        bitField0_ |= 0x00000008;
+        source_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 source = 4;</code>
+       *
+       * <pre>
+       *二级列表基础数据来源[客户端不用关心,需要透传给服务器]
+       * </pre>
+       */
+      public Builder clearSource() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        source_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetGameSublistReq)
+    }
+
+    static {
+      defaultInstance = new GetGameSublistReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetGameSublistReq)
+  }
+
+  public interface GetGameSublistRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GetGameSublistRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    java.util.List<com.wali.live.proto.HotChannelProto.TabPage> 
+        getPagesList();
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    com.wali.live.proto.HotChannelProto.TabPage getPages(int index);
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    int getPagesCount();
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.HotChannelProto.TabPageOrBuilder> 
+        getPagesOrBuilderList();
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    com.wali.live.proto.HotChannelProto.TabPageOrBuilder getPagesOrBuilder(
+        int index);
+
+    /**
+     * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+     */
+    boolean hasGame();
+    /**
+     * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+     */
+    com.wali.live.proto.HotChannelProto.GameInfo getGame();
+    /**
+     * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+     */
+    com.wali.live.proto.HotChannelProto.GameInfoOrBuilder getGameOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.mi.liveassistant.proto.GetGameSublistRsp}
+   */
+  public static final class GetGameSublistRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GetGameSublistRsp)
+      GetGameSublistRspOrBuilder {
+    // Use GetGameSublistRsp.newBuilder() to construct.
+    private GetGameSublistRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GetGameSublistRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GetGameSublistRsp defaultInstance;
+    public static GetGameSublistRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GetGameSublistRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetGameSublistRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                pages_ = new java.util.ArrayList<com.wali.live.proto.HotChannelProto.TabPage>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              pages_.add(input.readMessage(com.wali.live.proto.HotChannelProto.TabPage.PARSER, extensionRegistry));
+              break;
+            }
+            case 26: {
+              com.wali.live.proto.HotChannelProto.GameInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = game_.toBuilder();
+              }
+              game_ = input.readMessage(com.wali.live.proto.HotChannelProto.GameInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(game_);
+                game_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          pages_ = java.util.Collections.unmodifiableList(pages_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.HotChannelProto.GetGameSublistRsp.class, com.wali.live.proto.HotChannelProto.GetGameSublistRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GetGameSublistRsp> PARSER =
+        new com.google.protobuf.AbstractParser<GetGameSublistRsp>() {
+      public GetGameSublistRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetGameSublistRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetGameSublistRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int PAGES_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.HotChannelProto.TabPage> pages_;
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    public java.util.List<com.wali.live.proto.HotChannelProto.TabPage> getPagesList() {
+      return pages_;
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.HotChannelProto.TabPageOrBuilder> 
+        getPagesOrBuilderList() {
+      return pages_;
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    public int getPagesCount() {
+      return pages_.size();
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    public com.wali.live.proto.HotChannelProto.TabPage getPages(int index) {
+      return pages_.get(index);
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+     */
+    public com.wali.live.proto.HotChannelProto.TabPageOrBuilder getPagesOrBuilder(
+        int index) {
+      return pages_.get(index);
+    }
+
+    public static final int GAME_FIELD_NUMBER = 3;
+    private com.wali.live.proto.HotChannelProto.GameInfo game_;
+    /**
+     * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+     */
+    public boolean hasGame() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+     */
+    public com.wali.live.proto.HotChannelProto.GameInfo getGame() {
+      return game_;
+    }
+    /**
+     * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+     */
+    public com.wali.live.proto.HotChannelProto.GameInfoOrBuilder getGameOrBuilder() {
+      return game_;
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      pages_ = java.util.Collections.emptyList();
+      game_ = com.wali.live.proto.HotChannelProto.GameInfo.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getPagesCount(); i++) {
+        if (!getPages(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      for (int i = 0; i < pages_.size(); i++) {
+        output.writeMessage(2, pages_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(3, game_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      for (int i = 0; i < pages_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, pages_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, game_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GetGameSublistRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.HotChannelProto.GetGameSublistRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mi.liveassistant.proto.GetGameSublistRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GetGameSublistRsp)
+        com.wali.live.proto.HotChannelProto.GetGameSublistRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.HotChannelProto.GetGameSublistRsp.class, com.wali.live.proto.HotChannelProto.GetGameSublistRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.HotChannelProto.GetGameSublistRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getPagesFieldBuilder();
+          getGameFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (pagesBuilder_ == null) {
+          pages_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          pagesBuilder_.clear();
+        }
+        if (gameBuilder_ == null) {
+          game_ = com.wali.live.proto.HotChannelProto.GameInfo.getDefaultInstance();
+        } else {
+          gameBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_descriptor;
+      }
+
+      public com.wali.live.proto.HotChannelProto.GetGameSublistRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.HotChannelProto.GetGameSublistRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.HotChannelProto.GetGameSublistRsp build() {
+        com.wali.live.proto.HotChannelProto.GetGameSublistRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.HotChannelProto.GetGameSublistRsp buildPartial() {
+        com.wali.live.proto.HotChannelProto.GetGameSublistRsp result = new com.wali.live.proto.HotChannelProto.GetGameSublistRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (pagesBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            pages_ = java.util.Collections.unmodifiableList(pages_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.pages_ = pages_;
+        } else {
+          result.pages_ = pagesBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (gameBuilder_ == null) {
+          result.game_ = game_;
+        } else {
+          result.game_ = gameBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.HotChannelProto.GetGameSublistRsp) {
+          return mergeFrom((com.wali.live.proto.HotChannelProto.GetGameSublistRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.HotChannelProto.GetGameSublistRsp other) {
+        if (other == com.wali.live.proto.HotChannelProto.GetGameSublistRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (pagesBuilder_ == null) {
+          if (!other.pages_.isEmpty()) {
+            if (pages_.isEmpty()) {
+              pages_ = other.pages_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensurePagesIsMutable();
+              pages_.addAll(other.pages_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.pages_.isEmpty()) {
+            if (pagesBuilder_.isEmpty()) {
+              pagesBuilder_.dispose();
+              pagesBuilder_ = null;
+              pages_ = other.pages_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              pagesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getPagesFieldBuilder() : null;
+            } else {
+              pagesBuilder_.addAllMessages(other.pages_);
+            }
+          }
+        }
+        if (other.hasGame()) {
+          mergeGame(other.getGame());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getPagesCount(); i++) {
+          if (!getPages(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.HotChannelProto.GetGameSublistRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.HotChannelProto.GetGameSublistRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.HotChannelProto.TabPage> pages_ =
+        java.util.Collections.emptyList();
+      private void ensurePagesIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          pages_ = new java.util.ArrayList<com.wali.live.proto.HotChannelProto.TabPage>(pages_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.HotChannelProto.TabPage, com.wali.live.proto.HotChannelProto.TabPage.Builder, com.wali.live.proto.HotChannelProto.TabPageOrBuilder> pagesBuilder_;
+
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public java.util.List<com.wali.live.proto.HotChannelProto.TabPage> getPagesList() {
+        if (pagesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(pages_);
+        } else {
+          return pagesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public int getPagesCount() {
+        if (pagesBuilder_ == null) {
+          return pages_.size();
+        } else {
+          return pagesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.TabPage getPages(int index) {
+        if (pagesBuilder_ == null) {
+          return pages_.get(index);
+        } else {
+          return pagesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder setPages(
+          int index, com.wali.live.proto.HotChannelProto.TabPage value) {
+        if (pagesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePagesIsMutable();
+          pages_.set(index, value);
+          onChanged();
+        } else {
+          pagesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder setPages(
+          int index, com.wali.live.proto.HotChannelProto.TabPage.Builder builderForValue) {
+        if (pagesBuilder_ == null) {
+          ensurePagesIsMutable();
+          pages_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          pagesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder addPages(com.wali.live.proto.HotChannelProto.TabPage value) {
+        if (pagesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePagesIsMutable();
+          pages_.add(value);
+          onChanged();
+        } else {
+          pagesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder addPages(
+          int index, com.wali.live.proto.HotChannelProto.TabPage value) {
+        if (pagesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePagesIsMutable();
+          pages_.add(index, value);
+          onChanged();
+        } else {
+          pagesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder addPages(
+          com.wali.live.proto.HotChannelProto.TabPage.Builder builderForValue) {
+        if (pagesBuilder_ == null) {
+          ensurePagesIsMutable();
+          pages_.add(builderForValue.build());
+          onChanged();
+        } else {
+          pagesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder addPages(
+          int index, com.wali.live.proto.HotChannelProto.TabPage.Builder builderForValue) {
+        if (pagesBuilder_ == null) {
+          ensurePagesIsMutable();
+          pages_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          pagesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder addAllPages(
+          java.lang.Iterable<? extends com.wali.live.proto.HotChannelProto.TabPage> values) {
+        if (pagesBuilder_ == null) {
+          ensurePagesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, pages_);
+          onChanged();
+        } else {
+          pagesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder clearPages() {
+        if (pagesBuilder_ == null) {
+          pages_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          pagesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public Builder removePages(int index) {
+        if (pagesBuilder_ == null) {
+          ensurePagesIsMutable();
+          pages_.remove(index);
+          onChanged();
+        } else {
+          pagesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.TabPage.Builder getPagesBuilder(
+          int index) {
+        return getPagesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.TabPageOrBuilder getPagesOrBuilder(
+          int index) {
+        if (pagesBuilder_ == null) {
+          return pages_.get(index);  } else {
+          return pagesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.HotChannelProto.TabPageOrBuilder> 
+           getPagesOrBuilderList() {
+        if (pagesBuilder_ != null) {
+          return pagesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(pages_);
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.TabPage.Builder addPagesBuilder() {
+        return getPagesFieldBuilder().addBuilder(
+            com.wali.live.proto.HotChannelProto.TabPage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.TabPage.Builder addPagesBuilder(
+          int index) {
+        return getPagesFieldBuilder().addBuilder(
+            index, com.wali.live.proto.HotChannelProto.TabPage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.TabPage pages = 2;</code>
+       */
+      public java.util.List<com.wali.live.proto.HotChannelProto.TabPage.Builder> 
+           getPagesBuilderList() {
+        return getPagesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.HotChannelProto.TabPage, com.wali.live.proto.HotChannelProto.TabPage.Builder, com.wali.live.proto.HotChannelProto.TabPageOrBuilder> 
+          getPagesFieldBuilder() {
+        if (pagesBuilder_ == null) {
+          pagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.HotChannelProto.TabPage, com.wali.live.proto.HotChannelProto.TabPage.Builder, com.wali.live.proto.HotChannelProto.TabPageOrBuilder>(
+                  pages_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          pages_ = null;
+        }
+        return pagesBuilder_;
+      }
+
+      private com.wali.live.proto.HotChannelProto.GameInfo game_ = com.wali.live.proto.HotChannelProto.GameInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.HotChannelProto.GameInfo, com.wali.live.proto.HotChannelProto.GameInfo.Builder, com.wali.live.proto.HotChannelProto.GameInfoOrBuilder> gameBuilder_;
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public boolean hasGame() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.GameInfo getGame() {
+        if (gameBuilder_ == null) {
+          return game_;
+        } else {
+          return gameBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public Builder setGame(com.wali.live.proto.HotChannelProto.GameInfo value) {
+        if (gameBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          game_ = value;
+          onChanged();
+        } else {
+          gameBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public Builder setGame(
+          com.wali.live.proto.HotChannelProto.GameInfo.Builder builderForValue) {
+        if (gameBuilder_ == null) {
+          game_ = builderForValue.build();
+          onChanged();
+        } else {
+          gameBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public Builder mergeGame(com.wali.live.proto.HotChannelProto.GameInfo value) {
+        if (gameBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              game_ != com.wali.live.proto.HotChannelProto.GameInfo.getDefaultInstance()) {
+            game_ =
+              com.wali.live.proto.HotChannelProto.GameInfo.newBuilder(game_).mergeFrom(value).buildPartial();
+          } else {
+            game_ = value;
+          }
+          onChanged();
+        } else {
+          gameBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public Builder clearGame() {
+        if (gameBuilder_ == null) {
+          game_ = com.wali.live.proto.HotChannelProto.GameInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          gameBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.GameInfo.Builder getGameBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getGameFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      public com.wali.live.proto.HotChannelProto.GameInfoOrBuilder getGameOrBuilder() {
+        if (gameBuilder_ != null) {
+          return gameBuilder_.getMessageOrBuilder();
+        } else {
+          return game_;
+        }
+      }
+      /**
+       * <code>optional .com.mi.liveassistant.proto.GameInfo game = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.HotChannelProto.GameInfo, com.wali.live.proto.HotChannelProto.GameInfo.Builder, com.wali.live.proto.HotChannelProto.GameInfoOrBuilder> 
+          getGameFieldBuilder() {
+        if (gameBuilder_ == null) {
+          gameBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.HotChannelProto.GameInfo, com.wali.live.proto.HotChannelProto.GameInfo.Builder, com.wali.live.proto.HotChannelProto.GameInfoOrBuilder>(
+                  getGame(),
+                  getParentForChildren(),
+                  isClean());
+          game_ = null;
+        }
+        return gameBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GetGameSublistRsp)
+    }
+
+    static {
+      defaultInstance = new GetGameSublistRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GetGameSublistRsp)
+  }
+
+  public interface TabPageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.TabPage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string name = 1;</code>
+     */
+    boolean hasName();
+    /**
+     * <code>optional string name = 1;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <code>optional string name = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> 
+        getItemsList();
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index);
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    int getItemsCount();
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
+        getItemsOrBuilderList();
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code com.mi.liveassistant.proto.TabPage}
+   */
+  public static final class TabPage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.TabPage)
+      TabPageOrBuilder {
+    // Use TabPage.newBuilder() to construct.
+    private TabPage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private TabPage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final TabPage defaultInstance;
+    public static TabPage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public TabPage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TabPage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              name_ = bs;
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                items_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.ChannelItem>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              items_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.ChannelItem.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          items_ = java.util.Collections.unmodifiableList(items_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_TabPage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_TabPage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.HotChannelProto.TabPage.class, com.wali.live.proto.HotChannelProto.TabPage.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<TabPage> PARSER =
+        new com.google.protobuf.AbstractParser<TabPage>() {
+      public TabPage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TabPage(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TabPage> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NAME_FIELD_NUMBER = 1;
+    private java.lang.Object name_;
+    /**
+     * <code>optional string name = 1;</code>
+     */
+    public boolean hasName() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string name = 1;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          name_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string name = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ITEMS_FIELD_NUMBER = 2;
+    private java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> items_;
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> getItemsList() {
+      return items_;
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    public java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
+        getItemsOrBuilderList() {
+      return items_;
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    public int getItemsCount() {
+      return items_.size();
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index) {
+      return items_.get(index);
+    }
+    /**
+     * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+     */
+    public com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
+        int index) {
+      return items_.get(index);
+    }
+
+    private void initFields() {
+      name_ = "";
+      items_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      for (int i = 0; i < getItemsCount(); i++) {
+        if (!getItems(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getNameBytes());
+      }
+      for (int i = 0; i < items_.size(); i++) {
+        output.writeMessage(2, items_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getNameBytes());
+      }
+      for (int i = 0; i < items_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, items_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.TabPage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.HotChannelProto.TabPage prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mi.liveassistant.proto.TabPage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.TabPage)
+        com.wali.live.proto.HotChannelProto.TabPageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_TabPage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_TabPage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.HotChannelProto.TabPage.class, com.wali.live.proto.HotChannelProto.TabPage.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.HotChannelProto.TabPage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getItemsFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        name_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (itemsBuilder_ == null) {
+          items_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          itemsBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_TabPage_descriptor;
+      }
+
+      public com.wali.live.proto.HotChannelProto.TabPage getDefaultInstanceForType() {
+        return com.wali.live.proto.HotChannelProto.TabPage.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.HotChannelProto.TabPage build() {
+        com.wali.live.proto.HotChannelProto.TabPage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.HotChannelProto.TabPage buildPartial() {
+        com.wali.live.proto.HotChannelProto.TabPage result = new com.wali.live.proto.HotChannelProto.TabPage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.name_ = name_;
+        if (itemsBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            items_ = java.util.Collections.unmodifiableList(items_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.items_ = items_;
+        } else {
+          result.items_ = itemsBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.HotChannelProto.TabPage) {
+          return mergeFrom((com.wali.live.proto.HotChannelProto.TabPage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.HotChannelProto.TabPage other) {
+        if (other == com.wali.live.proto.HotChannelProto.TabPage.getDefaultInstance()) return this;
+        if (other.hasName()) {
+          bitField0_ |= 0x00000001;
+          name_ = other.name_;
+          onChanged();
+        }
+        if (itemsBuilder_ == null) {
+          if (!other.items_.isEmpty()) {
+            if (items_.isEmpty()) {
+              items_ = other.items_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureItemsIsMutable();
+              items_.addAll(other.items_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.items_.isEmpty()) {
+            if (itemsBuilder_.isEmpty()) {
+              itemsBuilder_.dispose();
+              itemsBuilder_ = null;
+              items_ = other.items_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              itemsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getItemsFieldBuilder() : null;
+            } else {
+              itemsBuilder_.addAllMessages(other.items_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        for (int i = 0; i < getItemsCount(); i++) {
+          if (!getItems(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.HotChannelProto.TabPage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.HotChannelProto.TabPage) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>optional string name = 1;</code>
+       */
+      public boolean hasName() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       */
+      public Builder clearName() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> items_ =
+        java.util.Collections.emptyList();
+      private void ensureItemsIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          items_ = new java.util.ArrayList<com.wali.live.proto.CommonChannelProto.ChannelItem>(items_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.ChannelItem, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder, com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> itemsBuilder_;
+
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem> getItemsList() {
+        if (itemsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(items_);
+        } else {
+          return itemsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public int getItemsCount() {
+        if (itemsBuilder_ == null) {
+          return items_.size();
+        } else {
+          return itemsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.ChannelItem getItems(int index) {
+        if (itemsBuilder_ == null) {
+          return items_.get(index);
+        } else {
+          return itemsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder setItems(
+          int index, com.wali.live.proto.CommonChannelProto.ChannelItem value) {
+        if (itemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemsIsMutable();
+          items_.set(index, value);
+          onChanged();
+        } else {
+          itemsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder setItems(
+          int index, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder addItems(com.wali.live.proto.CommonChannelProto.ChannelItem value) {
+        if (itemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemsIsMutable();
+          items_.add(value);
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder addItems(
+          int index, com.wali.live.proto.CommonChannelProto.ChannelItem value) {
+        if (itemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureItemsIsMutable();
+          items_.add(index, value);
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder addItems(
+          com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.add(builderForValue.build());
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder addItems(
+          int index, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder builderForValue) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          itemsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder addAllItems(
+          java.lang.Iterable<? extends com.wali.live.proto.CommonChannelProto.ChannelItem> values) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, items_);
+          onChanged();
+        } else {
+          itemsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder clearItems() {
+        if (itemsBuilder_ == null) {
+          items_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          itemsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public Builder removeItems(int index) {
+        if (itemsBuilder_ == null) {
+          ensureItemsIsMutable();
+          items_.remove(index);
+          onChanged();
+        } else {
+          itemsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder getItemsBuilder(
+          int index) {
+        return getItemsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
+          int index) {
+        if (itemsBuilder_ == null) {
+          return items_.get(index);  } else {
+          return itemsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public java.util.List<? extends com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
+           getItemsOrBuilderList() {
+        if (itemsBuilder_ != null) {
+          return itemsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(items_);
+        }
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder addItemsBuilder() {
+        return getItemsFieldBuilder().addBuilder(
+            com.wali.live.proto.CommonChannelProto.ChannelItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public com.wali.live.proto.CommonChannelProto.ChannelItem.Builder addItemsBuilder(
+          int index) {
+        return getItemsFieldBuilder().addBuilder(
+            index, com.wali.live.proto.CommonChannelProto.ChannelItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.mi.liveassistant.proto.ChannelItem items = 2;</code>
+       */
+      public java.util.List<com.wali.live.proto.CommonChannelProto.ChannelItem.Builder> 
+           getItemsBuilderList() {
+        return getItemsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.CommonChannelProto.ChannelItem, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder, com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder> 
+          getItemsFieldBuilder() {
+        if (itemsBuilder_ == null) {
+          itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.CommonChannelProto.ChannelItem, com.wali.live.proto.CommonChannelProto.ChannelItem.Builder, com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder>(
+                  items_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          items_ = null;
+        }
+        return itemsBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.TabPage)
+    }
+
+    static {
+      defaultInstance = new TabPage(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.TabPage)
+  }
+
+  public interface GameInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.mi.liveassistant.proto.GameInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *游戏名称
+     * </pre>
+     */
+    boolean hasName();
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *游戏名称
+     * </pre>
+     */
+    java.lang.String getName();
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *游戏名称
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图片
+     * </pre>
+     */
+    boolean hasBgImgUrl();
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图片
+     * </pre>
+     */
+    java.lang.String getBgImgUrl();
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图片
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getBgImgUrlBytes();
+
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    boolean hasIconUrl();
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    java.lang.String getIconUrl();
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getIconUrlBytes();
+
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme
+     * </pre>
+     */
+    boolean hasJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme
+     * </pre>
+     */
+    java.lang.String getJumpSchemeUri();
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getJumpSchemeUriBytes();
+
+    /**
+     * <code>optional string desc = 5;</code>
+     *
+     * <pre>
+     *游戏描述
+     * </pre>
+     */
+    boolean hasDesc();
+    /**
+     * <code>optional string desc = 5;</code>
+     *
+     * <pre>
+     *游戏描述
+     * </pre>
+     */
+    java.lang.String getDesc();
+    /**
+     * <code>optional string desc = 5;</code>
+     *
+     * <pre>
+     *游戏描述
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getDescBytes();
+
+    /**
+     * <code>optional uint32 grade = 6;</code>
+     *
+     * <pre>
+     *评分，数值[1-10]对应[0.5星-5星]
+     * </pre>
+     */
+    boolean hasGrade();
+    /**
+     * <code>optional uint32 grade = 6;</code>
+     *
+     * <pre>
+     *评分，数值[1-10]对应[0.5星-5星]
+     * </pre>
+     */
+    int getGrade();
+  }
+  /**
+   * Protobuf type {@code com.mi.liveassistant.proto.GameInfo}
+   */
+  public static final class GameInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.mi.liveassistant.proto.GameInfo)
+      GameInfoOrBuilder {
+    // Use GameInfo.newBuilder() to construct.
+    private GameInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GameInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GameInfo defaultInstance;
+    public static GameInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GameInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GameInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              name_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              bgImgUrl_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              iconUrl_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              jumpSchemeUri_ = bs;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              desc_ = bs;
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              grade_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GameInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GameInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.HotChannelProto.GameInfo.class, com.wali.live.proto.HotChannelProto.GameInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GameInfo> PARSER =
+        new com.google.protobuf.AbstractParser<GameInfo>() {
+      public GameInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GameInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GameInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NAME_FIELD_NUMBER = 1;
+    private java.lang.Object name_;
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *游戏名称
+     * </pre>
+     */
+    public boolean hasName() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *游戏名称
+     * </pre>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          name_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *游戏名称
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BGIMGURL_FIELD_NUMBER = 2;
+    private java.lang.Object bgImgUrl_;
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图片
+     * </pre>
+     */
+    public boolean hasBgImgUrl() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图片
+     * </pre>
+     */
+    public java.lang.String getBgImgUrl() {
+      java.lang.Object ref = bgImgUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bgImgUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bgImgUrl = 2;</code>
+     *
+     * <pre>
+     *背景图片
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getBgImgUrlBytes() {
+      java.lang.Object ref = bgImgUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bgImgUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ICONURL_FIELD_NUMBER = 3;
+    private java.lang.Object iconUrl_;
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    public boolean hasIconUrl() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    public java.lang.String getIconUrl() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          iconUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string iconUrl = 3;</code>
+     *
+     * <pre>
+     *游戏图标
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getIconUrlBytes() {
+      java.lang.Object ref = iconUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        iconUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int JUMPSCHEMEURI_FIELD_NUMBER = 4;
+    private java.lang.Object jumpSchemeUri_;
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme
+     * </pre>
+     */
+    public boolean hasJumpSchemeUri() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme
+     * </pre>
+     */
+    public java.lang.String getJumpSchemeUri() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          jumpSchemeUri_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string jumpSchemeUri = 4;</code>
+     *
+     * <pre>
+     *跳转scheme
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getJumpSchemeUriBytes() {
+      java.lang.Object ref = jumpSchemeUri_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        jumpSchemeUri_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DESC_FIELD_NUMBER = 5;
+    private java.lang.Object desc_;
+    /**
+     * <code>optional string desc = 5;</code>
+     *
+     * <pre>
+     *游戏描述
+     * </pre>
+     */
+    public boolean hasDesc() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string desc = 5;</code>
+     *
+     * <pre>
+     *游戏描述
+     * </pre>
+     */
+    public java.lang.String getDesc() {
+      java.lang.Object ref = desc_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          desc_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string desc = 5;</code>
+     *
+     * <pre>
+     *游戏描述
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getDescBytes() {
+      java.lang.Object ref = desc_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        desc_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GRADE_FIELD_NUMBER = 6;
+    private int grade_;
+    /**
+     * <code>optional uint32 grade = 6;</code>
+     *
+     * <pre>
+     *评分，数值[1-10]对应[0.5星-5星]
+     * </pre>
+     */
+    public boolean hasGrade() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional uint32 grade = 6;</code>
+     *
+     * <pre>
+     *评分，数值[1-10]对应[0.5星-5星]
+     * </pre>
+     */
+    public int getGrade() {
+      return grade_;
+    }
+
+    private void initFields() {
+      name_ = "";
+      bgImgUrl_ = "";
+      iconUrl_ = "";
+      jumpSchemeUri_ = "";
+      desc_ = "";
+      grade_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getNameBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getBgImgUrlBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getIconUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getJumpSchemeUriBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getDescBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeUInt32(6, grade_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getNameBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getBgImgUrlBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getIconUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getJumpSchemeUriBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getDescBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, grade_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.HotChannelProto.GameInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.HotChannelProto.GameInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mi.liveassistant.proto.GameInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.mi.liveassistant.proto.GameInfo)
+        com.wali.live.proto.HotChannelProto.GameInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GameInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GameInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.HotChannelProto.GameInfo.class, com.wali.live.proto.HotChannelProto.GameInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.HotChannelProto.GameInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        name_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bgImgUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        iconUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        jumpSchemeUri_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        desc_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        grade_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.HotChannelProto.internal_static_com_mi_liveassistant_proto_GameInfo_descriptor;
+      }
+
+      public com.wali.live.proto.HotChannelProto.GameInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.HotChannelProto.GameInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.HotChannelProto.GameInfo build() {
+        com.wali.live.proto.HotChannelProto.GameInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.HotChannelProto.GameInfo buildPartial() {
+        com.wali.live.proto.HotChannelProto.GameInfo result = new com.wali.live.proto.HotChannelProto.GameInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.name_ = name_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bgImgUrl_ = bgImgUrl_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.iconUrl_ = iconUrl_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.jumpSchemeUri_ = jumpSchemeUri_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.desc_ = desc_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.grade_ = grade_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.HotChannelProto.GameInfo) {
+          return mergeFrom((com.wali.live.proto.HotChannelProto.GameInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.HotChannelProto.GameInfo other) {
+        if (other == com.wali.live.proto.HotChannelProto.GameInfo.getDefaultInstance()) return this;
+        if (other.hasName()) {
+          bitField0_ |= 0x00000001;
+          name_ = other.name_;
+          onChanged();
+        }
+        if (other.hasBgImgUrl()) {
+          bitField0_ |= 0x00000002;
+          bgImgUrl_ = other.bgImgUrl_;
+          onChanged();
+        }
+        if (other.hasIconUrl()) {
+          bitField0_ |= 0x00000004;
+          iconUrl_ = other.iconUrl_;
+          onChanged();
+        }
+        if (other.hasJumpSchemeUri()) {
+          bitField0_ |= 0x00000008;
+          jumpSchemeUri_ = other.jumpSchemeUri_;
+          onChanged();
+        }
+        if (other.hasDesc()) {
+          bitField0_ |= 0x00000010;
+          desc_ = other.desc_;
+          onChanged();
+        }
+        if (other.hasGrade()) {
+          setGrade(other.getGrade());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.HotChannelProto.GameInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.HotChannelProto.GameInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *游戏名称
+       * </pre>
+       */
+      public boolean hasName() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *游戏名称
+       * </pre>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *游戏名称
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *游戏名称
+       * </pre>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *游戏名称
+       * </pre>
+       */
+      public Builder clearName() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *游戏名称
+       * </pre>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object bgImgUrl_ = "";
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图片
+       * </pre>
+       */
+      public boolean hasBgImgUrl() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图片
+       * </pre>
+       */
+      public java.lang.String getBgImgUrl() {
+        java.lang.Object ref = bgImgUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bgImgUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图片
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getBgImgUrlBytes() {
+        java.lang.Object ref = bgImgUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bgImgUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图片
+       * </pre>
+       */
+      public Builder setBgImgUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bgImgUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图片
+       * </pre>
+       */
+      public Builder clearBgImgUrl() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bgImgUrl_ = getDefaultInstance().getBgImgUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bgImgUrl = 2;</code>
+       *
+       * <pre>
+       *背景图片
+       * </pre>
+       */
+      public Builder setBgImgUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bgImgUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object iconUrl_ = "";
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public boolean hasIconUrl() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public java.lang.String getIconUrl() {
+        java.lang.Object ref = iconUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            iconUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getIconUrlBytes() {
+        java.lang.Object ref = iconUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          iconUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public Builder setIconUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        iconUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public Builder clearIconUrl() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        iconUrl_ = getDefaultInstance().getIconUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string iconUrl = 3;</code>
+       *
+       * <pre>
+       *游戏图标
+       * </pre>
+       */
+      public Builder setIconUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        iconUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object jumpSchemeUri_ = "";
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme
+       * </pre>
+       */
+      public boolean hasJumpSchemeUri() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme
+       * </pre>
+       */
+      public java.lang.String getJumpSchemeUri() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jumpSchemeUri_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getJumpSchemeUriBytes() {
+        java.lang.Object ref = jumpSchemeUri_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          jumpSchemeUri_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme
+       * </pre>
+       */
+      public Builder setJumpSchemeUri(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme
+       * </pre>
+       */
+      public Builder clearJumpSchemeUri() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        jumpSchemeUri_ = getDefaultInstance().getJumpSchemeUri();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string jumpSchemeUri = 4;</code>
+       *
+       * <pre>
+       *跳转scheme
+       * </pre>
+       */
+      public Builder setJumpSchemeUriBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        jumpSchemeUri_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object desc_ = "";
+      /**
+       * <code>optional string desc = 5;</code>
+       *
+       * <pre>
+       *游戏描述
+       * </pre>
+       */
+      public boolean hasDesc() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string desc = 5;</code>
+       *
+       * <pre>
+       *游戏描述
+       * </pre>
+       */
+      public java.lang.String getDesc() {
+        java.lang.Object ref = desc_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string desc = 5;</code>
+       *
+       * <pre>
+       *游戏描述
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getDescBytes() {
+        java.lang.Object ref = desc_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          desc_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string desc = 5;</code>
+       *
+       * <pre>
+       *游戏描述
+       * </pre>
+       */
+      public Builder setDesc(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        desc_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string desc = 5;</code>
+       *
+       * <pre>
+       *游戏描述
+       * </pre>
+       */
+      public Builder clearDesc() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        desc_ = getDefaultInstance().getDesc();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string desc = 5;</code>
+       *
+       * <pre>
+       *游戏描述
+       * </pre>
+       */
+      public Builder setDescBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        desc_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int grade_ ;
+      /**
+       * <code>optional uint32 grade = 6;</code>
+       *
+       * <pre>
+       *评分，数值[1-10]对应[0.5星-5星]
+       * </pre>
+       */
+      public boolean hasGrade() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint32 grade = 6;</code>
+       *
+       * <pre>
+       *评分，数值[1-10]对应[0.5星-5星]
+       * </pre>
+       */
+      public int getGrade() {
+        return grade_;
+      }
+      /**
+       * <code>optional uint32 grade = 6;</code>
+       *
+       * <pre>
+       *评分，数值[1-10]对应[0.5星-5星]
+       * </pre>
+       */
+      public Builder setGrade(int value) {
+        bitField0_ |= 0x00000020;
+        grade_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 grade = 6;</code>
+       *
+       * <pre>
+       *评分，数值[1-10]对应[0.5星-5星]
+       * </pre>
+       */
+      public Builder clearGrade() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        grade_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mi.liveassistant.proto.GameInfo)
+    }
+
+    static {
+      defaultInstance = new GameInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mi.liveassistant.proto.GameInfo)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetRecommendListReq_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetRecommendListReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetRecommendListReq_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetRecommendListReq_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetRecommendListRsp_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetRecommendListRsp_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetRecommendSublistReq_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetRecommendSublistReq_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_wali_live_proto_GetRecommendSublistRsp_descriptor;
+    internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_wali_live_proto_GetRecommendSublistRsp_fieldAccessorTable;
+      internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_liveassistant_proto_GetGameSublistReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mi_liveassistant_proto_GetGameSublistReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_liveassistant_proto_TabPage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mi_liveassistant_proto_TabPage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mi_liveassistant_proto_GameInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mi_liveassistant_proto_GameInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3150,18 +7432,31 @@ public final class HotChannelProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020HotChannel.proto\022\023com.wali.live.proto\032" +
-      "\023CommonChannel.proto\"5\n\023GetRecommendList" +
-      "Req\022\013\n\003uid\030\001 \002(\004\022\021\n\tchannelId\030\002 \001(\r\"X\n\023G" +
-      "etRecommendListRsp\022\020\n\010ret_code\030\001 \002(\r\022/\n\005" +
-      "items\030\002 \003(\0132 .com.wali.live.proto.Channe" +
-      "lItem\"w\n\026GetRecommendSublistReq\022\013\n\003uid\030\001" +
-      " \002(\004\022\021\n\tsubListId\030\002 \002(\r\022\021\n\tchannelId\030\003 \001" +
-      "(\r\022\013\n\003key\030\004 \001(\t\022\r\n\005keyId\030\005 \001(\004\022\016\n\006source" +
-      "\030\006 \001(\r\"[\n\026GetRecommendSublistRsp\022\020\n\010ret_" +
-      "code\030\001 \002(\r\022/\n\005items\030\002 \003(\0132 .com.wali.liv",
-      "e.proto.ChannelItemB&\n\023com.wali.live.pro" +
-      "toB\017HotChannelProto"
+      "\n\020HotChannel.proto\022\032com.mi.liveassistant" +
+      ".proto\032\023CommonChannel.proto\032\014Common.prot" +
+      "o\"5\n\023GetRecommendListReq\022\013\n\003uid\030\001 \002(\004\022\021\n" +
+      "\tchannelId\030\002 \001(\r\"_\n\023GetRecommendListRsp\022" +
+      "\020\n\010ret_code\030\001 \002(\r\0226\n\005items\030\002 \003(\0132\'.com.m" +
+      "i.liveassistant.proto.ChannelItem\"\277\001\n\026Ge" +
+      "tRecommendSublistReq\022\013\n\003uid\030\001 \002(\004\022\021\n\tsub" +
+      "ListId\030\002 \002(\r\022\021\n\tchannelId\030\003 \001(\r\022\013\n\003key\030\004" +
+      " \001(\t\022\r\n\005keyId\030\005 \001(\004\022\016\n\006source\030\006 \001(\r\0226\n\010l" +
+      "ocation\030\007 \001(\0132$.com.mi.liveassistant.pro",
+      "to.Location\022\016\n\006gender\030\010 \001(\r\"b\n\026GetRecomm" +
+      "endSublistRsp\022\020\n\010ret_code\030\001 \002(\r\0226\n\005items" +
+      "\030\002 \003(\0132\'.com.mi.liveassistant.proto.Chan" +
+      "nelItem\"V\n\021GetGameSublistReq\022\013\n\003uid\030\001 \002(" +
+      "\004\022\021\n\tchannelId\030\002 \002(\r\022\021\n\tsubListId\030\003 \002(\r\022" +
+      "\016\n\006source\030\004 \001(\r\"\214\001\n\021GetGameSublistRsp\022\017\n" +
+      "\007retCode\030\001 \002(\r\0222\n\005pages\030\002 \003(\0132#.com.mi.l" +
+      "iveassistant.proto.TabPage\0222\n\004game\030\003 \001(\013" +
+      "2$.com.mi.liveassistant.proto.GameInfo\"O" +
+      "\n\007TabPage\022\014\n\004name\030\001 \001(\t\0226\n\005items\030\002 \003(\0132\'",
+      ".com.mi.liveassistant.proto.ChannelItem\"" +
+      "o\n\010GameInfo\022\014\n\004name\030\001 \001(\t\022\020\n\010bgImgUrl\030\002 " +
+      "\001(\t\022\017\n\007iconUrl\030\003 \001(\t\022\025\n\rjumpSchemeUri\030\004 " +
+      "\001(\t\022\014\n\004desc\030\005 \001(\t\022\r\n\005grade\030\006 \001(\rB&\n\023com." +
+      "wali.live.protoB\017HotChannelProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3175,32 +7470,58 @@ public final class HotChannelProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.wali.live.proto.CommonChannelProto.getDescriptor(),
+          com.wali.live.proto.CommonProto.getDescriptor(),
         }, assigner);
-    internal_static_com_wali_live_proto_GetRecommendListReq_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetRecommendListReq_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_wali_live_proto_GetRecommendListReq_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetRecommendListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetRecommendListReq_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetRecommendListReq_descriptor,
         new java.lang.String[] { "Uid", "ChannelId", });
-    internal_static_com_wali_live_proto_GetRecommendListRsp_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_wali_live_proto_GetRecommendListRsp_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetRecommendListRsp_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetRecommendListRsp_descriptor,
         new java.lang.String[] { "RetCode", "Items", });
-    internal_static_com_wali_live_proto_GetRecommendSublistReq_descriptor =
+    internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_com_wali_live_proto_GetRecommendSublistReq_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetRecommendSublistReq_descriptor,
-        new java.lang.String[] { "Uid", "SubListId", "ChannelId", "Key", "KeyId", "Source", });
-    internal_static_com_wali_live_proto_GetRecommendSublistRsp_descriptor =
+        internal_static_com_mi_liveassistant_proto_GetRecommendSublistReq_descriptor,
+        new java.lang.String[] { "Uid", "SubListId", "ChannelId", "Key", "KeyId", "Source", "Location", "Gender", });
+    internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_com_wali_live_proto_GetRecommendSublistRsp_fieldAccessorTable = new
+    internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_wali_live_proto_GetRecommendSublistRsp_descriptor,
+        internal_static_com_mi_liveassistant_proto_GetRecommendSublistRsp_descriptor,
         new java.lang.String[] { "RetCode", "Items", });
+    internal_static_com_mi_liveassistant_proto_GetGameSublistReq_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_com_mi_liveassistant_proto_GetGameSublistReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetGameSublistReq_descriptor,
+        new java.lang.String[] { "Uid", "ChannelId", "SubListId", "Source", });
+    internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GetGameSublistRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Pages", "Game", });
+    internal_static_com_mi_liveassistant_proto_TabPage_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_mi_liveassistant_proto_TabPage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_TabPage_descriptor,
+        new java.lang.String[] { "Name", "Items", });
+    internal_static_com_mi_liveassistant_proto_GameInfo_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_mi_liveassistant_proto_GameInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_mi_liveassistant_proto_GameInfo_descriptor,
+        new java.lang.String[] { "Name", "BgImgUrl", "IconUrl", "JumpSchemeUri", "Desc", "Grade", });
     com.wali.live.proto.CommonChannelProto.getDescriptor();
+    com.wali.live.proto.CommonProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

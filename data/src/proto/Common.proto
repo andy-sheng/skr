@@ -1,0 +1,56 @@
+package com.mi.liveassistant.proto;
+
+option java_package = "com.wali.live.proto";
+option java_outer_classname = "CommonProto";
+
+message Attachment {
+    required uint32 type            = 1; //附件的类型 1:文本 2:图片 3:视频 4:地理位置
+    optional string text            = 2; //文本内容
+    optional string url             = 3; //富媒体url
+    optional uint32 duration        = 4; //音频或者视频的长度
+    optional uint32 size            = 5; //富媒体文件大小
+    optional uint64 exttype         = 6; //业务扩展类型
+    optional bytes extdata          = 7; //业务扩展二进制数据.客户端和业务服务器协商
+    optional uint32 width           = 8; //图片宽度
+    optional uint32 height          = 9; //图片的高度`
+}
+
+message Location {
+    optional double lon        = 1; //经度
+    optional double lat        = 2; //纬度
+    optional string country    = 3; //国家
+    optional string province   = 4; //省份
+    optional string city       = 5; //市
+    optional uint32 type       = 6; //地址定位的地图类型:0:百度,1:ios原生,2:高德,3:其他
+}
+
+// C2S 命令字： zhibo.upgrade.get ...............................
+message GetUpgradeInfoReq {
+    optional string app      = 1;           //walilive
+    optional string platform = 2;           //android
+    optional int32 system    = 3;           //android sdk version
+    required string channel  = 4;           //debug 渠道
+    optional string device   = 5;           //MI NOTE LTE 设备
+    required int32 currentVersion = 6;      //当前版本
+    optional string language      = 7;      //zh_CN
+    optional int64 uid            = 8;      //用户id
+    optional string md5           = 9;      //当前apk的md5值
+    optional string local        = 10;      //地区
+}
+//只有err_code == 0 , 并且has_update == true才需要更新，其他情况不更新
+//当err_code == 0 && has_update == true
+//   如果设置了addtionalUrl 使用差分包升级，
+//   否则使用全量包
+message GetUpgradeInfoRsp {
+    optional int32 err_code = 1;             //
+    optional string err_msg = 2;
+    optional bool hasUpdate = 3;             //是否有升级
+    optional int32 toVersion = 4;            //目标版本号
+    optional string apkUrl = 5;              //完整apk下载地址
+    optional string remark = 6;              //修复了几个bug 升级文案
+    optional string additionalUrl = 7;       //差分包下载地址，没有就走全量升级
+    optional string additionalSize = 8;      //差分包大小
+    optional int32 fullSize = 9;             //完整apk大小，供展示用
+    optional string fullHash = 10;           //完整apk的md5值
+    optional bool forced = 11;               //是否是强制升级
+}

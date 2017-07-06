@@ -44,7 +44,7 @@ import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
-import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
+import com.wali.live.watchsdk.scheme.specific.SpecificConstants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -303,7 +303,7 @@ public class HalfWebViewActivity extends BaseSdkActivity implements View.OnClick
                 openUrlWithBrowserIntent(url, this);
                 return;
             } else if (url.startsWith(SchemeConstants.SCHEME_WALILIVE) ||
-                    url.startsWith(GamecenterConstants.SCHEME_GAMECENTER)) {
+                    url.startsWith(SpecificConstants.SCHEME_GAMECENTER)) {
                 SchemeSdkActivity.openActivity(this, Uri.parse(url));
                 return;
             } else {

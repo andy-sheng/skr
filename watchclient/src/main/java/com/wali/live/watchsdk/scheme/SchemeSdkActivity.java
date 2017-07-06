@@ -10,11 +10,11 @@ import android.text.TextUtils;
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
+import com.wali.live.michannel.ChannelParam;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
-import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
-import com.wali.live.watchsdk.scheme.gamecenter.GamecenterProcessor;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
 import com.wali.live.watchsdk.scheme.processor.WaliliveProcessor;
+import com.wali.live.watchsdk.scheme.specific.SpecificProcessor;
 
 /**
  * Created by lan on 17/2/21.
@@ -27,7 +27,6 @@ public class SchemeSdkActivity extends BaseSdkActivity {
     private Intent mIntent;
     private Uri mUri;
     private Handler mHandler = new Handler();
-
     @Override
     protected String getTAG() {
         return SchemeConstants.LOG_PREFIX + SchemeSdkActivity.class.getSimpleName() + "@" + hashCode();
@@ -128,13 +127,8 @@ public class SchemeSdkActivity extends BaseSdkActivity {
             } else {
                 finish();
             }
-        } else if (scheme.equals(GamecenterConstants.SCHEME_GAMECENTER)) {
-            // 内部处理，不对外暴露
-            if (GamecenterProcessor.process(uri, host, this, true)) {
-                // activity finish 内置处理
-            } else {
-                finish();
-            }
+        } else if (SpecificProcessor.process(uri, scheme, this)) {
+            // activity finish 内置处理
         } else {
             finish();
         }
