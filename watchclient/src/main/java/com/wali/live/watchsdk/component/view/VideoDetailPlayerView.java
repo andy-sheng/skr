@@ -189,6 +189,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     }
 
     private void onCompleteState() {
+        MyLog.w(TAG, "onCompleteState");
         if (mCoverIv.getVisibility() != VISIBLE) {
             mCoverIv.setVisibility(VISIBLE);
         }
@@ -197,6 +198,7 @@ public class VideoDetailPlayerView extends RelativeLayout
     }
 
     public void destroy() {
+        MyLog.w(TAG, "destroy");
         if (mVideoPlayerPresenterEx != null) {
             mVideoPlayerPresenterEx.destroy();
         }

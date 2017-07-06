@@ -139,8 +139,12 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
     protected void onDestroy() {
         MyLog.w(TAG, "onDestroy");
         super.onDestroy();
+        if (mComponentController != null) {
+            mComponentController.release();
+            mComponentController = null;
+        }
         if (mSdkView != null) {
-            mSdkView.setupSdkView();
+            mSdkView.stopSdkView();
             mSdkView = null;
         }
         if (mDetailViewRef.get() != null) {

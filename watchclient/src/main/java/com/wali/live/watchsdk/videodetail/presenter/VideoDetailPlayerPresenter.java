@@ -56,10 +56,11 @@ public class VideoDetailPlayerPresenter extends ComponentPresenter<VideoDetailPl
     @Override
     public void destroy() {
         super.destroy();
+        EventBus.getDefault().unregister(this);
         if (mView != null) {
             mView.onDestroy();
+            mView = null;
         }
-        EventBus.getDefault().unregister(this);
     }
 
     @Nullable
