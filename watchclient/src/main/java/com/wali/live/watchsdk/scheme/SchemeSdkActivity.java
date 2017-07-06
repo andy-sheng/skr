@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
-import com.wali.live.watchsdk.callback.ISecureCallBack;
+import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.scheme.gamecenter.GamecenterConstants;
 import com.wali.live.watchsdk.scheme.gamecenter.GamecenterProcessor;
@@ -94,22 +94,33 @@ public class SchemeSdkActivity extends BaseSdkActivity {
                 channelSecret = "";
             }
 
-            MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret, new ISecureCallBack() {
-                @Override
-                public void process(Object... objects) {
-                    if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
-                        // activity finish 内置处理
-                    } else {
-                        finish();
-                    }
-                }
+            /**
+             * TODO 登录的回调方式可能需要重新修改为 SecureLoginCallback
+             */
+            MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
+                    new SecureCommonCallBack() {
+                        @Override
+                        public void postSuccess() {
+                            MyLog.w(TAG, "postSuccess callback");
+                            if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
+                                // activity finish 内置处理
+                            } else {
+                                finish();
+                            }
+                        }
 
-                @Override
-                public void processFailure() {
-                    MyLog.w(TAG, "processFailure");
-                    finish();
-                }
-            });
+                        @Override
+                        public void postError() {
+                            MyLog.w(TAG, "postError");
+                            finish();
+                        }
+
+                        @Override
+                        public void processFailure() {
+                            MyLog.w(TAG, "processFailure");
+                            finish();
+                        }
+                    });
         } else if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
             // 内部处理，不对外暴露
             if (WaliliveProcessor.process(uri, host, this, true)) {
