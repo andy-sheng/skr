@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -50,7 +49,6 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
     TextView mTvSelect;
 
     private String[] mGenderArray = GlobalData.app().getResources().getStringArray(R.array.subchannel_select_gender);
-    private int[] mItemColors = {0, R.color.color_ff2966, R.color.color_2f88ef, 0}; // 弹出选择男女对话框 文字颜色
     private LinearLayoutManager mLayoutManager;
     private ChannelRecyclerAdapter mRecyclerAdapter;
 
@@ -77,7 +75,7 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
                 public void onClick(View v) {
                     CharSequence[] items = GlobalData.app().getResources().getStringArray(R.array.subchannel_select_gender);
                     MyAlertDialog.Builder builder = new MyAlertDialog.Builder(SubChannelActivity.this);
-                    builder.setItems(items/*, mItemColors*/, new DialogInterface.OnClickListener() {
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
@@ -151,7 +149,6 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
 
             mTitleBar.getBackBtn().setOnClickListener(this);
             mTitleBar.getTitleTv().setText(mParam.getTitle());
-            mTitleBar.getTitleTv().setTextSize(TypedValue.COMPLEX_UNIT_PX, 42);
             mRefreshLayout.setOnRefreshListener(
                     new SwipeRefreshLayout.OnRefreshListener() {
                         @Override

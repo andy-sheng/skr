@@ -40,12 +40,7 @@ public class SpecificProcessor {
                 processSchemeHttp(uri, activity);
                 break;
             case SpecificConstants.SCHEME_GAMECENTER:
-                String host = uri.getHost();
-                if (SpecificConstants.HOST_OPEN_LIVE.equals(host)) {
-                    processHostOpenLive(uri, activity);
-                } else {
-                    return false;
-                }
+                processSchemeGameCenter(uri, activity);
                 break;
             default:
                 return false;
@@ -65,16 +60,23 @@ public class SpecificProcessor {
     /**
      * 跳转到WebView
      */
-    public static void processSchemeHttp(Uri uri, @NonNull Activity act) {
-        Intent intent = new Intent(act, WebViewActivity.class);
+    public static void processSchemeHttp(Uri uri, @NonNull Activity activity) {
+        Intent intent = new Intent(activity, WebViewActivity.class);
         intent.putExtra(WebViewActivity.EXTRA_URL, uri.toString());
         intent.putExtra(WebViewActivity.EXTRA_UID, MyUserInfoManager.getInstance().getUuid());
         intent.putExtra(WebViewActivity.EXTRA_AVATAR, MyUserInfoManager.getInstance().getAvatar());
-        BannerManger.BannerItem item = act.getIntent().getParcelableExtra(SchemeConstants.EXTRA_BANNER_INFO);
+        BannerManger.BannerItem item = activity.getIntent().getParcelableExtra(SchemeConstants.EXTRA_BANNER_INFO);
         if (item != null) {
             intent.putExtra(SchemeConstants.EXTRA_BANNER_INFO, item);
         }
-        act.startActivity(intent);
+        activity.startActivity(intent);
+    }
+
+    public static void processSchemeGameCenter(Uri uri, @NonNull Activity activity) {
+        String host = uri.getHost();
+        if (SpecificConstants.HOST_OPEN_LIVE.equals(host)) {
+            processHostOpenLive(uri, activity);
+        }
     }
 
     private static void processHostOpenLive(Uri uri, Activity activity) {

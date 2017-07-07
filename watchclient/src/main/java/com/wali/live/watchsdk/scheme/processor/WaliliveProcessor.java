@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.wali.live.watchsdk.channel.ChannelSdkActivity;
 import com.wali.live.watchsdk.channel.sublist.activity.SubChannelActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
@@ -47,6 +48,9 @@ public class WaliliveProcessor {
                 break;
             case SchemeConstants.HOST_PLAYBACK:
                 processHostPlayback(uri, activity);
+                break;
+            case SchemeConstants.HOST_CHANNEL:
+                processHostChannel(uri, activity);
                 break;
             case SchemeConstants.HOST_RECOMMEND:
                 if (isLegalPath(uri, "processHostSubList", SchemeConstants.PATH_SUB_LIST)) {
@@ -98,8 +102,7 @@ public class WaliliveProcessor {
         int feedsType = SchemeUtils.getInt(uri, SchemeConstants.PARAM_FEEDS_TYPE, 0);
 
         //这里拿掉区分type的
-        VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, "")
-                .build());
+        VideoDetailSdkActivity.openActivity(activity, RoomInfo.Builder.newInstance(ownerId, feedId, "").build());
     }
 
     private static void processHostRoom(Uri uri, Activity activity) {
@@ -132,6 +135,17 @@ public class WaliliveProcessor {
                 .setLiveType(liveType)
                 .build();
         VideoDetailSdkActivity.openActivity(activity, roomInfo);
+    }
+
+    /**
+     * 跳转到频道页面
+     */
+    public static void processHostChannel(Uri uri, Activity activity) {
+        long channelId = SchemeUtils.getLong(uri, SchemeConstants.PARAM_CHANNEL_ID, 0);
+        MyLog.w(TAG, "channel id=" + channelId);
+        if (channelId != 0) {
+            ChannelSdkActivity.openActivity(activity, channelId);
+        }
     }
 
     /**

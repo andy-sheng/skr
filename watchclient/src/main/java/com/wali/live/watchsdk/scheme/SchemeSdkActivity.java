@@ -60,7 +60,6 @@ public class SchemeSdkActivity extends BaseSdkActivity {
             MyLog.w(TAG, "process intent data uri is null");
             finish();
         }
-        MyLog.d(TAG, "process intent data uri=" + mUri);
         try {
             process(mUri);
         } catch (Exception e) {
@@ -137,7 +136,7 @@ public class SchemeSdkActivity extends BaseSdkActivity {
                 finish();
             }
         } else if (SpecificProcessor.process(uri, scheme, this)) {
-            // activity finish 内置处理
+            finish();
         } else {
             finish();
         }

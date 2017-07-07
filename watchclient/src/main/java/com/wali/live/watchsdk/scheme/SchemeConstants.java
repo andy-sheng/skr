@@ -45,7 +45,7 @@ public class SchemeConstants {
     public static final String PARAM_CHANNEL_ID = "channel_id";
 
     /**
-     * 跳转到频道二级页面
+     * 跳转到频道二级页面 <Walilive only>
      */
     public static final String HOST_RECOMMEND = "recommend";
     public static final String PATH_SUB_LIST = "/sublist";
@@ -123,7 +123,7 @@ public class SchemeConstants {
     public final static String PARAM_WEBVIEW_ISHALF = "ishalf";
 
     /**
-     * 跳转到咨询详情页,walilive专有.
+     * 跳转到咨询详情页 <Walilive only>
      * eg:uri=walilive://feed/newsinfo?feedid=6212263_1492610945&ownerid=6212263&feed_type=3
      */
     public static final String HOST_FEED = "feed";
