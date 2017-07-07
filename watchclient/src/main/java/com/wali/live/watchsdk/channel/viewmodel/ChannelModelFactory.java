@@ -32,9 +32,12 @@ public class ChannelModelFactory {
             } else if (uiType == 20 || uiType == 27 || uiType == 30 || uiType == 35) {
                 return new ChannelNavigateViewModel(protoItem);
             } else if (uiType == 23) {
-                return new ChannelNoticeViewModel(protoItem);
+                // TODO 过滤23和29样式
+                // return new ChannelNoticeViewModel(protoItem);
+                return null;
             } else if (uiType == 29) {
-                return new ChannelRankingViewModel(protoItem);
+                // return new ChannelRankingViewModel(protoItem);
+                return null;
             } else {
                 MyLog.d(TAG, "getChannelViewModel uiType  = " + uiType + " is illegal");
                 return null;
