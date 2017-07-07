@@ -141,4 +141,9 @@ public class SchemeConstants {
      * 广告的数据
      */
     public static final String EXTRA_BANNER_INFO = "extra_banner_info";
+
+    /**
+     * 登录跳转
+     */
+    public static final String HOST_LOGIN = "login";
 }

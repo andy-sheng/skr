@@ -294,6 +294,19 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }));
 
+        mDataList.add(new Bean("模拟登录(Scheme)", new Runnable() {
+            @Override
+            public void run() {
+                String uri = "livesdk://login";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                intent.putExtra("extra_channel_id", 50001);
+                intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
+                intent.putExtra("extra_mi_id", 12345678);
+                intent.putExtra("extra_service_token", "22345678");
+                mActivity.startActivity(intent);
+            }
+        }));
+
         mDataList.add(new Bean("活跃打点测试", new Runnable() {
             @Override
             public void run() {
