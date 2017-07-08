@@ -88,12 +88,17 @@ public class FoldView extends RelativeLayout {
     }
 
 
-    public void bindData(List<ChannelLiveViewModel.RichText> dataList) {
+    public void bindData(final List<ChannelLiveViewModel.RichText> dataList) {
         if (mVariableLengthView == null) {
             return;
         }
-        mVariableLengthView.bindData(dataList);
-        refreshVariableLengthView();
+        ((MultiLineTagLayout) mVariableLengthView).post(new Runnable() {
+            @Override
+            public void run() {
+                mVariableLengthView.bindData(dataList);
+                refreshVariableLengthView();
+            }
+        });
     }
 
 
