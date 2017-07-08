@@ -16,7 +16,6 @@ import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
 import com.base.permission.PermissionUtils;
 import com.base.view.BackTitleBar;
-import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.sublist.presenter.ISubChannelView;
@@ -25,8 +24,6 @@ import com.wali.live.watchsdk.channel.sublist.presenter.SubChannelPresenter;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -207,14 +204,6 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
         int i = v.getId();
         if (i == R.id.back_iv) {
             finish();
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(FollowOrUnfollowEvent event) {
-        if (event != null) {
-            boolean focus = event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW;
-//            mRecyclerAdapter.refreshFocus(event.uuid, focus);
         }
     }
 

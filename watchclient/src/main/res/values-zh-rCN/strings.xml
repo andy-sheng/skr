@@ -85,6 +85,7 @@
     </plurals>
     <string name="feeds_detail_label_comment" formatted="false">评论(%s)</string>
     <string name="feeds_detail_label_replay">回放(%s)</string>
+    <string name="feeds_detail_label_detail">详情</string>
     <string name="recomment_text">回复\u0020</string>
     <string name="feeds_hot_comment" formatted="false">热门评论</string>
     <string name="feeds_hot_all" formatted="false">全部评论</string>

@@ -12,6 +12,7 @@ import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel;
 
 import java.util.List;
@@ -91,7 +92,7 @@ public class NavigationListHolder extends RepeatHolder {
             if (i == 3 || i == 7 || i == minSize - 1) {
                 mParentViews[i].findViewById(mDividerId).setVisibility(View.INVISIBLE);
             }
-            ChannelNavigateViewModel.NavigateItem item = itemDatas.get(i);
+            final ChannelNavigateViewModel.NavigateItem item = itemDatas.get(i);
             if (item != null) {
                 MyLog.i(TAG, "bindNavigateModel " + item.getIconUrl() + " txt: " + item.getText());
                 if (!TextUtils.isEmpty(item.getIconUrl())) {
@@ -109,14 +110,13 @@ public class NavigationListHolder extends RepeatHolder {
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                //scheme jump
+                                HolderHelper.jumpScheme(itemView.getContext(), item.getSchemeUri());
                             }
                         });
                 mTextViews[i].setText(item.getText());
 
                 bindItemOnNavigateModel(item, i);
             }
-//            exposureItem(item);
         }
     }
 }

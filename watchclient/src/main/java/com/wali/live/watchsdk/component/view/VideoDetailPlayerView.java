@@ -123,6 +123,7 @@ public class VideoDetailPlayerView extends RelativeLayout
 
     private void showLoadingView() {
         mLoadingProgressBar.setVisibility(VISIBLE);
+        mPlayBtn.setVisibility(GONE);
     }
 
     private void hideLoadingView() {

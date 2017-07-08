@@ -1,17 +1,15 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 /**
  * Created by lan on 16/6/28.
@@ -159,8 +157,7 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
 
     private void jumpMore() {
         if (!TextUtils.isEmpty(mViewModel.getHeadUri())) {
-            SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
-                    Uri.parse(mViewModel.getHeadUri()));
+            HolderHelper.jumpScheme(itemView.getContext(), mViewModel.getHeadUri());
         } else {
             MyLog.e(TAG, "HeadHolder jumpMore uri is empty");
         }

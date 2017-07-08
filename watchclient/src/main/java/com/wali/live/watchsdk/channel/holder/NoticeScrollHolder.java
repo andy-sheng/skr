@@ -1,23 +1,21 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.view.IScrollListener;
 import com.wali.live.watchsdk.channel.view.RepeatScrollView;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNoticeViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNoticeViewModel.NoticeItem;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 import java.util.List;
 
@@ -89,8 +87,7 @@ public class NoticeScrollHolder extends FixedHolder {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(viewModel.getAllViewUri())) {
-                    SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
-                            Uri.parse(viewModel.getAllViewUri()));
+                    HolderHelper.jumpScheme(itemView.getContext(), viewModel.getAllViewUri());
                 } else {
                     MyLog.e(TAG, "bindForecastViewModel schemeUrl is empty");
                 }

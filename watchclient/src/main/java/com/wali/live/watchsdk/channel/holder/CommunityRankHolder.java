@@ -1,16 +1,14 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.image.fresco.BaseImageView;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelRankingViewModel;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 import java.util.List;
 
@@ -70,8 +68,7 @@ public class CommunityRankHolder extends FixedHolder {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(viewModel.getSchemeUri())) {
-                    SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
-                            Uri.parse(viewModel.getSchemeUri()));
+                    HolderHelper.jumpScheme(itemView.getContext(), viewModel.getSchemeUri());
                 }
             }
         });

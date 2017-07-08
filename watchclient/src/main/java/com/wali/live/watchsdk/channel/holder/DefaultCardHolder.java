@@ -1,13 +1,11 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
@@ -17,10 +15,10 @@ import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.LiveItem;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 /**
  * Created by lan on 16/6/28.
@@ -148,8 +146,8 @@ public class DefaultCardHolder extends FixedHolder {
                     @Override
                     public void onClick(View v) {
                         if (!TextUtils.isEmpty(jumpUrl)) {
-                            SchemeSdkActivity.openActivity((BaseSdkActivity)
-                                    itemView.getContext(), Uri.parse(jumpUrl));
+                            HolderHelper.jumpScheme(itemView.getContext(), jumpUrl);
+
                         } else {
                             MyLog.e(TAG, "leftLabelIv onClick jumpUrl is empty");
                         }

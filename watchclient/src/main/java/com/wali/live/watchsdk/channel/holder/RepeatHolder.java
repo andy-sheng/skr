@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.channel.holder;
 
 import android.graphics.Color;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
@@ -18,6 +16,7 @@ import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel.BaseLiveItem;
@@ -33,7 +32,6 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelTwoTextViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelTwoTextViewModel.TwoLineItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelUserViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelUserViewModel.UserItemData;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 import java.util.List;
 
@@ -407,8 +405,7 @@ public abstract class RepeatHolder extends FixedHolder {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(item.getTopLeft().getJumpUrl())) {
-                    SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
-                            Uri.parse(item.getTopLeft().getJumpUrl()));
+                    HolderHelper.jumpScheme(itemView.getContext(), item.getTopLeft().getJumpUrl());
                 }
             }
         });
@@ -440,8 +437,7 @@ public abstract class RepeatHolder extends FixedHolder {
                     @Override
                     public void onClick(View v) {
                         if (!TextUtils.isEmpty(jumpUrl)) {
-                            SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
-                                    Uri.parse(jumpUrl));
+                            HolderHelper.jumpScheme(itemView.getContext(), jumpUrl);
                         }
                     }
                 });

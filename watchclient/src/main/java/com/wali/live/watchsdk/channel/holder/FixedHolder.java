@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.net.Uri;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -10,7 +9,6 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
@@ -21,6 +19,7 @@ import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.mi.live.data.config.GetConfigManager;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.BaseJumpItem;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel;
@@ -28,7 +27,6 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelRankingViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelShowViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelTwoTextViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelUserViewModel;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 import java.util.List;
 
@@ -148,9 +146,8 @@ public abstract class FixedHolder extends HeadHolder {
     }
 
     protected void jumpItem(BaseJumpItem item) {
-        if (!TextUtils.isEmpty(item.getSchemeUri())) {
-            SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(),
-                    Uri.parse(item.getSchemeUri()));
+        if (item != null && !TextUtils.isEmpty(item.getSchemeUri())) {
+            HolderHelper.jumpScheme(itemView.getContext(), item.getSchemeUri());
         } else {
             MyLog.e(TAG, "jumpItem schemeUrl is empty");
         }
@@ -186,7 +183,7 @@ public abstract class FixedHolder extends HeadHolder {
         @Override
         public void onClick(View widget) {
             if (!TextUtils.isEmpty(url)) {
-                SchemeSdkActivity.openActivity((BaseSdkActivity) itemView.getContext(), Uri.parse(url));
+                HolderHelper.jumpScheme(itemView.getContext(), url);
             } else {
                 MyLog.e(TAG, "LabelClickSpan onClick url is empty");
             }

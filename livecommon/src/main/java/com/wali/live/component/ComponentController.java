@@ -85,6 +85,9 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_UPDATE_START_TIME = MSG_DETAIL_VIDEO_FIRST + 8; // 更新 回放的录制时间(用于拉取房间消息/弹幕)
     public static final int MSG_PLAYER_ROTATE_ORIENTATION = MSG_DETAIL_VIDEO_FIRST + 9; //方向变换事件
 
+    public static final int MSG_PLAYER_FEEDS_DETAIL = MSG_DETAIL_VIDEO_FIRST + 10;
+
+
     // 播放器相关消息
     private static final int MSG_PLAYER_FIRST = 41000;
     public static final int MSG_PLAYER_FULL_SCREEN = MSG_PLAYER_FIRST;

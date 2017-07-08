@@ -1,19 +1,17 @@
 package com.wali.live.watchsdk.channel.holder;
 
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.holder.listener.BannerClickListener;
+import com.wali.live.watchsdk.channel.holder.listener.HolderHelper;
 import com.wali.live.watchsdk.channel.view.ChannelBannerView;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelBannerViewModel;
-import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 
 /**
  * Created by lan on 16/6/28.
@@ -57,8 +55,7 @@ public class BannerHolder extends BaseHolder<ChannelBannerViewModel> implements 
     public void clickBanner(ChannelBannerViewModel.Banner banner) {
         String url = banner.getLinkUrl();
         if (!TextUtils.isEmpty(url)) {
-            SchemeSdkActivity.openActivity((BaseSdkActivity)
-                    itemView.getContext(), Uri.parse(url));
+            HolderHelper.jumpScheme(itemView.getContext(), url);
         } else {
             MyLog.e(TAG, "clickBanner url is empty");
         }

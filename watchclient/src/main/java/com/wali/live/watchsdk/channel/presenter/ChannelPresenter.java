@@ -124,7 +124,7 @@ public class ChannelPresenter implements IChannelPresenter {
     }
 
     private List<? extends BaseViewModel> processRsp(@NonNull HotChannelProto.GetRecommendListRsp rsp) {
-        MyLog.d(TAG, formatLog("processRsp ") + rsp.toString());
+        MyLog.d(TAG, formatLog("processRsp"));
         List<ChannelViewModel> models = new ArrayList();
 
         for (CommonChannelProto.ChannelItem protoItem : rsp.getItemsList()) {

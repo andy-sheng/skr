@@ -90,7 +90,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
         class ComponentView implements IView {
             @Override
             public <T extends View> T getRealView() {
-                return null;
+                return (T) mRootView;
             }
 
             @Override
@@ -103,8 +103,8 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
             }
 
             @Override
-            public void updateCommentTotalCnt(int cnt) {
-                mMessageAdapter.updatePageTitle(0, String.format(mRootView.getResources()
+            public void updateCommentTotalCnt(int cnt, boolean isReplay) {
+                mMessageAdapter.updatePageTitle(isReplay ? 0 : 1, String.format(mRootView.getResources()
                         .getString(R.string.feeds_detail_label_comment), "" + cnt));
                 mSlidingTabLayout.notifyDataChange();
             }
@@ -144,7 +144,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
          *
          * @param cnt 评论数目
          */
-        void updateCommentTotalCnt(int cnt);
+        void updateCommentTotalCnt(int cnt, boolean isReplay);
 
         /**
          * 更新回放总数
