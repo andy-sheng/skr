@@ -100,6 +100,7 @@ public class DetailTabView implements IComponentView<DetailTabView.IPresenter, D
                     mMessageAdapter.addView(elem.first, elem.second);
                 }
                 mMessageAdapter.notifyDataSetChanged();
+                mSlidingTabLayout.notifyDataChange();
             }
 
             @Override
