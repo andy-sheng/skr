@@ -14,11 +14,14 @@ import android.view.WindowManager;
 import com.base.event.SdkEventClass;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.component.presenter.ComponentPresenter;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.personinfo.fragment.FloatPersonInfoFragment;
+import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.videodetail.ReplaySdkView;
 import com.wali.live.watchsdk.videodetail.VideoDetailController;
 import com.wali.live.watchsdk.videodetail.VideoDetailView;
@@ -28,6 +31,7 @@ import com.wali.live.watchsdk.watch.presenter.VideoShowPresenter;
 import com.wali.live.watchsdk.watch.view.IWatchVideoView;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
@@ -284,6 +288,41 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
 
     }
 
+    private void startShowFloatPersonInfo(long uid) {
+        if (uid <= 0) {
+            return;
+        }
+        FloatPersonInfoFragment.openFragment(VideoDetailSdkActivity.this,
+                uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(),
+                mMyRoomData.getVideoUrl(), null, mMyRoomData.getEnterRoomTime());
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UserActionEvent event) {
+        MyLog.e(TAG, "BaseEvent.UserActionEvent");
+        // 该类型单独提出用指定的fastdoubleclick，防止fragment的崩溃
+        if (event.type == UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO) {
+            startShowFloatPersonInfo((Long) event.obj1);
+            return;
+        }
+        if (CommonUtils.isFastDoubleClick()) {
+            return;
+        }
+        switch (event.type) {
+            case UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_TICKET: {
+                long uid = (long) event.obj1;
+                int ticket = (int) event.obj2;
+                String liveId = (String) event.obj3;
+                RankingPagerFragment.openFragment(this, ticket, mMyRoomData.getInitTicket(), uid, liveId,
+                        mMyRoomData.isTicketing() ? RankingPagerFragment.PARAM_FROM_CURRENT : RankingPagerFragment.PARAM_FROM_TOTAL,
+                        true, isDisplayLandscape());
+            }
+            break;
+        }
+    }
+
+
     private class Action implements ComponentPresenter.IAction {
 
         private void registerAction() {
@@ -302,9 +341,7 @@ public class VideoDetailSdkActivity extends BaseComponentSdkActivity implements 
         public boolean onAction(int source, @Nullable ComponentPresenter.Params params) {
             switch (source) {
                 case MSG_SHOW_PERSONAL_INFO:
-                    FloatPersonInfoFragment.openFragment(VideoDetailSdkActivity.this,
-                            (long) params.getItem(0), mMyRoomData.getUid(), mMyRoomData.getRoomId(),
-                            mMyRoomData.getVideoUrl(), null, mMyRoomData.getEnterRoomTime());
+                    startShowFloatPersonInfo((long) params.getItem(0));
                     return true;
                 case MSG_PLAYER_FULL_SCREEN:
                     if (mVideoStartTime > 0) {
