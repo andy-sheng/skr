@@ -92,13 +92,8 @@ public class FoldView extends RelativeLayout {
         if (mVariableLengthView == null) {
             return;
         }
-        ((MultiLineTagLayout) mVariableLengthView).post(new Runnable() {
-            @Override
-            public void run() {
-                mVariableLengthView.bindData(dataList);
-                refreshVariableLengthView();
-            }
-        });
+        mVariableLengthView.bindData(dataList);
+        refreshVariableLengthView();
     }
 
 

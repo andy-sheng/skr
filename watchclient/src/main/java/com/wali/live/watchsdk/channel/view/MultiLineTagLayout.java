@@ -83,7 +83,7 @@ public class MultiLineTagLayout extends RelativeLayout implements IFoldViewConte
     }
 
     private void reset() {
-        mTotalWidth = getWidth() - LEFT_PADDING * 2;
+        mTotalWidth = DisplayUtils.getScreenWidth() - LEFT_PADDING * 2;
         mLeftWidth = mTotalWidth;
         mLine = 1;
     }
