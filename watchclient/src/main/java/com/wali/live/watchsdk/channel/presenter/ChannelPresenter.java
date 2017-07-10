@@ -129,7 +129,8 @@ public class ChannelPresenter implements IChannelPresenter {
 
         for (CommonChannelProto.ChannelItem protoItem : rsp.getItemsList()) {
             ChannelViewModel viewModel = ChannelModelFactory.getChannelViewModel(protoItem);
-            if (viewModel == null) {
+            if (viewModel == null || viewModel != null && viewModel.isNeedRemove()) {
+                MyLog.i(TAG, "viewModel need remove ");
                 continue;
             }
 

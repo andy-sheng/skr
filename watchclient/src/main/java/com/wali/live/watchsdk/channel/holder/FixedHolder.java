@@ -50,7 +50,6 @@ public abstract class FixedHolder extends HeadHolder {
     @Override
     protected void bindView() {
         super.bindView();
-
         if (mViewModel instanceof ChannelShowViewModel) {
             bindShowModel((ChannelShowViewModel) mViewModel.get());
         } else if (mViewModel instanceof ChannelTwoTextViewModel) {

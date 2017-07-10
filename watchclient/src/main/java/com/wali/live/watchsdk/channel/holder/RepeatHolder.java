@@ -157,12 +157,6 @@ public abstract class RepeatHolder extends FixedHolder {
                     }
                 });
                 mTextViews[i].setText(item.getText());
-                mTextViews[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        jumpItem(item);
-                    }
-                });
             }
             bindItemOnShowModel(item, i);
         }

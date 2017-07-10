@@ -57,7 +57,7 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel_sub_list);
         ButterKnife.bind(this);
-
+        initView();
         initExtraData();
 
         if (null != mParam) {
@@ -119,6 +119,13 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
 
     }
 
+    private void initView() {
+        mTitleBar = $(R.id.title_bar);
+        mRefreshLayout = $(R.id.swipe_refresh_layout);
+        mRecyclerView = $(R.id.recycler_view);
+        mTvSelect = $(R.id.tv_select);
+    }
+
     private void initExtraData() {
         Intent data = getIntent();
         if (data != null) {
@@ -139,11 +146,6 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
 
     private void initContentView() {
         if (null != mParam) {
-            mTitleBar = $(R.id.title_bar);
-            mRefreshLayout = $(R.id.swipe_refresh_layout);
-            mRecyclerView = $(R.id.recycler_view);
-            mTvSelect = $(R.id.tv_select);
-
             mTitleBar.getBackBtn().setOnClickListener(this);
             mTitleBar.getTitleTv().setText(mParam.getTitle());
             mRefreshLayout.setOnRefreshListener(

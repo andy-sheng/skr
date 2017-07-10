@@ -2,6 +2,8 @@ package com.wali.live.watchsdk.scheme.specific;
 
 /**
  * Created by lan on 2017/7/3.
+ * SchemeConstants 和 SpecificConstants 添加的scheme要在ALL_CHANNEL_SCHEME_TYPE里添加。
+ * host要在ALL_CHANNEL_HOST_TYPE裡添加。否則会被过滤掉导致ui上不被显示。
  */
 public class SpecificConstants {
     /**

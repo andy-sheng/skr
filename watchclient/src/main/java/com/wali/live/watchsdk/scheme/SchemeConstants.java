@@ -1,7 +1,15 @@
 package com.wali.live.watchsdk.scheme;
 
+import com.wali.live.watchsdk.scheme.specific.SpecificConstants;
+
+import java.util.Arrays;
+import java.util.HashSet;
+
 /**
  * Created by lan on 16/10/26.
+ * <p>
+ * SchemeConstants 和 SpecificConstants 添加的scheme要在ALL_CHANNEL_SCHEME_TYPE里添加。
+ * host要在ALL_CHANNEL_HOST_TYPE裡添加。否則会被过滤掉导致ui上不被显示。
  *
  * @module scheme
  */
@@ -146,4 +154,31 @@ public class SchemeConstants {
      * 登录跳转
      */
     public static final String HOST_LOGIN = "login";
+
+
+    /**
+     *SchemeConstants 和 SpecificConstants 添加的scheme和host都要在這裡添加一下。否則会被过滤掉导致ui上不被显示。
+     */
+
+    /**
+     * SCHEME常亮集合，用于ui显示拦截
+     */
+    public static final HashSet<String> ALL_CHANNEL_SCHEME_TYPE = new HashSet<>(Arrays.asList(
+            SchemeConstants.SCHEME_LIVESDK,
+            SchemeConstants.SCHEME_WALILIVE,
+            SpecificConstants.SCHEME_GAMECENTER,
+            SpecificConstants.SCHEME_HTTP,
+            SpecificConstants.SCHEME_HTTPS
+    ));
+    /**
+     * HOST常亮集合，用于ui显示拦截
+     */
+    public static final HashSet<String> ALL_CHANNEL_HOST_TYPE = new HashSet<>(Arrays.asList(
+            SchemeConstants.HOST_ROOM,
+            SchemeConstants.HOST_PLAYBACK,
+            SchemeConstants.HOST_CHANNEL,
+            SchemeConstants.HOST_RECOMMEND,
+            SchemeConstants.HOST_OPEN_URL,
+            SchemeConstants.HOST_FEED
+    ));
 }

@@ -1,11 +1,13 @@
 package com.wali.live.watchsdk.channel.viewmodel;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.mi.live.data.user.User;
 import com.wali.live.proto.CommonChannelProto.ChannelItem;
 import com.wali.live.proto.CommonChannelProto.OneTextOneImgItemData;
 import com.wali.live.proto.CommonChannelProto.UiTemplateOneTextOneImg;
+import com.wali.live.watchsdk.scheme.SchemeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,18 @@ public class ChannelShowViewModel extends ChannelViewModel<ChannelItem> {
 
     @Override
     public boolean isNeedRemove() {
+        for (OneTextItem item : mItemDatas) {
+            if (TextUtils.isEmpty(item.getSchemeUri())) {
+                return true;
+            }
+            Uri uri = Uri.parse(item.getSchemeUri());
+            String scheme = uri.getScheme();
+            String host = uri.getHost();
+            if (!SchemeConstants.ALL_CHANNEL_SCHEME_TYPE.contains(scheme) ||
+                    !SchemeConstants.ALL_CHANNEL_SCHEME_TYPE.contains(host)) {
+                return true;
+            }
+        }
         return false;
     }
 
