@@ -27,6 +27,15 @@ public class SchemeConstants {
      */
     public static final String SCHEME_WALILIVE = "walilive";
 
+    /**
+     * 安全验证参数
+     *
+     * @notice PARAM_CHANNEL 防止重名
+     */
+    public static final String PARAM_CHANNEL = "channel";
+    public static final String PARAM_PACKAGE_NAME = "package_name";
+    public static final String PARAM_CHANNEL_SECRET = "channel_secret";
+
     // 跳转到直播间
     public static final String HOST_ROOM = "room";
     public static final String PATH_JOIN = "/join";

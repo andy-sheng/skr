@@ -255,10 +255,11 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("跳转到直播(Scheme)", new Runnable() {
             @Override
             public void run() {
-                String uri = "livesdk://room/join?playerid=21050016";
+                String uri = "livesdk://room/join?channel=50001&package_name=com.wali.live.sdk.manager.demo" +
+                        "&playerid=21050016";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.putExtra("extra_channel_id", 50001);
-                intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
+                // intent.putExtra("extra_channel_id", 50001);
+                // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
                 mActivity.startActivity(intent);
             }
         }));
@@ -271,14 +272,15 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 String url = Uri.encode("http://playback.ks.zb.mi.com/record/live/22869193_1480938327/hls/22869193_1480938327.m3u8?playui=1");
                 int type = 6;
 
-                String uri = String.format("livesdk://playback/join?playerid=%s" +
+                String uri = String.format("livesdk://playback/join?channel=50001&package_name=com.wali.live.sdk.manager.demo" +
+                                "&playerid=%s" +
                                 "&liveid=%s" +
                                 "&videourl=%s" +
                                 "&type=%s",
                         playerId, liveId, url, type);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.putExtra("extra_channel_id", 50001);
-                intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
+                // intent.putExtra("extra_channel_id", 50001);
+                // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
                 mActivity.startActivity(intent);
             }
         }));
@@ -286,10 +288,10 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("跳转到频道(Scheme)", new Runnable() {
             @Override
             public void run() {
-                String uri = "livesdk://channel?channel_id=201";
+                String uri = "livesdk://channel?channel=50001&package_name=com.wali.live.sdk.manager.demo&channel_id=201";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.putExtra("extra_channel_id", 50001);
-                intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
+                // intent.putExtra("extra_channel_id", 50001);
+                // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
                 mActivity.startActivity(intent);
             }
         }));
@@ -297,10 +299,10 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mDataList.add(new Bean("模拟登录(Scheme)", new Runnable() {
             @Override
             public void run() {
-                String uri = "livesdk://login";
+                String uri = "livesdk://login?channel=50001&package_name=com.wali.live.sdk.manager.demo";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.putExtra("extra_channel_id", 50001);
-                intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
+                // intent.putExtra("extra_channel_id", 50001);
+                // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
                 intent.putExtra("extra_mi_id", 12345678);
                 intent.putExtra("extra_service_token", "22345678");
                 mActivity.startActivity(intent);

@@ -89,19 +89,26 @@ public class SchemeSdkActivity extends BaseSdkActivity {
         }
 
         if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)) {
+            int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL, 0);
+            String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
+            String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
+            if (channelSecret == null) {
+                channelSecret = "";
+            }
+
             // 登录逻辑单独处理
             if (host.equals(SchemeConstants.HOST_LOGIN)) {
                 Intent serviceIntent = new Intent(this, LoginService.class);
+                serviceIntent.putExtra(EXTRA_CHANNEL_ID, channelId);
+                serviceIntent.putExtra(EXTRA_PACKAGE_NAME, packageName);
+                serviceIntent.putExtra(EXTRA_CHANNEL_SECRET, channelSecret);
                 serviceIntent.putExtras(mIntent.getExtras());
                 startService(serviceIntent);
                 finish();
             } else {
-                int channelId = mIntent.getIntExtra(EXTRA_CHANNEL_ID, 0);
-                String packageName = mIntent.getStringExtra(EXTRA_PACKAGE_NAME);
-                String channelSecret = mIntent.getStringExtra(EXTRA_CHANNEL_SECRET);
-                if (channelSecret == null) {
-                    channelSecret = "";
-                }
+//                int channelId = mIntent.getIntExtra(EXTRA_CHANNEL_ID, 0);
+//                String packageName = mIntent.getStringExtra(EXTRA_PACKAGE_NAME);
+//                String channelSecret = mIntent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
                 MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
                         new SecureCommonCallBack() {
