@@ -64,6 +64,15 @@ public abstract class BaseBottomButton<PRESENTER, VIEW extends IViewProxy> imple
         view.setOnClickListener(this);
     }
 
+    protected final void addCreatedView(@NonNull View view, int width, int height, @IdRes int id) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
+        layoutParams.alignWithParent = true;
+        layoutParams.setMargins(BTN_MARGIN, BTN_MARGIN, BTN_MARGIN, BTN_MARGIN);
+        mContentContainer.addView(view, layoutParams);
+        view.setId(id);
+        view.setOnClickListener(this);
+    }
+
     public BaseBottomButton(@NonNull RelativeLayout contentContainer) {
         mContentContainer = contentContainer;
         mContentContainer.removeAllViews();

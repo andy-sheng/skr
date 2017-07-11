@@ -11,6 +11,7 @@ import com.wali.live.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
+import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -98,7 +99,7 @@ public class BottomButtonPresenter extends ComponentPresenter<WatchBottomButton.
                     mView.getRealView().setVisibility(View.VISIBLE);
                     return true;
                 case WatchComponentController.MSG_SHOE_GAME_ICON:
-                    mView.showGameIcon();
+                    mView.showGameIcon((GameViewModel) params.firstItem());
                     return true;
                 default:
                     break;

@@ -107,7 +107,9 @@ public class GameDownloadPresenter extends ComponentPresenter<GameDownloadPanel.
                             mGameModel = gameModel;
 
                             mView.inflate();
-                            mComponentController.onEvent(ComponentController.MSG_SHOE_GAME_ICON);
+                            Params params = new Params();
+                            params.putItem(mGameModel);
+                            mComponentController.onEvent(ComponentController.MSG_SHOE_GAME_ICON, params);
 
                             StatisticsAlmightyWorker.getsInstance().recordDelayDefault(formatGameIconShowKey(), 1);
                         }

@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
+import com.base.image.fresco.FrescoWorker;
+import com.base.image.fresco.image.BaseImage;
+import com.base.image.fresco.image.ImageFactory;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.account.HostChannelManager;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.component.view.BaseBottomButton;
@@ -16,6 +20,7 @@ import com.wali.live.component.view.IViewProxy;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 
 import static com.wali.live.statistics.StatisticsKey.AC_APP;
 import static com.wali.live.statistics.StatisticsKey.KEY;
@@ -127,9 +132,18 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         }
     }
 
-    private void showGameIcon() {
-        mGameBtn = createImageView(R.drawable.live_icon_game_btn);
-        addCreatedView(mGameBtn, R.id.game_btn);
+    private void showGameIcon(final GameViewModel gameModel) {
+        mGameBtn = new SimpleDraweeView(getContext());
+        addCreatedView(mGameBtn, mCommentBtn.getWidth(), mCommentBtn.getHeight(), R.id.game_btn);
+
+        BaseImage image = null;
+        if (gameModel != null) {
+//            image = ImageFactory.newHttpImage(gameModel.getIconUrl()).setCornerRadius(10).build();
+        }
+        if (image == null) {
+            image = ImageFactory.newResImage(R.drawable.live_icon_game_btn).build();
+        }
+        FrescoWorker.loadImage((SimpleDraweeView) mGameBtn, image);
 
         mRightBtnSetPort.add(mGameBtn);
         mBottomBtnSetLand.add(mGameBtn);
@@ -206,8 +220,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             }
 
             @Override
-            public void showGameIcon() {
-                WatchBottomButton.this.showGameIcon();
+            public void showGameIcon(GameViewModel gameModel) {
+                WatchBottomButton.this.showGameIcon(gameModel);
             }
 
             @Override
@@ -246,7 +260,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     public interface IView extends IViewProxy, IOrientationListener {
-        void showGameIcon();
+        void showGameIcon(GameViewModel gameModel);
 
         void destroyView();
     }

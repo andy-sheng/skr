@@ -65,7 +65,7 @@ public class FrescoWorker {
         ThreadUtils.ensureUiThread();
 
 //        MyLog.d(TAG, "loadImage start url = " + baseImage.getUri());
-//        checkResizeOption(draweeView, baseImage);
+//        checkResizeOption(draweeView, ba、seImage);
 
         if (baseImage.getScaleType() != null) {
             draweeView.getHierarchy().setActualImageScaleType(baseImage.getScaleType());
@@ -266,7 +266,7 @@ public class FrescoWorker {
         ImageRequest request = ImageRequest.fromUri(uri);
         if (null != request) {
             try {
-                CacheKey cacheKey = MLCacheKeyFactory.getInstance().getEncodedCacheKey(request,null);
+                CacheKey cacheKey = MLCacheKeyFactory.getInstance().getEncodedCacheKey(request, null);
                 if (ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey)) {
                     BinaryResource resource = ImagePipelineFactory.getInstance().getMainDiskStorageCache().getResource(cacheKey);
                     File cacheFile = ((FileBinaryResource) resource).getFile();
