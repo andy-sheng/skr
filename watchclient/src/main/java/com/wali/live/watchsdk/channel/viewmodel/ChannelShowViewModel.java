@@ -66,7 +66,7 @@ public class ChannelShowViewModel extends ChannelViewModel<ChannelItem> {
             String scheme = uri.getScheme();
             String host = uri.getHost();
             if (!SchemeConstants.ALL_CHANNEL_SCHEME_TYPE.contains(scheme) ||
-                    !SchemeConstants.ALL_CHANNEL_SCHEME_TYPE.contains(host)) {
+                    !SchemeConstants.ALL_CHANNEL_HOST_TYPE.contains(host)) {
                 return true;
             }
         }
