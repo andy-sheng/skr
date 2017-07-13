@@ -94,4 +94,7 @@
     <string name="feeds_comment_delete_dialog_title">确认删除该评论</string>
     <string name="feeds_comment_delete_failed">评论删除失败</string>
     <string name="live_lottery_no_comment_toast">暂时没有评论</string>
+    <string name="game_guide_close_tip">剩余%ds关闭页面</string>
+    <!--关注主播，不错过任何一次直播-->
+    <string name="game_guide_normal_tip">关注主播，不错过任何一次直播</string>
 </resources>

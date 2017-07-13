@@ -71,6 +71,9 @@ public abstract class ComponentController implements ComponentPresenter.ICompone
     public static final int MSG_SHOW_GAME_DOWNLOAD = MSG_POPUP_FIRST + 7;       // 展示 游戏中心下载框
     public static final int MSG_SHOW_SHARE_PANEL = MSG_POPUP_FIRST + 8;         // 显示 分享面板
     public static final int MSG_SHOW_PERSONAL_INFO = MSG_POPUP_FIRST + 9;       // 显示 个人信息页
+    public static final int MSG_SHOW_FOLLOW_GUIDE = MSG_POPUP_FIRST + 10;       // 显示 游戏引导页面
+    public static final int MSG_FOLLOW_COUNT_DOWN = MSG_POPUP_FIRST + 11;       // 显示 游戏引导页面之前的倒计时
+
 
     // 详情播放相关
     private static final int MSG_DETAIL_VIDEO_FIRST = 40000;
