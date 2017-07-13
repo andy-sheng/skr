@@ -19,7 +19,6 @@ import com.mi.live.data.account.XiaoMiOAuth;
 import com.mi.live.data.account.event.AccountEventController;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
-import com.mi.live.data.account.task.ActionParam;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.milink.command.MiLinkCommand;
 import com.wali.live.proto.AccountProto;
@@ -59,7 +58,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
                 .create(new Observable.OnSubscribe<Object>() {
                     @Override
                     public void call(Subscriber<? super Object> subscriber) {
-                        systemLoginInner(channelId);
+                        systemLoginInternal(channelId);
                         subscriber.onCompleted();
                     }
                 })
@@ -68,7 +67,7 @@ public class LoginPresenter extends RxLifeCyclePresenter {
     }
 
     // 再io线程执行
-    public void systemLoginInner(final int channelId) {
+    public void systemLoginInternal(final int channelId) {
         if (!Network.hasNetwork(GlobalData.app())) {
             return;
         }
@@ -89,8 +88,6 @@ public class LoginPresenter extends RxLifeCyclePresenter {
             miLogin();
         }
     }
-
-
 
     public void miLogin() {
         MyLog.w(TAG, "miLogin");

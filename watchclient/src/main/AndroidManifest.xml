@@ -1,5 +1,5 @@
-<manifest package="com.wali.live.watchsdk"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.wali.live.watchsdk">
 
     <!--账号权限-->
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
@@ -155,7 +155,7 @@
             android:exported="true"/>
 
         <service
-            android:name=".login.LoginService"
+            android:name=".login.LoginInternalService"
             android:exported="false"/>
     </application>
 </manifest>

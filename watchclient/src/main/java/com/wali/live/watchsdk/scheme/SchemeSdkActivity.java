@@ -11,7 +11,6 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.callback.SecureCommonCallBack;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
-import com.wali.live.watchsdk.login.LoginService;
 import com.wali.live.watchsdk.scheme.processor.SchemeProcessor;
 import com.wali.live.watchsdk.scheme.processor.WaliliveProcessor;
 import com.wali.live.watchsdk.scheme.specific.SpecificProcessor;
@@ -96,45 +95,34 @@ public class SchemeSdkActivity extends BaseSdkActivity {
                 channelSecret = "";
             }
 
-            // 登录逻辑单独处理
-            if (host.equals(SchemeConstants.HOST_LOGIN)) {
-                Intent serviceIntent = new Intent(this, LoginService.class);
-                serviceIntent.putExtra(EXTRA_CHANNEL_ID, channelId);
-                serviceIntent.putExtra(EXTRA_PACKAGE_NAME, packageName);
-                serviceIntent.putExtra(EXTRA_CHANNEL_SECRET, channelSecret);
-                serviceIntent.putExtras(mIntent.getExtras());
-                startService(serviceIntent);
-                finish();
-            } else {
 //                int channelId = mIntent.getIntExtra(EXTRA_CHANNEL_ID, 0);
 //                String packageName = mIntent.getStringExtra(EXTRA_PACKAGE_NAME);
 //                String channelSecret = mIntent.getStringExtra(EXTRA_CHANNEL_SECRET);
 
-                MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
-                        new SecureCommonCallBack() {
-                            @Override
-                            public void postSuccess() {
-                                MyLog.w(TAG, "postSuccess callback");
-                                if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
-                                    // activity finish 内置处理
-                                } else {
-                                    finish();
-                                }
-                            }
-
-                            @Override
-                            public void postError() {
-                                MyLog.w(TAG, "postError");
+            MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
+                    new SecureCommonCallBack() {
+                        @Override
+                        public void postSuccess() {
+                            MyLog.w(TAG, "postSuccess callback");
+                            if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
+                                // activity finish 内置处理
+                            } else {
                                 finish();
                             }
+                        }
 
-                            @Override
-                            public void processFailure() {
-                                MyLog.w(TAG, "processFailure");
-                                finish();
-                            }
-                        });
-            }
+                        @Override
+                        public void postError() {
+                            MyLog.w(TAG, "postError");
+                            finish();
+                        }
+
+                        @Override
+                        public void processFailure() {
+                            MyLog.w(TAG, "processFailure");
+                            finish();
+                        }
+                    });
         } else if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
             // 内部处理，不对外暴露
             if (WaliliveProcessor.process(uri, host, this, true)) {

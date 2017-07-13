@@ -161,6 +161,8 @@ public class SchemeConstants {
 
     /**
      * 登录跳转
+     *
+     * @deprecated
      */
     public static final String HOST_LOGIN = "login";
 

@@ -4,8 +4,6 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +33,6 @@ import com.xiaomi.passport.servicetoken.ServiceTokenFuture;
 import com.xiaomi.passport.servicetoken.ServiceTokenResult;
 import com.xiaomi.passport.servicetoken.ServiceTokenUtilFacade;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -296,19 +293,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }));
 
-        mDataList.add(new Bean("模拟登录(Scheme)", new Runnable() {
-            @Override
-            public void run() {
-                String uri = "livesdk://login?channel=50001&package_name=com.wali.live.sdk.manager.demo";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                // intent.putExtra("extra_channel_id", 50001);
-                // intent.putExtra("extra_package_name", "com.wali.live.sdk.manager.demo");
-                intent.putExtra("extra_mi_id", 12345678);
-                intent.putExtra("extra_service_token", "22345678");
-                mActivity.startActivity(intent);
-            }
-        }));
-
         mDataList.add(new Bean("活跃打点测试", new Runnable() {
             @Override
             public void run() {
@@ -408,12 +392,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 String authToken = future.getResult().getString(AccountManager.KEY_AUTHTOKEN);
                 return authToken;
             }
-        } catch (OperationCanceledException e) {
-            Log.e(TAG, "get auth token error", e);
-        } catch (AuthenticatorException e) {
-            Log.e(TAG, "get auth token error", e);
-        } catch (IOException e) {
-            Log.e(TAG, "get auth token error", e);
         } catch (Exception e) {
             Log.e(TAG, "get auth token error", e);
         }

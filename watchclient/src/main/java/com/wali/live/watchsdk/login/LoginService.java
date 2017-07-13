@@ -13,6 +13,7 @@ import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
  * Created by lan on 2017/7/7.
  *
  * @description 因为小米视频不接我们jar，所以这里单独起个服务用来给小米视频作登录
+ * @deprecated
  */
 public class LoginService extends IntentService {
     private static final String TAG = "LoginService";
